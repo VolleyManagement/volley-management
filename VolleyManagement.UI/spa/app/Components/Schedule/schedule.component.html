@@ -10,10 +10,8 @@
             <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}">
               <tbody *ngIf="isFreeDay(gameResult)">
                 <tr class="team-sch">
-                  <strong>{{ gameResult.HomeTeamName }}</strong>
-                </tr>
-                <tr class="team-sch">
-                  Выходной
+                  <td><strong>{{ gameResult.HomeTeamName }}</strong></td>
+                  <td>Выходной</td>
                 </tr>
               </tbody>
             </table>

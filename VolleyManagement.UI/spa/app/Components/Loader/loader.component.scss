@@ -1,8 +1,66 @@
 .vm-loader {
   position: relative;
-  .loader {
+  .loader-container {
     position: absolute;
-    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .3);
+    .loader {
+      height: 20px;
+      width: 250px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      .loader--dot {
+        animation-name: vmloader;
+        animation-timing-function: ease-in-out;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        height: 20px;
+        width: 20px;
+        border-radius: 100%;
+        background-color: black;
+        position: absolute;
+        background-color: rgba(255, 255, 255, .5);
+        &:first-child {
+          animation-delay: 0.5s;
+        }
+        &:nth-child(2) {
+          animation-delay: 0.4s;
+        }
+        &:nth-child(3) {
+          animation-delay: 0.3s;
+        }
+        &:nth-child(4) {
+          animation-delay: 0.2s;
+        }
+        &:nth-child(5) {
+          animation-delay: 0.1s;
+        }
+        &:nth-child(6) {
+          animation-delay: 0s;
+        }
+      }
+    }
+    @keyframes vmloader {
+      15% {
+        transform: translateX(0);
+      }
+      45% {
+        transform: translateX(230px);
+      }
+      65% {
+        transform: translateX(230px);
+      }
+      95% {
+        transform: translateX(0);
+      }
+    }
   }
   .alt-message-wrapper {
     position: absolute;

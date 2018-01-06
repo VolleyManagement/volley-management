@@ -56,6 +56,13 @@
 
         #region Main setter methods
 
+        public GameBuilder New()
+        {
+            _game.Id = 0;
+
+            return this;
+        }
+
         /// <summary>
         /// Sets the identifier of the game.
         /// </summary>
@@ -106,6 +113,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithNullResult()
         {
+            _game.GameDate = DateTime.Parse(DATE);
             _game.Result = null;
             return this;
         }

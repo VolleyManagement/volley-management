@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents tournament data transfer object
@@ -28,9 +29,9 @@
         public DateTime EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of the teams in tournament
+        /// Gets or sets scheduling information for all tournament divisions
         /// </summary>
-        public byte TeamCount { get; set; }
+        public List<DivisionScheduleDto> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament scheme

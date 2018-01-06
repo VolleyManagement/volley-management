@@ -6,6 +6,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.Teams;
 
     /// <summary>
@@ -56,8 +57,12 @@
         /// <returns>True if given team have the same properties.</returns>
         public bool AreEqual(TeamNameViewModel x, TeamNameViewModel y)
         {
-            return x.Id == y.Id &&
-                   x.Name == y.Name;
+
+            Assert.AreEqual(x.Id, y.Id, "Id should be equal");
+            Assert.AreEqual(x.Name, y.Name, "Name should be equal");
+            Assert.AreEqual(x.DivisionName, y.DivisionName, "DivisionName should be equal");
+
+            return true;
         }
 
         /// <summary>

@@ -30,7 +30,7 @@
                 TournamentId = 1,
                 TournamentName = "Name",
                 TournamentScheme = TournamentSchemeEnum.One,
-                NumberOfRounds = 3,
+                MaxNumberOfRounds = 3,
                 Rounds = new GameServiceTestFixture().TestGameResults()
                                      .Build().GroupBy(d => d.Round)
                                      .ToDictionary(
@@ -80,7 +80,7 @@
         /// <returns>Schedule view model builder object</returns>
         public ScheduleViewModelBuilder WithNumberOfRounds(byte numberOfRounds)
         {
-            _scheduleViewModel.NumberOfRounds = numberOfRounds;
+            _scheduleViewModel.MaxNumberOfRounds = numberOfRounds;
             return this;
         }
 

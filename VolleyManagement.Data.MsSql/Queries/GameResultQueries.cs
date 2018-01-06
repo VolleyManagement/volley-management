@@ -72,60 +72,17 @@
             // Join GameResult tables with tournaments then with Divisions and then with Groups
             // After that select only groupId and divisionId where Groups navigation property Teams
             // contains reference on teamId
-            /*var gameResults = _dalGameResults
+            var gameResults = _dalGameResults
             .Where(gr => gr.TournamentId == criteria.TournamentId)
-            .Join(
-                _dalTournaments, 
-                results => results.TournamentId, 
-                tournament => tournament.Id, 
-                (results, tournament) => new { results, tournament })
-            .Join(
-                _dalDivisions, 
-                firstJoin => firstJoin.tournament.Id, 
-                division => division.TournamentId, 
-                (firstJoin, division) => new { firstJoin, division })
-            .Join(
-                _dalGroups, 
-                secondJoin => secondJoin.division.Id, 
-                group => group.DivisionId, 
-                (secondJoin, groups) => new { secondJoin, groups })
-            .Where(
-                thirdJoin => 
-                    (thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.HomeTeamId.Value) &&
-                    (!thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue 
-                        || (thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue 
-                            && thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.AwayTeamId.Value)))))
-            .Select(r => new {
-                results = r.secondJoin.firstJoin.results,
-                divisionName = r.secondJoin.division.Name,
-                divisionId = r.secondJoin.division.Id,
-                groupId = r.groups.Id })
+            .Join(_dalTournaments, results => results.TournamentId, tournament => tournament.Id, (results, tournament) => new { results, tournament })
+            .Join(_dalDivisions, firstJoin => firstJoin.tournament.Id, division => division.TournamentId, (firstJoin, division) => new { firstJoin, division })
+            .Join(_dalGroups, secondJoin => secondJoin.division.Id, group => group.DivisionId, (secondJoin, groups) => new { secondJoin, groups })
+            .Where(thirdJoin => (thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.HomeTeamId.Value) &&
+            (!thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue || (thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue && thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.AwayTeamId.Value)))))
+            .Select(r => new { results = r.secondJoin.firstJoin.results, divisionName = r.secondJoin.division.Name, divisionId = r.secondJoin.division.Id, groupId = r.groups.Id })
             .ToList();
 
-            */
-            var query = from gameResults in _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
-                        join tournament in _dalTournaments
-                            on gameResults.TournamentId equals tournament.Id
-                        join division in _dalDivisions
-                            on tournament.Id equals division.TournamentId
-                        join groups in _dalGroups
-                            on division.Id equals groups.DivisionId
-                        where
-                            groups.Teams.Select(t => t.Id).Contains(gameResults.HomeTeamId.Value)
-                            && !gameResults.HomeTeamId.HasValue
-                            || (gameResults.HomeTeamId.HasValue && groups.Teams.Select(t => t.Id).Contains(gameResults.AwayTeamId.Value))
-                        select new
-                        {
-                            results = gameResults,
-                            divisionName = division.Name,
-                            divisionId = division.Id,
-                            groupId = groups.Id
-                        };
-
-            List<GameResultDto> list = query
-                .ToList()
-                .ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));
-
+            List<GameResultDto> list = gameResults.ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));
             return list;
         }
 

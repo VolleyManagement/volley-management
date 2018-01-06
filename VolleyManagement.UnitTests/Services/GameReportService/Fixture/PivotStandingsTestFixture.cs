@@ -54,6 +54,14 @@
             return this;
         }
 
+        public PivotStandingsTestFixture WithEmptyResults()
+        {
+            WithNoResults();
+            AddDivision1Group1EmptyGameResults();
+
+            return this;
+        }
+
         public PivotStandingsTestFixture WithStandingsForAllPossibleScores()
         {
             _teamStandings.Clear();
@@ -88,7 +96,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -96,7 +106,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -104,7 +116,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 3,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -112,7 +126,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 2,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 4,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -120,7 +136,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 1,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 5,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -128,7 +146,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 0,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 6,
             });
 
             return this;
@@ -167,7 +187,9 @@
                 AwayTeamId = 1,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -175,7 +197,9 @@
                 AwayTeamId = 1,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
 
             return this;
@@ -214,7 +238,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -222,7 +248,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -230,7 +258,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -238,7 +268,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 2,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
 
             return this;
@@ -277,7 +309,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -285,7 +319,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
 
             return this;
@@ -324,7 +360,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -332,7 +370,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
 
             return this;
@@ -371,7 +411,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -379,7 +421,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
 
             return this;
@@ -418,7 +462,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -426,7 +472,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
 
             return this;
@@ -465,7 +513,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -473,7 +523,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -481,7 +533,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 0,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 3,
             });
             return this;
         }
@@ -519,7 +573,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -527,7 +583,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -535,7 +593,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 0,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 3,
             });
             return this;
         }
@@ -573,7 +633,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -581,7 +643,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -589,7 +653,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 0,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = true
+                IsTechnicalDefeat = true,
+                WasPlayed = true,
+                RoundNumber = 3,
             });
             return this;
         }
@@ -627,7 +693,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -635,7 +703,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -643,7 +713,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 1,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 3,
             });
             return this;
         }
@@ -781,15 +853,15 @@
         public PivotStandingsTestFixture WithMultipleDivisionsEmptyStandings()
         {
             AddTeamStandings(// A
-                   new TeamStandingsDto
-                   {
-                       TeamId = 1,
-                       TeamName = "TeamNameA",
-                       Points = 0,
-                       SetsRatio = null,
-                       BallsRatio = null
-                   },
-                   divisionId: 1);
+                new TeamStandingsDto
+                {
+                    TeamId = 1,
+                    TeamName = "TeamNameA",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 1);
             AddTeamStandings(// B
                 new TeamStandingsDto
                 {
@@ -901,6 +973,10 @@
                 },
                 divisionId: 2);
 
+            AddDivision1Group1EmptyGameResults();
+            AddDivision1Group2EmptyGameResults();
+            AddDivision2Group1EmptyGameResults();
+
             return this;
         }
 
@@ -911,12 +987,117 @@
             return this;
         }
 
+        public PivotStandingsTestFixture WithNotAllGamesPlayed()
+        {
+            AddTeamStandings(// A
+                   new TeamStandingsDto
+                   {
+                       TeamId = 1,
+                       TeamName = "TeamNameA",
+                       Points = 3,
+                       SetsRatio = (float)3 / 3,
+                       BallsRatio = (float)75 / 76,
+                   },
+                   divisionId: 1);
+            AddTeamStandings(// B
+                new TeamStandingsDto
+                {
+                    TeamId = 2,
+                    TeamName = "TeamNameB",
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
+                    BallsRatio = (float)76 / 75,
+                },
+                divisionId: 1);            
+            AddTeamStandings(// C
+                new TeamStandingsDto
+                {
+                    TeamId = 3,
+                    TeamName = "TeamNameC",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null,
+                },
+                divisionId: 1);
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 0,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false,
+                WasPlayed = false,
+                RoundNumber = 3,
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                HomeGameScore = 0,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false,
+                WasPlayed = false,
+                RoundNumber = 4,
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 0,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false,
+                WasPlayed = false,
+                RoundNumber = 5,
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeGameScore = 0,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false,
+                WasPlayed = false,
+                RoundNumber = 6,
+            });
+
+            return this;
+        }
+
         public TournamentStandings<PivotStandingsDto> Build()
         {
             var result = new TournamentStandings<PivotStandingsDto>();
 
-            var uniqueDivisions = _teamStandings.Select(t => t.DivisionId)
-                .Union(_gameResults.Select(gr => gr.DivisionId)).Distinct().ToList();
+            var uniqueDivisions = _teamStandings
+                .Select(t => t.DivisionId)
+                .Union(_gameResults.Select(gr => gr.DivisionId))
+                .Distinct()
+                .ToList();
 
             result.Divisions = uniqueDivisions.Select(divId =>
                 {
@@ -952,7 +1133,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -960,7 +1143,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -968,7 +1153,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 3,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -976,7 +1163,9 @@
                 AwayTeamId = 2,
                 HomeGameScore = 2,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 4,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -984,7 +1173,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 1,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 5,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -992,7 +1183,9 @@
                 AwayTeamId = 3,
                 HomeGameScore = 0,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 6,
             });
         }
 
@@ -1004,7 +1197,9 @@
                 AwayTeamId = 6,
                 HomeGameScore = 3,
                 AwayGameScore = 0,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 1,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -1012,7 +1207,9 @@
                 AwayTeamId = 4,
                 HomeGameScore = 3,
                 AwayGameScore = 1,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 2,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -1020,7 +1217,9 @@
                 AwayTeamId = 4,
                 HomeGameScore = 3,
                 AwayGameScore = 2,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 3,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -1028,7 +1227,9 @@
                 AwayTeamId = 6,
                 HomeGameScore = 2,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 4,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -1036,7 +1237,9 @@
                 AwayTeamId = 4,
                 HomeGameScore = 1,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 5,
             });
             AddGameResult(new ShortGameResultDto
             {
@@ -1044,7 +1247,9 @@
                 AwayTeamId = 4,
                 HomeGameScore = 0,
                 AwayGameScore = 3,
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                WasPlayed = true,
+                RoundNumber = 6,
             });
         }
 
@@ -1057,7 +1262,9 @@
                     AwayTeamId = 8,
                     HomeGameScore = 3,
                     AwayGameScore = 0,
-                    IsTechnicalDefeat = false
+                    IsTechnicalDefeat = false,
+                    WasPlayed = true,
+                    RoundNumber = 1,
                 },
                 divisionId: 2);
             AddGameResult(
@@ -1067,7 +1274,9 @@
                     AwayTeamId = 9,
                     HomeGameScore = 3,
                     AwayGameScore = 1,
-                    IsTechnicalDefeat = false
+                    IsTechnicalDefeat = false,
+                    WasPlayed = true,
+                    RoundNumber = 2,
                 },
                 divisionId: 2);
             AddGameResult(
@@ -1077,7 +1286,9 @@
                     AwayTeamId = 9,
                     HomeGameScore = 3,
                     AwayGameScore = 2,
-                    IsTechnicalDefeat = false
+                    IsTechnicalDefeat = false,
+                    WasPlayed = true,
+                    RoundNumber = 3,
                 },
                 divisionId: 2);
             AddGameResult(
@@ -1087,7 +1298,9 @@
                     AwayTeamId = 8,
                     HomeGameScore = 2,
                     AwayGameScore = 3,
-                    IsTechnicalDefeat = false
+                    IsTechnicalDefeat = false,
+                    WasPlayed = true,
+                    RoundNumber = 4,
                 },
                 divisionId: 2);
             AddGameResult(
@@ -1097,7 +1310,9 @@
                     AwayTeamId = 9,
                     HomeGameScore = 1,
                     AwayGameScore = 3,
-                    IsTechnicalDefeat = false
+                    IsTechnicalDefeat = false,
+                    WasPlayed = true,
+                    RoundNumber = 5,
                 },
                 divisionId: 2);
             AddGameResult(
@@ -1107,7 +1322,159 @@
                     AwayTeamId = 9,
                     HomeGameScore = 0,
                     AwayGameScore = 3,
-                    IsTechnicalDefeat = false
+                    IsTechnicalDefeat = false,
+                    WasPlayed = true,
+                    RoundNumber = 6,
+                },
+                divisionId: 2);
+        }
+
+        private void AddDivision1Group1EmptyGameResults()
+        {
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                WasPlayed = false,
+                RoundNumber = 1,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                WasPlayed = false,
+                RoundNumber = 2,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                WasPlayed = false,
+                RoundNumber = 3,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                WasPlayed = false,
+                RoundNumber = 4,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                WasPlayed = false,
+                RoundNumber = 5,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                WasPlayed = false,
+                RoundNumber = 6,
+            });
+        }
+
+        private void AddDivision1Group2EmptyGameResults()
+        {
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                WasPlayed = false,
+                RoundNumber = 1,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                WasPlayed = false,
+                RoundNumber = 2,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                WasPlayed = false,
+                RoundNumber = 3,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                WasPlayed = false,
+                RoundNumber = 4,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                WasPlayed = false,
+                RoundNumber = 5,
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                WasPlayed = false,
+                RoundNumber = 6,
+            });
+        }
+
+        private void AddDivision2Group1EmptyGameResults()
+        {
+            AddGameResult(
+               new ShortGameResultDto
+               {
+                   HomeTeamId = 7,
+                   AwayTeamId = 8,
+                   WasPlayed = false,
+                   RoundNumber = 1,
+               },
+               divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 7,
+                    AwayTeamId = 9,
+                    WasPlayed = false,
+                    RoundNumber = 2,
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 8,
+                    AwayTeamId = 9,
+                    WasPlayed = false,
+                    RoundNumber = 3,
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 7,
+                    AwayTeamId = 8,
+                    WasPlayed = false,
+                    RoundNumber = 4,
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 7,
+                    AwayTeamId = 9,
+                    WasPlayed = false,
+                    RoundNumber = 5,
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 8,
+                    AwayTeamId = 9,
+                    WasPlayed = false,
+                    RoundNumber = 6,
                 },
                 divisionId: 2);
         }

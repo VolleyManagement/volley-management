@@ -11,10 +11,12 @@
     using Data.Exceptions;
     using Data.Queries.Common;
     using Data.Queries.GameResult;
+    using Data.Queries.Team;
     using Data.Queries.Tournament;
     using Domain.GamesAggregate;
     using Domain.Properties;
     using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
     using GameResultConstants = Domain.Constants.GameResult;
 
@@ -33,13 +35,14 @@
 
         #region Query objects
 
-        private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
-        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
+        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
         private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
         private readonly IQuery<List<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
-        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
+        private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
 
         #endregion
 
@@ -59,6 +62,7 @@
         /// <param name="gameNumberByTournamentIdQuery">Query which gets game by number</param>
         /// <param name="getTournamentInstanceByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier</param>
         /// <param name="tournamentRepository">Instance of class which implements <see cref="ITournamentRepository"/></param>
+        /// <param name="tournamentTeamsQuery"></param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
@@ -69,7 +73,8 @@
             IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
             IQuery<Game, GameByNumberCriteria> gameNumberByTournamentIdQuery,
             IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
-            ITournamentRepository tournamentRepository)
+            ITournamentRepository tournamentRepository, 
+            IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -79,16 +84,12 @@
             _gamesByTournamentIdInRoundsByNumbersQuery = gamesByTournamentIdInRoundsByNumbersQuery;
             _gameNumberByTournamentIdQuery = gameNumberByTournamentIdQuery;
             _tournamentRepository = tournamentRepository;
+            _tournamentTeamsQuery = tournamentTeamsQuery;
             _getTournamentInstanceByIdQuery = getTournamentInstanceByIdQuery;
             _authService = authService;
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets property of TournamentService
-        /// </summary>
-        public ITournamentService TournamentService { get; set; }
 
         #region Implementation
 
@@ -145,9 +146,7 @@
         /// <returns>List of game results of specified tournament.</returns>
         public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            var allGames = _tournamentGameResultsQuery
-                .Execute(
-                new TournamentGameResultsCriteria { TournamentId = tournamentId });
+            var allGames = QueryAllTournamentGames(tournamentId);
 
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
@@ -428,15 +427,15 @@
                 throw new ArgumentException(Resources.NoSuchToruanment);
             }
 
-            List<GameResultDto> allGamesInTournament = GetTournamentResults(game.TournamentId);
-            GameResultDto oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
+            var allGamesInTournament = QueryAllTournamentGames(game.TournamentId);
+            var oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
 
             if (oldGameToUpdate != null)
             {
                 allGamesInTournament.Remove(oldGameToUpdate);
             }
 
-            ValidateFreeDayGame(game);
+            PutFreeDayTeamAsAway(game);
             ValidateGameDateSet(game);
             ValidateGameDate(tournamentScheduleInfo, game);
             ValidateGameInRound(game, allGamesInTournament, tournamentScheduleInfo);
@@ -453,15 +452,32 @@
         private void ValidateGameInRound(
             Game newGame,
             List<GameResultDto> games,
-            TournamentScheduleDto torunamentSsheduleInfo)
+            TournamentScheduleDto tournamentSсheduleInfo)
         {
-            List<GameResultDto> gamesInRound = games
-               .Where(gr => gr.Round == newGame.Round)
-               .ToList();
+            var teamsInTournament =
+                _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria
+                {
+                    TournamentId = tournamentSсheduleInfo.Id
+                });
+
+            var newGameDivisionId = teamsInTournament
+                .First(t => t.TeamId == newGame.AwayTeamId || t.TeamId == newGame.HomeTeamId).DivisionId;
+
+            var gamesInSameRoundSameDivision = (
+                        from game in games
+                        where game.Round==newGame.Round
+                        join homeTeam in teamsInTournament
+                            on game.HomeTeamId equals homeTeam.TeamId
+                        where homeTeam.DivisionId==newGameDivisionId
+                        join awayTeam in teamsInTournament
+                            on game.HomeTeamId equals awayTeam.TeamId
+                        where awayTeam.DivisionId == newGameDivisionId
+                        select game
+                ).ToList();
             ValidateGameInRoundOnCreate(
                 newGame,
-                gamesInRound,
-                torunamentSsheduleInfo);
+                gamesInSameRoundSameDivision,
+                tournamentSсheduleInfo);
         }
 
         private void ValidateGameInRoundOnCreate(
@@ -509,35 +525,25 @@
                             throw new ArgumentException(
                                 Resources.SameFreeDayGameInRound);
                         }
-                        else if (!GameValidation.IsFreeDayGame(game))
-                        {
-                            string sameTeamName = game.HomeTeamId == newGame.HomeTeamId
-                                ? game.HomeTeamName : game.AwayTeamName;
-
-                            throw new ArgumentException(
-                                string.Format(
-                                Resources.SameTeamInRound,
-                                sameTeamName));
-                        }
                     }
                     else
                     {
-                        string opositeTeam = string.Empty;
+                        string oppositeTeam;
 
                         if (game.HomeTeamId == newGame.HomeTeamId
                             || game.HomeTeamId == newGame.AwayTeamId)
                         {
-                            opositeTeam = game.HomeTeamName;
+                            oppositeTeam = game.HomeTeamName;
                         }
                         else
                         {
-                            opositeTeam = game.AwayTeamName;
+                            oppositeTeam = game.AwayTeamName;
                         }
 
                         throw new ArgumentException(
                           string.Format(
                           Resources.SameTeamInRound,
-                                 opositeTeam));
+                                 oppositeTeam));
                     }
                 }
             }
@@ -579,8 +585,7 @@
                     SwitchTeamsOrder(newGame);
 
                     int switchedDuplicatesCount = tournamentGames
-                            .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
-                            .Count();
+                            .Count(x => GameValidation.AreSameOrderTeamsInGames(x, newGame));
 
                     if (switchedDuplicatesCount > 0)
                     {
@@ -606,15 +611,9 @@
 
             if (duplicates.Count > 0)
             {
-                string awayTeamName = string.Empty;
-                if (GameValidation.IsFreeDayGame(newGame))
-                {
-                    awayTeamName = GameResultConstants.FREE_DAY_TEAM_NAME;
-                }
-                else
-                {
-                    awayTeamName = duplicates.First().AwayTeamName;
-                }
+                var awayTeamName = GameValidation.IsFreeDayGame(newGame)
+                    ? GameResultConstants.FREE_DAY_TEAM_NAME
+                    : duplicates.First().AwayTeamName;
 
                 throw new ArgumentException(
                     string.Format(
@@ -624,7 +623,7 @@
             }
         }
 
-        private void ValidateFreeDayGame(Game game)
+        private void PutFreeDayTeamAsAway(Game game)
         {
             if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
             {
@@ -897,6 +896,13 @@
         #endregion
 
         #region private methods
+
+        private List<GameResultDto> QueryAllTournamentGames(int tournamentId)
+        {
+            return _tournamentGameResultsQuery
+                .Execute(
+                    new TournamentGameResultsCriteria { TournamentId = tournamentId });
+        }
 
         private void UpdateTournamentLastTimeUpdated(Game game)
         {

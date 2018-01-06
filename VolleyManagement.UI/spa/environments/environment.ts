@@ -5,7 +5,6 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://localhost:44300/',
-  apiUrl: 'https://volley-mgmt-app.azurewebsites.net/',
+  apiUrl: 'https://localhost:44300/',
   jsonBaseUrl: 'https://volleycontent.blob.core.windows.net/vmscripts/tournamentData/'
 };

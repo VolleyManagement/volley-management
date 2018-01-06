@@ -37,10 +37,10 @@
                 GroupId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                Result = null,
+                Result = new Result(),
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
-                GameNumber = 0
+                GameNumber = 0,
             });
             _gameResults.Add(new GameResultDto
             {
@@ -50,10 +50,10 @@
                 GroupId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 3,
-                Result = null,
+                Result = new Result(),
                 GameDate = DateTime.Parse(DATE_B),
                 Round = 2,
-                GameNumber = 0
+                GameNumber = 0,
             });
             _gameResults.Add(new GameResultDto
             {
@@ -63,10 +63,50 @@
                 GroupId = 1,
                 HomeTeamId = 2,
                 AwayTeamId = 3,
-                Result = null,
+                Result = new Result(),
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3,
-                GameNumber = 0
+                GameNumber = 0,
+            });
+
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 4,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_D),
+                Round = 4,
+                GameNumber = 0,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 5,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_E),
+                Round = 5,
+                GameNumber = 0,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 6,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_F),
+                Round = 6,
+                GameNumber = 0,
             });
 
             return this;
@@ -988,11 +1028,114 @@
             return this;
         }
 
+        public GameResultsTestFixture WithMultipleDivisionsEmptyResults()
+        {
+            AddDivision1Group1EmptyResults();
+            AddDivision1Group2EmptyResults();
+            AddDivision2Group1EmptyResults();
+
+            return this;
+        }
+
         public GameResultsTestFixture WithMultipleDivisionsAllPosibleScores()
         {
             AddDivision1Group1Results();
             AddDivision1Group2Results();
             AddDivision2Group1Results();
+
+            return this;
+        }
+
+        public GameResultsTestFixture WithNotAllGamesPlayed()
+        {
+            _gameResults.Clear();
+
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                Result = new Result
+                {
+                    GameScore = (3, 0),
+                    SetScores = new List<Score> { (25, 0), (25, 0), (25, 1), (0, 0), (0, 0) },
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 1,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                Result = new Result
+                {
+                    GameScore = (3, 0),
+                    SetScores = new List<Score> { (25, 0), (25, 0), (25, 0), (0, 0), (0, 0) },
+                },
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 2
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 3,
+                GameNumber = 3
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 4,
+                GameNumber = 4
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 5,
+                GameNumber = 5
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 6,
+                GameNumber = 6
+            });
 
             return this;
         }
@@ -1010,7 +1153,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 0),
-                    SetScores = new List<Score> {(25, 15), (25, 16), (25, 19), (0, 0), (0, 0)}
+                    SetScores = new List<Score> { (25, 15), (25, 16), (25, 19), (0, 0), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
@@ -1027,7 +1170,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 1),
-                    SetScores = new List<Score> {(24, 26), (25, 19), (25, 18), (25, 23), (0, 0)}
+                    SetScores = new List<Score> { (24, 26), (25, 19), (25, 18), (25, 23), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_B),
                 Round = 2,
@@ -1044,7 +1187,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 2),
-                    SetScores = new List<Score> {(18, 25), (25, 10), (22, 25), (25, 15), (25, 12)}
+                    SetScores = new List<Score> { (18, 25), (25, 10), (22, 25), (25, 15), (25, 12) }
                 },
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3,
@@ -1061,7 +1204,7 @@
                 Result = new Result
                 {
                     GameScore = (2, 3),
-                    SetScores = new List<Score> {(25, 22), (26, 24), (23, 25), (17, 25), (13, 25)}
+                    SetScores = new List<Score> { (25, 22), (26, 24), (23, 25), (17, 25), (13, 25) }
                 },
                 GameDate = DateTime.Parse(DATE_D),
                 Round = 4,
@@ -1078,7 +1221,7 @@
                 Result = new Result
                 {
                     GameScore = (1, 3),
-                    SetScores = new List<Score> {(24, 26), (25, 22), (23, 25), (13, 25), (0, 0)}
+                    SetScores = new List<Score> { (24, 26), (25, 22), (23, 25), (13, 25), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_E),
                 Round = 5,
@@ -1095,7 +1238,7 @@
                 Result = new Result
                 {
                     GameScore = (0, 3),
-                    SetScores = new List<Score> {(14, 25), (27, 29), (22, 25), (0, 0), (0, 0)}
+                    SetScores = new List<Score> { (14, 25), (27, 29), (22, 25), (0, 0), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_F),
                 Round = 6,
@@ -1314,6 +1457,253 @@
                 GameNumber = 6
             });
         }
+        
+        private void AddDivision1Group1EmptyResults()
+        {
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 1,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 2,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 3,
+                GameNumber = 3,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 4,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_D),
+                Round = 4,
+                GameNumber = 4,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 5,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_E),
+                Round = 5,
+                GameNumber = 5,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 6,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_F),
+                Round = 6,
+                GameNumber = 6,
+            });
+        }
+
+        private void AddDivision1Group2EmptyResults()
+        {
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 2,
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 1,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 2,
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 2,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 2,
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 3,
+                GameNumber = 3,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 4,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 2,
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_D),
+                Round = 4,
+                GameNumber = 4,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 5,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 2,
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_E),
+                Round = 5,
+                GameNumber = 5,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 6,
+                TournamentId = 1,
+                DivisionId = 1,
+                GroupId = 2,
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_F),
+                Round = 6,
+                GameNumber = 6,
+            });
+        }
+
+        private void AddDivision2Group1EmptyResults()
+        {
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                DivisionId = 2,
+                GroupId = 3,
+                HomeTeamId = 7,
+                AwayTeamId = 8,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 1,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                DivisionId = 2,
+                GroupId = 3,
+                HomeTeamId = 7,
+                AwayTeamId = 9,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 2,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                DivisionId = 2,
+                GroupId = 3,
+                HomeTeamId = 8,
+                AwayTeamId = 9,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 3,
+                GameNumber = 3,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 4,
+                TournamentId = 1,
+                DivisionId = 2,
+                GroupId = 3,
+                HomeTeamId = 7,
+                AwayTeamId = 8,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_D),
+                Round = 4,
+                GameNumber = 4,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 5,
+                TournamentId = 1,
+                DivisionId = 2,
+                GroupId = 3,
+                HomeTeamId = 7,
+                AwayTeamId = 9,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_E),
+                Round = 5,
+                GameNumber = 5,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 6,
+                TournamentId = 1,
+                DivisionId = 2,
+                GroupId = 3,
+                HomeTeamId = 8,
+                AwayTeamId = 9,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_F),
+                Round = 6,
+                GameNumber = 6,
+            });
+        }
+
 
         public List<GameResultDto> Build()
         {

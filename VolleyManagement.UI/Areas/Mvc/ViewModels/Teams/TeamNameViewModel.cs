@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
     using System;
     using System.Collections.Generic;
@@ -22,6 +22,27 @@
         /// </summary>
         [Display(Name = "Team Name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the division name where team is playing
+        /// </summary>
+        [Display(Name = "Division")]
+        public string DivisionName { get; set; }
+
+        /// <summary>
+        /// Maps Team to TeamNameViewModel
+        /// </summary>
+        /// <param name="team">Domain team</param>
+        /// <returns>View model object</returns>
+        public static TeamNameViewModel Map(TeamTournamentDto team)
+        {
+            return new TeamNameViewModel
+            {
+                Id = team.TeamId,
+                Name = team.TeamName,
+                DivisionName = $"Division {team.DivisionId}"
+            };
+        }
 
         /// <summary>
         /// Maps Team to TeamNameViewModel

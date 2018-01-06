@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
-        List<Team> GetAllTournamentTeams(int tournamentId);
+        List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
         /// Returns all divisions for specific tournament
@@ -117,13 +117,6 @@
         /// <param name="teamId">Team to delete</param>
         /// <param name="tournamentId">Tournament to un assign team</param>
         void DeleteTeamFromTournament(int teamId, int tournamentId);
-
-        /// <summary>
-        /// Counts number of rounds for specified tournament
-        /// </summary>
-        /// <param name="tournament">Tournament for which we count rounds</param>
-        /// <returns>Number of rounds</returns>
-        byte GetNumberOfRounds(TournamentScheduleDto tournament);
 
         /// <summary>
         /// Returns all teams that don't take part in specific tournament

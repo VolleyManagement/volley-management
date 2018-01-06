@@ -11,13 +11,20 @@
 @Html.ValidationMessage("ValidationError")
 @Html.HiddenFor(model => model.TournamentId)
 
-@if (!(Model.TournamentScheme == TournamentSchemeEnum.PlayOff))
+@if (Model.TournamentScheme != TournamentSchemeEnum.PlayOff)
 {
+    <div class="editor-label">
+        @Html.LabelFor(model => model.DivisionId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.DivisionId, Model.DivisionList, new { @class = "form-control division-select" })
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.Round)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.Round, Model.RoundList, new { @class = "form-control round-select" })
     </div>
 }
 else
@@ -33,14 +40,14 @@ else
         @Html.LabelFor(model => model.HomeTeamId)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.HomeTeamId, Model.Teams, new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.HomeTeamId, Model.TeamList, new { @class = "form-control home-team-select" })
     </div>
 
     <div class="editor-label">
         @Html.LabelFor(model => model.AwayTeamId)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.UI.TournamentViews.FreeDay, new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.AwayTeamId, Model.TeamList, $"<{Resources.UI.TournamentViews.FreeDay}>", new { @class = "form-control away-team-select" })
     </div>
 }
 else
@@ -61,6 +68,7 @@ else
         });
 
         $("#GameDate").datepicker();
+        $("#GameDate").addClass("form-control");
     });
 </script>
 
@@ -73,4 +81,6 @@ else
     @Html.EditorFor(model => model.GameTime, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
 </div>
+
+@Scripts.Render("~/bundles/tournamentschedule")
 

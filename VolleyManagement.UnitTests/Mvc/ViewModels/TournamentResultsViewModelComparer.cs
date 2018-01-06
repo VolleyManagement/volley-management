@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using UI.Areas.Mvc.ViewModels.GameReports;
     using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -54,9 +56,10 @@
         /// <returns>True if given <see cref="StandingsViewModel"/> objects are equal.</returns>
         internal bool AreEqual(TournamentResultsViewModel x, TournamentResultsViewModel y)
         {
-            return x.Id == y.Id
-                && x.Name == y.Name
-                && x.GameResults.SequenceEqual(y.GameResults, new GameResultViewModelEqualityComparer());
+            Assert.AreEqual(x.Id, y.Id, "Id should be equal.");
+            Assert.AreEqual(x.Name, y.Name, "Name should be equal.");
+
+            return x.GameResults.SequenceEqual(y.GameResults, new GameResultViewModelEqualityComparer());
         }
     }
 }

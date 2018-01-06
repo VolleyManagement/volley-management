@@ -5,7 +5,8 @@ import 'rxjs/add/operator/toPromise';
 import { ScheduleModel } from '../../Models/Schedule/Schedule';
 import { ScheduleService } from '../../Services/schedule.service';
 import { GameResult } from '../../Models/Schedule/GameResult';
-import { ScheduleDay } from '../../Models/Schedule/ScheduleDay';
+import { DivisionHeader } from '../../Models/Schedule/DivisionHeader';
+import { Result } from '../../Models/Schedule/Result';
 
 
 @Component({
@@ -40,26 +41,29 @@ export class ScheduleComponent implements OnInit {
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
     }
 
-    getdivisionsHeader(day: ScheduleDay): string {
-        let info = '';
-        day.Divisions.forEach((item, index) => {
-            info += item.Name + ' : ' + item.Rounds.join() + ' раунд. ';
-        });
-        return info;
+    getdivisionsHeader(divisionHeader: DivisionHeader): string {
+        return `${divisionHeader.Name}: ${divisionHeader.Rounds.join()} тур.`;
     }
 
     getDivisionAccentColor(divisionId: number): string {
         let index = this.divisionsIds.indexOf(divisionId);
-        return 'division' + ++index;
+        return `division${++index}`;
     }
 
     isFreeDay(gameResult: GameResult): boolean {
         return !gameResult.AwayTeamName;
     }
 
+    getGameTotalBallsScore(gameResult: Result): string {
+        const totalHomeTeamBalls = gameResult.SetScores.map(item => item.Home).reduce((prev, next) => prev + next);
+        const totalAwayTeamBalls = gameResult.SetScores.map(item => item.Away).reduce((prev, next) => prev + next);
+
+        return `${totalHomeTeamBalls}:${totalAwayTeamBalls}`;
+    }
+
     private _getSortedDivisionsIds() {
-        this.data.Schedule.forEach((item, index, arr) => {
-            item.Days.forEach((it, ind, ar) => {
+        this.data.Schedule.forEach((item) => {
+            item.Days.forEach((it) => {
                 it.Divisions.forEach(d => {
                     if (this.divisionsIds.indexOf(d.Id) === -1) {
                         this.divisionsIds.push(d.Id);

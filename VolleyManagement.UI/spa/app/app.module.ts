@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-// import { LoadingModule } from 'ngx-loading';
 
 import { AppComponent } from './app.component';
 
@@ -36,8 +35,7 @@ import { GameResultCellDirective } from './Components/PivotStanding/game-result-
     ],
     imports: [
         BrowserModule,
-        HttpModule,
-        // LoadingModule
+        HttpModule
     ],
     providers: [
         JsonService,

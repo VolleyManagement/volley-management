@@ -7,6 +7,8 @@ import { ScheduleService } from '../../Services/schedule.service';
 import { GameResult } from '../../Models/Schedule/GameResult';
 import { DivisionHeader } from '../../Models/Schedule/DivisionHeader';
 import { Result } from '../../Models/Schedule/Result';
+import { ScheduleDay } from '../../Models/Schedule/ScheduleDay';
+import { Week } from '../../Models/Schedule/Week';
 
 
 @Component({
@@ -59,6 +61,12 @@ export class ScheduleComponent implements OnInit {
         const totalAwayTeamBalls = gameResult.SetScores.map(item => item.Away).reduce((prev, next) => prev + next);
 
         return `${totalHomeTeamBalls}:${totalAwayTeamBalls}`;
+    }
+
+    getCountOfEmptyRows(day: ScheduleDay, week: Week): Array<number> {
+        const maxHeaders = week.Days.map(item => item.Divisions.length).reduce(function (a, b) { return Math.max(a, b); });
+        const difference = maxHeaders - day.Divisions.length;
+        return difference > 0 ? new Array(difference) : new Array(0);
     }
 
     private _getSortedDivisionsIds() {

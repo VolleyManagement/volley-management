@@ -106,7 +106,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         [Route("api/Tournament/{tournamentId}/Schedule")]
         public ScheduleViewModel GetSchedule(int tournamentId)
         {
-            List<GameViewModel> gamesViewModel = _gameService.GetTournamentResults(tournamentId)
+            List<GameViewModel> gamesViewModel = _gameService.GetTournamentGames(tournamentId)
                                                         .Select(t => GameViewModel.Map(t)).ToList();
             foreach (var item in gamesViewModel)
             {

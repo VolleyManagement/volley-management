@@ -33,6 +33,7 @@ export class ScheduleComponent implements OnInit {
             .toPromise()
             .then(data => {
                 this.data = data;
+                this._fillUpDivisionHeadersInDays();
                 this.ready.emit();
                 this._getSortedDivisionsIds();
             });
@@ -44,9 +45,9 @@ export class ScheduleComponent implements OnInit {
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
     }
 
-    getdivisionsHeader(divisionHeader: DivisionHeader): string {
+    getDivisionsHeaderText(divisionHeader: DivisionHeader): string {
         if (divisionHeader.Id === DummyDivisionHeader.DummyHeaderId) {
-            return '';
+            return '\u00A0';//$nbsp to preserve space
         }
         return `${divisionHeader.Name}: ${divisionHeader.Rounds.join()} тур.`;
     }
@@ -80,7 +81,8 @@ export class ScheduleComponent implements OnInit {
         this.data.Schedule.forEach((week) => {
             week.Days.forEach((day) => {
                 day.Divisions.forEach(division => {
-                    if (this.divisionsIds.indexOf(division.Id) === -1) {
+                    if (division.Id !== DummyDivisionHeader.DummyHeaderId &&
+                        this.divisionsIds.indexOf(division.Id) === -1) {
                         this.divisionsIds.push(division.Id);
                     }
                 });

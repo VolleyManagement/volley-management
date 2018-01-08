@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.TournamentsAggregate;
 
@@ -24,6 +25,15 @@
                 Id = DEFAULT_ID,
                 Name = "Tour1",
                 Scheme = TournamentSchemeEnum.One,
+                Divisions = new List<DivisionScheduleDto>
+                {
+                    new DivisionScheduleDto
+                    {
+                        DivisionId = 1,
+                        DivisionName = "First division",
+                        TeamCount = 3
+                    }
+                },
                 StartDate = DateTime.Parse(TEST_START_DATE),
                 EndDate = DateTime.Parse(TEST_END_DATE)
             };
@@ -37,6 +47,17 @@
         public TournamentScheduleDtoBuilder WithId(int id)
         {
             _tournamentScheduleDto.Id = id;
+            return this;
+        }
+
+        public TournamentScheduleDtoBuilder WithAnotherDivision()
+        {
+            _tournamentScheduleDto.Divisions.Add(new DivisionScheduleDto
+            {
+                DivisionId = 2,
+                DivisionName = "Division Two",
+                TeamCount = 5
+            });
             return this;
         }
 
@@ -59,28 +80,6 @@
         public TournamentScheduleDtoBuilder WithEndDate(DateTime date)
         {
             _tournamentScheduleDto.EndDate = date;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets name for tournament schedule data transfer object
-        /// </summary>
-        /// <param name="name">Tournament name</param>
-        /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
-        public TournamentScheduleDtoBuilder WithName(string name)
-        {
-            _tournamentScheduleDto.Name = name;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets number of teams for tournament schedule data transfer object
-        /// </summary>
-        /// <param name="teamCount">Number of teams</param>
-        /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
-        public TournamentScheduleDtoBuilder WithTeamCount(byte teamCount)
-        {
-            _tournamentScheduleDto.TeamCount = teamCount;
             return this;
         }
 

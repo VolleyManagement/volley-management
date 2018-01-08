@@ -37,10 +37,11 @@
                         new ScoreViewModel(33, 31),
                         new ScoreViewModel(27, 25),
                         new ScoreViewModel(24, 26),
-                        new ScoreViewModel()
+                        new ScoreViewModel(),
                     },
                 IsTechnicalDefeat = false,
-                TournamentId = 1
+                TournamentId = 1,
+                UrlToGameVideo = "http://test-url-a.com",
             };
         }
 

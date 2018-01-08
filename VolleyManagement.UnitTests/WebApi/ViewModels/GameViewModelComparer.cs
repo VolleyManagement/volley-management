@@ -84,6 +84,7 @@
             Assert.AreEqual(x.GroupId, y.GroupId, "Group id do not match");
             Assert.AreEqual(x.HomeTeamName, y.HomeTeamName, "Home team id do not match");
             Assert.AreEqual(x.Round, y.Round, "Round number do not match");
+            Assert.AreEqual(x.UrlToGameVideo, y.UrlToGameVideo, "UrlToGameVideo do not match");
 
             return AreResultsEqual(x.Result, y.Result);
         }

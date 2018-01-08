@@ -28,14 +28,15 @@
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round
                 && x.AwayTeamId == y.AwayTeamId
-                && x.Result == x.Result;
+                && x.Result == x.Result
+                && x.UrlToGameVideo == y.UrlToGameVideo;
         }
 
         /// <summary>
-        /// Gets hash code for the specified <see cref="GameResultViewModel"/> object.
+        /// Gets hash code for the specified <see cref="Game"/> object.
         /// </summary>
-        /// <param name="obj"><see cref="GameResultViewModel"/> object.</param>
-        /// <returns>Hash code for the specified <see cref="GameResultViewModel"/>.</returns>
+        /// <param name="obj"><see cref="Game"/> object.</param>
+        /// <returns>Hash code for the specified <see cref="Game"/>.</returns>
         public int GetHashCode(Game obj)
         {
             StringBuilder stringBuilder = new StringBuilder();

@@ -38,7 +38,7 @@
                         new ScoreViewModel(26, 24),
                         new ScoreViewModel(30, 28),
                         new ScoreViewModel(0, 0),
-                        new ScoreViewModel(0, 0)
+                        new ScoreViewModel(0, 0),
                     })
                 .Build();
 

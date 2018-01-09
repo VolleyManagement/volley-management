@@ -208,4 +208,10 @@ table.standings {
 .videoLinkIcon {
   width: 16px;
   height: 16px;
+  text-decoration: none;
 }
+
+  .videoLinkIcon:hover,
+  .videoLinkIcon:focus {
+    text-decoration: none;
+  }

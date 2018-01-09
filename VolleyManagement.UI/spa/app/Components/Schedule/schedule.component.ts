@@ -9,6 +9,7 @@ import { DivisionHeader } from '../../Models/Schedule/DivisionHeader';
 import { Result } from '../../Models/Schedule/Result';
 import { ScheduleDay } from '../../Models/Schedule/ScheduleDay';
 import { Week } from '../../Models/Schedule/Week';
+import { DummyDivisionHeader } from './DummyDivisionHeader';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class ScheduleComponent implements OnInit {
             .toPromise()
             .then(data => {
                 this.data = data;
+                this._fillUpDivisionHeadersInDays();
                 this.ready.emit();
                 this._getSortedDivisionsIds();
             });
@@ -43,11 +45,17 @@ export class ScheduleComponent implements OnInit {
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
     }
 
-    getdivisionsHeader(divisionHeader: DivisionHeader): string {
+    getDivisionsHeaderText(divisionHeader: DivisionHeader): string {
+        if (divisionHeader.Id === DummyDivisionHeader.DummyHeaderId) {
+            return '\u00A0';//$nbsp to preserve space
+        }
         return `${divisionHeader.Name}: ${divisionHeader.Rounds.join()} тур.`;
     }
 
     getDivisionAccentColor(divisionId: number): string {
+        if (divisionId === DummyDivisionHeader.DummyHeaderId) {
+            return '';
+        }
         let index = this.divisionsIds.indexOf(divisionId);
         return `division${++index}`;
     }
@@ -63,23 +71,35 @@ export class ScheduleComponent implements OnInit {
         return `${totalHomeTeamBalls}:${totalAwayTeamBalls}`;
     }
 
-    getCountOfEmptyRows(day: ScheduleDay, week: Week): Array<number> {
+    getNumberOfEmptyDivisionHeaders(day: ScheduleDay, week: Week): Array<number> {
         const maxHeaders = week.Days.map(item => item.Divisions.length).reduce(function (a, b) { return Math.max(a, b); });
         const difference = maxHeaders - day.Divisions.length;
         return difference > 0 ? new Array(difference) : new Array(0);
     }
 
     private _getSortedDivisionsIds() {
-        this.data.Schedule.forEach((item) => {
-            item.Days.forEach((it) => {
-                it.Divisions.forEach(d => {
-                    if (this.divisionsIds.indexOf(d.Id) === -1) {
-                        this.divisionsIds.push(d.Id);
+        this.data.Schedule.forEach((week) => {
+            week.Days.forEach((day) => {
+                day.Divisions.forEach(division => {
+                    if (division.Id !== DummyDivisionHeader.DummyHeaderId &&
+                        this.divisionsIds.indexOf(division.Id) === -1) {
+                        this.divisionsIds.push(division.Id);
                     }
                 });
             });
         });
 
         this.divisionsIds.sort((a, b) => a - b);
+    }
+
+    private _fillUpDivisionHeadersInDays() {
+        this.data.Schedule.forEach((week) => {
+            const maxNumberOfRoundsInWeek = week.Days.map(item => item.Divisions.length).reduce(function (a, b) { return Math.max(a, b); });
+            week.Days.forEach(day => {
+                while (day.Divisions.length < maxNumberOfRoundsInWeek) {
+                    day.Divisions.push(new DummyDivisionHeader())
+                }
+            });
+        });
     }
 }

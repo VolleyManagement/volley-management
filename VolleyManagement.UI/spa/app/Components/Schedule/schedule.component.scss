@@ -234,15 +234,19 @@
       }
     }
     .videoIconCell {
-      width: 26px;
-        .videoLinkIcon {
-          width: 16px;
-          height: 16px;
-          margin-left: 8px;
-          position: relative;
-          top: -6px;
-        }
-      
+      width: 20px;
+      .videoLinkIcon {
+        width: 16px;
+        height: 16px;
+        margin-left: 2px;
+        position: relative;
+        top: -8px;
+        text-decoration: none;
+      }
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
     }
   }
 }

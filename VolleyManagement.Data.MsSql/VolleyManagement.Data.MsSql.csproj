@@ -190,6 +190,10 @@
     <Compile Include="Context\Migrations\201711042048383_GamePenalty.Designer.cs">
       <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.cs" />
+    <Compile Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.Designer.cs">
+      <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -363,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201711042048383_GamePenalty.resx">
       <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.resx">
+      <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

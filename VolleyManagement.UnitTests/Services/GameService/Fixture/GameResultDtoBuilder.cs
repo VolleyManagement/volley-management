@@ -43,41 +43,17 @@
                     },
                     SetScores = new System.Collections.Generic.List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 20,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 26,
-                            Away = 24,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 30,
-                            Away = 28,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        }
-                    }
+                        new Score(25, 20),
+                        new Score(26, 24),
+                        new Score(30, 28),
+                        new Score(0, 0),
+                        new Score(0, 0),
+                    },
                 },
                 GameDate = DateTime.Parse(DATE),
                 Round = 1,
-                GameNumber = 0
+                GameNumber = 0,
+                UrlToGameVideo = "http://test-url-a.com",
             };
         }
 

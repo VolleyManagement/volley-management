@@ -148,6 +148,11 @@
         public string PenaltyDescription { get; set; }
 
         /// <summary>
+        /// Gets or sets link to game video
+        /// </summary>
+        public string UrlToGameVideo { get; set; }
+
+        /// <summary>
         /// Gets or sets the tournament where game result belongs.
         /// </summary>
         public virtual TournamentEntity Tournament { get; set; }

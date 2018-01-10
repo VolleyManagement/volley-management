@@ -237,6 +237,7 @@
                     to.PenaltyAmount = 0;
                 }
             }
+            to.UrlToGameVideo = from.UrlToGameVideo;
         }
 
         /// <summary>

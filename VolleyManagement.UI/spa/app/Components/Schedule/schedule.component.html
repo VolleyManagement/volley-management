@@ -22,6 +22,12 @@
 
                 <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
 
+                  <td class="videoIconCell" *ngIf="gameResult.UrlToGameVideo" rowspan="3">
+                    <a href="{{gameResult.UrlToGameVideo}}" title="Перейти к видео" class="videoLinkIcon">
+                        📹
+                    </a>
+                  </td>
+
                   <td class="teamname" colspan="5">
                     {{gameResult.HomeTeamName}}
                   </td>

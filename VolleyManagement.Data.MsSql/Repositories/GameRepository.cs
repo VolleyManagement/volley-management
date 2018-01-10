@@ -74,9 +74,16 @@
         /// <param name="id">Identifier of the game.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new GameResultEntity { Id = id };
-
-            _dalGame.Attach(dalToRemove);
+            GameResultEntity dalToRemove;
+            if (_dalGame.Local.Any(gr => gr.Id == id))
+            {
+                dalToRemove = _dalGame.Find(id);
+            }
+            else
+            {
+                dalToRemove = new GameResultEntity { Id = id };
+                _dalGame.Attach(dalToRemove);
+            }
             _dalGame.Remove(dalToRemove);
         }
     }

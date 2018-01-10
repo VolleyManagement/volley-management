@@ -1,0 +1,58 @@
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.0.{build}
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+image: Visual Studio 2017
+
+cache:
+  - packages -> **\packages.config
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+build_script:
+- ps: >-
+    cd .\BuildScripts
+
+    .\build.ps1
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+test: off
+
+#---------------------------------#
+#         notifications           #
+#---------------------------------#
+
+notifications:
+# Regular Slack notification
+- provider: Slack
+  incoming_webhook: 
+    secure: luby6/6oxEkccvelC2OAWgSoJBO+gLqYVKLwylU1KMYz8Plwycoshmlv2pQJkFZCm4EckYt7AAfL8k7vR70BhM9b26TnBqeuNpmMlF3KZAc=
+  on_build_success: false
+  on_build_failure: false
+  on_build_status_changed: true
+
+# Detailed Slack notification
+- provider: Slack
+  incoming_webhook:
+    secure: luby6/6oxEkccvelC2OAWgSoJBO+gLqYVKLwylU1KMbzbnbcyNyjBiNIU9bPCQUTWPyH4PVe7Dv1wZsgZfmQ+U1UX8hyjwoNm1MycBoqJ4w=
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false

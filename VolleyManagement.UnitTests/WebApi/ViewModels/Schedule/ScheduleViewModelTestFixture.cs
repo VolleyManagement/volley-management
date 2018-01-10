@@ -22,6 +22,14 @@
 
         private readonly DateTime _date_C_For_Round = new DateTime(2016, 04, 07, 10, 00, 00);
 
+        private const string URL_A = "http://test-url-a.com";
+
+        private const string URL_B = "http://test-url-b.com";
+
+        private const string URL_C = "http://test-url-c.com";
+
+        private const string URL_D = "http://test-url-d.com";
+
         /// <summary>
         /// Holds collection of games
         /// </summary>
@@ -46,9 +54,9 @@
                                     Name = "Division Name",
                                     Rounds = new List<int>
                                     {
-                                        1
-                                    }
-                                }
+                                        1,
+                                    },
+                                },
                             },
                             Games = new List<GameViewModel>
                             {
@@ -67,7 +75,7 @@
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
                                         },
                                         IsTechnicalDefeat = true,
                                     },
@@ -75,12 +83,13 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = _date_A_For_Round
-                                }
-                            }
-                        }
-                    }
-                }
+                                    Date = _date_A_For_Round,
+                                    UrlToGameVideo = URL_A,
+                                },
+                            },
+                        },
+                    },
+                },
             };
             return this;
         }
@@ -104,8 +113,8 @@
                                     Name = "Division Name",
                                     Rounds = new List<int>
                                     {
-                                        1
-                                    }
+                                        1,
+                                    },
                                 },
                                 new DivisionTitleViewModel
                                 {
@@ -113,9 +122,9 @@
                                     Name = "Division Name1",
                                     Rounds = new List<int>
                                     {
-                                        2
-                                    }
-                                }
+                                        2,
+                                    },
+                                },
                             },
                             Games = new List<GameViewModel>
                             {
@@ -134,7 +143,7 @@
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
                                         },
                                         IsTechnicalDefeat = true,
                                     },
@@ -142,7 +151,8 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = _date_A_For_Round
+                                    Date = _date_A_For_Round,
+                                    UrlToGameVideo = URL_A,
                                 },
                                 new GameViewModel
                                 {
@@ -159,7 +169,7 @@
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
                                         },
                                         IsTechnicalDefeat = false,
                                     },
@@ -167,12 +177,13 @@
                                     DivisionId = 2,
                                     DivisionName = "Division Name1",
                                     GroupId = 2,
-                                    Date = _date_A_For_Round
-                                }
-                            }
-                        }
-                    }
-                }
+                                    Date = _date_A_For_Round,
+                                    UrlToGameVideo = URL_B,
+                                },
+                            },
+                        },
+                    },
+                },
             };
             return this;
         }
@@ -196,9 +207,9 @@
                                     Name = "Division Name1",
                                     Rounds = new List<int>
                                     {
-                                        2
-                                    }
-                                }
+                                        2,
+                                    },
+                                },
                             },
                             Games = new List<GameViewModel>
                             {
@@ -217,7 +228,7 @@
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
                                         },
                                         IsTechnicalDefeat = false,
                                     },
@@ -225,11 +236,12 @@
                                     DivisionId = 2,
                                     DivisionName = "Division Name1",
                                     GroupId = 2,
-                                    Date = _date_B_For_Round
-                                }
-                            }
+                                    Date = _date_B_For_Round,
+                                    UrlToGameVideo = URL_B,
+                                },
+                            },
                         },
-                          new ScheduleDayViewModel
+                        new ScheduleDayViewModel
                         {
                             Date = _date_A_For_Round,
                             Divisions = new List<DivisionTitleViewModel>
@@ -240,9 +252,9 @@
                                     Name = "Division Name",
                                     Rounds = new List<int>
                                     {
-                                        1
-                                    }
-                                }
+                                        1,
+                                    },
+                                },
                             },
                             Games = new List<GameViewModel>
                             {
@@ -261,7 +273,7 @@
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
                                         },
                                         IsTechnicalDefeat = true,
                                     },
@@ -269,12 +281,13 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = _date_A_For_Round
-                                }
-                            }
-                        }
-                    }
-                }
+                                    Date = _date_A_For_Round,
+                                    UrlToGameVideo = URL_A,
+                                },
+                            },
+                        },
+                    },
+                },
             };
             return this;
         }
@@ -298,9 +311,9 @@
                                     Name = "Division Name",
                                     Rounds = new List<int>
                                     {
-                                        1
-                                    }
-                                }
+                                        1,
+                                    },
+                                },
                             },
                             Games = new List<GameViewModel>
                             {
@@ -319,7 +332,7 @@
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
                                         },
                                         IsTechnicalDefeat = true,
                                     },
@@ -327,11 +340,12 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = _date_A_For_Round
-                                }
-                            }
-                        }
-                    }
+                                    Date = _date_A_For_Round,
+                                    UrlToGameVideo = URL_A,
+                                },
+                            },
+                        },
+                    },
                 },
                 new WeekViewModel
                 {
@@ -348,9 +362,9 @@
                                     Name = "Division Name1",
                                     Rounds = new List<int>
                                     {
-                                        2
-                                    }
-                                }
+                                        2,
+                                    },
+                                },
                             },
                             Games = new List<GameViewModel>
                             {
@@ -369,7 +383,7 @@
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
                                             new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
                                         },
                                         IsTechnicalDefeat = false,
                                     },
@@ -377,12 +391,13 @@
                                     DivisionId = 2,
                                     DivisionName = "Division Name1",
                                     GroupId = 2,
-                                    Date = _date_C_For_Round
-                                }
-                            }
-                        }
-                    }
-                }
+                                    Date = _date_C_For_Round,
+                                    UrlToGameVideo = URL_B,
+                                },
+                            },
+                        },
+                    },
+                },
             };
             return this;
         }

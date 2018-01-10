@@ -73,6 +73,8 @@
             Assert.AreEqual(x.PenaltyAmount, y.PenaltyAmount, "PenaltyAmount should be equal.");
             Assert.AreEqual(x.PenaltyDescrition, y.PenaltyDescrition, "PenaltyDescrition should be equal.");
 
+            Assert.AreEqual(x.UrlToGameVideo, y.UrlToGameVideo, "UrlToGameVideo should be equal.");
+
             ScoreViewModelComparer.AssertAreEqual(x.GameScore, y.GameScore);
 
             for (var i = 0; i < 5; i++)

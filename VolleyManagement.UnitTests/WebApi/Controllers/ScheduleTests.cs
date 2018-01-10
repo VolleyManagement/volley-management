@@ -64,7 +64,7 @@
             var actual = sut.GetSchedule(TOURNAMENT_ID);
 
             // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
+            _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
             TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
         }
@@ -88,7 +88,7 @@
             var actual = sut.GetSchedule(TOURNAMENT_ID);
 
             // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
+            _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
             TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
         }
@@ -116,7 +116,7 @@
             var actual = sut.GetSchedule(TOURNAMENT_ID);
 
             // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
+            _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
             TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
         }
@@ -144,7 +144,7 @@
             var actual = sut.GetSchedule(TOURNAMENT_ID);
 
             // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
+            _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
             TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
         }
@@ -172,7 +172,7 @@
             var actual = sut.GetSchedule(TOURNAMENT_ID);
 
             // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
+            _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
             TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
         }
@@ -195,7 +195,7 @@
 
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
         {
-            _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
+            _gameServiceMock.Setup(t => t.GetTournamentGames(It.IsAny<int>())).Returns(expectedGames);
         }
         #endregion
     }

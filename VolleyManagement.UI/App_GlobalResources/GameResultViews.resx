@@ -201,4 +201,7 @@
   <data name="TournamentResultsTitle" xml:space="preserve">
     <value>Game results</value>
   </data>
+  <data name="UrlToGameVideo" xml:space="preserve">
+    <value>Link to the game video</value>
+  </data>
 </root>

@@ -1,19 +1,18 @@
 <div class="schedule-wrapper">
-  <div class="schedule-table" *ngFor="let weeks of data.Schedule; let weekIndex = index;">
+  <div class="schedule-table" *ngFor="let weeks of data.Schedule">
     <div *ngIf="weeks">
 
-      <div class="day" *ngFor="let day of weeks.Days; let daysIndex = index;">
+      <div class="day" *ngFor="let day of weeks.Days">
         <p class="headercenter">{{day.Date | date: "dd-MM-yyyy"}}</p>
-        <p class="headercenter {{getDivisionAccentColor(division.Id)}}" *ngFor="let division of day.Divisions">{{getdivisionsHeader(division)}}</p>
+        <p class="headercenter {{getDivisionAccentColor(division.Id)}}" *ngFor="let division of day.Divisions">{{getDivisionsHeaderText(division)}}</p>
+
         <div>
           <div class="games" *ngFor="let gameResult of day.Games;">
             <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}">
               <tbody *ngIf="isFreeDay(gameResult)">
                 <tr class="team-sch">
-                  <strong>{{ gameResult.HomeTeamName }}</strong>
-                </tr>
-                <tr class="team-sch">
-                  Выходной
+                  <td><strong>{{ gameResult.HomeTeamName }}</strong></td>
+                  <td>Выходной</td>
                 </tr>
               </tbody>
             </table>
@@ -22,6 +21,12 @@
               <tbody *ngIf="gameIsPlayed(gameResult)">
 
                 <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
+
+                  <td class="videoIconCell" *ngIf="gameResult.UrlToGameVideo" rowspan="3">
+                    <a href="{{gameResult.UrlToGameVideo}}" title="Перейти к видео" class="videoLinkIcon">
+                        📹
+                    </a>
+                  </td>
 
                   <td class="teamname" colspan="5">
                     {{gameResult.HomeTeamName}}

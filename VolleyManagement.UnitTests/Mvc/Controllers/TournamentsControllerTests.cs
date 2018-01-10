@@ -1764,7 +1764,7 @@
 
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
         {
-            _gameServiceMock.Setup(t => t.GetTournamentResults(tournamentId)).Returns(expectedGames);
+            _gameServiceMock.Setup(t => t.GetTournamentGames(tournamentId)).Returns(expectedGames);
         }
 
         private void SetupCurrentUserServiceReturnsUserId(int id)

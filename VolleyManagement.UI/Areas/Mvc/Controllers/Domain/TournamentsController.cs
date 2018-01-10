@@ -368,7 +368,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 TournamentName = tournament.Name,
                 TournamentScheme = tournament.Scheme,
                 MaxNumberOfRounds = tournament.Divisions.Max(d => d.NumberOfRounds),
-                Rounds = _gameService.GetTournamentResults(tournamentId)
+                Rounds = _gameService.GetTournamentGames(tournamentId)
                 .GroupBy(d => d.Round)
                 .ToDictionary(
                      d => d.Key,

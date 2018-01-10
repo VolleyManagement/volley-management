@@ -18,10 +18,14 @@ $(document).ready(function () {
   }
 
   me.updateStateForDropDown = function (dropdown) {
-    var list = $(dropdown).find("optgroup"),
-      child;
-    for (var i = 0; i < list.length; i++) {
-      child = list[i];
+    var optGroups = $(dropdown).find("optgroup"),
+      child,
+      options,
+      i,
+      hasFirstSelected = false;
+
+    for (i = 0; i < optGroups.length; i++) {
+      child = optGroups[i];
       child.hidden = child.label !== me.selectedDivision;
       if (child.label === me.selectedDivision) {
         $(child).removeClass("hidden");
@@ -29,6 +33,24 @@ $(document).ready(function () {
         $(child).addClass("hidden");
       }
     }
+
+    options = $(dropdown).find("option");
+    for (i = 0; i < options.length; i++) {
+      child = $(options[i]);
+      var parent = child.parent();
+      if (parent.is("optgroup")) {
+        if (!parent.hasClass("hidden")) {
+          $(dropdown).value = child.value;
+        }
+      } else {
+        $(dropdown).val(null);
+      }
+    }
+  }
+
+  me.setSelected = function (child, hasFirstSelected) {
+    child.selected = !hasFirstSelected;
+    return child.selected;
   }
 
   me.getDivisionDropdown = function () {

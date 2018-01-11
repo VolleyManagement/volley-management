@@ -15,11 +15,6 @@ export class LocalDatePipe implements PipeTransform {
 
         const newDate = new Date(dateValue.getTime() + dateValue.getTimezoneOffset() * 60 * 1000);
 
-        const offset = dateValue.getTimezoneOffset() / 60;
-        const hours = dateValue.getHours();
-
-        newDate.setHours(hours - offset);
-
         return newDate;
     }
 }

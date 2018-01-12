@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "package-vou": "ng build --prod --vendor-chunk=false --output-hashing=none"
+    "package-vou": "ng build --prod --vendor-chunk=false --output-hashing=none --extract-css=false"
   },
   "private": true,
   "dependencies": {

@@ -176,6 +176,34 @@
 
             TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
         }
+
+        /// <summary>
+        /// Test for GetSchedule method.
+        /// Tournament with games in different weeks. Schedule returned
+        /// </summary>
+        [TestMethod]
+        public void GetSchedule_TournamentWithThreeWeeksTwoDivisionsThreeGames_ScheduleReturned()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture().
+                TestGamesWithResultInThreeWeeksTwoDivisionsThreeGames().
+                Build();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new ScheduleViewModelTestFixture().WithThreeWeeksTwoDivisionsThreeGames().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
+
+            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+        }
         #endregion
 
         #region Private

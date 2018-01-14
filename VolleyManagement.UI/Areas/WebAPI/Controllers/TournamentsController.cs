@@ -118,6 +118,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
 
             var resultGroupedByWeek = gamesViewModel.GroupBy(gr => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
                 gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday))
+                .OrderBy(w => w.Key)
                 .Select(w => new Tuple<int, List<GameViewModel>>(w.Key, w.ToList()))
                 .ToList();
 

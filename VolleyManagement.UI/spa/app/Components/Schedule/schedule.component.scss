@@ -48,6 +48,7 @@
     .day {
       width: 280px;
       display: inline-block;
+      margin-bottom: 10px;
     }
     .headercenter {
       margin: 0;
@@ -230,6 +231,21 @@
       }
       &.game-sch {
         background-color: $division16-bg-color;
+      }
+    }
+    .videoIconCell {
+      width: 20px;
+      .videoLinkIcon {
+        width: 16px;
+        height: 16px;
+        margin-left: 2px;
+        position: relative;
+        top: -8px;
+        text-decoration: none;
+      }
+      &:hover,
+      &:focus {
+        text-decoration: none;
       }
     }
   }

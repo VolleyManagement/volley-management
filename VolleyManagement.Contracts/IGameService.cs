@@ -23,10 +23,18 @@
 
         /// <summary>
         /// Gets game results of the tournament specified by its identifier.
+        /// Games without results are ommitted
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>List of game results of specified tournament.</returns>
         List<GameResultDto> GetTournamentResults(int tournamentId);
+
+        /// <summary>
+        /// Gets all scheduled games of the tournament specified by its identifier.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>List of games of specified tournament.</returns>
+        List<GameResultDto> GetTournamentGames(int tournamentId);
 
         /// <summary>
         /// Edits specified instance of game.

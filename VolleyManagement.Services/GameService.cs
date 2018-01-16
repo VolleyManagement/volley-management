@@ -73,7 +73,7 @@
             IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
             IQuery<Game, GameByNumberCriteria> gameNumberByTournamentIdQuery,
             IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
-            ITournamentRepository tournamentRepository, 
+            ITournamentRepository tournamentRepository,
             IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
         {
             _gameRepository = gameRepository;
@@ -146,7 +146,8 @@
         /// <returns>List of game results of specified tournament.</returns>
         public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            var allGames = QueryAllTournamentGames(tournamentId);
+            var allGames = QueryAllTournamentGames(tournamentId)
+                            .FindAll(gr => gr.HasResult);
 
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
@@ -155,6 +156,13 @@
             {
                 SetAbilityToEditResults(allGames);
             }
+
+            return allGames;
+        }
+
+        public List<GameResultDto> GetTournamentGames(int tournamentId)
+        {
+            var allGames = QueryAllTournamentGames(tournamentId);
 
             return allGames;
         }
@@ -465,10 +473,10 @@
 
             var gamesInSameRoundSameDivision = (
                         from game in games
-                        where game.Round==newGame.Round
+                        where game.Round == newGame.Round
                         join homeTeam in teamsInTournament
                             on game.HomeTeamId equals homeTeam.TeamId
-                        where homeTeam.DivisionId==newGameDivisionId
+                        where homeTeam.DivisionId == newGameDivisionId
                         join awayTeam in teamsInTournament
                             on game.HomeTeamId equals awayTeam.TeamId
                         where awayTeam.DivisionId == newGameDivisionId
@@ -551,7 +559,7 @@
 
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
-            if (gameToDelete.HasResult || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
+            if (gameToDelete.HasResult)
             {
                 throw new ArgumentException(Resources.WrongDeletingGame);
             }

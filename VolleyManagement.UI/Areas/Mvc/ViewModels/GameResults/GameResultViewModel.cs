@@ -90,6 +90,12 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         public string PenaltyDescrition { get; set; }
 
         /// <summary>
+        /// Gets or sets a url to game video
+        /// </summary>
+        public string UrlToGameVideo { get; set; }
+
+
+        /// <summary>
         /// Gets or sets a value indicating whether gets or sets whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
         public bool AllowEditResult { get; set; }
@@ -139,7 +145,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameDate = gameResult.GameDate,
                 GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
-
+                UrlToGameVideo = gameResult.UrlToGameVideo,
                 GameScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
                 IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
@@ -184,7 +190,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                     GameScore = GameScore.ToDomain(),
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList(),
                     Penalty = penalty
-                }
+                },
+                UrlToGameVideo = UrlToGameVideo
             };
         }
 

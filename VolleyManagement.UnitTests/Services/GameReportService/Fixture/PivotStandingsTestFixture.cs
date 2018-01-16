@@ -729,7 +729,7 @@
                     TeamName = "TeamNameA",
                     Points = 7,
                     SetsRatio = (float)9 / 7,
-                    BallsRatio = (float)363 / 355
+                    BallsRatio = (float)363 / 355,
                 },
                 divisionId: 1);
             AddTeamStandings(// E
@@ -739,7 +739,7 @@
                     TeamName = "TeamNameE",
                     Points = 7,
                     SetsRatio = (float)9 / 7,
-                    BallsRatio = (float)363 / 355
+                    BallsRatio = (float)363 / 355,
                 },
                 divisionId: 1);
             AddTeamStandings(// C
@@ -749,7 +749,7 @@
                     TeamName = "TeamNameC",
                     Points = 7,
                     SetsRatio = (float)9 / 7,
-                    BallsRatio = (float)350 / 362
+                    BallsRatio = (float)350 / 362,
                 },
                 divisionId: 1);
             AddTeamStandings(// D
@@ -759,7 +759,7 @@
                     TeamName = "TeamNameD",
                     Points = 7,
                     SetsRatio = (float)9 / 7,
-                    BallsRatio = (float)350 / 362
+                    BallsRatio = (float)350 / 362,
                 },
                 divisionId: 1);
             AddTeamStandings(// B
@@ -769,7 +769,7 @@
                     TeamName = "TeamNameB",
                     Points = 4,
                     SetsRatio = (float)6 / 10,
-                    BallsRatio = (float)349 / 345
+                    BallsRatio = (float)349 / 345,
                 },
                 divisionId: 1);
             AddTeamStandings(// F
@@ -779,7 +779,7 @@
                     TeamName = "TeamNameF",
                     Points = 4,
                     SetsRatio = (float)6 / 10,
-                    BallsRatio = (float)349 / 345
+                    BallsRatio = (float)349 / 345,
                 },
                 divisionId: 1);
             AddTeamStandings(// G
@@ -789,7 +789,7 @@
                     TeamName = "TeamNameG",
                     Points = 7,
                     SetsRatio = (float)9 / 7,
-                    BallsRatio = (float)363 / 355
+                    BallsRatio = (float)363 / 355,
                 },
                 divisionId: 2);
             AddTeamStandings(// I
@@ -799,7 +799,7 @@
                     TeamName = "TeamNameI",
                     Points = 7,
                     SetsRatio = (float)9 / 7,
-                    BallsRatio = (float)350 / 362
+                    BallsRatio = (float)350 / 362,
                 },
                 divisionId: 2);
             AddTeamStandings(// H
@@ -809,7 +809,7 @@
                     TeamName = "TeamNameH",
                     Points = 4,
                     SetsRatio = (float)6 / 10,
-                    BallsRatio = (float)349 / 345
+                    BallsRatio = (float)349 / 345,
                 },
                 divisionId: 2);
             AddTeamStandings(// J
@@ -819,7 +819,7 @@
                     TeamName = "TeamNameJ",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
             AddTeamStandings(// K
@@ -829,7 +829,7 @@
                     TeamName = "TeamNameK",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
             AddTeamStandings(// L
@@ -839,7 +839,7 @@
                     TeamName = "TeamNameL",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
 
@@ -859,7 +859,7 @@
                     TeamName = "TeamNameA",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 1);
             AddTeamStandings(// B
@@ -869,7 +869,7 @@
                     TeamName = "TeamNameB",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 1);
             AddTeamStandings(// C
@@ -879,7 +879,7 @@
                     TeamName = "TeamNameC",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 1);
             AddTeamStandings(// D
@@ -889,7 +889,7 @@
                     TeamName = "TeamNameD",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 1);
             AddTeamStandings(// E
@@ -899,7 +899,7 @@
                     TeamName = "TeamNameE",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 1);
             AddTeamStandings(// F
@@ -909,7 +909,7 @@
                     TeamName = "TeamNameF",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 1);
             AddTeamStandings(// G
@@ -919,7 +919,7 @@
                     TeamName = "TeamNameG",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
             AddTeamStandings(// H
@@ -929,7 +929,7 @@
                     TeamName = "TeamNameH",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
             AddTeamStandings(// I
@@ -939,7 +939,7 @@
                     TeamName = "TeamNameI",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
             AddTeamStandings(// J
@@ -949,7 +949,7 @@
                     TeamName = "TeamNameJ",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
             AddTeamStandings(// K
@@ -959,7 +959,7 @@
                     TeamName = "TeamNameK",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
             AddTeamStandings(// L
@@ -969,7 +969,7 @@
                     TeamName = "TeamNameL",
                     Points = 0,
                     SetsRatio = null,
-                    BallsRatio = null
+                    BallsRatio = null,
                 },
                 divisionId: 2);
 
@@ -989,6 +989,16 @@
 
         public PivotStandingsTestFixture WithNotAllGamesPlayed()
         {
+            AddTeamStandings(// B
+                new TeamStandingsDto
+                {
+                    TeamId = 2,
+                    TeamName = "TeamNameB",
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
+                    BallsRatio = (float)76 / 75,
+                },
+                divisionId: 1);
             AddTeamStandings(// A
                    new TeamStandingsDto
                    {
@@ -999,16 +1009,7 @@
                        BallsRatio = (float)75 / 76,
                    },
                    divisionId: 1);
-            AddTeamStandings(// B
-                new TeamStandingsDto
-                {
-                    TeamId = 2,
-                    TeamName = "TeamNameB",
-                    Points = 3,
-                    SetsRatio = (float)3 / 3,
-                    BallsRatio = (float)76 / 75,
-                },
-                divisionId: 1);            
+            
             AddTeamStandings(// C
                 new TeamStandingsDto
                 {
@@ -1107,7 +1108,7 @@
                     {
                         DivisionId = divId,
                         DivisionName = $"Division {divId}",
-                        LastUpdateTime = _lastUpdateTime
+                        LastUpdateTime = _lastUpdateTime,
                     };
                 })
                 .ToList();

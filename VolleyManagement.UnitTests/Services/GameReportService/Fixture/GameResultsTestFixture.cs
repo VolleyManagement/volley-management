@@ -63,7 +63,7 @@
                 GroupId = 1,
                 HomeTeamId = 2,
                 AwayTeamId = 3,
-                Result = new Result(),
+                Result = null,
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3,
                 GameNumber = 0,

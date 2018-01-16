@@ -1365,10 +1365,11 @@
         public void GetTournamentResults_GameResultsRequsted_GameResultsReturned()
         {
             // Arrange
+            var existingGames = new GameServiceTestFixture().TestGameResults().Build();
             var expected = new GameServiceTestFixture().TestGameResults().Build();
 
             MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
-            MockGetTournamentResults(TOURNAMENT_ID, expected);
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
 
             var sut = BuildSUT();
 
@@ -1378,6 +1379,56 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
         }
+
+        /// <summary>
+        /// Test for GetTournamentResults method. Game results of specified tournament are requested. Game results are returned.
+        /// </summary>
+        [TestMethod]
+        public void GetTournamentResults_HasGamesWithoutResults_OnlyGamesWithResultsReturned()
+        {
+            // Arrange
+            var existingGames = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .TestGameResults()
+                .Build();
+            var expected = new GameServiceTestFixture()
+                .TestGameResults()
+                .Build();
+
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentResults(TOURNAMENT_ID);
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+        }
+
+        /// <summary>
+        /// Test for GetTournamentResults method. Game results of specified tournament are requested. Game results are returned.
+        /// </summary>
+        [TestMethod]
+        public void GetTournamentGames_GamesRequsted_AllScheduledReturned()
+        {
+            // Arrange
+            var existingGames = new GameServiceTestFixture().TestGameResults().Build();
+            var expected = new GameServiceTestFixture().TestGameResults().Build();
+
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentGames(TOURNAMENT_ID);
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+        }
+
         #endregion
 
         #region Edit
@@ -1400,9 +1451,7 @@
                 .WithId(GAME_RESULT_ID)
                 .Build();
 
-            _tournamentGameResultsQueryMock
-                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>()))
-                .Returns(new List<GameResultDto> { existingGame });
+            MockGetTournamentResults(existingGame);
 
             var game = new GameBuilder()
                 .WithId(GAME_RESULT_ID)
@@ -1431,8 +1480,7 @@
             _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
-            _tournamentGameResultsQueryMock
-                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
 
             var sut = BuildSUT();
 
@@ -1453,8 +1501,7 @@
             MockDefaultTournament();
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
-            _tournamentGameResultsQueryMock
-                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
 
             var sut = BuildSUT();
 
@@ -1483,9 +1530,7 @@
                 .WithStartDate(DateTime.Parse(DATE))
                 .Build();
 
-            _tournamentGameResultsQueryMock
-                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>()))
-                .Returns(new List<GameResultDto> { existingGame });
+            MockGetTournamentResults(existingGame);
 
             var sut = BuildSUT();
 
@@ -2204,6 +2249,11 @@
             MockGetTournamentById(tournament.Id, tournament);
             MockGetTournamentResults(tournament.Id, allGames);
             MockGetTournamentResults(tournament.Id, games);
+        }
+
+        private void MockGetTournamentResults(GameResultDto singleGame)
+        {
+            MockGetTournamentResults(TOURNAMENT_ID, new List<GameResultDto> { singleGame });
         }
 
         #endregion

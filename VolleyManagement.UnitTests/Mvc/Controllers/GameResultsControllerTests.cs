@@ -41,6 +41,7 @@
 
         private const string REDIRECT_TO_ACTION = "ShowSchedule";
         private const string REDIRECT_TO_CONTROLLER = "Tournaments";
+
         #endregion
 
         #region Fields
@@ -184,13 +185,13 @@
                 .WithId(GAME_RESULTS_ID)
                 .WithSetsScore(3, 2)
                 .WithSetScores(new List<ScoreViewModel>
-                    {
-                        new ScoreViewModel(25, 20),
-                        new ScoreViewModel(24, 26),
-                        new ScoreViewModel(28, 30),
-                        new ScoreViewModel(25, 22),
-                        new ScoreViewModel(27, 25)
-                    })
+                {
+                    new ScoreViewModel(25, 20),
+                    new ScoreViewModel(24, 26),
+                    new ScoreViewModel(28, 30),
+                    new ScoreViewModel(25, 22),
+                    new ScoreViewModel(27, 25),
+                })
                 .Build();
 
             SetupGet(TOURNAMENT_ID, testData.ElementAt(0));
@@ -428,7 +429,7 @@
 
             _teamServiceMock.Setup(ts => ts.Get(HOME_TEAM_ID)).Returns(homeTeam);
             _teamServiceMock.Setup(ts => ts.Get(AWAY_TEAM_ID)).Returns(awayTeam);
-            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>() { homeTeam, awayTeam });
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>() {homeTeam, awayTeam});
         }
 
         private void SetupDeleteGameThrowsArgumentNullException()
@@ -445,11 +446,12 @@
 
         private void VerifyRedirectingRoute(ActionResult result, string action, string controller)
         {
-            var routeValues = ((RedirectToRouteResult)result).RouteValues;
+            var routeValues = ((RedirectToRouteResult) result).RouteValues;
             Assert.AreEqual(TOURNAMENT_ID, routeValues["tournamentId"]);
             Assert.AreEqual(action, routeValues["action"]);
             Assert.AreEqual(controller, routeValues["controller"]);
         }
+
         #endregion
     }
 }

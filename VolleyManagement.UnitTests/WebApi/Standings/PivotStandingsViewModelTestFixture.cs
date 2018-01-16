@@ -45,18 +45,18 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
             {
                 new PivotStandingsTeamViewModel
                 {
-                    TeamId = 1,
-                    TeamName = "TeamNameA",
-                    Points = 3,
-                    SetsRatio = (float)3 / 3,
-                },
-                new PivotStandingsTeamViewModel
-                {
                     TeamId = 2,
                     TeamName = "TeamNameB",
                     Points = 3,
                     SetsRatio = (float)3 / 3,
                 },
+                new PivotStandingsTeamViewModel
+                {
+                    TeamId = 1,
+                    TeamName = "TeamNameA",
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
+                },                
                 new PivotStandingsTeamViewModel
                 {
                     TeamId = 3,

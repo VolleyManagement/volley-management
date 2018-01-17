@@ -182,7 +182,7 @@
         /// Tournament with games in different weeks. Schedule returned
         /// </summary>
         [TestMethod]
-        public void GetSchedule_TournamentWithThreeWeeksTwoDivisionsThreeGames_ScheduleReturned()
+        public void GetSchedule_TournamentPlayedSeveralWeeks_ScheduleReturned()
         {
             // Arrange
             var testTournament = new TournamentBuilder().Build();

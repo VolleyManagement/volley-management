@@ -16,10 +16,7 @@
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
-    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
     using VolleyManagement.UnitTests.Services.GameReportService;
-    using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using TournamentViewModelComparer = ViewModels.TournamentViewModelComparer;
 
@@ -217,9 +214,13 @@
         public void PivotStandings_StandingsRequested_StandingsReturned()
         {
             // Arrange
-            var testStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+            var testStandings = new PivotStandingsTestFixture()
+                .WithMultipleDivisionsAllPossibleScores()
+                .Build();
 
-            var expected = new PivotStandingsViewModelTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+            var expected = new PivotStandingsViewModelTestFixture()
+                .WithMultipleDivisionsAllPossibleScores()
+                .Build();
 
             MockGetPivotStandings(TOURNAMENT_ID, testStandings);
 
@@ -255,6 +256,28 @@
             TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
         }
 
+        [TestMethod]
+        public void PivotStandings_PlannedGamesWithoutResults_RoundNumbersReturned()
+        {
+            // Arrange
+            var testStandings = new PivotStandingsTestFixture()
+                .WithNotAllGamesPlayed()
+                .Build();
+
+            var expected = new PivotStandingsViewModelTestFixture()
+                .WithNotAllGamesPlayed()
+                .Build();
+
+            MockGetPivotStandings(TOURNAMENT_ID, testStandings);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
+        }
         #endregion
 
         #region Private

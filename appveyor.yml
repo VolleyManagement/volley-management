@@ -34,7 +34,9 @@ build_script:
 #       tests configuration       #
 #---------------------------------#
 
-test: off
+test:
+  assemblies:
+    - '**\*.unittests.dll'
 
 #---------------------------------#
 #         notifications           #

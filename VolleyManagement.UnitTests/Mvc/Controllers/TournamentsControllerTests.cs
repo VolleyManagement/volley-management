@@ -86,7 +86,7 @@
 
         private Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
-        private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+        private Mock<TimeProvider> _timeMock = new Mock<TimeProvider> { CallBase = true };
 
         /// <summary>
         /// Initializes test data.
@@ -104,7 +104,7 @@
             _tournamentRequestServiceMock = new Mock<ITournamentRequestService>();
             _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
 
-            _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
+            _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate.ToUniversalTime());
             TimeProvider.Current = _timeMock.Object;
         }
 

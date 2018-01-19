@@ -1,35 +1,17 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels.Schedule
 {
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
-    internal class DivisionTitleViewModelComparer : IEqualityComparer<DivisionTitleViewModel>
+    internal static class DivisionTitleViewModelComparer
     {
-        public bool Equals(DivisionTitleViewModel x, DivisionTitleViewModel y)
+        public static void AssertAreEqual(DivisionTitleViewModel expected, DivisionTitleViewModel actual, string messagePrefix = "")
         {
-            return AreEqual(x, y);
-        }
-
-        public int GetHashCode(DivisionTitleViewModel obj)
-        {
-            return obj.Id.GetHashCode();
-        }
-
-        /// <summary>
-        /// Finds out whether two standings entries objects have the same properties.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given entries have the same properties.</returns>
-        private bool AreEqual(DivisionTitleViewModel x, DivisionTitleViewModel y)
-        {
-            Assert.AreEqual(x.Id, y.Id, "Division id do not match");
-            Assert.AreEqual(x.Name, y.Name, "Division name do not match");
-            return x.Rounds.AsQueryable().SequenceEqual(y.Rounds.AsQueryable());
+            Assert.AreEqual(expected.Id, actual.Id, $"{messagePrefix}Division id do not match");
+            Assert.AreEqual(expected.Name, actual.Name, $"{messagePrefix}Division name do not match");
+            CollectionAssert.AreEqual(expected.Rounds,actual.Rounds, $"{messagePrefix}Division Rounds collection do not match");
         }
     }
 }

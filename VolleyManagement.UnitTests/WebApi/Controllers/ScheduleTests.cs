@@ -66,7 +66,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
         #endregion
 

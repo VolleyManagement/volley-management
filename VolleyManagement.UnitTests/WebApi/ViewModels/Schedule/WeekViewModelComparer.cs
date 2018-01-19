@@ -1,30 +1,24 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels.Schedule
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
-    internal class WeekViewModelComparer : IEqualityComparer<WeekViewModel>
+    [ExcludeFromCodeCoverage]
+    internal static class WeekViewModelComparer
     {
-        public bool Equals(WeekViewModel x, WeekViewModel y)
+        public static void AssertAreEqual(WeekViewModel expected, WeekViewModel actual, string messagePrefix = "")
         {
-            return AreEqual(x, y);
-        }
+            if (expected == null && actual == null) return;
 
-        public int GetHashCode(WeekViewModel obj)
-        {
-            return obj.Days.GetHashCode();
-        }
+            Assert.IsFalse(expected == null || actual == null, $"{messagePrefix}Instance should not be null.");
 
-        /// <summary>
-        /// Finds out whether two standings entries objects have the same properties.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given entries have the same properties.</returns>
-        private bool AreEqual(WeekViewModel x, WeekViewModel y)
-        {
-            return x.Days.AsQueryable().SequenceEqual(y.Days.AsQueryable(), new ScheduleDayViewModelComparer());
+            Assert.AreEqual(expected.Days.Count, actual.Days.Count, $"{messagePrefix}Number of Day entries does not match.");
+
+            for (var i = 0; i < expected.Days.Count; i++)
+            {
+                ScheduleDayViewModelComparer.AssertAreEqual(expected.Days[i], actual.Days[i], $"{messagePrefix}[Day#{i}]");
+            }
         }
     }
 }

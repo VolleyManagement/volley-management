@@ -1,35 +1,32 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels.Schedule
 {
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
-    internal class ScheduleDayViewModelComparer : IEqualityComparer<ScheduleDayViewModel>
+    internal static class ScheduleDayViewModelComparer
     {
-        public bool Equals(ScheduleDayViewModel x, ScheduleDayViewModel y)
+        public static void AssertAreEqual(ScheduleDayViewModel expected, ScheduleDayViewModel actual, string messagePrefix = "")
         {
-            return AreEqual(x, y);
-        }
+            if (expected == null && actual == null) return;
 
-        public int GetHashCode(ScheduleDayViewModel obj)
-        {
-            return obj.Date.GetHashCode() + obj.Games.GetHashCode();
-        }
+            Assert.IsFalse(expected == null || actual == null, $"{messagePrefix}Instance should not be null.");
 
-        /// <summary>
-        /// Finds out whether two standings entries objects have the same properties.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given entries have the same properties.</returns>
-        private bool AreEqual(ScheduleDayViewModel x, ScheduleDayViewModel y)
-        {
-            Assert.AreEqual(x.Date, y.Date, "Date of game do not match");
-            return x.Divisions.AsQueryable().SequenceEqual(y.Divisions.AsQueryable(), new DivisionTitleViewModelComparer()) &&
-            x.Games.AsQueryable().SequenceEqual(y.Games.AsQueryable(), new GameViewModelComparer());
+            Assert.AreEqual(expected.Date, actual.Date, $"{messagePrefix}Date of game do not match");
+            Assert.AreEqual(expected.Divisions.Count, actual.Divisions.Count, $"{messagePrefix}Number of Division entries does not match.");
+
+            for (var i = 0; i < expected.Divisions.Count; i++)
+            {
+                DivisionTitleViewModelComparer.AssertAreEqual(expected.Divisions[i], actual.Divisions[i], $"{messagePrefix}[Division#{i}]");
+            }
+
+            Assert.AreEqual(expected.Games.Count, actual.Games.Count, $"{messagePrefix}Number of Game entries does not match.");
+
+            for (var i = 0; i < expected.Games.Count; i++)
+            {
+                GameViewModelComparer.AssertAreEqual(expected.Games[i], actual.Games[i], $"{messagePrefix}[Game#{i}]");
+            }
         }
     }
 }

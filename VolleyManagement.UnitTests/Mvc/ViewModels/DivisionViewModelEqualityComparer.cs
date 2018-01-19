@@ -1,40 +1,32 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>
     /// Equality comparer for division view model objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class DivisionViewModelEqualityComparer : IEqualityComparer<DivisionViewModel>
+    internal static class DivisionViewModelEqualityComparer
     {
-        /// <summary>
-        /// Check if objects are equal
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if objects are equal</returns>
-        public bool Equals(DivisionViewModel x, DivisionViewModel y)
+        public static void AssertAreEqual(DivisionViewModel expected, DivisionViewModel actual, string messagePrefix = "")
         {
-            return x != null &&
-                   y != null &&
-                   x.Id == y.Id &&
-                   x.Name == y.Name &&
-                   x.Groups.SequenceEqual(y.Groups, new GroupViewModelEqualityComparer());
-        }
+            if (expected == null && actual == null) return;
 
-        /// <summary>
-        /// Get hash code for the division view model object
-        /// </summary>
-        /// <param name="obj">Division view model object</param>
-        /// <returns>Division's Name as hash code</returns>
-        public int GetHashCode(DivisionViewModel obj)
-        {
-            return obj.Name.GetHashCode();
+            Assert.IsFalse(expected == null || actual == null, "Instance should not be null.");
+
+            Assert.AreEqual(expected.Id, actual.Id, $"{messagePrefix}Ids should be equal.");
+            Assert.AreEqual(expected.Name, actual.Name, $"{messagePrefix}[Id:{expected.Id}]Name should be equal.");
+
+            Assert.AreEqual(expected.Groups.Count, actual.Groups.Count, $"[Id:{expected.Id}]Number of Groups items should be equal.");
+            for (var i = 0; i < expected.Groups.Count; i++)
+            {
+                GroupViewModelEqualityComparer.AssertAreEqual(
+                    expected.Groups[i],
+                    actual.Groups[i],
+                    $"[Id:{expected.Id}][Group#{i}]");
+            }
         }
     }
 }

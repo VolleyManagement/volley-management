@@ -1,35 +1,23 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>
     /// Equality comparer for group view model objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class GroupViewModelEqualityComparer : IEqualityComparer<GroupViewModel>
+    internal class GroupViewModelEqualityComparer
     {
-        /// <summary>
-        /// Check if objects are equal
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if objects are equal</returns>
-        public bool Equals(GroupViewModel x, GroupViewModel y)
+        public static void AssertAreEqual(GroupViewModel expected, GroupViewModel actual, string messagePrefix = "")
         {
-            return x != null && y != null && x.Id == y.Id && x.Name == y.Name;
-        }
+            if (expected == null && actual == null) return;
 
-        /// <summary>
-        /// Get hash code for the group view model object
-        /// </summary>
-        /// <param name="obj">Group view model object</param>
-        /// <returns>Group's Name as hash code</returns>
-        public int GetHashCode(GroupViewModel obj)
-        {
-            return obj.Name.GetHashCode();
+            Assert.IsFalse(expected == null || actual == null, "Instance should not be null.");
+
+            Assert.AreEqual(expected.Id, actual.Id, $"{messagePrefix}Ids should be equal.");
+            Assert.AreEqual(expected.Name, actual.Name, $"{messagePrefix}[Id:{expected.Id}]Name should be equal.");
         }
     }
 }

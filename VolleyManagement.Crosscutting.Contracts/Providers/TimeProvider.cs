@@ -51,7 +51,7 @@
         {
             get
             {
-                return TimeZone.CurrentTimeZone.ToLocalTime(UtcNow);
+                return UtcNow.ToLocalTime();
             }
         }
 

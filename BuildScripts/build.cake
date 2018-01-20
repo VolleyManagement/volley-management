@@ -53,7 +53,7 @@ Task("UnitTests")
     .Does(()=>
     {
         // There is a known issue with Cake+MSTest+VS 2017. One more point to move to xUnit :)
-        // VSTest(testsDir.Path.FullPath + "/*.UnitTests.dll");
+        MSTest(testsDir.Path.FullPath + "/*.UnitTests.dll");
     });
 
 //////////////////////////////////////////////////////////////////////

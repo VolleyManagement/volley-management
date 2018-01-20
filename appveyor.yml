@@ -34,9 +34,7 @@ build_script:
 #       tests configuration       #
 #---------------------------------#
 
-test:
-  assemblies:
-    - '**\*.unittests.dll'
+test: off # should be handled by Cake
 
 #---------------------------------#
 #         notifications           #

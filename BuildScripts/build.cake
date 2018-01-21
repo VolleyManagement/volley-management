@@ -11,14 +11,26 @@ var configuration = Argument("configuration", "Release");
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var srcPath     = "./../";
-var srcDir      = Directory(srcPath);
-var buildDir    = srcDir + Directory("bin/") + Directory(configuration);
-var webBuildDir = srcDir + Directory("VolleyManagement.UI/bin");
-var testsDir    = srcDir + Directory("bin/UnitTests/") + Directory(configuration);
+var srcPath        = "./../";
+var srcDir         = Directory(srcPath);
+var buildDir       = srcDir + Directory("bin/") + Directory(configuration);
+var webBuildDir    = srcDir + Directory("VolleyManagement.UI/bin");
+var testsDir       = srcDir + Directory("bin/UnitTests/") + Directory(configuration);
+var testResultsDir = srcDir + Directory("TestResults/");
 
 // Define files
 var slnPath = srcPath + "VolleyManagement.sln";
+
+string testResultsFile;
+if (AppVeyor.IsRunningOnAppVeyor)
+{
+    testResultsFile = testResultsDir.ToString() 
+                + string.Format("TestResults_AppVeyor_{0}.trx", EnvironmentVariable("APPVEYOR_JOB_ID"));
+}
+else
+{
+    testResultsFile = testResultsDir.ToString() + "TestResults.trx";
+}
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -52,19 +64,24 @@ Task("UnitTests")
     .IsDependentOn("Build")
     .Does(()=>
     {
-        // There is a known issue with Cake+MSTest+VS 2017. One more point to move to xUnit :)
-        MSTest(testsDir.Path.FullPath + "/*.UnitTests.dll");
+        MSTest(
+            testsDir.Path.FullPath + "/*.UnitTests.dll",
+            new MSTestSettings{
+                ResultsFile = testResultsFile
+            });
+
+        if (AppVeyor.IsRunningOnAppVeyor)
+        {
+            AppVeyor.UploadTestResults(testResultsFile, AppVeyorTestResultsType.MSTest);
+        }
     });
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
-Task("IIS")
-    .IsDependentOn("UnitTests");
-
 Task("Default")
-    .IsDependentOn("IIS");
+    .IsDependentOn("UnitTests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

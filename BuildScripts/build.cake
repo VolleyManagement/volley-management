@@ -24,12 +24,12 @@ var slnPath = srcPath + "VolleyManagement.sln";
 string testResultsFile;
 if (AppVeyor.IsRunningOnAppVeyor)
 {
-    testResultsFile = testResultsDir.Path.FullPath 
-                + string.Format("TestResults_AppVeyor_{0}.trx", EnvironmentVariable("APPVEYOR_JOB_ID"));
+    testResultsFile = testResultsDir 
+                + File(string.Format("TestResults_AppVeyor_{0}.trx", EnvironmentVariable("APPVEYOR_JOB_ID")));
 }
 else
 {
-    testResultsFile = testResultsDir.Path.FullPath + "TestResults.trx";
+    testResultsFile = testResultsDir + File("TestResults.trx");
 }
 
 //////////////////////////////////////////////////////////////////////

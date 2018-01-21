@@ -24,12 +24,12 @@ var slnPath = srcPath + "VolleyManagement.sln";
 string testResultsFile;
 if (AppVeyor.IsRunningOnAppVeyor)
 {
-    testResultsFile = testResultsDir.ToString() 
+    testResultsFile = testResultsDir.Path.FullPath 
                 + string.Format("TestResults_AppVeyor_{0}.trx", EnvironmentVariable("APPVEYOR_JOB_ID"));
 }
 else
 {
-    testResultsFile = testResultsDir.ToString() + "TestResults.trx";
+    testResultsFile = testResultsDir.Path.FullPath + "TestResults.trx";
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -67,7 +67,8 @@ Task("UnitTests")
         MSTest(
             testsDir.Path.FullPath + "/*.UnitTests.dll",
             new MSTestSettings{
-                ResultsFile = testResultsFile
+                ResultsFile = testsDir,
+                WorkingDirectory = testResultsDir
             });
 
         if (AppVeyor.IsRunningOnAppVeyor)

@@ -1,3 +1,4 @@
+#addin "Cake.Incubator"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -16,20 +17,19 @@ var srcDir         = Directory(srcPath);
 var buildDir       = srcDir + Directory("bin/") + Directory(configuration);
 var webBuildDir    = srcDir + Directory("VolleyManagement.UI/bin");
 var testsDir       = srcDir + Directory("bin/UnitTests/") + Directory(configuration);
-var testResultsDir = srcDir + Directory("TestResults/");
 
 // Define files
 var slnPath = srcPath + "VolleyManagement.sln";
 
-string testResultsFile;
+ConvertableFilePath testResultsFile;
 if (AppVeyor.IsRunningOnAppVeyor)
 {
-    testResultsFile = testResultsDir 
+    testResultsFile = testsDir 
                 + File(string.Format("TestResults_AppVeyor_{0}.trx", EnvironmentVariable("APPVEYOR_JOB_ID")));
 }
 else
 {
-    testResultsFile = testResultsDir + File("TestResults.trx");
+    testResultsFile = testsDir + File("TestResults.trx");
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ Task("UnitTests")
         MSTest(
             testsDir.Path.FullPath + "/*.UnitTests.dll",
             new MSTestSettings{
-                ResultsFile = testResultsFile,
+                ResultsFile = testResultsFile.Path.GetFilename().FullPath,
                 WorkingDirectory = testsDir
             });
 

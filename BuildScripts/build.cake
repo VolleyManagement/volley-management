@@ -67,8 +67,8 @@ Task("UnitTests")
         MSTest(
             testsDir.Path.FullPath + "/*.UnitTests.dll",
             new MSTestSettings{
-                ResultsFile = testsDir,
-                WorkingDirectory = testResultsDir
+                ResultsFile = testResultsFile,
+                WorkingDirectory = testsDir
             });
 
         if (AppVeyor.IsRunningOnAppVeyor)

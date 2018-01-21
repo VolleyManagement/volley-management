@@ -95,7 +95,7 @@ Task("SonarBegin")
         Login = sonarToken,
         VsTestReportsPath = testResultsFile
      };
-     sonarEndSettings = setting.GetEndSettings();
+     sonarEndSettings = settings.GetEndSettings();
      SonarBegin(settings);
   });
 

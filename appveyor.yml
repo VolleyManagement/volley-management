@@ -17,6 +17,11 @@ version: 1.0.{build}
 
 image: Visual Studio 2017
 
+# environment variables
+environment:
+  SONAR_TOKEN:
+    secure: +v6PmDXb6BsEnMx0hJSdUWbBL7Y/VipzkMUgQa1DgmRbl6XVAR0+RgUc7M7Q9G77
+
 cache:
   - packages -> **\packages.config
 

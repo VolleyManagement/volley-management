@@ -1,4 +1,7 @@
+#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+
 #addin "Cake.Incubator"
+#addin "Cake.Sonar"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -6,6 +9,9 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var sonarToken = HasArgument("sonar-token") 
+    ? Argument<string>("sonar-token") 
+    : EnvironmentVariable("SONAR_TOKEN");
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -32,8 +38,13 @@ else
     testResultsFile = testsDir + File("TestResults.trx");
 }
 
+// Variables
+var canRunSonar = sonarToken != null;
+SonarEndSettings sonarEndSettings;
+
 //////////////////////////////////////////////////////////////////////
 // TASKS
+// Are atomic and small. Next region is responsible for setting order
 //////////////////////////////////////////////////////////////////////
 
 Task("Clean")
@@ -45,14 +56,12 @@ Task("Clean")
     });
 
 Task("Restore-NuGet-Packages")
-    .IsDependentOn("Clean")
     .Does(() =>
     {
         NuGetRestore(slnPath);
     });
 
 Task("Build")
-    .IsDependentOn("Restore-NuGet-Packages")
     .Does(()=>
     {
         MSBuild(slnPath, configurator =>
@@ -61,7 +70,6 @@ Task("Build")
     });
 
 Task("UnitTests")
-    .IsDependentOn("Build")
     .Does(()=>
     {
         MSTest(
@@ -71,18 +79,46 @@ Task("UnitTests")
                 WorkingDirectory = testsDir
             });
 
-        if (AppVeyor.IsRunningOnAppVeyor)
+        if (BuildSystem.IsRunningOnAppVeyor)
         {
             AppVeyor.UploadTestResults(testResultsFile, AppVeyorTestResultsType.MSTest);
         }
     });
+ 
+Task("SonarBegin")
+  .WithCriteria(() => canRunSonar)
+  .Does(() => {
+      var settings = new SonarBeginSettings{
+        Url = "https://sonarcloud.io",
+        Key = "volley-management",
+        Organization = "volleymanagement",
+        Login = sonarToken,
+        VsTestReportsPath = testResultsFile
+     };
+     sonarEndSettings = setting.GetEndSettings();
+     SonarBegin(settings);
+  });
+
+Task("SonarEnd")
+  .WithCriteria(() => canRunSonar)
+  .Does(() => {
+     SonarEnd(sonarEndSettings);
+  });
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
+Task("Sonar")
+  .IsDependentOn("Clean")
+  .IsDependentOn("Restore-NuGet-Packages")
+  .IsDependentOn("SonarBegin")
+  .IsDependentOn("Build")
+  .IsDependentOn("UnitTests")
+  .IsDependentOn("SonarEnd");
+
 Task("Default")
-    .IsDependentOn("UnitTests");
+  .IsDependentOn("Sonar");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

@@ -229,11 +229,13 @@
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithAwayTeamPenalty().Build();
             var teamsTestData = TeamsInSingleDivisionSingleGroup();
+            var testTour = CreateSingleDivisionTournament(TOURNAMENT_ID);
 
             var expected = new PivotStandingsTestFixture().WithTeamCPenalty().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 
@@ -326,6 +328,7 @@
                 .Build();
 
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
+            var testTour = CreateTwoDivisionsTournament(TOURNAMENT_ID);
 
             var expected = new PivotStandingsTestFixture()
                 .WithMultipleDivisionsAllPossibleScores()
@@ -333,6 +336,7 @@
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 
@@ -352,11 +356,13 @@
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsEmptyResults().Build();
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
+            var testTour = CreateTwoDivisionsTournament(TOURNAMENT_ID);
 
             var expected = new PivotStandingsTestFixture().WithMultipleDivisionsEmptyStandings().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 

@@ -72,7 +72,7 @@
                 var standingsDto = new StandingsDto
                 {
                     DivisionId = groupedTeams.Key,
-                    DivisionName = $"Division {groupedTeams.Key}",
+                    DivisionName = tournament.Divisions.First(d => d.Id == groupedTeams.Key)?.Name,
                     LastUpdateTime = tournament.LastTimeUpdated,
                     Standings = standings
                 };
@@ -110,7 +110,7 @@
                 pivotStandings.Divisions.Add(new PivotStandingsDto(teamStandingsInDivision, shortGameResults)
                 {
                     DivisionId = groupedTeams.Key,
-                    DivisionName = $"Division {groupedTeams.Key}",
+                    DivisionName = tournament.Divisions.First(d => d.Id == groupedTeams.Key)?.Name,
                     LastUpdateTime = tournament.LastTimeUpdated
                 });
             }

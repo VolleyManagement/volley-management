@@ -28,10 +28,10 @@ var testsDir       = srcDir + Directory("bin/UnitTests/") + Directory(configurat
 var slnPath = srcPath + "VolleyManagement.sln";
 
 ConvertableFilePath testResultsFile;
-if (AppVeyor.IsRunningOnAppVeyor)
+if (BuildSystem.IsRunningOnAppVeyor)
 {
     testResultsFile = testsDir 
-                + File(string.Format("TestResults_AppVeyor_{0}.trx", EnvironmentVariable("APPVEYOR_JOB_ID")));
+                + File(string.Format("TestResults_AppVeyor_{0}.trx", AppVeyor.Environment.JobId));
 }
 else
 {
@@ -48,30 +48,26 @@ SonarEndSettings sonarEndSettings;
 //////////////////////////////////////////////////////////////////////
 
 Task("Clean")
-    .Does(() =>
-    {
+    .Does(() => {
         CleanDirectory(buildDir);
         CleanDirectory(webBuildDir);
         CleanDirectory(testsDir);
     });
 
 Task("Restore-NuGet-Packages")
-    .Does(() =>
-    {
+    .Does(() => {
         NuGetRestore(slnPath);
     });
 
 Task("Build")
-    .Does(()=>
-    {
+    .Does(() => {
         MSBuild(slnPath, configurator =>
             configurator.SetConfiguration(configuration)
         );
     });
 
 Task("UnitTests")
-    .Does(()=>
-    {
+    .Does(() => {
         MSTest(
             testsDir.Path.FullPath + "/*.UnitTests.dll",
             new MSTestSettings{
@@ -84,41 +80,52 @@ Task("UnitTests")
             AppVeyor.UploadTestResults(testResultsFile, AppVeyorTestResultsType.MSTest);
         }
     });
- 
+
 Task("SonarBegin")
-  .WithCriteria(() => canRunSonar)
-  .Does(() => {
-      var settings = new SonarBeginSettings{
-        Url = "https://sonarcloud.io",
-        Key = "volley-management",
-        Organization = "volleymanagement",
-        Login = sonarToken,
-        VsTestReportsPath = testResultsFile
-     };
-     sonarEndSettings = settings.GetEndSettings();
-     SonarBegin(settings);
-  });
+    .WithCriteria(() => canRunSonar)
+    .Does(() => {
+        var settings = new SonarBeginSettings{
+            Url = "https://sonarcloud.io",
+            Key = "volley-management",
+            Organization = "volleymanagement",
+            Login = sonarToken,
+            VsTestReportsPath = testResultsFile
+        };
+
+        if (BuildSystem.IsRunningOnAppVeyor
+            && AppVeyor.Environment.PullRequest.IsPullRequest)
+        {
+            settings.ArgumentCustomization = 
+                args => args.Append("/d:\"sonar.analysis.mode=preview\"")
+                            .Append($"/d:\"sonar.github.pullRequest={AppVeyor.Environment.PullRequest.Number}\"")
+                            .Append("/d:\"sonar.github.repository=YourRepositoryUrl\"")
+                            .AppendSecret($"/d:\"sonar.github.oauth={EnvironmentVariable("GITHUB_SONAR_PR_TOKEN")}\"");
+        }
+
+        sonarEndSettings = settings.GetEndSettings();
+        SonarBegin(settings);
+    });
 
 Task("SonarEnd")
-  .WithCriteria(() => canRunSonar)
-  .Does(() => {
-     SonarEnd(sonarEndSettings);
-  });
+    .WithCriteria(() => canRunSonar)
+    .Does(() => {
+        SonarEnd(sonarEndSettings);
+    });
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Sonar")
-  .IsDependentOn("Clean")
-  .IsDependentOn("Restore-NuGet-Packages")
-  .IsDependentOn("SonarBegin")
-  .IsDependentOn("Build")
-  .IsDependentOn("UnitTests")
-  .IsDependentOn("SonarEnd");
+    .IsDependentOn("Clean")
+    .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("SonarBegin")
+    .IsDependentOn("Build")
+    .IsDependentOn("UnitTests")
+    .IsDependentOn("SonarEnd");
 
 Task("Default")
-  .IsDependentOn("Sonar");
+    .IsDependentOn("Sonar");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

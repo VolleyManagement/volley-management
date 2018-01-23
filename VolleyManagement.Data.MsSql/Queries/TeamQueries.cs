@@ -109,6 +109,7 @@
                                  t => new TeamTournamentDto
                                  {
                                      DivisionId = grp.DivisionId,
+                                     DivisionName = grp.Division.Name,
                                      GroupId = grp.Id,
                                      TeamId = t.Id,
                                      TeamName = t.Name

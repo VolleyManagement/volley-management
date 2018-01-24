@@ -11,6 +11,13 @@
 # version format
 version: 1.0.{build}
 
+# branches to build
+branches:
+  only:
+    - master
+    - Release
+    - /issue_#*/
+
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#

@@ -45,13 +45,6 @@ var canRunSonar =   sonarToken != null //Has Sonar token
                     || AppVeyor.Environment.PullRequest.IsPullRequest)); // OR pull request
 SonarEndSettings sonarEndSettings;
 
-Verbose($"CanRunSonar: {canRunSonar}");
-Verbose($"sonarToken: {sonarToken}");
-Verbose($"Env:sonarToken: {EnvironmentVariable("SONAR_TOKEN")}");
-Verbose($"IsRunningOnAppVeyor: {BuildSystem.IsRunningOnAppVeyor}");
-Verbose($"Branch: {AppVeyor.Environment.Repository.Branch}");
-Verbose($"IsPR: {AppVeyor.Environment.PullRequest.IsPullRequest}");
-
 //////////////////////////////////////////////////////////////////////
 // TASKS
 // Are atomic and small. Next region is responsible for setting order

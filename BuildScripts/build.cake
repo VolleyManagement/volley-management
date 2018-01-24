@@ -47,6 +47,7 @@ SonarEndSettings sonarEndSettings;
 
 Verbose($"CanRunSonar: {canRunSonar}");
 Verbose($"sonarToken: {sonarToken}");
+Verbose($"Env:sonarToken: {EnvironmentVariable("SONAR_TOKEN")}");
 Verbose($"IsRunningOnAppVeyor: {BuildSystem.IsRunningOnAppVeyor}");
 Verbose($"Branch: {AppVeyor.Environment.Repository.Branch}");
 Verbose($"IsPR: {AppVeyor.Environment.PullRequest.IsPullRequest}");

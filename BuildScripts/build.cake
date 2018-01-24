@@ -39,7 +39,10 @@ else
 }
 
 // Variables
-var canRunSonar = sonarToken != null;
+var canRunSonar =   sonarToken != null //Has Sonar token
+                && (BuildSystem.IsRunningOnAppVeyor 
+                   && (AppVeyor.Environment.Repository.Branch == "master" // master branch
+                    || AppVeyor.Environment.PullRequest.IsPullRequest)); // OR pull request
 SonarEndSettings sonarEndSettings;
 
 //////////////////////////////////////////////////////////////////////
@@ -92,15 +95,11 @@ Task("SonarBegin")
             VsTestReportsPath = testResultsFile
         };
 
-        if (BuildSystem.IsRunningOnAppVeyor
-            && AppVeyor.Environment.PullRequest.IsPullRequest)
-        {
-            settings.ArgumentCustomization = 
-                args => args.Append("/d:\"sonar.analysis.mode=preview\"")
-                            .Append($"/d:\"sonar.github.pullRequest={AppVeyor.Environment.PullRequest.Number}\"")
-                            .Append("/d:\"sonar.github.repository=YourRepositoryUrl\"")
-                            .AppendSecret($"/d:\"sonar.github.oauth={EnvironmentVariable("GITHUB_SONAR_PR_TOKEN")}\"");
-        }
+        settings.ArgumentCustomization = 
+            args => args.Append("/d:\"sonar.analysis.mode=preview\"")
+                        .Append($"/d:\"sonar.github.pullRequest={AppVeyor.Environment.PullRequest.Number}\"")
+                        .Append("/d:\"sonar.github.repository=VolleyManagement/volley-management\"")
+                        .AppendSecret($"/d:\"sonar.github.oauth={EnvironmentVariable("GITHUB_SONAR_PR_TOKEN")}\"");        
 
         sonarEndSettings = settings.GetEndSettings();
         SonarBegin(settings);

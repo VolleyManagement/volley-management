@@ -8,6 +8,8 @@
 
         public int DivisionId { get; set; }
 
+        public string DivisionName { get; set; }
+
         public int GroupId { get; set; }
     }
 }

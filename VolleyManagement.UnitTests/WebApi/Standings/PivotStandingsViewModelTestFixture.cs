@@ -99,6 +99,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     },
                 },
             };
+            _pivotStandings[0].DivisionName = "DivisionNameA";
 
             return this;
         }
@@ -255,6 +256,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     Points = 4,
                     SetsRatio = (float)6 / 10,
                 });
+            _pivotStandings[0].DivisionName = "DivisionNameA";
 
             _pivotStandings[1].TeamsStandings = new List<PivotStandingsTeamViewModel>();
             _pivotStandings[1].TeamsStandings.Add( // G
@@ -305,7 +307,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     Points = 0,
                     SetsRatio = null,
                 });
-
+            _pivotStandings[1].DivisionName = "DivisionNameB";
         }
 
         public PivotStandingsViewModelTestFixture WithLastUpdateTime(DateTime? lastUpdateTime)

@@ -77,6 +77,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 var standings = new DivisionStandingsViewModel
                 {
                     LastUpdateTime = entry.LastUpdateTime,
+                    DivisionName = entry.DivisionName,
                     StandingsTable = entry.Standings.Select(StandingsEntryViewModel.Map).ToList()
                 };
                 StandingsEntryViewModel.SetPositions(standings.StandingsTable);

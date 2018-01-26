@@ -35,7 +35,7 @@ build_script:
 - ps: >-
     cd .\BuildScripts
 
-    .\build.ps1
+    .\build.ps1 -v Verbose
 
 #---------------------------------#
 #       tests configuration       #

@@ -97,7 +97,6 @@ Task("SonarBegin")
 
         settings.ArgumentCustomization = 
             args => args.Append("/d:\"sonar.analysis.mode=preview\"")
-                        .Append("-X")
                         .Append($"/d:\"sonar.github.pullRequest={AppVeyor.Environment.PullRequest.Number}\"")
                         .Append("/d:\"sonar.github.repository=VolleyManagement/volley-management\"")
                         .AppendSecret($"/d:\"sonar.github.oauth={EnvironmentVariable("GITHUB_SONAR_PR_TOKEN")}\"");        
@@ -109,6 +108,10 @@ Task("SonarBegin")
 Task("SonarEnd")
     .WithCriteria(() => canRunSonar)
     .Does(() => {
+        
+        sonarEndSettings.ArgumentCustomization = 
+            args => args.Append("-X");    
+
         SonarEnd(sonarEndSettings);
     });
 

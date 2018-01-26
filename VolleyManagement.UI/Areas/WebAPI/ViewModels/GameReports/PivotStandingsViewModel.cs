@@ -17,6 +17,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         public PivotStandingsViewModel(PivotStandingsDto pivotStandings)
         {
             LastUpdateTime = pivotStandings.LastUpdateTime;
+            DivisionName = pivotStandings.DivisionName;
             TeamsStandings = pivotStandings.Teams.Select(PivotStandingsTeamViewModel.Map).ToList();
 
             // Group results by participating teams

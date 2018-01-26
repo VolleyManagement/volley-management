@@ -24,6 +24,7 @@
 
                 Assert.AreEqual(expected.TeamsStandings.Count, actual.TeamsStandings.Count, "Number of Team Standings divisions should match");
                 Assert.AreEqual(expected.LastUpdateTime, actual.LastUpdateTime, "LastUpdateTime for division should match");
+                Assert.AreEqual(expected.DivisionName, actual.DivisionName, "DivisionName for division should match");
 
                 for (var i = 0; i < expected.TeamsStandings.Count; i++)
                 {

@@ -55,6 +55,7 @@
         internal bool AreEqual(DivisionStandingsViewModel expected, DivisionStandingsViewModel actual)
         {
             Assert.AreEqual(expected.LastUpdateTime, actual.LastUpdateTime, "LastTimeUpdated should match");
+            Assert.AreEqual(expected.DivisionName, actual.DivisionName, "DivisionName should match");
 
             if (expected.StandingsTable != null || actual.StandingsTable != null)
             {

@@ -12,7 +12,9 @@
     [ExcludeFromCodeCoverage]
     internal class StandingsTestFixture
     {
-        private readonly List<(int DivisionId, StandingsEntry Standings)> _standings = new List<(int DivisionId, StandingsEntry Standings)>();
+        private readonly List<(int DivisionId, string DivisionName, StandingsEntry Standings)> _standings =
+            new List<(int DivisionId, string DivisionName, StandingsEntry Standings)>();
+
         private DateTime? _lastUpdateTime;
 
         public StandingsTestFixture DefaultStandings()
@@ -783,7 +785,7 @@
         public StandingsTestFixture WithMultipleDivisionsAllPossibleScores()
         {
             _standings.Clear();
-            AddStandings(// A
+            AddStandings( // A
                 new StandingsEntry
                 {
                     TeamName = "TeamNameA",
@@ -802,8 +804,9 @@
                     BallsWon = 363,
                     BallsLost = 355
                 },
-                divisionId: 1);
-            AddStandings(// E
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // E
                 new StandingsEntry
                 {
                     TeamName = "TeamNameE",
@@ -822,8 +825,9 @@
                     BallsWon = 363,
                     BallsLost = 355
                 },
-                divisionId: 1);
-            AddStandings(// C
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // C
                 new StandingsEntry
                 {
                     TeamName = "TeamNameC",
@@ -842,8 +846,9 @@
                     BallsWon = 350,
                     BallsLost = 362
                 },
-                divisionId: 1);
-            AddStandings(// D
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // D
                 new StandingsEntry
                 {
                     TeamName = "TeamNameD",
@@ -862,8 +867,9 @@
                     BallsWon = 350,
                     BallsLost = 362
                 },
-                divisionId: 1);
-            AddStandings(// B
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // B
                 new StandingsEntry
                 {
                     TeamName = "TeamNameB",
@@ -882,8 +888,9 @@
                     BallsWon = 349,
                     BallsLost = 345
                 },
-                divisionId: 1);
-            AddStandings(// F
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // F
                 new StandingsEntry
                 {
                     TeamName = "TeamNameF",
@@ -902,8 +909,9 @@
                     BallsWon = 349,
                     BallsLost = 345
                 },
-                divisionId: 1);
-            AddStandings(// G
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // G
                 new StandingsEntry
                 {
                     TeamName = "TeamNameG",
@@ -922,8 +930,9 @@
                     BallsWon = 363,
                     BallsLost = 355
                 },
-                divisionId: 2);
-            AddStandings(// I
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // I
                 new StandingsEntry
                 {
                     TeamName = "TeamNameI",
@@ -942,8 +951,9 @@
                     BallsWon = 350,
                     BallsLost = 362
                 },
-                divisionId: 2);
-            AddStandings(// H
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // H
                 new StandingsEntry
                 {
                     TeamName = "TeamNameH",
@@ -962,8 +972,9 @@
                     BallsWon = 349,
                     BallsLost = 345
                 },
-                divisionId: 2);
-            AddStandings(// J
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // J
                 new StandingsEntry
                 {
                     TeamName = "TeamNameJ",
@@ -982,8 +993,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
-            AddStandings(// K
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // K
                 new StandingsEntry
                 {
                     TeamName = "TeamNameK",
@@ -1002,8 +1014,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
-            AddStandings(// L
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // L
                 new StandingsEntry
                 {
                     TeamName = "TeamNameL",
@@ -1022,7 +1035,8 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
+                divisionId: 2,
+                divisionName: "DivisionNameB");
 
             return this;
         }
@@ -1030,7 +1044,7 @@
         public StandingsTestFixture WithMultipleDivisionsEmptyStandings()
         {
             _standings.Clear();
-            AddStandings(// A
+            AddStandings( // A
                 new StandingsEntry
                 {
                     TeamName = "TeamNameA",
@@ -1049,8 +1063,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 1);
-            AddStandings(// B
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // B
                 new StandingsEntry
                 {
                     TeamName = "TeamNameB",
@@ -1069,8 +1084,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 1);
-            AddStandings(// C
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // C
                 new StandingsEntry
                 {
                     TeamName = "TeamNameC",
@@ -1089,8 +1105,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 1);
-            AddStandings(// D
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // D
                 new StandingsEntry
                 {
                     TeamName = "TeamNameD",
@@ -1109,8 +1126,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 1);
-            AddStandings(// E
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // E
                 new StandingsEntry
                 {
                     TeamName = "TeamNameE",
@@ -1129,8 +1147,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 1);
-            AddStandings(// F
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // F
                 new StandingsEntry
                 {
                     TeamName = "TeamNameF",
@@ -1149,8 +1168,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 1);
-            AddStandings(// G
+                divisionId: 1,
+                divisionName: "DivisionNameA");
+            AddStandings( // G
                 new StandingsEntry
                 {
                     TeamName = "TeamNameG",
@@ -1169,8 +1189,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
-            AddStandings(// H
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // H
                 new StandingsEntry
                 {
                     TeamName = "TeamNameH",
@@ -1189,8 +1210,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
-            AddStandings(// I
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // I
                 new StandingsEntry
                 {
                     TeamName = "TeamNameI",
@@ -1209,8 +1231,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
-            AddStandings(// J
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // J
                 new StandingsEntry
                 {
                     TeamName = "TeamNameJ",
@@ -1229,8 +1252,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
-            AddStandings(// K
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // K
                 new StandingsEntry
                 {
                     TeamName = "TeamNameK",
@@ -1249,8 +1273,9 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
-            AddStandings(// L
+                divisionId: 2,
+                divisionName: "DivisionNameB");
+            AddStandings( // L
                 new StandingsEntry
                 {
                     TeamName = "TeamNameL",
@@ -1269,7 +1294,8 @@
                     BallsWon = 0,
                     BallsLost = 0
                 },
-                divisionId: 2);
+                divisionId: 2,
+                divisionName: "DivisionNameB");
 
             return this;
         }
@@ -1286,15 +1312,15 @@
             var result = new TournamentStandings<StandingsDto>();
 
             result.Divisions = _standings.Select(t => t.DivisionId)
-                                         .Distinct()
-                                         .Select(divId =>
+                .Distinct()
+                .Select(divId =>
                 {
                     return new StandingsDto
                     {
                         DivisionId = divId,
-                        DivisionName = $"Division {divId}",
+                        DivisionName = _standings.FirstOrDefault(t => t.DivisionId == divId).DivisionName,
                         LastUpdateTime = _lastUpdateTime,
-                        Standings = _standings.Where(t => t.DivisionId == divId).Select(t => t.Standings).ToList()
+                        Standings = _standings.Where(t => t.DivisionId == divId).Select(t => t.Standings).ToList(),
                     };
                 })
                 .ToList();
@@ -1302,9 +1328,9 @@
             return result;
         }
 
-        private void AddStandings(StandingsEntry standing, int divisionId = 1)
+        private void AddStandings(StandingsEntry standing, int divisionId = 1, string divisionName = "DivisionNameA")
         {
-            _standings.Add((divisionId, standing));
+            _standings.Add((divisionId, divisionName, standing));
         }
     }
 }

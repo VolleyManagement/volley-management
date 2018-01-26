@@ -108,10 +108,6 @@ Task("SonarBegin")
 Task("SonarEnd")
     .WithCriteria(() => canRunSonar)
     .Does(() => {
-        
-        sonarEndSettings.ArgumentCustomization = 
-            args => args.Append("-X");    
-
         SonarEnd(sonarEndSettings);
     });
 

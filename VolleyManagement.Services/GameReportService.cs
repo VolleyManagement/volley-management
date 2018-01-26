@@ -63,7 +63,7 @@
 
             var tournament = _tournamentByIdQuery.Execute(new FindByIdCriteria(tournamentId));
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
+            Dictionary<(int divisionId,string divisionName),List<TeamTournamentDto>> teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
             foreach (var groupedTeams in teamsInTournamentByDivisions)
             {
@@ -71,8 +71,8 @@
 
                 var standingsDto = new StandingsDto
                 {
-                    DivisionId = groupedTeams.Key,
-                    DivisionName = $"Division {groupedTeams.Key}",
+                    DivisionId = groupedTeams.Key.divisionId,
+                    DivisionName = groupedTeams.Key.divisionName,
                     LastUpdateTime = tournament.LastTimeUpdated,
                     Standings = standings
                 };
@@ -91,7 +91,7 @@
         {
             var tournament = _tournamentByIdQuery.Execute(new FindByIdCriteria(tournamentId));
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
+            Dictionary<(int divisionId, string divisionName), List<TeamTournamentDto>> teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
             var pivotStandings = new TournamentStandings<PivotStandingsDto>();
 
@@ -109,8 +109,8 @@
 
                 pivotStandings.Divisions.Add(new PivotStandingsDto(teamStandingsInDivision, shortGameResults)
                 {
-                    DivisionId = groupedTeams.Key,
-                    DivisionName = $"Division {groupedTeams.Key}",
+                    DivisionId = groupedTeams.Key.divisionId,
+                    DivisionName = groupedTeams.Key.divisionName,
                     LastUpdateTime = tournament.LastTimeUpdated
                 });
             }
@@ -294,11 +294,11 @@
             return lostBalls;
         }
 
-        private Dictionary<int, List<TeamTournamentDto>> GetTeamsInTournamentByDivisions(int tournamentId)
+        private Dictionary<(int, string), List<TeamTournamentDto>> GetTeamsInTournamentByDivisions(int tournamentId)
         {
             var teamsByDivisions = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
 
-            return teamsByDivisions.GroupBy(t => t.DivisionId).ToDictionary(t => t.Key, t => t.ToList());
+            return teamsByDivisions.GroupBy(t => (t.DivisionId, t.DivisionName)).ToDictionary(t => t.Key, t => t.ToList());
         }
 
         private static List<GameResultDto> GetGamesResultsForDivision(List<GameResultDto> gameResults, List<TeamTournamentDto> teams)

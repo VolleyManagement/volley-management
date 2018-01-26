@@ -335,11 +335,13 @@
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
+            var testTour = CreateTwoDivisionsTournament(TOURNAMENT_ID);
 
             var expected = new StandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 
@@ -359,11 +361,13 @@
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithNoGameResults().Build();
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
+            var testTour = CreateTwoDivisionsTournament(TOURNAMENT_ID);
 
             var expected = new StandingsTestFixture().WithMultipleDivisionsEmptyStandings().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 

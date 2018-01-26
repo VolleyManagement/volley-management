@@ -46,7 +46,7 @@
                                 SetsRatio = 6.0f / 3,
                                 BallsWon = 234,
                                 BallsLost = 214,
-                                BallsRatio = 234.0f / 214
+                                BallsRatio = 234.0f / 214,
                             },
                             new StandingsEntryViewModel
                             {
@@ -67,7 +67,7 @@
                                 SetsRatio = 4.0f / 3,
                                 BallsWon = 166,
                                 BallsLost = 105,
-                                BallsRatio = 166.0f / 105
+                                BallsRatio = 166.0f / 105,
                             },
                             new StandingsEntryViewModel
                             {
@@ -88,10 +88,11 @@
                                 SetsRatio = 2.0f / 6,
                                 BallsWon = 123,
                                 BallsLost = 204,
-                                BallsRatio = 123.0f / 204
-                            }
-                        }
-                    }
+                                BallsRatio = 123.0f / 204,
+                            },
+                        },
+                        DivisionName = "DivisionNameA",
+                    },
             };
         }
 
@@ -100,7 +101,7 @@
             _divisionStandings = new List<DivisionStandingsViewModel>
             {
                     new DivisionStandingsViewModel(),
-                    new DivisionStandingsViewModel()
+                    new DivisionStandingsViewModel(),
             };
 
             AddTeamsForMultipleDivisionsCase();
@@ -242,6 +243,8 @@
                     BallsLost = 345,
                     BallsRatio = (float)349 / 345
                 });
+            _divisionStandings[0].DivisionName = "DivisionNameA";
+
             _divisionStandings[1].StandingsTable.Add( // G
                 new StandingsEntryViewModel
                 {
@@ -374,6 +377,7 @@
                     BallsLost = 0,
                     BallsRatio = null
                 });
+            _divisionStandings[1].DivisionName = "DivisionNameB";
         }
 
         public DivisionStandingsViewModelTestFixture WithLastUpdateTime(DateTime? lastUpdateTime)

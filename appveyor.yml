@@ -22,7 +22,7 @@ environment:
   SONAR_TOKEN:
     secure: +v6PmDXb6BsEnMx0hJSdUWbBL7Y/VipzkMUgQa1DgmRbl6XVAR0+RgUc7M7Q9G77
   GITHUB_SONAR_PR_TOKEN:
-    secure: 3nvsKlgxZb4QSrPyKP8e2fVXVA2QLkWVJ+BBcCjTft760ZT0/MSvXqWO1W7i6mxi
+    secure: M3EfBP6KDctwpttA3VZRbjk6WOpMxTrGdYX5mTwdsDe9RMQQ+yFXOlFD/TTxixaw
 
 cache:
   - packages -> **\packages.config

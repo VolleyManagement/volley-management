@@ -97,6 +97,7 @@ Task("SonarBegin")
 
         settings.ArgumentCustomization = 
             args => args.Append("/d:\"sonar.analysis.mode=preview\"")
+                        .Append("/d:\"sonar.verbose=true\"")
                         .Append($"/d:\"sonar.github.pullRequest={AppVeyor.Environment.PullRequest.Number}\"")
                         .Append("/d:\"sonar.github.repository=VolleyManagement/volley-management\"")
                         .AppendSecret($"/d:\"sonar.github.oauth={EnvironmentVariable("GITHUB_SONAR_PR_TOKEN")}\"");        

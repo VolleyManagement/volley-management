@@ -16,6 +16,13 @@ pull_requests:
   do_not_increment_build_number: true
 
 
+# branches to build
+branches:
+  only:
+    - master
+    - Release
+    - /issue_#*/
+
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#

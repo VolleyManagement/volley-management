@@ -223,6 +223,28 @@
             ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void GetSchedule_TournamentHasFreeDayGame_FreeDayGameIsLast()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture()
+                .TestGamesForSeveralDivisionsAndFreeDayGameInOneDay()
+                .Build();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new ScheduleViewModelTestFixture().WithGamesInSeveralDivisionsAndFreeDayGameInOneDay().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Private

@@ -107,20 +107,14 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         [Route("api/Tournament/{tournamentId}/Schedule")]
         public ScheduleViewModel GetSchedule(int tournamentId)
         {
-            List<GameViewModel> gamesViewModel = _gameService.GetTournamentGames(tournamentId)
-                                                        .Select(t => GameViewModel.Map(t)).ToList();
-            foreach (var item in gamesViewModel)
-            {
-                if (item.Result.TotalScore.IsEmpty)
-                {
-                    item.Result = null;
-                }
-            }
+            var games = _gameService.GetTournamentGames(tournamentId)
+                                    .Select(GameViewModel.Map)
+                                    .ToList();
 
-            var resultGroupedByWeek = gamesViewModel.GroupBy(gr => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-                gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday))
-                .OrderBy(w => w.Key)
-                .Select(w => new Tuple<int, List<GameViewModel>>(w.Key, w.ToList()))
+            var resultGroupedByWeek = games.GroupBy(GetWeekOfYear)
+                .OrderBy(w => w.Key.Year)
+                .ThenBy(w => w.Key.Week)
+                .Select(w => new Tuple<int, List<GameViewModel>>(w.Key.Week, w.ToList()))
                 .ToList();
 
             var result = new ScheduleViewModel()
@@ -145,8 +139,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                                             .OrderBy(i => i)
                                                             .ToList()
                                     }).
-                                    Distinct(new DivisionTitleComparer()).
-                                    ToList(),
+                                    Distinct(new DivisionTitleComparer()).ToList(),
                                 Games = element.ToList()
                             }).
                         OrderBy(item => item.Date).
@@ -156,6 +149,13 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
             };
 
             return result;
+        }
+
+        private static (int Year, int Week) GetWeekOfYear(GameViewModel gr)
+        {
+            return (
+                Year: gr.Date.Year,
+                Week: CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday));
         }
     }
 }

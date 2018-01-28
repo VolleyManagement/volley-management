@@ -21,6 +21,8 @@
 
         private const string DATE_E = "2016-04-22 10:00";
 
+        private const string DATE_F = "2017-04-22 10:00";
+
         private const string URL_A = "http://test-url-a.com";
 
         private const string URL_B = "http://test-url-b.com";
@@ -506,15 +508,8 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score(3, 0, true),
-                    SetScores = new List<Score>
-                    {
-                        new Score(25, 0),
-                        new Score(25, 0),
-                        new Score(25, 0),
-                        new Score(0, 0),
-                        new Score(0, 0),
-                    },
+                    GameScore = (3, 0, true),
+                    SetScores = new List<Score> { (25, 0), (25, 0), (25, 0), (0, 0), (0, 0), },
                 },
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
@@ -534,14 +529,14 @@
                 AwayTeamName = "TeamNameA",
                 Result = new Result
                 {
-                    GameScore = new Score(3, 2),
+                    GameScore = (3, 2),
                     SetScores = new List<Score>
                     {
-                        new Score(25, 0),
-                        new Score(0, 25),
-                        new Score(0, 25),
-                        new Score(25, 0),
-                        new Score(15, 0),
+                        (25, 0),
+                        (0, 25),
+                        (0, 25),
+                        (25, 0),
+                        (15, 0),
                     },
                 },
                 GameDate = DateTime.Parse(DATE_E),
@@ -562,14 +557,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score(1, 3),
+                    GameScore = (1, 3),
                     SetScores = new List<Score>
                     {
-                        new Score(25, 0),
-                        new Score(5, 25),
-                        new Score(5, 25),
-                        new Score(5, 25),
-                        new Score(0, 0),
+                        (25, 0),
+                        (5, 25),
+                        (5, 25),
+                        (5, 25),
+                        (0, 0),
                     },
                 },
                 GameDate = DateTime.Parse(DATE_B),
@@ -584,6 +579,90 @@
             return this;
         }
 
+
+        public GameServiceTestFixture TestGamesInSeveralYearsAndWeeks()
+        {
+            _gameResults.Clear();
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = (3, 0, true),
+                    SetScores = new List<Score> { (25, 0), (25, 0), (25, 0), (0, 0), (0, 0), },
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 0,
+                GroupId = 1,
+                DivisionId = 1,
+                DivisionName = "Division Name",
+                UrlToGameVideo = URL_A,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                HomeTeamName = "TeamNameC",
+                AwayTeamName = "TeamNameA",
+                Result = new Result
+                {
+                    GameScore = (3, 2),
+                    SetScores = new List<Score>
+                    {
+                        (25, 0),
+                        (0, 25),
+                        (0, 25),
+                        (25, 0),
+                        (15, 0),
+                    },
+                },
+                GameDate = DateTime.Parse(DATE_E),
+                Round = 2,
+                GameNumber = 0,
+                GroupId = 1,
+                DivisionId = 1,
+                DivisionName = "Division Name1",
+                UrlToGameVideo = URL_A,
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameC",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = (1, 3),
+                    SetScores = new List<Score>
+                    {
+                        (25, 0),
+                        (5, 25),
+                        (5, 25),
+                        (5, 25),
+                        (0, 0),
+                    },
+                },
+                GameDate = DateTime.Parse(DATE_F),
+                Round = 3,
+                GameNumber = 0,
+                GroupId = 2,
+                DivisionId = 2,
+                DivisionName = "Division Name2",
+                UrlToGameVideo = URL_B,
+            });
+
+            return this;
+        }
 
         public GameServiceTestFixture TestEmptyGamesInPlayoff()
         {

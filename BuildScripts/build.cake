@@ -92,7 +92,8 @@ Task("SonarBegin")
             Key = "volley-management",
             Organization = "volleymanagement",
             Login = sonarToken,
-            VsTestReportsPath = testResultsFile
+            VsTestReportsPath = testResultsFile,
+            Version = AppVeyor.Environment.Build.Version
         };
 
         if (BuildSystem.IsRunningOnAppVeyor

@@ -74,7 +74,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         /// <returns>View model of game.</returns>
         public static GameViewModel Map(GameResultDto gameResult)
         {
-            return new GameViewModel
+            var game = new GameViewModel
             {
                 Id = gameResult.Id,
                 HomeTeamName = gameResult.HomeTeamName,
@@ -98,6 +98,13 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                 Date = gameResult.GameDate.GetValueOrDefault(),
                 UrlToGameVideo = gameResult.UrlToGameVideo
             };
+
+            if (game.Result.TotalScore.IsEmpty)
+            {
+                game.Result = null;
+            }
+
+            return game;
         }
 
         /// <summary>

@@ -7,7 +7,9 @@
 
     public class ScheduleViewModelTestFixture
     {
-        private const string DATE_A = "2016-04-03 10:00";
+        private const string DATE_A_1 = "2016-04-03 10:00";
+        private const string DATE_A_2 = "2016-04-03 12:00";
+        private const string DATE_A_3 = "2016-04-03 14:00";
 
         private const string DATE_B = "2016-04-07 10:00";
 
@@ -16,6 +18,8 @@
         private const string DATE_D = "2016-04-02 10:00";
 
         private const string DATE_E = "2016-04-22 10:00";
+
+        private const string DATE_F = "2017-04-22 10:00";
 
         private const string URL_A = "http://test-url-a.com";
 
@@ -40,7 +44,7 @@
                     {
                         new ScheduleDayViewModel
                         {
-                            Date = DateTime.Parse(DATE_A),
+                            Date = DateTime.Parse(DATE_A_1),
                             Divisions = new List<DivisionTitleViewModel>
                             {
                                 new DivisionTitleViewModel
@@ -60,7 +64,7 @@
                                     Id = 1,
                                     HomeTeamName = "TeamNameA",
                                     AwayTeamName = "TeamNameB",
-                                    GameDate = DateTime.Parse(DATE_A).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
                                     Result = new GameViewModel.GameResult
                                     {
                                         TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
@@ -78,7 +82,7 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = DateTime.Parse(DATE_A),
+                                    Date = DateTime.Parse(DATE_A_1),
                                     UrlToGameVideo = URL_A,
                                 },
                             },
@@ -99,7 +103,7 @@
                     {
                         new ScheduleDayViewModel
                         {
-                            Date = DateTime.Parse(DATE_A),
+                            Date = DateTime.Parse(DATE_A_1),
                             Divisions = new List<DivisionTitleViewModel>
                             {
                                 new DivisionTitleViewModel
@@ -128,7 +132,7 @@
                                     Id = 1,
                                     HomeTeamName = "TeamNameA",
                                     AwayTeamName = "TeamNameB",
-                                    GameDate = DateTime.Parse(DATE_A).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
                                     Result = new GameViewModel.GameResult
                                     {
                                         TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
@@ -146,7 +150,7 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = DateTime.Parse(DATE_A),
+                                    Date = DateTime.Parse(DATE_A_1),
                                     UrlToGameVideo = URL_A,
                                 },
                                 new GameViewModel
@@ -154,7 +158,7 @@
                                     Id = 2,
                                     HomeTeamName = "TeamNameC",
                                     AwayTeamName = "TeamNameB",
-                                    GameDate = DateTime.Parse(DATE_A).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
                                     Result = new GameViewModel.GameResult
                                     {
                                         TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(1, 3),
@@ -172,7 +176,7 @@
                                     DivisionId = 2,
                                     DivisionName = "Division Name1",
                                     GroupId = 2,
-                                    Date = DateTime.Parse(DATE_A),
+                                    Date = DateTime.Parse(DATE_A_1),
                                     UrlToGameVideo = URL_B,
                                 },
                             },
@@ -238,7 +242,7 @@
                         },
                         new ScheduleDayViewModel
                         {
-                            Date = DateTime.Parse(DATE_A),
+                            Date = DateTime.Parse(DATE_A_1),
                             Divisions = new List<DivisionTitleViewModel>
                             {
                                 new DivisionTitleViewModel
@@ -258,7 +262,7 @@
                                     Id = 1,
                                     HomeTeamName = "TeamNameA",
                                     AwayTeamName = "TeamNameB",
-                                    GameDate = DateTime.Parse(DATE_A).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
                                     Result = new GameViewModel.GameResult
                                     {
                                         TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
@@ -276,7 +280,7 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = DateTime.Parse(DATE_A),
+                                    Date = DateTime.Parse(DATE_A_1),
                                     UrlToGameVideo = URL_A,
                                 },
                             },
@@ -297,7 +301,7 @@
                     {
                         new ScheduleDayViewModel
                         {
-                            Date = DateTime.Parse(DATE_A),
+                            Date = DateTime.Parse(DATE_A_1),
                             Divisions = new List<DivisionTitleViewModel>
                             {
                                 new DivisionTitleViewModel
@@ -317,7 +321,7 @@
                                     Id = 1,
                                     HomeTeamName = "TeamNameA",
                                     AwayTeamName = "TeamNameB",
-                                    GameDate = DateTime.Parse(DATE_A).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
                                     Result = new GameViewModel.GameResult
                                     {
                                         TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
@@ -335,7 +339,7 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = DateTime.Parse(DATE_A),
+                                    Date = DateTime.Parse(DATE_A_1),
                                     UrlToGameVideo = URL_A,
                                 },
                             },
@@ -407,7 +411,7 @@
                     {
                         new ScheduleDayViewModel
                         {
-                            Date = DateTime.Parse(DATE_A),
+                            Date = DateTime.Parse(DATE_A_1),
                             Divisions = new List<DivisionTitleViewModel>
                             {
                                 new DivisionTitleViewModel
@@ -427,7 +431,7 @@
                                     Id = 1,
                                     HomeTeamName = "TeamNameA",
                                     AwayTeamName = "TeamNameB",
-                                    GameDate = DateTime.Parse(DATE_A).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
                                     Result = new GameViewModel.GameResult
                                     {
                                         TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
@@ -445,7 +449,7 @@
                                     DivisionId = 1,
                                     DivisionName = "Division Name",
                                     GroupId = 1,
-                                    Date = DateTime.Parse(DATE_A),
+                                    Date = DateTime.Parse(DATE_A_1),
                                     UrlToGameVideo = URL_A,
                                 },
                             },
@@ -558,6 +562,167 @@
             return this;
         }
 
+        public ScheduleViewModelTestFixture WithGamesInSeveralYearsAndWeeks()
+        {
+            _schedule.Schedule = new List<WeekViewModel>
+            {
+                new WeekViewModel
+                {
+                    Days = new List<ScheduleDayViewModel>
+                    {
+                        new ScheduleDayViewModel
+                        {
+                            Date = DateTime.Parse(DATE_A_1),
+                            Divisions = new List<DivisionTitleViewModel>
+                            {
+                                new DivisionTitleViewModel
+                                {
+                                    Id = 1,
+                                    Name = "Division Name",
+                                    Rounds = new List<int>
+                                    {
+                                        1,
+                                    },
+                                },
+                            },
+                            Games = new List<GameViewModel>
+                            {
+                                new GameViewModel
+                                {
+                                    Id = 1,
+                                    HomeTeamName = "TeamNameA",
+                                    AwayTeamName = "TeamNameB",
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    Result = new GameViewModel.GameResult
+                                    {
+                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
+                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>
+                                        {
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
+                                        },
+                                        IsTechnicalDefeat = true,
+                                    },
+                                    Round = 1,
+                                    DivisionId = 1,
+                                    DivisionName = "Division Name",
+                                    GroupId = 1,
+                                    Date = DateTime.Parse(DATE_A_1),
+                                    UrlToGameVideo = URL_A,
+                                },
+                            },
+                        },
+                    },
+                },
+                new WeekViewModel
+                {
+                    Days = new List<ScheduleDayViewModel>
+                    {
+                        new ScheduleDayViewModel
+                        {
+                            Date = DateTime.Parse(DATE_E),
+                            Divisions = new List<DivisionTitleViewModel>
+                            {
+                                new DivisionTitleViewModel
+                                {
+                                    Id = 1,
+                                    Name = "Division Name1",
+                                    Rounds = new List<int>
+                                    {
+                                        2,
+                                    },
+                                },
+                            },
+                            Games = new List<GameViewModel>
+                            {
+                                new GameViewModel
+                                {
+                                    Id = 3,
+                                    HomeTeamName = "TeamNameC",
+                                    AwayTeamName = "TeamNameA",
+                                    GameDate = DateTime.Parse(DATE_E).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    Result = new GameViewModel.GameResult
+                                    {
+                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 2),
+                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>
+                                        {
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(15, 0),
+                                        },
+                                        IsTechnicalDefeat = false,
+                                    },
+                                    Round = 2,
+                                    DivisionId = 1,
+                                    DivisionName = "Division Name1",
+                                    GroupId = 1,
+                                    Date = DateTime.Parse(DATE_E),
+                                    UrlToGameVideo = URL_A,
+                                },
+                            },
+                        },
+                    },
+                },
+                new WeekViewModel
+                {
+                    Days = new List<ScheduleDayViewModel>
+                    {
+                        new ScheduleDayViewModel
+                        {
+                            Date = DateTime.Parse(DATE_F),
+                            Divisions = new List<DivisionTitleViewModel>
+                            {
+                                new DivisionTitleViewModel
+                                {
+                                    Id = 2,
+                                    Name = "Division Name2",
+                                    Rounds = new List<int>
+                                    {
+                                        3,
+                                    },
+                                },
+                            },
+                            Games = new List<GameViewModel>
+                            {
+                                new GameViewModel
+                                {
+                                    Id = 2,
+                                    HomeTeamName = "TeamNameC",
+                                    AwayTeamName = "TeamNameB",
+                                    GameDate = DateTime.Parse(DATE_F).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    Result = new GameViewModel.GameResult
+                                    {
+                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(1, 3),
+                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>
+                                        {
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(5, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
+                                        },
+                                        IsTechnicalDefeat = false,
+                                    },
+                                    Round = 3,
+                                    DivisionId = 2,
+                                    DivisionName = "Division Name2",
+                                    GroupId = 2,
+                                    Date = DateTime.Parse(DATE_F),
+                                    UrlToGameVideo = URL_B,
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            return this;
+        }
+
         public ScheduleViewModelTestFixture WithEmptyResult()
         {
             _schedule.Schedule = new List<WeekViewModel>();
@@ -571,6 +736,112 @@
         public ScheduleViewModel Build()
         {
             return _schedule;
+        }
+
+
+        public ScheduleViewModelTestFixture WithGamesInSeveralDivisionsAndFreeDayGameInOneDay()
+        {
+            _schedule.Schedule = new List<WeekViewModel>
+            {
+                new WeekViewModel
+                {
+                    Days = new List<ScheduleDayViewModel>
+                    {
+                        new ScheduleDayViewModel
+                        {
+                            Date = DateTime.Parse(DATE_A_2),
+                            Divisions = new List<DivisionTitleViewModel>
+                            {
+                                new DivisionTitleViewModel
+                                {
+                                    Id = 1,
+                                    Name = "Division Name1",
+                                    Rounds = new List<int>
+                                    {
+                                        1,
+                                    },
+                                },
+                                new DivisionTitleViewModel
+                                {
+                                    Id = 2,
+                                    Name = "Division Name2",
+                                    Rounds = new List<int>
+                                    {
+                                        1,
+                                    },
+                                },
+                            },
+                            Games = new List<GameViewModel>
+                            {
+                                new GameViewModel
+                                {
+                                    Id = 1,
+                                    HomeTeamName = "TeamNameA",
+                                    AwayTeamName = "TeamNameB",
+                                    GameDate = DateTime.Parse(DATE_A_2).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    Result = new GameViewModel.GameResult
+                                    {
+                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 2),
+                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>
+                                        {
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 20),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(24, 26),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(28, 30),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 22),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(27, 25),
+                                        },
+                                    },
+                                    Round = 1,
+                                    DivisionId = 1,
+                                    DivisionName = "Division Name1",
+                                    GroupId = 1,
+                                    Date = DateTime.Parse(DATE_A_2),
+                                    UrlToGameVideo = URL_A,
+                                },
+                                new GameViewModel
+                                {
+                                    Id = 2,
+                                    HomeTeamName = "TeamNameA",
+                                    AwayTeamName = "TeamNameC",
+                                    GameDate = DateTime.Parse(DATE_A_3).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    Result = new GameViewModel.GameResult
+                                    {
+                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 1),
+                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>
+                                        {
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(26, 28),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 15),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 21),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(29, 27),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
+                                        },
+                                    },
+                                    Round = 1,
+                                    DivisionId = 2,
+                                    DivisionName = "Division Name2",
+                                    GroupId = 2,
+                                    Date = DateTime.Parse(DATE_A_3),
+                                    UrlToGameVideo = URL_B,
+                                },
+                                new GameViewModel
+                                {
+                                    Id = 3,
+                                    HomeTeamName = "TeamNameB",
+                                    GameDate = DateTime.Parse(DATE_A_1).ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                                    Result = null,
+                                    Round = 1,
+                                    DivisionId = 1,
+                                    DivisionName = "Division Name1",
+                                    GroupId = 1,
+                                    Date = DateTime.Parse(DATE_A_1),
+                                    UrlToGameVideo = URL_C,
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            return this;
         }
     }
 }

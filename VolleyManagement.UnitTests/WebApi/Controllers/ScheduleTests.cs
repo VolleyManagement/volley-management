@@ -177,10 +177,6 @@
             ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
-        /// <summary>
-        /// Test for GetSchedule method.
-        /// Tournament with games in different weeks. Schedule returned
-        /// </summary>
         [TestMethod]
         public void GetSchedule_TournamentPlayedOverSeveralWeeks_ScheduleIsOrderedByWeekNumber()
         {
@@ -204,6 +200,51 @@
 
             ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetSchedule_TournamentPlayedOverSeveralYears_ScheduleIsOrderedByYearThenByWeek()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture()
+                                .TestGamesInSeveralYearsAndWeeks()
+                                .Build();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new ScheduleViewModelTestFixture().WithGamesInSeveralYearsAndWeeks().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetSchedule_TournamentHasFreeDayGame_FreeDayGameIsLast()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture()
+                .TestGamesForSeveralDivisionsAndFreeDayGameInOneDay()
+                .Build();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new ScheduleViewModelTestFixture().WithGamesInSeveralDivisionsAndFreeDayGameInOneDay().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Private

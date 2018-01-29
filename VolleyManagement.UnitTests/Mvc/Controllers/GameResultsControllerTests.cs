@@ -16,7 +16,6 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.
@@ -229,7 +228,8 @@
         public void EditPost_MissingEntityException_RedirectToGameResultViewModel()
         {
             // Arrange
-            var gameResultViewModel = new GameResultViewModelBuilder().Build();
+            var gameResultViewModel = CreateResultViewModel();
+            var expectedResult = CreateExpectedResult();
 
             _gameServiceMock.Setup(grs => grs.EditGameResult(It.IsAny<Game>()))
                                   .Throws(new MissingEntityException());
@@ -240,7 +240,7 @@
             var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(gameResultViewModel));
 
             // Assert
-            VerifyEditGameResult(Times.Once());
+            VerifyEditGameResult(expectedResult, Times.Once());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
@@ -251,7 +251,8 @@
         public void EditPost_ValidEntity_GameResultViewModelIsReturned()
         {
             // Arrange
-            var testData = new GameResultViewModelBuilder().Build();
+            var testData = CreateResultViewModel();
+            var expectedResult = CreateExpectedResult();
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
 
             var controller = BuildSUT();
@@ -260,7 +261,7 @@
             var result = controller.Edit(testData);
 
             // Assert
-            VerifyEditGameResult(Times.Once());
+            VerifyEditGameResult(expectedResult, Times.Once());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
@@ -271,15 +272,16 @@
         public void EditPost_ValidEntity_RedirectToResultsList()
         {
             // Arrange
-            var gameResultViewModel = new GameResultViewModelBuilder().Build();
+            var testData = CreateResultViewModel();
+            var expectedResult = CreateExpectedResult();
 
             var sut = BuildSUT();
 
             // Act
-            var result = sut.Edit(gameResultViewModel);
+            var result = sut.Edit(testData);
 
             // Assert
-            VerifyEditGameResult(Times.Once());
+            VerifyEditGameResult(expectedResult, Times.Once());
             Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
             VerifyRedirectingRoute(result, REDIRECT_TO_ACTION, REDIRECT_TO_CONTROLLER);
         }
@@ -292,7 +294,8 @@
         public void EditPostAction_InvalidGameResultViewModel_GameResultViewModelIsReturned()
         {
             // Arrange
-            var testData = new GameResultViewModelBuilder().Build();
+            var testData = CreateResultViewModel();
+            var expectedResult = CreateExpectedResult();
 
             var sut = BuildSUT();
             sut.ModelState.AddModelError(string.Empty, string.Empty);
@@ -301,7 +304,7 @@
             var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(testData));
 
             // Assert
-            VerifyEditGameResult(Times.Never());
+            VerifyEditGameResult(expectedResult, Times.Never());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
@@ -395,9 +398,41 @@
                 _authServiceMock.Object);
         }
 
-        private void VerifyEditGameResult(Times times)
+        private static GameResultViewModel CreateResultViewModel()
         {
-            _gameServiceMock.Verify(ts => ts.EditGameResult(It.IsAny<Game>()), times);
+            var result = new GameResultViewModelBuilder()
+                            .WithTechnicalDefeat(true)
+                            .WithPenalty(new Penalty
+                            {
+                                Amount = 1,
+                                Description = "asd",
+                                IsHomeTeam = true,
+                            })
+                            .Build();
+
+            result.SetScores[2].IsTechnicalDefeat = true;
+
+            return result;
+        }
+
+        private static Result CreateExpectedResult()
+        {
+            return new Result
+            {
+                GameScore = (3, 1, true),
+                SetScores = new List<Score> { (27, 25), (33, 31), (27, 25, true), (24, 26), (0, 0) },
+                Penalty = new Penalty
+                {
+                    Amount = 1,
+                    Description = "asd",
+                    IsHomeTeam = true,
+                },
+            };
+        }
+
+        private void VerifyEditGameResult(Result expectedResult, Times times)
+        {
+            _gameServiceMock.Verify(ts => ts.EditGameResult(It.Is<Game>(g => AreResultsEqual(g.Result, expectedResult))), times);
         }
 
         private void VerifyDelete(int gameId, Times times)
@@ -415,23 +450,6 @@
             _gameServiceMock.Setup(m => m.GetTournamentResults(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
 
-        private void MockTeams()
-        {
-            var homeTeam = new TeamBuilder()
-                            .WithId(HOME_TEAM_ID)
-                            .WithName(HOME_TEAM_NAME)
-                            .Build();
-
-            var awayTeam = new TeamBuilder()
-                .WithId(AWAY_TEAM_ID)
-                .WithName(AWAY_TEAM_NAME)
-                .Build();
-
-            _teamServiceMock.Setup(ts => ts.Get(HOME_TEAM_ID)).Returns(homeTeam);
-            _teamServiceMock.Setup(ts => ts.Get(AWAY_TEAM_ID)).Returns(awayTeam);
-            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>() {homeTeam, awayTeam});
-        }
-
         private void SetupDeleteGameThrowsArgumentNullException()
         {
             _gameServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
@@ -446,10 +464,52 @@
 
         private void VerifyRedirectingRoute(ActionResult result, string action, string controller)
         {
-            var routeValues = ((RedirectToRouteResult) result).RouteValues;
+            var routeValues = ((RedirectToRouteResult)result).RouteValues;
             Assert.AreEqual(TOURNAMENT_ID, routeValues["tournamentId"]);
             Assert.AreEqual(action, routeValues["action"]);
             Assert.AreEqual(controller, routeValues["controller"]);
+        }
+
+        private static bool AreResultsEqual(Result actual, Result expected)
+        {
+            var result = AreScoresEqual(actual.GameScore, expected.GameScore);
+            if (!result)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < expected.SetScores.Count; i++)
+            {
+                result = AreScoresEqual(actual.SetScores[i], expected.SetScores[i]);
+                if (!result)
+                {
+                    return false;
+                }
+            }
+
+            if (actual.Penalty == null && expected.Penalty == null)
+            {
+                result = true;
+            }
+            else if (actual.Penalty == null || expected.Penalty == null)
+            {
+                result = false;
+            }
+            else
+            {
+                result = actual.Penalty.IsHomeTeam == expected.Penalty.IsHomeTeam
+                         && actual.Penalty.Amount == expected.Penalty.Amount
+                         && actual.Penalty.Description == expected.Penalty.Description;
+            }
+
+            return result;
+        }
+
+        private static bool AreScoresEqual(Score actual, Score expected)
+        {
+            return actual.Home == expected.Home
+                   && actual.Away == expected.Away
+                   && actual.IsTechnicalDefeat == expected.IsTechnicalDefeat;
         }
 
         #endregion

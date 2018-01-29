@@ -167,6 +167,15 @@
             return this;
         }
 
+        public GameResultViewModelBuilder WithPenalty(Penalty penalty)
+        {
+            _gameResultsViewModel.HasPenalty = true;
+            _gameResultsViewModel.IsHomeTeamPenalty = penalty.IsHomeTeam;
+            _gameResultsViewModel.PenaltyAmount = penalty.Amount;
+            _gameResultsViewModel.PenaltyDescrition = penalty.Description;
+            return this;
+        }
+
         /// <summary>
         /// Builds test game results view model
         /// </summary>

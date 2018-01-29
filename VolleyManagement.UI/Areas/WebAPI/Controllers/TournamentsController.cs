@@ -121,9 +121,9 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 Schedule = resultGroupedByWeek.Select(it =>
                     new WeekViewModel()
                     {
-                        Days = it.Item2.
-                        GroupBy(item => item.Date.DayOfWeek).
-                        Select(element =>
+                        Days = it.Item2
+                            .GroupBy(item => item.Date.DayOfWeek)
+                            .Select(element =>
                             new ScheduleDayViewModel()
                             {
                                 Date = element.ToList().Select(d => d.Date).First(),
@@ -139,10 +139,10 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                                             .ToList()
                                     }).
                                     Distinct(new DivisionTitleComparer()).ToList(),
-                                Games = element.ToList()
-                            }).
-                        OrderBy(item => item.Date).
-                        ToList()
+                                Games = element.OrderBy(g => g.AwayTeamName == null)
+                                               .ThenBy(g => g.Date)
+                                               .ToList()
+                            }).OrderBy(item => item.Date).ToList()
                     }
                 ).ToList()
             };

@@ -176,6 +176,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         public Game ToDomain()
         {
             var penalty = MapPenalty();
+            var gameScore = GameScore.ToDomain();
+            gameScore.IsTechnicalDefeat = IsTechnicalDefeat;
             return new Game
             {
                 Id = Id,
@@ -187,7 +189,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = GameNumber,
                 Result = new Result
                 {
-                    GameScore = GameScore.ToDomain(),
+                    GameScore = gameScore,
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList(),
                     Penalty = penalty
                 },

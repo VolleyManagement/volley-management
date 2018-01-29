@@ -17,6 +17,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         public PivotStandingsViewModel(PivotStandingsDto pivotStandings)
         {
             LastUpdateTime = pivotStandings.LastUpdateTime;
+            DivisionName = pivotStandings.DivisionName;
             TeamsStandings = pivotStandings.Teams.Select(PivotStandingsTeamViewModel.Map).ToList();
 
             // Group results by participating teams
@@ -28,11 +29,17 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
                 {
                     HomeTeamId = grouped.Key.TeamAId,
                     AwayTeamId = grouped.Key.TeamBId,
-                    Results = grouped.Select(r => {
+                    Results = grouped.Select(r =>
+                    {
                         ShortGameResultViewModel result;
-                        if (r.HomeTeamId == grouped.Key.TeamAId)
+                        if (!r.WasPlayed)
+                        {
+                            result = ShortGameResultViewModel.CreatePlannedGame(r.RoundNumber);
+                        }
+                        else if (r.HomeTeamId == grouped.Key.TeamAId)
                         {
                             result = new ShortGameResultViewModel(
+                             r.RoundNumber,
                              r.HomeGameScore,
                              r.AwayGameScore,
                              r.IsTechnicalDefeat);
@@ -42,6 +49,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
                             // during grouping we got teams swapped
                             // need to revert sides
                             result = new ShortGameResultViewModel(
+                             r.RoundNumber,
                              r.AwayGameScore,
                              r.HomeGameScore,
                              r.IsTechnicalDefeat);

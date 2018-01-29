@@ -39,6 +39,71 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
             return this;
         }
 
+        public PivotStandingsViewModelTestFixture WithNotAllGamesPlayed()
+        {
+            _pivotStandings[0].TeamsStandings = new List<PivotStandingsTeamViewModel>
+            {
+                new PivotStandingsTeamViewModel
+                {
+                    TeamId = 2,
+                    TeamName = "TeamNameB",
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
+                },
+                new PivotStandingsTeamViewModel
+                {
+                    TeamId = 1,
+                    TeamName = "TeamNameA",
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
+                },                
+                new PivotStandingsTeamViewModel
+                {
+                    TeamId = 3,
+                    TeamName = "TeamNameC",
+                    Points = 0,
+                    SetsRatio = null,
+                },
+            };
+
+            _pivotStandings[0].GamesStandings = new List<PivotStandingsGameViewModel>
+            {
+                new PivotStandingsGameViewModel
+                {
+                    HomeTeamId = 1,
+                    AwayTeamId = 2,
+                    Results = new List<ShortGameResultViewModel>
+                    {
+                        new ShortGameResultViewModel(1, 3, 0),
+                        new ShortGameResultViewModel(2, 0, 3),
+                    },
+                },
+                new PivotStandingsGameViewModel
+                {
+                    HomeTeamId = 1,
+                    AwayTeamId = 3,
+                    Results = new List<ShortGameResultViewModel>
+                    {
+                        ShortGameResultViewModel.CreatePlannedGame(3),
+                        ShortGameResultViewModel.CreatePlannedGame(4),
+                    },
+                },
+                new PivotStandingsGameViewModel
+                {
+                    HomeTeamId = 2,
+                    AwayTeamId = 3,
+                    Results = new List<ShortGameResultViewModel>
+                    {
+                        ShortGameResultViewModel.CreatePlannedGame(5),
+                        ShortGameResultViewModel.CreatePlannedGame(6),
+                    },
+                },
+            };
+            _pivotStandings[0].DivisionName = "DivisionNameA";
+
+            return this;
+        }
+
         private void AddFirstPivotResultsForMultipleDivisionsCase()
         {
             // Group 1
@@ -49,8 +114,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(3, 0),
-                    new ShortGameResultViewModel(2, 3)
-                }
+                    new ShortGameResultViewModel(2, 3),
+                },
             });
             _pivotStandings[0].GamesStandings.Add(new PivotStandingsGameViewModel
             {
@@ -59,8 +124,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(3, 1),
-                    new ShortGameResultViewModel(1, 3)
-                }
+                    new ShortGameResultViewModel(1, 3),
+                },
             });
             _pivotStandings[0].GamesStandings.Add(new PivotStandingsGameViewModel
             {
@@ -69,8 +134,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(3, 2),
-                    new ShortGameResultViewModel(0, 3)
-                }
+                    new ShortGameResultViewModel(0, 3),
+                },
             });
 
             // Group 2
@@ -81,8 +146,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(3, 0),
-                    new ShortGameResultViewModel(2, 3)
-                }
+                    new ShortGameResultViewModel(2, 3),
+                },
             });
             _pivotStandings[0].GamesStandings.Add(new PivotStandingsGameViewModel
             {
@@ -91,8 +156,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(1, 3),
-                    new ShortGameResultViewModel(3, 1)
-                }
+                    new ShortGameResultViewModel(3, 1),
+                },
             });
             _pivotStandings[0].GamesStandings.Add(new PivotStandingsGameViewModel
             {
@@ -101,8 +166,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(2, 3),
-                    new ShortGameResultViewModel(3, 0)
-                }
+                    new ShortGameResultViewModel(3, 0),
+                },
             });
         }
 
@@ -115,8 +180,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(3, 0),
-                    new ShortGameResultViewModel(2, 3)
-                }
+                    new ShortGameResultViewModel(2, 3),
+                },
             });
             _pivotStandings[1].GamesStandings.Add(new PivotStandingsGameViewModel
             {
@@ -125,8 +190,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(3, 1),
-                    new ShortGameResultViewModel(1, 3)
-                }
+                    new ShortGameResultViewModel(1, 3),
+                },
             });
             _pivotStandings[1].GamesStandings.Add(new PivotStandingsGameViewModel
             {
@@ -135,8 +200,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 Results = new List<ShortGameResultViewModel>
                 {
                     new ShortGameResultViewModel(3, 2),
-                    new ShortGameResultViewModel(0, 3)
-                }
+                    new ShortGameResultViewModel(0, 3),
+                },
             });
         }
 
@@ -191,6 +256,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     Points = 4,
                     SetsRatio = (float)6 / 10,
                 });
+            _pivotStandings[0].DivisionName = "DivisionNameA";
 
             _pivotStandings[1].TeamsStandings = new List<PivotStandingsTeamViewModel>();
             _pivotStandings[1].TeamsStandings.Add( // G
@@ -241,7 +307,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     Points = 0,
                     SetsRatio = null,
                 });
-
+            _pivotStandings[1].DivisionName = "DivisionNameB";
         }
 
         public PivotStandingsViewModelTestFixture WithLastUpdateTime(DateTime? lastUpdateTime)

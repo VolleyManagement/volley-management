@@ -156,7 +156,7 @@
             var actual = TestExtensions.GetModel<TournamentViewModel>(sut.TournamentDetails(TEST_TOURNAMENT_ID));
 
             // Assert
-            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TournamentViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         [TestMethod]

@@ -66,7 +66,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -174,8 +174,77 @@
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
 
-            TestHelper.AreEqual<ScheduleViewModel>(expected, actual, new ScheduleViewModelComparer());
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetSchedule_TournamentPlayedOverSeveralWeeks_ScheduleIsOrderedByWeekNumber()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture().
+                TestGamesWithResultInThreeWeeksTwoDivisionsThreeGames().
+                Build();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new ScheduleViewModelTestFixture().WithThreeWeeksTwoDivisionsThreeGames().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            _gameServiceMock.Verify(ts => ts.GetTournamentGames(TOURNAMENT_ID), Times.Once());
+
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetSchedule_TournamentPlayedOverSeveralYears_ScheduleIsOrderedByYearThenByWeek()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture()
+                                .TestGamesInSeveralYearsAndWeeks()
+                                .Build();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new ScheduleViewModelTestFixture().WithGamesInSeveralYearsAndWeeks().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetSchedule_TournamentHasFreeDayGame_FreeDayGameIsLast()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture()
+                .TestGamesForSeveralDivisionsAndFreeDayGameInOneDay()
+                .Build();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new ScheduleViewModelTestFixture().WithGamesInSeveralDivisionsAndFreeDayGameInOneDay().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Private

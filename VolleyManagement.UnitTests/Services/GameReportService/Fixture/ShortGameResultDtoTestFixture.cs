@@ -11,11 +11,11 @@
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     [ExcludeFromCodeCoverage]
-    internal class ShortGameResultDtoTetsFixture
+    internal class ShortGameResultDtoTestFixture
     {
         private List<ShortGameResultDto> _shortResults;
 
-        public ShortGameResultDtoTetsFixture GetShortResults()
+        public ShortGameResultDtoTestFixture GetShortResults()
         {
             _shortResults = new List<ShortGameResultDto>();
 
@@ -52,7 +52,7 @@
             return this;
         }
 
-        public ShortGameResultDtoTetsFixture GetShortResultsForTwoTeamsScoresCompletelyEqual()
+        public ShortGameResultDtoTestFixture GetShortResultsForTwoTeamsScoresCompletelyEqual()
         {
             _shortResults = new List<ShortGameResultDto>();
 

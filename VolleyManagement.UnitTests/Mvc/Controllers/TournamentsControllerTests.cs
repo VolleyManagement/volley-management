@@ -86,7 +86,7 @@
 
         private Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
-        private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+        private Mock<TimeProvider> _timeMock = new Mock<TimeProvider> { CallBase = true };
 
         /// <summary>
         /// Initializes test data.
@@ -104,7 +104,7 @@
             _tournamentRequestServiceMock = new Mock<ITournamentRequestService>();
             _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
 
-            _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
+            _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate.ToUniversalTime());
             TimeProvider.Current = _timeMock.Object;
         }
 
@@ -786,7 +786,7 @@
             var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Details(TEST_TOURNAMENT_ID));
 
             // Assert
-            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TournamentViewModelComparer.AssertAreEqual(expected, actual);
             VerifyGetAllowedOperations(Times.Once());
         }
 
@@ -824,7 +824,7 @@
                                           + DAYS_FOR_APPLYING_PERIOD
                                           + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                           + DAYS_FROM_GAMES_START_TO_TRANSFER_START
-                                          + DAYS_FOR_TRANSFER_PERIOD)
+                                          + DAYS_FOR_TRANSFER_PERIOD),
             };
 
             var sut = BuildSUT();
@@ -833,7 +833,7 @@
             var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
 
             // Assert
-            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TournamentViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -953,7 +953,7 @@
             var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TournamentViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         /// <summary>
@@ -1278,7 +1278,7 @@
             var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Delete(TEST_TOURNAMENT_ID));
 
             // Assert
-            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TournamentViewModelComparer.AssertAreEqual(expected, actual);
         }
 
         #endregion

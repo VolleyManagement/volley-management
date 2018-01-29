@@ -28,7 +28,8 @@
 
         protected void InitializeTest()
         {
-            _tournamentScheduleDtoByIdQueryMock = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
+            _tournamentScheduleDtoByIdQueryMock =
+                new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _tournamentTeamsQueryMock = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
             _tournamentGameResultsQueryMock = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
             _tournamentByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
@@ -94,7 +95,8 @@
             Assert.IsTrue(compareResult == 0, $"{message}{errorDetails}");
         }
 
-        protected static Tournament CreateSingleDivisionTournament(int tournamentId, DateTime? lastStandingsUpdateTime = null)
+        protected static Tournament CreateSingleDivisionTournament(int tournamentId,
+            DateTime? lastStandingsUpdateTime = null)
         {
             return new Tournament
             {
@@ -108,7 +110,7 @@
                     new Division
                     {
                         Id = 1,
-                        Name = "Division 1",
+                        Name = "DivisionNameA",
                         TournamentId = tournamentId,
                         Groups = new List<Group>
                         {
@@ -117,11 +119,58 @@
                                 Id = 1,
                                 Name = "Group 1",
                                 DivisionId = 1,
-                                IsEmpty = false
-                            }
-                        }
-                    }
-                }
+                                IsEmpty = false,
+                            },
+                        },
+                    },
+                },
+            };
+        }
+
+        protected static Tournament CreateTwoDivisionsTournament(int tournamentId, DateTime? lastStandingsUpdateTime = null)
+        {
+            return new Tournament
+            {
+                Id = tournamentId,
+                Name = $"Tournament #{tournamentId}",
+                Season = 17,
+                Scheme = TournamentSchemeEnum.One,
+                LastTimeUpdated = lastStandingsUpdateTime,
+                Divisions = new List<Division>
+                {
+                    new Division
+                    {
+                        Id = 1,
+                        Name = "DivisionNameA",
+                        TournamentId = tournamentId,
+                        Groups = new List<Group>
+                        {
+                            new Group
+                            {
+                                Id = 1,
+                                Name = "Group 1",
+                                DivisionId = 1,
+                                IsEmpty = false,
+                            },
+                        },
+                    },
+                    new Division
+                    {
+                        Id = 2,
+                        Name = "DivisionNameB",
+                        TournamentId = tournamentId,
+                        Groups = new List<Group>
+                        {
+                            new Group
+                            {
+                                Id = 1,
+                                Name = "Group 1",
+                                DivisionId = 1,
+                                IsEmpty = false,
+                            },
+                        },
+                    },
+                },
             };
         }
     }

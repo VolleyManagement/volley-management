@@ -21,7 +21,8 @@ export class PivotStandingsGame {
             this.Results.map(item => ({
                 HomeSetsScore: item.AwaySetsScore,
                 AwaySetsScore: item.HomeSetsScore,
-                IsTechnicalDefeat: item.IsTechnicalDefeat
+                IsTechnicalDefeat: item.IsTechnicalDefeat,
+                RoundNumber: item.RoundNumber
             })));
     }
 }

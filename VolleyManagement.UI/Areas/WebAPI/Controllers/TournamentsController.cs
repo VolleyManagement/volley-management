@@ -77,6 +77,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 var standings = new DivisionStandingsViewModel
                 {
                     LastUpdateTime = entry.LastUpdateTime,
+                    DivisionName = entry.DivisionName,
                     StandingsTable = entry.Standings.Select(StandingsEntryViewModel.Map).ToList()
                 };
                 StandingsEntryViewModel.SetPositions(standings.StandingsTable);
@@ -106,19 +107,13 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         [Route("api/Tournament/{tournamentId}/Schedule")]
         public ScheduleViewModel GetSchedule(int tournamentId)
         {
-            List<GameViewModel> gamesViewModel = _gameService.GetTournamentGames(tournamentId)
-                                                        .Select(t => GameViewModel.Map(t)).ToList();
-            foreach (var item in gamesViewModel)
-            {
-                if (item.Result.TotalScore.IsEmpty)
-                {
-                    item.Result = null;
-                }
-            }
+            var games = _gameService.GetTournamentGames(tournamentId)
+                                    .Select(GameViewModel.Map);
 
-            var resultGroupedByWeek = gamesViewModel.GroupBy(gr => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-                gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday))
-                .Select(w => new Tuple<int, List<GameViewModel>>(w.Key, w.ToList()))
+            var resultGroupedByWeek = games.GroupBy(GetWeekOfYear)
+                .OrderBy(w => w.Key.Year)
+                .ThenBy(w => w.Key.Week)
+                .Select(w => new Tuple<int, List<GameViewModel>>(w.Key.Week, w.ToList()))
                 .ToList();
 
             var result = new ScheduleViewModel()
@@ -126,9 +121,9 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 Schedule = resultGroupedByWeek.Select(it =>
                     new WeekViewModel()
                     {
-                        Days = it.Item2.
-                        GroupBy(item => item.Date.DayOfWeek).
-                        Select(element =>
+                        Days = it.Item2
+                            .GroupBy(item => item.Date.DayOfWeek)
+                            .Select(element =>
                             new ScheduleDayViewModel()
                             {
                                 Date = element.ToList().Select(d => d.Date).First(),
@@ -143,17 +138,23 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                                             .OrderBy(i => i)
                                                             .ToList()
                                     }).
-                                    Distinct(new DivisionTitleComparer()).
-                                    ToList(),
-                                Games = element.ToList()
-                            }).
-                        OrderBy(item => item.Date).
-                        ToList()
+                                    Distinct(new DivisionTitleComparer()).ToList(),
+                                Games = element.OrderBy(g => g.AwayTeamName == null)
+                                               .ThenBy(g => g.Date)
+                                               .ToList()
+                            }).OrderBy(item => item.Date).ToList()
                     }
                 ).ToList()
             };
 
             return result;
+        }
+
+        private static (int Year, int Week) GetWeekOfYear(GameViewModel gr)
+        {
+            return (
+                Year: gr.Date.Year,
+                Week: CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday));
         }
     }
 }

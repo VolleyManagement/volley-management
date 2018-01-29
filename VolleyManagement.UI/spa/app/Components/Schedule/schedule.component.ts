@@ -65,10 +65,16 @@ export class ScheduleComponent implements OnInit {
     }
 
     getGameTotalBallsScore(gameResult: Result): string {
-        const totalHomeTeamBalls = gameResult.SetScores.map(item => item.Home).reduce((prev, next) => prev + next);
-        const totalAwayTeamBalls = gameResult.SetScores.map(item => item.Away).reduce((prev, next) => prev + next);
+        let result = "";
 
-        return `${totalHomeTeamBalls}:${totalAwayTeamBalls}`;
+        if (!gameResult.IsTechnicalDefeat) {
+            const totalHomeTeamBalls = gameResult.SetScores.map(item => item.Home).reduce((prev, next) => prev + next);
+            const totalAwayTeamBalls = gameResult.SetScores.map(item => item.Away).reduce((prev, next) => prev + next);
+
+            result = `${totalHomeTeamBalls}:${totalAwayTeamBalls}`;
+        }
+
+        return result;
     }
 
     getNumberOfEmptyDivisionHeaders(day: ScheduleDay, week: Week): Array<number> {

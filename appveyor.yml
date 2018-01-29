@@ -9,13 +9,32 @@
 #---------------------------------#
 
 # version format
-version: 1.0.{build}
+version: 1.0.{build}-{branch}
+
+# GitHub PR related builds do not increment build number
+pull_requests:
+  do_not_increment_build_number: true
+
+
+# branches to build
+branches:
+  only:
+    - master
+    - Release
+    - /issue_#*/
 
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#
 
 image: Visual Studio 2017
+
+# environment variables
+environment:
+  SONAR_TOKEN:
+    secure: +v6PmDXb6BsEnMx0hJSdUWbBL7Y/VipzkMUgQa1DgmRbl6XVAR0+RgUc7M7Q9G77
+  GITHUB_SONAR_PR_TOKEN:
+    secure: M3EfBP6KDctwpttA3VZRbjk6WOpMxTrGdYX5mTwdsDe9RMQQ+yFXOlFD/TTxixaw
 
 cache:
   - packages -> **\packages.config
@@ -28,13 +47,13 @@ build_script:
 - ps: >-
     cd .\BuildScripts
 
-    .\build.ps1
+    .\build.ps1 -v Verbose
 
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
 
-test: off
+test: off # should be handled by Cake
 
 #---------------------------------#
 #         notifications           #

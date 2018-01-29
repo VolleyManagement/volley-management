@@ -44,7 +44,7 @@
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
 
-            var expected = new PivotStandingsTestFixture().WithNoResults().Build();
+            var expected = new PivotStandingsTestFixture().WithEmptyResults().Build();
 
             var sut = BuildSUT();
 
@@ -229,11 +229,13 @@
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithAwayTeamPenalty().Build();
             var teamsTestData = TeamsInSingleDivisionSingleGroup();
+            var testTour = CreateSingleDivisionTournament(TOURNAMENT_ID);
 
             var expected = new PivotStandingsTestFixture().WithTeamCPenalty().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 
@@ -321,13 +323,20 @@
         public void GetMultipleDivisionPivotStandings_GameResultsAllPossibleScores_CorrectStats()
         {
             // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
-            var teamsTestData = TeamsInTwoDivisionTwoGroups();
+            var gameResultsTestData = new GameResultsTestFixture()
+                .WithMultipleDivisionsAllPosibleScores()
+                .Build();
 
-            var expected = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+            var teamsTestData = TeamsInTwoDivisionTwoGroups();
+            var testTour = CreateTwoDivisionsTournament(TOURNAMENT_ID);
+
+            var expected = new PivotStandingsTestFixture()
+                .WithMultipleDivisionsAllPossibleScores()
+                .Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 
@@ -345,13 +354,15 @@
         public void GetMultipleDivisionPivotStandings_NoGameResults_StandingsAreEmpty()
         {
             // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithNoGameResults().Build();
+            var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsEmptyResults().Build();
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
+            var testTour = CreateTwoDivisionsTournament(TOURNAMENT_ID);
 
             var expected = new PivotStandingsTestFixture().WithMultipleDivisionsEmptyStandings().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
 
             var sut = BuildSUT();
 
@@ -363,6 +374,32 @@
                 expected,
                 actual,
                 "Standings should be properly calclulated for case of several divisions");
+        }
+
+        [TestMethod]
+        public void GetPivotStandings_PlannedGamesWithoutResults_StandingsContainPlannedGames()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture()
+                .WithNotAllGamesPlayed()
+                .Build();
+
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var expected = new PivotStandingsTestFixture()
+                .WithNotAllGamesPlayed()
+                .Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqual(expected, actual, "Points, games, sets and balls should be calculated properly.");
         }
 
         private void AssertPivotStandingsAreEqual(

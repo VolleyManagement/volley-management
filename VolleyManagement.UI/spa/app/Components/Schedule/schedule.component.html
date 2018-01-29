@@ -11,7 +11,9 @@
             <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}">
               <tbody *ngIf="isFreeDay(gameResult)">
                 <tr class="team-sch">
-                  <td><strong>{{ gameResult.HomeTeamName }}</strong></td>
+                  <td>
+                    <strong>{{ gameResult.HomeTeamName }}</strong>
+                  </td>
                   <td>Выходной</td>
                 </tr>
               </tbody>
@@ -24,7 +26,7 @@
 
                   <td class="videoIconCell" *ngIf="gameResult.UrlToGameVideo" rowspan="3">
                     <a href="{{gameResult.UrlToGameVideo}}" title="Перейти к видео" class="videoLinkIcon">
-                        📹
+                      📹
                     </a>
                   </td>
 
@@ -50,47 +52,23 @@
 
                 </tr>
 
-                <tr class="sets" *ngIf="gameResult.Result && gameResult.Result.IsTechnicalDefeat">
-
-                  <td class="set">
-                    <div>
-                      <span>техн.</span>
-                    </div>
-                  </td>
-                  <td class="set">
-                    <div>
-                      <span>техн.</span>
-                    </div>
-                  </td>
-                  <td class="set">
-                    <div>
-                      <span>техн.</span>
-                    </div>
-                  </td>
-                  <td class="set">
-                    <div class="hidden">
-                    </div>
-                  </td>
-                  <td class="set">
-                    <div class="hidden">
-                    </div>
-                  </td>
-                  <td>
-                    <div class="game-time">техн.</div>
-                  </td>
-                </tr>
-
-                <tr class="sets" *ngIf="gameResult.Result && !gameResult.Result.TotalScore.IsEmpty">
+                <tr class="sets" *ngIf="gameResult.Result">
 
                   <td class="set" *ngFor="let setScore of gameResult.Result.SetScores">
 
-                    <div *ngIf="!setScore.IsEmpty; else noSetScore">
+                    <ng-template [ngIf]="!setScore.IsEmpty && !gameResult.Result.IsTechnicalDefeat">
+                      <div>
+                        {{setScore.Home}} : {{setScore.Away}}
+                      </div>
+                    </ng-template>
 
-                      {{setScore.Home}} : {{setScore.Away}}
+                    <ng-template [ngIf]="!setScore.IsEmpty && gameResult.Result.IsTechnicalDefeat">
+                      <div>
+                        <span>техн.</span>
+                      </div>
+                    </ng-template>
 
-                    </div>
-
-                    <ng-template #noSetScore>
+                    <ng-template [ngIf]="setScore.IsEmpty">
                       <div class="hidden"></div>
                     </ng-template>
 

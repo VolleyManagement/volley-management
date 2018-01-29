@@ -11,9 +11,8 @@ import { CSS_CLASSES } from '../../Constants/CssClassConstants';
 import { APP_CONSTANTS } from '../../Constants/Constants';
 
 const NON_PLAYABLE_GAME_RESULT: ShortGameResult = {
-    HomeSetsScore: 0,
-    AwaySetsScore: 0,
-    IsTechnicalDefeat: false
+    IsTechnicalDefeat: false,
+    RoundNumber: APP_CONSTANTS.ZERO
 };
 
 
@@ -87,7 +86,9 @@ export class PivotStandingsComponent implements OnInit {
         const isTechnicalDefeat = gameResult.IsTechnicalDefeat;
 
         let result = '';
-        if (homeSetsScore !== APP_CONSTANTS.ZERO || awaySetsScore !== APP_CONSTANTS.ZERO) {
+        if (gameResult.RoundNumber > 0 && !homeSetsScore && !awaySetsScore) {
+            result = `Тур ${gameResult.RoundNumber}`;
+        } else if (homeSetsScore || awaySetsScore) {
             result = `${homeSetsScore} : ${awaySetsScore}${isTechnicalDefeat ? '*' : ''}`;
         }
 

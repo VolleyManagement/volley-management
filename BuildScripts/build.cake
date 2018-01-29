@@ -1,4 +1,5 @@
 #tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+#tool nuget:?package=JetBrains.dotCover.CommandLineTools
 
 #addin "Cake.Incubator"
 #addin "Cake.Sonar"
@@ -28,14 +29,18 @@ var testsDir       = srcDir + Directory("bin/UnitTests/") + Directory(configurat
 var slnPath = srcPath + "VolleyManagement.sln";
 
 ConvertableFilePath testResultsFile;
+ConvertableFilePath codeCoverageResultsFile;
 if (BuildSystem.IsRunningOnAppVeyor)
 {
     testResultsFile = testsDir 
-                + File(string.Format("TestResults_AppVeyor_{0}.trx", AppVeyor.Environment.JobId));
+                + File($"TestResults_AppVeyor_{AppVeyor.Environment.JobId}.trx");
+    codeCoverageResultsFile = testsDir
+        + File($"CodeCoverageResults_AppVeyor_{AppVeyor.Environment.JobId}.xml");
 }
 else
 {
     testResultsFile = testsDir + File("TestResults.trx");
+    codeCoverageResultsFile = testsDir + File("CodeCoverageResults.xml");
 }
 
 // Variables
@@ -71,12 +76,21 @@ Task("Build")
 
 Task("UnitTests")
     .Does(() => {
-        MSTest(
-            testsDir.Path.FullPath + "/*.UnitTests.dll",
-            new MSTestSettings{
-                ResultsFile = testResultsFile.Path.GetFilename().FullPath,
-                WorkingDirectory = testsDir
-            });
+        var testsPath = testsDir.Path.FullPath + "/*.UnitTests.dll";
+        var msTestSettings = new MSTestSettings {
+            ResultsFile = testResultsFile.Path.GetFilename().FullPath,
+            WorkingDirectory = testsDir
+        };
+
+        var dotCoverSettings = new DotCoverAnalyseSettings {
+            WorkingDirectory = testsDir,
+            TargetWorkingDir = testsDir
+        };
+        
+        DotCoverAnalyse(
+            (ICakeContext c) => { c.MSTest(testsPath, msTestSettings); },
+            codeCoverageResultsFile,
+            dotCoverSettings);        
 
         if (BuildSystem.IsRunningOnAppVeyor)
         {
@@ -87,13 +101,14 @@ Task("UnitTests")
 Task("SonarBegin")
     .WithCriteria(() => canRunSonar)
     .Does(() => {
-        var settings = new SonarBeginSettings{
+        var settings = new SonarBeginSettings {
             Url = "https://sonarcloud.io",
             Key = "volley-management",
             Organization = "volleymanagement",
             Login = sonarToken,
             VsTestReportsPath = testResultsFile,
-            Version = AppVeyor.Environment.Build.Version
+            Version = AppVeyor.Environment.Build.Version,
+            DotCoverReportsPath = codeCoverageResultsFile
         };
 
         if (BuildSystem.IsRunningOnAppVeyor

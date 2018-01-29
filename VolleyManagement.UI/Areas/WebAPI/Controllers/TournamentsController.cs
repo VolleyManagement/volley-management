@@ -108,8 +108,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         public ScheduleViewModel GetSchedule(int tournamentId)
         {
             var games = _gameService.GetTournamentGames(tournamentId)
-                                    .Select(GameViewModel.Map)
-                                    .ToList();
+                                    .Select(GameViewModel.Map);
 
             var resultGroupedByWeek = games.GroupBy(GetWeekOfYear)
                 .OrderBy(w => w.Key.Year)

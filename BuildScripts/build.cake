@@ -35,12 +35,12 @@ if (BuildSystem.IsRunningOnAppVeyor)
     testResultsFile = testsDir 
                 + File($"TestResults_AppVeyor_{AppVeyor.Environment.JobId}.trx");
     codeCoverageResultsFile = testsDir
-        + File($"CodeCoverageResults_AppVeyor_{AppVeyor.Environment.JobId}.xml");
+        + File($"CodeCoverageResults_AppVeyor_{AppVeyor.Environment.JobId}.html");
 }
 else
 {
     testResultsFile = testsDir + File("TestResults.trx");
-    codeCoverageResultsFile = testsDir + File("CodeCoverageResults.xml");
+    codeCoverageResultsFile = testsDir + File("CodeCoverageResults.html");
 }
 
 // Variables
@@ -83,6 +83,7 @@ Task("UnitTests")
         };
 
         var dotCoverSettings = new DotCoverAnalyseSettings {
+            ReportType = DotCoverReportType.HTML,
             WorkingDirectory = testsDir,
             TargetWorkingDir = testsDir
         };

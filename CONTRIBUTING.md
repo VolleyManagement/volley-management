@@ -20,7 +20,7 @@ Note: :warning: Some articles in requirements section might not be up to date. I
 
 We have Slack chat [volleymanagement.slack.com](https://volleymanagement.slack.com/). As the project is relatively small all questions can be asked in `#general` channel
 
-As for now to get access to this chat please write email to [Sergii Diachenko](mailto:sdiachenko AT outlook DOT com). In future we might get this automated.
+As for now to get access to this chat please write email to Sergii Diachenko(mailto:sdiachenko AT outlook DOT com). In future we might get this automated.
 
 ## How Can I Contribute? ##
 ### Reporting Bugs ###
@@ -42,7 +42,7 @@ Having said that OSS contributions is better managed by Bitbucket cloud issue tr
 
 At some point in the future we will have single consolidated backlog.
 
-If you want to see issues stored in VS Online please contact [Sergii Diachenko](mailto:sdiachenko AT outlook DOT com) for access.
+If you want to see issues stored in VS Online please contact Sergii Diachenko(mailto:sdiachenko AT outlook DOT com) for access.
 
 ## Development Environment ##
 Minimum sofware requirements:
@@ -80,7 +80,7 @@ In order to test/debug/use features using those integrations you might need to c
 ### C#
 C# code style is controlled by StyleCop Code Analyzer. You will see errors and warnings if you break code style.
 
-If you feel that some particular rule is too strict or too lose. Also if you have ideas how it can be enhanced please log __enhancement__ issue or contact [Sergii Diachenko](mailto:sdiachenko AT outlook DOT com)
+If you feel that some particular rule is too strict or too lose. Also if you have ideas how it can be enhanced please log __enhancement__ issue or contact Sergii Diachenko(mailto:sdiachenko AT outlook DOT com)
 ### Unit Tests
 We put a lot of emphasis on writing useful unit tests which will communicate requirements, ease maintainability and serve as a safety net.
 

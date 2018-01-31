@@ -43,9 +43,9 @@ This file should be put one level above sln file. (This prevents from accidental
 
 ## Additional references ##
 
-* [License](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/LICENSE.md)
+* [License](/LICENSE.md)
 * [Contribution Guidelines](/CONTRIBUTING.md)
-* [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/CODE_OF_CONDUCT.md)
+* [Code of Conduct](/CODE_OF_CONDUCT.md)
 
 ## Who do I talk to? ##
 

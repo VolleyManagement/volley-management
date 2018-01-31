@@ -10,7 +10,7 @@ More content to be added :timer_clock:
 
 ## Code of Conduct ##
 
-This project and everyone participating in it is governed by the [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [Sergii Diachenko](mailto:sdiachenko@outlook.com).
+This project and everyone participating in it is governed by the [Code of Conduct](/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [Sergii Diachenko](mailto:sdiachenko@outlook.com).
 
 ## How to reach team and/or ask question? ##
 
@@ -24,11 +24,11 @@ As for now to get access to this chat please write email to [Sergii Diachenko](m
 
 ## How Can I Contribute? ##
 ### Reporting Bugs ###
-Log issue as __bug__ in the [issue tracker](https://bitbucket.org/VolleyManagement/volleymanagement/issues?status=new&status=open).
+Log issue as __bug__ in the [issue tracker](https://github.com/VolleyManagement/volley-management/issues).
 
 Before creating bug reports, please check existing open issues as you might find out that you don't need to create one. When you are creating a bug report, please include as many details as possible.
 ### Suggesting Improvements ###
-Log issue as __enhcancement__ or __proposal__ in the [issue tracker](https://bitbucket.org/VolleyManagement/volleymanagement/issues?status=new&status=open).
+Log issue as __enhcancement__ or __proposal__ in the [issue tracker](https://github.com/VolleyManagement/volley-management/issues).
 
 Before creating suggestions reports, please check existing open issues as you might find out that you don't need to create one. Please include as many details as possible including but not limited to reasononing, design decisions, potential impact on existing code.
 ### Pull Requests ###

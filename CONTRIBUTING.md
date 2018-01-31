@@ -10,7 +10,7 @@ More content to be added :timer_clock:
 
 ## Code of Conduct ##
 
-This project and everyone participating in it is governed by the [Code of Conduct](/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [Sergii Diachenko](mailto:sdiachenko AT outlook DOT com).
+This project and everyone participating in it is governed by the [Code of Conduct](/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to Sergii Diachenko(mailto:sdiachenko AT outlook DOT com).
 
 ## How to reach team and/or ask question? ##
 

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { AppIntegrationComponent } from './integration/app-integration.component';
 
 import { StandingsService } from './Services/standings.service';
 import { JsonService } from './Services/json.service';
@@ -20,9 +21,12 @@ import { GameReportsBoardComponent } from './Components/GameReportsBoard/game-re
 import { TournamentDataService } from './Services/tournament-data.service';
 import { GameResultCellDirective } from './Components/PivotStanding/game-result-cell.directive';
 
+import { environment } from '../environments/environment';
+
 @NgModule({
     declarations: [
         AppComponent,
+        AppIntegrationComponent,
 
         GameResultCellDirective,
         PivotStandingsComponent,
@@ -44,6 +48,6 @@ import { GameResultCellDirective } from './Components/PivotStanding/game-result-
         StandingsService,
         ScheduleService
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [(environment.integrated ? AppIntegrationComponent : AppComponent)]
 })
 export class AppModule { }

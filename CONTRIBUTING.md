@@ -36,11 +36,19 @@ Log issue as __enhcancement__ or __proposal__ in the [issue tracker](https://git
 
 Before creating suggestions reports, please check existing open issues as you might find out that you don't need to create one. Please include as many details as possible including but not limited to reasononing, design decisions, potential impact on existing code.
 
+### Branch naming
+
+Project has a CI configured to work with following branch naming pattern:
+
+**issue_#{issue number}_short_issue_description_with_underscores**
+
 ### Pull Requests
 
 If you want to directly contribute to the project you are highly welcome!
 
 You can do so by creating pull request into `master` branch. After review your request will either be merged or set of questions/suggestions will be given to you to address before accepting PR.
+
+As part of PR approval process project uses CI checks. Please following branch naming so it can be picked up by CI and properly verified.
 
 ### Visual Studio online task tracker
 

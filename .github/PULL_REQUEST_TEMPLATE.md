@@ -23,6 +23,6 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 #### Unit Tests
 
 - [ ] Naming: Initial state and expected result are properly stated
-- [ ] Test follows AAA pattern
+- [ ] Test follows [AAA](https://medium.com/@pjbgf/title-testing-code-ocd-and-the-aaa-pattern-df453975ab80) pattern.
 - [ ] Test is Isolated
 - [ ] Mock instances and expected instances do not share references

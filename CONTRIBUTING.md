@@ -101,8 +101,8 @@ If you feel that some particular rule is too strict or too lose. Also if you hav
 
 We put a lot of emphasis on writing useful unit tests which will communicate requirements, ease maintainability and serve as a safety net.
 
-See more details at [Unit Testing Conventions](wiki/Unit-Testing-Conventions)
+See more details at [Unit Testing Conventions](../../wiki/Unit-Testing-Conventions)
 
 ## Additional references
 
-Some of the deatils we try to keep up to date at [Development Process](wiki/Development-Process) page
+Some of the deatils we try to keep up to date at [Development Process](../../wiki/Development-Process) page

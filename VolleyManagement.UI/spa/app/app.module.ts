@@ -22,7 +22,8 @@ import { TournamentDataService } from './Services/tournament-data.service';
 import { GameResultCellDirective } from './Components/PivotStanding/game-result-cell.directive';
 
 import { environment } from '../environments/environment';
-
+console.log('TARG: ' + environment.production);
+console.log('ENV: ' + environment.integrated);
 @NgModule({
     declarations: [
         AppComponent,

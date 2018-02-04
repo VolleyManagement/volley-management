@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { AppIntegrationComponent } from './integration/app-integration.component';
+import { VouIntegrationComponent } from './integration/vou-integration.component';
 
 import { StandingsService } from './Services/standings.service';
 import { JsonService } from './Services/json.service';
@@ -26,7 +26,7 @@ import { environment } from '../environments/environment';
 @NgModule({
     declarations: [
         AppComponent,
-        AppIntegrationComponent,
+        VouIntegrationComponent,
 
         GameResultCellDirective,
         PivotStandingsComponent,
@@ -48,6 +48,6 @@ import { environment } from '../environments/environment';
         StandingsService,
         ScheduleService
     ],
-    bootstrap: [(environment.integrated ? AppIntegrationComponent : AppComponent)]
+    bootstrap: [(environment.integrated ? VouIntegrationComponent : AppComponent)]
 })
 export class AppModule { }

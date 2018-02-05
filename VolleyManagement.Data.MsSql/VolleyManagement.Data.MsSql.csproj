@@ -271,7 +271,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="VolleyManagement.Data.MsSql.ruleset" />
   </ItemGroup>
   <ItemGroup>

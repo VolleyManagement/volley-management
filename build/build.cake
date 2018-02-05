@@ -19,14 +19,14 @@ var sonarToken = HasArgument("sonar-token")
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var srcPath        = "./../";
-var srcDir         = Directory(srcPath);
-var buildDir       = srcDir + Directory("bin/") + Directory(configuration);
-var webBuildDir    = srcDir + Directory("src/VolleyManagement.Backend/VolleyManagement.UI/bin");
-var testsDir       = srcDir + Directory("bin/UnitTests/") + Directory(configuration);
+var rootPath        = "./../";
+var rootDir         = Directory(rootPath);
+var buildDir       = rootDir + Directory("bin/") + Directory(configuration);
+var webBuildDir    = rootDir + Directory("src/VolleyManagement.Backend/VolleyManagement.UI/bin");
+var testsDir       = rootDir + Directory("bin/UnitTests/") + Directory(configuration);
 
 // Define files
-var slnPath = srcPath + "src/VolleyManagement.sln";
+var slnPath = rootPath + "src/VolleyManagement.sln";
 
 ConvertableFilePath testResultsFile;
 ConvertableFilePath codeCoverageResultsFile;

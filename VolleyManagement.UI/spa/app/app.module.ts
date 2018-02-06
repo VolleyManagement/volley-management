@@ -22,8 +22,7 @@ import { TournamentDataService } from './Services/tournament-data.service';
 import { GameResultCellDirective } from './Components/PivotStanding/game-result-cell.directive';
 
 import { environment } from '../environments/environment';
-console.log('TARG: ' + environment.production);
-console.log('ENV: ' + environment.integrated);
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -49,6 +48,6 @@ console.log('ENV: ' + environment.integrated);
         StandingsService,
         ScheduleService
     ],
-    bootstrap: [(environment.integrated ? VouIntegrationComponent : AppComponent)]
+    bootstrap: [(environment.vouIntegration ? VouIntegrationComponent : AppComponent)]
 })
 export class AppModule { }

@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  integrated: false,
+  vouIntegration: false,
   apiUrl: 'https://localhost:44300/',
   jsonBaseUrl: 'https://volleycontent.blob.core.windows.net/vmscripts/tournamentData/'
 };

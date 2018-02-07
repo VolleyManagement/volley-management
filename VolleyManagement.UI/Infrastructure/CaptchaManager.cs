@@ -17,7 +17,7 @@
         private const string CONFIG_KEY_RECAPTCHA_SECERET = "RecaptchaSecretKey";
         private const string RECAPTCHA_VERIFY_URL_FORMAT = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
         private const string RECAPTCHA_JSON_TOKEN_SUCCESS = "success";
-        
+
         /// <summary>
         /// Method, that verifies if captcha is valid
         /// </summary>
@@ -34,7 +34,7 @@
 
                     var jsonResultObj = JObject.Parse(jsonResultStr);
                     isCaptchaValid = jsonResultObj[RECAPTCHA_JSON_TOKEN_SUCCESS].Value<bool>();
-                }               
+                }
                 catch (HttpRequestException)
                 {
                     //Means that there are issues with network. LOGGING REQUIRED
@@ -50,12 +50,12 @@
             return isCaptchaValid;
         }
 
-        private string GetCapchaRequestUrl(string userResponseToken)
+        public static Uri GetCapchaRequestUrl(string userResponseToken)
         {
             string secretKey = WebConfigurationManager.AppSettings[CONFIG_KEY_RECAPTCHA_SECERET];
-            return string.Format(RECAPTCHA_VERIFY_URL_FORMAT,
-                                 secretKey,
-                                 userResponseToken);
+            return new Uri(string.Format(RECAPTCHA_VERIFY_URL_FORMAT,
+                                         secretKey,
+                                         userResponseToken));
         }
     }
 }

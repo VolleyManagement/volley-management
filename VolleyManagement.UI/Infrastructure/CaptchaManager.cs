@@ -35,12 +35,12 @@
                     var jsonResultObj = JObject.Parse(jsonResultStr);
                     isCaptchaValid = jsonResultObj[RECAPTCHA_JSON_TOKEN_SUCCESS].Value<bool>();
                 }               
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     //Means that there are issues with network. LOGGING REQUIRED
                     isCaptchaValid = false;
                 }
-                catch (ArgumentNullException argumentNullException)
+                catch (ArgumentNullException)
                 {
                     //Means that response from Google is not JSON. LOGGING REQUIRED
                     isCaptchaValid = false;

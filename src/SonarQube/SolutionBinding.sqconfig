@@ -1,0 +1,14 @@
+{
+  "ServerUri": "https://sonarcloud.io",
+  "Organization": {
+    "Key": "volleymanagement",
+    "Name": "volleymanagement"
+  },
+  "ProjectKey": "volley-management",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AWFg_vHpX7qPRavB61vs",
+      "ProfileTimestamp": "2018-02-04T21:07:03+02:00"
+    }
+  }
+}

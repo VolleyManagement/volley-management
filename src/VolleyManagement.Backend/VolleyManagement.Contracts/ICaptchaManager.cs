@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
-    using System.Web;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Defines a contract for CaptchaManager
@@ -8,10 +8,10 @@
     public interface ICaptchaManager
     {
         /// <summary>
-        /// Method, that give result: captcha passed or not
+        /// Method, that verifies if captcha is valid
         /// </summary>
-        /// <param name="response">Response of Captcha.</param>
+        /// <param name="userResponseToken">Response captcha token from user.</param>
         /// <returns>Captcha result</returns>
-        bool IsFormSubmit(string response);
+        Task<bool> ValidateUserCaptcha(string userResponseToken);
     }
 }

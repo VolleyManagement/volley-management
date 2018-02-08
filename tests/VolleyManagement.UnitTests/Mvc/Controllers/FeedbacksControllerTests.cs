@@ -13,6 +13,7 @@
     using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.FeedbackService;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Feedbacks controller tests.
@@ -55,7 +56,7 @@
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _captchaManagerMock = new Mock<ICaptchaManager>();
 
-            _captchaManagerMock.Setup(m => m.IsFormSubmit(It.IsAny<string>())).Returns(true);
+            _captchaManagerMock.Setup(m => m.ValidateUserCaptcha(It.IsAny<string>())).Returns(Task.FromResult<bool>(true));
         }
 
         #endregion
@@ -125,7 +126,7 @@
             SetInvalidModelState(sut);
 
             // Act
-            var result = sut.Create(feedback) as JsonResult;
+            var result = sut.Create(feedback).Result as JsonResult;
             var returnedDataResult = result.Data as FeedbackMessageViewModel;
 
             // Assert
@@ -144,7 +145,7 @@
             var feedback = CreateValidFeedback();
 
             // Act
-            var result = sut.Create(feedback) as JsonResult;
+            var result = sut.Create(feedback).Result as JsonResult;
             var returnedDataResult = result.Data as FeedbackMessageViewModel;
 
             // Assert
@@ -210,9 +211,9 @@
 
             // Act
             _captchaManagerMock
-                .Setup(cm => cm.IsFormSubmit(It.IsAny<string>()))
-                .Returns(false);
-            var res = sut.Create(feedback) as JsonResult;
+                .Setup(cm => cm.ValidateUserCaptcha(It.IsAny<string>()))
+                .Returns(Task.FromResult<bool>(false));
+            var res = sut.Create(feedback).Result as JsonResult;
             var returnedDataResult = res.Data as FeedbackMessageViewModel;
 
             // Assert

@@ -7,6 +7,7 @@
     using Contracts.Authorization;
     using Domain.UsersAggregate;
     using ViewModels.FeedbackViewModel;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Defines feedback controller.
@@ -66,7 +67,7 @@
         /// <param name="feedbackViewModel">Feedback view model.</param>
         /// <returns>Feedback creation view.</returns>
         [HttpPost]
-        public JsonResult Create(FeedbackViewModel feedbackViewModel)
+        public async Task<JsonResult> Create(FeedbackViewModel feedbackViewModel)
         {
             FeedbackMessageViewModel result = new FeedbackMessageViewModel
             {
@@ -76,7 +77,8 @@
 
             try
             {
-                if (_captchaManager.IsFormSubmit(feedbackViewModel.CaptchaResponse))
+                var isCaptchaValid = await _captchaManager.ValidateUserCaptcha(feedbackViewModel.CaptchaResponse);
+                if (isCaptchaValid)
                 {
                     if (ModelState.IsValid)
                     {

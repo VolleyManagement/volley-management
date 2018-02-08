@@ -1,0 +1,812 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A0FE5D5B-B9C7-4C0F-9FA9-F0DD5119FCCB}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VolleyManagement.UI</RootNamespace>
+    <AssemblyName>VolleyManagement.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>43125</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>0</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>VolleyManagement.UI.ruleset</CodeAnalysisRuleSet>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>VolleyManagement.UI.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FeatureToggle, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FeatureToggle.3.5.1\lib\net40\FeatureToggle.dll</HintPath>
+    </Reference>
+    <Reference Include="FeatureToggle.Core, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FeatureToggle.Core.3.5.1\lib\portable-net40+sl50+wp81+wpa+win\FeatureToggle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.AspNet, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Glimpse.AspNet.1.8.0\lib\net45\Glimpse.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Core, Version=1.8.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Glimpse.1.8.6\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc5, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Spatial, Version=6.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Spatial.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.4.0.8\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.Web, Version=3.2.7.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Integration.Web.3.2.7\lib\net40\SimpleInjector.Integration.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.Web.Mvc, Version=3.2.7.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Integration.Web.Mvc.3.2.7\lib\net40\SimpleInjector.Integration.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.WebApi, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Integration.WebApi.4.0.8\lib\net45\SimpleInjector.Integration.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ApplicationInsights">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.2.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.2.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.2.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.WindowsServer.2.2.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.Web.2.2.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\AccountController.Designer.cs">
+      <DependentUpon>AccountController.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\AuthorizationRoles.Designer.cs">
+      <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeedbackViews.Designer.cs">
+      <DependentUpon>FeedbackViews.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\GameReportViews.Designer.cs">
+      <DependentUpon>GameReportViews.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\GameResultsController.Designer.cs">
+      <DependentUpon>GameResultsController.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\GameResultViews.Designer.cs">
+      <DependentUpon>GameResultViews.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
+      <DependentUpon>PlayerViews.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\TeamViews.Designer.cs">
+      <DependentUpon>TeamViews.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\TournamentController.Designer.cs">
+      <DependentUpon>TournamentController.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
+      <DependentUpon>TournamentViews.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\UserViews.Designer.cs">
+      <DependentUpon>UserViews.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\ViewModelResources.Designer.cs">
+      <DependentUpon>ViewModelResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="AreaConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TournamentRequestController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\MessageViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ModifiedRoleViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\OperationResultViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RequestCollectionViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RequestViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RoleDetailsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RoleEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RoleViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TournamentRequestCollectionViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TournamentRequestViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
+    <Compile Include="Areas\Mvc\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Constants.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\ContributorsTeamController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\GameReportsController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\GameResultsController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\PlayersController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\TeamsController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\TournamentsController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\ErrorController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\NavigationController.cs" />
+    <Compile Include="Areas\Mvc\Helpers\DateTimeModelBinder.cs" />
+    <Compile Include="Areas\Mvc\Helpers\EnumHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\Helpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Areas\Mvc\Helpers\JQueryUIDateFormatConverter.cs" />
+    <Compile Include="Areas\Mvc\Helpers\ReverseComparer.cs" />
+    <Compile Include="Areas\Mvc\Helpers\TournamentSeasonHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
+    <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
+    <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackMessageViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\CssClassConstants.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\DivisionStandingsBase.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\DivisionStandingsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotGameResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotTableViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotTeamStandingsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsEntryViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\TeamStandingsViewModelBase.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameDeleteResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\ScoreViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Generic\RefererViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayerDeleteResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayerNameViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayerRefererViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamCollectionReferrerViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamCollectionViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamNameViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamOperationResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamRefererViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionScheduleViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupTeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\ScheduleViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamsAddToTournamentViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentApplyViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentsCollectionsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListReferrerViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\ContributorsTeamController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\DivisionTitleComparer.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\HomeController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\PlayersController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\TeamsController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\TournamentsController.cs" />
+    <Compile Include="Areas\WebAPI\Infrastructure\WebApiHelpers.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\GameReports\DivisionStandingsViewModelBase.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\GameReports\DivisionStandingsViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\GameReports\PivotStandingsTeamViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\GameReports\PivotStandingsGameViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\GameReports\PivotStandingsViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\GameReports\ShortGameResultViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\GameReports\StandingsEntryViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Games\GameViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Players\PlayerViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\DivisionTitleViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleDayViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\WeekViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Teams\TeamViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Tournaments\TournamentViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebAPI\WebAPIAreaRegistration.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\CaptchaManager.cs" />
+    <Compile Include="Infrastructure\CurrentUserService.cs" />
+    <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
+    <Compile Include="Infrastructure\IocUIModule.cs" />
+    <Compile Include="Infrastructure\IOC\SimpleInjectorContainer.cs" />
+    <Compile Include="Infrastructure\SimpleTraceLog.cs" />
+    <Compile Include="OwinConfig.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModelConstants.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Content\Admin\admin.css" />
+    <Content Include="Content\Admin\Reply.css" />
+    <Content Include="Content\Admin\vm.css" />
+    <Content Include="Content\ajax-loader.gif" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\metisMenu.css" />
+    <Content Include="Content\metisMenu.min.css" />
+    <Content Include="Content\Photo\Teams\0.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\styles.css" />
+    <Content Include="Content\TeamPhoto.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\InvalidOperation.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\PlayerDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\UserDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\ErrorPage.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminNavigation.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\InvalidOperation.cshtml" />
+    <Content Include="Areas\Admin\Views\TournamentRequest\Decline.cshtml" />
+    <Content Include="Areas\Admin\Views\TournamentRequest\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\ActiveUsers.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\UserDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Mvc\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Mvc\Views\Account\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Account\Error.cshtml" />
+    <Content Include="Areas\Mvc\Views\Account\Info.cshtml" />
+    <Content Include="Areas\Mvc\Views\Account\Login.cshtml" />
+    <Content Include="Areas\Mvc\Views\ContributorsTeam\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameReports\Standings.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameReports\StandingsNotAvailable.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\TournamentResults.cshtml" />
+    <Content Include="Areas\Mvc\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Navigation\Menu.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\_PartialNameViewModelCollection.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\ChoosePlayers.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\_MenuLayout.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\_Navigation.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\_CreateEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_ScheduledGameResult.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ApplyForTournament.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Delete.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ManageTournamentTeams.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ScheduleGame.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ShowSchedule.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\TournamentsList.cshtml" />
+    <Content Include="Areas\Mvc\Views\Users\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Areas\WebAPI\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\WebAPI\Views\Home\Index.cshtml" />
+    <Content Include="Areas\WebAPI\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\WebAPI\Views\web.config" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Archived.cshtml" />
+    <None Include="Properties\PublishProfiles\volley-mgmt-app - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\volley-mgmt-app - Web Deploy.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\GameResults\ResultsValidate.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\metisMenu.js" />
+    <Content Include="Scripts\metisMenu.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\scripts.js" />
+    <Content Include="Scripts\TournamentOperationScripts.js" />
+    <Content Include="Scripts\UserActions.js" />
+    <Content Include="Scripts\VMScripts\Admin\admin.js" />
+    <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
+    <Content Include="Scripts\VMScripts\Admin\ChangeUserBlocked.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\AjaxResponse.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\CheckEnvironment.js" />
+    <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
+    <Content Include="Scripts\VMScripts\PlayerOperations\LinkPlayerToUser.js" />
+    <Content Include="Scripts\VMScripts\TeamOperations\CreateEdit.js" />
+    <Content Include="Scripts\VMScripts\TeamOperations\List.js" />
+    <Content Include="Scripts\VMScripts\TeamOperations\UploadPhoto.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\AddTeams.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\ApplyForTournament.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\ScheduleCreateOrEdit.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\SwapRounds.js" />
+    <Content Include="Scripts\VMScripts\VMScripts.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\AccessDenied.cshtml" />
+    <Content Include="Views\Shared\Blocked.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\web.config" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\jquery.min.map" />
+    <Content Include="VolleyManagement.UI.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Mvc\Views\App_Data\Photo\Teams\" />
+    <Folder Include="Content\Site\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\AccountController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountController.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\AuthorizationRoles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\FeedbackViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\GameReportViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameReportViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\GameResultsController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameResultsController.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\GameResultViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameResultViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\PlayerViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlayerViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TeamViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TeamViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TournamentController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TournamentController.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TournamentViews.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\UserViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\ViewModelResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewModelResources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
+      <Project>{285d93e6-1ad5-4f78-aef6-72b81d81465d}</Project>
+      <Name>VolleyManagement.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
+      <Project>{ba2d2bb6-9862-4d96-9d64-54ece7f8ca2c}</Project>
+      <Name>VolleyManagement.Crosscutting.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Data.MsSql\VolleyManagement.Data.MsSql.csproj">
+      <Project>{f82ff279-9d06-4494-bc61-1b7ac88a737d}</Project>
+      <Name>VolleyManagement.Data.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
+      <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
+      <Name>VolleyManagement.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Services\VolleyManagement.Services.csproj">
+      <Project>{4d6c885f-9e5d-4f09-b81b-cd14ed6a527f}</Project>
+      <Name>VolleyManagement.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.6.7.1.4347\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.6.7.1.4347\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.6.7.1.4347\analyzers\SonarAnalyzer.dll" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>51240</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44300/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost:44300/</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

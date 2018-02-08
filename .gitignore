@@ -12,7 +12,6 @@
 [Dd]ebug/
 [Rr]elease/
 x64/
-build/
 [Bb]in/
 [Oo]bj/
 
@@ -110,7 +109,7 @@ csx
 AppPackages/
 
 # Cake Build files
-BuildScripts/tools/
+build/tools/
 
 # Others
 sql/
@@ -168,3 +167,4 @@ $RECYCLE.BIN/
 .vs/
 VolleyManagement.UI/package-lock.json
 .sonarqube/
+src/.nuget/

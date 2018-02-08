@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SonarQube - volley-management Sonar way" ToolsVersion="15.0">
-  <Include Path="..\codeanalysisrules\volleymanagement.general.ruleset" Action="Default" />
-  <Include Path="..\sonarqube\volley-managementcsharp.ruleset" Action="Default" />
-</RuleSet>

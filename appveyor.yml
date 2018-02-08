@@ -45,7 +45,7 @@ cache:
 
 build_script:
 - ps: >-
-    cd .\BuildScripts
+    cd .\build
 
     .\build.ps1 -v Verbose
 

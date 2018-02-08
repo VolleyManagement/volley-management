@@ -34,7 +34,7 @@ environment:
   SONAR_TOKEN:
     secure: +v6PmDXb6BsEnMx0hJSdUWbBL7Y/VipzkMUgQa1DgmRbl6XVAR0+RgUc7M7Q9G77
   GITHUB_SONAR_PR_TOKEN:
-    secure: M3EfBP6KDctwpttA3VZRbjk6WOpMxTrGdYX5mTwdsDe9RMQQ+yFXOlFD/TTxixaw
+    secure: Yw7T+6L/sj76jLwFSis3fGNkotT3iI99pJhoKdr8ocvW5xdIk/WfjSQb5PoAtryH
 
 cache:
   - packages -> **\packages.config

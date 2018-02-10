@@ -78,7 +78,6 @@
                 join groups in _dalGroups
                     on division.Id equals groups.DivisionId
                 where game.TournamentId == criteria.TournamentId
-                where groups.Teams.Contains(game.HomeTeam)
                 select new
                 {
                     results = game,

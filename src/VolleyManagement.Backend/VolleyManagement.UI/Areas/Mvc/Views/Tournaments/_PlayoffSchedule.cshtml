@@ -1,0 +1,39 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.ScheduleViewModel
+
+<h2>
+    @Resources.UI.TournamentViews.ScheduleTitle
+    @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
+</h2>
+
+@if (Model.MaxNumberOfRounds == 0)
+{
+    <div class="col-md-6">@Resources.UI.TournamentViews.NoTeamsAvailable</div>
+}
+else
+{
+    <hr>
+    <div class="col-md-3">
+        @for (byte i = 1; i <= Model.MaxNumberOfRounds; i++)
+        {
+            <h4>
+                @Model.RoundNames[i - 1]
+            </h4>
+
+            <div class="table-bordered">
+                @foreach (var game in Model.Rounds[i])
+                {
+                    if (Model.IsFinal(game))
+                    {
+                        <h5>@Resources.UI.TournamentViews.FinalGameName:</h5>
+                    }
+                    else if (Model.IsBronzeMatch(game))
+                    {
+                        <h5>@Resources.UI.TournamentViews.BronzeGameName:</h5>
+                    }
+                    
+                    @Html.Partial("_PlayoffGameResult", game);
+                }
+            </div>
+        }
+    </div>
+}

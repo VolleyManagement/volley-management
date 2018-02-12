@@ -40,7 +40,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
             {
                 Id = team.TeamId,
                 Name = team.TeamName,
-                DivisionName = $"Division {team.DivisionId}"
+                DivisionName = team.DivisionName
             };
         }
 

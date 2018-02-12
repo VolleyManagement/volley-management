@@ -181,7 +181,8 @@
             ValidateGame(game, tournamentScheduleInfo);
 
             // Add autogeneration
-            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff
+                && game.Result != null)
             {
                 ScheduleNextGames(game, tournamentScheduleInfo);
             }
@@ -876,21 +877,26 @@
             }
         }
 
-        private List<GameResultDto> NextGames(IEnumerable<GameResultDto> allGames, GameResultDto currentGame)
+        private List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
         {
-            var numberOfRounds = Convert.ToByte(Math.Sqrt(allGames.Count()));
+            if (allGames == null)
+            {
+                throw new ArgumentNullException(nameof(allGames));
+            }
+
+            var numberOfRounds = Convert.ToByte(Math.Sqrt(allGames.Count));
             if (currentGame.Round == numberOfRounds)
             {
                 return new List<GameResultDto>();
             }
 
-            List<GameResultDto> games = new List<GameResultDto>();
+            var games = new List<GameResultDto>();
 
             int nextGameNumber = NextGameNumber(currentGame.GameNumber, numberOfRounds);
-            games.Add(allGames.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault());
+            games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
             if (currentGame.Round == numberOfRounds - 1)
             {
-                games.Add(allGames.Where(g => g.GameNumber == nextGameNumber + 1).SingleOrDefault());
+                games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber + 1));
             }
 
             return games;

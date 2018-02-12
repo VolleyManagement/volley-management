@@ -583,7 +583,6 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Areas\Mvc\Views\Tournaments\Archived.cshtml" />
-    <None Include="Properties\PublishProfiles\volley-mgmt-app - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\volley-mgmt-app - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />

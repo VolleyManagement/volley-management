@@ -168,13 +168,15 @@ $(document).ready(function () {
         }
 
         privates.getAllGroupsOptions(function (options) {
-
-            var responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
-
-            $.each(options, function (key, value) {
-                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
-            });
-       
+            if (options.length == 1) {
+                var responseOptions = "<option value ='" + options[0].Id + "'>" + options[0].Name + "</option>";
+            }
+            else {
+                var responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
+                $.each(options, function (key, value) {
+                    responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                });
+            }
             privates.RemoveGroupsAndDeleteRowButtonMarkup();
             privates.renderNewTournamentGroupsRow(responseOptions);
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);

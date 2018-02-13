@@ -69,25 +69,45 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
-            var query =
-                (from game in _dalGameResults
-                 join tournament in _dalTournaments
-                     on game.TournamentId equals tournament.Id
-                 join division in _dalDivisions
-                     on tournament.Id equals division.TournamentId
-                 join groups in _dalGroups
-                     on division.Id equals groups.DivisionId
-                 where game.TournamentId == criteria.TournamentId
-                 select new
-                 {
-                     results = game,
-                     divisionName = division.Name,
-                     divisionId = division.Id,
-                     groupId = groups.Id
-                 })
-                // Distinct by game id
-                .GroupBy(p => p.results.Id)
-                .Select(group => group.FirstOrDefault());
+            var tournamentId = criteria.TournamentId;
+
+            var allGamesWithTeams =
+                from game in _dalGameResults
+                join tournament in _dalTournaments
+                    on game.TournamentId equals tournament.Id
+                join division in _dalDivisions
+                    on tournament.Id equals division.TournamentId
+                join groups in _dalGroups
+                    on division.Id equals groups.DivisionId
+                where game.TournamentId == tournamentId
+                where groups.Teams.Contains(game.HomeTeam)
+                select new
+                {
+                    results = game,
+                    divisionName = division.Name,
+                    divisionId = division.Id,
+                    groupId = groups.Id
+                };
+
+            var gamesWithoutTeams =
+                from game in _dalGameResults
+                join tournament in _dalTournaments
+                    on game.TournamentId equals tournament.Id
+                join division in _dalDivisions
+                    on tournament.Id equals division.TournamentId
+                join groups in _dalGroups
+                    on division.Id equals groups.DivisionId
+                where game.TournamentId == tournamentId
+                where game.HomeTeam == null
+                select new
+                {
+                    results = game,
+                    divisionName = division.Name,
+                    divisionId = division.Id,
+                    groupId = groups.Id
+                };
+
+            var query = allGamesWithTeams.Union(gamesWithoutTeams);
 
             List<GameResultDto> list = query.ToList()
                         .ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));

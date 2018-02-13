@@ -131,7 +131,7 @@ $(document).ready(function () {
         }
 
         privates.getAllDivisionsOptions(function (options) {
-            var responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
+         var responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
 
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
@@ -168,16 +168,13 @@ $(document).ready(function () {
         }
 
         privates.getAllGroupsOptions(function (options) {
-            var responseOptions;
-            if (options.length === 1) {
-                 responseOptions = "<option value ='" + options[0].Id + "'>" + options[0].Name + "</option>";
+            var responseOptions = "";
+            if (options.length > 1) {
+                responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
             }
-            else {
-                 responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
-                $.each(options, function (key, value) {
-                    responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
-                });
-            }
+            $.each(options, function (key, value) {
+                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+            });
             privates.RemoveGroupsAndDeleteRowButtonMarkup();
             privates.renderNewTournamentGroupsRow(responseOptions);
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);

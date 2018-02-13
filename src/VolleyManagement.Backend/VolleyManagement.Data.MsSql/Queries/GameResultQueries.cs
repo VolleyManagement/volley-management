@@ -70,21 +70,24 @@
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
             var query =
-                from game in _dalGameResults
-                join tournament in _dalTournaments
-                    on game.TournamentId equals tournament.Id
-                join division in _dalDivisions
-                    on tournament.Id equals division.TournamentId
-                join groups in _dalGroups
-                    on division.Id equals groups.DivisionId
-                where game.TournamentId == criteria.TournamentId
-                select new
-                {
-                    results = game,
-                    divisionName = division.Name,
-                    divisionId = division.Id,
-                    groupId = groups.Id
-                };
+                (from game in _dalGameResults
+                 join tournament in _dalTournaments
+                     on game.TournamentId equals tournament.Id
+                 join division in _dalDivisions
+                     on tournament.Id equals division.TournamentId
+                 join groups in _dalGroups
+                     on division.Id equals groups.DivisionId
+                 where game.TournamentId == criteria.TournamentId
+                 select new
+                 {
+                     results = game,
+                     divisionName = division.Name,
+                     divisionId = division.Id,
+                     groupId = groups.Id
+                 })
+                // Distinct by game id
+                .GroupBy(p => p.results.Id)
+                .Select(group => group.FirstOrDefault());
 
             List<GameResultDto> list = query.ToList()
                         .ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));

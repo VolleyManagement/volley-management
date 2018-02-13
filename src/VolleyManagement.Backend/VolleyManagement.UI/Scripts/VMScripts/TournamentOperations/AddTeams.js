@@ -168,11 +168,12 @@ $(document).ready(function () {
         }
 
         privates.getAllGroupsOptions(function (options) {
-            if (options.length == 1) {
-                var responseOptions = "<option value ='" + options[0].Id + "'>" + options[0].Name + "</option>";
+            var responseOptions;
+            if (options.length === 1) {
+                 responseOptions = "<option value ='" + options[0].Id + "'>" + options[0].Name + "</option>";
             }
             else {
-                var responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
+                 responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
                 $.each(options, function (key, value) {
                     responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
                 });

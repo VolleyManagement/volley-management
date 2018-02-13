@@ -18,7 +18,7 @@ export class AppToolsService {
 
     getAppMetadataFileName(): string {
         if (!this._appMetadataFile) {
-            this._appMetadataFile = document.getElementsByTagName('vm-app')[0].getAttribute('metadatafile');
+            this._appMetadataFile = document.getElementsByTagName('vm-app-integration')[0].getAttribute('metadatafile');
         }
 
         return this._appMetadataFile;

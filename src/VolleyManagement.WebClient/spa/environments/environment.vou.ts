@@ -4,8 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false,
-  vouIntegration: false,
+  production: true,
+  vouIntegration: true,
   apiUrl: 'https://localhost:44300/',
-  jsonBaseUrl: 'http://127.0.0.1:10000/devstoreaccount1/volleymanagement/'
+  jsonBaseUrl: 'https://volleycontent.blob.core.windows.net/vmscripts/tournamentData/'
 };

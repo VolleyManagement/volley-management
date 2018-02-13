@@ -41,7 +41,7 @@ Project uses MSTest framework. Tests can be triggered via Visual Studio test men
 To deploy it locally you need to get AppSettingSecret.config file from Sergii Diachenko(mailto:sdiachenko AT outlook DOT com).
 This file should be put one level above sln file. (This prevents from accidental checkin)
 
-# Angular dev environment setup #
+# Angular development environment setup #
 
 ## Set up the Development Environment ##
 You need to set up your development environment before you can do anything.
@@ -51,11 +51,11 @@ Then install the Angular CLI globally.
 'npm install -g @angular/cli'
 
 ## Restore npm packages ##
-Go to the project directory (rootFolder\src\VolleyManagement.WebClient\spa)
+Go to the project directory (src\VolleyManagement.WebClient\spa)
 Run 'npm install'
 
 ## Serve the application ##
-Go to the project directory (rootFolder\src\VolleyManagement.WebClient\spa) and launch the server.
+Go to the project directory (src\VolleyManagement.WebClient\spa) and launch the server.
 'ng serve --open'
 The ng serve command launches the server, watches your files, and rebuilds the app as you make changes to those files.
 Using the --open (or just -o) option will automatically open your browser on http://localhost:4200/.

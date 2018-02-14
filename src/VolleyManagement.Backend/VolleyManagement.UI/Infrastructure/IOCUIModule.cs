@@ -24,11 +24,7 @@ namespace VolleyManagement.UI.Infrastructure
             {
                 container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
             }
-            else if (Is<IISDeployment>.Enabled)
-            {
-                container.Register<IMailService, GmailAccountMailService>(IocLifetimeEnum.Scoped);
-            }
-            else
+            else if (Is<IISDeployment>.Disabled)
             {
                 container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
             }

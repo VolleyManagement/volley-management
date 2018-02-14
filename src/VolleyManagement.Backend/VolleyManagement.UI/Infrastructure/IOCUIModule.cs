@@ -19,14 +19,14 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
-
-            if (Is<DebugMode>.Enabled)
-            {
-                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
-            }
-            else if (Is<IISDeployment>.Disabled)
+            
+            if (Is<IISDeployment>.Disabled)
             {
                 container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
+            }
+            else
+            {
+                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
             }
         }
     }

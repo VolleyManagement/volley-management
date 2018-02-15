@@ -187,8 +187,8 @@
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
-            SetupControllerContext(sut);           
-         
+            SetupControllerContext(sut);
+
             // Act
             var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
                 sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
@@ -1593,7 +1593,7 @@
 
         private TournamentTeamsListViewModel CreateExpectedTeamsList()
         {
-            TournamentTeamsListViewModel expectedTeams = new TournamentTeamsListViewModel
+            var expectedTeams = new TournamentTeamsListViewModel
             {
                 TeamsList = new List<TeamNameViewModel>()
             {

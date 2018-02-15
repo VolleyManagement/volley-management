@@ -16,7 +16,7 @@
             _teamNameViewModel = new TeamNameViewModel()
             {
                 Id = 1,
-                Name = "Name"      
+                Name = "Name"
             };
         }
 
@@ -63,7 +63,7 @@
                 new TeamNameViewModel()
                 {
                     Id = 3,
-                    Name = "TeamNameC",                  
+                    Name = "TeamNameC",
                 },
             };
         }

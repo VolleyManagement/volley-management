@@ -1593,8 +1593,9 @@
 
         private TournamentTeamsListViewModel CreateExpectedTeamsList()
         {
-            TournamentTeamsListViewModel expectedTeams = new TournamentTeamsListViewModel();
-            expectedTeams.TeamsList = new List<TeamNameViewModel>()
+            TournamentTeamsListViewModel expectedTeams = new TournamentTeamsListViewModel
+            {
+                TeamsList = new List<TeamNameViewModel>()
             {
                 new TeamNameViewModel()
                 {
@@ -1614,8 +1615,9 @@
                     Id=3,
                     Name="TeamNameC"
                 }
+            },
+                TournamentId = TEST_DIVISION_ID
             };
-            expectedTeams.TournamentId = 1;
 
             return expectedTeams;
         }

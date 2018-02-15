@@ -44,8 +44,7 @@
             _dalGroups = _unitOfWork.Context.Groups;
         }
 
-        #endregion
-            
+        #endregion   
         #region Implemenations
 
         /// <summary>

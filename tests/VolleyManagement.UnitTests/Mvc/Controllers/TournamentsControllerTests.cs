@@ -180,21 +180,22 @@
         public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
             // Arrange
+            var expextedTeamsList = CreateExpectedTeamsList();
+
             var testData = CreateTestTeams();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
-            var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
-            SetupControllerContext(sut);
-
+            SetupControllerContext(sut);           
+         
             // Act
             var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
                 sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
-                .AreEqual(expectedTeamsList, returnedTeamsList.Model));
+                .AreEqual(expextedTeamsList, returnedTeamsList.Model));
             Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 
@@ -1588,6 +1589,35 @@
                     Value = "3",
                 },
             };
+        }
+
+        private TournamentTeamsListViewModel CreateExpectedTeamsList()
+        {
+            TournamentTeamsListViewModel expectedTeams = new TournamentTeamsListViewModel();
+            expectedTeams.TeamsList = new List<TeamNameViewModel>()
+            {
+                new TeamNameViewModel()
+                {
+                    DivisionName="DivisionNameA",
+                    Id=1,
+                    Name="TeamNameA"
+                },
+                new TeamNameViewModel()
+                {
+                    DivisionName="DivisionNameA",
+                    Id=2,
+                    Name="TeamNameB"
+                },
+                new TeamNameViewModel()
+                {
+                    DivisionName="DivisionNameA",
+                    Id=3,
+                    Name="TeamNameC"
+                }
+            };
+            expectedTeams.TournamentId = 1;
+
+            return expectedTeams;
         }
 
         private List<SelectListItem> CreateTestRoundList(int testRoundCount)

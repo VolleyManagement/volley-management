@@ -591,7 +591,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                     _requestService.Create(tournamentRequest);
                     result = Json(ViewModelResources.SuccessRequest);
                 }
-            }
+                }
             catch (ArgumentException ex)
             {
                 result = Json(ex.Message);

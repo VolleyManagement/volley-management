@@ -19,18 +19,14 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
-
-            if (Is<DebugMode>.Enabled)
+            
+            if (Is<IISDeployment>.Disabled)
             {
-                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
-            }
-            else if (Is<IISDeployment>.Enabled)
-            {
-                container.Register<IMailService, GmailAccountMailService>(IocLifetimeEnum.Scoped);
+                container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
             }
             else
             {
-                container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
+                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
             }
         }
     }

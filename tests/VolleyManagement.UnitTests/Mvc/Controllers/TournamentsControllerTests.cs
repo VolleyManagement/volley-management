@@ -180,7 +180,7 @@
         public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
             // Arrange
-            var expextedTeamsList = CreateExpectedTeamsList();
+            var expectedTeamsList = CreateExpectedTeamsList();
 
             var testData = CreateTestTeams();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
@@ -195,7 +195,7 @@
 
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
-                .AreEqual(expextedTeamsList, returnedTeamsList.Model));
+                .AreEqual(expectedTeamsList, returnedTeamsList.Model));
             Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 

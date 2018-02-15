@@ -1596,26 +1596,26 @@
             var expectedTeams = new TournamentTeamsListViewModel
             {
                 TeamsList = new List<TeamNameViewModel>()
-            {
-                new TeamNameViewModel()
                 {
-                    DivisionName = "DivisionNameA",
-                    Id = 1,
-                    Name = "TeamNameA"
+                    new TeamNameViewModel()
+                    {
+                        DivisionName = "DivisionNameA",
+                        Id = 1,
+                        Name = "TeamNameA"
+                    },
+                    new TeamNameViewModel()
+                    {
+                        DivisionName = "DivisionNameA",
+                        Id = 2,
+                        Name = "TeamNameB"
+                    },
+                    new TeamNameViewModel()
+                    {
+                        DivisionName = "DivisionNameA",
+                        Id = 3,
+                        Name = "TeamNameC"
+                    }
                 },
-                new TeamNameViewModel()
-                {
-                    DivisionName = "DivisionNameA",
-                    Id = 2,
-                    Name = "TeamNameB"
-                },
-                new TeamNameViewModel()
-                {
-                    DivisionName = "DivisionNameA",
-                    Id = 3,
-                    Name = "TeamNameC"
-                }
-            },
                 TournamentId = TEST_DIVISION_ID
             };
 

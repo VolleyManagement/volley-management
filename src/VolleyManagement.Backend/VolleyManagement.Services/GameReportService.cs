@@ -135,7 +135,7 @@
 
         #region Private methods
 
-        private List<StandingsEntry> CalculateStandingsForDivision(List<TeamTournamentDto> teams, List<GameResultDto> gameResults)
+        private static List<StandingsEntry> CalculateStandingsForDivision(List<TeamTournamentDto> teams, List<GameResultDto> gameResults)
         {
             var standings = CreateEntriesForTeams(teams);
 
@@ -245,7 +245,7 @@
             }
         }
 
-        private void CalculateBallsStatistics(List<GameResultDto> gameResults, List<StandingsEntry> standings)
+        private static void CalculateBallsStatistics(List<GameResultDto> gameResults, List<StandingsEntry> standings)
         {
             foreach (var item in standings)
             {
@@ -270,7 +270,7 @@
             return result;
         }
 
-        private int GetTeamWonBalls(int teamId, List<GameResultDto> games)
+        private static int GetTeamWonBalls(int teamId, List<GameResultDto> games)
         {
             var wonBalls = games.Where(g => g.HomeTeamId == teamId)
                                 .Where(item => !item.Result.GameScore.IsTechnicalDefeat)
@@ -282,7 +282,7 @@
             return wonBalls;
         }
 
-        private int GetTeamLostBalls(int teamId, List<GameResultDto> games)
+        private static int GetTeamLostBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
             var lostBalls = results.Where(item => !item.Result.GameScore.IsTechnicalDefeat)

@@ -317,7 +317,7 @@
             return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
         }
 
-        private void ValidateTeamName(string teamName)
+        private static void ValidateTeamName(string teamName)
         {
             if (TeamValidation.ValidateTeamName(teamName))
             {
@@ -329,7 +329,7 @@
             }
         }
 
-        private void ValidateCoachName(string teamCoachName)
+        private static void ValidateCoachName(string teamCoachName)
         {
             if (!string.IsNullOrEmpty(teamCoachName))
             {
@@ -344,7 +344,7 @@
         }
         }
 
-        private void ValidateAchievements(string teamAchievements)
+        private static void ValidateAchievements(string teamAchievements)
         {
             if (!string.IsNullOrEmpty(teamAchievements))
             {

@@ -25,7 +25,7 @@
             RegisterQueries(container);
         }
 
-        private void RegisterRepositories(IIocContainer container)
+        private static void RegisterRepositories(IIocContainer container)
         {
             container
                 .Register<IUnitOfWork, VolleyUnitOfWork>(IocLifetimeEnum.Scoped)
@@ -64,7 +64,7 @@
             }
         }
 
-        private bool InterfaceIsQuery(Type type)
+        private static bool InterfaceIsQuery(Type type)
         {
             var typeDefinition = type.GetGenericTypeDefinition();
             return typeDefinition == typeof(IQuery<,>) || typeDefinition == typeof(IQueryAsync<,>);

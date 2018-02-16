@@ -1,0 +1,1311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\home\.Rider2017.2\system\resharper-host\local\Transient\ReSharperHost\v10\SolutionCaches\_VolleyManagement.-1406492009.00" t="ExcludeRecursive" />
+    <e p="C:\Users\home\source\repos\volley-management2\bin\Debug" t="ExcludeRecursive" />
+    <e p="C:\Users\home\source\repos\volley-management2\bin\UnitTests\Debug" t="ExcludeRecursive" />
+    <e p="C:\Users\home\source\repos\volley-management2\src" t="IncludeFlat">
+      <e p="Application" t="Include" />
+      <e p="DataAccess" t="Include" />
+      <e p="Infrastructure" t="Include" />
+      <e p="packages" t="ExcludeRecursive">
+        <e p="SonarAnalyzer.CSharp.6.8.1.4648\analyzers" t="Include">
+          <e p="Google.Protobuf.dll" t="Include" />
+          <e p="SonarAnalyzer.CSharp.dll" t="Include" />
+          <e p="SonarAnalyzer.dll" t="Include" />
+        </e>
+      </e>
+      <e p="SonarQube" t="Include">
+        <e p="SolutionBinding.sqconfig" t="Include" />
+        <e p="volley-managementCSharp.ruleset" t="Include" />
+      </e>
+      <e p="UI" t="Include" />
+      <e p="VolleyManagement.Backend\VolleyManagement.Contracts" t="IncludeRecursive">
+        <e p="app.config" t="Include" />
+        <e p="Authentication" t="Include">
+          <e p="IVolleyUserManager.cs" t="Include" />
+          <e p="IVolleyUserStore.cs" t="Include" />
+          <e p="Models" t="Include">
+            <e p="LoginProviderModel.cs" t="Include" />
+            <e p="UserModel.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Authorization" t="Include">
+          <e p="AllowedOperations.cs" t="Include" />
+          <e p="IAuthorizationService.cs" t="Include" />
+          <e p="ICurrentUserService.cs" t="Include" />
+          <e p="IRolesService.cs" t="Include" />
+          <e p="IUserService.cs" t="Include" />
+        </e>
+        <e p="Exceptions" t="Include">
+          <e p="AuthorizationException.cs" t="Include" />
+          <e p="MissingEntityException.cs" t="Include" />
+          <e p="TournamentValidationException.cs" t="Include" />
+        </e>
+        <e p="ExternalResources" t="Include">
+          <e p="EmailMessage.cs" t="Include" />
+          <e p="IMailService.cs" t="Include" />
+        </e>
+        <e p="ICacheProvider.cs" t="Include" />
+        <e p="ICaptchaManager.cs" t="Include" />
+        <e p="IContributorTeamService.cs" t="Include" />
+        <e p="IFeedbackService.cs" t="Include" />
+        <e p="IFileService.cs" t="Include" />
+        <e p="IGameReportService.cs" t="Include" />
+        <e p="IGameService.cs" t="Include" />
+        <e p="IPlayerService.cs" t="Include" />
+        <e p="IRequestService.cs" t="Include" />
+        <e p="ITeamService.cs" t="Include" />
+        <e p="ITournamentRequestService.cs" t="Include" />
+        <e p="ITournamentService.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="TeamTournamentAssignmentDto.cs" t="Include" />
+        <e p="VolleyManagement.Contracts.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.Contracts.ruleset" t="Include" />
+      </e>
+      <e p="VolleyManagement.Backend\VolleyManagement.Crosscutting" t="IncludeRecursive">
+        <e p="Logger" t="Include">
+          <e p="EnterpriseLibraryLog.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+        </e>
+        <e p="Specifications" t="Include">
+          <e p="AndSpecification.cs" t="Include" />
+          <e p="CompositeSpecification.cs" t="Include" />
+          <e p="ExpressionSpecification.cs" t="Include" />
+          <e p="NotSpecification.cs" t="Include" />
+          <e p="OrSpecification.cs" t="Include" />
+        </e>
+        <e p="VolleyManagement.Crosscutting.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.Crosscutting.ruleset" t="Include" />
+      </e>
+      <e p="VolleyManagement.Backend\VolleyManagement.Crosscutting.Contracts" t="IncludeRecursive">
+        <e p="Extensions" t="Include">
+          <e p="EnumExtensions.cs" t="Include" />
+        </e>
+        <e p="FeatureToggles" t="Include">
+          <e p="DebugMode.cs" t="Include" />
+          <e p="IISDeployment.cs" t="Include" />
+        </e>
+        <e p="Infrastructure" t="Include">
+          <e p="IOC" t="Include">
+            <e p="IIocContainer.cs" t="Include" />
+            <e p="IIocRegistrationModule.cs" t="Include" />
+            <e p="IocLifetimeEnum.cs" t="Include" />
+          </e>
+          <e p="Logger" t="Include">
+            <e p="ILog.cs" t="Include" />
+            <e p="LogLevel.cs" t="Include" />
+          </e>
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Providers" t="Include">
+          <e p="DefaultTimeProvider.cs" t="Include" />
+          <e p="TimeProvider.cs" t="Include" />
+        </e>
+        <e p="Specifications" t="Include">
+          <e p="ISpecification.cs" t="Include" />
+        </e>
+        <e p="VolleyManagement.Crosscutting.Contracts.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.Crosscutting.Contracts.ruleset" t="Include" />
+      </e>
+      <e p="VolleyManagement.Backend\VolleyManagement.Data" t="IncludeRecursive">
+        <e p="Contracts" t="Include">
+          <e p="Constants.cs" t="Include" />
+          <e p="IGenericRepository.cs" t="Include" />
+          <e p="IQuery.cs" t="Include" />
+          <e p="IQueryAsync.cs" t="Include" />
+          <e p="IQueryCriteria.cs" t="Include" />
+          <e p="IRepository.cs" t="Include" />
+          <e p="IUnitOfWork.cs" t="Include" />
+        </e>
+        <e p="Exceptions" t="Include">
+          <e p="ConcurrencyException.cs" t="Include" />
+          <e p="InvalidEntityException.cs" t="Include" />
+          <e p="InvalidKeyValueException.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Queries" t="Include">
+          <e p="Authorization" t="Include">
+            <e p="FindByUserIdCriteria.cs" t="Include" />
+          </e>
+          <e p="Common" t="Include">
+            <e p="FindByIdCriteria.cs" t="Include" />
+            <e p="GetAllCriteria.cs" t="Include" />
+          </e>
+          <e p="Division" t="Include">
+            <e p="TournamentDivisionsCriteria.cs" t="Include" />
+          </e>
+          <e p="GameResult" t="Include">
+            <e p="GameByNumberCriteria.cs" t="Include" />
+            <e p="GamesByRoundCriteria.cs" t="Include" />
+            <e p="TournamentGameResultsCriteria.cs" t="Include" />
+            <e p="TournamentRoundsGameResultsCriteria.cs" t="Include" />
+          </e>
+          <e p="Group" t="Include">
+            <e p="DivisionGroupsCriteria.cs" t="Include" />
+          </e>
+          <e p="Player" t="Include">
+            <e p="FindByFullNameCriteria.cs" t="Include" />
+            <e p="TeamPlayersCriteria.cs" t="Include" />
+            <e p="UserToPlayerCriteria.cs" t="Include" />
+          </e>
+          <e p="Team" t="Include">
+            <e p="FindByCaptainIdCriteria.cs" t="Include" />
+            <e p="FindByTournamentIdCriteria.cs" t="Include" />
+            <e p="FindByTournamentIdCriteriaOld.cs" t="Include" />
+            <e p="FindTeamsByGroupIdCriteria.cs" t="Include" />
+            <e p="FindTeamsInDivisionsByTournamentIdCriteria.cs" t="Include" />
+          </e>
+          <e p="Tournament" t="Include">
+            <e p="OldTournamentsCriteria.cs" t="Include" />
+            <e p="TournamentByGroupCriteria.cs" t="Include" />
+            <e p="TournamentScheduleInfoCriteria.cs" t="Include" />
+            <e p="UniqueTournamentCriteria.cs" t="Include" />
+          </e>
+          <e p="TournamentRequest" t="Include">
+            <e p="FindByTeamTournamentCriteria.cs" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="FindByEmailCriteria.cs" t="Include" />
+            <e p="FindByLoginInfoCriteria.cs" t="Include" />
+            <e p="FindByNameCriteria.cs" t="Include" />
+            <e p="FindByRoleCriteria.cs" t="Include" />
+            <e p="UniqueUserCriteria.cs" t="Include" />
+          </e>
+        </e>
+        <e p="VolleyManagement.Data.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.Data.ruleset" t="Include" />
+      </e>
+      <e p="VolleyManagement.Backend\VolleyManagement.Data.MsSql" t="IncludeRecursive">
+        <e p="app.config" t="Include" />
+        <e p="Context" t="Include">
+          <e p="Migrations" t="Include">
+            <e p="201510171413220_InitialCreate.cs" t="Include" />
+            <e p="201510171413220_InitialCreate.Designer.cs" t="Include" />
+            <e p="201510171413220_InitialCreate.resx" t="Include" />
+            <e p="201510171919218_DropExtraIndexes.cs" t="Include" />
+            <e p="201510171919218_DropExtraIndexes.Designer.cs" t="Include" />
+            <e p="201510171919218_DropExtraIndexes.resx" t="Include" />
+            <e p="201510241559278_UserIdentity.cs" t="Include" />
+            <e p="201510241559278_UserIdentity.Designer.cs" t="Include" />
+            <e p="201510241559278_UserIdentity.resx" t="Include" />
+            <e p="201510311319565_AddRolesSupport.cs" t="Include" />
+            <e p="201510311319565_AddRolesSupport.Designer.cs" t="Include" />
+            <e p="201510311319565_AddRolesSupport.resx" t="Include" />
+            <e p="201511081957142_OptionalTransferPeriod.cs" t="Include" />
+            <e p="201511081957142_OptionalTransferPeriod.Designer.cs" t="Include" />
+            <e p="201511081957142_OptionalTransferPeriod.resx" t="Include" />
+            <e p="201511301922059_AddDivisions.cs" t="Include" />
+            <e p="201511301922059_AddDivisions.Designer.cs" t="Include" />
+            <e p="201511301922059_AddDivisions.resx" t="Include" />
+            <e p="201511301927551_AddGroups.cs" t="Include" />
+            <e p="201511301927551_AddGroups.Designer.cs" t="Include" />
+            <e p="201511301927551_AddGroups.resx" t="Include" />
+            <e p="201512171559020_AddGameResults.cs" t="Include" />
+            <e p="201512171559020_AddGameResults.Designer.cs" t="Include" />
+            <e p="201512171559020_AddGameResults.resx" t="Include" />
+            <e p="201604021015192_TeamTournamentRelation.cs" t="Include" />
+            <e p="201604021015192_TeamTournamentRelation.Designer.cs" t="Include" />
+            <e p="201604021015192_TeamTournamentRelation.resx" t="Include" />
+            <e p="201604061543141_ModifyGameResult.cs" t="Include" />
+            <e p="201604061543141_ModifyGameResult.Designer.cs" t="Include" />
+            <e p="201604061543141_ModifyGameResult.resx" t="Include" />
+            <e p="201604140531421_NullableAwayTeam.cs" t="Include" />
+            <e p="201604140531421_NullableAwayTeam.Designer.cs" t="Include" />
+            <e p="201604140531421_NullableAwayTeam.resx" t="Include" />
+            <e p="201604271211049_AddRolesToOperationsMap.cs" t="Include" />
+            <e p="201604271211049_AddRolesToOperationsMap.Designer.cs" t="Include" />
+            <e p="201604271211049_AddRolesToOperationsMap.resx" t="Include" />
+            <e p="201605070838352_NullableHomeTeam.cs" t="Include" />
+            <e p="201605070838352_NullableHomeTeam.Designer.cs" t="Include" />
+            <e p="201605070838352_NullableHomeTeam.resx" t="Include" />
+            <e p="201605071138277_GameNumberInGameResult.cs" t="Include" />
+            <e p="201605071138277_GameNumberInGameResult.Designer.cs" t="Include" />
+            <e p="201605071138277_GameNumberInGameResult.resx" t="Include" />
+            <e p="201605141828548_HomeTeamOptional.cs" t="Include" />
+            <e p="201605141828548_HomeTeamOptional.Designer.cs" t="Include" />
+            <e p="201605141828548_HomeTeamOptional.resx" t="Include" />
+            <e p="201605150733454_GameStartTimeNullable.cs" t="Include" />
+            <e p="201605150733454_GameStartTimeNullable.Designer.cs" t="Include" />
+            <e p="201605150733454_GameStartTimeNullable.resx" t="Include" />
+            <e p="201605161743580_LastTimeUpdate.cs" t="Include" />
+            <e p="201605161743580_LastTimeUpdate.Designer.cs" t="Include" />
+            <e p="201605161743580_LastTimeUpdate.resx" t="Include" />
+            <e p="201610141515542_MergedMigration.cs" t="Include" />
+            <e p="201610141515542_MergedMigration.Designer.cs" t="Include" />
+            <e p="201610141515542_MergedMigration.resx" t="Include" />
+            <e p="201610171943183_AddFeedbacks.cs" t="Include" />
+            <e p="201610171943183_AddFeedbacks.Designer.cs" t="Include" />
+            <e p="201610171943183_AddFeedbacks.resx" t="Include" />
+            <e p="201610272249353_AddNewFieldsToFeedback.cs" t="Include" />
+            <e p="201610272249353_AddNewFieldsToFeedback.Designer.cs" t="Include" />
+            <e p="201610272249353_AddNewFieldsToFeedback.resx" t="Include" />
+            <e p="201611031410480_AddPlayerToUser.cs" t="Include" />
+            <e p="201611031410480_AddPlayerToUser.Designer.cs" t="Include" />
+            <e p="201611031410480_AddPlayerToUser.resx" t="Include" />
+            <e p="201611192118036_AddedUserEnvironmentToFeedback.cs" t="Include" />
+            <e p="201611192118036_AddedUserEnvironmentToFeedback.Designer.cs" t="Include" />
+            <e p="201611192118036_AddedUserEnvironmentToFeedback.resx" t="Include" />
+            <e p="201611212206547_AddRequestsTable.cs" t="Include" />
+            <e p="201611212206547_AddRequestsTable.Designer.cs" t="Include" />
+            <e p="201611212206547_AddRequestsTable.resx" t="Include" />
+            <e p="201611222024248_BlockUser.cs" t="Include" />
+            <e p="201611222024248_BlockUser.Designer.cs" t="Include" />
+            <e p="201611222024248_BlockUser.resx" t="Include" />
+            <e p="201611232119533_AddTournamentRequestTable.cs" t="Include" />
+            <e p="201611232119533_AddTournamentRequestTable.Designer.cs" t="Include" />
+            <e p="201611232119533_AddTournamentRequestTable.resx" t="Include" />
+            <e p="201707111817526_AddTeamGroupRelations.cs" t="Include" />
+            <e p="201707111817526_AddTeamGroupRelations.Designer.cs" t="Include" />
+            <e p="201707111817526_AddTeamGroupRelations.resx" t="Include" />
+            <e p="201707140851580_ChangeTournamentRequest.cs" t="Include" />
+            <e p="201707140851580_ChangeTournamentRequest.Designer.cs" t="Include" />
+            <e p="201707140851580_ChangeTournamentRequest.resx" t="Include" />
+            <e p="201708091004233_AddIsArchivedFlag.cs" t="Include" />
+            <e p="201708091004233_AddIsArchivedFlag.Designer.cs" t="Include" />
+            <e p="201708091004233_AddIsArchivedFlag.resx" t="Include" />
+            <e p="201710160802100_TechnicalDefeatForSet.cs" t="Include" />
+            <e p="201710160802100_TechnicalDefeatForSet.Designer.cs" t="Include" />
+            <e p="201710160802100_TechnicalDefeatForSet.resx" t="Include" />
+            <e p="201711042048383_GamePenalty.cs" t="Include" />
+            <e p="201711042048383_GamePenalty.Designer.cs" t="Include" />
+            <e p="201711042048383_GamePenalty.resx" t="Include" />
+            <e p="201712291116409_AddUrlToGameVideo_Property.cs" t="Include" />
+            <e p="201712291116409_AddUrlToGameVideo_Property.Designer.cs" t="Include" />
+            <e p="201712291116409_AddUrlToGameVideo_Property.resx" t="Include" />
+            <e p="SeedDataGenerator.cs" t="Include" />
+            <e p="VolleyContextConfiguration.cs" t="Include" />
+          </e>
+          <e p="VolleyDatabaseMetadata.cs" t="Include" />
+          <e p="VolleyManagementDatabaseInitializer.cs" t="Include" />
+          <e p="VolleyManagementEntities.cs" t="Include" />
+        </e>
+        <e p="Entities" t="Include">
+          <e p="ContributorEntity.cs" t="Include" />
+          <e p="ContributorTeamEntity.cs" t="Include" />
+          <e p="DivisionEntity.cs" t="Include" />
+          <e p="FeedbackEntity.cs" t="Include" />
+          <e p="GameResultEntity.cs" t="Include" />
+          <e p="GroupEntity.cs" t="Include" />
+          <e p="LoginInfoEntity.cs" t="Include" />
+          <e p="PlayerEntity.cs" t="Include" />
+          <e p="RequestEntity.cs" t="Include" />
+          <e p="RoleEntity.cs" t="Include" />
+          <e p="RoleToOperationEntity.cs" t="Include" />
+          <e p="TeamEntity.cs" t="Include" />
+          <e p="TournamentEntity.cs" t="Include" />
+          <e p="TournamentRequestEntity.cs" t="Include" />
+          <e p="UserEntity.cs" t="Include" />
+          <e p="ValidationConstants.cs" t="Include" />
+        </e>
+        <e p="Infrastructure" t="Include">
+          <e p="IocDataAccessModule.cs" t="Include" />
+        </e>
+        <e p="Mappers" t="Include">
+          <e p="DomainToDal.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+        </e>
+        <e p="Queries" t="Include">
+          <e p="AuthorizationQueries.cs" t="Include" />
+          <e p="DivisionQueries.cs" t="Include" />
+          <e p="FeedbackQueries.cs" t="Include" />
+          <e p="GameResultQueries.cs" t="Include" />
+          <e p="PlayerQueries.cs" t="Include" />
+          <e p="RequestQueries.cs" t="Include" />
+          <e p="RolesQueries.cs" t="Include" />
+          <e p="TeamQueries.cs" t="Include" />
+          <e p="TournamentQueries.cs" t="Include" />
+          <e p="TournamentRequestQueries.cs" t="Include" />
+          <e p="UserQueries.cs" t="Include" />
+        </e>
+        <e p="Repositories" t="Include">
+          <e p="ContributorTeamRepository.cs" t="Include" />
+          <e p="FeedbackRepository.cs" t="Include" />
+          <e p="GameRepository.cs" t="Include" />
+          <e p="PlayerRepository.cs" t="Include" />
+          <e p="RequestRepository.cs" t="Include" />
+          <e p="RoleRepostitory.cs" t="Include" />
+          <e p="Specifications" t="Include">
+            <e p="FeedbackStorageSpecification.cs" t="Include" />
+            <e p="PlayerStorageSpecification.cs" t="Include" />
+            <e p="TeamStorageSpecification.cs" t="Include" />
+            <e p="TournamentsStorageSpecification.cs" t="Include" />
+          </e>
+          <e p="TeamRepository.cs" t="Include" />
+          <e p="TournamentRepository.cs" t="Include" />
+          <e p="TournamentRequestRepository.cs" t="Include" />
+          <e p="UserRepository.cs" t="Include" />
+        </e>
+        <e p="Sql" t="Include">
+          <e p="CreateDatabase.sql" t="Include" />
+          <e p="InsertValues.sql" t="Include" />
+        </e>
+        <e p="VolleyManagement.Data.MsSql.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.Data.MsSql.ruleset" t="Include" />
+        <e p="VolleyUnitOfWork.cs" t="Include" />
+      </e>
+      <e p="VolleyManagement.Backend\VolleyManagement.Domain" t="IncludeRecursive">
+        <e p="Constants.cs" t="Include" />
+        <e p="ContributorsAggregate" t="Include">
+          <e p="Contributor.cs" t="Include" />
+          <e p="ContributorTeam.cs" t="Include" />
+          <e p="IContributorTeamRepository.cs" t="Include" />
+        </e>
+        <e p="Dto" t="Include">
+          <e p="UserInRoleDto.cs" t="Include" />
+        </e>
+        <e p="FeedbackAggregate" t="Include">
+          <e p="Feedback.cs" t="Include" />
+          <e p="FeedbackStatusEnum.cs" t="Include" />
+          <e p="FeedbackValidation.cs" t="Include" />
+          <e p="IFeedbackRepository.cs" t="Include" />
+        </e>
+        <e p="GameReportsAggregate" t="Include">
+          <e p="DivisionStandingsDtoBase.cs" t="Include" />
+          <e p="PivotStandingsDto.cs" t="Include" />
+          <e p="ShortGameResultDto.cs" t="Include" />
+          <e p="StandingsDto.cs" t="Include" />
+          <e p="StandingsEntry.cs" t="Include" />
+          <e p="TeamStandingsDto.cs" t="Include" />
+          <e p="TournamentStandings.cs" t="Include" />
+        </e>
+        <e p="GamesAggregate" t="Include">
+          <e p="Game.cs" t="Include" />
+          <e p="GameResultDto.cs" t="Include" />
+          <e p="GameValidation.cs" t="Include" />
+          <e p="IGameRepository.cs" t="Include" />
+          <e p="Penalty.cs" t="Include" />
+          <e p="Result.cs" t="Include" />
+          <e p="ResultValidation.cs" t="Include" />
+          <e p="Score.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="PlayersAggregate" t="Include">
+          <e p="IPlayerRepository.cs" t="Include" />
+          <e p="Player.cs" t="Include" />
+          <e p="PlayerValidation.cs" t="Include" />
+        </e>
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+        </e>
+        <e p="RequestsAggregate" t="Include">
+          <e p="IRequestRepository.cs" t="Include" />
+          <e p="Request.cs" t="Include" />
+          <e p="RequestValidation.cs" t="Include" />
+        </e>
+        <e p="RolesAggregate" t="Include">
+          <e p="AuthOperation.cs" t="Include" />
+          <e p="AuthOperations.cs" t="Include" />
+          <e p="IRoleRepository.cs" t="Include" />
+          <e p="Role.cs" t="Include" />
+        </e>
+        <e p="TeamsAggregate" t="Include">
+          <e p="ITeamRepository.cs" t="Include" />
+          <e p="Team.cs" t="Include" />
+          <e p="TeamTournamentDto.cs" t="Include" />
+          <e p="TeamValidation.cs" t="Include" />
+        </e>
+        <e p="TournamentRequestAggregate" t="Include">
+          <e p="ITournamentRequestRepository.cs" t="Include" />
+          <e p="TournamentRequest.cs" t="Include" />
+          <e p="TournamentRequestValidation.cs" t="Include" />
+        </e>
+        <e p="TournamentsAggregate" t="Include">
+          <e p="Divisions" t="Include">
+            <e p="Division.cs" t="Include" />
+            <e p="DivisionValidation.cs" t="Include" />
+          </e>
+          <e p="DivisionScheduleDto.cs" t="Include" />
+          <e p="Groups" t="Include">
+            <e p="Group.cs" t="Include" />
+            <e p="GroupValidation.cs" t="Include" />
+          </e>
+          <e p="ITournamentRepository.cs" t="Include" />
+          <e p="Tournament.cs" t="Include" />
+          <e p="TournamentScheduleDto.cs" t="Include" />
+          <e p="TournamentSchemeEnum.cs" t="Include" />
+          <e p="TournamentStateEnum.cs" t="Include" />
+          <e p="TournamentValidationSpecification.cs" t="Include" />
+        </e>
+        <e p="UsersAggregate" t="Include">
+          <e p="IUserRepository.cs" t="Include" />
+          <e p="LoginProviderInfo.cs" t="Include" />
+          <e p="User.cs" t="Include" />
+          <e p="UserValidation.cs" t="Include" />
+        </e>
+        <e p="VolleyManagement.Domain.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.Domain.ruleset" t="Include" />
+      </e>
+      <e p="VolleyManagement.Backend\VolleyManagement.Services" t="IncludeRecursive">
+        <e p="app.config" t="Include" />
+        <e p="Authentication" t="Include">
+          <e p="VolleyUserManager.cs" t="Include" />
+          <e p="VolleyUserStore.cs" t="Include" />
+        </e>
+        <e p="Authorization" t="Include">
+          <e p="AuthorizationService.cs" t="Include" />
+          <e p="RolesService.cs" t="Include" />
+          <e p="UserService.cs" t="Include" />
+        </e>
+        <e p="CacheProvider.cs" t="Include" />
+        <e p="ContributorTeamService.cs" t="Include" />
+        <e p="FeedbackService.cs" t="Include" />
+        <e p="FileService.cs" t="Include" />
+        <e p="GameReportService.cs" t="Include" />
+        <e p="GameService.cs" t="Include" />
+        <e p="Infrastructure" t="Include">
+          <e p="IocServicesModule.cs" t="Include" />
+        </e>
+        <e p="Mail" t="Include">
+          <e p="DebugMailService.cs" t="Include" />
+          <e p="SendGridMailService.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="PlayerService.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+        </e>
+        <e p="RequestService.cs" t="Include" />
+        <e p="ServiceResources" t="Include">
+          <e p="ExceptionMessages.Designer.cs" t="Include" />
+          <e p="ExceptionMessages.resx" t="Include" />
+        </e>
+        <e p="TeamService.cs" t="Include" />
+        <e p="TournamentRequestService.cs" t="Include" />
+        <e p="TournamentService.cs" t="Include" />
+        <e p="VolleyManagement.Services.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.Services.ruleset" t="Include" />
+      </e>
+      <e p="VolleyManagement.Backend\VolleyManagement.UI" t="IncludeRecursive">
+        <e p="App_Data" t="Include" />
+        <e p="App_GlobalResources" t="Include">
+          <e p="AccountController.Designer.cs" t="Include" />
+          <e p="AccountController.resx" t="Include" />
+          <e p="AuthorizationRoles.Designer.cs" t="Include" />
+          <e p="AuthorizationRoles.resx" t="Include" />
+          <e p="FeedbackViews.Designer.cs" t="Include" />
+          <e p="FeedbackViews.resx" t="Include" />
+          <e p="GameReportViews.Designer.cs" t="Include" />
+          <e p="GameReportViews.resx" t="Include" />
+          <e p="GameResultsController.Designer.cs" t="Include" />
+          <e p="GameResultsController.resx" t="Include" />
+          <e p="GameResultViews.Designer.cs" t="Include" />
+          <e p="GameResultViews.resx" t="Include" />
+          <e p="PlayerViews.Designer.cs" t="Include" />
+          <e p="PlayerViews.resx" t="Include" />
+          <e p="TeamViews.Designer.cs" t="Include" />
+          <e p="TeamViews.resx" t="Include" />
+          <e p="TournamentController.Designer.cs" t="Include" />
+          <e p="TournamentController.resx" t="Include" />
+          <e p="TournamentViews.Designer.cs" t="Include" />
+          <e p="TournamentViews.resx" t="Include" />
+          <e p="UserViews.Designer.cs" t="Include" />
+          <e p="UserViews.resx" t="Include" />
+          <e p="ViewModelResources.Designer.cs" t="Include" />
+          <e p="ViewModelResources.resx" t="Include" />
+        </e>
+        <e p="App_Readme" t="Include">
+          <e p="Elmah.txt" t="Include" />
+        </e>
+        <e p="App_Start" t="Include">
+          <e p="BundleConfig.cs" t="Include" />
+          <e p="FilterConfig.cs" t="Include" />
+          <e p="RouteConfig.cs" t="Include" />
+          <e p="WebApiConfig.cs" t="Include" />
+        </e>
+        <e p="AreaConfig.cs" t="Include" />
+        <e p="Areas" t="Include">
+          <e p="Admin" t="Include">
+            <e p="AdminAreaRegistration.cs" t="Include" />
+            <e p="Controllers" t="Include">
+              <e p="DashboardController.cs" t="Include" />
+              <e p="RequestController.cs" t="Include" />
+              <e p="RequestsController.cs" t="Include" />
+              <e p="RolesController.cs" t="Include" />
+              <e p="TournamentRequestController.cs" t="Include" />
+              <e p="UsersController.cs" t="Include" />
+            </e>
+            <e p="Models" t="Include">
+              <e p="LoginProviderViewModel.cs" t="Include" />
+              <e p="MessageViewModel.cs" t="Include" />
+              <e p="ModifiedRoleViewModel.cs" t="Include" />
+              <e p="OperationResultViewModel.cs" t="Include" />
+              <e p="RequestCollectionViewModel.cs" t="Include" />
+              <e p="RequestsViewModel.cs" t="Include" />
+              <e p="RequestViewModel.cs" t="Include" />
+              <e p="RoleDetailsViewModel.cs" t="Include" />
+              <e p="RoleEditViewModel.cs" t="Include" />
+              <e p="RoleViewModel.cs" t="Include" />
+              <e p="TournamentRequestCollectionViewModel.cs" t="Include" />
+              <e p="TournamentRequestViewModel.cs" t="Include" />
+              <e p="UserViewModel.cs" t="Include" />
+            </e>
+            <e p="Views" t="Include">
+              <e p="_ViewStart.cshtml" t="Include" />
+              <e p="Dashboard" t="Include">
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Request" t="Include">
+                <e p="Index.cshtml" t="Include" />
+                <e p="InvalidOperation.cshtml" t="Include" />
+                <e p="PlayerDetails.cshtml" t="Include" />
+                <e p="UserDetails.cshtml" t="Include" />
+              </e>
+              <e p="Requests" t="Include">
+                <e p="Details.cshtml" t="Include" />
+                <e p="ErrorPage.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+                <e p="Reply.cshtml" t="Include" />
+              </e>
+              <e p="Roles" t="Include">
+                <e p="Details.cshtml" t="Include" />
+                <e p="Edit.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Shared" t="Include">
+                <e p="_AdminNavigation.cshtml" t="Include" />
+                <e p="_Layout.cshtml" t="Include" />
+                <e p="InvalidOperation.cshtml" t="Include" />
+              </e>
+              <e p="TournamentRequest" t="Include">
+                <e p="Decline.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Users" t="Include">
+                <e p="ActiveUsers.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+                <e p="UserDetails.cshtml" t="Include" />
+              </e>
+              <e p="web.config" t="Include" />
+            </e>
+          </e>
+          <e p="Mvc" t="Include">
+            <e p="Controllers" t="Include">
+              <e p="AccountController.cs" t="Include" />
+              <e p="Constants.cs" t="Include" />
+              <e p="Domain" t="Include">
+                <e p="ContributorsTeamController.cs" t="Include" />
+                <e p="FeedbacksController.cs" t="Include" />
+                <e p="GameReportsController.cs" t="Include" />
+                <e p="GameResultsController.cs" t="Include" />
+                <e p="PlayersController.cs" t="Include" />
+                <e p="TeamsController.cs" t="Include" />
+                <e p="TournamentsController.cs" t="Include" />
+              </e>
+              <e p="ErrorController.cs" t="Include" />
+              <e p="HomeController.cs" t="Include" />
+              <e p="NavigationController.cs" t="Include" />
+            </e>
+            <e p="Helpers" t="Include">
+              <e p="DateTimeModelBinder.cs" t="Include" />
+              <e p="EnumHtmlHelper.cs" t="Include" />
+              <e p="HtmlHelperExtensions.cs" t="Include" />
+              <e p="JQueryUIDateFormatConverter.cs" t="Include" />
+              <e p="ReverseComparer.cs" t="Include" />
+              <e p="TournamentSeasonHtmlHelper.cs" t="Include" />
+            </e>
+            <e p="Mappers" t="Include">
+              <e p="DomainToViewModel.cs" t="Include" />
+              <e p="ViewModelToDomain.cs" t="Include" />
+            </e>
+            <e p="MvcAreaRegistration.cs" t="Include" />
+            <e p="ViewModels" t="Include">
+              <e p="Account" t="Include">
+                <e p="AuthenticationStatusViewModel.cs" t="Include" />
+              </e>
+              <e p="ContributorsTeam" t="Include">
+                <e p="ContributorsTeamViewModel.cs" t="Include" />
+              </e>
+              <e p="FeedbackViewModel" t="Include">
+                <e p="FeedbackMessageViewModel.cs" t="Include" />
+                <e p="FeedbackViewModel.cs" t="Include" />
+              </e>
+              <e p="GameReports" t="Include">
+                <e p="CssClassConstants.cs" t="Include" />
+                <e p="DivisionStandingsBase.cs" t="Include" />
+                <e p="DivisionStandingsViewModel.cs" t="Include" />
+                <e p="PivotGameResultViewModel.cs" t="Include" />
+                <e p="PivotTableViewModel.cs" t="Include" />
+                <e p="PivotTeamStandingsViewModel.cs" t="Include" />
+                <e p="StandingsEntryViewModel.cs" t="Include" />
+                <e p="StandingsViewModel.cs" t="Include" />
+                <e p="TeamStandingsViewModelBase.cs" t="Include" />
+              </e>
+              <e p="GameResults" t="Include">
+                <e p="GameDeleteResultViewModel.cs" t="Include" />
+                <e p="GameResultViewModel.cs" t="Include" />
+                <e p="GameViewModel.cs" t="Include" />
+                <e p="ScoreViewModel.cs" t="Include" />
+                <e p="TournamentResultsViewModel.cs" t="Include" />
+              </e>
+              <e p="Generic" t="Include">
+                <e p="RefererViewModel.cs" t="Include" />
+              </e>
+              <e p="Menu" t="Include">
+                <e p="MenuItemViewModel.cs" t="Include" />
+              </e>
+              <e p="Players" t="Include">
+                <e p="PlayerDeleteResultViewModel.cs" t="Include" />
+                <e p="PlayerNameViewModel.cs" t="Include" />
+                <e p="PlayerRefererViewModel.cs" t="Include" />
+                <e p="PlayersListReferrerViewModel.cs" t="Include" />
+                <e p="PlayersListViewModel.cs" t="Include" />
+                <e p="PlayerViewModel.cs" t="Include" />
+              </e>
+              <e p="Teams" t="Include">
+                <e p="TeamCollectionReferrerViewModel.cs" t="Include" />
+                <e p="TeamCollectionViewModel.cs" t="Include" />
+                <e p="TeamNameViewModel.cs" t="Include" />
+                <e p="TeamOperationResultViewModel.cs" t="Include" />
+                <e p="TeamRefererViewModel.cs" t="Include" />
+                <e p="TeamViewModel.cs" t="Include" />
+              </e>
+              <e p="Tournaments" t="Include">
+                <e p="DivisionScheduleViewModel.cs" t="Include" />
+                <e p="DivisionViewModel.cs" t="Include" />
+                <e p="GroupTeamViewModel.cs" t="Include" />
+                <e p="GroupViewModel.cs" t="Include" />
+                <e p="ScheduleViewModel.cs" t="Include" />
+                <e p="TeamDeleteFromTournamentViewModel.cs" t="Include" />
+                <e p="TeamsAddToTournamentViewModel.cs" t="Include" />
+                <e p="TournamentApplyViewModel.cs" t="Include" />
+                <e p="TournamentsCollectionsViewModel.cs" t="Include" />
+                <e p="TournamentTeamsListReferrerViewModel.cs" t="Include" />
+                <e p="TournamentTeamsListViewModel.cs" t="Include" />
+                <e p="TournamentViewModel.cs" t="Include" />
+              </e>
+              <e p="Users" t="Include">
+                <e p="UserEditViewModel.cs" t="Include" />
+                <e p="UserViewModel.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Views" t="Include">
+              <e p="_ViewStart.cshtml" t="Include" />
+              <e p="Account" t="Include">
+                <e p="Details.cshtml" t="Include" />
+                <e p="Edit.cshtml" t="Include" />
+                <e p="Error.cshtml" t="Include" />
+                <e p="Info.cshtml" t="Include" />
+                <e p="Login.cshtml" t="Include" />
+              </e>
+              <e p="App_Data" t="Include">
+                <e p="Photo" t="Include">
+                  <e p="Teams" t="Include" />
+                </e>
+              </e>
+              <e p="ContributorsTeam" t="Include">
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Feedbacks" t="Include">
+                <e p="Create.cshtml" t="Include" />
+              </e>
+              <e p="GameReports" t="Include">
+                <e p="Standings.cshtml" t="Include" />
+                <e p="StandingsNotAvailable.cshtml" t="Include" />
+              </e>
+              <e p="GameResults" t="Include">
+                <e p="_CreateOrEdit.cshtml" t="Include" />
+                <e p="Create.cshtml" t="Include" />
+                <e p="Edit.cshtml" t="Include" />
+                <e p="TournamentResults.cshtml" t="Include" />
+              </e>
+              <e p="home" t="Include">
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Navigation" t="Include">
+                <e p="Menu.cshtml" t="Include" />
+              </e>
+              <e p="Players" t="Include">
+                <e p="_CreateOrEdit.cshtml" t="Include" />
+                <e p="_PartialNameViewModelCollection.cshtml" t="Include" />
+                <e p="ChoosePlayers.cshtml" t="Include" />
+                <e p="Create.cshtml" t="Include" />
+                <e p="Details.cshtml" t="Include" />
+                <e p="Edit.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Shared" t="Include">
+                <e p="_Layout.cshtml" t="Include" />
+                <e p="_MenuLayout.cshtml" t="Include" />
+                <e p="_Navigation.cshtml" t="Include" />
+              </e>
+              <e p="Teams" t="Include">
+                <e p="_CreateEdit.cshtml" t="Include" />
+                <e p="Create.cshtml" t="Include" />
+                <e p="Details.cshtml" t="Include" />
+                <e p="Edit.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Tournaments" t="Include">
+                <e p="_CreateOrEdit.cshtml" t="Include" />
+                <e p="_NonPlayoffSchedule.cshtml" t="Include" />
+                <e p="_PlayoffGameResult.cshtml" t="Include" />
+                <e p="_PlayoffSchedule.cshtml" t="Include" />
+                <e p="_ScheduledGameResult.cshtml" t="Include" />
+                <e p="_ScheduleOrEditGame.cshtml" t="Include" />
+                <e p="_SwappedRounds.cshtml" t="Include" />
+                <e p="ApplyForTournament.cshtml" t="Include" />
+                <e p="Archived.cshtml" t="Include" />
+                <e p="Create.cshtml" t="Include" />
+                <e p="Delete.cshtml" t="Include" />
+                <e p="Details.cshtml" t="Include" />
+                <e p="Edit.cshtml" t="Include" />
+                <e p="EditScheduledGame.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+                <e p="ManageTournamentTeams.cshtml" t="Include" />
+                <e p="ScheduleGame.cshtml" t="Include" />
+                <e p="ShowSchedule.cshtml" t="Include" />
+                <e p="TournamentsList.cshtml" t="Include" />
+              </e>
+              <e p="Users" t="Include">
+                <e p="Details.cshtml" t="Include" />
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="web.config" t="Include" />
+            </e>
+          </e>
+          <e p="WebAPI" t="Include">
+            <e p="Controllers" t="Include">
+              <e p="ContributorsTeamController.cs" t="Include" />
+              <e p="DivisionTitleComparer.cs" t="Include" />
+              <e p="HomeController.cs" t="Include" />
+              <e p="PlayersController.cs" t="Include" />
+              <e p="TeamsController.cs" t="Include" />
+              <e p="TournamentsController.cs" t="Include" />
+            </e>
+            <e p="Infrastructure" t="Include">
+              <e p="WebApiHelpers.cs" t="Include" />
+            </e>
+            <e p="ViewModels" t="Include">
+              <e p="ContributorsTeam" t="Include">
+                <e p="ContributorsTeamViewModel.cs" t="Include" />
+              </e>
+              <e p="GameReports" t="Include">
+                <e p="DivisionStandingsViewModel.cs" t="Include" />
+                <e p="DivisionStandingsViewModelBase.cs" t="Include" />
+                <e p="PivotStandingsGameViewModel.cs" t="Include" />
+                <e p="PivotStandingsTeamViewModel.cs" t="Include" />
+                <e p="PivotStandingsViewModel.cs" t="Include" />
+                <e p="ShortGameResultViewModel.cs" t="Include" />
+                <e p="StandingsEntryViewModel.cs" t="Include" />
+              </e>
+              <e p="Games" t="Include">
+                <e p="GameViewModel.cs" t="Include" />
+              </e>
+              <e p="Players" t="Include">
+                <e p="PlayerViewModel.cs" t="Include" />
+              </e>
+              <e p="Schedule" t="Include">
+                <e p="DivisionTitleViewModel.cs" t="Include" />
+                <e p="ScheduleDayViewModel.cs" t="Include" />
+                <e p="ScheduleViewModel.cs" t="Include" />
+                <e p="WeekViewModel.cs" t="Include" />
+              </e>
+              <e p="Teams" t="Include">
+                <e p="TeamViewModel.cs" t="Include" />
+              </e>
+              <e p="Tournaments" t="Include">
+                <e p="TournamentViewModel.cs" t="Include" />
+              </e>
+              <e p="Users" t="Include">
+                <e p="UserViewModel.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Views" t="Include">
+              <e p="_ViewStart.cshtml" t="Include" />
+              <e p="home" t="Include">
+                <e p="Index.cshtml" t="Include" />
+              </e>
+              <e p="Shared" t="Include">
+                <e p="_Layout.cshtml" t="Include" />
+              </e>
+              <e p="web.config" t="Include" />
+            </e>
+            <e p="WebAPIAreaRegistration.cs" t="Include" />
+          </e>
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Content" t="Include">
+          <e p="Admin" t="Include">
+            <e p="admin.css" t="Include" />
+            <e p="Reply.css" t="Include" />
+            <e p="vm.css" t="Include" />
+          </e>
+          <e p="ajax-loader.gif" t="Include" />
+          <e p="bootstrap.css" t="Include" />
+          <e p="bootstrap.min.css" t="Include" />
+          <e p="font-awesome.css" t="Include" />
+          <e p="font-awesome.min.css" t="Include" />
+          <e p="fonts" t="Include">
+            <e p="glyphicons-halflings-regular.eot" t="Include" />
+            <e p="glyphicons-halflings-regular.svg" t="Include" />
+            <e p="glyphicons-halflings-regular.ttf" t="Include" />
+            <e p="glyphicons-halflings-regular.woff" t="Include" />
+          </e>
+          <e p="metisMenu.css" t="Include" />
+          <e p="metisMenu.min.css" t="Include" />
+          <e p="Photo" t="Include">
+            <e p="Teams" t="Include">
+              <e p="0.jpg" t="Include" />
+            </e>
+          </e>
+          <e p="Site" t="Include" />
+          <e p="Site.css" t="Include" />
+          <e p="styles.css" t="Include" />
+          <e p="TeamPhoto.css" t="Include" />
+          <e p="themes" t="Include">
+            <e p="base" t="Include">
+              <e p="accordion.css" t="Include" />
+              <e p="all.css" t="Include" />
+              <e p="autocomplete.css" t="Include" />
+              <e p="base.css" t="Include" />
+              <e p="button.css" t="Include" />
+              <e p="core.css" t="Include" />
+              <e p="datepicker.css" t="Include" />
+              <e p="dialog.css" t="Include" />
+              <e p="draggable.css" t="Include" />
+              <e p="images" t="Include">
+                <e p="ui-bg_flat_0_aaaaaa_40x100.png" t="Include" />
+                <e p="ui-bg_flat_75_ffffff_40x100.png" t="Include" />
+                <e p="ui-bg_glass_55_fbf9ee_1x400.png" t="Include" />
+                <e p="ui-bg_glass_65_ffffff_1x400.png" t="Include" />
+                <e p="ui-bg_glass_75_dadada_1x400.png" t="Include" />
+                <e p="ui-bg_glass_75_e6e6e6_1x400.png" t="Include" />
+                <e p="ui-bg_glass_95_fef1ec_1x400.png" t="Include" />
+                <e p="ui-bg_highlight-soft_75_cccccc_1x100.png" t="Include" />
+                <e p="ui-icons_222222_256x240.png" t="Include" />
+                <e p="ui-icons_2e83ff_256x240.png" t="Include" />
+                <e p="ui-icons_454545_256x240.png" t="Include" />
+                <e p="ui-icons_888888_256x240.png" t="Include" />
+                <e p="ui-icons_cd0a0a_256x240.png" t="Include" />
+              </e>
+              <e p="menu.css" t="Include" />
+              <e p="progressbar.css" t="Include" />
+              <e p="resizable.css" t="Include" />
+              <e p="selectable.css" t="Include" />
+              <e p="selectmenu.css" t="Include" />
+              <e p="slider.css" t="Include" />
+              <e p="sortable.css" t="Include" />
+              <e p="spinner.css" t="Include" />
+              <e p="tabs.css" t="Include" />
+              <e p="theme.css" t="Include" />
+              <e p="tooltip.css" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="HomeController.cs" t="Include" />
+        </e>
+        <e p="favicon.ico" t="Include" />
+        <e p="fonts" t="Include">
+          <e p="fontawesome-webfont.eot" t="Include" />
+          <e p="fontawesome-webfont.svg" t="Include" />
+          <e p="fontawesome-webfont.ttf" t="Include" />
+          <e p="fontawesome-webfont.woff" t="Include" />
+          <e p="fontawesome-webfont.woff2" t="Include" />
+          <e p="FontAwesome.otf" t="Include" />
+          <e p="glyphicons-halflings-regular.eot" t="Include" />
+          <e p="glyphicons-halflings-regular.svg" t="Include" />
+          <e p="glyphicons-halflings-regular.ttf" t="Include" />
+          <e p="glyphicons-halflings-regular.woff" t="Include" />
+        </e>
+        <e p="GlimpseSecurityPolicy.cs" t="Include" />
+        <e p="Global.asax" t="Include" />
+        <e p="Global.asax.cs" t="Include" />
+        <e p="Infrastructure" t="Include">
+          <e p="CaptchaManager.cs" t="Include" />
+          <e p="CurrentUserService.cs" t="Include" />
+          <e p="ExceptionManagement" t="Include">
+            <e p="VolleyExceptionFilterAttribute.cs" t="Include" />
+          </e>
+          <e p="IOC" t="Include">
+            <e p="SimpleInjectorContainer.cs" t="Include" />
+          </e>
+          <e p="IocUIModule.cs" t="Include" />
+          <e p="SimpleTraceLog.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="OwinConfig.cs" t="Include" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="PublishProfiles" t="Include">
+            <e p="volley-mgmt-app - Web Deploy.pubxml" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="bootstrap.js" t="Include" />
+          <e p="bootstrap.min.js" t="Include" />
+          <e p="GameResults" t="Include">
+            <e p="ResultsValidate.js" t="Include" />
+          </e>
+          <e p="jquery-1.10.2.intellisense.js" t="Include" />
+          <e p="jquery-1.10.2.js" t="Include" />
+          <e p="jquery-1.10.2.min.js" t="Include" />
+          <e p="jquery-1.10.2.min.map" t="Include" />
+          <e p="jquery-2.1.4.intellisense.js" t="Include" />
+          <e p="jquery-2.1.4.js" t="Include" />
+          <e p="jquery-2.1.4.min.js" t="Include" />
+          <e p="jquery-2.1.4.min.map" t="Include" />
+          <e p="jquery-ui-1.11.4.js" t="Include" />
+          <e p="jquery-ui-1.11.4.min.js" t="Include" />
+          <e p="jquery.min.map" t="Include" />
+          <e p="jquery.unobtrusive-ajax.js" t="Include" />
+          <e p="jquery.unobtrusive-ajax.min.js" t="Include" />
+          <e p="jquery.validate-vsdoc.js" t="Include" />
+          <e p="jquery.validate.js" t="Include" />
+          <e p="jquery.validate.min.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+          <e p="metisMenu.js" t="Include" />
+          <e p="metisMenu.min.js" t="Include" />
+          <e p="modernizr-2.6.2.js" t="Include" />
+          <e p="respond.js" t="Include" />
+          <e p="respond.min.js" t="Include" />
+          <e p="scripts.js" t="Include" />
+          <e p="TournamentOperationScripts.js" t="Include" />
+          <e p="UserActions.js" t="Include" />
+          <e p="VMScripts" t="Include">
+            <e p="Admin" t="Include">
+              <e p="admin.js" t="Include" />
+              <e p="BackButton.js" t="Include" />
+              <e p="ChangeUserBlocked.js" t="Include" />
+            </e>
+            <e p="FeedbackOperations" t="Include">
+              <e p="AjaxResponse.js" t="Include" />
+              <e p="BackButton.js" t="Include" />
+              <e p="CheckEnvironment.js" t="Include" />
+            </e>
+            <e p="GameOperations" t="Include">
+              <e p="DeleteGame.js" t="Include" />
+            </e>
+            <e p="PlayerOperations" t="Include">
+              <e p="LinkPlayerToUser.js" t="Include" />
+            </e>
+            <e p="TeamOperations" t="Include">
+              <e p="CreateEdit.js" t="Include" />
+              <e p="List.js" t="Include" />
+              <e p="UploadPhoto.js" t="Include" />
+            </e>
+            <e p="TournamentOperations" t="Include">
+              <e p="AddTeams.js" t="Include" />
+              <e p="ApplyForTournament.js" t="Include" />
+              <e p="ScheduleCreateOrEdit.js" t="Include" />
+              <e p="SwapRounds.js" t="Include" />
+            </e>
+            <e p="VMScripts.js" t="Include" />
+          </e>
+        </e>
+        <e p="ViewModelConstants.cs" t="Include" />
+        <e p="Views" t="Include">
+          <e p="_ViewStart.cshtml" t="Include" />
+          <e p="home" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="Shared" t="Include">
+            <e p="_Layout.cshtml" t="Include" />
+            <e p="AccessDenied.cshtml" t="Include" />
+            <e p="Blocked.cshtml" t="Include" />
+            <e p="Error.cshtml" t="Include" />
+            <e p="PageNotFound.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="VolleyManagement.UI.csproj" t="IncludeRecursive" />
+        <e p="VolleyManagement.UI.ruleset" t="Include" />
+        <e p="web.config" t="Include" />
+        <e p="Web.Debug.config" t="Include" />
+        <e p="Web.Release.config" t="Include" />
+      </e>
+      <e p="VolleyManagement.sln" t="IncludeFlat" />
+    </e>
+    <e p="C:\Users\home\source\repos\volley-management2\tests\VolleyManagement.UnitTests" t="IncludeRecursive">
+      <e p="Admin" t="Include">
+        <e p="Comparers" t="Include">
+          <e p="MessageViewModelComparer.cs" t="Include" />
+          <e p="TournamentRequestViewModelComparer.cs" t="Include" />
+          <e p="UserViewModelComparer.cs" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="TournamentRequestControllerTest.cs" t="Include" />
+          <e p="UsersControllerTest.cs" t="Include" />
+        </e>
+        <e p="ViewModels" t="Include">
+          <e p="TournamentRequestsViewModelsBuilder.cs" t="Include" />
+          <e p="UserAdminViewModelBuilder.cs" t="Include" />
+        </e>
+      </e>
+      <e p="app.config" t="Include" />
+      <e p="GlobalSuppressions.cs" t="Include" />
+      <e p="Mvc" t="Include">
+        <e p="Comparers" t="Include">
+          <e p="RequestsViewModelComparer.cs" t="Include" />
+          <e p="RoleViewModelComparer.cs" t="Include" />
+          <e p="UserEditViewModelComparer.cs" t="Include" />
+          <e p="UserViewModelComparer.cs" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="AccountControllerTests.cs" t="Include" />
+          <e p="ContributorsTeamControllerTests.cs" t="Include" />
+          <e p="FeedbacksControllerTests.cs" t="Include" />
+          <e p="GameReportsControllerTests.cs" t="Include" />
+          <e p="GameResultsControllerTests.cs" t="Include" />
+          <e p="PlayersControllerTests.cs" t="Include" />
+          <e p="RequestControllerTests.cs" t="Include" />
+          <e p="RequestsControllerTests.cs" t="Include" />
+          <e p="RolesControllerTests.cs" t="Include" />
+          <e p="TeamsControllerTests.cs" t="Include" />
+          <e p="TournamentsControllerTests.cs" t="Include" />
+        </e>
+        <e p="ViewModels" t="Include">
+          <e p="Comparers" t="Include">
+            <e p="ScoreViewModelComparer.cs" t="Include" />
+          </e>
+          <e p="ContributorteamDomainToViewModel.cs" t="Include" />
+          <e p="ContributorTeamMvcViewModelBuilder.cs" t="Include" />
+          <e p="ContributorTeamViewModelComparer.cs" t="Include" />
+          <e p="ContributorTeamViewModelToDomain.cs" t="Include" />
+          <e p="DivisionViewModelEqualityComparer.cs" t="Include" />
+          <e p="FeedbackMvcViewModelBuilder.cs" t="Include" />
+          <e p="FeedbackViewModelComparer.cs" t="Include" />
+          <e p="GameMvcEqualityComparer.cs" t="Include" />
+          <e p="GameResultViewModelBuilder.cs" t="Include" />
+          <e p="GameResultViewModelComparer.cs" t="Include" />
+          <e p="GameResultViewModelEqualityComparer.cs" t="Include" />
+          <e p="GameResultViewModelToDomain.cs" t="Include" />
+          <e p="GameViewModelBuilder.cs" t="Include" />
+          <e p="GroupViewModelEqualityComparer.cs" t="Include" />
+          <e p="PivotGameResultsViewModelEqualityComparer.cs" t="Include" />
+          <e p="PivotTableEqualityComparer.cs" t="Include" />
+          <e p="PivotTeamStandingsViewModelEqualityComparer.cs" t="Include" />
+          <e p="PlayerDomainToViewModel.cs" t="Include" />
+          <e p="PlayerMvcViewModelBuilder.cs" t="Include" />
+          <e p="PlayerNameViewModelComparer.cs" t="Include" />
+          <e p="PlayerViewModelComparer.cs" t="Include" />
+          <e p="PlayerViewModelToDomainTest.cs" t="Include" />
+          <e p="ScheduleViewModelBuilder.cs" t="Include" />
+          <e p="ScheduleViewModelComparer.cs" t="Include" />
+          <e p="StandingsEntryViewModelEqualityComparer.cs" t="Include" />
+          <e p="StandingsViewModelBuilder.cs" t="Include" />
+          <e p="StandingsViewModelComparer.cs" t="Include" />
+          <e p="TeamMvcViewModelBuilder.cs" t="Include" />
+          <e p="TeamNameViewModelBuilder.cs" t="Include" />
+          <e p="TeamNameViewModelComparer.cs" t="Include" />
+          <e p="TeamViewModelComparer.cs" t="Include" />
+          <e p="TournamentApplyViewModelBuilder.cs" t="Include" />
+          <e p="TournamentApplyViewModelComparer.cs" t="Include" />
+          <e p="TournamentDomainToViewModel.cs" t="Include" />
+          <e p="TournamentMvcViewModelBuilder.cs" t="Include" />
+          <e p="TournamentResultsViewModelBuilder.cs" t="Include" />
+          <e p="TournamentResultsViewModelComparer.cs" t="Include" />
+          <e p="TournamentTeamsListViewModelComparer.cs" t="Include" />
+          <e p="TournamentViewModelComparer.cs" t="Include" />
+          <e p="UserEditMvcViewModelBuilder.cs" t="Include" />
+          <e p="UserMvcViewModelBuilder.cs" t="Include" />
+          <e p="ViewModelToDomainTests.cs" t="Include" />
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages.config" t="Include" />
+      <e p="Properties" t="Include">
+        <e p="AssemblyInfo.cs" t="Include" />
+      </e>
+      <e p="Services" t="Include">
+        <e p="AuthService" t="Include">
+          <e p="AuthorizationServiceTests.cs" t="Include" />
+        </e>
+        <e p="ContributorService" t="Include">
+          <e p="ContributorEqualityComparer.cs" t="Include" />
+          <e p="ContributorTeamBuilder.cs" t="Include" />
+          <e p="ContributorTeamComparer.cs" t="Include" />
+          <e p="ContributorTeamServiceTestFixture.cs" t="Include" />
+          <e p="ContributorTeamServiceTests.cs" t="Include" />
+        </e>
+        <e p="FeedbackService" t="Include">
+          <e p="FeedbackBuilder.cs" t="Include" />
+          <e p="FeedbackComparer.cs" t="Include" />
+          <e p="FeedbackServiceTestFixture.cs" t="Include" />
+          <e p="FeedbackServiceTests.cs" t="Include" />
+        </e>
+        <e p="FileService" t="Include">
+          <e p="FileServiceTests.cs" t="Include" />
+        </e>
+        <e p="GameReportService" t="Include">
+          <e p="Comparers" t="Include">
+            <e p="PivotStandingsComparer.cs" t="Include" />
+            <e p="ShortGameResultDtoComparer.cs" t="Include" />
+            <e p="StandingsDtoComparer.cs" t="Include" />
+            <e p="StandingsEntryComparer.cs" t="Include" />
+            <e p="TeamStandingsDtoComparer.cs" t="Include" />
+            <e p="TournamentStandingsComparer.cs" t="Include" />
+          </e>
+          <e p="Fixture" t="Include">
+            <e p="GameResultsTestFixture.cs" t="Include" />
+            <e p="PivotStandingsTestFixture.cs" t="Include" />
+            <e p="ShortGameResultDtoTestFixture.cs" t="Include" />
+            <e p="StandingsTestFixture.cs" t="Include" />
+            <e p="TeamInTournamentTestFixture.cs" t="Include" />
+          </e>
+          <e p="GameReportsServiceTestsBase.cs" t="Include" />
+          <e p="GetPivotStandingsTests.cs" t="Include" />
+          <e p="GetStandingsTests.cs" t="Include" />
+          <e p="StandingsEntryTests.cs" t="Include" />
+        </e>
+        <e p="GameService" t="Include">
+          <e p="Comparers" t="Include">
+            <e p="GameComparer.cs" t="Include" />
+            <e p="GameResultDtoComparer.cs" t="Include" />
+            <e p="ScoreComparer.cs" t="Include" />
+          </e>
+          <e p="ExpectedExceptionMessages.cs" t="Include" />
+          <e p="Fixture" t="Include">
+            <e p="GameBuilder.cs" t="Include" />
+            <e p="GameResultDtoBuilder.cs" t="Include" />
+            <e p="GameServiceTestFixture.cs" t="Include" />
+            <e p="GameTestFixture.cs" t="Include" />
+          </e>
+          <e p="GameServiceTests.cs" t="Include" />
+        </e>
+        <e p="GroupTeamService" t="Include">
+          <e p="GroupTeamServiceTestFixture.cs" t="Include" />
+          <e p="TournamentTeamsListViewModelTestFixture.cs" t="Include" />
+        </e>
+        <e p="MailService" t="Include">
+          <e p="EmailMessageBuilder.cs" t="Include" />
+        </e>
+        <e p="PlayerService" t="Include">
+          <e p="PlayerBuilder.cs" t="Include" />
+          <e p="PlayerComparer.cs" t="Include" />
+          <e p="PlayerServiceTestFixture.cs" t="Include" />
+          <e p="PlayerServiceTests.cs" t="Include" />
+        </e>
+        <e p="RequestsService" t="Include">
+          <e p="RequestBuilder.cs" t="Include" />
+          <e p="RequestComparer.cs" t="Include" />
+          <e p="RequestServiceTestFixture.cs" t="Include" />
+          <e p="RequestServiceTests.cs" t="Include" />
+        </e>
+        <e p="RolesService" t="Include">
+          <e p="RoleComparer.cs" t="Include" />
+          <e p="RolesServiceTests.cs" t="Include" />
+          <e p="UserInRoleComparer.cs" t="Include" />
+        </e>
+        <e p="TeamService" t="Include">
+          <e p="TeamBuilder.cs" t="Include" />
+          <e p="TeamComparer.cs" t="Include" />
+          <e p="TeamInTournamentComparer.cs" t="Include" />
+          <e p="TeamServiceTestFixture.cs" t="Include" />
+          <e p="TeamServiceTests.cs" t="Include" />
+        </e>
+        <e p="TournamentRequestService" t="Include">
+          <e p="TournamentRequestBuilder.cs" t="Include" />
+          <e p="TournamentRequestComparer.cs" t="Include" />
+          <e p="TournamentRequestServiceTestFixture.cs" t="Include" />
+          <e p="TournamentRequestServiceTests.cs" t="Include" />
+        </e>
+        <e p="TournamentService" t="Include">
+          <e p="DivisionComparer.cs" t="Include" />
+          <e p="DivisionTestFixture.cs" t="Include" />
+          <e p="GroupComparer.cs" t="Include" />
+          <e p="GroupTestFixture.cs" t="Include" />
+          <e p="TournamentBuilder.cs" t="Include" />
+          <e p="TournamentComparer.cs" t="Include" />
+          <e p="TournamentScheduleDtoBuilder.cs" t="Include" />
+          <e p="TournamentServiceTestFixture.cs" t="Include" />
+          <e p="TournamentServiceTests.cs" t="Include" />
+        </e>
+        <e p="UserManager" t="Include">
+          <e p="UserBuilder.cs" t="Include" />
+          <e p="UserModelBuilder.cs" t="Include" />
+        </e>
+        <e p="UserService" t="Include">
+          <e p="BlockUserBuilder.cs" t="Include" />
+          <e p="BlockUserComparer.cs" t="Include" />
+          <e p="BlockUserServiceTests.cs" t="Include" />
+        </e>
+        <e p="UsersService" t="Include">
+          <e p="UserBuilder.cs" t="Include" />
+          <e p="UserComparer.cs" t="Include" />
+          <e p="UserServiceTestFixture.cs" t="Include" />
+          <e p="UserServiceTests.cs" t="Include" />
+        </e>
+      </e>
+      <e p="TestCSharp7FeaturesSupport.cs" t="Include" />
+      <e p="TestExtensions.cs" t="Include" />
+      <e p="TestHelper.cs" t="Include" />
+      <e p="VolleyManagement.UnitTests.csproj" t="IncludeRecursive" />
+      <e p="WebAPI" t="Include">
+        <e p="Controllers" t="Include">
+          <e p="ScheduleTests.cs" t="Include" />
+          <e p="TournamentControllerTests.cs" t="Include" />
+        </e>
+        <e p="Standings" t="Include">
+          <e p="DivisionStandingsViewModelTestFixture.cs" t="Include" />
+          <e p="PivotStandingsViewModelTestFixture.cs" t="Include" />
+          <e p="StandingsEntryViewModelEqualityComparer.cs" t="Include" />
+          <e p="StandingsViewModelComparer.cs" t="Include" />
+        </e>
+        <e p="ViewModels" t="Include">
+          <e p="ContributorTeamViewModelBuilder.cs" t="Include" />
+          <e p="ContributorTeamViewModelComparer.cs" t="Include" />
+          <e p="ContributorTeamViewModelServiceTestFixture.cs" t="Include" />
+          <e p="GameViewModelBuilder.cs" t="Include" />
+          <e p="GameViewModelComparer.cs" t="Include" />
+          <e p="PivotStandingsEntryViewModelComparer.cs" t="Include" />
+          <e p="PivotStandingsEntryViewModelServiceTestFixture.cs" t="Include" />
+          <e p="PivotStandingsGameViewModelComparer.cs" t="Include" />
+          <e p="PivotStandingsGameViewModelServiceTestFixture.cs" t="Include" />
+          <e p="PivotStandingsViewModelComparer.cs" t="Include" />
+          <e p="PlayerViewModelBuilder.cs" t="Include" />
+          <e p="PlayerViewModelComparer.cs" t="Include" />
+          <e p="PlayerViewModelServiceTestFixture.cs" t="Include" />
+          <e p="Schedule" t="Include">
+            <e p="DivisionTitleViewModelComparer.cs" t="Include" />
+            <e p="ScheduleDayViewModelComparer.cs" t="Include" />
+            <e p="ScheduleViewModelComparer.cs" t="Include" />
+            <e p="ScheduleViewModelTestFixture.cs" t="Include" />
+            <e p="WeekViewModelComparer.cs" t="Include" />
+          </e>
+          <e p="StandingsEntryViewModelComparer.cs" t="Include" />
+          <e p="StandingsEntryViewModelServiceTestFixture.cs" t="Include" />
+          <e p="TeamViewModelBuilder.cs" t="Include" />
+          <e p="TeamViewModelComparer.cs" t="Include" />
+          <e p="TeamViewModelServiceTestFixture.cs" t="Include" />
+          <e p="TournamentViewModelBuilder.cs" t="Include" />
+          <e p="TournamentViewModelComparer.cs" t="Include" />
+          <e p="TournamentViewModelServiceTestFixture.cs" t="Include" />
+        </e>
+      </e>
+    </e>
+  </component>
+</project>

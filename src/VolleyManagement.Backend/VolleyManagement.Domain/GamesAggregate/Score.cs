@@ -18,11 +18,21 @@
         /// <param name="home">Score of the home team.</param>
         /// <param name="away">Score of the away team.</param>
         /// <param name="isTechnicalDefeat">Indicating whether the technical defeat has taken place.</param>
-        public Score(byte home, byte away, bool isTechnicalDefeat = false)
+        public Score(byte home, byte away, bool isTechnicalDefeat)
         {
             Home = home;
             Away = away;
             IsTechnicalDefeat = isTechnicalDefeat;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Score"/> class that contains specified score.
+        /// </summary>
+        /// <param name="home">Score of the home team.</param>
+        /// <param name="away">Score of the away team.</param>
+        public Score(byte home, byte away)
+        {
+            Home = home;
+            Away = away;
         }
 
         /// <summary>

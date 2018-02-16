@@ -708,7 +708,7 @@
             // Schedule next games only if finished game is not in last round
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                Game oldGame = gamesInCurrentAndNextRounds.Where(gr => gr.Id == finishedGame.Id).SingleOrDefault();
+                Game oldGame = gamesInCurrentAndNextRounds.SingleOrDefault(gr => gr.Id == finishedGame.Id);
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue

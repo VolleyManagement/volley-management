@@ -121,7 +121,7 @@
             }
             else
             {
-                var division = oldDivisions.Where(d => d.Id == from.Id).SingleOrDefault();
+                var division = oldDivisions.SingleOrDefault(d => d.Id == from.Id);
                 var newGroups = from.Groups.Where(gr => gr.Id == 0);
                 foreach (var group in newGroups.ToList())
                 {

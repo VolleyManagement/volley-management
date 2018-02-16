@@ -14,8 +14,8 @@
     /// </summary>
     public class AuthorizationService : IAuthorizationService
     {
-        private ICurrentUserService _userService;
-        private IQuery<List<AuthOperation>, FindByUserIdCriteria> _getOperationsQuery;
+        private readonly ICurrentUserService _userService;
+        private readonly IQuery<List<AuthOperation>, FindByUserIdCriteria> _getOperationsQuery;
 
         #region Constructor
 
@@ -28,18 +28,9 @@
             ICurrentUserService userService,
             IQuery<List<AuthOperation>, FindByUserIdCriteria> getOperationsQuery)
         {
-            if (userService == null)
-            {
-                throw new ArgumentException("userService");
-            }
+            _userService = userService ?? throw new ArgumentException("userService");
 
-            if (getOperationsQuery == null)
-            {
-                throw new ArgumentException("getFeaturesQuery");
-            }
-
-            _userService = userService;
-            _getOperationsQuery = getOperationsQuery;
+            _getOperationsQuery = getOperationsQuery ?? throw new ArgumentException("getFeaturesQuery");
         }
 
         #endregion

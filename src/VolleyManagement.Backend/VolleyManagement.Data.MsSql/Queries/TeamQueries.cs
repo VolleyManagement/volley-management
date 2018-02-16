@@ -26,8 +26,6 @@
         #region Fields
 
         private readonly VolleyUnitOfWork _unitOfWork;
-        private readonly DbSet<TeamEntity> _dalTeams;
-        private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<DivisionEntity> _dalDivisions;
         private readonly DbSet<GroupEntity> _dalGroups;
 
@@ -41,7 +39,9 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public TeamQueries(IUnitOfWork unitOfWork)
         {
+            DbSet<TeamEntity> _dalTeams;
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            DbSet<TournamentEntity> _dalTournaments;
             _dalTeams = _unitOfWork.Context.Teams;
             _dalTournaments = _unitOfWork.Context.Tournaments;
             _dalDivisions = _unitOfWork.Context.Divisions;

@@ -110,9 +110,7 @@
             }
             else
             {
-                result = obj is AuthOperation
-                         ? Equals((AuthOperation)obj)
-                         : false;
+                result = obj is AuthOperation && Equals((AuthOperation)obj);
             }
 
             return result;

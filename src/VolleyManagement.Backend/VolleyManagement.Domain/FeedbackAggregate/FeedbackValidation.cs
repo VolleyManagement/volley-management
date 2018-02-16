@@ -3,7 +3,7 @@
     /// <summary>
     /// Feedback validation class.
     /// </summary>
-    public class FeedbackValidation
+    public static class FeedbackValidation
     {
         /// <summary>
         /// Validates user's email.

@@ -413,6 +413,8 @@
                 case TournamentSchemeEnum.PlayOff:
                     numberOfRounds = GetNumberOfRoundsByPlayOffScheme(teamCount);
                     break;
+                default: numberOfRounds = 0;
+                    break;
             }
 
             return numberOfRounds;
@@ -713,6 +715,7 @@
 
         private void ValidateUniqueGroupNames(List<Group> groups)
         {
+           
             if (groups.Select(g => new { Name = g.Name.ToUpper() }).Distinct().Count() != groups.Count)
             {
                 throw new ArgumentException(TournamentResources.GroupNamesNotUnique);

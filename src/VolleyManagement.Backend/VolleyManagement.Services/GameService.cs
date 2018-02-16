@@ -539,8 +539,8 @@
                     {
                         string oppositeTeam;
 
-                        if (game.HomeTeamId == newGame.HomeTeamId
-                            || game.HomeTeamId == newGame.AwayTeamId)
+                        if ((game.HomeTeamId == newGame.HomeTeamId)
+                            || (game.HomeTeamId == newGame.AwayTeamId))
                         {
                             oppositeTeam = game.HomeTeamName;
                         }

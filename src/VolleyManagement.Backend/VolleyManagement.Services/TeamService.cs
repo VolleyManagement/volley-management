@@ -331,32 +331,27 @@
 
         private static void ValidateCoachName(string teamCoachName)
         {
-            if (!string.IsNullOrEmpty(teamCoachName))
-            {
-            if (TeamValidation.ValidateCoachName(teamCoachName))
+            if (!string.IsNullOrEmpty(teamCoachName)
+                && TeamValidation.ValidateCoachName(teamCoachName))
             {
                 throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationCoachName,
-                    Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                    "Coach");
+                       string.Format(
+                       Resources.ValidationCoachName,
+                       Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                       "Coach");
             }
-        }
         }
 
         private static void ValidateAchievements(string teamAchievements)
         {
-            if (!string.IsNullOrEmpty(teamAchievements))
-            {
-            if (TeamValidation.ValidateAchievements(teamAchievements))
+            if (!string.IsNullOrEmpty(teamAchievements)
+                && TeamValidation.ValidateAchievements(teamAchievements))
             {
                 throw new ArgumentException(
                     string.Format(
-                    Resources.ValidationTeamAchievements,
-                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                    "Achievements");
+                    TournamentResources.ValidationTeamAchievements,
+                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH));
             }
-        }
         }
 
         private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)

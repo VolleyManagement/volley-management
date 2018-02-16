@@ -408,12 +408,10 @@
                             GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
                     }
 
-                    if (isPreviousOptionalSetUnplayed)
+                    if (isPreviousOptionalSetUnplayed
+                        && !ResultValidation.IsSetUnplayed(setScores[i]))
                     {
-                        if (!ResultValidation.IsSetUnplayed(setScores[i]))
-                        {
-                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-                        }
+                        throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
                     }
 
                     isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);

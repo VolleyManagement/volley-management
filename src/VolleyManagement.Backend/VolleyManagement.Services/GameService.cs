@@ -331,7 +331,7 @@
             ValidateGameInTournament(game, tournamentScheduleInfo);
         }
 
-        private void ValidateResult(Result result)
+        private static void ValidateResult(Result result)
         {
             ValidateSetsScore(result.GameScore, result.GameScore.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores);
@@ -339,7 +339,7 @@
             ValidateSetScoresOrder(result.SetScores);
         }
 
-        private void ValidateTeams(int? homeTeamId, int? awayTeamId)
+        private static void ValidateTeams(int? homeTeamId, int? awayTeamId)
         {
             if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
@@ -347,7 +347,7 @@
             }
         }
 
-        private void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
+        private static void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
         {
             if (!ResultValidation.IsSetsScoreValid(setsScore, isTechnicalDefeat))
             {
@@ -359,7 +359,7 @@
             }
         }
 
-        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
+        private static void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresMatched(setsScore, setScores))
             {
@@ -367,7 +367,7 @@
             }
         }
 
-        private void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
+        private static void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
 
@@ -421,7 +421,7 @@
             }
         }
 
-        private void ValidateSetScoresOrder(IList<Score> setScores)
+        private static void ValidateSetScoresOrder(IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresOrdered(setScores))
             {
@@ -489,7 +489,7 @@
                 tournamentSсheduleInfo);
         }
 
-        private void ValidateGameInRoundOnCreate(
+        private static void ValidateGameInRoundOnCreate(
             Game newGame,
             List<GameResultDto> gamesInRound,
             TournamentScheduleDto tournamentScheduleInfo)
@@ -558,7 +558,7 @@
             }
         }
 
-        private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
+        private static void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
             if (gameToDelete.HasResult)
             {
@@ -566,7 +566,7 @@
             }
         }
 
-        private void ValidateGamesInTournamentSchemeTwo(Game newGame, List<GameResultDto> games)
+        private static void ValidateGamesInTournamentSchemeTwo(Game newGame, List<GameResultDto> games)
         {
             var tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -608,7 +608,7 @@
             }
         }
 
-        private void ValidateGamesInTournamentSchemeOne(Game newGame, List<GameResultDto> games)
+        private static void ValidateGamesInTournamentSchemeOne(Game newGame, List<GameResultDto> games)
         {
             List<GameResultDto> tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -632,7 +632,7 @@
             }
         }
 
-        private void PutFreeDayTeamAsAway(Game game)
+        private static void PutFreeDayTeamAsAway(Game game)
         {
             if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
             {
@@ -640,7 +640,7 @@
             }
         }
 
-        private void ValidateGameDateSet(Game game)
+        private static void ValidateGameDateSet(Game game)
         {
             if (!game.GameDate.HasValue)
             {
@@ -648,7 +648,7 @@
             }
         }
 
-        private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
+        private static void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
             if (DateTime.Compare(tournament.StartDate, game.GameDate.Value) > 0
                 || DateTime.Compare(tournament.EndDate, game.GameDate.Value) < 0)
@@ -657,7 +657,7 @@
             }
         }
 
-        private void SwitchTeamsOrder(Game game)
+        private static void SwitchTeamsOrder(Game game)
         {
             if (!GameValidation.IsFreeDayGame(game))
             {
@@ -725,7 +725,7 @@
             return gamesToUpdate;
         }
 
-        private List<Game> GetGamesToUpdate(Game finishedGame, List<Game> gamesInCurrentAndNextRounds)
+        private static List<Game> GetGamesToUpdate(Game finishedGame, List<Game> gamesInCurrentAndNextRounds)
         {
             List<Game> gamesToUpdate = new List<Game>();
 
@@ -750,7 +750,7 @@
             return gamesToUpdate;
         }
 
-        private void ClearGame(Game finishedGame, Game newGame)
+        private static void ClearGame(Game finishedGame, Game newGame)
         {
             if (finishedGame.GameNumber % 2 != 0)
             {
@@ -762,7 +762,7 @@
             }
         }
 
-        private Game GetNextWinnerGame(Game finishedGame, List<Game> games)
+        private static Game GetNextWinnerGame(Game finishedGame, List<Game> games)
         {
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
             if (IsSemiFinalGame(finishedGame, games))
@@ -800,7 +800,7 @@
             return nextGame;
         }
 
-        private Game GetNextLoserGame(Game finishedGame, List<Game> games)
+        private static Game GetNextLoserGame(Game finishedGame, List<Game> games)
         {
             // Assume that finished game is a semifinal game
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
@@ -823,7 +823,7 @@
             return nextGame;
         }
 
-        private int GetNextGameNumber(Game finishedGame, List<Game> games)
+        private static int GetNextGameNumber(Game finishedGame, List<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
 
@@ -831,7 +831,7 @@
                 + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
         }
 
-        private bool IsSemiFinalGame(Game finishedGame, List<Game> games)
+        private static bool IsSemiFinalGame(Game finishedGame, List<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
             List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
@@ -839,7 +839,7 @@
             return finishedGame.Round == numberOfRounds - 1;
         }
 
-        private int GetNumberOfRounds(Game finishedGame, List<Game> games)
+        private static int GetNumberOfRounds(Game finishedGame, List<Game> games)
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
@@ -847,13 +847,13 @@
                 + finishedGame.Round;
         }
 
-        private bool IsGameInLastRound(Game finishedGame, List<Game> games)
+        private static bool IsGameInLastRound(Game finishedGame, List<Game> games)
         {
             byte roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;
         }
 
-        private void ValidateEditingSchemePlayoff(Game nextGame)
+        private static void ValidateEditingSchemePlayoff(Game nextGame)
         {
             if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
                 && nextGame.Result.GameScore.Away != 0)
@@ -862,7 +862,7 @@
             }
         }
 
-        private void SetAbilityToEditResults(List<GameResultDto> allGames)
+        private static void SetAbilityToEditResults(List<GameResultDto> allGames)
         {
             List<GameResultDto> gamesToAllowEditingResults = allGames.Where(
                 game => game.HomeTeamId.HasValue
@@ -877,7 +877,7 @@
             }
         }
 
-        private List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
+        private static List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
         {
             if (allGames == null)
             {
@@ -902,7 +902,7 @@
             return games;
         }
 
-        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
+        private static byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
         {
             return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(2, numberOfRounds - 1));
         }

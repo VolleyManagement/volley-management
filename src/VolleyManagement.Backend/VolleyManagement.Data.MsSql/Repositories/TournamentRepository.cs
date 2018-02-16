@@ -198,7 +198,7 @@
             }
         }
 
-        private void MapIdentifiers(Tournament to, TournamentEntity from)
+        private static void MapIdentifiers(Tournament to, TournamentEntity from)
         {
             to.Id = from.Id;
 

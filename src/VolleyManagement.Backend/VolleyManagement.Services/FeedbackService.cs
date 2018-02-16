@@ -240,12 +240,12 @@
             }
         }
 
-        private bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
+        private static bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
         {
             return newStatusCode == FeedbackStatusEnum.Closed || newStatusCode == FeedbackStatusEnum.Answered;
         }
 
-        private void UpdateFeedbackDate(Feedback feedbackToUpdate)
+        private static void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
         }

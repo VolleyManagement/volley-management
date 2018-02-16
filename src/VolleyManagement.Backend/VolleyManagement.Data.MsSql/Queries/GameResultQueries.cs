@@ -239,7 +239,7 @@
             return result;
         }
 
-        private GameResultDto Map(GameResultEntity gr, string divisionName, int divisionId, int groupId)
+        private static GameResultDto Map(GameResultEntity gr, string divisionName, int divisionId, int groupId)
         {
             var result = GetGameResultDtoMap()(gr);
             result.DivisionName = divisionName;

@@ -537,15 +537,8 @@
                     {
                         string oppositeTeam;
 
-                        if (game.HomeTeamId == newGame.HomeTeamId
-                            || game.HomeTeamId == newGame.AwayTeamId)
-                        {
-                            oppositeTeam = game.HomeTeamName;
-                        }
-                        else
-                        {
-                            oppositeTeam = game.AwayTeamName;
-                        }
+                        oppositeTeam = game.HomeTeamId == newGame.HomeTeamId
+                            || game.HomeTeamId == newGame.AwayTeamId ? game.HomeTeamName : game.AwayTeamName;
 
                         throw new ArgumentException(
                           string.Format(
@@ -671,7 +664,7 @@
         private Game GetGameByNumber(int gameNumber, int tournamentId)
         {
             Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
-               .Execute(new GameByNumberCriteria()
+               .Execute(new GameByNumberCriteria
                {
                    TournamentId = tournamentId,
                    GameNumber = gameNumber
@@ -693,7 +686,7 @@
             List<Game> gamesToUpdate = new List<Game>();
 
             List<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria()
+                .Execute(new GamesByRoundCriteria
                 {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
@@ -919,7 +912,7 @@
         private void UpdateTournamentLastTimeUpdated(Game game)
         {
             var tournament = _getTournamentInstanceByIdQuery
-               .Execute(new FindByIdCriteria()
+               .Execute(new FindByIdCriteria
                {
                    Id = game.TournamentId
                });

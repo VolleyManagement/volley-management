@@ -220,19 +220,13 @@
         private static Penalty MapPenalty(GameResultEntity gr)
         {
             Penalty result;
-            if (gr.PenaltyTeam != 0)
+
+            result = gr.PenaltyTeam != 0 ? new Penalty
             {
-                result = new Penalty
-                {
-                    IsHomeTeam = gr.PenaltyTeam == 1,
-                    Amount = gr.PenaltyAmount,
-                    Description = gr.PenaltyDescription
-                };
-            }
-            else
-            {
-                result = null;
-            }
+                IsHomeTeam = gr.PenaltyTeam == 1,
+                Amount = gr.PenaltyAmount,
+                Description = gr.PenaltyDescription
+            } : null;
 
             return result;
         }

@@ -89,7 +89,7 @@
         private List<AuthOperation> GetAllUserOperations()
         {
             var userId = _userService.GetCurrentUserId();
-            return _getOperationsQuery.Execute(new FindByUserIdCriteria() { UserId = userId });
+            return _getOperationsQuery.Execute(new FindByUserIdCriteria { UserId = userId });
         }
 
         #endregion

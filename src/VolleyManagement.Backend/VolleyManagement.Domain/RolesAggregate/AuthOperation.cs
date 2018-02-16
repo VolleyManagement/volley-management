@@ -66,18 +66,7 @@
         /// <returns>Flag if specified objects equals</returns>
         public static bool operator ==(AuthOperation x, AuthOperation y)
         {
-            bool result;
-
-            if (ReferenceEquals(x, null))
-            {
-                result = ReferenceEquals(y, null);
-            }
-            else
-            {
-                result = x.Equals(y);
-            }
-
-            return result;
+            return ReferenceEquals(x, null) ? ReferenceEquals(y, null) : x.Equals(y);
         }
 
         /// <summary>
@@ -102,18 +91,7 @@
         /// <returns>Flag if specified object equals to current</returns>
         public override bool Equals(object obj)
         {
-            bool result;
-
-            if (obj == null)
-            {
-                result = false;
-            }
-            else
-            {
-                result = obj is AuthOperation && Equals((AuthOperation)obj);
-            }
-
-            return result;
+            return !(obj is null) && obj is AuthOperation && Equals((AuthOperation)obj);
         }
 
         /// <summary>
@@ -123,18 +101,7 @@
         /// <returns>Flag if specified object equals to current</returns>
         public bool Equals(AuthOperation obj)
         {
-            bool result;
-
-            if (obj == null)
-            {
-                result = false;
-            }
-            else
-            {
-                result = _id == obj._id;
-            }
-
-            return result;
+            return !(obj is null) && _id == obj._id;
         }
 
         /// <summary>

@@ -180,9 +180,10 @@
         public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
             // Arrange
+            var expectedTeamsList = CreateExpectedTeamsList();
+
             var testData = CreateTestTeams();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
-            var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
@@ -1588,6 +1589,37 @@
                     Value = "3",
                 },
             };
+        }
+
+        private TournamentTeamsListViewModel CreateExpectedTeamsList()
+        {
+            var expectedTeams = new TournamentTeamsListViewModel
+            {
+                TeamsList = new List<TeamNameViewModel>()
+                {
+                    new TeamNameViewModel()
+                    {
+                        DivisionName = "DivisionNameA",
+                        Id = 1,
+                        Name = "TeamNameA"
+                    },
+                    new TeamNameViewModel()
+                    {
+                        DivisionName = "DivisionNameA",
+                        Id = 2,
+                        Name = "TeamNameB"
+                    },
+                    new TeamNameViewModel()
+                    {
+                        DivisionName = "DivisionNameA",
+                        Id = 3,
+                        Name = "TeamNameC"
+                    }
+                },
+                TournamentId = TEST_DIVISION_ID
+            };
+
+            return expectedTeams;
         }
 
         private List<SelectListItem> CreateTestRoundList(int testRoundCount)

@@ -437,7 +437,7 @@
             }
 
             var allGamesInTournament = QueryAllTournamentGames(game.TournamentId);
-            var oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
+            var oldGameToUpdate = allGamesInTournament.SingleOrDefault(gr => gr.Id == game.Id);
 
             if (oldGameToUpdate != null)
             {
@@ -489,6 +489,65 @@
                 tournamentSсheduleInfo);
         }
 
+        private static void IsFreeDayGameValidation(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
+        {
+            if (GameValidationIsFreeDayGame)
+            {
+                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
+                {
+                    throw new ArgumentException(
+                    Resources
+                    .SameFreeDayGameInRound);
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        string.Format(Resources.SameTeamInRound, game.HomeTeamName));
+                }
+            }
+            else
+            {
+                throw new ArgumentException(
+                   string.Format(
+                   Resources.SameGameInRound,
+                   game.HomeTeamName,
+                   game.AwayTeamName,
+                   game.Round.ToString()));
+            }
+        }
+        private static void IsTheSameTeamInTwoGames(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
+        {
+            if (GameValidationIsFreeDayGame)
+            {
+                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff
+                    && game.HomeTeamId != newGame.HomeTeamId
+                    && game.AwayTeamId != newGame.HomeTeamId)
+                {
+                    throw new ArgumentException(
+                        Resources.SameFreeDayGameInRound);
+                }
+            }
+            else
+            {
+                string oppositeTeam;
+
+                if (game.HomeTeamId == newGame.HomeTeamId
+                    || game.HomeTeamId == newGame.AwayTeamId)
+                {
+                    oppositeTeam = game.HomeTeamName;
+                }
+                else
+                {
+                    oppositeTeam = game.AwayTeamName;
+                }
+
+                throw new ArgumentException(
+                  string.Format(
+                  Resources.SameTeamInRound,
+                         oppositeTeam));
+            }
+        }
+
         private static void ValidateGameInRoundOnCreate(
             Game newGame,
             List<GameResultDto> gamesInRound,
@@ -499,61 +558,11 @@
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
                 {
-                    if (GameValidation.IsFreeDayGame(newGame))
-                    {
-                        if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
-                        {
-                            throw new ArgumentException(
-                            Resources
-                            .SameFreeDayGameInRound);
-                        }
-                        else
-                        {
-                            throw new ArgumentException(
-                                string.Format(Resources.SameTeamInRound, game.HomeTeamName));
-                        }
-                    }
-                    else
-                    {
-                        throw new ArgumentException(
-                           string.Format(
-                           Resources.SameGameInRound,
-                           game.HomeTeamName,
-                           game.AwayTeamName,
-                           game.Round.ToString()));
-                    }
+                    IsFreeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
                 {
-                    if (GameValidation.IsFreeDayGame(newGame))
-                    {
-                        if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff
-                            && game.HomeTeamId != newGame.HomeTeamId
-                            && game.AwayTeamId != newGame.HomeTeamId)
-                        {
-                            throw new ArgumentException(
-                                Resources.SameFreeDayGameInRound);
-                        }
-                    }
-                    else
-                    {
-                        string oppositeTeam;
-
-                        if (game.HomeTeamId == newGame.HomeTeamId
-                            || game.HomeTeamId == newGame.AwayTeamId)
-                        {
-                            oppositeTeam = game.HomeTeamName;
-                        }
-                        else
-                        {
-                            oppositeTeam = game.AwayTeamName;
-                        }
-
-                        throw new ArgumentException(
-                          string.Format(
-                          Resources.SameTeamInRound,
-                                 oppositeTeam));
-                    }
+                    IsTheSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
                 }
             }
         }
@@ -708,7 +717,6 @@
             // Schedule next games only if finished game is not in last round
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                Game oldGame = gamesInCurrentAndNextRounds.SingleOrDefault(gr => gr.Id == finishedGame.Id);
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue
@@ -770,9 +778,7 @@
                 nextGameNumber++;
             }
 
-            Game nextGame = games
-                .Where(g => g.GameNumber == nextGameNumber)
-                .SingleOrDefault();
+            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
@@ -804,7 +810,7 @@
         {
             // Assume that finished game is a semifinal game
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
-            Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
+            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             ValidateEditingSchemePlayoff(nextGame);
 
@@ -834,8 +840,6 @@
         private static bool IsSemiFinalGame(Game finishedGame, List<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
-            List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
-
             return finishedGame.Round == numberOfRounds - 1;
         }
 
@@ -843,7 +847,7 @@
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
-            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count(), 2))
+            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count, 2))
                 + finishedGame.Round;
         }
 

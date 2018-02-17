@@ -19,7 +19,6 @@
                                IQuery<List<Team>, GetAllCriteria>,
                                IQuery<Team, FindByCaptainIdCriteria>,
                                IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>,
-                               IQuery<List<Team>, FindByTournamentIdCriteriaOld>,
                                IQuery<List<Team>, FindTeamsByGroupIdCriteria>,
                                IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
     {
@@ -39,11 +38,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public TeamQueries(IUnitOfWork unitOfWork)
         {
-            DbSet<TeamEntity> _dalTeams;
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            DbSet<TournamentEntity> _dalTournaments;
-            _dalTeams = _unitOfWork.Context.Teams;
-            _dalTournaments = _unitOfWork.Context.Tournaments;
             _dalDivisions = _unitOfWork.Context.Divisions;
             _dalGroups = _unitOfWork.Context.Groups;
         }
@@ -82,21 +77,6 @@
             return _unitOfWork.Context.Teams.Where(t => t.CaptainId == criteria.CaptainId).Select(GetTeamMapping()).SingleOrDefault();
         }
 
-        /// <summary>
-        /// Find teams by given criteria
-        /// </summary>
-        /// <param name="criteria">Search criteria</param>
-        /// <returns>List of <see cref="Team"/>.</returns>
-        public List<Team> Execute(FindByTournamentIdCriteriaOld criteria)
-        {
-            return _unitOfWork.Context.Tournaments
-                                      .Where(t => t.Id == criteria.TournamentId)
-                                      .SelectMany(t => t.Divisions)
-                                      .SelectMany(d => d.Groups)
-                                      .SelectMany(g => g.Teams)
-                                      .Select(GetTeamMapping())
-                                      .ToList();
-        }
 
         public List<TeamTournamentDto> Execute(FindByTournamentIdCriteria criteria)
         {

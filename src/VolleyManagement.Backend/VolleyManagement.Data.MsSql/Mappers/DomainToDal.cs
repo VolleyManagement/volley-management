@@ -151,7 +151,7 @@
         /// <returns>Dal division model</returns>
         public static DivisionEntity Map(Division from)
         {
-            return new DivisionEntity()
+            return new DivisionEntity
             {
                 Id = from.Id,
                 Name = from.Name,

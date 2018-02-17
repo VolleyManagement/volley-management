@@ -392,7 +392,7 @@
             }
 
             var allTeams = GetAllTournamentTeams(tournamentId);
-            var count = allTeams.Count() - 1;
+            var count = allTeams.Count - 1;
             CreateSchedule(tournamentId, count);
 
             _tournamentRepository.UnitOfWork.Commit();

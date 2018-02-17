@@ -670,17 +670,6 @@
 
         #region Schedule autogeneration methods
 
-        private Game GetGameByNumber(int gameNumber, int tournamentId)
-        {
-            Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
-               .Execute(new GameByNumberCriteria()
-               {
-                   TournamentId = tournamentId,
-                   GameNumber = gameNumber
-               });
-            return gameInCurrentTournament;
-        }
-
         private void ScheduleNextGames(Game finishedGame, TournamentScheduleDto tournamentScheduleInfo)
         {
             List<Game> gamesToUpdate = GetGamesToSchedule(finishedGame, tournamentScheduleInfo);

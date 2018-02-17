@@ -350,7 +350,8 @@
                 throw new ArgumentException(
                     string.Format(
                     TournamentResources.ValidationTeamAchievements,
-                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH));
+                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
+                    $"Achievements");
             }
         }
 

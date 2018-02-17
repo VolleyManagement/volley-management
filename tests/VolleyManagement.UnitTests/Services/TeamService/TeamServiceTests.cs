@@ -208,7 +208,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Achievements"));
+                new ArgumentException(argExMessage, $"Achievements"));
         }
 
         /// <summary>
@@ -1255,7 +1255,7 @@
         {
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.GetType().Equals(expected.GetType()), "Exception is of the wrong type");
-            Assert.IsTrue(exception.Message.Equals(expected.Message));
+                Assert.IsTrue(exception.Message.Equals(expected.Message));
         }
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)

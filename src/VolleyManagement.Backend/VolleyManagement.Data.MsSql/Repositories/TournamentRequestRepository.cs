@@ -41,14 +41,14 @@
         /// Adds new tournament request.
         /// </summary>
         /// <param name="newRequest">Tournament request to add.</param>
-        public void Add(TournamentRequest newRequest)
+        public void Add(TournamentRequest newEntity)
         {
             var newRequestEntity = new TournamentRequestEntity();
 
-            DomainToDal.Map(newRequestEntity, newRequest);
+            DomainToDal.Map(newRequestEntity, newEntity);
             _dalRequest.Add(newRequestEntity);
             _unitOfWork.Commit();
-            newRequest.Id = newRequestEntity.Id;
+            newEntity.Id = newRequestEntity.Id;
         }
 
         /// <summary>

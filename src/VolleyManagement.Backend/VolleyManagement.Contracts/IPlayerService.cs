@@ -21,7 +21,7 @@
         /// Create new player.
         /// </summary>
         /// <param name="player">New player.</param>
-        void Create(Player player);
+        void Create(Player playerToCreate);
 
         /// <summary>
         /// Create new players.
@@ -33,7 +33,7 @@
         /// Edit player profile.
         /// </summary>
         /// <param name="player">Updated player data.</param>
-        void Edit(Player player);
+        void Edit(Player playerToEdit);
 
         /// <summary>
         /// Find player by id.

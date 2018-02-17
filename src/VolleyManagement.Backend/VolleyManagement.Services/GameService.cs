@@ -254,7 +254,7 @@
 
             if (game == null)
             {
-                throw new ArgumentNullException("game");
+                throw new ArgumentNullException($"game");
             }
 
             ValidateGameInRoundOnDelete(game);

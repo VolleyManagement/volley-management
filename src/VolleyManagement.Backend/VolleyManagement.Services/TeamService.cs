@@ -111,38 +111,38 @@
         /// Edit team.
         /// </summary>
         /// <param name="team">Team to edit.</param>
-        public void Edit(Team team)
+        public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            Player captain = GetPlayerById(team.CaptainId);
+            Player captain = GetPlayerById(teamToEdit.CaptainId);
 
             if (captain == null)
             {
                 // ToDo: Revisit this case
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, team.CaptainId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
         }
 
             // Check if captain in teamToCreate is captain of another team
-            if ((captain.TeamId != null) && (captain.TeamId != team.Id))
+            if ((captain.TeamId != null) && (captain.TeamId != teamToEdit.Id))
             {
                 var existTeam = GetPlayerLedTeam(captain.Id);
                 VerifyExistingTeamOrThrow(existTeam);
             }
 
-            ValidateTeam(team);
+            ValidateTeam(teamToEdit);
 
-            team.CaptainId = captain.Id;
+            teamToEdit.CaptainId = captain.Id;
 
             try
             {
-                _teamRepository.Update(team);
+                _teamRepository.Update(teamToEdit);
             }
             catch (ConcurrencyException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
 
-            captain.TeamId = team.Id;
+            captain.TeamId = teamToEdit.Id;
             _playerRepository.Update(captain);
             _playerRepository.UnitOfWork.Commit();
         }
@@ -232,7 +232,7 @@
         {
             var existingTeams = from ex in getExistingTeams
                                 where ex.Id != teamToValidate.Id
-                                where ex.Name.ToLower().Equals(teamToValidate.Name.ToLower())
+                                where String.Equals(ex.Name, teamToValidate.Name, StringComparison.CurrentCultureIgnoreCase)
                                 select ex;
             return existingTeams.Count() != 0;
         }
@@ -325,7 +325,7 @@
                     string.Format(
                     Resources.ValidationTeamName,
                     Domain.Constants.Team.MAX_NAME_LENGTH),
-                    "Name");
+                    $"Name");
             }
         }
 
@@ -338,7 +338,7 @@
                        string.Format(
                        Resources.ValidationCoachName,
                        Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                       "Coach");
+                       $"Coach");
             }
         }
 

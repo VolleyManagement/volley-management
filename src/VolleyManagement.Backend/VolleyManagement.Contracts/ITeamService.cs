@@ -27,19 +27,19 @@
         /// Create new team.
         /// </summary>
         /// <param name="team">New team.</param>
-        void Create(Team team);
+        void Create(Team teamToCreate);
 
         /// <summary>
         /// Edit team.
         /// </summary>
         /// <param name="team">Team to edit.</param>
-        void Edit(Team team);
+        void Edit(Team teamToEdit);
 
         /// <summary>
         /// Delete team by id.
         /// </summary>
         /// <param name="id">Team id.</param>
-        void Delete(int id);
+        void Delete(int teamId);
 
         /// <summary>
         /// Find captain of specified team

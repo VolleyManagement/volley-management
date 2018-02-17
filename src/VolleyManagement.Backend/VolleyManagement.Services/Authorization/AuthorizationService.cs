@@ -58,7 +58,7 @@
         {
             if (requestedOperations == null)
             {
-                throw new ArgumentNullException("Requested operations list shouldn't be null!");
+                throw new ArgumentNullException($"Requested operations list shouldn't be null!");
             }
 
             var data = GetAllUserOperations()
@@ -78,7 +78,7 @@
         {
             if (requestedOperation == null)
             {
-                throw new ArgumentNullException("Requested operation shouldn't be null!");
+                throw new ArgumentNullException($"Requested operation shouldn't be null!");
             }
 
             return GetAllowedOperations(new List<AuthOperation> { requestedOperation });

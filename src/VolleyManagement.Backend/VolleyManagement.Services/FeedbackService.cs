@@ -72,7 +72,7 @@
         {
             if (feedbackToCreate == null)
             {
-                throw new ArgumentNullException("feedback");
+                throw new ArgumentNullException($"feedback");
             }
 
             UpdateFeedbackDate(feedbackToCreate);

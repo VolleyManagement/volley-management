@@ -5,7 +5,7 @@
     /// <summary>
     /// Contains information about particular operation within application
     /// </summary>
-    public class AuthOperation
+    public sealed class AuthOperation 
     {
         #region Constants
 

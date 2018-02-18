@@ -68,7 +68,7 @@
         {
             return
                 t =>
-                new Feedback()
+                new Feedback
                 {
                     Id = t.Id,
                     UsersEmail = t.UsersEmail,

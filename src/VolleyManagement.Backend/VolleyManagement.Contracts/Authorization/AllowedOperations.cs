@@ -10,15 +10,15 @@
     /// </summary>
     public class AllowedOperations
     {
-        private readonly List<AuthOperation> _allowedOperations;
+        private readonly ICollection<AuthOperation> _allowedOperations;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AllowedOperations"/> class
         /// </summary>
         /// <param name="allowedOperations">List of operations which should be checked for accessibility</param>
-        public AllowedOperations(List<AuthOperation> allowedOperations)
+        public AllowedOperations(ICollection<AuthOperation> allowedOperations)
         {
-            _allowedOperations = allowedOperations ?? throw new ArgumentNullException("Allowed operations list shouldn't be null!");
+            _allowedOperations = allowedOperations ?? throw new ArgumentNullException($"Allowed operations list shouldn't be null!");
         }
 
         /// <summary>

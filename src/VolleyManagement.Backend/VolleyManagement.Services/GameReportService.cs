@@ -329,7 +329,7 @@
                 AwayTeamId = g.AwayTeamId.GetValueOrDefault(),
                 HomeGameScore = g.HasResult ? g.Result.GameScore.Home : byte.MinValue,
                 AwayGameScore = g.HasResult ? g.Result.GameScore.Away : byte.MinValue,
-                IsTechnicalDefeat = g.HasResult ? g.Result.GameScore.IsTechnicalDefeat : false,
+                IsTechnicalDefeat = g.HasResult && g.Result.GameScore.IsTechnicalDefeat,
                 WasPlayed = g.HasResult,
                 RoundNumber = g.Round
             };

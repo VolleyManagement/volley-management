@@ -392,7 +392,7 @@
             }
 
             var allTeams = GetAllTournamentTeams(tournamentId);
-            var count = allTeams.Count() - 1;
+            var count = allTeams.Count - 1;
             CreateSchedule(tournamentId, count);
 
             _tournamentRepository.UnitOfWork.Commit();
@@ -742,14 +742,12 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
-            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff
+                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
-                if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
-                {
-                    var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-                    _gameService.RemoveAllGamesInTournament(tournamentId);
-                    _gameService.AddGames(gamesToAdd);
-                }
+                var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
+                _gameService.RemoveAllGamesInTournament(tournamentId);
+                _gameService.AddGames(gamesToAdd);
             }
         }
 

@@ -185,7 +185,7 @@
             }
         }
 
-        private void UpdateGroups(List<GroupEntity> old, List<Group> changed)
+        private void UpdateGroups(IEnumerable<GroupEntity> old, List<Group> changed)
         {
             foreach (var item in old.ToList())
             {

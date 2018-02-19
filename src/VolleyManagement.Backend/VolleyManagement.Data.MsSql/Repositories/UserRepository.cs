@@ -66,7 +66,7 @@
         /// <param name="id">The id of user to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         private void UpdateUserProviders(List<LoginInfoEntity> providers)

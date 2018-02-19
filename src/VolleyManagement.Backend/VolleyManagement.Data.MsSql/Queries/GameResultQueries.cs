@@ -57,6 +57,7 @@
         {
             return _dalGameResults
                 .Where(gr => gr.Id == criteria.Id)
+                .ToList()
                 .Select(gr => GetGameResultDtoMap()(gr))
                 .SingleOrDefault();
         }

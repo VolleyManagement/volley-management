@@ -107,7 +107,7 @@
         /// <param name="from">Division Domain model</param>
         /// <param name="oldDivisions">Divisions which already exists in database</param>
         /// <returns>Division Entity model</returns>
-        public static DivisionEntity Map(Division from, ICollection<DivisionEntity> oldDivisions)
+        public static DivisionEntity Map(Division from, IEnumerable<DivisionEntity> oldDivisions)
         {
             if (from.Id == 0)
             {

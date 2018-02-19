@@ -202,7 +202,7 @@
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
-        private static IEnumerable<Player> GetNewPlayers(List<Player> playersToCreate)
+        private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
         {
             return playersToCreate.Where(p => p.Id == 0);
         }

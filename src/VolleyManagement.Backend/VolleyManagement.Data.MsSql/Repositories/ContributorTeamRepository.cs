@@ -6,6 +6,7 @@
     using System.Linq;
     using Contracts;
     using Domain.ContributorsAggregate;
+    using VolleyManagement.Data.MsSql.Entities;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.
@@ -65,7 +66,9 @@
         /// <param name="id">The id of contributor team to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var contributorTeamDelete = _unitOfWork.Context.ContributorTeams.Single(x => x.Id == id);
+            _unitOfWork.Context.ContributorTeams.Remove(contributorTeamDelete);
+            //TODO: make unit test
         }
 
         /// <summary>
@@ -75,7 +78,7 @@
         /// <returns>Collection of domain contributors.</returns>
         public static IQueryable<ContributorTeam> FindWhere(System.Linq.Expressions.Expression<Func<ContributorTeam, bool>> predicate)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -84,7 +87,11 @@
         /// <param name="newEntity">The contributor team for adding.</param>
         public void Add(ContributorTeam newEntity)
         {
-            throw new NotImplementedException();
+            var newUser = new ContributorTeamEntity();
+            _unitOfWork.Context.ContributorTeams.Add(newUser);
+            _unitOfWork.Commit();
+            newEntity.Id = newUser.Id;
+            //TODO: make unit test
         }
 
         /// <summary>
@@ -93,7 +100,7 @@
         /// <param name="updatedEntity">Updated contributor team.</param>
         public void Update(ContributorTeam updatedEntity)
         {
-            throw new NotImplementedException();
+            var contributorTeamToUpdate = _unitOfWork.Context.ContributorTeams.Single(t => t.Id == updatedEntity.Id);
         }
     }
 }

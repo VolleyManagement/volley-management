@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Services
+﻿using System.Diagnostics.Eventing.Reader;
+
+namespace VolleyManagement.Services
 {
     using System;
     using System.Collections.Generic;
@@ -373,10 +375,8 @@
 
             for (int i = 0, setOrderNumber = 1; i < setScores.Count; i++, setOrderNumber++)
             {
-                if (i < GameResultConstants.SETS_COUNT_TO_WIN)
+                if ((i < GameResultConstants.SETS_COUNT_TO_WIN)&& (!ResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat)))
                 {
-                    if (!ResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
-                    {
                         throw new ArgumentException(
                             string.Format(
                             Resources.GameResultRequiredSetScores,
@@ -384,21 +384,20 @@
                             GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
                             GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
                             GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
-                    }
+                  
                 }
                 else
                 {
-                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
-                    {
-                        if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
-                        {
+                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber)
+                        &&(setOrderNumber == GameResultConstants.MAX_SETS_COUNT))
+                    {         
                             throw new ArgumentException(
                             string.Format(
                             Resources.GameResultFifthSetScoreInvalid,
                             GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
                             GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
                         }
-
+                    else if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber) ){ 
                         throw new ArgumentException(
                             string.Format(
                             Resources.GameResultOptionalSetScores,
@@ -408,12 +407,9 @@
                             GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
                     }
 
-                    if (isPreviousOptionalSetUnplayed)
+                    if (isPreviousOptionalSetUnplayed && !ResultValidation.IsSetUnplayed(setScores[i]))
                     {
-                        if (!ResultValidation.IsSetUnplayed(setScores[i]))
-                        {
-                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-                        }
+                        throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
                     }
 
                     isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);

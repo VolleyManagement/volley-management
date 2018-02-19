@@ -135,7 +135,7 @@
 
         #region Private methods
 
-        private static List<StandingsEntry> CalculateStandingsForDivision(List<TeamTournamentDto> teams, List<GameResultDto> gameResults)
+        private static List<StandingsEntry> CalculateStandingsForDivision(List<TeamTournamentDto> teams, IEnumerable<GameResultDto> gameResults)
         {
             var standings = CreateEntriesForTeams(teams);
 
@@ -301,7 +301,7 @@
             return teamsByDivisions.GroupBy(t => (t.DivisionId, t.DivisionName)).ToDictionary(t => t.Key, t => t.ToList());
         }
 
-        private static List<GameResultDto> GetGamesResultsForDivision(List<GameResultDto> gameResults, List<TeamTournamentDto> teams)
+        private static List<GameResultDto> GetGamesResultsForDivision(IEnumerable<GameResultDto> gameResults, IEnumerable<TeamTournamentDto> teams)
         {
             var teamsIds = teams.Select(t => t.TeamId).ToList();
             return gameResults.Where(gr => teamsIds.Contains(gr.AwayTeamId.GetValueOrDefault()) &&

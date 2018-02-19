@@ -222,8 +222,8 @@
 
             var isExistingPlayers = existingPlayers
                     .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
-                                  && t.LastName.ToLower().Equals(allPlayer.LastName.ToLower())
+                    .FirstOrDefault(t => String.Equals(t.FirstName,allPlayer.FirstName,StringComparison.InvariantCultureIgnoreCase)
+                                  && String.Equals(t.LastName,allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
                                   && allPlayer.TeamId != null
                                   && allPlayer.TeamId != teamId));
 

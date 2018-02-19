@@ -393,13 +393,13 @@
             }
 
             var allTeams = GetAllTournamentTeams(tournamentId);
-            var count = allTeams.Count() - 1;
+            var count = allTeams.Count - 1;
             CreateSchedule(tournamentId, count);
 
             _tournamentRepository.UnitOfWork.Commit();
         }
 
-        public byte CalculateNumberOfRounds(TournamentSchemeEnum  scheme, int teamCount)
+        public static byte CalculateNumberOfRounds(TournamentSchemeEnum  scheme, int teamCount)
         {
             byte numberOfRounds = 0;
 
@@ -452,7 +452,7 @@
         /// </summary>
         /// <param name="teamCount">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private byte GetNumberOfRoundsByScheme1(int teamCount)
+        private static byte GetNumberOfRoundsByScheme1(int teamCount)
         {
             return Convert.ToByte((teamCount % 2 == 0) && (teamCount != 0) ? teamCount - 1 : teamCount);
         }
@@ -462,7 +462,7 @@
         /// </summary>
         /// <param name="teamCount">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private byte GetNumberOfRoundsByScheme2(int teamCount)
+        private static byte GetNumberOfRoundsByScheme2(int teamCount)
         {
             return Convert.ToByte(2 * GetNumberOfRoundsByScheme1(teamCount));
         }
@@ -552,14 +552,14 @@
             }
         }
 
-        private void ValidateTournamentDates(Tournament tournament)
+        private static void ValidateTournamentDates(Tournament tournament)
         {
             ValidateTournamentApplyingPeriod(tournament);
             ValidateTournamentGamesPeriod(tournament);
             ValidateTournamentTrasferPeriod(tournament);
         }
 
-        private void ValidateTournamentApplyingPeriod(Tournament tournament)
+        private static void ValidateTournamentApplyingPeriod(Tournament tournament)
         {
             // if registration dates comes before current date
             if (TimeProvider.Current.UtcNow >= tournament.ApplyingPeriodStart)
@@ -601,7 +601,7 @@
             ////}
         }
 
-        private void ValidateTournamentGamesPeriod(Tournament tournament)
+        private static void ValidateTournamentGamesPeriod(Tournament tournament)
         {
             // if games start date comes after end date
             if (tournament.GamesStart >= tournament.GamesEnd)
@@ -613,7 +613,7 @@
             }
         }
 
-        private void ValidateTournamentTrasferPeriod(Tournament tournament)
+        private static void ValidateTournamentTrasferPeriod(Tournament tournament)
         {
             // if there is no transfer period
             if (!tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
@@ -673,7 +673,7 @@
             ValidateUniqueDivisionNames(divisions);
         }
 
-        private void ValidateDivisionCount(int count)
+        private static void ValidateDivisionCount(int count)
         {
             if (!DivisionValidation.IsDivisionCountWithinRange(count))
             {
@@ -702,7 +702,7 @@
             }
         }
 
-        private void ValidateGroupCount(int count)
+        private static void ValidateGroupCount(int count)
         {
             if (!GroupValidation.IsGroupCountWithinRange(count))
             {
@@ -723,7 +723,7 @@
             }
         }
 
-        private byte GetNumberOfRoundsByPlayOffScheme(int teamCount)
+        private static byte GetNumberOfRoundsByPlayOffScheme(int teamCount)
         {
             byte rounds = 0;
             for (byte i = 0; i < teamCount; i++)
@@ -738,7 +738,7 @@
             return rounds;
         }
 
-        private int GetGamesCount(int teamsCount)
+        private static int GetGamesCount(int teamsCount)
         {
             return (int)Math.Pow(GAMES_TO_PLAY_ONE_ROUND, GetNumberOfRoundsByPlayOffScheme((byte)teamsCount));
         }
@@ -746,18 +746,16 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
-            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff
+                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
-                if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
-                {
-                    var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-                    _gameService.RemoveAllGamesInTournament(tournamentId);
-                    _gameService.AddGames(gamesToAdd);
-                }
+                var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
+                _gameService.RemoveAllGamesInTournament(tournamentId);
+                _gameService.AddGames(gamesToAdd);
             }
         }
 
-        private List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
+        private static List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
             int gamesCount = GetGamesCount(teamsCount);
@@ -779,7 +777,7 @@
             return games;
         }
 
-        private byte GetRoundNumber(int roundsCount, int gamesCount, int gameNumber)
+        private static byte GetRoundNumber(int roundsCount, int gamesCount, int gameNumber)
         {
             byte roundNumber = 1;
 

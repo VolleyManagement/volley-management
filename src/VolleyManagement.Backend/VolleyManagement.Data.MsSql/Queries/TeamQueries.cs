@@ -19,15 +19,12 @@
                                IQuery<List<Team>, GetAllCriteria>,
                                IQuery<Team, FindByCaptainIdCriteria>,
                                IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>,
-                               IQuery<List<Team>, FindByTournamentIdCriteriaOld>,
                                IQuery<List<Team>, FindTeamsByGroupIdCriteria>,
                                IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
     {
         #region Fields
 
         private readonly VolleyUnitOfWork _unitOfWork;
-        private readonly DbSet<TeamEntity> _dalTeams;
-        private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<DivisionEntity> _dalDivisions;
         private readonly DbSet<GroupEntity> _dalGroups;
 
@@ -42,8 +39,6 @@
         public TeamQueries(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            _dalTeams = _unitOfWork.Context.Teams;
-            _dalTournaments = _unitOfWork.Context.Tournaments;
             _dalDivisions = _unitOfWork.Context.Divisions;
             _dalGroups = _unitOfWork.Context.Groups;
         }
@@ -82,21 +77,6 @@
             return _unitOfWork.Context.Teams.Where(t => t.CaptainId == criteria.CaptainId).Select(GetTeamMapping()).SingleOrDefault();
         }
 
-        /// <summary>
-        /// Find teams by given criteria
-        /// </summary>
-        /// <param name="criteria">Search criteria</param>
-        /// <returns>List of <see cref="Team"/>.</returns>
-        public List<Team> Execute(FindByTournamentIdCriteriaOld criteria)
-        {
-            return _unitOfWork.Context.Tournaments
-                                      .Where(t => t.Id == criteria.TournamentId)
-                                      .SelectMany(t => t.Divisions)
-                                      .SelectMany(d => d.Groups)
-                                      .SelectMany(g => g.Teams)
-                                      .Select(GetTeamMapping())
-                                      .ToList();
-        }
 
         public List<TeamTournamentDto> Execute(FindByTournamentIdCriteria criteria)
         {

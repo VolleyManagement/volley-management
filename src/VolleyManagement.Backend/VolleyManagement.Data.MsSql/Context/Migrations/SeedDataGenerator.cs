@@ -52,7 +52,7 @@
 
         private static void GenerateTournamentAdministratorOperations(int roleId, VolleyManagementEntities context)
         {
-            var operationIds = new List<short>()
+            var operationIds = new List<short>
             {
                 AuthOperations.Tournaments.Create,
                 AuthOperations.Tournaments.Edit,
@@ -80,7 +80,7 @@
 
         private static void GenerateAdministratorOperations(int roleId, VolleyManagementEntities context)
         {
-            var operationIds = new List<short>()
+            var operationIds = new List<short>
             {
                 AuthOperations.Tournaments.Create,
                 AuthOperations.Tournaments.Edit,
@@ -167,7 +167,7 @@
 
         private static ContributorTeamEntity ContributorsProMan()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Project Management",
                 CourseDirection = "All",
@@ -185,7 +185,7 @@
 
         private static ContributorTeamEntity Contributors042Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-042 .NET",
                 CourseDirection = ".NET",
@@ -203,7 +203,7 @@
 
         private static ContributorTeamEntity Contributors052Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-052 .NET",
                 CourseDirection = ".NET",
@@ -222,7 +222,7 @@
 
         private static ContributorTeamEntity Contributors061Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-061 .NET",
                 CourseDirection = ".NET",
@@ -240,7 +240,7 @@
 
         private static ContributorTeamEntity Contributors064Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-064 .NET",
                 CourseDirection = ".NET",
@@ -260,7 +260,7 @@
 
         private static ContributorTeamEntity Contributors064Atqc()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-064 ATQC",
                 CourseDirection = "ATQC",
@@ -281,7 +281,7 @@
 
         private static ContributorTeamEntity Contributors065Ui()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-065 UI",
                 CourseDirection = "UI",
@@ -299,7 +299,7 @@
 
         private static ContributorTeamEntity Contributors070Ui()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-070 UI",
                 CourseDirection = "UI",
@@ -316,7 +316,7 @@
 
         private static ContributorTeamEntity Contributors072Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-072 .NET",
                 CourseDirection = ".NET",
@@ -335,7 +335,7 @@
 
         private static ContributorTeamEntity Contributors076Atqc()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-076 ATQC",
                 CourseDirection = "ATQC",
@@ -354,7 +354,7 @@
 
         private static ContributorTeamEntity Contributors085Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-085 .NET",
                 CourseDirection = ".NET",
@@ -373,7 +373,7 @@
 
         private static ContributorTeamEntity Contributors091Atqc()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-091 ATQC",
                 CourseDirection = "ATQC",
@@ -391,7 +391,7 @@
 
         private static ContributorTeamEntity Contributors096Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-096 .NET",
                 CourseDirection = ".NET",
@@ -411,7 +411,7 @@
 
         private static ContributorTeamEntity Contributors103Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-103 .NET",
                 CourseDirection = ".NET",
@@ -430,7 +430,7 @@
 
         private static ContributorTeamEntity Contributors122Net()
         {
-            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            ContributorTeamEntity contributors = new ContributorTeamEntity
             {
                 Name = "Dp-122 .NET",
                 CourseDirection = ".NET",

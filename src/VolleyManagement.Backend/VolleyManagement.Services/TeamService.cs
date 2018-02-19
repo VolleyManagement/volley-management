@@ -112,38 +112,38 @@
         /// Edit team.
         /// </summary>
         /// <param name="team">Team to edit.</param>
-        public void Edit(Team team)
+        public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            Player captain = GetPlayerById(team.CaptainId);
+            Player captain = GetPlayerById(teamToEdit.CaptainId);
 
             if (captain == null)
             {
                 // ToDo: Revisit this case
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, team.CaptainId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
         }
 
             // Check if captain in teamToCreate is captain of another team
-            if ((captain.TeamId != null) && (captain.TeamId != team.Id))
+            if ((captain.TeamId != null) && (captain.TeamId != teamToEdit.Id))
             {
                 var existTeam = GetPlayerLedTeam(captain.Id);
                 VerifyExistingTeamOrThrow(existTeam);
             }
 
-            ValidateTeam(team);
+            ValidateTeam(teamToEdit);
 
-            team.CaptainId = captain.Id;
+            teamToEdit.CaptainId = captain.Id;
 
             try
             {
-                _teamRepository.Update(team);
+                _teamRepository.Update(teamToEdit);
             }
             catch (ConcurrencyException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
 
-            captain.TeamId = team.Id;
+            captain.TeamId = teamToEdit.Id;
             _playerRepository.Update(captain);
             _playerRepository.UnitOfWork.Commit();
         }
@@ -319,7 +319,7 @@
             return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
         }
 
-        private void ValidateTeamName(string teamName)
+        private static void ValidateTeamName(string teamName)
         {
             if (TeamValidation.ValidateTeamName(teamName))
             {
@@ -327,38 +327,34 @@
                     string.Format(
                     Resources.ValidationTeamName,
                     Domain.Constants.Team.MAX_NAME_LENGTH),
-                    "Name");
+                    $"Name");
             }
         }
 
-        private void ValidateCoachName(string teamCoachName)
+        private static void ValidateCoachName(string teamCoachName)
         {
-            if (!string.IsNullOrEmpty(teamCoachName))
-            {
-            if (TeamValidation.ValidateCoachName(teamCoachName))
+            if (!string.IsNullOrEmpty(teamCoachName)
+                && TeamValidation.ValidateCoachName(teamCoachName))
             {
                 throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationCoachName,
-                    Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                    "Coach");
+                       string.Format(
+                       Resources.ValidationCoachName,
+                       Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                       $"Coach");
             }
         }
-        }
 
-        private void ValidateAchievements(string teamAchievements)
+        private static void ValidateAchievements(string teamAchievements)
         {
-            if (!string.IsNullOrEmpty(teamAchievements))
-            {
-            if (TeamValidation.ValidateAchievements(teamAchievements))
+            if (!string.IsNullOrEmpty(teamAchievements)
+                && TeamValidation.ValidateAchievements(teamAchievements))
             {
                 throw new ArgumentException(
                     string.Format(
-                    Resources.ValidationTeamAchievements,
+                    TournamentResources.ValidationTeamAchievements,
                     Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                    "Achievements");
+                    $"Achievements");
             }
-        }
         }
 
         private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)

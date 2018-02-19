@@ -185,7 +185,7 @@
             }
         }
 
-        private void UpdateGroups(List<GroupEntity> old, List<Group> changed)
+        private void UpdateGroups(IEnumerable<GroupEntity> old, List<Group> changed)
         {
             foreach (var item in old.ToList())
             {
@@ -198,19 +198,19 @@
             }
         }
 
-        private void MapIdentifiers(Tournament to, TournamentEntity from)
+        private static void MapIdentifiers(Tournament to, TournamentEntity from)
         {
             to.Id = from.Id;
 
             foreach (DivisionEntity divisionEntity in from.Divisions)
             {
-                Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
+                Division divisionDomain = to.Divisions.First(d => d.Name == divisionEntity.Name);
                 divisionDomain.Id = divisionEntity.Id;
                 divisionDomain.TournamentId = divisionEntity.TournamentId;
 
                 foreach (GroupEntity groupEntity in divisionEntity.Groups)
                 {
-                    Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();
+                    Group groupDomain = divisionDomain.Groups.First(g => g.Name == groupEntity.Name);
                     groupDomain.Id = groupEntity.Id;
                     groupDomain.DivisionId = divisionEntity.Id;
                 }

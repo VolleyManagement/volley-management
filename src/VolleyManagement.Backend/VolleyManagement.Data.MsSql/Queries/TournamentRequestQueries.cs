@@ -83,7 +83,7 @@
         {
             return
                 t =>
-                new TournamentRequest()
+                new TournamentRequest
                 {
                     Id = t.Id,
                     UserId = t.UserId,

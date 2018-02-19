@@ -80,13 +80,13 @@
         /// Create new tournament.
         /// </summary>
         /// <param name="tournament">New tournament</param>
-        void Create(Tournament tournament);
+        void Create(Tournament tournamentToCreate);
 
         /// <summary>
         /// Edit tournament
         /// </summary>
-        /// <param name="tournament">New tournament data</param>
-        void Edit(Tournament tournament);
+        /// <param name="tournamentToEdit">New tournament data</param>
+        void Edit(Tournament tournamentToEdit);
 
         /// <summary>
         /// Delete specific tournament

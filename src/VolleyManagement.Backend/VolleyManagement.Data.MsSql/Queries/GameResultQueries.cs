@@ -21,7 +21,6 @@
     {
         #region Fields
 
-        private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<GameResultEntity> _dalGameResults;
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<DivisionEntity> _dalDivisions;
@@ -37,6 +36,7 @@
         /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/>.</param>
         public GameResultQueries(IUnitOfWork unitOfWork)
         {
+            VolleyUnitOfWork _unitOfWork;
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalGameResults = _unitOfWork.Context.GameResults;
             _dalTournaments = _unitOfWork.Context.Tournaments;
@@ -57,7 +57,6 @@
         {
             return _dalGameResults
                 .Where(gr => gr.Id == criteria.Id)
-                .ToList()
                 .Select(gr => GetGameResultDtoMap()(gr))
                 .SingleOrDefault();
         }
@@ -159,7 +158,6 @@
             return _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId
                 && gr.GameNumber == criteria.GameNumber)
-                .ToList()
                 .Select(gr => GetGameMapping()(gr))
                 .SingleOrDefault();
         }
@@ -222,24 +220,18 @@
         private static Penalty MapPenalty(GameResultEntity gr)
         {
             Penalty result;
-            if (gr.PenaltyTeam != 0)
+
+            result = gr.PenaltyTeam != 0 ? new Penalty
             {
-                result = new Penalty
-                {
-                    IsHomeTeam = gr.PenaltyTeam == 1,
-                    Amount = gr.PenaltyAmount,
-                    Description = gr.PenaltyDescription
-                };
-            }
-            else
-            {
-                result = null;
-            }
+                IsHomeTeam = gr.PenaltyTeam == 1,
+                Amount = gr.PenaltyAmount,
+                Description = gr.PenaltyDescription
+            } : null;
 
             return result;
         }
 
-        private GameResultDto Map(GameResultEntity gr, string divisionName, int divisionId, int groupId)
+        private static GameResultDto Map(GameResultEntity gr, string divisionName, int divisionId, int groupId)
         {
             var result = GetGameResultDtoMap()(gr);
             result.DivisionName = divisionName;

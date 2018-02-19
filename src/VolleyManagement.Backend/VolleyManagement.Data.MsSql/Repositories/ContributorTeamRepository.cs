@@ -73,7 +73,7 @@
         /// </summary>
         /// <param name="predicate">Condition to find contributors.</param>
         /// <returns>Collection of domain contributors.</returns>
-        public IQueryable<ContributorTeam> FindWhere(System.Linq.Expressions.Expression<Func<ContributorTeam, bool>> predicate)
+        public static IQueryable<ContributorTeam> FindWhere(System.Linq.Expressions.Expression<Func<ContributorTeam, bool>> predicate)
         {
             throw new NotImplementedException();
         }

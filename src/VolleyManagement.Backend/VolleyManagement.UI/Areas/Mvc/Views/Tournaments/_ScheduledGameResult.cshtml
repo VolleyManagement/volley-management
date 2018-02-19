@@ -82,15 +82,23 @@
         }
         else
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.AwayTeamName </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3" style="margin-top:8px">
+                        <div>                        
+                           <strong>@Html.Raw("G"+ @Model.GameNumber) </strong>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div>
+                                <strong>  @Model.HomeTeamName </strong>
+                            </div>
+                            <div>
+                                <strong>  @Model.AwayTeamName </strong>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -126,7 +134,7 @@
 
             <div class="col-md-2">
                 @Html.ActionLink(Resources.UI.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
-                                        new { @class = "deleteGame", @id = Model.Id })
+                                             new { @class = "deleteGame", @id = Model.Id })
             </div>
 
         }

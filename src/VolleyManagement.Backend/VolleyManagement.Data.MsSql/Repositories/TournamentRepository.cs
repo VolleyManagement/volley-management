@@ -167,7 +167,7 @@
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
         }
 
-        private void UpdateDivisions(List<DivisionEntity> old, List<Division> changed)
+        private void UpdateDivisions(IEnumerable<DivisionEntity> old, List<Division> changed)
         {
             foreach (var item in old.ToList())
             {

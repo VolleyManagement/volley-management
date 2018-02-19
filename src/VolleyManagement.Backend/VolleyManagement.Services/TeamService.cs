@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Linq;
     using Contracts;
     using Contracts.Authorization;
@@ -227,12 +228,13 @@
                 UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
             }
         }
-
+        //зміна
+      
         private static bool ValidateTwoTeamsName(Team teamToValidate, List<Team> getExistingTeams)
         {
             var existingTeams = from ex in getExistingTeams
                                 where ex.Id != teamToValidate.Id
-                                where String.Equals(ex.Name, teamToValidate.Name, StringComparison.CurrentCultureIgnoreCase)
+                                where String.Equals(ex.Name,teamToValidate.Name,StringComparison.InvariantCultureIgnoreCase)
                                 select ex;
             return existingTeams.Count() != 0;
         }

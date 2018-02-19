@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Contracts;
     using Contracts.Authorization;
@@ -413,6 +414,8 @@
                 case TournamentSchemeEnum.PlayOff:
                     numberOfRounds = GetNumberOfRoundsByPlayOffScheme(teamCount);
                     break;
+                default: numberOfRounds = 0;
+                    break;
             }
 
             return numberOfRounds;
@@ -684,7 +687,7 @@
 
         private void ValidateUniqueDivisionNames(List<Division> divisions)
         {
-            if (divisions.Select(d => new { Name = d.Name.ToUpper() }).Distinct().Count() != divisions.Count)
+            if (divisions.Select(d => new { Name = d.Name.ToUpper(CultureInfo.InvariantCulture)}).Distinct().Count() != divisions.Count)
             {
                 throw new ArgumentException(TournamentResources.DivisionNamesNotUnique);
             }
@@ -713,7 +716,8 @@
 
         private void ValidateUniqueGroupNames(List<Group> groups)
         {
-            if (groups.Select(g => new { Name = g.Name.ToUpper() }).Distinct().Count() != groups.Count)
+           
+            if (groups.Select(g => new { Name = g.Name.ToUpper(CultureInfo.InvariantCulture) }).Distinct().Count() != groups.Count)
             {
                 throw new ArgumentException(TournamentResources.GroupNamesNotUnique);
             }

@@ -212,13 +212,15 @@
                     awayTeamEntry.GamesWon++;
                     awayTeamEntry.GamesWithScoreThreeOne++;
                     break;
-                case -3: // sets score - 0:3
+                //case -3: // sets score - 0:3
+                default:
                     homeTeamEntry.GamesLost++;
                     homeTeamEntry.GamesWithScoreNilThree++;
                     awayTeamEntry.Points += 3;
                     awayTeamEntry.GamesWon++;
                     awayTeamEntry.GamesWithScoreThreeNil++;
                     break;
+               
             }
 
             var penalty = gameResult.Result.Penalty;

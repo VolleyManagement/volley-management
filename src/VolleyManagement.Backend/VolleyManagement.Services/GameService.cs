@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Services
+﻿using System.Diagnostics.Eventing.Reader;
+
+namespace VolleyManagement.Services
 {
     using System;
     using System.Collections.Generic;
@@ -37,7 +39,7 @@
 
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
-        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
+
         private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
         private readonly IQuery<List<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
@@ -82,7 +84,6 @@
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
             _gamesByTournamentIdInRoundsByNumbersQuery = gamesByTournamentIdInRoundsByNumbersQuery;
-            _gameNumberByTournamentIdQuery = gameNumberByTournamentIdQuery;
             _tournamentRepository = tournamentRepository;
             _tournamentTeamsQuery = tournamentTeamsQuery;
             _getTournamentInstanceByIdQuery = getTournamentInstanceByIdQuery;
@@ -379,43 +380,39 @@
                     {
                         throw new ArgumentException(
                             string.Format(
-                            Resources.GameResultRequiredSetScores,
-                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
-                    }
+                                Resources.GameResultRequiredSetScores,
+                                GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                                GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                                GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
+                                GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+
+                   }
                 }
                 else
                 {
-                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
+                    if( (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))&& 
+                        (setOrderNumber == GameResultConstants.MAX_SETS_COUNT))
                     {
-                        if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
-                        {
                             throw new ArgumentException(
-                            string.Format(
-                            Resources.GameResultFifthSetScoreInvalid,
-                            GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
+                                string.Format(
+                                    Resources.GameResultFifthSetScoreInvalid,
+                                    GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+                                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
                         }
-
+                    else if(!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber)) { 
                         throw new ArgumentException(
                             string.Format(
-                            Resources.GameResultOptionalSetScores,
-                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                            GameResultConstants.UNPLAYED_SET_HOME_SCORE,
-                            GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
-                    }
+                                Resources.GameResultOptionalSetScores,
+                                GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                                GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                                GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+                                GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
 
-                    if (isPreviousOptionalSetUnplayed)
-                    {
-                        if (!ResultValidation.IsSetUnplayed(setScores[i]))
-                        {
-                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-                        }
                     }
-
+                    if ((isPreviousOptionalSetUnplayed)&&(!ResultValidation.IsSetUnplayed(setScores[i])))
+                    {                      
+                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);                 
+                    }
                     isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
                 }
             }
@@ -531,15 +528,8 @@
             {
                 string oppositeTeam;
 
-                if (game.HomeTeamId == newGame.HomeTeamId
-                    || game.HomeTeamId == newGame.AwayTeamId)
-                {
-                    oppositeTeam = game.HomeTeamName;
-                }
-                else
-                {
-                    oppositeTeam = game.AwayTeamName;
-                }
+                oppositeTeam = game.HomeTeamId == newGame.HomeTeamId
+                    || game.HomeTeamId == newGame.AwayTeamId ? game.HomeTeamName : game.AwayTeamName;
 
                 throw new ArgumentException(
                   string.Format(
@@ -561,7 +551,7 @@
                     IsFreeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
-                {
+                {      
                     IsTheSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
                 }
             }
@@ -575,7 +565,7 @@
             }
         }
 
-        private static void ValidateGamesInTournamentSchemeTwo(Game newGame, List<GameResultDto> games)
+        private static void ValidateGamesInTournamentSchemeTwo(Game newGame, IEnumerable<GameResultDto> games)
         {
             var tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -617,7 +607,7 @@
             }
         }
 
-        private static void ValidateGamesInTournamentSchemeOne(Game newGame, List<GameResultDto> games)
+        private static void ValidateGamesInTournamentSchemeOne(Game newGame, IEnumerable<GameResultDto> games)
         {
             List<GameResultDto> tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -693,7 +683,7 @@
             List<Game> gamesToUpdate = new List<Game>();
 
             List<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria()
+                .Execute(new GamesByRoundCriteria
                 {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
@@ -773,15 +763,8 @@
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
-            if (finishedGame.AwayTeamId == null)
-            {
-                winnerTeamId = finishedGame.HomeTeamId.Value;
-            }
-            else
-            {
-                winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
+            winnerTeamId = finishedGame.AwayTeamId == null ? finishedGame.HomeTeamId.Value : finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
-            }
 
             if (finishedGame.GameNumber % 2 != 0)
             {
@@ -818,7 +801,7 @@
             return nextGame;
         }
 
-        private static int GetNextGameNumber(Game finishedGame, List<Game> games)
+        private static int GetNextGameNumber(Game finishedGame, IEnumerable<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
 
@@ -826,13 +809,13 @@
                 + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
         }
 
-        private static bool IsSemiFinalGame(Game finishedGame, List<Game> games)
+        private static bool IsSemiFinalGame(Game finishedGame, IEnumerable<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
             return finishedGame.Round == numberOfRounds - 1;
         }
 
-        private static int GetNumberOfRounds(Game finishedGame, List<Game> games)
+        private static int GetNumberOfRounds(Game finishedGame, IEnumerable<Game> games)
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
@@ -840,7 +823,7 @@
                 + finishedGame.Round;
         }
 
-        private static bool IsGameInLastRound(Game finishedGame, List<Game> games)
+        private static bool IsGameInLastRound(Game finishedGame, IEnumerable<Game> games)
         {
             byte roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;
@@ -914,7 +897,7 @@
         private void UpdateTournamentLastTimeUpdated(Game game)
         {
             var tournament = _getTournamentInstanceByIdQuery
-               .Execute(new FindByIdCriteria()
+               .Execute(new FindByIdCriteria
                {
                    Id = game.TournamentId
                });

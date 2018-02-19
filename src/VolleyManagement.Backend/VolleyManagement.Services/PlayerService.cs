@@ -202,7 +202,7 @@
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
-        private static IEnumerable<Player> GetNewPlayers(List<Player> playersToCreate)
+        private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
         {
             return playersToCreate.Where(p => p.Id == 0);
         }
@@ -222,8 +222,8 @@
 
             var isExistingPlayers = existingPlayers
                     .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => String.Equals(t.FirstName, allPlayer.FirstName, StringComparison.CurrentCultureIgnoreCase)
-                                  && String.Equals(t.LastName, allPlayer.LastName, StringComparison.CurrentCultureIgnoreCase)
+                    .FirstOrDefault(t => String.Equals(t.FirstName,allPlayer.FirstName,StringComparison.InvariantCultureIgnoreCase)
+                                  && String.Equals(t.LastName,allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
                                   && allPlayer.TeamId != null
                                   && allPlayer.TeamId != teamId));
 

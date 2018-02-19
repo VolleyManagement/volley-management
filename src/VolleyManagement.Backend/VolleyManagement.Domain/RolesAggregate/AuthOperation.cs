@@ -5,7 +5,7 @@
     /// <summary>
     /// Contains information about particular operation within application
     /// </summary>
-    public sealed class AuthOperation 
+    public sealed class AuthOperation:IEquatable<AuthOperation>
     {
         #region Constants
 
@@ -99,9 +99,9 @@
         /// </summary>
         /// <param name="obj">>object to check equality</param>
         /// <returns>Flag if specified object equals to current</returns>
-        public bool Equals(AuthOperation obj)
+        public bool Equals(AuthOperation other)
         {
-            return !(obj is null) && _id == obj._id;
+            return !(other is null) && _id == other._id;
         }
 
         /// <summary>

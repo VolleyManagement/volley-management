@@ -14,9 +14,9 @@
     /// Provides implementation of game result queries.
     /// </summary>
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
-                                     IQuery<List<GameResultDto>, TournamentGameResultsCriteria>,
-                                     IQuery<List<Game>, TournamentRoundsGameResultsCriteria>,
-                                     IQuery<List<Game>, GamesByRoundCriteria>,
+                                     IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>,
+                                     IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria>,
+                                     IQuery<ICollection<Game>, GamesByRoundCriteria>,
                                      IQuery<Game, GameByNumberCriteria>
     {
         #region Fields
@@ -67,7 +67,7 @@
         /// </summary>
         /// <param name="criteria">Tournament's game results criteria.</param>
         /// <returns>List of domain models of game result.</returns>
-        public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
+        public ICollection<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
             var tournamentId = criteria.TournamentId;
 
@@ -120,7 +120,7 @@
         /// </summary>
         /// <param name="criteria">Tournament's and round`s game results criteria.</param>
         /// <returns>List of Game of game result.</returns>
-        public List<Game> Execute(TournamentRoundsGameResultsCriteria criteria)
+        public ICollection<Game> Execute(TournamentRoundsGameResultsCriteria criteria)
         {
             // Method ToList() used because it gives opportunity to load
             // specified game results into memory and then convert them.
@@ -139,7 +139,7 @@
         /// </summary>
         /// <param name="criteria">Tournament and round number criteria</param>
         /// <returns>Collection of games which satisfy the criteria</returns>
-        public List<Game> Execute(GamesByRoundCriteria criteria)
+        public ICollection<Game> Execute(GamesByRoundCriteria criteria)
         {
             var games = _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId

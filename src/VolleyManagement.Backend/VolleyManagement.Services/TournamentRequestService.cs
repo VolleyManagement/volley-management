@@ -23,7 +23,7 @@
         private readonly ITournamentRequestRepository _tournamentRequestRepository;
         private readonly ITournamentRepository _tournamentRepository;
         private readonly IAuthorizationService _authService;
-        private readonly IQuery<List<TournamentRequest>, GetAllCriteria> _getAllTournamentRequestsQuery;
+        private readonly IQuery<ICollection<TournamentRequest>, GetAllCriteria> _getAllTournamentRequestsQuery;
         private readonly IQuery<TournamentRequest, FindByIdCriteria> _getTournamentRequestByIdQuery;
         private readonly IQuery<TournamentRequest, FindByTeamTournamentCriteria> _getTournamentRequestByAllQuery;
         private readonly IUserService _userService;
@@ -42,7 +42,7 @@
         public TournamentRequestService(
             ITournamentRequestRepository tournamentRequestRepository,
             IAuthorizationService authService,
-            IQuery<List<TournamentRequest>, GetAllCriteria> getAllTournamentRequestsQuery,
+            IQuery<ICollection<TournamentRequest>, GetAllCriteria> getAllTournamentRequestsQuery,
             IQuery<TournamentRequest, FindByIdCriteria> getTournamentRequestById,
             IQuery<TournamentRequest, FindByTeamTournamentCriteria> getTournamentRequestByAll,
             ITournamentRepository tournamentRepository,

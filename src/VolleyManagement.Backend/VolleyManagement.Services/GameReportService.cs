@@ -21,7 +21,7 @@
     {
         #region Queries
 
-        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _tournamentByIdQuery;
@@ -37,7 +37,7 @@
         /// <param name="tournamentTeamsQuery">Query for getting tournament's game teams.</param>
         /// <param name="tournamentScheduleDtoByIdQuery">Get tournament data transfer object query.</param>
         public GameReportService(
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery,
             IQuery<Tournament, FindByIdCriteria> tournamentByIdQuery)

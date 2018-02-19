@@ -20,9 +20,9 @@
 
         private readonly IQuery<Role, FindByIdCriteria> _getByIdQuery;
 
-        private readonly IQuery<List<UserInRoleDto>, FindByRoleCriteria> _getUsersByRoleQuery;
+        private readonly IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria> _getUsersByRoleQuery;
 
-        private readonly IQuery<List<UserInRoleDto>, GetAllCriteria> _getUserInRolesQuery;
+        private readonly IQuery<ICollection<UserInRoleDto>, GetAllCriteria> _getUserInRolesQuery;
 
         private readonly IRoleRepository _roleRepository;
 
@@ -41,8 +41,8 @@
         public RolesService(
             IQuery<ICollection<Role>, GetAllCriteria> getAllQuery,
             IQuery<Role, FindByIdCriteria> getByIdQuery,
-            IQuery<List<UserInRoleDto>, FindByRoleCriteria> getUsersByRoleQuery,
-            IQuery<List<UserInRoleDto>, GetAllCriteria> getUserInRolesQuery,
+            IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria> getUsersByRoleQuery,
+            IQuery<ICollection<UserInRoleDto>, GetAllCriteria> getUserInRolesQuery,
             IRoleRepository roleRepository)
         {
             _getAllQuery = getAllQuery;

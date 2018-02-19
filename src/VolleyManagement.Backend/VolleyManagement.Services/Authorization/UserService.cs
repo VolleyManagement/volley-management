@@ -24,7 +24,7 @@
         private readonly IQuery<ICollection<User>, GetAllCriteria> _getAllUsersQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
         private readonly ICacheProvider _cacheProvider;
-        private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
+        private readonly IQuery<ICollection<User>, UniqueUserCriteria> _getAdminsListQuery;
         private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
@@ -44,7 +44,7 @@
             IQuery<ICollection<User>, GetAllCriteria> getAllUsersQuery,
             IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
             ICacheProvider cacheProvider,
-            IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery,
+            IQuery<ICollection<User>, UniqueUserCriteria> getAdminsListQuery,
             IUserRepository userRepository,
             ICurrentUserService currentUserService)
         {

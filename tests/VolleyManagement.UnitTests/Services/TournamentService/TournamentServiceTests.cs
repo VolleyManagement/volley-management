@@ -62,13 +62,13 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
         private Mock<IQuery<ICollection<Tournament>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock;
         private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
-        private Mock<IQuery<List<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
-        private Mock<IQuery<List<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
+        private Mock<IQuery<ICollection<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
+        private Mock<IQuery<ICollection<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
         private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
         private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
-        private Mock<IQuery<List<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
+        private Mock<IQuery<ICollection<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -86,13 +86,13 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
             _getAllQueryMock = new Mock<IQuery<ICollection<Tournament>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
             _getAllTournamentTeamsQuery = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
-            _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
-            _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
+            _getAllTournamentDivisionsQuery = new Mock<IQuery<ICollection<Division>, TournamentDivisionsCriteria>>();
+            _getAllTournamentGroupsQuery = new Mock<IQuery<ICollection<Group>, DivisionGroupsCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
             _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
-            _getOldTournamentsQuery = new Mock<IQuery<List<Tournament>, OldTournamentsCriteria>>();
+            _getOldTournamentsQuery = new Mock<IQuery<ICollection<Tournament>, OldTournamentsCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);

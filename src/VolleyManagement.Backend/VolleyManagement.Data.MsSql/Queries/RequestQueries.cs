@@ -13,7 +13,7 @@
     /// <summary>
     /// Provides Object Query implementation for Requests
     /// </summary>
-    public class RequestQueries : IQuery<List<Request>, GetAllCriteria>,
+    public class RequestQueries : IQuery<ICollection<Request>, GetAllCriteria>,
                                   IQuery<Request, FindByIdCriteria>,
                                   IQuery<Request, UserToPlayerCriteria>
     {
@@ -43,7 +43,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Request"/>. </returns>
-        public List<Request> Execute(GetAllCriteria criteria)
+        public ICollection<Request> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Requests.Select(GetRequestMapping()).ToList();
         }

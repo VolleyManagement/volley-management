@@ -33,7 +33,7 @@ namespace VolleyManagement.UnitTests.Services.UsersService
         private Mock<IQuery<ICollection<User>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getByIdQueryMock;
-        private Mock<IQuery<List<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
+        private Mock<IQuery<ICollection<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
         private Mock<ICurrentUserService> _currentUserServiceMock;
 
         private UserServiceTestFixture _testFixture = new UserServiceTestFixture();
@@ -50,7 +50,7 @@ namespace VolleyManagement.UnitTests.Services.UsersService
             _getAllQueryMock = new Mock<IQuery<ICollection<User>, GetAllCriteria>>();
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
-            _getAdminsListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
+            _getAdminsListQueryMock = new Mock<IQuery<ICollection<User>, UniqueUserCriteria>>();
             _currentUserServiceMock = new Mock<ICurrentUserService>();
         }
 
@@ -198,7 +198,7 @@ namespace VolleyManagement.UnitTests.Services.UsersService
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
-        private void MockGetAdminsListQuery(List<User> testData)
+        private void MockGetAdminsListQuery(IEnumerable<User> testData)
         {
             _getAdminsListQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueUserCriteria>())).Returns(testData.ToList());
         }

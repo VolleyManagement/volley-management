@@ -37,7 +37,7 @@ namespace VolleyManagement.UnitTests.Services.TournamentRequestService
         private Mock<ITournamentRequestRepository> _tournamentRequestRepositoryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
         private Mock<IAuthorizationService> _authServiceMock;
-        private Mock<IQuery<List<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock;
+        private Mock<IQuery<ICollection<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock;
         private Mock<IQuery<TournamentRequest, FindByIdCriteria>> _getRequestByIdQueryMock;
         private Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>> _getRequestByAllQueryMock;
         private Mock<ITournamentRepository> _tournamentRepositoryMock;
@@ -54,7 +54,7 @@ namespace VolleyManagement.UnitTests.Services.TournamentRequestService
 
             _authServiceMock = new Mock<IAuthorizationService>();
 
-            _getAllRequestsQueryMock = new Mock<IQuery<List<TournamentRequest>, GetAllCriteria>>();
+            _getAllRequestsQueryMock = new Mock<IQuery<ICollection<TournamentRequest>, GetAllCriteria>>();
 
             _getRequestByIdQueryMock = new Mock<IQuery<TournamentRequest, FindByIdCriteria>>();
 

@@ -19,8 +19,8 @@
                                IQuery<ICollection<Team>, GetAllCriteria>,
                                IQuery<Team, FindByCaptainIdCriteria>,
                                IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>,
-                               IQuery<List<Team>, FindTeamsByGroupIdCriteria>,
-                               IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
+                               IQuery<ICollection<Team>, FindTeamsByGroupIdCriteria>,
+                               IQuery<ICollection<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
     {
         #region Fields
 
@@ -99,7 +99,7 @@
             return result;
         }
 
-        public List<Team> Execute(FindTeamsByGroupIdCriteria criteria)
+        public ICollection<Team> Execute(FindTeamsByGroupIdCriteria criteria)
         {
             return _unitOfWork.Context.Groups
                                       .Where(g => g.Id == criteria.GroupId)
@@ -108,7 +108,7 @@
                                       .ToList();
         }
 
-        public List<List<Team>> Execute(FindTeamsInDivisionsByTournamentIdCriteria criteria)
+        public ICollection<List<Team>> Execute(FindTeamsInDivisionsByTournamentIdCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments
                                       .Where(t => t.Id == criteria.TournamentId)

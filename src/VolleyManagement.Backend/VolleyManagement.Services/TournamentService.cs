@@ -62,11 +62,11 @@
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
-        private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
-        private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
+        private readonly IQuery<ICollection<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
+        private readonly IQuery<ICollection<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
         private readonly IQuery<Tournament, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
-        private readonly IQuery<List<Tournament>, OldTournamentsCriteria> _getOldTournamentsQuery;
+        private readonly IQuery<ICollection<Tournament>, OldTournamentsCriteria> _getOldTournamentsQuery;
 
         #endregion
 
@@ -94,11 +94,11 @@
             IQuery<ICollection<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
-            IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
-            IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
+            IQuery<ICollection<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
+            IQuery<ICollection<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
-            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery, 
+            IQuery<ICollection<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery, 
             IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IAuthorizationService authService,
             IGameService gameService)

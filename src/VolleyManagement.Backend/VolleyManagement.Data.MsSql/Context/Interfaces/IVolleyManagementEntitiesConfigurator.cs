@@ -8,5 +8,6 @@
         void ConfigureGameDataEntities(DbModelBuilder modelBuilder);
         void ConfigureGameParticipantEntities(DbModelBuilder modelBuilder);
         void ConfigureEntityRelationships(DbModelBuilder modelBuilder);
+        void RemoveManyToManyCascadeConvention(DbModelBuilder modelBuilder);
     }
 }

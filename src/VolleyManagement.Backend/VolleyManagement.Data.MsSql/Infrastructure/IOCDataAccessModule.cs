@@ -9,6 +9,7 @@
             UserRelatedRepositoriesRegistrator.Register(container);
             RepositoriesRegistrator.Register(container);
             QueriesRegistrator.Register(container);
+            EntityConfigurationRegistrator.Register(container);
         }
     }
 }

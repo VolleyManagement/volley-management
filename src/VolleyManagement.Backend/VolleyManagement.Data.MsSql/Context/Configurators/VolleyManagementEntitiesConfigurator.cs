@@ -1,22 +1,16 @@
 ﻿namespace VolleyManagement.Data.MsSql.Context.Configurators
 {
+    using System;
     using System.Data.Entity;
     using Interfaces;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
-    class VolleyManagementEntitiesConfigurator : Interfaces.IVolleyManagementEntitiesConfigurator
+    class VolleyManagementEntitiesConfigurator : IVolleyManagementEntitiesConfigurator
     {
         internal IUserEntitiesConfigurator UserEntitiesConfigurator { get; set; }
         internal IEntityRelationshipConfigurator EntityRelationshipConfigurator { get; set; }
         internal IGameDataEntitiesConfigurator GameDataEntitiesConfigurator { get; set; }
         internal IGameParticipantEntitiesConfigurator GameParticipantEntitiesConfigurator { get; set; }
-
-        public VolleyManagementEntitiesConfigurator()
-        {
-            UserEntitiesConfigurator = new UserEntitiesConfigurator();
-            GameDataEntitiesConfigurator = new GameDataEntitiesConfigurator();
-            GameParticipantEntitiesConfigurator = new GameParticipantEntitiesConfigurator();
-            EntityRelationshipConfigurator = new EntityRelationshipConfigurator();
-        }
 
         public void ConfigureEntityRelationships(DbModelBuilder modelBuilder)
         {
@@ -49,6 +43,11 @@
         {
             UserEntitiesConfigurator.ConfigureUsers(modelBuilder);
             UserEntitiesConfigurator.ConfigureRoles(modelBuilder);
+        }
+
+        public void RemoveManyToManyCascadeConvention(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
         }
     }
 }

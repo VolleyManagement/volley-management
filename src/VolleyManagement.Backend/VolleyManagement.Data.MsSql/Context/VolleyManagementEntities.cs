@@ -1,10 +1,8 @@
 namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
-    using System.Data.Entity.ModelConfiguration.Conventions;
     using Entities;
     using VolleyManagement.Data.MsSql.Context.Interfaces;
-    using VolleyManagement.Data.MsSql.Context.Configurators;
 
     /// <summary>
     /// Volley management database context
@@ -29,7 +27,6 @@ namespace VolleyManagement.Data.MsSql.Context
         public VolleyManagementEntities()
             : base("VolleyManagementEntities")
         {
-            VolleyManagementEntitiesConfigurator = new VolleyManagementEntitiesConfigurator();
         }
 
         #endregion
@@ -121,7 +118,7 @@ namespace VolleyManagement.Data.MsSql.Context
         /// <param name="modelBuilder">model builder</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+            VolleyManagementEntitiesConfigurator.RemoveManyToManyCascadeConvention(modelBuilder);
 
             VolleyManagementEntitiesConfigurator.ConfigureUserEnitites(modelBuilder);
             VolleyManagementEntitiesConfigurator.ConfigureGameDataEntities(modelBuilder);

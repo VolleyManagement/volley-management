@@ -131,35 +131,7 @@
                 return division;
             }
         }
-
-        /// <summary>
-        /// Maps Division model
-        /// </summary>
-        /// <param name="to">Division entity model</param>
-        /// <param name="from">Division domain model</param>
-        public static void Map(DivisionEntity to, Division from)
-        {
-            to.Id = from.Id;
-            to.Name = from.Name;
-            to.TournamentId = from.TournamentId;
-        }
-
-        /// <summary>
-        /// Maps Division model
-        /// </summary>
-        /// <param name="from">Division domain model</param>
-        /// <returns>Dal division model</returns>
-        public static DivisionEntity Map(Division from)
-        {
-            return new DivisionEntity
-            {
-                Id = from.Id,
-                Name = from.Name,
-                TournamentId = from.TournamentId,
-                Groups = from.Groups.Select(g => Map(g)).ToList()
-            };
-        }
-
+        
         /// <summary>
         /// Maps group models
         /// </summary>

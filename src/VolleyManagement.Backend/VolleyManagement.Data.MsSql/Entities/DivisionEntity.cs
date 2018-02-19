@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Data.MsSql.Entities
+﻿using System.Linq;
+
+namespace VolleyManagement.Data.MsSql.Entities
 {
     using System.Collections.Generic;
 
@@ -40,10 +42,10 @@
         /// <summary>
         /// Gets or sets division's groups
         /// </summary>
-        public virtual List<GroupEntity> Groups
+        public virtual ICollection<GroupEntity> Groups
         {
             get => _groups;
-            set => _groups = value;
+            set => _groups = value.ToList();
         }
     }
 }

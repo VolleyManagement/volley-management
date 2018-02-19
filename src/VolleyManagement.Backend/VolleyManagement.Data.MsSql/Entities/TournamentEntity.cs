@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace VolleyManagement.Data.MsSql.Entities
 {
     using System;
@@ -81,10 +83,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets collection of tournaments divisions
         /// </summary>
-        public virtual List<DivisionEntity> Divisions
+        public virtual ICollection<DivisionEntity> Divisions
         {
             get => _divisions;
-            set => _divisions = value;
+            set => _divisions = value.ToList();
         }
 
         /// <summary>

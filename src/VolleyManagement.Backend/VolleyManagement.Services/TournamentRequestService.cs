@@ -169,7 +169,7 @@
                 request.UserId,
                 request.TournamentId,
                 request.TeamId);
-            IList<User> adminList = _userService.GetAdminsList();
+            ICollection<User> adminList = _userService.GetAdminsList();
             foreach (var admin in adminList)
             {
                 EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);

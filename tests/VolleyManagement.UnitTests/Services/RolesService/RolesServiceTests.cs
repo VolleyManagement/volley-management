@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.RolesService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.RolesService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -62,7 +64,7 @@
             var actualResult = service.GetAllRoles();
 
             // Assert
-            CollectionAssert.AreEqual(expectedResult, actualResult, new RoleComparer());
+            CollectionAssert.AreEqual(expectedResult, actualResult as ICollection, new RoleComparer());
         }
 
         [TestMethod]
@@ -95,7 +97,7 @@
             var actualResult = service.GetUsersInRole(ROLE_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
+            CollectionAssert.AreEqual(expectedResult, actualResult as ICollection, new UserInRoleComparer());
         }
 
         [TestMethod]
@@ -114,7 +116,7 @@
             var actualResult = service.GetAllUsersWithRoles();
 
             // Assert
-            CollectionAssert.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
+            CollectionAssert.AreEqual(expectedResult, actualResult as ICollection, new UserInRoleComparer());
         }
 
         [TestMethod]

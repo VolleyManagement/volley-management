@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.UsersService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.UsersService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -70,7 +72,7 @@
             var actual = sut.GetAllUsers();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new UserComparer());
         }
 
         [TestMethod]
@@ -160,7 +162,7 @@
             var actual = sut.GetAdminsList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new UserComparer());
         }
 
         private UserService BuildSUT()

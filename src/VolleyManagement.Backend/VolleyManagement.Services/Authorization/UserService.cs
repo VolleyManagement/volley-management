@@ -92,7 +92,7 @@
         /// Get all users collection.
         /// </summary>
         /// <returns>Use collection.</returns>
-        public List<User> GetAllUsers()
+        public ICollection<User> GetAllUsers()
         {
             _authService.CheckAccess(AuthOperations.AllUsers.ViewList);
             return _getAllUsersQuery.Execute(new GetAllCriteria());
@@ -102,7 +102,7 @@
         /// Get all users collection.
         /// </summary>
         /// <returns>Use collection.</returns>
-        public List<User> GetAllActiveUsers()
+        public ICollection<User> GetAllActiveUsers()
         {
             _authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
             var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
@@ -114,7 +114,7 @@
         /// Gets list of users which role is Admin.
         /// </summary>
         /// <returns>List of User entities.</returns>
-        public List<User> GetAdminsList()
+        public ICollection<User> GetAdminsList()
         {
             return _getAdminsListQuery.Execute(
                 new UniqueUserCriteria { RoleId = 1 });

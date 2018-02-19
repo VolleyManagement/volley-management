@@ -60,7 +60,7 @@
         /// Returns all roles supported by the application
         /// </summary>
         /// <returns>List of roles</returns>
-        public List<Role> GetAllRoles()
+        public ICollection<Role> GetAllRoles()
         {
             return _getAllQuery.Execute(new GetAllCriteria());
         }
@@ -80,7 +80,7 @@
         /// </summary>
         /// <param name="roleId">Id of the role to look for</param>
         /// <returns>User in role</returns>
-        public List<UserInRoleDto> GetUsersInRole(int roleId)
+        public ICollection<UserInRoleDto> GetUsersInRole(int roleId)
         {
             return _getUsersByRoleQuery.Execute(new FindByRoleCriteria { RoleId = roleId });
         }
@@ -89,7 +89,7 @@
         /// The get all users with roles.
         /// </summary>
         /// <returns> Collection of <see cref="UserInRoleDto"/></returns>
-        public List<UserInRoleDto> GetAllUsersWithRoles()
+        public ICollection<UserInRoleDto> GetAllUsersWithRoles()
         {
             return _getUserInRolesQuery.Execute(new GetAllCriteria());
         }

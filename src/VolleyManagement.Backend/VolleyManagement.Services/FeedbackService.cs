@@ -231,7 +231,7 @@
                 feedback.Status,
                 feedback.Content);
 
-            IList<User> adminsList = _userService.GetAdminsList();
+            ICollection<User> adminsList = _userService.GetAdminsList();
 
             foreach (var admin in adminsList)
             {

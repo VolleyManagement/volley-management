@@ -9,9 +9,20 @@
 
     @if (!Model.AwayTeamId.HasValue)
     {
-        <div class="row">
-            <div class="col-md-10">
-                <strong>  @Model.HomeTeamName </strong>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div>
+                        <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row">
+                        <div>
+                            <strong>  @Model.HomeTeamName </strong>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -24,21 +35,33 @@
     {
         if (Model.IsTechnicalDefeat)
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>  @Model.GameScore.Home </strong>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.AwayTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>  @Model.GameScore.Away </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3" style="margin-top:8px">
+                        <div>
+                            <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.HomeTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>   @Model.GameScore.Home </strong>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.AwayTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>  @Model.GameScore.Away </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -50,21 +73,33 @@
         }
         else if (!Model.GameScore.IsEmpty)
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>   @Model.GameScore.Home </strong>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.AwayTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>  @Model.GameScore.Away </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3" style="margin-top:8px">
+                        <div>
+                            <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.HomeTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>   @Model.GameScore.Home </strong>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.AwayTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>  @Model.GameScore.Away </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -85,8 +120,8 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-3" style="margin-top:8px">
-                        <div>                        
-                           <strong>@Html.Raw("G"+ @Model.GameNumber) </strong>
+                        <div>
+                            <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
                         </div>
                     </div>
                     <div class="col-md-7">
@@ -134,7 +169,7 @@
 
             <div class="col-md-2">
                 @Html.ActionLink(Resources.UI.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
-                                             new { @class = "deleteGame", @id = Model.Id })
+                                                            new { @class = "deleteGame", @id = Model.Id })
             </div>
 
         }

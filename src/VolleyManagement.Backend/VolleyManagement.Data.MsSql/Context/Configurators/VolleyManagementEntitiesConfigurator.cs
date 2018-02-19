@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Data.MsSql.Context.Configurators
 {
-    using System;
     using System.Data.Entity;
     using Interfaces;
     using System.Data.Entity.ModelConfiguration.Conventions;
@@ -11,6 +10,14 @@
         internal IEntityRelationshipConfigurator EntityRelationshipConfigurator { get; set; }
         internal IGameDataEntitiesConfigurator GameDataEntitiesConfigurator { get; set; }
         internal IGameParticipantEntitiesConfigurator GameParticipantEntitiesConfigurator { get; set; }
+
+        public VolleyManagementEntitiesConfigurator()
+        {
+            UserEntitiesConfigurator = new UserEntitiesConfigurator();
+            EntityRelationshipConfigurator = new EntityRelationshipConfigurator();
+            GameDataEntitiesConfigurator = new GameDataEntitiesConfigurator();
+            GameParticipantEntitiesConfigurator = new GameParticipantEntitiesConfigurator();
+        }
 
         public void ConfigureEntityRelationships(DbModelBuilder modelBuilder)
         {

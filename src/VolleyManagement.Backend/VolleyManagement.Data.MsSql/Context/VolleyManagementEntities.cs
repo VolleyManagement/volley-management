@@ -2,7 +2,9 @@ namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
     using Entities;
+    using VolleyManagement.Data.MsSql.Context.Configurators;
     using VolleyManagement.Data.MsSql.Context.Interfaces;
+    
 
     /// <summary>
     /// Volley management database context
@@ -27,6 +29,7 @@ namespace VolleyManagement.Data.MsSql.Context
         public VolleyManagementEntities()
             : base("VolleyManagementEntities")
         {
+            VolleyManagementEntitiesConfigurator = new VolleyManagementEntitiesConfigurator();
         }
 
         #endregion

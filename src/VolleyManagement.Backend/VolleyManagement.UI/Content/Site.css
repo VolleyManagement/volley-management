@@ -149,6 +149,10 @@ div.game-away-team {
     text-align: left;
 }
 
+div.game-number {
+    margin-top:8px;
+}
+
 table.standings {
     margin: 0 0 20px 0;
     font-size: 13px;

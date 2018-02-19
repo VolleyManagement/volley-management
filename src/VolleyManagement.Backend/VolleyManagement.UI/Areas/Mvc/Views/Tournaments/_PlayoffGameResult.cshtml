@@ -1,12 +1,14 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
+<link rel="stylesheet" href="~/Content/Site.css" />
+
 <div class="table-bordered">
 
     @if (!Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3" style="margin-top:8px">
+                <div class="col-md-3 game-number">
                     <div>
                         <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
                     </div>
@@ -43,7 +45,7 @@
     {
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3" style="margin-top:8px">
+                <div class="col-md-3 game-number">
                     <div>
                         <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
                     </div>
@@ -104,7 +106,7 @@
         {
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3" style="margin-top:8px">
+                    <div class="col-md-3 game-number">
                         <div>
                             <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
                         </div>
@@ -147,7 +149,7 @@
         {
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3" style="margin-top:8px">
+                    <div class="col-md-3 game-number">
                         <div>
                             <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
                         </div>
@@ -194,7 +196,7 @@
         {
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3" style="margin-top:8px">
+                    <div class="col-md-3 game-number">
                         <div>
                             <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
                         </div>
@@ -248,7 +250,7 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3" style="margin-top:8px">
+                    <div class="col-md-3 game-number">
                         <div>
                             <strong>@Html.Raw("G" + @Model.GameNumber) </strong>
                         </div>

@@ -30,7 +30,7 @@ namespace VolleyManagement.UnitTests.Services.UsersService
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<ICacheProvider> _cacheProviderMock;
-        private Mock<IQuery<List<User>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<ICollection<User>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getByIdQueryMock;
         private Mock<IQuery<List<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
@@ -47,7 +47,7 @@ namespace VolleyManagement.UnitTests.Services.UsersService
             _authServiceMock = new Mock<IAuthorizationService>();
             _userRepositoryMock = new Mock<IUserRepository>();
             _cacheProviderMock = new Mock<ICacheProvider>();
-            _getAllQueryMock = new Mock<IQuery<List<User>, GetAllCriteria>>();
+            _getAllQueryMock = new Mock<IQuery<ICollection<User>, GetAllCriteria>>();
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
             _getAdminsListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();

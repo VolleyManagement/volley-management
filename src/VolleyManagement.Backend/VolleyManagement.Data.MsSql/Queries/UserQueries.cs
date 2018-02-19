@@ -24,7 +24,7 @@
                              IQuery<List<UserInRoleDto>, FindByRoleCriteria>,
                              IQuery<List<UserInRoleDto>, GetAllCriteria>,
                              IQuery<User, FindByIdCriteria>,
-                             IQuery<List<User>, GetAllCriteria>,
+                             IQuery<ICollection<User>, GetAllCriteria>,
                              IQuery<List<User>, UniqueUserCriteria>
     {
         #region Fields
@@ -151,7 +151,7 @@
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>User entity list.</returns>
-        List<User> IQuery<List<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
+        ICollection<User> IQuery<ICollection<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Users.Select(GetUserMapping()).ToList();
         }

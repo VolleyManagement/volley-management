@@ -16,7 +16,7 @@
     /// Provides Object Query implementation for Tournaments
     /// </summary>
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
-                                     IQuery<List<Tournament>, GetAllCriteria>,
+                                     IQuery<ICollection<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
                                      IQuery<List<Division>, TournamentDivisionsCriteria>,
                                      IQuery<List<Group>, DivisionGroupsCriteria>,
@@ -84,7 +84,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public List<Tournament> Execute(GetAllCriteria criteria)
+        public ICollection<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
         }

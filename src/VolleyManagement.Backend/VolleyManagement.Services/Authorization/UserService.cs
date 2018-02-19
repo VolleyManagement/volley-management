@@ -21,7 +21,7 @@
         private readonly IAuthorizationService _authService;
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
         private readonly IUserRepository _userRepository;
-        private readonly IQuery<List<User>, GetAllCriteria> _getAllUsersQuery;
+        private readonly IQuery<ICollection<User>, GetAllCriteria> _getAllUsersQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
         private readonly ICacheProvider _cacheProvider;
         private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
@@ -41,7 +41,7 @@
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
-            IQuery<List<User>, GetAllCriteria> getAllUsersQuery,
+            IQuery<ICollection<User>, GetAllCriteria> getAllUsersQuery,
             IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
             ICacheProvider cacheProvider,
             IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery,

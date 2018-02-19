@@ -16,7 +16,7 @@
     {
         #region Fields
 
-        private readonly IQuery<List<Role>, GetAllCriteria> _getAllQuery;
+        private readonly IQuery<ICollection<Role>, GetAllCriteria> _getAllQuery;
 
         private readonly IQuery<Role, FindByIdCriteria> _getByIdQuery;
 
@@ -39,7 +39,7 @@
         /// <param name="getUserInRolesQuery"> Users In Role query. </param>
         /// <param name="roleRepository">Role repository</param>
         public RolesService(
-            IQuery<List<Role>, GetAllCriteria> getAllQuery,
+            IQuery<ICollection<Role>, GetAllCriteria> getAllQuery,
             IQuery<Role, FindByIdCriteria> getByIdQuery,
             IQuery<List<UserInRoleDto>, FindByRoleCriteria> getUsersByRoleQuery,
             IQuery<List<UserInRoleDto>, GetAllCriteria> getUserInRolesQuery,

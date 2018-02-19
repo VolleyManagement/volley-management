@@ -49,7 +49,7 @@
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<Player, FindByFullNameCriteria>> _getPlayerByFullNameQueryMock;
         private Mock<IQuery<Team, FindByCaptainIdCriteria>> _getTeamByCaptainQueryMock;
-        private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
+        private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
         private Mock<IQuery<List<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
 
@@ -70,7 +70,7 @@
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getPlayerByFullNameQueryMock = new Mock<IQuery<Player, FindByFullNameCriteria>>();
             _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
-            _getAllTeamsQueryMock = new Mock<IQuery<List<Team>, GetAllCriteria>>();
+            _getAllTeamsQueryMock = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTeamRosterQueryMock = new Mock<IQuery<List<Player>, TeamPlayersCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 

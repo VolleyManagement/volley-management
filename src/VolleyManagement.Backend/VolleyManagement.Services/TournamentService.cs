@@ -126,7 +126,7 @@
         /// Get all tournaments
         /// </summary>
         /// <returns>All tournaments</returns>
-        public List<Tournament> Get()
+        public ICollection<Tournament> Get()
         {
             ArchiveOld();
 
@@ -137,7 +137,7 @@
         /// Get only actual tournaments
         /// </summary>
         /// <returns>actual tournaments</returns>
-        public List<Tournament> GetActual()
+        public ICollection<Tournament> GetActual()
         {
             return GetFilteredTournaments(_actualStates);
         }
@@ -146,7 +146,7 @@
         /// Returns only archived tournaments
         /// </summary>
         /// <returns>Archived tournaments</returns>
-        public List<Tournament> GetArchived()
+        public ICollection<Tournament> GetArchived()
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
 
@@ -157,7 +157,7 @@
         /// Get only finished tournaments
         /// </summary>
         /// <returns>Finished tournaments</returns>
-        public List<Tournament> GetFinished()
+        public ICollection<Tournament> GetFinished()
         {
             return GetFilteredTournaments(_finishedStates);
         }
@@ -167,7 +167,7 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
-        public List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId)
+        public ICollection<TeamTournamentDto> GetAllTournamentTeams(int tournamentId)
         {
             return _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
         }
@@ -177,7 +177,7 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament to get divisions list</param>
         /// <returns>Tournament divisions</returns>
-        public List<Division> GetAllTournamentDivisions(int tournamentId)
+        public ICollection<Division> GetAllTournamentDivisions(int tournamentId)
         {
             return _getAllTournamentDivisionsQuery.Execute(new TournamentDivisionsCriteria { TournamentId = tournamentId });
         }
@@ -187,7 +187,7 @@
         /// </summary>
         /// <param name="divisionId">Id of Division to get group list</param>
         /// <returns>Tournament groups</returns>
-        public List<Group> GetAllTournamentGroups(int divisionId)
+        public ICollection<Group> GetAllTournamentGroups(int divisionId)
         {
             return _getAllTournamentGroupsQuery.Execute(new DivisionGroupsCriteria { DivisionId = divisionId });
         }
@@ -332,7 +332,7 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        public void AddTeamsToTournament(List<TeamTournamentAssignmentDto> groupTeam)
+        public void AddTeamsToTournament(ICollection<TeamTournamentAssignmentDto> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
 
@@ -344,7 +344,7 @@
                     TournamentResources.CollectionIsEmpty);
             }
 
-            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId).Id;
+            var tournamentId = GetTournamentByGroup(groupTeam.ToList()[0].GroupId).Id;
             var allTeams = GetAllTournamentTeams(tournamentId);
             int numberOfTeamAlreadyExist = 0;
 
@@ -496,7 +496,7 @@
             _gameService.RemoveAllGamesInTournament(tournamentId);
         }
 
-        private void RemoveAllTeamsFromTournament(List<TeamTournamentDto> allTeamsInTournament, int tournamentId)
+        private void RemoveAllTeamsFromTournament(ICollection<TeamTournamentDto> allTeamsInTournament, int tournamentId)
         {
             if (allTeamsInTournament != null)
             {
@@ -514,7 +514,7 @@
             }
         }
 
-        private void RemoveAllDivisionsFromTournament(List<Division> allDivisionsInTournament)
+        private void RemoveAllDivisionsFromTournament(ICollection<Division> allDivisionsInTournament)
         {
             if (allDivisionsInTournament != null)
             {

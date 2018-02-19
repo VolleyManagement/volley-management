@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.GameService
 {
     using System;
     using System.Collections.Generic;
@@ -1377,7 +1379,7 @@
             var actual = sut.GetTournamentResults(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GameResultDtoComparer());
         }
 
         /// <summary>
@@ -1404,7 +1406,7 @@
             var actual = sut.GetTournamentResults(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GameResultDtoComparer());
         }
 
         /// <summary>
@@ -1426,7 +1428,7 @@
             var actual = sut.GetTournamentGames(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GameResultDtoComparer());
         }
 
         #endregion

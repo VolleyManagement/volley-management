@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.RequestsService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.RequestsService
 {
     using System;
     using System.Collections.Generic;
@@ -89,7 +91,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new RequestComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new RequestComparer());
         }
 
         [TestMethod]

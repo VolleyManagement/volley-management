@@ -228,7 +228,7 @@
         /// <returns>Task to await</returns>
         public Task RemoveLoginAsync(UserModel user, UserLoginInfo login)
         {
-            var loginToDelete = user.Logins.Find(l =>
+            var loginToDelete = (user.Logins.ToList()).Find(l =>
                                     l.LoginProvider == login.LoginProvider
                                     && l.ProviderKey == login.ProviderKey);
             if (loginToDelete != null)
@@ -246,7 +246,7 @@
         /// <returns>Task to await</returns>
         public Task<IList<UserLoginInfo>> GetLoginsAsync(UserModel user)
         {
-            return Task.FromResult((IList<UserLoginInfo>)user.Logins.ConvertAll(
+            return Task.FromResult((IList<UserLoginInfo>)user.Logins.ToList().ConvertAll(
                 l => new UserLoginInfo(l.LoginProvider, l.ProviderKey)));
         }
 
@@ -302,7 +302,7 @@
             to.Email = from.Email;
             to.PersonName = from.PersonName;
             to.PhoneNumber = from.PhoneNumber;
-            to.LoginProviders = from.Logins.ConvertAll(
+            to.LoginProviders = from.Logins.ToList().ConvertAll(
                                 l => new LoginProviderInfo
                                          {
                                              ProviderKey = l.ProviderKey,

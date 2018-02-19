@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System;
     using System.Collections.Generic;
@@ -195,7 +197,7 @@
             var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TeamInTournamentComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new TeamInTournamentComparer());
         }
 
         /// <summary>
@@ -238,7 +240,7 @@
             var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new DivisionComparer());
         }
 
         /// <summary>
@@ -281,7 +283,7 @@
             var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GroupComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GroupComparer());
         }
 
         /// <summary>

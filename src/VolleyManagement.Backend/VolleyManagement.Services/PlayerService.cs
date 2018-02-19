@@ -82,11 +82,11 @@
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void Create(List<Player> playersToCreate)
+        public void Create(ICollection<Player> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            if (ValidateExistingPlayers(playersToCreate))
+            if (ValidateExistingPlayers(playersToCreate as List<Player>))
             {
                 throw new ArgumentException(
                     PlayerResources.ValidationPlayerOfAnotherTeam);

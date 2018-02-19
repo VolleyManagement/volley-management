@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
     using System.Collections.Generic;
@@ -109,7 +111,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new FeedbackComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new FeedbackComparer());
         }
 
         [TestMethod]

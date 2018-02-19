@@ -14,7 +14,7 @@
         /// Gets list of all tournaments
         /// </summary>
         /// <returns>Return list of all tournaments.</returns>
-        List<Tournament> Get();
+        ICollection<Tournament> Get();
 
         /// <summary>
         /// Gets tournament by its group
@@ -27,19 +27,19 @@
         /// Returns only actual tournaments
         /// </summary>
         /// <returns>Actual tournaments</returns>
-        List<Tournament> GetActual();
+        ICollection<Tournament> GetActual();
 
         /// <summary>
         /// Returns only archived tournaments
         /// </summary>
         /// <returns>Archived tournaments</returns>
-        List<Tournament> GetArchived();
+        ICollection<Tournament> GetArchived();
 
         /// <summary>
         /// Returns only finished tournaments
         /// </summary>
         /// <returns>Finished tournaments</returns>
-        List<Tournament> GetFinished();
+        ICollection<Tournament> GetFinished();
 
         /// <summary>
         /// Find a Tournament by id
@@ -53,21 +53,21 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
-        List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId);
+        ICollection<TeamTournamentDto> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
         /// Returns all divisions for specific tournament
         /// </summary>
         /// <param name="tournamentId">Id of Tournament to get divisions</param>
         /// <returns>Tournament divisions</returns>
-        List<Division> GetAllTournamentDivisions(int tournamentId);
+        ICollection<Division> GetAllTournamentDivisions(int tournamentId);
 
         /// <summary>
         /// Returns all groups for specific tournament by division id
         /// </summary>
         /// <param name="divisionId">Id of Division to get groups</param>
         /// <returns>Tournament groups</returns>
-        List<Group> GetAllTournamentGroups(int divisionId);
+        ICollection<Group> GetAllTournamentGroups(int divisionId);
 
         /// <summary>
         /// Finds tournament data transfer object by tournament id
@@ -109,7 +109,7 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        void AddTeamsToTournament(List<TeamTournamentAssignmentDto> groupTeam);
+        void AddTeamsToTournament(ICollection<TeamTournamentAssignmentDto> groupTeam);
 
         /// <summary>
         /// Deletes team from tournament

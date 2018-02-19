@@ -120,7 +120,7 @@
         /// Gets list of all requests.
         /// </summary>
         /// <returns>Return list of all requests.</returns>
-        public List<TournamentRequest> Get()
+        public ICollection<TournamentRequest> Get()
         {
             _authService.CheckAccess(AuthOperations.TournamentRequests.ViewList);
             return _getAllTournamentRequestsQuery.Execute(new GetAllCriteria());

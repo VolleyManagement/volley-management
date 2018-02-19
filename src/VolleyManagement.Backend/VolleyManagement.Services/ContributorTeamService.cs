@@ -24,7 +24,7 @@
         /// Method to get all contributors team.
         /// </summary>
         /// <returns>All teams.</returns>
-        public List<ContributorTeam> Get()
+        public ICollection<ContributorTeam> Get()
         {
             return _contributorTeamRepository.Find();
         }

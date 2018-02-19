@@ -145,7 +145,7 @@ namespace VolleyManagement.Services
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>List of game results of specified tournament.</returns>
-        public List<GameResultDto> GetTournamentResults(int tournamentId)
+        public ICollection<GameResultDto> GetTournamentResults(int tournamentId)
         {
             var allGames = QueryAllTournamentGames(tournamentId)
                             .FindAll(gr => gr.HasResult);
@@ -161,7 +161,7 @@ namespace VolleyManagement.Services
             return allGames;
         }
 
-        public List<GameResultDto> GetTournamentGames(int tournamentId)
+        public ICollection<GameResultDto> GetTournamentGames(int tournamentId)
         {
             var allGames = QueryAllTournamentGames(tournamentId);
 
@@ -314,7 +314,7 @@ namespace VolleyManagement.Services
         /// Adds collection of new games.
         /// </summary>
         /// <param name="games">Collection of games to add</param>
-        public void AddGames(List<Game> games)
+        public void AddGames(ICollection<Game> games)
         {
             foreach (var game in games)
             {

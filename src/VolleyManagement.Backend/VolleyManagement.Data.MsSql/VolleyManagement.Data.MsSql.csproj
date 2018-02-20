@@ -223,9 +223,9 @@
     <Compile Include="Infrastructure\IocDataAccessModule.cs" />
     <Compile Include="Infrastructure\QueriesRegistrator.cs" />
     <Compile Include="Infrastructure\RepositoriesRegistrator.cs" />
-    <Compile Include="Infrastructure\UserRelatedRepositoriesRegistrator.cs" />
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Entities\PlayerEntity.cs" />
+    <Compile Include="Mappers\TournamentQueriesMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\AuthorizationQueries.cs" />
     <Compile Include="Queries\DivisionQueries.cs" />

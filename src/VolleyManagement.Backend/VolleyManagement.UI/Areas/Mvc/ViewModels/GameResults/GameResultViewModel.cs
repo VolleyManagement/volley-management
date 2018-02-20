@@ -81,6 +81,21 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// </summary>
         public byte GameNumber { get; set; }
 
+        /// <summary>
+        /// Gets or sets the number of the game in the tournament
+        /// </summary>
+        public string FormatGameNumber
+        {
+            get
+            {
+                return "G" + ((int)GameNumber).ToString();
+            }
+            set
+            {
+                //FormatGameNumber = "G" + ((int)GameNumber).ToString();
+            }
+        }
+
         public bool HasPenalty { get; set; }
 
         public bool IsHomeTeamPenalty { get; set; }

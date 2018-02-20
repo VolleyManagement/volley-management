@@ -180,8 +180,8 @@
   <data name="PlayoffGameEditingError" xml:space="preserve">
     <value>Editing of the old game is not allowed</value>
   </data>
-  <data name="SameFreeDayGameInRound" xml:space="preserve">
-    <value>Free day game has already been scheduled in this round</value>
+  <data name="SameFreeDayGameInRound" xml:space="preserve" >
+    <value >Free day game has already been scheduled in this round</value>
   </data>
   <data name="SameGameInRound" xml:space="preserve">
     <value>Game between {0} and {1} has already been scheduled for round number {2}</value>

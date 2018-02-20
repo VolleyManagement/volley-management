@@ -74,6 +74,14 @@
                     @Resources.UI.TournamentViews.TeamDayOff
                 </div>
             </div>
+            if (Model.AllowEditResult)
+            {
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                    </div>
+                </div>
+            }
         }
         else
         {

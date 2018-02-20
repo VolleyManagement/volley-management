@@ -54,7 +54,7 @@
         /// </summary>
         /// <param name="requestedOperations">Operations to check</param>
         /// <returns>An instance of <see cref="AllowedOperations"/> class</returns>
-        public AllowedOperations GetAllowedOperations(List<AuthOperation> requestedOperations)
+        public AllowedOperations GetAllowedOperations(ICollection<AuthOperation> requestedOperations)
         {
             if (requestedOperations == null)
             {

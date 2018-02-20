@@ -134,7 +134,7 @@
         /// Method for getting all requests.
         /// </summary>
         /// <returns>All requests.</returns>
-        public List<Request> Get()
+        public ICollection<Request> Get()
         {
             _authService.CheckAccess(AuthOperations.Requests.ViewList);
             return _getAllRequestsQuery.Execute(new GetAllCriteria());

@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Contracts.Authorization
+﻿using VolleyManagement.Contracts.Exceptions;
+
+namespace VolleyManagement.Contracts.Authorization
 {
     using System.Collections.Generic;
     using Domain.RolesAggregate;
@@ -21,7 +23,7 @@
         /// </summary>
         /// <param name="requestedOperations">Operations to check</param>
         /// <returns>An instance of <see cref="AllowedOperations"/> class</returns>
-        AllowedOperations GetAllowedOperations(List<AuthOperation> requestedOperations);
+        AllowedOperations GetAllowedOperations(ICollection<AuthOperation> requestedOperations);
 
         /// <summary>
         /// Returns an instance of <see cref="AllowedOperations"/> class, which allows to check permissions

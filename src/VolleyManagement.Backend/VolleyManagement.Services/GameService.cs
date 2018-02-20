@@ -40,11 +40,11 @@ namespace VolleyManagement.Services
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
 
-        private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
-        private readonly IQuery<List<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
+        private readonly IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
+        private readonly IQuery<ICollection<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
-        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
+        private readonly IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
 
         #endregion
 
@@ -68,15 +68,15 @@ namespace VolleyManagement.Services
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
-            IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
+            IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
             IAuthorizationService authService,
-            IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
+            IQuery<ICollection<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
             IQuery<Game, GameByNumberCriteria> gameNumberByTournamentIdQuery,
             IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
             ITournamentRepository tournamentRepository,
-            IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
+            IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -145,9 +145,9 @@ namespace VolleyManagement.Services
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>List of game results of specified tournament.</returns>
-        public List<GameResultDto> GetTournamentResults(int tournamentId)
+        public ICollection<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            var allGames = QueryAllTournamentGames(tournamentId)
+            var allGames = QueryAllTournamentGames(tournamentId).ToList()
                             .FindAll(gr => gr.HasResult);
 
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
@@ -161,7 +161,7 @@ namespace VolleyManagement.Services
             return allGames;
         }
 
-        public List<GameResultDto> GetTournamentGames(int tournamentId)
+        public ICollection<GameResultDto> GetTournamentGames(int tournamentId)
         {
             var allGames = QueryAllTournamentGames(tournamentId);
 
@@ -273,7 +273,7 @@ namespace VolleyManagement.Services
         {
             _authService.CheckAccess(AuthOperations.Games.SwapRounds);
 
-            List<Game> games = _gamesByTournamentIdRoundsNumberQuery.Execute(
+            ICollection<Game> games = _gamesByTournamentIdRoundsNumberQuery.Execute(
                 new TournamentRoundsGameResultsCriteria
                 {
                     TournamentId = tournamentId,
@@ -314,7 +314,7 @@ namespace VolleyManagement.Services
         /// Adds collection of new games.
         /// </summary>
         /// <param name="games">Collection of games to add</param>
-        public void AddGames(List<Game> games)
+        public void AddGames(ICollection<Game> games)
         {
             foreach (var game in games)
             {
@@ -386,20 +386,21 @@ namespace VolleyManagement.Services
                                 GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
                                 GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
 
-                   }
+                    }
                 }
                 else
                 {
-                    if( (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))&& 
+                    if ((!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber)) &&
                         (setOrderNumber == GameResultConstants.MAX_SETS_COUNT))
                     {
-                            throw new ArgumentException(
-                                string.Format(
-                                    Resources.GameResultFifthSetScoreInvalid,
-                                    GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
-                                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
-                        }
-                    else if(!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber)) { 
+                        throw new ArgumentException(
+                            string.Format(
+                                Resources.GameResultFifthSetScoreInvalid,
+                                GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+                                GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
+                    }
+                    else if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
+                    {
                         throw new ArgumentException(
                             string.Format(
                                 Resources.GameResultOptionalSetScores,
@@ -409,9 +410,9 @@ namespace VolleyManagement.Services
                                 GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
 
                     }
-                    if ((isPreviousOptionalSetUnplayed)&&(!ResultValidation.IsSetUnplayed(setScores[i])))
-                    {                      
-                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);                 
+                    if ((isPreviousOptionalSetUnplayed) && (!ResultValidation.IsSetUnplayed(setScores[i])))
+                    {
+                        throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
                     }
                     isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
                 }
@@ -457,7 +458,7 @@ namespace VolleyManagement.Services
 
         private void ValidateGameInRound(
             Game newGame,
-            List<GameResultDto> games,
+            ICollection<GameResultDto> games,
             TournamentScheduleDto tournamentSсheduleInfo)
         {
             var teamsInTournament =
@@ -551,7 +552,7 @@ namespace VolleyManagement.Services
                     IsFreeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
-                {      
+                {
                     IsTheSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
                 }
             }
@@ -682,7 +683,7 @@ namespace VolleyManagement.Services
         {
             List<Game> gamesToUpdate = new List<Game>();
 
-            List<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+            ICollection<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
                 .Execute(new GamesByRoundCriteria
                 {
                     TournamentId = torunamentScheduleInfo.Id,
@@ -696,7 +697,7 @@ namespace VolleyManagement.Services
             // Schedule next games only if finished game is not in last round
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
+                gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds.ToList()));
 
                 if (finishedGame.AwayTeamId.HasValue
                     && finishedGame.Result.GameScore.Home == 0
@@ -887,7 +888,7 @@ namespace VolleyManagement.Services
 
         #region private methods
 
-        private List<GameResultDto> QueryAllTournamentGames(int tournamentId)
+        private ICollection<GameResultDto> QueryAllTournamentGames(int tournamentId)
         {
             return _tournamentGameResultsQuery
                 .Execute(

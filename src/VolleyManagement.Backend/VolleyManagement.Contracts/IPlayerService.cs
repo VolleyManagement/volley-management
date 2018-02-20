@@ -27,7 +27,7 @@
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        void Create(List<Player> playersToCreate);
+        void Create(ICollection<Player> playersToCreate);
 
         /// <summary>
         /// Edit player profile.

@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.GameService
 {
     using System;
     using System.Collections.Generic;
@@ -62,13 +64,13 @@
         private Mock<ITournamentService> _tournamentServiceMock;
         private Mock<ITournamentRepository> _tournamentRepositoryMock;
         private Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock;
-        private Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
-        private Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>> _gamesByTournamentIdRoundsNumberQueryMock;
+        private Mock<IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
+        private Mock<IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria>> _gamesByTournamentIdRoundsNumberQueryMock;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock;
-        private Mock<IQuery<List<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock;
+        private Mock<IQuery<ICollection<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock;
         private Mock<IQuery<Game, GameByNumberCriteria>> _gameNumberByTournamentIdQueryMock;
-        private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
+        private Mock<IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
@@ -86,13 +88,13 @@
             _tournamentServiceMock = new Mock<ITournamentService>();
             _tournamentRepositoryMock = new Mock<ITournamentRepository>();
             _getByIdQueryMock = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
-            _tournamentGameResultsQueryMock = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
-            _gamesByTournamentIdRoundsNumberQueryMock = new Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>();
+            _tournamentGameResultsQueryMock = new Mock<IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>>();
+            _gamesByTournamentIdRoundsNumberQueryMock = new Mock<IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria>>();
             _tournamentScheduleDtoByIdQueryMock = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _tournamentByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
-            _gamesByTournamentIdInRoundsByNumbersQueryMock = new Mock<IQuery<List<Game>, GamesByRoundCriteria>>();
+            _gamesByTournamentIdInRoundsByNumbersQueryMock = new Mock<IQuery<ICollection<Game>, GamesByRoundCriteria>>();
             _gameNumberByTournamentIdQueryMock = new Mock<IQuery<Game, GameByNumberCriteria>>();
-            _tournamentTeamsQueryMock = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
+            _tournamentTeamsQueryMock = new Mock<IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -1377,7 +1379,7 @@
             var actual = sut.GetTournamentResults(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GameResultDtoComparer());
         }
 
         /// <summary>
@@ -1404,7 +1406,7 @@
             var actual = sut.GetTournamentResults(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GameResultDtoComparer());
         }
 
         /// <summary>
@@ -1426,7 +1428,7 @@
             var actual = sut.GetTournamentGames(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GameResultDtoComparer());
         }
 
         #endregion

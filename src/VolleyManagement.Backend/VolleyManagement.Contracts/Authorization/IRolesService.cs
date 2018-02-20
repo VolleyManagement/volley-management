@@ -15,7 +15,7 @@
         /// Returns all roles supported by the application
         /// </summary>
         /// <returns>List of roles</returns>
-        List<Role> GetAllRoles();
+        ICollection<Role> GetAllRoles();
 
         /// <summary>
         /// Retrieves role by specified Id
@@ -29,13 +29,13 @@
         /// </summary>
         /// <param name="roleId">Id of the role to look for</param>
         /// <returns>User in role</returns>
-        List<UserInRoleDto> GetUsersInRole(int roleId);
+        ICollection<UserInRoleDto> GetUsersInRole(int roleId);
 
         /// <summary>
         /// The get all users with roles.
         /// </summary>
         /// <returns> Collection of <see cref="UserInRoleDto"/></returns>
-        List<UserInRoleDto> GetAllUsersWithRoles();
+        ICollection<UserInRoleDto> GetAllUsersWithRoles();
 
         /// <summary>
         /// The change role membership.

@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
+﻿using System.Linq;
+
+namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
     using System.Web.Mvc;
@@ -28,7 +30,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Index()
         {
-            var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
+            var users = _userService.GetAllUsers().ToList().ConvertAll(UserViewModel.Initialize);
             return View(users);
         }
 
@@ -38,7 +40,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult ActiveUsers()
         {
-            var activeUsers = _userService.GetAllActiveUsers().ConvertAll(UserViewModel.Initialize);
+            var activeUsers = _userService.GetAllActiveUsers().ToList().ConvertAll(UserViewModel.Initialize);
             return View(activeUsers);
         }
 

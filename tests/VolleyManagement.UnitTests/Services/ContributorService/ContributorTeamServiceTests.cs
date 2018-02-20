@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.ContributorService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.ContributorService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -45,16 +47,16 @@
             MockRepositoryFindAll(testData);
 
             var sut = BuildSUT();
-            var expected = new ContributorTeamServiceTestFixture()
-                                            .TestContributors()
-                                            .Build()
-                                            .ToList();
+            ICollection<ContributorTeam> expected = new ContributorTeamServiceTestFixture()
+                .TestContributors()
+                .Build();
+                                            
 
             // Act
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());
+            CollectionAssert.AreEqual(expected as ICollection, actual as ICollection, new ContributorTeamComparer());
         }
 
         private ContributorTeamService BuildSUT()

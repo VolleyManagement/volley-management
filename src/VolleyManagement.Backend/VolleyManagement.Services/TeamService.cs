@@ -30,7 +30,7 @@
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
         private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
-        private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
+        private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
         private readonly IAuthorizationService _authService;
 
@@ -53,7 +53,7 @@
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
-            IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
+            IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Player>, TeamPlayersCriteria> getTeamRosterQuery,
             IAuthorizationService authService)
         {
@@ -72,7 +72,7 @@
         /// Method to get all teams.
         /// </summary>
         /// <returns>All teams.</returns>
-        public List<Team> Get()
+        public ICollection<Team> Get()
         {
             return _getAllTeamsQuery.Execute(new GetAllCriteria());
         }
@@ -200,7 +200,7 @@
         /// </summary>
         /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        public List<Player> GetTeamRoster(int teamId)
+        public ICollection<Player> GetTeamRoster(int teamId)
         {
             return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId });
         }
@@ -210,7 +210,7 @@
         /// </summary>
         /// <param name="roster">Players to set the team</param>
         /// <param name="teamId">Id of team which should be set to player</param>
-        public void UpdateRosterTeamId(List<Player> roster, int teamId)
+        public void UpdateRosterTeamId(ICollection<Player> roster, int teamId)
         {
             if (GetTeamRoster(teamId).Count > 1)
             {
@@ -360,7 +360,7 @@
         private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
         {
             var existingTeams = Get();
-            if (ValidateTwoTeamsName(teamToValidate, existingTeams))
+            if (ValidateTwoTeamsName(teamToValidate, existingTeams as List<Team>))
             {
                 throw new ArgumentException(
                     TournamentResources.TeamNameInTournamentNotUnique);

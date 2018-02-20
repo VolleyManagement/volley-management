@@ -12,7 +12,7 @@
         /// Gets list of all requests.
         /// </summary>
         /// <returns>Return list of all requests.</returns>
-        List<TournamentRequest> Get();
+        ICollection<TournamentRequest> Get();
 
         /// <summary>
         /// Find request by id.

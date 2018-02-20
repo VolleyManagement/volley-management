@@ -13,7 +13,7 @@
     /// <summary>
     /// Provides Object Query implementation for Roles
     /// </summary>
-    public class RolesQueries : IQuery<List<Role>, GetAllCriteria>,
+    public class RolesQueries : IQuery<ICollection<Role>, GetAllCriteria>,
                                 IQuery<Role, FindByIdCriteria>
     {
         #region Fields
@@ -42,7 +42,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Role"/>. </returns>
-        public List<Role> Execute(GetAllCriteria criteria)
+        public ICollection<Role> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Roles.Select(GetRoleMapping()).ToList();
         }

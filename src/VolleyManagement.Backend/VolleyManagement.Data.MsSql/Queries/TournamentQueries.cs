@@ -16,13 +16,13 @@
     /// Provides Object Query implementation for Tournaments
     /// </summary>
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
-                                     IQuery<List<Tournament>, GetAllCriteria>,
+                                     IQuery<ICollection<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
-                                     IQuery<List<Division>, TournamentDivisionsCriteria>,
-                                     IQuery<List<Group>, DivisionGroupsCriteria>,
+                                     IQuery<ICollection<Division>, TournamentDivisionsCriteria>,
+                                     IQuery<ICollection<Group>, DivisionGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
                                      IQuery<Tournament, TournamentByGroupCriteria>,
-                                     IQuery<List<Tournament>, OldTournamentsCriteria>
+                                     IQuery<ICollection<Tournament>, OldTournamentsCriteria>
     {
         #region Fields
 
@@ -84,7 +84,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public List<Tournament> Execute(GetAllCriteria criteria)
+        public ICollection<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
         }
@@ -94,7 +94,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public List<Tournament> Execute(OldTournamentsCriteria criteria)
+        public ICollection<Tournament> Execute(OldTournamentsCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments
                                       .Where(t => !t.IsArchived)
@@ -108,7 +108,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Division"/>. </returns>
-        public List<Division> Execute(TournamentDivisionsCriteria criteria)
+        public ICollection<Division> Execute(TournamentDivisionsCriteria criteria)
         {
             return _unitOfWork.Context.Divisions
                                       .Where(d => d.TournamentId == criteria.TournamentId)
@@ -120,7 +120,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Division"/>. </returns>
-        public List<Group> Execute(DivisionGroupsCriteria criteria)
+        public ICollection<Group> Execute(DivisionGroupsCriteria criteria)
         {
             return _unitOfWork.Context.Groups
                                       .Where(d => d.DivisionId == criteria.DivisionId)

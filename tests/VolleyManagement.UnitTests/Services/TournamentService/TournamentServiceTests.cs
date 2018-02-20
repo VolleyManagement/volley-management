@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System;
     using System.Collections.Generic;
@@ -57,16 +59,16 @@
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<IGameService> _gameServiceMock;
         private Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock;
-        private Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<ICollection<Tournament>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock;
         private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
-        private Mock<IQuery<List<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
-        private Mock<IQuery<List<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
+        private Mock<IQuery<ICollection<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
+        private Mock<IQuery<ICollection<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
-        private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
+        private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
         private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
-        private Mock<IQuery<List<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
+        private Mock<IQuery<ICollection<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -81,16 +83,16 @@
             _authServiceMock = new Mock<IAuthorizationService>();
             _gameServiceMock = new Mock<IGameService>();
             _uniqueTournamentQueryMock = new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
-            _getAllQueryMock = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
+            _getAllQueryMock = new Mock<IQuery<ICollection<Tournament>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
             _getAllTournamentTeamsQuery = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
-            _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
-            _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
-            _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
+            _getAllTournamentDivisionsQuery = new Mock<IQuery<ICollection<Division>, TournamentDivisionsCriteria>>();
+            _getAllTournamentGroupsQuery = new Mock<IQuery<ICollection<Group>, DivisionGroupsCriteria>>();
+            _getAllTeamsQuery = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
             _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
-            _getOldTournamentsQuery = new Mock<IQuery<List<Tournament>, OldTournamentsCriteria>>();
+            _getOldTournamentsQuery = new Mock<IQuery<ICollection<Tournament>, OldTournamentsCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -195,7 +197,7 @@
             var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TeamInTournamentComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new TeamInTournamentComparer());
         }
 
         /// <summary>
@@ -238,7 +240,7 @@
             var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new DivisionComparer());
         }
 
         /// <summary>
@@ -281,7 +283,7 @@
             var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GroupComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new GroupComparer());
         }
 
         /// <summary>

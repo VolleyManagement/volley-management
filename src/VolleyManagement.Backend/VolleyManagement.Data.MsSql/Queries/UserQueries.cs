@@ -21,11 +21,11 @@
                              IQueryAsync<User, FindByNameCriteria>,
                              IQueryAsync<User, FindByEmailCriteria>,
                              IQueryAsync<User, FindByLoginInfoCriteria>,
-                             IQuery<List<UserInRoleDto>, FindByRoleCriteria>,
-                             IQuery<List<UserInRoleDto>, GetAllCriteria>,
+                             IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria>,
+                             IQuery<ICollection<UserInRoleDto>, GetAllCriteria>,
                              IQuery<User, FindByIdCriteria>,
-                             IQuery<List<User>, GetAllCriteria>,
-                             IQuery<List<User>, UniqueUserCriteria>
+                             IQuery<ICollection<User>, GetAllCriteria>,
+                             IQuery<ICollection<User>, UniqueUserCriteria>
     {
         #region Fields
 
@@ -108,7 +108,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="User"/>. </returns>
-        public List<UserInRoleDto> Execute(FindByRoleCriteria criteria)
+        public ICollection<UserInRoleDto> Execute(FindByRoleCriteria criteria)
         {
             var users = _unitOfWork.Context.Roles
                                            .Where(r => r.Id == criteria.RoleId)
@@ -123,7 +123,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="User"/>. </returns>
-        public List<UserInRoleDto> Execute(GetAllCriteria criteria)
+        public ICollection<UserInRoleDto> Execute(GetAllCriteria criteria)
         {
             var users = _unitOfWork.Context.Users
                                            .Select(GetUserInRoleMapper())
@@ -151,7 +151,7 @@
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>User entity list.</returns>
-        List<User> IQuery<List<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
+        ICollection<User> IQuery<ICollection<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Users.Select(GetUserMapping()).ToList();
         }
@@ -161,7 +161,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="User"/>. </returns>
-        public List<User> Execute(UniqueUserCriteria criteria)
+        public ICollection<User> Execute(UniqueUserCriteria criteria)
         {
             var users = _unitOfWork.Context.Roles
                                            .Where(r => r.Id == criteria.RoleId)

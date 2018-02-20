@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
+﻿using System.Linq;
+
+namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
     using System.Web.Mvc;
@@ -36,7 +38,7 @@
         {
             _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
-            var roles = _rolesService.GetAllRoles().ConvertAll(r => new RoleViewModel(r));
+            var roles = _rolesService.GetAllRoles().ToList().ConvertAll(r => new RoleViewModel(r));
             return View(roles);
         }
 
@@ -94,7 +96,7 @@
             var role = _rolesService.GetRole(id);
             var result = new RoleDetailsViewModel(role);
 
-            result.Users = _rolesService.GetUsersInRole(id).ConvertAll(u => u.UserName);
+            result.Users = _rolesService.GetUsersInRole(id).ToList().ConvertAll(u => u.UserName);
 
             return View(result);
         }

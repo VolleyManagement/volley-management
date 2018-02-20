@@ -34,7 +34,7 @@
         private Mock<IUnitOfWork> _unitOfWorkMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock;
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
-        private Mock<IQuery<List<User>, GetAllCriteria>> _getAllUserQueryMock;
+        private Mock<IQuery<ICollection<User>, GetAllCriteria>> _getAllUserQueryMock;
         private Mock<IQuery<List<User>, UniqueUserCriteria>> _getUserListQueryMock;
         private Mock<ICurrentUserService> _currentUserServiceMock;
 
@@ -48,7 +48,7 @@
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _getUserByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
-            _getAllUserQueryMock = new Mock<IQuery<List<User>, GetAllCriteria>>();
+            _getAllUserQueryMock = new Mock<IQuery<ICollection<User>, GetAllCriteria>>();
             _getUserListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
             _currentUserServiceMock = new Mock<ICurrentUserService>();
 

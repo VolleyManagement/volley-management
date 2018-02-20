@@ -14,7 +14,7 @@
         /// Gets list of all teams.
         /// </summary>
         /// <returns>Return list of all teams.</returns>
-        List<Team> Get();
+        ICollection<Team> Get();
 
         /// <summary>
         /// Find team by id.
@@ -53,13 +53,13 @@
         /// </summary>
         /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        List<Player> GetTeamRoster(int teamId);
+        ICollection<Player> GetTeamRoster(int teamId);
 
         /// <summary>
         /// Sets team id to roster
         /// </summary>
         /// <param name="roster">Players to set the team id</param>
         /// <param name="teamId">Id of team which should be set to player</param>
-        void UpdateRosterTeamId(List<Player> roster, int teamId);
+        void UpdateRosterTeamId(ICollection<Player> roster, int teamId);
     }
 }

@@ -87,7 +87,7 @@
         /// Method to get all feedbacks.
         /// </summary>
         /// <returns>All feedbacks.</returns>
-        public List<Feedback> Get()
+        public ICollection<Feedback> Get()
         {
             _authService.CheckAccess(AuthOperations.Feedbacks.Read);
             return _getAllFeedbacksQuery.Execute(new GetAllCriteria());
@@ -231,7 +231,7 @@
                 feedback.Status,
                 feedback.Content);
 
-            IList<User> adminsList = _userService.GetAdminsList();
+            ICollection<User> adminsList = _userService.GetAdminsList();
 
             foreach (var admin in adminsList)
             {

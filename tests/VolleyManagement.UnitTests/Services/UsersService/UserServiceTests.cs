@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.UsersService
+﻿using System.Collections;
+
+namespace VolleyManagement.UnitTests.Services.UsersService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -28,10 +30,10 @@
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<ICacheProvider> _cacheProviderMock;
-        private Mock<IQuery<List<User>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<ICollection<User>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getByIdQueryMock;
-        private Mock<IQuery<List<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
+        private Mock<IQuery<ICollection<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
         private Mock<ICurrentUserService> _currentUserServiceMock;
 
         private UserServiceTestFixture _testFixture = new UserServiceTestFixture();
@@ -45,10 +47,10 @@
             _authServiceMock = new Mock<IAuthorizationService>();
             _userRepositoryMock = new Mock<IUserRepository>();
             _cacheProviderMock = new Mock<ICacheProvider>();
-            _getAllQueryMock = new Mock<IQuery<List<User>, GetAllCriteria>>();
+            _getAllQueryMock = new Mock<IQuery<ICollection<User>, GetAllCriteria>>();
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
-            _getAdminsListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
+            _getAdminsListQueryMock = new Mock<IQuery<ICollection<User>, UniqueUserCriteria>>();
             _currentUserServiceMock = new Mock<ICurrentUserService>();
         }
 
@@ -70,7 +72,7 @@
             var actual = sut.GetAllUsers();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new UserComparer());
         }
 
         [TestMethod]
@@ -160,7 +162,7 @@
             var actual = sut.GetAdminsList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            CollectionAssert.AreEqual(expected, actual as ICollection, new UserComparer());
         }
 
         private UserService BuildSUT()
@@ -196,7 +198,7 @@
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
-        private void MockGetAdminsListQuery(List<User> testData)
+        private void MockGetAdminsListQuery(IEnumerable<User> testData)
         {
             _getAdminsListQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueUserCriteria>())).Returns(testData.ToList());
         }

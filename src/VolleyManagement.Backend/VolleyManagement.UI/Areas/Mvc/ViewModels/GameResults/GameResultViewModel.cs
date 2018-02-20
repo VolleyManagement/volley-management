@@ -88,7 +88,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         {
             get
             {
-                return "G" + ((int)GameNumber).ToString();
+                return "G" + GameNumber;
             }
         }
 

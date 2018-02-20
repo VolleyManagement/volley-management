@@ -92,7 +92,7 @@
 
             // Act
             var result = sut.Create(gameResult) as RedirectToRouteResult;
-            string expectedDisplayGameNumber = "G" + gameResult.GameNumber
+            string expectedDisplayGameNumber = "G" + gameResult.GameNumber;
 
             // Assert
             TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameComparer());

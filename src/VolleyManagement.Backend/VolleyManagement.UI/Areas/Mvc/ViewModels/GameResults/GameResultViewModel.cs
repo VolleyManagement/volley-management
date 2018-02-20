@@ -82,7 +82,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of the game in the tournament
+        /// Gets formated number of the game in the tournament
         /// </summary>
         public string FormatedGameNumber
         {

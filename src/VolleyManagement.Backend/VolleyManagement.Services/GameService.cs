@@ -489,7 +489,7 @@
                 tournamentSсheduleInfo);
         }
 
-        private void ValidateGameInRoundOnCreate(
+        private static void ValidateGameInRoundOnCreate(
             Game newGame,
             List<GameResultDto> gamesInRound,
             TournamentScheduleDto tournamentScheduleInfo)
@@ -499,62 +499,63 @@
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
                 {
-                    if (GameValidation.IsFreeDayGame(newGame))
-                    {
-                        if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
-                        {
-                            throw new ArgumentException(
-                            Resources
-                            .SameFreeDayGameInRound);
-                        }
-                        else
-                        {
-                            throw new ArgumentException(
-                                string.Format(Resources.SameTeamInRound, game.HomeTeamName));
-                        }
-                    }
-                    else
-                    {
-                        throw new ArgumentException(
-                           string.Format(
-                           Resources.SameGameInRound,
-                           game.HomeTeamName,
-                           game.AwayTeamName,
-                           game.Round.ToString()));
-                    }
+                    ValidateAreSameTeamsInGames(game, newGame, tournamentScheduleInfo);
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
                 {
-                    if (GameValidation.IsFreeDayGame(newGame))
-                    {
-                        if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff
-                            && game.HomeTeamId != newGame.HomeTeamId
-                            && game.AwayTeamId != newGame.HomeTeamId)
-                        {
-                            throw new ArgumentException(
-                                Resources.SameFreeDayGameInRound);
-                        }
-                    }
-                    else
-                    {
-                        string oppositeTeam;
-
-                        if (game.HomeTeamId == newGame.HomeTeamId
-                            || game.HomeTeamId == newGame.AwayTeamId)
-                        {
-                            oppositeTeam = game.HomeTeamName;
-                        }
-                        else
-                        {
-                            oppositeTeam = game.AwayTeamName;
-                        }
-
-                        throw new ArgumentException(
-                          string.Format(
-                          Resources.SameTeamInRound,
-                                 oppositeTeam));
-                    }
+                    ValidateIsTheSameTeamInTwoGames(game, newGame, tournamentScheduleInfo);
                 }
+            }
+        }
+
+        private static void ValidateAreSameTeamsInGames(GameResultDto game, Game newGame,
+           TournamentScheduleDto tournamentScheduleInfo)
+        {
+            if (GameValidation.IsFreeDayGame(newGame))
+            {
+                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
+                {
+                    throw new ArgumentException(Resources.SameFreeDayGameInRound);
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format(Resources.SameTeamInRound, game.HomeTeamName));
+                }
+            }
+            else
+            {
+                throw new ArgumentException(
+                    string.Format(Resources.SameGameInRound,
+                        game.HomeTeamName, game.AwayTeamName,
+                        game.Round.ToString()));
+            }
+        }
+
+        private static void ValidateIsTheSameTeamInTwoGames(GameResultDto game, Game newGame,
+            TournamentScheduleDto tournamentScheduleInfo)
+        {
+            if ((GameValidation.IsFreeDayGame(newGame) && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
+            {
+                if (game.HomeTeamId != newGame.HomeTeamId
+                    && game.AwayTeamId != newGame.HomeTeamId)
+                {
+                    throw new ArgumentException(
+                        Resources.SameFreeDayGameInRound);
+                }
+                else if (game.HomeTeamId != newGame.HomeTeamId
+                         || game.AwayTeamId != newGame.HomeTeamId)
+                {
+                    throw new ArgumentException(
+                        string.Format(Resources.SameTeamInRound, (game.HomeTeamId == newGame.HomeTeamId)
+                            ? game.HomeTeamName : game.AwayTeamName));
+                }
+            }
+            else
+            {
+                throw new ArgumentException(
+                    string.Format(Resources.SameTeamInRound,
+                       (game.HomeTeamId == newGame.HomeTeamId || game.HomeTeamId == newGame.AwayTeamId)
+                            ? game.HomeTeamName : game.AwayTeamName));
             }
         }
 

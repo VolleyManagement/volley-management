@@ -11,15 +11,13 @@
     using Mappers;
     using Specifications;
 
+    using static VolleyManagement.Data.MsSql.Mappers.DomainToDal;
+
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
     /// </summary>
     internal class TournamentRepository : ITournamentRepository
     {
-        private readonly DbSet<TournamentEntity> _dalTournaments;
-        private readonly DbSet<TeamEntity> _dalTeams;
-        private readonly DbSet<DivisionEntity> _dalDivisions;
-        private readonly DbSet<GroupEntity> _dalGroups;
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly ISpecification<TournamentEntity> _dbStorageSpecification = new TournamentsStorageSpecification();
 
@@ -30,10 +28,6 @@
         public TournamentRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            _dalTournaments = _unitOfWork.Context.Tournaments;
-            _dalTeams = _unitOfWork.Context.Teams;
-            _dalDivisions = _unitOfWork.Context.Divisions;
-            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         /// <summary>
@@ -51,14 +45,14 @@
         public void Add(Tournament newEntity)
         {
             var tournament = new TournamentEntity();
-            DomainToDal.Map(tournament, newEntity);
+            Map(tournament, newEntity);
 
             if (!_dbStorageSpecification.IsSatisfiedBy(tournament))
             {
                 throw new InvalidEntityException();
             }
 
-            _dalTournaments.Add(tournament);
+            _unitOfWork.Context.Tournaments.Add(tournament);
             _unitOfWork.Commit();
             MapIdentifiers(newEntity, tournament);
         }
@@ -69,9 +63,9 @@
         /// <param name="updatedEntity">Updated tournament.</param>
         public void Update(Tournament updatedEntity)
         {
-            var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
+            var tournamentToUpdate = _unitOfWork.Context.Tournaments.Single(t => t.Id == updatedEntity.Id);
             UpdateDivisions(tournamentToUpdate.Divisions, updatedEntity.Divisions);
-            DomainToDal.Map(tournamentToUpdate, updatedEntity);
+            Map(tournamentToUpdate, updatedEntity);
         }
 
         /// <summary>
@@ -86,7 +80,7 @@
                 throw new ConcurrencyException();
             }
 
-            _dalTournaments.Remove(dalToRemove);
+            _unitOfWork.Context.Tournaments.Remove(dalToRemove);
         }
 
         /// <summary>
@@ -96,12 +90,12 @@
         /// <param name="groupId">Group id to add</param>
         public void AddTeamToTournament(int teamId, int groupId)
         {
-            var group = from t in _dalTournaments
-                        join d in _dalDivisions on t.Id equals d.TournamentId
-                        join g in _dalGroups on d.Id equals g.DivisionId
+            var group = from t in _unitOfWork.Context.Tournaments
+                        join d in _unitOfWork.Context.Divisions on t.Id equals d.TournamentId
+                        join g in _unitOfWork.Context.Groups on d.Id equals g.DivisionId
                         where g.Id == groupId
                         select g;
-            group.First().Teams.Add(_dalTeams.Find(teamId));
+            group.First().Teams.Add(_unitOfWork.Context.Teams.Find(teamId));
         }
 
         /// <summary>

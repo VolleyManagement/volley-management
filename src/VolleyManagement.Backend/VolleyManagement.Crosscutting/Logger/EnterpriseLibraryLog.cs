@@ -15,7 +15,7 @@
         /// <param name="message">Message text</param>
         public void Write(LogLevelEnum level, string message)
         {
-            var logEntry = new LogEntry { Message = message };
+            var logEntry = new LogEntry {Message = message};
             SetCategory(logEntry, level);
             Logger.Write(logEntry);
         }
@@ -27,26 +27,7 @@
         /// <param name="level">The level. </param>
         private static void SetCategory(LogEntry logEntry, LogLevelEnum level)
         {
-            if (level == LogLevelEnum.Information)
-            {
-                logEntry.Categories.Add("Information");
-            }
-            else
-            {
-                logEntry.Categories.Add("Error");
-            }
-          /*  switch (level)
-            {
-                case LogLevelEnum.Information:
-                    logEntry.Categories.Add("Information");
-                    break;
-                default: logEntry.Categories.Add("Error");
-                    break;
-                     case LogLevelEnum.Error:
-                         logEntry.Categories.Add("Error");
-                         break;
-                         
-            }*/
+            logEntry.Categories.Add(level == LogLevelEnum.Information ? "Information" : "Error");
         }
     }
 }

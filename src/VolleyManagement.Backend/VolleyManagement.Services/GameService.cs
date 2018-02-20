@@ -335,9 +335,9 @@ namespace VolleyManagement.Services
         private static void ValidateResult(Result result)
         {
             ValidateSetsScore(result.GameScore, result.GameScore.IsTechnicalDefeat);
-            ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores);
-            ValidateSetScoresValues(result.SetScores, result.GameScore.IsTechnicalDefeat);
-            ValidateSetScoresOrder(result.SetScores);
+            ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores as IList<Score>);
+            ValidateSetScoresValues(result.SetScores as IList<Score>, result.GameScore.IsTechnicalDefeat);
+            ValidateSetScoresOrder(result.SetScores as IList<Score>);
         }
 
         private static void ValidateTeams(int? homeTeamId, int? awayTeamId)

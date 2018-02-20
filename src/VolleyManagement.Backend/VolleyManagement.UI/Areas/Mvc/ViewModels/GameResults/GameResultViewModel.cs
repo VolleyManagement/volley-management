@@ -90,10 +90,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
             {
                 return "G" + ((int)GameNumber).ToString();
             }
-            set
-            { 
-
-            }
         }
 
         public bool HasPenalty { get; set; }

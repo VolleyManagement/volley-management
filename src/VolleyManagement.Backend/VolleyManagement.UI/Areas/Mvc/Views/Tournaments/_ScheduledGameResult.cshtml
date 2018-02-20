@@ -1,8 +1,6 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 @using VolleyManagement.Domain.RolesAggregate;
 
-<link rel="stylesheet" href="~/Content/Site.css" />
-
 <div class="table-bordered" id=@Model.Id>
 
     @Html.HiddenFor(model => Model.Round, new { @id = "numberOfRound_" + @Model.Id })

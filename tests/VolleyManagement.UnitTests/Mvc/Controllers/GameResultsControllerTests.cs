@@ -71,7 +71,8 @@
         #region Tests
 
         /// <summary>
-        /// Test for Create POST method. Valid model passed. Games result created.
+        /// Test for Create POST method. Valid model passed. Games result created. 
+        /// Check correct displaying game number
         /// </summary>
         [TestMethod]
         public void CreatePostAction_ValidModel_Created()
@@ -91,9 +92,12 @@
 
             // Act
             var result = sut.Create(gameResult) as RedirectToRouteResult;
+            string expectedDisplayGameNumber = "G" + gameResult.GameNumber
 
             // Assert
             TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameComparer());
+            Assert.AreEqual(expectedDisplayGameNumber, gameResult.DisplayGameNumber);
+            Assert.AreNotEqual(gameResult.GameNumber, gameResult.DisplayGameNumber);
         }
 
         /// <summary>

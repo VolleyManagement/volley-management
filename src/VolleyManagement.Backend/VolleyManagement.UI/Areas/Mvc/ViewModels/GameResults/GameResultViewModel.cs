@@ -84,15 +84,15 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// Gets or sets the number of the game in the tournament
         /// </summary>
-        public string FormatGameNumber
+        public string FormatedGameNumber
         {
             get
             {
                 return "G" + ((int)GameNumber).ToString();
             }
             set
-            {
-                //FormatGameNumber = "G" + ((int)GameNumber).ToString();
+            { 
+
             }
         }
 

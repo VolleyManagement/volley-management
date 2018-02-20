@@ -6,7 +6,6 @@
     {
         public void RegisterDependencies(IIocContainer container)
         {
-            UserRelatedRepositoriesRegistrator.Register(container);
             RepositoriesRegistrator.Register(container);
             QueriesRegistrator.Register(container);
         }

@@ -52,7 +52,7 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
-        private Mock<IQuery<List<Feedback>, GetAllCriteria>> _getAllFeedbacksQueryMock;
+        private Mock<IQuery<ICollection<Feedback>, GetAllCriteria>> _getAllFeedbacksQueryMock;
         private Mock<IQuery<Feedback, FindByIdCriteria>> _getFeedbackByIdQueryMock;
         private Mock<ICurrentUserService> _currentUserServiceMock;
         private Mock<IUserService> _userServiceMock;
@@ -72,7 +72,7 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
             _feedbackServiceMock = new Mock<IFeedbackService>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _timeMock = new Mock<TimeProvider>();
-            _getAllFeedbacksQueryMock = new Mock<IQuery<List<Feedback>, GetAllCriteria>>();
+            _getAllFeedbacksQueryMock = new Mock<IQuery<ICollection<Feedback>, GetAllCriteria>>();
             _getFeedbackByIdQueryMock = new Mock<IQuery<Feedback, FindByIdCriteria>>();
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _userServiceMock = new Mock<IUserService>();

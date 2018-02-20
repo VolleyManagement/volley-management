@@ -47,7 +47,7 @@ namespace VolleyManagement.UnitTests.Services.RequestsService
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<IQuery<Request, FindByIdCriteria>> _getRequestByIdQueryMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock;
-        private Mock<IQuery<List<Request>, GetAllCriteria>> _getAllRequestsQueryMock;
+        private Mock<IQuery<ICollection<Request>, GetAllCriteria>> _getAllRequestsQueryMock;
         private Mock<IQuery<Request, UserToPlayerCriteria>> _getRequestUserPlayerQueryMock;
 
         private Mock<IUnitOfWork> _unitOfWorkMock;
@@ -68,7 +68,7 @@ namespace VolleyManagement.UnitTests.Services.RequestsService
             _authServiceMock = new Mock<IAuthorizationService>();
             _getRequestByIdQueryMock = new Mock<IQuery<Request, FindByIdCriteria>>();
             _getUserByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
-            _getAllRequestsQueryMock = new Mock<IQuery<List<Request>, GetAllCriteria>>();
+            _getAllRequestsQueryMock = new Mock<IQuery<ICollection<Request>, GetAllCriteria>>();
             _getRequestUserPlayerQueryMock = new Mock<IQuery<Request, UserToPlayerCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 

@@ -100,7 +100,7 @@
         /// <param name="updatedEntity">Updated contributor team.</param>
         public void Update(ContributorTeam updatedEntity)
         {
-            var contributorTeamToUpdate = _unitOfWork.Context.ContributorTeams.Single(t => t.Id == updatedEntity.Id);
+            _unitOfWork.Context.ContributorTeams.Single(t => t.Id == updatedEntity.Id);
         }
     }
 }

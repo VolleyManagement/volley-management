@@ -31,7 +31,7 @@
         private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
         private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
-        private readonly IQuery<List<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
+        private readonly IQuery<ICollection<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
         private readonly IAuthorizationService _authService;
 
         /// <summary>
@@ -54,7 +54,7 @@
             IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
-            IQuery<List<Player>, TeamPlayersCriteria> getTeamRosterQuery,
+            IQuery<ICollection<Player>, TeamPlayersCriteria> getTeamRosterQuery,
             IAuthorizationService authService)
         {
             _teamRepository = teamRepository;

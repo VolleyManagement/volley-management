@@ -414,8 +414,8 @@
                 case TournamentSchemeEnum.PlayOff:
                     numberOfRounds = GetNumberOfRoundsByPlayOffScheme(teamCount);
                     break;
-                default: numberOfRounds = 0;
-                    break;
+                default:
+                    throw new InvalidOperationException("This scheme doesn't exist");
             }
 
             return numberOfRounds;

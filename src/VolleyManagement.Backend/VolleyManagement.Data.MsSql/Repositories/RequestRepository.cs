@@ -40,7 +40,7 @@
         /// <summary>
         /// Adds new game.
         /// </summary>
-        /// <param name="newRequest">Request to add.</param>
+        /// <param name="newEntity">Request to add.</param>
         public void Add(Request newEntity)
         {
             var newRequestEntity = new RequestEntity();

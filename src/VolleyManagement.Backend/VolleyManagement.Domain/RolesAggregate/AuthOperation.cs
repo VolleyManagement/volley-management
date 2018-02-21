@@ -5,7 +5,7 @@
     /// <summary>
     /// Contains information about particular operation within application
     /// </summary>
-    public sealed class AuthOperation:IEquatable<AuthOperation>
+    public sealed class AuthOperation : IEquatable<AuthOperation>
     {
         #region Constants
 
@@ -66,7 +66,9 @@
         /// <returns>Flag if specified objects equals</returns>
         public static bool operator ==(AuthOperation x, AuthOperation y)
         {
-            return ReferenceEquals(x, null) ? ReferenceEquals(y, null) : x.Equals(y);
+            return ReferenceEquals(x, null)
+                 ? ReferenceEquals(y, null)
+                 : x.Equals(y);
         }
 
         /// <summary>
@@ -97,7 +99,7 @@
         /// <summary>
         /// Implementing of "Equals" method
         /// </summary>
-        /// <param name="obj">>object to check equality</param>
+        /// <param name="other">>object to check equality</param>
         /// <returns>Flag if specified object equals to current</returns>
         public bool Equals(AuthOperation other)
         {

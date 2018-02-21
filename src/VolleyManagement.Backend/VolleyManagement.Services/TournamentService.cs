@@ -344,7 +344,7 @@
                     TournamentResources.CollectionIsEmpty);
             }
 
-            var tournamentId = GetTournamentByGroup(groupTeam.ToList()[0].GroupId).Id;
+            var tournamentId = GetTournamentByGroup(((List<TeamTournamentAssignmentDto>)(groupTeam))[0].GroupId).Id;
             var allTeams = GetAllTournamentTeams(tournamentId);
             int numberOfTeamAlreadyExist = 0;
 
@@ -414,8 +414,8 @@
                 case TournamentSchemeEnum.PlayOff:
                     numberOfRounds = GetNumberOfRoundsByPlayOffScheme(teamCount);
                     break;
-                default: numberOfRounds = 0;
-                    break;
+                default:
+                    throw new InvalidOperationException("This scheme doesn't exist");
             }
 
             return numberOfRounds;

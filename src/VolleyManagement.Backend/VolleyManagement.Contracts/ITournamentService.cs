@@ -79,7 +79,7 @@
         /// <summary>
         /// Create new tournament.
         /// </summary>
-        /// <param name="tournament">New tournament</param>
+        /// <param name="tournamentToCreate">New tournament</param>
         void Create(Tournament tournamentToCreate);
 
         /// <summary>

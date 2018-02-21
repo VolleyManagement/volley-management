@@ -40,7 +40,7 @@
         /// <summary>
         /// Adds new tournament request.
         /// </summary>
-        /// <param name="newRequest">Tournament request to add.</param>
+        /// <param name="newEntity">Tournament request to add.</param>
         public void Add(TournamentRequest newEntity)
         {
             var newRequestEntity = new TournamentRequestEntity();

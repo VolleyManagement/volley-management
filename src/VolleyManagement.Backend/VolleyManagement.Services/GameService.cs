@@ -519,7 +519,9 @@
                 }
                 else
                 {
-                    throw new ArgumentException(string.Format(Resources.SameTeamInRound, game.HomeTeamName));
+                    throw new ArgumentException(
+                        string.Format(Resources.SameTeamInRound, 
+                        game.HomeTeamName));
                 }
             }
             else
@@ -546,7 +548,8 @@
                          || game.AwayTeamId != newGame.HomeTeamId)
                 {
                     throw new ArgumentException(
-                        string.Format(Resources.SameTeamInRound, (game.HomeTeamId == newGame.HomeTeamId)
+                        string.Format(Resources.SameTeamInRound, 
+                        (game.HomeTeamId == newGame.HomeTeamId)
                             ? game.HomeTeamName : game.AwayTeamName));
                 }
             }

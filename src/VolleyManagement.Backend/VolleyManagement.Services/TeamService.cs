@@ -121,7 +121,7 @@
             {
                 // ToDo: Revisit this case
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
-        }
+            }
 
             // Check if captain in teamToCreate is captain of another team
             if ((captain.TeamId != null) && (captain.TeamId != teamToEdit.Id))
@@ -229,11 +229,11 @@
             }
         }
 
-        private static bool ValidateTwoTeamsName(Team teamToValidate, List<Team> getExistingTeams)
+        private static bool ValidateTwoTeamsName(Team teamToValidate, ICollection<Team> getExistingTeams)
         {
             var existingTeams = from ex in getExistingTeams
                                 where ex.Id != teamToValidate.Id
-                                where String.Equals(ex.Name,teamToValidate.Name,StringComparison.InvariantCultureIgnoreCase)
+                                where String.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
                                 select ex;
             return existingTeams.Count() != 0;
         }
@@ -336,10 +336,10 @@
                 && TeamValidation.ValidateCoachName(teamCoachName))
             {
                 throw new ArgumentException(
-                       string.Format(
-                       Resources.ValidationCoachName,
-                       Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                       $"Coach");
+                    string.Format(
+                    Resources.ValidationCoachName,
+                    Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                    $"Coach");
             }
         }
 
@@ -359,7 +359,7 @@
         private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
         {
             var existingTeams = Get();
-            if (ValidateTwoTeamsName(teamToValidate, existingTeams as List<Team>))
+            if (ValidateTwoTeamsName(teamToValidate, existingTeams))
             {
                 throw new ArgumentException(
                     TournamentResources.TeamNameInTournamentNotUnique);

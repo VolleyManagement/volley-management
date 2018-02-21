@@ -212,10 +212,10 @@
         public Task AddLoginAsync(UserModel user, UserLoginInfo login)
         {
             var loginInfo = new LoginProviderModel
-                                {
-                                    LoginProvider = login.LoginProvider,
-                                    ProviderKey = login.ProviderKey
-                                };
+            {
+                LoginProvider = login.LoginProvider,
+                ProviderKey = login.ProviderKey
+            };
             user.Logins.Add(loginInfo);
             return Task.FromResult(true);
         }
@@ -228,7 +228,7 @@
         /// <returns>Task to await</returns>
         public Task RemoveLoginAsync(UserModel user, UserLoginInfo login)
         {
-            var loginToDelete = (user.Logins.ToList()).Find(l =>
+            var loginToDelete = ((List<LoginProviderModel>)(user.Logins)).Find(l =>
                                     l.LoginProvider == login.LoginProvider
                                     && l.ProviderKey == login.ProviderKey);
             if (loginToDelete != null)
@@ -246,8 +246,8 @@
         /// <returns>Task to await</returns>
         public Task<IList<UserLoginInfo>> GetLoginsAsync(UserModel user)
         {
-            return Task.FromResult((IList<UserLoginInfo>)user.Logins.ToList().ConvertAll(
-                l => new UserLoginInfo(l.LoginProvider, l.ProviderKey)));
+            return Task.FromResult((IList<UserLoginInfo>)((List<LoginProviderModel>)(user.Logins))
+                       .ConvertAll(                l => new UserLoginInfo(l.LoginProvider, l.ProviderKey)));
         }
 
         /// <summary>
@@ -258,10 +258,10 @@
         public async Task<UserModel> FindAsync(UserLoginInfo login)
         {
             var criteria = new FindByLoginInfoCriteria
-                               {
-                                   ProviderKey = login.ProviderKey,
-                                   LoginProvider = login.LoginProvider
-                               };
+            {
+                ProviderKey = login.ProviderKey,
+                LoginProvider = login.LoginProvider
+            };
             var user = await _getByLoginInfoQuery.ExecuteAsync(criteria);
 
             return CreateUserModel(user);
@@ -297,17 +297,18 @@
 
         private void Map(User to, UserModel from)
         {
+            
             to.Id = from.Id;
             to.UserName = from.UserName;
             to.Email = from.Email;
             to.PersonName = from.PersonName;
             to.PhoneNumber = from.PhoneNumber;
-            to.LoginProviders = from.Logins.ToList().ConvertAll(
+            to.LoginProviders = ((List<LoginProviderModel>)from.Logins).ConvertAll(
                                 l => new LoginProviderInfo
-                                         {
-                                             ProviderKey = l.ProviderKey,
-                                             LoginProvider = l.LoginProvider
-                                         });
+                                {
+                                    ProviderKey = l.ProviderKey,
+                                    LoginProvider = l.LoginProvider
+                                });
         }
 
         private void Map(UserModel to, User from)
@@ -319,10 +320,10 @@
             to.PhoneNumber = from.PhoneNumber;
             to.Logins = from.LoginProviders.Select(
                                 l => new LoginProviderModel
-                                         {
-                                             LoginProvider = l.LoginProvider,
-                                             ProviderKey = l.ProviderKey
-                                         })
+                                {
+                                    LoginProvider = l.LoginProvider,
+                                    ProviderKey = l.ProviderKey
+                                })
                                          .ToList();
         }
 

@@ -18,10 +18,8 @@
         /// <param name="home">Score of the home team.</param>
         /// <param name="away">Score of the away team.</param>
         /// <param name="isTechnicalDefeat">Indicating whether the technical defeat has taken place.</param>
-        public Score(byte home, byte away, bool isTechnicalDefeat)
+        public Score(byte home, byte away, bool isTechnicalDefeat) : this(home, away)
         {
-            Home = home;
-            Away = away;
             IsTechnicalDefeat = isTechnicalDefeat;
         }
         /// <summary>

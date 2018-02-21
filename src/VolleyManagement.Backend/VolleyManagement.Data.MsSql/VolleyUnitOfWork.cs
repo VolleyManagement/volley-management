@@ -55,11 +55,13 @@
         public void Dispose()
         {
             Dispose(true);
-
         }
         protected virtual void Dispose(bool disposing)
         {
-            _context.Dispose();
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
     }
 }

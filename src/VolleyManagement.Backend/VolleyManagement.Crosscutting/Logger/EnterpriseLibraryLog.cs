@@ -27,7 +27,15 @@
         /// <param name="level">The level. </param>
         private static void SetCategory(LogEntry logEntry, LogLevelEnum level)
         {
-            logEntry.Categories.Add(level == LogLevelEnum.Information ? "Information" : "Error");
+            switch (level)
+            {
+                case LogLevelEnum.Information:
+                    logEntry.Categories.Add("Information");
+                    break;
+                case LogLevelEnum.Error:
+                    logEntry.Categories.Add("Error");
+                    break;
+            }
         }
     }
 }

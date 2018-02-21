@@ -66,7 +66,9 @@
         /// <returns>Flag if specified objects equals</returns>
         public static bool operator ==(AuthOperation x, AuthOperation y)
         {
-            return ReferenceEquals(x, null) ? ReferenceEquals(y, null) : x.Equals(y);
+            return ReferenceEquals(x, null)
+                 ? ReferenceEquals(y, null)
+                 : x.Equals(y);
         }
 
         /// <summary>

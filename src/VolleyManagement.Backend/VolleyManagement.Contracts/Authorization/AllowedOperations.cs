@@ -18,7 +18,12 @@
         /// <param name="allowedOperations">List of operations which should be checked for accessibility</param>
         public AllowedOperations(ICollection<AuthOperation> allowedOperations)
         {
-            _allowedOperations = allowedOperations ?? throw new ArgumentNullException($"Allowed operations list shouldn't be null!");
+
+            if (allowedOperations == null)
+            {
+                throw new ArgumentNullException("Allowed operations list shouldn't be null!");
+            }
+            _allowedOperations = allowedOperations;
         }
 
         /// <summary>

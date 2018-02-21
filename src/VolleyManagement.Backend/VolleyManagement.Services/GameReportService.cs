@@ -63,7 +63,7 @@
 
             var tournament = _tournamentByIdQuery.Execute(new FindByIdCriteria(tournamentId));
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            Dictionary<(int divisionId,string divisionName),List<TeamTournamentDto>> teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
+            Dictionary<(int divisionId, string divisionName), List<TeamTournamentDto>> teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
             foreach (var groupedTeams in teamsInTournamentByDivisions)
             {
@@ -212,15 +212,17 @@
                     awayTeamEntry.GamesWon++;
                     awayTeamEntry.GamesWithScoreThreeOne++;
                     break;
-                //case -3: // sets score - 0:3
-                default:
+                case -3: // sets score - 0:3
                     homeTeamEntry.GamesLost++;
                     homeTeamEntry.GamesWithScoreNilThree++;
                     awayTeamEntry.Points += 3;
                     awayTeamEntry.GamesWon++;
                     awayTeamEntry.GamesWithScoreThreeNil++;
                     break;
-               
+                default:
+                    throw new InvalidOperationException();
+                   
+
             }
 
             var penalty = gameResult.Result.Penalty;

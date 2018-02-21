@@ -86,7 +86,7 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            if (ValidateExistingPlayers(playersToCreate as List<Player>))
+            if (ValidateExistingPlayers(playersToCreate))
             {
                 throw new ArgumentException(
                     PlayerResources.ValidationPlayerOfAnotherTeam);
@@ -212,7 +212,7 @@
         /// </summary>
         /// <param name="playersToCreate">List of Players</param>
         /// <returns> Return true if Player has TeamId </returns>
-        private bool ValidateExistingPlayers(List<Player> playersToCreate)
+        private bool ValidateExistingPlayers(ICollection<Player> playersToCreate)
         {
             var existingPlayers = Get().ToList();
 

@@ -1331,6 +1331,37 @@
             VerifyCreateGame(newGame, Times.Once());
         }
 
+        [TestMethod]
+        public void Create_SameTeamInTheRound_ExceptionThrown()
+        {
+            MockTournamentSchemeTwo();
+            var newGame = new GameBuilder().TestFreeDayGame().WithTournamentId(1).WithId(2).Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeTwo()
+                .Build();
+
+            MockGetTournamentResults(
+                newGame.TournamentId,
+                gameResults);
+
+            var sut = BuildSUT();
+
+            ArgumentException argumentException = null;
+
+            // Act
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                argumentException = ex;
+            }
+
+            VerifyExceptionThrown(argumentException, ExpectedExceptionMessages.SAME_TEAM_IN_ROUND);
+        }
+
         #endregion
 
         #region Get

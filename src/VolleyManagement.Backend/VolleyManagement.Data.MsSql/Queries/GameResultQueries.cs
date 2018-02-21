@@ -19,7 +19,7 @@
                                      IQuery<Game, GameByNumberCriteria>
     {
         #region Fields
-        
+
         private readonly VolleyUnitOfWork dbEntyPoint;
 
         #endregion
@@ -213,12 +213,14 @@
         {
             Penalty result;
 
-            result = gr.PenaltyTeam != 0 ? new Penalty
-            {
-                IsHomeTeam = gr.PenaltyTeam == 1,
-                Amount = gr.PenaltyAmount,
-                Description = gr.PenaltyDescription
-            } : null;
+            result = gr.PenaltyTeam != 0 ?
+                new Penalty
+                {
+                    IsHomeTeam = gr.PenaltyTeam == 1,
+                    Amount = gr.PenaltyAmount,
+                    Description = gr.PenaltyDescription
+                }
+                : null;
 
             return result;
         }

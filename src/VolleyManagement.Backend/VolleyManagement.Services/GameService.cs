@@ -513,6 +513,7 @@ namespace VolleyManagement.Services
                    game.Round.ToString()));
             }
         }
+
         private static void IsTheSameTeamInTwoGames(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
         {
             if (GameValidationIsFreeDayGame)
@@ -527,10 +528,8 @@ namespace VolleyManagement.Services
             }
             else
             {
-                string oppositeTeam;
-
-                oppositeTeam = game.HomeTeamId == newGame.HomeTeamId
-                    || game.HomeTeamId == newGame.AwayTeamId ? game.HomeTeamName : game.AwayTeamName;
+                var oppositeTeam = game.HomeTeamId == newGame.HomeTeamId
+                                      || game.HomeTeamId == newGame.AwayTeamId ? game.HomeTeamName : game.AwayTeamName;
 
                 throw new ArgumentException(
                   string.Format(

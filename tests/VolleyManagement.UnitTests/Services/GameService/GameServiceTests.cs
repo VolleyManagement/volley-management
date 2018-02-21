@@ -1332,10 +1332,15 @@
         }
 
         [TestMethod]
-        public void Create_SameTeamInTheRound_ExceptionThrown()
+        public void Create_SameTeamInTheRoundSchemeOne_ExceptionThrown()
         {
-            MockTournamentSchemeTwo();
-            var newGame = new GameBuilder().TestFreeDayGame().WithTournamentId(1).WithId(2).Build();
+            // Arrange
+            MockDefaultTournament();
+            var newGame = new GameBuilder()
+                            .TestFreeDayGame()
+                            .WithTournamentId(TOURNAMENT_ID)
+                            .WithId(2)
+                            .Build();
 
             List<GameResultDto> gameResults = new GameServiceTestFixture()
                 .TestGamesForDuplicateSchemeTwo()
@@ -1359,6 +1364,44 @@
                 argumentException = ex;
             }
 
+            // Assert
+            VerifyExceptionThrown(argumentException, ExpectedExceptionMessages.SAME_TEAM_IN_ROUND);
+        }
+
+        [TestMethod]
+        public void Create_SameTeamInTheRoundSchemeTwo_ExceptionThrown()
+        {
+            // Arrange
+            MockTournamentSchemeTwo();
+            var newGame = new GameBuilder()
+                            .TestFreeDayGame()
+                            .WithTournamentId(TOURNAMENT_ID)
+                            .WithId(2)
+                            .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeTwo()
+                .Build();
+
+            MockGetTournamentResults(
+                newGame.TournamentId,
+                gameResults);
+
+            var sut = BuildSUT();
+
+            ArgumentException argumentException = null;
+
+            // Act
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                argumentException = ex;
+            }
+
+            // Assert
             VerifyExceptionThrown(argumentException, ExpectedExceptionMessages.SAME_TEAM_IN_ROUND);
         }
 

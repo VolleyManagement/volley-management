@@ -26,19 +26,19 @@
         /// <summary>
         /// Create new team.
         /// </summary>
-        /// <param name="team">New team.</param>
+        /// <param name="teamToCreate">New team.</param>
         void Create(Team teamToCreate);
 
         /// <summary>
         /// Edit team.
         /// </summary>
-        /// <param name="team">Team to edit.</param>
+        /// <param name="teamToEdit">Team to edit.</param>
         void Edit(Team teamToEdit);
 
         /// <summary>
         /// Delete team by id.
         /// </summary>
-        /// <param name="id">Team id.</param>
+        /// <param name="teamId">Team id.</param>
         void Delete(int teamId);
 
         /// <summary>

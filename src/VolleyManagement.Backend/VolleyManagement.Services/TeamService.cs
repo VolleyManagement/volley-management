@@ -280,7 +280,7 @@
             Team team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
 
             if (team == null)
-               {
+            {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
             }
 
@@ -326,7 +326,7 @@
                     string.Format(
                     Resources.ValidationTeamName,
                     Domain.Constants.Team.MAX_NAME_LENGTH),
-                    $"Name");
+                    nameof(Team.Name));
             }
         }
 
@@ -339,7 +339,7 @@
                     string.Format(
                     Resources.ValidationCoachName,
                     Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                    $"Coach");
+                    nameof(Team.Coach));
             }
         }
 
@@ -352,7 +352,7 @@
                     string.Format(
                     TournamentResources.ValidationTeamAchievements,
                     Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                    $"Achievements");
+                    nameof(Team.Achievements));
             }
         }
 

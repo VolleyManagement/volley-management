@@ -211,7 +211,7 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentNullException("feedback"));
+                new ArgumentNullException("feedbackToCreate"));
         }
 
         [TestMethod]

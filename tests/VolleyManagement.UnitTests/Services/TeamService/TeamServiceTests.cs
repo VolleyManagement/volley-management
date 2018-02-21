@@ -208,7 +208,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, $"Achievements"));
+                new ArgumentException(argExMessage, nameof(Team.Achievements)));
         }
 
         /// <summary>

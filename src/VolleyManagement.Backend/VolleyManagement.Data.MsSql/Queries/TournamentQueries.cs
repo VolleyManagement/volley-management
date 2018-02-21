@@ -8,7 +8,9 @@
     using System.Linq;
     using VolleyManagement.Data.Queries.Division;
     using VolleyManagement.Data.Queries.Group;
-    using VolleyManagement.Data.MsSql.Mappers;
+    using System.Linq.Expressions;
+    using System;
+    using VolleyManagement.Data.MsSql.Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -59,7 +61,7 @@
 
             // ToDo: Use Automapper to substitute Select clause
             return query
-                .Select(TournamentQueriesMapper.GetTournamentMapping())
+                .Select(GetTournamentMapping())
                 .FirstOrDefault();
         }
 
@@ -77,7 +79,7 @@
                              select t;
 
             return tournament
-                .Select(TournamentQueriesMapper.GetTournamentMapping())
+                .Select(GetTournamentMapping())
                 .FirstOrDefault();
         }
 
@@ -89,7 +91,7 @@
         public ICollection<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments
-                .Select(TournamentQueriesMapper.GetTournamentMapping())
+                .Select(GetTournamentMapping())
                 .ToList();
         }
 
@@ -103,7 +105,7 @@
             return _unitOfWork.Context.Tournaments
                                       .Where(t => !t.IsArchived)
                                       .Where(t => t.GamesEnd <= criteria.CheckDate)
-                                      .Select(TournamentQueriesMapper.GetTournamentMapping())
+                                      .Select(GetTournamentMapping())
                                       .ToList();
         }
 
@@ -116,7 +118,7 @@
         {
             return _unitOfWork.Context.Divisions
                                       .Where(d => d.TournamentId == criteria.TournamentId)
-                                      .Select(TournamentQueriesMapper.GetDivisionMapping())
+                                      .Select(GetDivisionMapping())
                                       .ToList();
         }
 
@@ -129,7 +131,7 @@
         {
             return _unitOfWork.Context.Groups
                                       .Where(d => d.DivisionId == criteria.DivisionId)
-                                      .Select(TournamentQueriesMapper.GetGroupMapping())
+                                      .Select(GetGroupMapping())
                                       .ToList();
         }
 
@@ -142,7 +144,7 @@
         {
             return _unitOfWork.Context.Tournaments
                                       .Where(t => t.Id == criteria.Id)
-                                      .Select(TournamentQueriesMapper.GetTournamentMapping())
+                                      .Select(GetTournamentMapping())
                                       .SingleOrDefault();
         }
 
@@ -187,6 +189,68 @@
                     TeamCount = d.GroupTeamCount
                 }).ToList()
             }).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Mapping
+
+        private static Expression<Func<TournamentEntity, Tournament>> GetTournamentMapping()
+        {
+            return
+                t =>
+                new Tournament
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    RegulationsLink = t.RegulationsLink,
+                    Scheme = (TournamentSchemeEnum)t.Scheme,
+                    Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
+                    GamesStart = t.GamesStart,
+                    GamesEnd = t.GamesEnd,
+                    ApplyingPeriodStart = t.ApplyingPeriodStart,
+                    ApplyingPeriodEnd = t.ApplyingPeriodEnd,
+                    TransferEnd = t.TransferEnd,
+                    TransferStart = t.TransferStart,
+                    Divisions = t.Divisions
+                                    .AsQueryable()
+                                    .Where(d => d.TournamentId == t.Id)
+                                    .Select(GetDivisionMapping())
+                                    .ToList(),
+                    LastTimeUpdated = t.LastTimeUpdated,
+                    IsArchived = t.IsArchived
+                };
+        }
+
+        private static Expression<Func<DivisionEntity, Division>> GetDivisionMapping()
+        {
+            return
+                d =>
+                new Division
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    TournamentId = d.TournamentId,
+                    Groups = d.Groups
+                                .AsQueryable()
+                                .Where(g => g.DivisionId == d.Id)
+                                .Select(GetGroupMapping())
+                                .ToList()
+                };
+        }
+
+        private static Expression<Func<GroupEntity, Group>> GetGroupMapping()
+        {
+            return
+                g =>
+                new Group
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    DivisionId = g.DivisionId,
+                    IsEmpty = g.Teams.Count == 0
+                };
         }
 
         #endregion

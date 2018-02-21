@@ -92,12 +92,10 @@
 
             // Act
             var result = sut.Create(gameResult) as RedirectToRouteResult;
-            string expectedDisplayGameNumber = "G" + gameResult.GameNumber;
-
+          
             // Assert
             TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameComparer());
-            Assert.AreEqual(expectedDisplayGameNumber, gameResult.DisplayGameNumber);
-            Assert.AreNotEqual(gameResult.GameNumber, gameResult.DisplayGameNumber);
+
         }
 
         /// <summary>
@@ -137,6 +135,8 @@
                                 .WithHomeTeamId(HOME_TEAM_ID)
                                 .WithAwayTeamId(HOME_TEAM_ID)
                                 .Build();
+
+            gameResult.GameNumber = 5;
 
             var sut = BuildSUT();
 

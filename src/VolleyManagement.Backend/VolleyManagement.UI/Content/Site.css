@@ -35,14 +35,39 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
-div#content { padding: 1em; float: left; width: 88em; }
-div#menu {float: left; width: 8em; padding: .3em; }
-div#menu a{font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial; display: block;
-           text-decoration: none; padding: .6em; color: black; border-bottom: 1px solid silver;
+div#content {
+    padding: 1em;
+    float: left;
+    width: 88em;
 }
-div#menu a.selected {background-color: #666; color: white;}
-div#menu a:hover {background-color: #CCC; }
-div#menu a.selected:hover{background-color: #666}
+
+div#menu {
+    float: left;
+    width: 8em;
+    padding: .3em;
+}
+
+    div#menu a {
+        font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial;
+        display: block;
+        text-decoration: none;
+        padding: .6em;
+        color: black;
+        border-bottom: 1px solid silver;
+    }
+
+        div#menu a.selected {
+            background-color: #666;
+            color: white;
+        }
+
+        div#menu a:hover {
+            background-color: #CCC;
+        }
+
+        div#menu a.selected:hover {
+            background-color: #666
+        }
 
 .form-control {
     display: inline-block;
@@ -150,7 +175,7 @@ div.game-away-team {
 }
 
 div.game-number {
-    margin-top:8px;
+    margin-top: 8px;
 }
 
 table.standings {
@@ -210,12 +235,12 @@ table.standings {
 }
 
 .videoLinkIcon {
-  width: 16px;
-  height: 16px;
-  text-decoration: none;
+    width: 16px;
+    height: 16px;
+    text-decoration: none;
 }
 
-  .videoLinkIcon:hover,
-  .videoLinkIcon:focus {
-    text-decoration: none;
-  }
+    .videoLinkIcon:hover,
+    .videoLinkIcon:focus {
+        text-decoration: none;
+    }

@@ -30,6 +30,7 @@
                 AwayTeamName = "AwayTeam",
                 GameDate = DateTime.Parse("2016-04-03 10:00"),
                 Round = 1,
+                GameNumber = 0,
                 GameScore = new ScoreViewModel(3, 1),
                 SetScores = new List<ScoreViewModel>()
                     {

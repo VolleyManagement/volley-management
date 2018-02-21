@@ -84,13 +84,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// Gets display number of the game in the tournament
         /// </summary>
-        public string DisplayGameNumber
-        {
-            get
-            {
-                return "G" + GameNumber;
-            }
-        }
+        public string DisplayGameNumber => "G" + GameNumber;
 
         public bool HasPenalty { get; set; }
 

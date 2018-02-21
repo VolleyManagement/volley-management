@@ -5,7 +5,7 @@
     /// <summary>
     /// Contains information about particular operation within application
     /// </summary>
-    public sealed class AuthOperation:IEquatable<AuthOperation>
+    public sealed class AuthOperation : IEquatable<AuthOperation>
     {
         #region Constants
 

@@ -1,8 +1,7 @@
-﻿using VolleyManagement.Contracts.Exceptions;
-
-namespace VolleyManagement.Contracts.Authorization
+﻿namespace VolleyManagement.Contracts.Authorization
 {
     using System.Collections.Generic;
+    using VolleyManagement.Contracts.Exceptions;
     using Domain.RolesAggregate;
 
     /// <summary>

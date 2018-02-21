@@ -764,8 +764,15 @@ namespace VolleyManagement.Services
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
-            winnerTeamId = finishedGame.AwayTeamId == null ? finishedGame.HomeTeamId.Value : finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+            if (finishedGame.AwayTeamId == null)
+            {
+                winnerTeamId = finishedGame.HomeTeamId.Value;
+            }
+            else
+            {
+                winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
+                    finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+            }
 
             if (finishedGame.GameNumber % 2 != 0)
             {

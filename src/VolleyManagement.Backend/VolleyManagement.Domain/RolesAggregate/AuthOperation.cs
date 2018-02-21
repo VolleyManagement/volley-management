@@ -99,7 +99,7 @@
         /// <summary>
         /// Implementing of "Equals" method
         /// </summary>
-        /// <param name="obj">>object to check equality</param>
+        /// <param name="other">>object to check equality</param>
         /// <returns>Flag if specified object equals to current</returns>
         public bool Equals(AuthOperation other)
         {

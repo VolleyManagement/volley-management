@@ -111,7 +111,7 @@
         /// <summary>
         /// Edit team.
         /// </summary>
-        /// <param name="team">Team to edit.</param>
+        /// <param name="teamToEdit">Team to edit.</param>
         public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
@@ -280,7 +280,7 @@
             Team team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
 
             if (team == null)
-            {
+               {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
             }
 

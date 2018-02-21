@@ -26,7 +26,7 @@
         private readonly ICurrentUserService _currentUserService;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Feedback, FindByIdCriteria> _getFeedbackByIdQuery;
-        private readonly IQuery<List<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
+        private readonly IQuery<ICollection<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
 
         #endregion
 
@@ -49,7 +49,7 @@
             ICurrentUserService currentUserService,
             IAuthorizationService authService,
             IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
-            IQuery<List<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
+            IQuery<ICollection<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
         {
             _feedbackRepository = feedbackRepository;
             _userService = userService;

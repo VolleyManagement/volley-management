@@ -228,8 +228,7 @@
                 UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
             }
         }
-        //зміна
-      
+
         private static bool ValidateTwoTeamsName(Team teamToValidate, List<Team> getExistingTeams)
         {
             var existingTeams = from ex in getExistingTeams

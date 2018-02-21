@@ -42,7 +42,7 @@
         /// Gets all teams with contributors inside.
         /// </summary>
         /// <returns>Collection of teams with contributors</returns>
-        public List<ContributorTeam> Find()
+        public ICollection<ContributorTeam> Find()
         {
             var result = _contribsSet.GroupBy(c => c.Team)
                                      .Select(gr => new ContributorTeam

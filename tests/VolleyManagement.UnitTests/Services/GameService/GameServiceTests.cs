@@ -1,11 +1,10 @@
-﻿using System.Collections;
-
-namespace VolleyManagement.UnitTests.Services.GameService
+﻿namespace VolleyManagement.UnitTests.Services.GameService
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Collections;
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;

@@ -1,9 +1,8 @@
-﻿using System.Linq;
-
-namespace VolleyManagement.UI.Areas.Admin.Controllers
+﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
     using System.Web.Mvc;
+    using System.Linq;
     using Contracts;
     using Contracts.Exceptions;
     using Models;
@@ -95,9 +94,9 @@ namespace VolleyManagement.UI.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
-               return View(
-                   "ErrorPage",
-                   CreateErrorReply(ex));
+                return View(
+                    "ErrorPage",
+                    CreateErrorReply(ex));
             }
             catch (MissingEntityException ex)
             {

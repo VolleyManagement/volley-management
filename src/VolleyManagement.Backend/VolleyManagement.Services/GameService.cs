@@ -147,7 +147,7 @@ namespace VolleyManagement.Services
         /// <returns>List of game results of specified tournament.</returns>
         public ICollection<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            var allGames = QueryAllTournamentGames(tournamentId).ToList()
+            var allGames = ((List<GameResultDto>)(QueryAllTournamentGames(tournamentId)))
                             .FindAll(gr => gr.HasResult);
 
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
@@ -368,7 +368,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
+        private static void ValidateSetScoresValues(ICollection<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
 
@@ -376,7 +376,7 @@ namespace VolleyManagement.Services
             {
                 if (i < GameResultConstants.SETS_COUNT_TO_WIN)
                 {
-                    if (!ResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
+                    if (!ResultValidation.IsRequiredSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat))
                     {
                         throw new ArgumentException(
                             string.Format(
@@ -390,7 +390,7 @@ namespace VolleyManagement.Services
                 }
                 else
                 {
-                    if ((!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber)) &&
+                    if ((!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber)) &&
                         (setOrderNumber == GameResultConstants.MAX_SETS_COUNT))
                     {
                         throw new ArgumentException(
@@ -399,7 +399,7 @@ namespace VolleyManagement.Services
                                 GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
                                 GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
                     }
-                    else if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
+                    else if (!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber))
                     {
                         throw new ArgumentException(
                             string.Format(
@@ -410,11 +410,11 @@ namespace VolleyManagement.Services
                                 GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
 
                     }
-                    if ((isPreviousOptionalSetUnplayed) && (!ResultValidation.IsSetUnplayed(setScores[i])))
+                    if ((isPreviousOptionalSetUnplayed) && (!ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i])))
                     {
                         throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
                     }
-                    isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
+                    isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i]);
                 }
             }
         }
@@ -487,7 +487,7 @@ namespace VolleyManagement.Services
                 tournamentSсheduleInfo);
         }
 
-        private static void IsFreeDayGameValidation(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
+        private static void freeDayGameValidation(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
         {
             if (GameValidationIsFreeDayGame)
             {
@@ -513,7 +513,8 @@ namespace VolleyManagement.Services
                    game.Round.ToString()));
             }
         }
-        private static void IsTheSameTeamInTwoGames(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
+
+        private static void theSameTeamInTwoGames(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
         {
             if (GameValidationIsFreeDayGame)
             {
@@ -527,10 +528,8 @@ namespace VolleyManagement.Services
             }
             else
             {
-                string oppositeTeam;
-
-                oppositeTeam = game.HomeTeamId == newGame.HomeTeamId
-                    || game.HomeTeamId == newGame.AwayTeamId ? game.HomeTeamName : game.AwayTeamName;
+                var oppositeTeam = game.HomeTeamId == newGame.HomeTeamId
+                                      || game.HomeTeamId == newGame.AwayTeamId ? game.HomeTeamName : game.AwayTeamName;
 
                 throw new ArgumentException(
                   string.Format(
@@ -549,11 +548,11 @@ namespace VolleyManagement.Services
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
                 {
-                    IsFreeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
+                    freeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
                 {
-                    IsTheSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
+                    theSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
                 }
             }
         }
@@ -764,8 +763,15 @@ namespace VolleyManagement.Services
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
-            winnerTeamId = finishedGame.AwayTeamId == null ? finishedGame.HomeTeamId.Value : finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+            if (finishedGame.AwayTeamId == null)
+            {
+                winnerTeamId = finishedGame.HomeTeamId.Value;
+            }
+            else
+            {
+                winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
+                    finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+            }
 
             if (finishedGame.GameNumber % 2 != 0)
             {

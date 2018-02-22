@@ -66,6 +66,7 @@
 
             Assert.AreEqual(x.GameDate, y.GameDate, "GameDate should be equal.");
             Assert.AreEqual(x.Round, y.Round, "Round should be equal.");
+            Assert.AreEqual(x.DisplayGameNumber, y.DisplayGameNumber, "DisplayGameNumber should be equal.");
             Assert.AreEqual(x.IsTechnicalDefeat, y.IsTechnicalDefeat, "IsTechnicalDefeat should be equal.");
 
             Assert.AreEqual(x.HasPenalty, y.HasPenalty, "HasPenalty should be equal.");

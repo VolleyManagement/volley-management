@@ -8,6 +8,7 @@
     using Data.Queries.GameResult;
     using Domain.GamesAggregate;
     using Entities;
+    using System.Data.Entity;
 
     /// <summary>
     /// Provides implementation of game result queries.
@@ -20,7 +21,11 @@
     {
         #region Fields
 
-        private readonly VolleyUnitOfWork dbEntyPoint;
+        private readonly VolleyUnitOfWork _unitOfWork;
+        private readonly DbSet<GameResultEntity> _dalGameResults;
+        private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
 
         #endregion
 
@@ -32,7 +37,11 @@
         /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/>.</param>
         public GameResultQueries(IUnitOfWork unitOfWork)
         {
-            dbEntyPoint = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalGameResults = _unitOfWork.Context.GameResults;
+            _dalTournaments = _unitOfWork.Context.Tournaments;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         #endregion
@@ -46,7 +55,7 @@
         /// <returns>Domain model of game result.</returns>
         public GameResultDto Execute(FindByIdCriteria criteria)
         {
-            return dbEntyPoint.Context.GameResults
+            return _dalGameResults
                 .Where(gr => gr.Id == criteria.Id)
                 .ToList()
                 .Select(gr => GetGameResultDtoMap()(gr))
@@ -63,12 +72,12 @@
             var tournamentId = criteria.TournamentId;
 
             var allGamesWithTeams =
-                from game in dbEntyPoint.Context.GameResults
-                join tournament in dbEntyPoint.Context.Tournaments
+                from game in _dalGameResults
+                join tournament in _dalTournaments
                     on game.TournamentId equals tournament.Id
-                join division in dbEntyPoint.Context.Divisions
+                join division in _dalDivisions
                     on tournament.Id equals division.TournamentId
-                join groups in dbEntyPoint.Context.Groups
+                join groups in _dalGroups
                     on division.Id equals groups.DivisionId
                 where game.TournamentId == tournamentId
                 where groups.Teams.Contains(game.HomeTeam)
@@ -81,12 +90,12 @@
                 };
 
             var gamesWithoutTeams =
-                from game in dbEntyPoint.Context.GameResults
-                join tournament in dbEntyPoint.Context.Tournaments
+                from game in _dalGameResults
+                join tournament in _dalTournaments
                     on game.TournamentId equals tournament.Id
-                join division in dbEntyPoint.Context.Divisions
+                join division in _dalDivisions
                     on tournament.Id equals division.TournamentId
-                join groups in dbEntyPoint.Context.Groups
+                join groups in _dalGroups
                     on division.Id equals groups.DivisionId
                 where game.TournamentId == tournamentId
                 where game.HomeTeam == null
@@ -117,7 +126,7 @@
             // specified game results into memory and then convert them.
             // In case of using method Select(Mapper) there is an issue with EF query.
             // If method Select() called set scores mapped in wrong order.
-            var games = dbEntyPoint.Context.GameResults
+            var games = _dalGameResults
                  .Where(gr => gr.TournamentId == criteria.TournamentId
                      && (gr.RoundNumber == criteria.FirstRoundNumber || gr.RoundNumber == criteria.SecondRoundNumber))
                      .ToList();
@@ -132,7 +141,7 @@
         /// <returns>Collection of games which satisfy the criteria</returns>
         public ICollection<Game> Execute(GamesByRoundCriteria criteria)
         {
-            var games = dbEntyPoint.Context.GameResults
+            var games = _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId
                     && criteria.RoundNumbers.Any(n => gr.RoundNumber == n))
                     .ToList();
@@ -147,7 +156,7 @@
         /// <returns>Domain model of game result.</returns>
         public Game Execute(GameByNumberCriteria criteria)
         {
-            return dbEntyPoint.Context.GameResults
+            return _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId
                 && gr.GameNumber == criteria.GameNumber)
                 .Select(gr => GetGameMapping()(gr))

@@ -487,10 +487,10 @@ namespace VolleyManagement.Services
                 tournamentSсheduleInfo);
         }
 
-        private static void freeDayGameValidation(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
+        private static void FreeDayGameValidation(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
         {
             if (GameValidationIsFreeDayGame)
-            {
+            {   
                 if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
                 {
                     throw new ArgumentException(
@@ -514,7 +514,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void theSameTeamInTwoGames(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
+        private static void TheSameTeamInTwoGames(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
         {
             if (GameValidationIsFreeDayGame)
             {
@@ -548,11 +548,11 @@ namespace VolleyManagement.Services
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
                 {
-                    freeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
+                    FreeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
                 {
-                    theSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
+                    TheSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
                 }
             }
         }

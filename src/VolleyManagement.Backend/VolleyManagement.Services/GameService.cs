@@ -502,9 +502,9 @@ namespace VolleyManagement.Services
                 tournamentSсheduleInfo);
         }
 
-        private static void FreeDayGameValidation(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
+        private static void FreeDayGameValidation(bool gameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
         {
-            if (GameValidationIsFreeDayGame)
+            if (gameValidationIsFreeDayGame)
             {
                 if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
                 {

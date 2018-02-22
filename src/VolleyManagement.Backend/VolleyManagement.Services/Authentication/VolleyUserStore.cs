@@ -247,7 +247,7 @@
         public Task<IList<UserLoginInfo>> GetLoginsAsync(UserModel user)
         {
             return Task.FromResult((IList<UserLoginInfo>)((List<LoginProviderModel>)(user.Logins))
-                       .ConvertAll(                l => new UserLoginInfo(l.LoginProvider, l.ProviderKey)));
+                       .ConvertAll(l => new UserLoginInfo(l.LoginProvider, l.ProviderKey)));
         }
 
         /// <summary>
@@ -297,7 +297,7 @@
 
         private void Map(User to, UserModel from)
         {
-            
+
             to.Id = from.Id;
             to.UserName = from.UserName;
             to.Email = from.Email;

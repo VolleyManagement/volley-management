@@ -178,8 +178,7 @@
             // Arrange
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var testData = new GameServiceTestFixture().TestGameResults().Build();
-            testData.Find(g => g.TournamentId == TOURNAMENT_ID).GameNumber = 5;
-
+            
             var expected = new GameResultViewModelBuilder()
                 .WithTournamentId(TOURNAMENT_ID)
                 .WithAwayTeamName("TeamNameB")
@@ -196,8 +195,6 @@
                 })
                 .Build();
 
-            expected.GameNumber = 5;
-            
             SetupGet(TOURNAMENT_ID, testData.ElementAt(0));
 
             var controller = BuildSUT();

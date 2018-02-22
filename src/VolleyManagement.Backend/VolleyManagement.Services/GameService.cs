@@ -368,6 +368,51 @@ namespace VolleyManagement.Services
             }
         }
 
+
+        private static void ThrowExceptionInValidateSetScoreValues()
+        {
+            throw new ArgumentException(
+                string.Format(
+                    Resources.GameResultRequiredSetScores,
+                    GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                    GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
+                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+        }
+
+        private static void CheckIfPreviousOptionalSetUnplayed(int i, int setOrderNumber, ICollection<Score> setScores, bool isTechnicalDefeat, ref bool isPreviousOptionalSetUnplayed)
+        {
+            if ((!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber)) &&
+                (setOrderNumber == GameResultConstants.MAX_SETS_COUNT))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        Resources.GameResultFifthSetScoreInvalid,
+                        GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+                        GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
+            }
+
+            if (!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        Resources.GameResultOptionalSetScores,
+                        GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                        GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                        GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+                        GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
+
+            }
+
+            if ((isPreviousOptionalSetUnplayed) && (!ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i])))
+            {
+                throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
+            }
+
+            isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i]);
+
+        }
+
         private static void ValidateSetScoresValues(ICollection<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
@@ -378,43 +423,13 @@ namespace VolleyManagement.Services
                 {
                     if (!ResultValidation.IsRequiredSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat))
                     {
-                        throw new ArgumentException(
-                            string.Format(
-                                Resources.GameResultRequiredSetScores,
-                                GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                                GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                                GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
-                                GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
-
+                        ThrowExceptionInValidateSetScoreValues();
                     }
                 }
                 else
                 {
-                    if ((!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber)) &&
-                        (setOrderNumber == GameResultConstants.MAX_SETS_COUNT))
-                    {
-                        throw new ArgumentException(
-                            string.Format(
-                                Resources.GameResultFifthSetScoreInvalid,
-                                GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
-                                GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
-                    }
-                    else if (!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber))
-                    {
-                        throw new ArgumentException(
-                            string.Format(
-                                Resources.GameResultOptionalSetScores,
-                                GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                                GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                                GameResultConstants.UNPLAYED_SET_HOME_SCORE,
-                                GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
-
-                    }
-                    if ((isPreviousOptionalSetUnplayed) && (!ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i])))
-                    {
-                        throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-                    }
-                    isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i]);
+                    CheckIfPreviousOptionalSetUnplayed(i, setOrderNumber, setScores, isTechnicalDefeat,
+                        ref isPreviousOptionalSetUnplayed);
                 }
             }
         }
@@ -490,7 +505,7 @@ namespace VolleyManagement.Services
         private static void FreeDayGameValidation(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
         {
             if (GameValidationIsFreeDayGame)
-            {   
+            {
                 if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
                 {
                     throw new ArgumentException(

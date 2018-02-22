@@ -508,57 +508,70 @@
             }
         }
 
-        private static void ValidateAreSameTeamsInGames(GameResultDto game, Game newGame,
-           TournamentScheduleDto tournamentScheduleInfo)
+        private static void ValidateAreSameTeamsInGames(
+            GameResultDto game, 
+            Game newGame,
+            TournamentScheduleDto tournamentScheduleInfo)
         {
+            string errorMessage = null;
             if (GameValidation.IsFreeDayGame(newGame))
             {
                 if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
                 {
-                    throw new ArgumentException(Resources.SameFreeDayGameInRound);
+                    errorMessage = Resources.SameFreeDayGameInRound;
+                    throw new ArgumentException(errorMessage);
                 }
                 else
                 {
-                    throw new ArgumentException(
-                        string.Format(Resources.SameTeamInRound, 
-                        game.HomeTeamName));
+                    errorMessage = string.Format(Resources.SameTeamInRound, 
+                        game.HomeTeamId);
+                    throw new ArgumentException(errorMessage);
                 }
             }
             else
             {
-                throw new ArgumentException(
-                    string.Format(Resources.SameGameInRound,
-                        game.HomeTeamName, game.AwayTeamName,
-                        game.Round.ToString()));
+                errorMessage = String.Format(
+                    Resources.SameGameInRound,
+                    game.HomeTeamName, 
+                    game.AwayTeamName,
+                    game.Round.ToString());
+                throw new ArgumentException(errorMessage);
             }
         }
 
-        private static void ValidateIsTheSameTeamInTwoGames(GameResultDto game, Game newGame,
+        private static void ValidateIsTheSameTeamInTwoGames(
+            GameResultDto game,
+            Game newGame,
             TournamentScheduleDto tournamentScheduleInfo)
         {
+            string errorMessage = null;
             if ((GameValidation.IsFreeDayGame(newGame) && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
             {
                 if (game.HomeTeamId != newGame.HomeTeamId
                     && game.AwayTeamId != newGame.HomeTeamId)
                 {
-                    throw new ArgumentException(
-                        Resources.SameFreeDayGameInRound);
+                    errorMessage = Resources.SameFreeDayGameInRound;
+                    throw new ArgumentException(errorMessage);
                 }
                 else if (game.HomeTeamId != newGame.HomeTeamId
                          || game.AwayTeamId != newGame.HomeTeamId)
                 {
-                    throw new ArgumentException(
-                        string.Format(Resources.SameTeamInRound, 
+                    errorMessage = string.Format(
+                        Resources.SameTeamInRound,
                         (game.HomeTeamId == newGame.HomeTeamId)
-                            ? game.HomeTeamName : game.AwayTeamName));
+                            ? game.HomeTeamName
+                            : game.AwayTeamName);
+                    throw new ArgumentException(errorMessage);
                 }
             }
             else
             {
-                throw new ArgumentException(
-                    string.Format(Resources.SameTeamInRound,
-                       (game.HomeTeamId == newGame.HomeTeamId || game.HomeTeamId == newGame.AwayTeamId)
-                            ? game.HomeTeamName : game.AwayTeamName));
+                errorMessage = string.Format(
+                    Resources.SameTeamInRound,
+                    (game.HomeTeamId == newGame.HomeTeamId || game.HomeTeamId == newGame.AwayTeamId)
+                        ? game.HomeTeamName
+                        : game.AwayTeamName);
+                throw new ArgumentException(errorMessage);
             }
         }
 

@@ -529,9 +529,9 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void TheSameTeamInTwoGames(bool GameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
+        private static void TheSameTeamInTwoGames(bool gameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
         {
-            if (GameValidationIsFreeDayGame)
+            if (gameValidationIsFreeDayGame)
             {
                 if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff
                     && game.HomeTeamId != newGame.HomeTeamId

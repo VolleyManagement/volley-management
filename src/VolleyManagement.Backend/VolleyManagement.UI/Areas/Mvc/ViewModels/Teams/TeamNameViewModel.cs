@@ -6,6 +6,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
     using System.Linq;
     using System.Web;
     using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
 
     /// <summary>
     /// Represents team view model just with name and id
@@ -30,6 +31,12 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         public string DivisionName { get; set; }
 
         /// <summary>
+        /// Gets or sets the group ID where team is playing
+        /// </summary>
+        [Display(Name = "GroupId")]
+        public int GroupId { get; set; }
+
+        /// <summary>
         /// Maps Team to TeamNameViewModel
         /// </summary>
         /// <param name="team">Domain team</param>
@@ -40,7 +47,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
             {
                 Id = team.TeamId,
                 Name = team.TeamName,
-                DivisionName = team.DivisionName
+                DivisionName = team.DivisionName,
+                GroupId = team.GroupId                
             };
         }
 
@@ -59,6 +67,20 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         }
 
         /// <summary>
+        /// Returns team's group name
+        /// </summary>
+        /// <param name="team">Mapped team</param>
+        /// <param name="divisions">Divisions list in the current tournament</param>
+        /// <returns>String which contains group name</returns>
+        public static string GetGroupName(TeamNameViewModel team, List<Division> divisions)
+        {
+            return GetGroups(team, divisions)
+                   .Where(group => group.Id == team.GroupId)
+                   .First()
+                   .Name;
+        }
+
+        /// <summary>
         /// Maps presentation entity to domain
         /// </summary>
         /// <returns>Domain object</returns>
@@ -70,5 +92,23 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
                 Name = Name
             };
         }
+
+        #region private
+
+        /// <summary>
+        /// Returns groups list in the division
+        /// </summary>
+        /// <param name="team">Mapped team</param>
+        /// <param name="divisions">Divisions list in the current tournament</param>
+        /// <returns>List of type Group</returns>
+        private static List<Group> GetGroups(TeamNameViewModel team, List<Division> divisions)
+        {
+            return divisions
+                   .Where(div => div.Name == team.DivisionName)
+                   .Select(res => res.Groups)
+                   .First();
+        }
+
+        #endregion
     }
 }

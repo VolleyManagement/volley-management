@@ -289,7 +289,8 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
+            var resultDivisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
+            var teams = new TournamentTeamsListViewModel(resultTeams, resultDivisions, tournamentId);
             var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }

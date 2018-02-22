@@ -94,7 +94,6 @@
           
             // Assert
             TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameComparer());
-
         }
 
         /// <summary>

@@ -46,7 +46,7 @@
             MockRepositoryFindAll(testData);
 
             var sut = BuildSUT();
-            ICollection<ContributorTeam> expected = new ContributorTeamServiceTestFixture()
+            var expected = new ContributorTeamServiceTestFixture()
                 .TestContributors()
                 .Build();
                                             

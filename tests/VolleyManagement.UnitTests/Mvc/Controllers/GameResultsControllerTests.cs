@@ -72,7 +72,6 @@
 
         /// <summary>
         /// Test for Create POST method. Valid model passed. Games result created. 
-        /// Check correct displaying game number
         /// </summary>
         [TestMethod]
         public void CreatePostAction_ValidModel_Created()
@@ -136,8 +135,6 @@
                                 .WithAwayTeamId(HOME_TEAM_ID)
                                 .Build();
 
-            gameResult.GameNumber = 5;
-
             var sut = BuildSUT();
 
             _gameServiceMock.Setup(gr => gr.Create(It.IsAny<Game>())).Throws(new ArgumentException());
@@ -181,6 +178,8 @@
             // Arrange
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var testData = new GameServiceTestFixture().TestGameResults().Build();
+            testData.Find(g => g.TournamentId == TOURNAMENT_ID).GameNumber = 5;
+
             var expected = new GameResultViewModelBuilder()
                 .WithTournamentId(TOURNAMENT_ID)
                 .WithAwayTeamName("TeamNameB")
@@ -197,6 +196,8 @@
                 })
                 .Build();
 
+            expected.GameNumber = 5;
+            
             SetupGet(TOURNAMENT_ID, testData.ElementAt(0));
 
             var controller = BuildSUT();

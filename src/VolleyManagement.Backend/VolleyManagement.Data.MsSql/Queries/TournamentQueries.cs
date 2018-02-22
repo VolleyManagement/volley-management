@@ -103,7 +103,7 @@
         public ICollection<Tournament> Execute(OldTournamentsCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments
-                                      .Where(t => !t.IsArchived)
+                                      .Where(t => t.IsArchived == false)
                                       .Where(t => t.GamesEnd <= criteria.CheckDate)
                                       .Select(GetTournamentMapping())
                                       .ToList();

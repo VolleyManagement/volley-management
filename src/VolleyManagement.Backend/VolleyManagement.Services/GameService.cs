@@ -519,13 +519,11 @@
                 if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
                 {
                     errorMessage = Resources.SameFreeDayGameInRound;
-                    throw new ArgumentException(errorMessage);
                 }
                 else
                 {
                     errorMessage = string.Format(Resources.SameTeamInRound, 
                         game.HomeTeamId);
-                    throw new ArgumentException(errorMessage);
                 }
             }
             else
@@ -535,6 +533,9 @@
                     game.HomeTeamName, 
                     game.AwayTeamName,
                     game.Round.ToString());
+            }
+            if (errorMessage != null)
+            {
                 throw new ArgumentException(errorMessage);
             }
         }
@@ -551,7 +552,6 @@
                     && game.AwayTeamId != newGame.HomeTeamId)
                 {
                     errorMessage = Resources.SameFreeDayGameInRound;
-                    throw new ArgumentException(errorMessage);
                 }
                 else if (game.HomeTeamId != newGame.HomeTeamId
                          || game.AwayTeamId != newGame.HomeTeamId)
@@ -561,8 +561,7 @@
                         (game.HomeTeamId == newGame.HomeTeamId)
                             ? game.HomeTeamName
                             : game.AwayTeamName);
-                    throw new ArgumentException(errorMessage);
-                }
+                }              
             }
             else
             {
@@ -571,6 +570,10 @@
                     (game.HomeTeamId == newGame.HomeTeamId || game.HomeTeamId == newGame.AwayTeamId)
                         ? game.HomeTeamName
                         : game.AwayTeamName);
+                throw new ArgumentException(errorMessage);
+            }
+            if (errorMessage != null)
+            {
                 throw new ArgumentException(errorMessage);
             }
         }

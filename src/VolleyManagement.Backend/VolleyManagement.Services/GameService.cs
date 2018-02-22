@@ -509,7 +509,7 @@
         }
 
         private static void ValidateAreSameTeamsInGames(
-            GameResultDto game, 
+            GameResultDto game,
             Game newGame,
             TournamentScheduleDto tournamentScheduleInfo)
         {
@@ -522,7 +522,8 @@
                 }
                 else
                 {
-                    errorMessage = string.Format(Resources.SameTeamInRound, 
+                    errorMessage = string.Format(
+                        Resources.SameTeamInRound,
                         game.HomeTeamId);
                 }
             }
@@ -530,7 +531,7 @@
             {
                 errorMessage = String.Format(
                     Resources.SameGameInRound,
-                    game.HomeTeamName, 
+                    game.HomeTeamName,
                     game.AwayTeamName,
                     game.Round.ToString());
             }
@@ -561,7 +562,7 @@
                         (game.HomeTeamId == newGame.HomeTeamId)
                             ? game.HomeTeamName
                             : game.AwayTeamName);
-                }              
+                }
             }
             else
             {
@@ -570,7 +571,6 @@
                     (game.HomeTeamId == newGame.HomeTeamId || game.HomeTeamId == newGame.AwayTeamId)
                         ? game.HomeTeamName
                         : game.AwayTeamName);
-                throw new ArgumentException(errorMessage);
             }
             if (errorMessage != null)
             {

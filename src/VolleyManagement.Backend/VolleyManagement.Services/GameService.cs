@@ -557,7 +557,7 @@
                 else if (game.HomeTeamId != newGame.HomeTeamId
                          || game.AwayTeamId != newGame.HomeTeamId)
                 {
-                    errorMessage= string.Format(
+                    errorMessage = string.Format(
                         Resources.SameTeamInRound,
                         (game.HomeTeamId == newGame.HomeTeamId)
                             ? game.HomeTeamName

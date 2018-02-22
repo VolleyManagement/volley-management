@@ -5,15 +5,19 @@
 
     @if (!Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
-        <div class="row">
-            <div class="col-md-10">
-                <strong>  @Resources.UI.TournamentViews.HomeTeamPlaceholder </strong>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-10">
-                <strong>  @Resources.UI.TournamentViews.AwayTeamPlaceholder </strong>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 game-number">
+                    <strong>@Model.DisplayGameNumber </strong>
+                </div>
+                <div class="col-md-7">
+                    <div class="row">
+                        <strong>  @Resources.UI.TournamentViews.HomeTeamPlaceholder </strong>
+                    </div>
+                    <div class="row">
+                        <strong>  @Resources.UI.TournamentViews.AwayTeamPlaceholder </strong>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -34,15 +38,19 @@
     }
     else if (!Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
     {
-        <div class="row">
-            <div class="col-md-10">
-                <strong>  @Resources.UI.TournamentViews.HomeTeamPlaceholder </strong>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-10">
-                <strong>  @Model.AwayTeamName </strong>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 game-number">
+                    <strong>@Model.DisplayGameNumber </strong>
+                </div>
+                <div class="col-md-7">
+                    <div class="row">
+                        <strong>   @Resources.UI.TournamentViews.HomeTeamPlaceholder </strong>
+                    </div>
+                    <div class="row">
+                        <strong>  @Model.AwayTeamName </strong>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -65,11 +73,17 @@
     {
         if (Model.IsFirstRoundGame)
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>@Model.DisplayGameNumber </strong>
+                    </div>
+                    <div class="col-md-7">
+                        <strong>   @Model.HomeTeamName </strong>
+                    </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-10 text-right">
                     @Resources.UI.TournamentViews.TeamDayOff
@@ -78,15 +92,19 @@
         }
         else
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Resources.UI.TournamentViews.AwayTeamPlaceholder </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 game-number">
+                        <strong>@Model.DisplayGameNumber </strong>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <strong>   @Model.HomeTeamName </strong>
+                        </div>
+                        <div class="row">
+                            <strong>  @Resources.UI.TournamentViews.AwayTeamPlaceholder </strong>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -113,21 +131,31 @@
     {
         if (Model.IsTechnicalDefeat)
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>  @Model.GameScore.Home </strong>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.AwayTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>  @Model.GameScore.Away </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 game-number">
+                        <strong>@Model.DisplayGameNumber </strong>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.HomeTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>  @Model.GameScore.Home </strong>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.AwayTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>  @Model.GameScore.Away </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -148,21 +176,31 @@
         }
         else if (!Model.GameScore.IsEmpty)
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>   @Model.GameScore.Home </strong>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.AwayTeamName </strong>
-                </div>
-                <div class="col-md-2">
-                    <strong>  @Model.GameScore.Away </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 game-number">
+                        <strong>@Model.DisplayGameNumber </strong>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.HomeTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>   @Model.GameScore.Home </strong>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong>  @Model.AwayTeamName </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>  @Model.GameScore.Away </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -189,15 +227,20 @@
         }
         else
         {
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.HomeTeamName </strong>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-10">
-                    <strong>  @Model.AwayTeamName </strong>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 game-number">
+                        <strong>@Model.DisplayGameNumber </strong>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <strong>  @Model.HomeTeamName </strong>
+                        </div>
+                        <div class="row">
+                            <strong>  @Model.AwayTeamName </strong>
+                        </div>
+                    </div>
                 </div>
             </div>
 

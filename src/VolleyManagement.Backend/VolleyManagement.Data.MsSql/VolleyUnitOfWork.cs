@@ -54,14 +54,7 @@
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
+            _context.Dispose();
         }
     }
 }

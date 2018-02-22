@@ -9,7 +9,7 @@ namespace VolleyManagement.Data.MsSql.Entities
     /// </summary>
     public class DivisionEntity
     {
-        private List<GroupEntity> _groups;
+        private ICollection<GroupEntity> _groups;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DivisionEntity"/> class.
@@ -45,7 +45,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         public virtual ICollection<GroupEntity> Groups
         {
             get => _groups;
-            set => _groups = value.ToList();
+            set => _groups = value;
         }
     }
 }

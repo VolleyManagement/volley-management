@@ -1,17 +1,15 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using Contracts;
     using Crosscutting.Contracts.Specifications;
     using Domain.TournamentsAggregate;
     using Entities;
     using Exceptions;
-    using Mappers;
     using Specifications;
 
-    using static VolleyManagement.Data.MsSql.Mappers.DomainToDal;
+    using static Mappers.DomainToDal;
 
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.

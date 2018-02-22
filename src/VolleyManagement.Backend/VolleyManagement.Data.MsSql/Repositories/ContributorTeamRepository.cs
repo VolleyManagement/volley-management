@@ -66,9 +66,7 @@
         /// <param name="id">The id of contributor team to remove.</param>
         public void Remove(int id)
         {
-            var contributorTeamDelete = _unitOfWork.Context.ContributorTeams.Single(x => x.Id == id);
-            _unitOfWork.Context.ContributorTeams.Remove(contributorTeamDelete);
-            //TODO: make unit test
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -87,11 +85,7 @@
         /// <param name="newEntity">The contributor team for adding.</param>
         public void Add(ContributorTeam newEntity)
         {
-            var newUser = new ContributorTeamEntity();
-            _unitOfWork.Context.ContributorTeams.Add(newUser);
-            _unitOfWork.Commit();
-            newEntity.Id = newUser.Id;
-            //TODO: make unit test
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -100,7 +94,7 @@
         /// <param name="updatedEntity">Updated contributor team.</param>
         public void Update(ContributorTeam updatedEntity)
         {
-            _unitOfWork.Context.ContributorTeams.Single(t => t.Id == updatedEntity.Id);
+            throw new NotImplementedException();
         }
     }
 }

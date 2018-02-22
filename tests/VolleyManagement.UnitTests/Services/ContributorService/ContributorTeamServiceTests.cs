@@ -55,7 +55,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected as ICollection, actual as ICollection, new ContributorTeamComparer());
+            CollectionAssert.AreEqual(expected, (List<ContributorTeam>)actual, new ContributorTeamComparer());
         }
 
         private ContributorTeamService BuildSUT()

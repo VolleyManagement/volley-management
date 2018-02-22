@@ -2,10 +2,11 @@
 {
     using System;
     using System.Web.Mvc;
-    using System.Linq;
     using Contracts;
     using Contracts.Exceptions;
     using Models;
+    using System.Collections.Generic;
+    using Domain.FeedbackAggregate;
 
     /// <summary>
     /// Provides Feedback management
@@ -30,7 +31,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var feedbacks = (_feedbackService.Get()).ToList().ConvertAll(f => new RequestsViewModel(f));
+            var feedbacks = (((List<Feedback>)_feedbackService.Get())).ConvertAll(f => new RequestsViewModel(f));
             return View(feedbacks);
         }
 

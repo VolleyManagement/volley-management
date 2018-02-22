@@ -44,6 +44,6 @@
 
         public const string GAME_DATE_NOT_SET = "Game date not set.";
 
-        public const string SAME_TEAM_IN_ROUND = "Team  has game scheduled already in this round";
+        public const string SAME_TEAM_IN_ROUND = "Team Team A has game scheduled already in this round";
     }
 }

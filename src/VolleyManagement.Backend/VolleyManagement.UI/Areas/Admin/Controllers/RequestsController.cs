@@ -31,7 +31,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var feedbacks = (((List<Feedback>)_feedbackService.Get())).ConvertAll(f => new RequestsViewModel(f));
+            var feedbacks = ((List<Feedback>)_feedbackService.Get()).ConvertAll(f => new RequestsViewModel(f));
             return View(feedbacks);
         }
 

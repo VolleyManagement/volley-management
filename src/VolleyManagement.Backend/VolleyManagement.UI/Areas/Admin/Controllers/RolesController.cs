@@ -1,12 +1,11 @@
-﻿using System.Linq;
-
-namespace VolleyManagement.UI.Areas.Admin.Controllers
+﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
     using System.Web.Mvc;
     using Contracts.Authorization;
     using Domain.RolesAggregate;
     using Models;
+    using System.Linq;
 
     /// <summary>
     /// Provides Roles management

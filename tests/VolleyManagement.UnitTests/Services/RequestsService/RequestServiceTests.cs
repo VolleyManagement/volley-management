@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace VolleyManagement.UnitTests.Services.RequestsService
+﻿namespace VolleyManagement.UnitTests.Services.RequestsService
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +7,7 @@ namespace VolleyManagement.UnitTests.Services.RequestsService
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-
+    using System.Collections;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;

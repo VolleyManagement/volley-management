@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace VolleyManagement.UnitTests.Services.TournamentRequestService
+﻿namespace VolleyManagement.UnitTests.Services.TournamentRequestService
 {
     using System;
     using System.Collections.Generic;
@@ -24,6 +22,7 @@ namespace VolleyManagement.UnitTests.Services.TournamentRequestService
     using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
+    using System.Collections;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

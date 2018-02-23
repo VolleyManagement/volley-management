@@ -221,7 +221,6 @@
                     break;
                 default:
                     throw new InvalidOperationException();
-                   
 
             }
 

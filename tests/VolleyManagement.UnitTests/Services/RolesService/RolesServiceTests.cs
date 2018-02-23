@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using VolleyManagement.Contracts.Authorization;
-
-namespace VolleyManagement.UnitTests.Services.RolesService
+﻿namespace VolleyManagement.UnitTests.Services.RolesService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.Collections;
+    using VolleyManagement.Contracts.Authorization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;

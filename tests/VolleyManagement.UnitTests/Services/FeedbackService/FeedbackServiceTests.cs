@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace VolleyManagement.UnitTests.Services.FeedbackService
+﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
     using System.Collections.Generic;
@@ -23,6 +21,7 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
     using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
+    using System.Collections;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

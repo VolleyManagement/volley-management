@@ -297,7 +297,6 @@
 
         private void Map(User to, UserModel from)
         {
-
             to.Id = from.Id;
             to.UserName = from.UserName;
             to.Email = from.Email;

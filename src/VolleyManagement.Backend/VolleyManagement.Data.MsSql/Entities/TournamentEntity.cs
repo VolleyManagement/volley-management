@@ -1,9 +1,8 @@
-using System.Linq;
-
 namespace VolleyManagement.Data.MsSql.Entities
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// DAL tournament model

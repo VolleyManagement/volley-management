@@ -785,7 +785,7 @@ namespace VolleyManagement.Services
             else
             {
                 winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                    finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+                               finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
             }
 
             if (finishedGame.GameNumber % 2 != 0)
@@ -809,7 +809,7 @@ namespace VolleyManagement.Services
             ValidateEditingSchemePlayoff(nextGame);
 
             int loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
+                              finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
             if (finishedGame.GameNumber % 2 != 0)
             {

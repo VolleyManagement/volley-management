@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace VolleyManagement.UnitTests.Services.UsersService
+﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -8,7 +6,7 @@ namespace VolleyManagement.UnitTests.Services.UsersService
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-
+    using System.Collections;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;

@@ -6,6 +6,17 @@
 
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {
+        private IComparer<TeamStandingsDto> teamsComparer;
+        public PivotStandingsComparer()
+        {
+            teamsComparer = new TeamStandingsDtoComparer();
+        }
+
+        public PivotStandingsComparer(IComparer<TeamStandingsDto> teamsComparer)
+        {
+            this.teamsComparer = teamsComparer;
+        }
+
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
             Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
@@ -14,7 +25,6 @@
 
             if (x.Teams.Count == y.Teams.Count)
             {
-                var teamsComparer = new TeamStandingsDtoComparer();
                 for (var i = 0; i < x.Teams.Count; i++)
                 {
                     if (teamsComparer.Compare(x.Teams[i], y.Teams[i]) != 0)

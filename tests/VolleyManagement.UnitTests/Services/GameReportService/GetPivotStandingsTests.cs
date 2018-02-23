@@ -3,6 +3,7 @@
     using System;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using VolleyManagement.UnitTests.Services.GameReportService.Comparers;
 
     [TestClass]
     public class GetPivotStandingsTests : GameReportsServiceTestsBase
@@ -74,6 +75,27 @@
 
             // Assert
             AssertPivotStandingsAreEqual(expected, actual, "Points, games, sets and balls should be calculated properly.");
+        }
+
+        [TestMethod]
+        public void GetPivotStandings_GameResultsAllPossibleScores_CorrectPointStats()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var expected = new PivotStandingsTestFixture().WithStandingsForAllPossibleScores().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqualByPoints(expected, actual, "Points should be calculated properly.");
         }
 
         [TestMethod]
@@ -409,5 +431,15 @@
         {
             AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer());
         }
+
+        private void AssertPivotStandingsAreEqualByPoints(
+           TournamentStandings<PivotStandingsDto> expected,
+           TournamentStandings<PivotStandingsDto> actual,
+           string message)
+        {
+            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer(new TeamStandingsDtoComparerByPoints()));
+        }
+
+
     }
 }

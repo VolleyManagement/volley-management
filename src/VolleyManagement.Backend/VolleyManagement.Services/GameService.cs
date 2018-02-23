@@ -543,37 +543,32 @@
             Game newGame,
             TournamentScheduleDto tournamentScheduleInfo)
         {
-            string errorMessage = null;
             if ((GameValidation.IsFreeDayGame(newGame)
                 && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
             {
                 if (game.HomeTeamId != newGame.HomeTeamId
                     && game.AwayTeamId != newGame.HomeTeamId)
                 {
-                    errorMessage = Resources.SameFreeDayGameInRound;
+                    throw new ArgumentException(Resources.SameFreeDayGameInRound);
                 }
                 else if (game.HomeTeamId != newGame.HomeTeamId
                          || game.AwayTeamId != newGame.HomeTeamId)
                 {
-                    errorMessage = string.Format(
+                    throw new ArgumentException(string.Format(
                         Resources.SameTeamInRound,
                         (game.HomeTeamId == newGame.HomeTeamId)
                             ? game.HomeTeamName
-                            : game.AwayTeamName);
+                            : game.AwayTeamName));
                 }
             }
             else
             {
-                errorMessage = string.Format(
+                throw new ArgumentException(string.Format(
                     Resources.SameTeamInRound,
                     (game.HomeTeamId == newGame.HomeTeamId
                     || game.HomeTeamId == newGame.AwayTeamId)
                         ? game.HomeTeamName
-                        : game.AwayTeamName);
-            }
-            if (errorMessage != null)
-            {
-                throw new ArgumentException(errorMessage);
+                        : game.AwayTeamName));
             }
         }
 

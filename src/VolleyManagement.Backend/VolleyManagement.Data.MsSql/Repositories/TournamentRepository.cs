@@ -1,21 +1,25 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using Contracts;
     using Crosscutting.Contracts.Specifications;
     using Domain.TournamentsAggregate;
     using Entities;
     using Exceptions;
+    using Mappers;
     using Specifications;
-
-    using static Mappers.DomainToDal;
 
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
     /// </summary>
     internal class TournamentRepository : ITournamentRepository
     {
+        private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly DbSet<TeamEntity> _dalTeams;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly ISpecification<TournamentEntity> _dbStorageSpecification = new TournamentsStorageSpecification();
 
@@ -26,6 +30,10 @@
         public TournamentRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalTournaments = _unitOfWork.Context.Tournaments;
+            _dalTeams = _unitOfWork.Context.Teams;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         /// <summary>
@@ -43,14 +51,14 @@
         public void Add(Tournament newEntity)
         {
             var tournament = new TournamentEntity();
-            Map(tournament, newEntity);
+            DomainToDal.Map(tournament, newEntity);
 
             if (!_dbStorageSpecification.IsSatisfiedBy(tournament))
             {
                 throw new InvalidEntityException();
             }
 
-            _unitOfWork.Context.Tournaments.Add(tournament);
+            _dalTournaments.Add(tournament);
             _unitOfWork.Commit();
             MapIdentifiers(newEntity, tournament);
         }
@@ -61,9 +69,9 @@
         /// <param name="updatedEntity">Updated tournament.</param>
         public void Update(Tournament updatedEntity)
         {
-            var tournamentToUpdate = _unitOfWork.Context.Tournaments.Single(t => t.Id == updatedEntity.Id);
+            var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
             UpdateDivisions(tournamentToUpdate.Divisions, updatedEntity.Divisions);
-            Map(tournamentToUpdate, updatedEntity);
+            DomainToDal.Map(tournamentToUpdate, updatedEntity);
         }
 
         /// <summary>
@@ -78,7 +86,7 @@
                 throw new ConcurrencyException();
             }
 
-            _unitOfWork.Context.Tournaments.Remove(dalToRemove);
+            _dalTournaments.Remove(dalToRemove);
         }
 
         /// <summary>
@@ -88,12 +96,12 @@
         /// <param name="groupId">Group id to add</param>
         public void AddTeamToTournament(int teamId, int groupId)
         {
-            var group = from t in _unitOfWork.Context.Tournaments
-                        join d in _unitOfWork.Context.Divisions on t.Id equals d.TournamentId
-                        join g in _unitOfWork.Context.Groups on d.Id equals g.DivisionId
+            var group = from t in _dalTournaments
+                        join d in _dalDivisions on t.Id equals d.TournamentId
+                        join g in _dalGroups on d.Id equals g.DivisionId
                         where g.Id == groupId
                         select g;
-            group.First().Teams.Add(_unitOfWork.Context.Teams.Find(teamId));
+            group.First().Teams.Add(_dalTeams.Find(teamId));
         }
 
         /// <summary>
@@ -182,8 +190,8 @@
             foreach (var item in old.ToList())
             {
                 if (!Enumerable.Any(from element in changed
-                                   where item.Id == element.Id
-                                   select element))
+                                    where item.Id == element.Id
+                                    select element))
                 {
                     RemoveGroup(item.Id);
                 }

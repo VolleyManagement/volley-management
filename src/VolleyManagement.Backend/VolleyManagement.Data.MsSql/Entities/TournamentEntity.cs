@@ -2,7 +2,6 @@ namespace VolleyManagement.Data.MsSql.Entities
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// DAL tournament model
@@ -82,10 +81,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets collection of tournaments divisions
         /// </summary>
-        public virtual ICollection<DivisionEntity> Divisions
+        public virtual List<DivisionEntity> Divisions
         {
             get => _divisions;
-            set => _divisions = value.ToList();
+            set => _divisions = value;
         }
 
         /// <summary>

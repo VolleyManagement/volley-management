@@ -45,6 +45,6 @@
         /// <summary>
         /// Gets or sets the Login Provider info list.
         /// </summary>
-        public ICollection<LoginProviderModel> Logins { get; set; }
+        public List<LoginProviderModel> Logins { get; set; }
     }
 }

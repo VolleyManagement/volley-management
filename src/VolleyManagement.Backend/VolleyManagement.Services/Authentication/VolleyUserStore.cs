@@ -228,7 +228,7 @@
         /// <returns>Task to await</returns>
         public Task RemoveLoginAsync(UserModel user, UserLoginInfo login)
         {
-            var loginToDelete = ((List<LoginProviderModel>)(user.Logins)).Find(l =>
+            var loginToDelete = user.Logins.Find(l =>
                                     l.LoginProvider == login.LoginProvider
                                     && l.ProviderKey == login.ProviderKey);
             if (loginToDelete != null)

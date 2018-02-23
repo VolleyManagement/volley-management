@@ -535,10 +535,7 @@
                     game.AwayTeamName,
                     game.Round.ToString());
             }
-            if (errorMessage != null)
-            {
-                throw new ArgumentException(errorMessage);
-            }
+            throw new ArgumentException(errorMessage);
         }
 
         private static void ValidateIsTheSameTeamInTwoGames(
@@ -547,7 +544,8 @@
             TournamentScheduleDto tournamentScheduleInfo)
         {
             string errorMessage = null;
-            if ((GameValidation.IsFreeDayGame(newGame) && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
+            if ((GameValidation.IsFreeDayGame(newGame)
+                && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
             {
                 if (game.HomeTeamId != newGame.HomeTeamId
                     && game.AwayTeamId != newGame.HomeTeamId)
@@ -568,13 +566,17 @@
             {
                 errorMessage = string.Format(
                     Resources.SameTeamInRound,
-                    (game.HomeTeamId == newGame.HomeTeamId || game.HomeTeamId == newGame.AwayTeamId)
+                    (game.HomeTeamId == newGame.HomeTeamId
+                    || game.HomeTeamId == newGame.AwayTeamId)
                         ? game.HomeTeamName
                         : game.AwayTeamName);
-            }        
+            }
+            if (errorMessage != null)
+            {
                 throw new ArgumentException(errorMessage);
+            }
         }
-       
+
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
             if (gameToDelete.HasResult)

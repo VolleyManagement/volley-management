@@ -32,7 +32,7 @@
         /// <summary>
         /// Edit player profile.
         /// </summary>
-        /// <param name="player">Updated player data.</param>
+        /// <param name="playerToEdit">Updated player data.</param>
         void Edit(Player playerToEdit);
 
         /// <summary>

@@ -6,7 +6,7 @@ The following is a set of guidelines for contributing to Volley Managment. These
 
 🏗 UNDER CONSTRUCTION 🏗
 
-More content to be added :timer_clock:
+More content to be added :timer_clock::timer_clock::timer_clock:
 
 ## Code of Conduct
 

@@ -31,7 +31,9 @@ namespace VolleyManagement.UI
         {
             bundles.Add(new StyleBundle("~/bundles/commoncss")
                 .Include(
-                    "~/Content/bootstrap.min.css"));
+                    "~/Content/bootstrap.min.css")
+                .Include(
+                    "~/Content/Site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/commonscripts")
                 .Include(

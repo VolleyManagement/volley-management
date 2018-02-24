@@ -43,5 +43,7 @@
         + " the points difference must be equal to 2.";
 
         public const string GAME_DATE_NOT_SET = "Game date not set.";
+
+        public const string SAME_TEAM_IN_ROUND = "Team Team A has game scheduled already in this round";
     }
 }

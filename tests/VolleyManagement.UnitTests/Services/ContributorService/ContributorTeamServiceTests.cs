@@ -49,7 +49,7 @@
             var expected = new ContributorTeamServiceTestFixture()
                 .TestContributors()
                 .Build();
-                                            
+
 
             // Act
             var actual = sut.Get();

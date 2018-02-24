@@ -246,7 +246,7 @@
         /// <returns>Task to await</returns>
         public Task<IList<UserLoginInfo>> GetLoginsAsync(UserModel user)
         {
-            return Task.FromResult((IList<UserLoginInfo>)((List<LoginProviderModel>)(user.Logins))
+            return Task.FromResult((IList<UserLoginInfo>)(user.Logins)
                        .ConvertAll(l => new UserLoginInfo(l.LoginProvider, l.ProviderKey)));
         }
 
@@ -302,7 +302,7 @@
             to.Email = from.Email;
             to.PersonName = from.PersonName;
             to.PhoneNumber = from.PhoneNumber;
-            to.LoginProviders = ((List<LoginProviderModel>)from.Logins).ConvertAll(
+            to.LoginProviders = (from.Logins).ConvertAll(
                                 l => new LoginProviderInfo
                                 {
                                     ProviderKey = l.ProviderKey,

@@ -1647,42 +1647,80 @@
         }
 
         [TestMethod]
-        public void Edit_AddResultsToPlayoffTournamentWithMinimalEvenTeams_NewGameIsScheduled()
+        public void Edit_BothTeamsEqualInPlayOff_ArgumentExceptionThrown()
         {
-            // Arrange
-            MockDefaultTournament();
+            Exception exception = null;
 
-            List<Game> games = new GameTestFixture()
-                .TestMinimumEvenTeamsPlayOffSchedule()
+            // Arrange
+            var games = new GameTestFixture()
+                .TestTeamsEqualsPlayOffScheme()
                 .Build();
 
-            List<GameResultDto> gameInfo = new GameServiceTestFixture()
-                .TestMinimumEvenEmptyGamesPlayoff()
+            var gameInfo = new GameServiceTestFixture()
+                .TestTeamsEqualsPlayOffScheme()
                 .Build();
 
             MockTournamentSchemePlayoff(
                 gameInfo,
                 games);
 
-            Game finishedGame = BuildTestGameToEditInPlayoff();
+            var gameToEdit = new GameBuilder()
+                .WithId(1)
+                .WithGameNumber(1)
+                .WithRound(1)
+                .WithTheSameTeams()
+                .Build();
 
             var sut = BuildSUT();
 
             // Act
-            sut.Edit(finishedGame);
-
-            Game newScheduledGame = games
-                    .Where(g => g.GameNumber == 3)
-                    .SingleOrDefault();
+            try
+            {
+                sut.Edit(gameToEdit);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyEditGames(
-                new List<Game>
-                {
-                    finishedGame,
-                    newScheduledGame
-                },
-                Times.AtLeastOnce());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SAME_TEAM);
+        }
+
+        [TestMethod]
+        public void Edit_BothTeamsNotSetInPlayOff_GameEdited()
+        {
+            // Arrange
+            MockDefaultTournament();
+
+            var games = new GameTestFixture()
+                .TestTeamsEqualsPlayOffScheme()
+                .Build();
+
+            var gameInfo = new GameServiceTestFixture()
+                .TestTeamsEqualsPlayOffScheme()
+                .Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            var gameToEdit = new GameBuilder()
+                .WithId(3)
+                .WithGameNumber(3)
+                .WithRound(2)
+                .WithHomeTeamId(null)
+                .WithAwayTeamId(null)
+                .WithDefaultResult()
+                .Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Edit(gameToEdit);
+
+            // Assert
+            VerifyEditGame(gameToEdit, Times.Once());
         }
 
         [TestMethod]
@@ -1752,6 +1790,45 @@
                     finishedGame
                 },
                 Times.Once());
+        }
+
+        [TestMethod]
+        public void Edit_AddResultsToPlayoffTournamentWithMinimalEvenTeams_NewGameIsScheduled()
+        {
+            // Arrange
+            MockDefaultTournament();
+
+            List<Game> games = new GameTestFixture()
+                .TestMinimumEvenTeamsPlayOffSchedule()
+                .Build();
+
+            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+                .TestMinimumEvenEmptyGamesPlayoff()
+                .Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            Game finishedGame = BuildTestGameToEditInPlayoff();
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Edit(finishedGame);
+
+            Game newScheduledGame = games
+                .Where(g => g.GameNumber == 3)
+                .SingleOrDefault();
+
+            // Assert
+            VerifyEditGames(
+                new List<Game>
+                {
+                    finishedGame,
+                    newScheduledGame
+                },
+                Times.AtLeastOnce());
         }
 
         #endregion
@@ -2181,7 +2258,6 @@
                 })
                 .Build();
         }
-
         #endregion
 
         #region Mock Helpers

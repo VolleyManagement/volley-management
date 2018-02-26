@@ -7,9 +7,14 @@
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {
         private IComparer<TeamStandingsDto> teamsComparer;
+        private bool gameResultComparer = false;
         public PivotStandingsComparer()
         {
-            teamsComparer = new TeamStandingsDtoComparer();
+            TeamStandingsDtoComparer comparer = new TeamStandingsDtoComparer();
+            comparer.WithBallsRatioComparer();
+            comparer.WithPointsComparer();
+            comparer.WithSetRatioComparer();
+            this.teamsComparer = comparer;
         }
 
         public PivotStandingsComparer(IComparer<TeamStandingsDto> teamsComparer)
@@ -17,6 +22,7 @@
             this.teamsComparer = teamsComparer;
         }
 
+        public void WithGameResultComparer() => gameResultComparer = true;
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
             Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
@@ -38,22 +44,24 @@
                 Assert.Fail($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
             }
 
-            if (x.GameResults.Count == y.GameResults.Count)
+            if (gameResultComparer)
             {
-                var gameResultComparer = new ShortGameResultDtoComparer();
-                for (var i = 0; i < x.GameResults.Count; i++)
+                if (x.GameResults.Count == y.GameResults.Count)
                 {
-                    if (gameResultComparer.Compare(x.GameResults[i], y.GameResults[i]) != 0)
+                    var gameResultComparer = new ShortGameResultDtoComparer();
+                    for (var i = 0; i < x.GameResults.Count; i++)
                     {
-                        return 1;
+                        if (gameResultComparer.Compare(x.GameResults[i], y.GameResults[i]) != 0)
+                        {
+                            return 1;
+                        }
                     }
                 }
+                else
+                {
+                    Assert.Fail($"[DivisionId={x.DivisionId}] Number of game result entries does not match.");
+                }
             }
-            else
-            {
-                Assert.Fail($"[DivisionId={x.DivisionId}] Number of game result entries does not match.");
-            }
-
             return 0;
         }
     }

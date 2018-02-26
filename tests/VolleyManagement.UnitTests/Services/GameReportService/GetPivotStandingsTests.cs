@@ -467,7 +467,9 @@
             TournamentStandings<PivotStandingsDto> actual,
             string message)
         {
-            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer());
+            PivotStandingsComparer comparer = new PivotStandingsComparer();
+            comparer.WithGameResultComparer();
+            AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
         private void AssertPivotStandingsAreEqualByPoints(

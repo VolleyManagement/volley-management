@@ -181,9 +181,11 @@
         {
             // Arrange
             var expectedTeamsList = CreateExpectedTeamsList();
+            var testDivisions = CreateTestDivisions();
+            var testTeams = CreateTestTeams();
 
-            var testData = CreateTestTeams();
-            SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
+            SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
+            SetupGetTournamentDivisions(testDivisions, TEST_DIVISION_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
@@ -379,7 +381,8 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var testGroupData = CreateTestGroups();
+            var testDivisions = CreateTestDivisions();
+
             _tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()))
                 .Throws(new ArgumentException(string.Empty));
@@ -387,10 +390,9 @@
             var sut = BuildSUT();
 
             // Act
-            //var jsonResult =
-            //    sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
-            //var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
-            TeamsAddToTournamentViewModel modelResult = null;
+            var jsonResult =
+                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, testDivisions, TEST_TOURNAMENT_ID));
+            var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert
             Assert.IsNotNull(modelResult.Message);

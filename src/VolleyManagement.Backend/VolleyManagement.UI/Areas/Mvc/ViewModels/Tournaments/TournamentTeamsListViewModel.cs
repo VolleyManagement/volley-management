@@ -35,7 +35,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
                         .OrderBy(model => model.DivisionName)
                         .ThenBy(model => TeamNameViewModel.GetGroupName(model, divisions))
                         .ToList();
-            
         }
 
         /// <summary>

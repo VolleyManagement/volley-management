@@ -75,8 +75,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         public static string GetGroupName(TeamNameViewModel team, List<Division> divisions)
         {
             return GetGroups(team, divisions)
-                   .Where(group => group.Id == team.GroupId)
-                   .First()
+                   .First(group => group.Id == team.GroupId)
                    .Name;
         }
 

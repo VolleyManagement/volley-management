@@ -93,6 +93,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// </summary>
         public string DisplayGameNumber => "G" + GameNumber;
 
+        public string DisplayGameWinnerNumber => "W" + GameWinnerNumber++;
+
         public bool HasPenalty { get; set; }
 
         public bool IsHomeTeamPenalty { get; set; }

@@ -4,9 +4,9 @@
 
     @if (!Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
-        string homeTeamName = Model.IsFirstRoundGame ? Resources.UI.TournamentViews.HomeTeamPlaceholder 
+        string homeTeamName = Model.MustDisplayOnlyTeamNames ? Resources.UI.TournamentViews.HomeTeamPlaceholder 
             : Model.DisplayHomeTeamPreviouslyWonGameNumber;
-        string awayTeamName = Model.IsFirstRoundGame ? Resources.UI.TournamentViews.AwayTeamPlaceholder 
+        string awayTeamName = Model.MustDisplayOnlyTeamNames ? Resources.UI.TournamentViews.AwayTeamPlaceholder 
             : Model.DisplayAwayTeamPreviouslyWonGameNumber;
 
         <div class="container-fluid">

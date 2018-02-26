@@ -57,7 +57,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         public ScoreViewModel GameScore { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// Gets or sets a value indicating whenever the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
 
@@ -92,6 +92,12 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// in order to proceed to current game.
         /// </summary>
         public byte AwayTeamPreviouslyWonGameNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whenever we take only team names,
+        /// not game number.
+        /// </summary>
+        public bool MustDisplayOnlyTeamNames { get; set; }
 
         /// <summary>
         /// Gets display number of the game in the tournament

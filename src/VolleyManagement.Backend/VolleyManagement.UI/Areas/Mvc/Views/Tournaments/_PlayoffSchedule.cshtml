@@ -32,7 +32,9 @@ else
                         <h5>@Resources.UI.TournamentViews.BronzeGameName:</h5>
                     }
 
-                    if(!game.IsFirstRoundGame)
+                    game.MustDisplayOnlyTeamNames = game.IsFirstRoundGame || Model.IsBronzeMatch(game);
+
+                    if (!game.MustDisplayOnlyTeamNames)
                     {
                         game.HomeTeamPreviouslyWonGameNumber = winnerCounter++;
                         game.AwayTeamPreviouslyWonGameNumber = winnerCounter++;

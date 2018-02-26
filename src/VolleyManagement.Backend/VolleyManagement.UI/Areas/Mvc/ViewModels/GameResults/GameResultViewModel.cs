@@ -13,12 +13,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
     public class GameResultViewModel
     {
         /// <summary>
-        /// Gets or sets number of game in which team has won
-        /// in order to proceed to current game.
-        /// </summary>
-        private static byte gameWinnerNumber = 1;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GameResultViewModel"/> class.
         /// </summary>
         public GameResultViewModel()
@@ -86,13 +80,19 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// Gets or sets the number of the game in the tournament
         /// </summary>
         public byte GameNumber { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets numbers of game in which teams had won
+        /// in order to proceed to current game.
+        /// </summary>
+        public byte[] GameWinnerNumbers { get; set; } = new byte[2];
+
         /// <summary>
         /// Gets display number of the game in the tournament
         /// </summary>
         public string DisplayGameNumber => "G" + GameNumber;
 
-        public string DisplayGameWinnerNumber => "Winner" + gameWinnerNumber++;
+        public string DisplayGameWinnerNumber(int index) => "Winner" + GameWinnerNumbers[index];
 
         public bool HasPenalty { get; set; }
 

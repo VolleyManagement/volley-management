@@ -10,8 +10,21 @@
     /// Represents a comparer for <see cref="StandingsEntry"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer
+    public class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer
     {
+        private bool pointsComparer;
+        private bool gamesComparer;
+        private bool setsComparer;
+        private bool ballsComparer;
+
+        public void WithPointsComparer() => pointsComparer = true;
+
+        public void WithGamesComparer() => gamesComparer = true;
+
+        public void WithSetsComparer() => setsComparer = true;
+
+        public void WithBallsComparer() => ballsComparer = true;
+
         /// <summary>
         /// Compares two <see cref="StandingsEntry"/> objects.
         /// </summary>
@@ -21,13 +34,39 @@
         public int Compare(StandingsEntry x, StandingsEntry y)
         {
             Assert.AreEqual(x.TeamName, y.TeamName, "TeamNames do not match");
+            if (pointsComparer)
+            {
+                PointsComparer(x, y);
+            }
+            if (gamesComparer)
+            {
+                GamesComparer(x, y);
+            }
+            if (setsComparer)
+            {
+                SetsComparer(x, y);
+            }
+            if (ballsComparer)
+            {
+                BallsComparer(x, y);
+            }
+            return 0;
+        }
 
+        public void PointsComparer(StandingsEntry x, StandingsEntry y)
+        {
             Assert.AreEqual(x.Points, y.Points, "Points do not match");
+        }
 
+        public void GamesComparer(StandingsEntry x, StandingsEntry y)
+        {
             Assert.AreEqual(x.GamesTotal, y.GamesTotal, "GamesTotal do not match");
             Assert.AreEqual(x.GamesWon, y.GamesWon, "GamesWon do not match");
             Assert.AreEqual(x.GamesLost, y.GamesLost, "GamesLost do not match");
+        }
 
+        public void SetsComparer(StandingsEntry x, StandingsEntry y)
+        {
             Assert.AreEqual(x.GamesWithScoreThreeNil, y.GamesWithScoreThreeNil, "GamesWithScoreThreeNil do not match");
             Assert.AreEqual(x.GamesWithScoreThreeOne, y.GamesWithScoreThreeOne, "GamesWithScoreThreeOne do not match");
             Assert.AreEqual(x.GamesWithScoreThreeTwo, y.GamesWithScoreThreeTwo, "GamesWithScoreThreeTwo do not match");
@@ -37,11 +76,12 @@
 
             Assert.AreEqual(x.SetsWon, y.SetsWon, "SetsWon do not match");
             Assert.AreEqual(x.SetsLost, y.SetsLost, "SetsLost do not match");
+        }
 
+        public void BallsComparer(StandingsEntry x, StandingsEntry y)
+        {
             Assert.AreEqual(x.BallsWon, y.BallsWon, "BallsWon do not match");
             Assert.AreEqual(x.BallsLost, y.BallsLost, "BallsLost do not match");
-
-            return 0;
         }
 
         /// <summary>

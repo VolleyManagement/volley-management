@@ -63,7 +63,7 @@
         }
 
         [TestMethod]
-        public void GetStandings_GameResultsAllPossibleScores_CorrectStats()
+        public void GetStandings_GameResultsAllPossibleScores_CorrectPointStats()
         {
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
@@ -80,7 +80,70 @@
             var actual = sut.GetStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertStandingsAreEqual(expected, actual, "Points, games, sets and balls should be calculated properly.");
+            AssertStandingsAreEqualByPoints(expected, actual, "Points should be calculated properly.");
+        }
+
+        [TestMethod]
+        public void GetStandings_GameResultsAllPossibleScores_CorrectGamesStats()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqualByGames(expected, actual, "Games should be calculated properly.");
+        }
+
+        [TestMethod]
+        public void GetStandings_GameResultsAllPossibleScores_CorrectSetsStats()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqualBySets(expected, actual, "Sets should be calculated properly.");
+        }
+
+        [TestMethod]
+        public void GetStandings_GameResultsAllPossibleScores_CorrectBallStats()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqualByBalls(expected, actual, "Balls should be calculated properly.");
         }
 
         [TestMethod]
@@ -385,5 +448,34 @@
         {
             AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer());
         }
+
+        private static void AssertStandingsAreEqualByPoints(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
+        {
+            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            standingsComparer.WithPointsComparer();
+            AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
+        }
+
+        private static void AssertStandingsAreEqualByGames(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
+        {
+            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            standingsComparer.WithGamesComparer();
+            AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
+        }
+
+        private static void AssertStandingsAreEqualBySets(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
+        {
+            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            standingsComparer.WithSetsComparer();
+            AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
+        }
+
+        private static void AssertStandingsAreEqualByBalls(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
+        {
+            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            standingsComparer.WithBallsComparer();
+            AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
+        }
+
     }
 }

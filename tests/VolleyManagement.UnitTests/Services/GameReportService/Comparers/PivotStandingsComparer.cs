@@ -8,12 +8,14 @@
     {
         private IComparer<TeamStandingsDto> teamsComparer;
         private bool gameResultComparer = false;
+
         public PivotStandingsComparer()
         {
             TeamStandingsDtoComparer comparer = new TeamStandingsDtoComparer();
             comparer.WithBallsRatioComparer();
             comparer.WithPointsComparer();
             comparer.WithSetRatioComparer();
+            WithGameResultComparer();
             this.teamsComparer = comparer;
         }
 
@@ -23,6 +25,7 @@
         }
 
         public void WithGameResultComparer() => gameResultComparer = true;
+
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
             Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");

@@ -10,20 +10,28 @@
     /// Represents a comparer for <see cref="StandingsEntry"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer
+    internal class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer
     {
-        private bool pointsComparer;
-        private bool gamesComparer;
-        private bool setsComparer;
-        private bool ballsComparer;
+        private bool arePointsComparer;
+        private bool areGamesComparer;
+        private bool areSetsComparer;
+        private bool areBallsComparer;
 
-        public void WithPointsComparer() => pointsComparer = true;
+        public void WithPointsComparer() => arePointsComparer = true;
 
-        public void WithGamesComparer() => gamesComparer = true;
+        public void WithGamesComparer() => areGamesComparer = true;
 
-        public void WithSetsComparer() => setsComparer = true;
+        public void WithSetsComparer() => areSetsComparer = true;
 
-        public void WithBallsComparer() => ballsComparer = true;
+        public void WithBallsComparer() => areBallsComparer = true;
+
+        public void WithAllComparer()
+        {
+            WithPointsComparer();
+            WithGamesComparer();
+            WithSetsComparer();
+            WithBallsComparer(); 
+        }
 
         /// <summary>
         /// Compares two <see cref="StandingsEntry"/> objects.
@@ -34,19 +42,19 @@
         public int Compare(StandingsEntry x, StandingsEntry y)
         {
             Assert.AreEqual(x.TeamName, y.TeamName, "TeamNames do not match");
-            if (pointsComparer)
+            if (arePointsComparer)
             {
                 PointsComparer(x, y);
             }
-            if (gamesComparer)
+            if (areGamesComparer)
             {
                 GamesComparer(x, y);
             }
-            if (setsComparer)
+            if (areSetsComparer)
             {
                 SetsComparer(x, y);
             }
-            if (ballsComparer)
+            if (areBallsComparer)
             {
                 BallsComparer(x, y);
             }

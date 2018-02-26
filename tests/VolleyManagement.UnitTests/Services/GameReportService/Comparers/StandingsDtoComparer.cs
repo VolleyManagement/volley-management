@@ -11,13 +11,9 @@
         public StandingsDtoComparer()
         {
             standingsComparer = new StandingsEntryComparer();
-            standingsComparer.WithPointsComparer();
-            standingsComparer.WithSetsComparer();
-            standingsComparer.WithGamesComparer();
-            standingsComparer.WithBallsComparer();
         }
 
-        public StandingsDtoComparer(StandingsEntryComparer standingsComparer)
+        internal StandingsDtoComparer(StandingsEntryComparer standingsComparer)
         {
             this.standingsComparer = standingsComparer;
         }

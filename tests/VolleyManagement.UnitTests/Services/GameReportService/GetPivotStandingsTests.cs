@@ -507,7 +507,9 @@
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsGameResultComparer());
+            PivotStandingsComparer comparer = new PivotStandingsComparer();
+            comparer.WithGameResultComparer();
+            AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
     }
 }

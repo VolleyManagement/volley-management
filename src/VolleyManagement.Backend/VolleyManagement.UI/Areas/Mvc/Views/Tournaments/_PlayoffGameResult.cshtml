@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
+@using VolleyManagement.Domain.RolesAggregate;
 
 <div class="table-bordered">
 
@@ -88,8 +89,8 @@
                     @Resources.UI.TournamentViews.TeamDayOff
                 </div>
             </div>
-
-            if (Model.AllowEditResult)
+                    
+            if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
             {
                 <div class="row">
                     <div class="col-md-2">
@@ -124,15 +125,6 @@
                     </div>
                 </div>
             }
-        }
-
-        if (Model.AllowEditResult)
-        {
-            <div class="row">
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                </div>
-            </div>
         }
     }
     else if (Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)

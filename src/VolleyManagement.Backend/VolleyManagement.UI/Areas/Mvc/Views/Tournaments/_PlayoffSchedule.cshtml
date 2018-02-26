@@ -11,6 +11,7 @@
 }
 else
 {
+    byte winnerCounter = 1;
     <hr>
     <div class="col-md-3">
         @for (byte i = 1; i <= Model.MaxNumberOfRounds; i++)
@@ -30,7 +31,12 @@ else
                     {
                         <h5>@Resources.UI.TournamentViews.BronzeGameName:</h5>
                     }
-                    
+
+                    if(!game.IsFirstRoundGame)
+                    {
+                        game.HomeTeamPreviouslyWonGameNumber = winnerCounter++;
+                        game.AwayTeamPreviouslyWonGameNumber = winnerCounter++;
+                    }
 
                     @Html.Partial("_PlayoffGameResult", game);
                 }

@@ -6,25 +6,36 @@
 
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {
-        private IComparer<TeamStandingsDto> teamsComparer;
-        private bool gameResultComparer = false;
+        private TeamStandingsDtoComparer teamsComparer;
+        private bool isGameResultComparer;
 
         public PivotStandingsComparer()
         {
-            TeamStandingsDtoComparer comparer = new TeamStandingsDtoComparer();
-            comparer.WithBallsRatioComparer();
-            comparer.WithPointsComparer();
-            comparer.WithSetRatioComparer();
-            WithGameResultComparer();
-            this.teamsComparer = comparer;
+            this.teamsComparer = new TeamStandingsDtoComparer();
         }
-
-        public PivotStandingsComparer(IComparer<TeamStandingsDto> teamsComparer)
+        public void WithPointsComparer()
         {
-            this.teamsComparer = teamsComparer;
+            teamsComparer.ArePointsComparer();
         }
-
-        public void WithGameResultComparer() => gameResultComparer = true;
+        public void WithSetRatioComparer()
+        {
+            teamsComparer.AreSetsRatioComparer();
+        }
+        public void WithBallsRatioComparer()
+        {
+            teamsComparer.AreBallsRatioComparer();
+        }
+        public void WithGameResultComparer()
+        {
+            isGameResultComparer = true;
+        }
+        public void WithAllComparer()
+        {
+            teamsComparer.ArePointsComparer();
+            teamsComparer.AreSetsRatioComparer();
+            teamsComparer.AreBallsRatioComparer();
+            isGameResultComparer = true;
+        }
 
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
@@ -47,7 +58,7 @@
                 Assert.Fail($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
             }
 
-            if (gameResultComparer)
+            if (isGameResultComparer)
             {
                 if (x.GameResults.Count == y.GameResults.Count)
                 {

@@ -73,7 +73,7 @@
             var actual = sut.GetPivotStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertPivotStandingsAreEqualByPoints(expected, actual, "Points should be calculated properly.");
+            AssertPointsAreEqual(expected, actual, "Points should be calculated properly.");
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@
             var actual = sut.GetPivotStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertPivotStandingsAreEqualByBalls(expected, actual, "Balls should be calculated properly.");
+            AssertBallsAreEqual(expected, actual, "Balls should be calculated properly.");
         }
         [TestMethod]
         public void GetPivotStandings_GameResultsAllPossibleScores_CorrectGamesStats()
@@ -114,7 +114,7 @@
             var actual = sut.GetPivotStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertPivotStandingsAreEqualByGameStatus(expected, actual, "Game status should be correct.");
+            AssertGameStatusAreEqual(expected, actual, "Game status should be correct.");
         }
         [TestMethod]
         public void GetPivotStandings_GameResultsAllPossibleScores_CorrectSetsStats()
@@ -134,7 +134,7 @@
             var actual = sut.GetPivotStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertPivotStandingsAreEqualBySet(expected, actual, "Sets should be calculated properly.");
+            AssertSetsAreEqual(expected, actual, "Sets should be calculated properly.");
         }
         [TestMethod]
         public void GetPivotStandings_GameResultsAllPossibleScores_TeamsOrderedByPoints()
@@ -467,40 +467,42 @@
             TournamentStandings<PivotStandingsDto> actual,
             string message)
         {
-            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer());
+            PivotStandingsComparer comparer = new PivotStandingsComparer();
+            comparer.WithAllComparer();
+            AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
-        private void AssertPivotStandingsAreEqualByPoints(
+        private void AssertPointsAreEqual(
            TournamentStandings<PivotStandingsDto> expected,
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            TeamStandingsDtoComparer comparer = new TeamStandingsDtoComparer();
+            PivotStandingsComparer comparer = new PivotStandingsComparer();
             comparer.WithPointsComparer();
-            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer(comparer));
+            AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
-        private void AssertPivotStandingsAreEqualBySet(
+        private void AssertSetsAreEqual(
            TournamentStandings<PivotStandingsDto> expected,
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            TeamStandingsDtoComparer comparer = new TeamStandingsDtoComparer();
+            PivotStandingsComparer comparer = new PivotStandingsComparer();
             comparer.WithSetRatioComparer();
-            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer(comparer));
+            AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
-        private void AssertPivotStandingsAreEqualByBalls(
+        private void AssertBallsAreEqual(
           TournamentStandings<PivotStandingsDto> expected,
           TournamentStandings<PivotStandingsDto> actual,
           string message)
         {
-            TeamStandingsDtoComparer comparer = new TeamStandingsDtoComparer();
+            PivotStandingsComparer comparer = new PivotStandingsComparer();
             comparer.WithBallsRatioComparer();
-            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer(comparer));
+            AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
-        private void AssertPivotStandingsAreEqualByGameStatus(
+        private void AssertGameStatusAreEqual(
            TournamentStandings<PivotStandingsDto> expected,
            TournamentStandings<PivotStandingsDto> actual,
            string message)

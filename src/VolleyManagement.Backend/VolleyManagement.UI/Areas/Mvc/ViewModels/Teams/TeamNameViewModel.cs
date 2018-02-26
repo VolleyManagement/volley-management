@@ -100,7 +100,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <param name="team">Mapped team</param>
         /// <param name="divisions">Divisions list in the current tournament</param>
         /// <returns>List of type Group</returns>
-        private static List<Group> GetGroups(TeamNameViewModel team, List<Division> divisions)
+        private static IEnumerable<Group> GetGroups(TeamNameViewModel team, IEnumerable<Division> divisions)
         {
             return divisions
                    .Where(div => div.Name == team.DivisionName)

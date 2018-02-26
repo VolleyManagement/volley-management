@@ -27,7 +27,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// </summary>
         /// <param name="source">All needed teams</param>
         /// <param name="tournamentId">Tournament id</param>
-        public TournamentTeamsListViewModel(List<TeamTournamentDto> source, List<Division> divisions, int tournamentId)
+        public TournamentTeamsListViewModel(IEnumerable<TeamTournamentDto> source, List<Division> divisions, int tournamentId)
         {
             TournamentId = tournamentId;
             TeamsList = source

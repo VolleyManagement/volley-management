@@ -13,12 +13,17 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
     public class GameResultViewModel
     {
         /// <summary>
+        /// Gets or sets number of game in which team has won
+        /// in order to proceed to current game.
+        /// </summary>
+        private static byte gameWinnerNumber = 1;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GameResultViewModel"/> class.
         /// </summary>
         public GameResultViewModel()
         {
             GameScore = new ScoreViewModel();
-            GameWinnerNumber = 1;
             SetScores = Enumerable.Repeat(new ScoreViewModel(), Constants.GameResult.MAX_SETS_COUNT).ToList();
         }
 
@@ -81,19 +86,13 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// Gets or sets the number of the game in the tournament
         /// </summary>
         public byte GameNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets number of game in which team has won
-        /// in order to proceed to current game.
-        /// </summary>
-        public byte GameWinnerNumber { get; set; }
-
+        
         /// <summary>
         /// Gets display number of the game in the tournament
         /// </summary>
         public string DisplayGameNumber => "G" + GameNumber;
 
-        public string DisplayGameWinnerNumber => "W" + GameWinnerNumber++;
+        public string DisplayGameWinnerNumber => "Winner" + gameWinnerNumber++;
 
         public bool HasPenalty { get; set; }
 

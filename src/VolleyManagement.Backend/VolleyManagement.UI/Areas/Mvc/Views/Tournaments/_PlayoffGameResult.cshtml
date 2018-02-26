@@ -5,9 +5,9 @@
     @if (!Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
         string homeTeamName = Model.IsFirstRoundGame ? Resources.UI.TournamentViews.HomeTeamPlaceholder 
-            : Model.DisplayGameWinnerNumber;
+            : Model.DisplayGameWinnerNumber(0);
         string awayTeamName = Model.IsFirstRoundGame ? Resources.UI.TournamentViews.AwayTeamPlaceholder 
-            : Model.DisplayGameWinnerNumber;
+            : Model.DisplayGameWinnerNumber(1);
 
         <div class="container-fluid">
             <div class="row">

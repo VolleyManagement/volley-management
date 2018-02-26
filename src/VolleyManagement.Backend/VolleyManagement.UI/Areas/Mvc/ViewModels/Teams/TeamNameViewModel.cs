@@ -72,7 +72,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <param name="team">Mapped team</param>
         /// <param name="divisions">Divisions list in the current tournament</param>
         /// <returns>String which contains group name</returns>
-        public static string GetGroupName(TeamNameViewModel team, List<Division> divisions)
+        public static string GetGroupName(TeamNameViewModel team, ICollection<Division> divisions)
         {
             return GetGroups(team, divisions)
                    .First(group => group.Id == team.GroupId)

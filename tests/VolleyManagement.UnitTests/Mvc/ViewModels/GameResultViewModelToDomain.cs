@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Domain.GamesAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Services.GameService;
     using UI.Areas.Mvc.ViewModels.GameResults;
@@ -13,6 +12,8 @@
     [TestClass]
     public class GameResultViewModelToDomain
     {
+        private const int TEST_GAME_NUMBER = 5;
+
         /// <summary>
         /// Map() method test.
         /// Does correct game result mapped to a view model.
@@ -42,6 +43,8 @@
                     })
                 .Build();
 
+            testViewModel.GameNumber = TEST_GAME_NUMBER;
+
             var testDomainModel = new GameResultDtoBuilder()
                 .WithId(1)
                 .WithTournamentId(1)
@@ -66,6 +69,7 @@
                 .WithRound(1)
                 .Build();
 
+            testDomainModel.GameNumber = TEST_GAME_NUMBER;
             // Act
             var actual = GameResultViewModel.Map(testDomainModel);
 

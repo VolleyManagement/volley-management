@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Services
+namespace VolleyManagement.Services
 {
     using System;
     using System.Collections.Generic;

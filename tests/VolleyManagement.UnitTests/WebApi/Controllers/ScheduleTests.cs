@@ -1,22 +1,16 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
-    using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels.Schedule;
+    using Contracts;
+    using Domain.GamesAggregate;
+    using Domain.TournamentsAggregate;
+    using UI.Areas.WebApi.Controllers;
+    using Services.GameService;
+    using Services.TournamentService;
+    using ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

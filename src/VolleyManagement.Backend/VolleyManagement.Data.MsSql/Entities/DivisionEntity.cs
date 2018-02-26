@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Data.MsSql.Entities
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// DAL Division model

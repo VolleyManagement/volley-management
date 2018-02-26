@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Domain.PlayersAggregate
 {
     using System;
-
     using Properties;
 
     /// <summary>

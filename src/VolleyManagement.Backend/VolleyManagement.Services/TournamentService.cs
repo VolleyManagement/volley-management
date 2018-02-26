@@ -98,7 +98,7 @@
             IQuery<ICollection<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
-            IQuery<ICollection<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery, 
+            IQuery<ICollection<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery,
             IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IAuthorizationService authService,
             IGameService gameService)
@@ -211,7 +211,7 @@
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
         public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
         {
-            var result= _getTournamentDtoQuery
+            var result = _getTournamentDtoQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
 
             result.Divisions.ForEach(d =>
@@ -399,7 +399,7 @@
             _tournamentRepository.UnitOfWork.Commit();
         }
 
-        public static byte CalculateNumberOfRounds(TournamentSchemeEnum  scheme, int teamCount)
+        public static byte CalculateNumberOfRounds(TournamentSchemeEnum scheme, int teamCount)
         {
             byte numberOfRounds = 0;
 
@@ -687,7 +687,7 @@
 
         private void ValidateUniqueDivisionNames(List<Division> divisions)
         {
-            if (divisions.Select(d => new { Name = d.Name.ToUpper(CultureInfo.InvariantCulture)}).Distinct().Count() != divisions.Count)
+            if (divisions.Select(d => new { Name = d.Name.ToUpper(CultureInfo.InvariantCulture) }).Distinct().Count() != divisions.Count)
             {
                 throw new ArgumentException(TournamentResources.DivisionNamesNotUnique);
             }
@@ -716,7 +716,6 @@
 
         private void ValidateUniqueGroupNames(List<Group> groups)
         {
-           
             if (groups.Select(g => new { Name = g.Name.ToUpper(CultureInfo.InvariantCulture) }).Distinct().Count() != groups.Count)
             {
                 throw new ArgumentException(TournamentResources.GroupNamesNotUnique);

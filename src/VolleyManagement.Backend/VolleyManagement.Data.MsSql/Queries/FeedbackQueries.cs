@@ -7,7 +7,6 @@
     using Contracts;
     using Data.Queries.Common;
     using Domain.FeedbackAggregate;
-    using Domain.TournamentsAggregate;
     using Entities;
 
     /// <summary>

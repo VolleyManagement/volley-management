@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Services
 {
-    using System;
     using System.Collections.Generic;
     using Contracts;
     using Contracts.Authorization;
@@ -152,8 +151,8 @@
 
         private void DeleteRequest(int requestId)
         {
-                _requestRepository.Remove(requestId);
-                _requestRepository.UnitOfWork.Commit();
+            _requestRepository.Remove(requestId);
+            _requestRepository.UnitOfWork.Commit();
         }
     }
 }

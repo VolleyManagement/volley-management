@@ -6,11 +6,11 @@
     using Domain.TournamentsAggregate;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Data.Queries.Division;
-    using VolleyManagement.Data.Queries.Group;
+    using Data.Queries.Division;
+    using Data.Queries.Group;
     using System.Linq.Expressions;
     using System;
-    using VolleyManagement.Data.MsSql.Entities;
+    using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments

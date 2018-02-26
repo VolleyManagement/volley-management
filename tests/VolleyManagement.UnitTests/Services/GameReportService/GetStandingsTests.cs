@@ -1,10 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.GameReportsAggregate;
-    using Domain.TournamentsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

@@ -11,8 +11,8 @@
     using Moq;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.FeedbackService;
+    using ViewModels;
+    using Services.FeedbackService;
     using System.Threading.Tasks;
 
     /// <summary>

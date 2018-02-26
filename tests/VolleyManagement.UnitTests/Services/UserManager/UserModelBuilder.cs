@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests.Services.UserManager
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Contracts.Authentication.Models;

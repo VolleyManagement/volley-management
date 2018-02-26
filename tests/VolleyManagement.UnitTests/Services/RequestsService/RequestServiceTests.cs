@@ -8,18 +8,18 @@
     using Moq;
     using MSTestExtensions;
     using System.Collections;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Player;
-    using VolleyManagement.Domain.RequestsAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Player;
+    using Domain.RequestsAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.UsersService;
+    using UsersService;
 
     /// <summary>
     /// Tests for RequestService class.

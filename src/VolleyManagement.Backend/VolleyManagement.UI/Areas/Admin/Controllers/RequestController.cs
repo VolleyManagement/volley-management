@@ -3,7 +3,6 @@
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
-    using Contracts.Authorization;
     using Contracts.Exceptions;
     using Models;
 

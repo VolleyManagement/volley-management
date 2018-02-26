@@ -6,7 +6,6 @@
     using System.Linq;
     using Contracts;
     using Domain.ContributorsAggregate;
-    using VolleyManagement.Data.MsSql.Entities;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.

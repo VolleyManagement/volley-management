@@ -4,17 +4,14 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Admin.Controllers;
-    using VolleyManagement.UI.Areas.Admin.Models;
-    using VolleyManagement.UnitTests.Mvc.Comparers;
+    using Contracts.Authorization;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
+    using UI.Areas.Admin.Controllers;
+    using UI.Areas.Admin.Models;
+    using Comparers;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

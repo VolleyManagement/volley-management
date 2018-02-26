@@ -75,7 +75,7 @@
 
             _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.GroupId);
             _tournamentRepository.UnitOfWork.Commit();
-             NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
+            NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
             _tournamentRequestRepository.Remove(requestId);
             _tournamentRequestRepository.UnitOfWork.Commit();
         }

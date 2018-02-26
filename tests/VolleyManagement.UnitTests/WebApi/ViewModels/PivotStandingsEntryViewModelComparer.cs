@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.WebApi.ViewModels.GameReports;

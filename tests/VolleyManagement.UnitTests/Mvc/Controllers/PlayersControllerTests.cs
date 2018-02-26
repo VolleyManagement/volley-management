@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -12,14 +11,14 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.PlayerService;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.Players;
+    using ViewModels;
+    using Services.PlayerService;
 
     /// <summary>
     /// Tests for MVC PlayersController class.

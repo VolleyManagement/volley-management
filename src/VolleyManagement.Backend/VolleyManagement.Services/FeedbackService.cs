@@ -171,17 +171,17 @@
         /// <param name="newStatusCode">Information about mail (body, receiver)</param>
         private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
         {
-                feedback.Status = newStatusCode;
-                if (ShouldChangeLastUpdateInfo(newStatusCode))
-                {
-                    int userId = _currentUserService.GetCurrentUserId();
-                    User user = _userService.GetUser(userId);
-                    feedback.UpdateDate = TimeProvider.Current.UtcNow;
-                    feedback.AdminName = user.PersonName;
-                }
+            feedback.Status = newStatusCode;
+            if (ShouldChangeLastUpdateInfo(newStatusCode))
+            {
+                int userId = _currentUserService.GetCurrentUserId();
+                User user = _userService.GetUser(userId);
+                feedback.UpdateDate = TimeProvider.Current.UtcNow;
+                feedback.AdminName = user.PersonName;
+            }
 
-                _feedbackRepository.Update(feedback);
-                _feedbackRepository.UnitOfWork.Commit();
+            _feedbackRepository.Update(feedback);
+            _feedbackRepository.UnitOfWork.Commit();
         }
 
         #endregion

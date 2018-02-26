@@ -11,13 +11,13 @@
     using Services.TournamentService;
     using Standings;
     using UI.Areas.WebApi.ViewModels.Tournaments;
-    using VolleyManagement.Crosscutting.Contracts.Extensions;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UnitTests.Services.GameReportService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using Crosscutting.Contracts.Extensions;
+    using Domain.GameReportsAggregate;
+    using Domain.GamesAggregate;
+    using Domain.TournamentsAggregate;
+    using UI.Areas.WebApi.Controllers;
+    using Services.GameReportService;
+    using ViewModels;
     using TournamentViewModelComparer = ViewModels.TournamentViewModelComparer;
 
     /// <summary>

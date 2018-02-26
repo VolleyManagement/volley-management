@@ -29,7 +29,10 @@
         /// </summary>
         internal VolleyManagementEntities Context
         {
-            get { return _context; }
+            get
+            {
+                return _context;
+            }
         }
 
         /// <summary>

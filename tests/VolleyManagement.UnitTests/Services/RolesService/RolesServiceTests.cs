@@ -3,14 +3,13 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Collections;
-    using VolleyManagement.Contracts.Authorization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
     using VolleyManagement.Services.Authorization;
 
     /// <summary>

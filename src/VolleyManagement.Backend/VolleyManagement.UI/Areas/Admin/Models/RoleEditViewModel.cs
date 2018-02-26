@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
     using System.Collections.Generic;
-
     using Domain.Dto;
     using Domain.RolesAggregate;
 

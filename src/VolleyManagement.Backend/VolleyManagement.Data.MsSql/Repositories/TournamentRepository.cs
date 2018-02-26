@@ -41,7 +41,10 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get
+            {
+                return _unitOfWork;
+            }
         }
 
         /// <summary>

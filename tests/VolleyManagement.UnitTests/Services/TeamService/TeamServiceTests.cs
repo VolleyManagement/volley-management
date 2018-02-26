@@ -10,17 +10,17 @@
     using Data.Queries.Team;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Domain.PlayersAggregate;
+    using Domain.Properties;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.PlayerService;
+    using PlayerService;
     using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>

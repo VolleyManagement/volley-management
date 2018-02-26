@@ -6,9 +6,7 @@
     using Contracts.Authentication;
     using Contracts.Authentication.Models;
     using Contracts.Authorization;
-    using Contracts.ExternalResources;
     using Crosscutting.Contracts.Infrastructure.IOC;
-    using Mail;
 
     public class IocServicesModule : IIocRegistrationModule
     {

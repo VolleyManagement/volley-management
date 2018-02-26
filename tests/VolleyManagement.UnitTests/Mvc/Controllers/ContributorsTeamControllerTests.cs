@@ -6,11 +6,11 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.ContributorService;
+    using Domain.ContributorsAggregate;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.ContributorsTeam;
+    using ViewModels;
+    using Services.ContributorService;
 
     /// <summary>
     /// Tests for MVC ContributorTeamController class.

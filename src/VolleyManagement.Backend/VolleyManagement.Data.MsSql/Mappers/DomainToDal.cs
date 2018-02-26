@@ -9,7 +9,7 @@
     using Domain.TeamsAggregate;
     using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.UsersAggregate;
     using Entities;
 
     /// <summary>
@@ -131,7 +131,7 @@
                 return division;
             }
         }
-        
+
         /// <summary>
         /// Maps group models
         /// </summary>

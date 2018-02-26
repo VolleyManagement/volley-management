@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using Crosscutting.Contracts.Providers;
-    using Properties;
 
     /// <summary>
     /// Tournament domain class.

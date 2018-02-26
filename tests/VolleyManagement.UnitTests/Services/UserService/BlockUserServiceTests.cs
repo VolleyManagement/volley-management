@@ -9,11 +9,10 @@
     using Domain.PlayersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Contracts;
+    using Contracts.Exceptions;
+    using Data.Queries.Common;
+    using Domain.UsersAggregate;
     using VolleyManagement.Services.Authorization;
 
     [ExcludeFromCodeCoverage]

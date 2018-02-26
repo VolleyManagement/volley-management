@@ -121,8 +121,7 @@
 
         private static short GetAuthOperationId(byte areaId, byte operationId)
         {
-            short result = (short)(areaId << BYTE_SIZE_SHIFT | operationId);
-            return result;
+            return (short)(areaId << BYTE_SIZE_SHIFT | operationId);
         }
 
         #endregion

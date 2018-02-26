@@ -1,13 +1,11 @@
 ﻿namespace VolleyManagement.UnitTests.Services.ContributorService
 {
     using System.Collections.Generic;
-    using System.Collections;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Data.Contracts;
+    using Domain.ContributorsAggregate;
     using VolleyManagement.Services;
 
     /// <summary>

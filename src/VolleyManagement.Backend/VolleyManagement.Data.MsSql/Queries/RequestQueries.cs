@@ -75,11 +75,11 @@
                                       .SingleOrDefault();
         }
 
-    #endregion
+        #endregion
 
-    #region Mapping
+        #region Mapping
 
-    private static Expression<Func<RequestEntity, Request>> GetRequestMapping()
+        private static Expression<Func<RequestEntity, Request>> GetRequestMapping()
         {
             return
                 t =>

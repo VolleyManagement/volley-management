@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
-    using System.Collections.Generic;
     using Crosscutting.Contracts.Specifications;
 
     /// <summary>

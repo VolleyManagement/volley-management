@@ -8,7 +8,6 @@
     using Contracts;
     using Data.Queries.Common;
     using Data.Queries.Team;
-    using Domain.PlayersAggregate;
     using Domain.TeamsAggregate;
     using Entities;
 

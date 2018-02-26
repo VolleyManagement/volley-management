@@ -1,10 +1,8 @@
 ﻿namespace VolleyManagement.Contracts.Authorization
 {
     using System.Collections.Generic;
-
     using Domain.Dto;
     using Domain.RolesAggregate;
-    using Domain.UsersAggregate;
 
     /// <summary>
     /// Provides Roles management

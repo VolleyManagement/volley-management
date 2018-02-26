@@ -7,7 +7,6 @@
     using Contracts;
     using Data.Queries.Common;
     using Domain.RolesAggregate;
-    using Domain.TournamentsAggregate;
     using Entities;
 
     /// <summary>
@@ -69,10 +68,10 @@
             return
                 t =>
                 new Role
-                    {
-                        Id = t.Id,
-                        Name = t.Name
-                    };
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                };
         }
 
         #endregion

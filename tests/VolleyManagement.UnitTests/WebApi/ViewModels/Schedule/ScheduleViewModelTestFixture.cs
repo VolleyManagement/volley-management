@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
+    using UI.Areas.WebApi.ViewModels.Games;
     using UI.Areas.WebAPI.ViewModels.Schedule;
 
     public class ScheduleViewModelTestFixture

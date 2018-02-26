@@ -308,20 +308,19 @@
         {
             var teamsIds = teams.Select(t => t.TeamId).ToList();
             return gameResults.Where(gr => teamsIds.Contains(gr.AwayTeamId.GetValueOrDefault()) &&
-                                            teamsIds.Contains(gr.HomeTeamId.GetValueOrDefault())).
-                               ToList();
+                                           teamsIds.Contains(gr.HomeTeamId.GetValueOrDefault())).ToList();
         }
 
         private static int CalculateHomeSetBallsForNonTechnicalDefeatSets(GameResultDto item)
         {
             return item.Result.SetScores.Where(s => !s.IsTechnicalDefeat)
-                                        .Sum(r => r.Home);
+                                                      .Sum(r => r.Home);
         }
 
         private static int CalculateAwaySetBallsForNonTechnicalDefeatSets(GameResultDto item)
         {
             return item.Result.SetScores.Where(s => !s.IsTechnicalDefeat)
-                                        .Sum(r => r.Away);
+                                                      .Sum(r => r.Away);
         }
 
         private static Func<GameResultDto, ShortGameResultDto> MapToShortGameResult()

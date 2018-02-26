@@ -9,7 +9,7 @@
     [ExcludeFromCodeCoverage]
     internal class GameViewModelBuilder
     {
-         /// <summary>
+        /// <summary>
         /// Holds test game view model instance
         /// </summary>
         private GameViewModel _gameViewModel;

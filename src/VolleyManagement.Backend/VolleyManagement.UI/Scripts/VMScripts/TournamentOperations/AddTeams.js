@@ -6,7 +6,7 @@ $(document).ready(function () {
     var divisionCounter = 0;
     var teamCounter = 0;
     var MAX_TEAMS_NUMBER = 0;
-    
+    var groupCounter;
 
     privates.tornamentTeamsTable = $("#tournamentRoster");
 
@@ -23,7 +23,7 @@ $(document).ready(function () {
     privates.getAllGroupsOptions = function (callback) {
         var actualDivisionCounter = $(document.activeElement).attr('counter');
         var divId = $("select[name='divisions'][counter='" + actualDivisionCounter + "'] :selected").val();
-        $.getJSON("/Tournaments/GetAllAvailableGroups", { divisionId: divId }, callback);
+        $.getJSON("/Tournaments/GetAllAvailableGroups", { divisionId: divId }, callback);             
     };
 
     privates.handleTeamsAddSuccess = function (data, status, xhr) {
@@ -72,8 +72,8 @@ $(document).ready(function () {
     };
 
     privates.getTornamentDivisionRowMarkup = function (responseOptions) {
-
-        var result = "<td><select name = 'divisions' counter = '" + divisionCounter + "'>" + responseOptions + "</select></td>"
+        var visibl = "visible";
+        var result = "<td><select name = 'divisions' counter = '" + divisionCounter + "'"+visibl+">" + responseOptions + "</select></td>"
             + "<td class = 'markup' counter = '" + divisionCounter +"'></td>"
             + "<td></td><td><button class='deleteTeamButton' counter = '" + divisionCounter +"'>Delete</button></td>";
         return result;
@@ -85,8 +85,13 @@ $(document).ready(function () {
     };
 
     privates.getTornamentGroupRowMarkup = function (responseOptions, actualDivisionCounter) {
-        var result = "<td><select name='groups' counter = '" + actualDivisionCounter + "' >" + responseOptions + "</select></td>"
+        var visibl = "visible";
+        if (groupCounter == 1) {
+            visibl = "hidden";
+        }
+        var result = "<td><select name='groups' counter = '" + actualDivisionCounter + "'" + visibl + ">" + responseOptions + "</select></td>"
             + "<td><button class='deleteTeamButton' counter = '" + actualDivisionCounter + "'>Delete</button></td>";
+
         return result;
     };
 
@@ -131,8 +136,7 @@ $(document).ready(function () {
         }
 
         privates.getAllDivisionsOptions(function (options) {
-         var responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
-
+            var responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
             });
@@ -169,14 +173,15 @@ $(document).ready(function () {
 
         privates.getAllGroupsOptions(function (options) {
             var responseOptions = "";
+            groupCounter = options.length;
             if (options.length > 1) {
                 responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
             }
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
-            });
+            });          
             privates.RemoveGroupsAndDeleteRowButtonMarkup();
-            privates.renderNewTournamentGroupsRow(responseOptions);
+            privates.renderNewTournamentGroupsRow(responseOptions);           
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
         });
 

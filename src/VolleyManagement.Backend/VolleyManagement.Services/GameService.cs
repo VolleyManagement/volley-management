@@ -37,7 +37,7 @@ namespace VolleyManagement.Services
 
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
-
+        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
         private readonly IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
         private readonly IQuery<ICollection<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
@@ -82,6 +82,7 @@ namespace VolleyManagement.Services
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
             _gamesByTournamentIdInRoundsByNumbersQuery = gamesByTournamentIdInRoundsByNumbersQuery;
+            _gameNumberByTournamentIdQuery = gameNumberByTournamentIdQuery;
             _tournamentRepository = tournamentRepository;
             _tournamentTeamsQuery = tournamentTeamsQuery;
             _getTournamentInstanceByIdQuery = getTournamentInstanceByIdQuery;
@@ -330,7 +331,7 @@ namespace VolleyManagement.Services
             ValidateGameInTournament(game, tournamentScheduleInfo);
         }
 
-        private static void ValidateResult(Result result)
+        private void ValidateResult(Result result)
         {
             ValidateSetsScore(result.GameScore, result.GameScore.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores);
@@ -338,7 +339,7 @@ namespace VolleyManagement.Services
             ValidateSetScoresOrder(result.SetScores);
         }
 
-        private static void ValidateTeams(int? homeTeamId, int? awayTeamId)
+        private void ValidateTeams(int? homeTeamId, int? awayTeamId)
         {
             if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
@@ -346,7 +347,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
+        private void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
         {
             if (!ResultValidation.IsSetsScoreValid(setsScore, isTechnicalDefeat))
             {
@@ -358,7 +359,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
+        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresMatched(setsScore, setScores))
             {
@@ -366,52 +367,7 @@ namespace VolleyManagement.Services
             }
         }
 
-
-        private static void ThrowExceptionInValidateSetScoreValues()
-        {
-            throw new ArgumentException(
-                string.Format(
-                    Resources.GameResultRequiredSetScores,
-                    GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                    GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
-                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
-        }
-
-        private static void CheckIfPreviousOptionalSetUnplayed(int i, int setOrderNumber, ICollection<Score> setScores, bool isTechnicalDefeat, ref bool isPreviousOptionalSetUnplayed)
-        {
-            if ((!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber)) &&
-                (setOrderNumber == GameResultConstants.MAX_SETS_COUNT))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                        Resources.GameResultFifthSetScoreInvalid,
-                        GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
-                        GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
-            }
-
-            if (!ResultValidation.IsOptionalSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat, setOrderNumber))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                        Resources.GameResultOptionalSetScores,
-                        GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                        GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                        GameResultConstants.UNPLAYED_SET_HOME_SCORE,
-                        GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
-
-            }
-
-            if ((isPreviousOptionalSetUnplayed) && (!ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i])))
-            {
-                throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-            }
-
-            isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(((List<Score>)(setScores))[i]);
-
-        }
-
-        private static void ValidateSetScoresValues(ICollection<Score> setScores, bool isTechnicalDefeat)
+        private void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
 
@@ -419,20 +375,53 @@ namespace VolleyManagement.Services
             {
                 if (i < GameResultConstants.SETS_COUNT_TO_WIN)
                 {
-                    if (!ResultValidation.IsRequiredSetScoreValid(((List<Score>)(setScores))[i], isTechnicalDefeat))
+                    if (!ResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
                     {
-                        ThrowExceptionInValidateSetScoreValues();
+                        throw new ArgumentException(
+                            string.Format(
+                            Resources.GameResultRequiredSetScores,
+                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                            GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
+                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
                     }
                 }
                 else
                 {
-                    CheckIfPreviousOptionalSetUnplayed(i, setOrderNumber, setScores, isTechnicalDefeat,
-                        ref isPreviousOptionalSetUnplayed);
+                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
+                    {
+                        if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
+                        {
+                            throw new ArgumentException(
+                            string.Format(
+                            Resources.GameResultFifthSetScoreInvalid,
+                            GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
+                        }
+
+                        throw new ArgumentException(
+                            string.Format(
+                            Resources.GameResultOptionalSetScores,
+                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                            GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+                            GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
+                    }
+
+                    if (isPreviousOptionalSetUnplayed)
+                    {
+                        if (!ResultValidation.IsSetUnplayed(setScores[i]))
+                        {
+                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
+                        }
+                    }
+
+                    isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
                 }
             }
         }
 
-        private static void ValidateSetScoresOrder(IList<Score> setScores)
+        private void ValidateSetScoresOrder(IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresOrdered(setScores))
             {
@@ -448,7 +437,7 @@ namespace VolleyManagement.Services
             }
 
             var allGamesInTournament = QueryAllTournamentGames(game.TournamentId);
-            var oldGameToUpdate = allGamesInTournament.SingleOrDefault(gr => gr.Id == game.Id);
+            var oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
 
             if (oldGameToUpdate != null)
             {
@@ -500,57 +489,6 @@ namespace VolleyManagement.Services
                 tournamentSсheduleInfo);
         }
 
-        private static void FreeDayGameValidation(bool gameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game)
-        {
-            if (gameValidationIsFreeDayGame)
-            {
-                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
-                {
-                    throw new ArgumentException(
-                    Resources
-                    .SameFreeDayGameInRound);
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        string.Format(Resources.SameTeamInRound, game.HomeTeamName));
-                }
-            }
-            else
-            {
-                throw new ArgumentException(
-                   string.Format(
-                   Resources.SameGameInRound,
-                   game.HomeTeamName,
-                   game.AwayTeamName,
-                   game.Round.ToString()));
-            }
-        }
-
-        private static void TheSameTeamInTwoGames(bool gameValidationIsFreeDayGame, TournamentScheduleDto tournamentScheduleInfo, GameResultDto game, Game newGame)
-        {
-            if (gameValidationIsFreeDayGame)
-            {
-                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff
-                    && game.HomeTeamId != newGame.HomeTeamId
-                    && game.AwayTeamId != newGame.HomeTeamId)
-                {
-                    throw new ArgumentException(
-                        Resources.SameFreeDayGameInRound);
-                }
-            }
-            else
-            {
-                var oppositeTeam = game.HomeTeamId == newGame.HomeTeamId
-                                      || game.HomeTeamId == newGame.AwayTeamId ? game.HomeTeamName : game.AwayTeamName;
-
-                throw new ArgumentException(
-                  string.Format(
-                  Resources.SameTeamInRound,
-                         oppositeTeam));
-            }
-        }
-
         private static void ValidateGameInRoundOnCreate(
             Game newGame,
             List<GameResultDto> gamesInRound,
@@ -561,16 +499,80 @@ namespace VolleyManagement.Services
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
                 {
-                    FreeDayGameValidation(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game);
+                    ValidateAreSameTeamsInGames(game, newGame, tournamentScheduleInfo);
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
                 {
-                    TheSameTeamInTwoGames(GameValidation.IsFreeDayGame(newGame), tournamentScheduleInfo, game, newGame);
+                    ValidateIsTheSameTeamInTwoGames(game, newGame, tournamentScheduleInfo);
                 }
             }
         }
 
-        private static void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
+        private static void ValidateAreSameTeamsInGames(
+            GameResultDto game,
+            Game newGame,
+            TournamentScheduleDto tournamentScheduleInfo)
+        {
+            string errorMessage = null;
+            if (GameValidation.IsFreeDayGame(newGame))
+            {
+                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
+                {
+                    errorMessage = Resources.SameFreeDayGameInRound;
+                }
+                else
+                {
+                    errorMessage = string.Format(
+                        Resources.SameTeamInRound,
+                        game.HomeTeamId);
+                }
+            }
+            else
+            {
+                errorMessage = String.Format(
+                    Resources.SameGameInRound,
+                    game.HomeTeamName,
+                    game.AwayTeamName,
+                    game.Round.ToString());
+            }
+            throw new ArgumentException(errorMessage);
+        }
+
+        private static void ValidateIsTheSameTeamInTwoGames(
+            GameResultDto game,
+            Game newGame,
+            TournamentScheduleDto tournamentScheduleInfo)
+        {
+            if ((GameValidation.IsFreeDayGame(newGame)
+                && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
+            {
+                if (game.HomeTeamId != newGame.HomeTeamId
+                    && game.AwayTeamId != newGame.HomeTeamId)
+                {
+                    throw new ArgumentException(Resources.SameFreeDayGameInRound);
+                }
+                else if (game.HomeTeamId != newGame.HomeTeamId
+                         || game.AwayTeamId != newGame.HomeTeamId)
+                {
+                    throw new ArgumentException(string.Format(
+                        Resources.SameTeamInRound,
+                        (game.HomeTeamId == newGame.HomeTeamId)
+                            ? game.HomeTeamName
+                            : game.AwayTeamName));
+                }
+            }
+            else
+            {
+                throw new ArgumentException(string.Format(
+                    Resources.SameTeamInRound,
+                    (game.HomeTeamId == newGame.HomeTeamId
+                    || game.HomeTeamId == newGame.AwayTeamId)
+                        ? game.HomeTeamName
+                        : game.AwayTeamName));
+            }
+        }
+
+        private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
             if (gameToDelete.HasResult)
             {
@@ -578,7 +580,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void ValidateGamesInTournamentSchemeTwo(Game newGame, IEnumerable<GameResultDto> games)
+        private void ValidateGamesInTournamentSchemeTwo(Game newGame, ICollection<GameResultDto> games)
         {
             var tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -620,7 +622,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void ValidateGamesInTournamentSchemeOne(Game newGame, IEnumerable<GameResultDto> games)
+        private void ValidateGamesInTournamentSchemeOne(Game newGame, ICollection<GameResultDto> games)
         {
             List<GameResultDto> tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -644,7 +646,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void PutFreeDayTeamAsAway(Game game)
+        private void PutFreeDayTeamAsAway(Game game)
         {
             if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
             {
@@ -652,7 +654,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void ValidateGameDateSet(Game game)
+        private void ValidateGameDateSet(Game game)
         {
             if (!game.GameDate.HasValue)
             {
@@ -660,7 +662,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void ValidateGameDate(TournamentScheduleDto tournament, Game game)
+        private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
             if (DateTime.Compare(tournament.StartDate, game.GameDate.Value) > 0
                 || DateTime.Compare(tournament.EndDate, game.GameDate.Value) < 0)
@@ -669,7 +671,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void SwitchTeamsOrder(Game game)
+        private void SwitchTeamsOrder(Game game)
         {
             if (!GameValidation.IsFreeDayGame(game))
             {
@@ -681,6 +683,17 @@ namespace VolleyManagement.Services
         #endregion
 
         #region Schedule autogeneration methods
+
+        private Game GetGameByNumber(int gameNumber, int tournamentId)
+        {
+            Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
+               .Execute(new GameByNumberCriteria()
+               {
+                   TournamentId = tournamentId,
+                   GameNumber = gameNumber
+               });
+            return gameInCurrentTournament;
+        }
 
         private void ScheduleNextGames(Game finishedGame, TournamentScheduleDto tournamentScheduleInfo)
         {
@@ -696,7 +709,7 @@ namespace VolleyManagement.Services
             List<Game> gamesToUpdate = new List<Game>();
 
             ICollection<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria
+                .Execute(new GamesByRoundCriteria()
                 {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
@@ -709,7 +722,8 @@ namespace VolleyManagement.Services
             // Schedule next games only if finished game is not in last round
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds.ToList()));
+                Game oldGame = gamesInCurrentAndNextRounds.Where(gr => gr.Id == finishedGame.Id).SingleOrDefault();
+                gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue
                     && finishedGame.Result.GameScore.Home == 0
@@ -725,7 +739,7 @@ namespace VolleyManagement.Services
             return gamesToUpdate;
         }
 
-        private static List<Game> GetGamesToUpdate(Game finishedGame, List<Game> gamesInCurrentAndNextRounds)
+        private List<Game> GetGamesToUpdate(Game finishedGame, ICollection<Game> gamesInCurrentAndNextRounds)
         {
             List<Game> gamesToUpdate = new List<Game>();
 
@@ -750,7 +764,7 @@ namespace VolleyManagement.Services
             return gamesToUpdate;
         }
 
-        private static void ClearGame(Game finishedGame, Game newGame)
+        private void ClearGame(Game finishedGame, Game newGame)
         {
             if (finishedGame.GameNumber % 2 != 0)
             {
@@ -762,7 +776,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static Game GetNextWinnerGame(Game finishedGame, List<Game> games)
+        private Game GetNextWinnerGame(Game finishedGame, ICollection<Game> games)
         {
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
             if (IsSemiFinalGame(finishedGame, games))
@@ -770,7 +784,9 @@ namespace VolleyManagement.Services
                 nextGameNumber++;
             }
 
-            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+            Game nextGame = games
+                .Where(g => g.GameNumber == nextGameNumber)
+                .SingleOrDefault();
 
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
@@ -783,7 +799,7 @@ namespace VolleyManagement.Services
             else
             {
                 winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                               finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+                finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
             }
 
             if (finishedGame.GameNumber % 2 != 0)
@@ -798,16 +814,16 @@ namespace VolleyManagement.Services
             return nextGame;
         }
 
-        private static Game GetNextLoserGame(Game finishedGame, List<Game> games)
+        private Game GetNextLoserGame(Game finishedGame, ICollection<Game> games)
         {
             // Assume that finished game is a semifinal game
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
-            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+            Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
 
             ValidateEditingSchemePlayoff(nextGame);
 
             int loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                              finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
+                finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
             if (finishedGame.GameNumber % 2 != 0)
             {
@@ -821,7 +837,7 @@ namespace VolleyManagement.Services
             return nextGame;
         }
 
-        private static int GetNextGameNumber(Game finishedGame, IEnumerable<Game> games)
+        private int GetNextGameNumber(Game finishedGame, ICollection<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
 
@@ -829,27 +845,29 @@ namespace VolleyManagement.Services
                 + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
         }
 
-        private static bool IsSemiFinalGame(Game finishedGame, IEnumerable<Game> games)
+        private bool IsSemiFinalGame(Game finishedGame, ICollection<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
+            List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
+
             return finishedGame.Round == numberOfRounds - 1;
         }
 
-        private static int GetNumberOfRounds(Game finishedGame, IEnumerable<Game> games)
+        private int GetNumberOfRounds(Game finishedGame, ICollection<Game> games)
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
-            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count, 2))
+            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count(), 2))
                 + finishedGame.Round;
         }
 
-        private static bool IsGameInLastRound(Game finishedGame, IEnumerable<Game> games)
+        private bool IsGameInLastRound(Game finishedGame, ICollection<Game> games)
         {
             byte roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;
         }
 
-        private static void ValidateEditingSchemePlayoff(Game nextGame)
+        private void ValidateEditingSchemePlayoff(Game nextGame)
         {
             if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
                 && nextGame.Result.GameScore.Away != 0)
@@ -858,7 +876,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static void SetAbilityToEditResults(List<GameResultDto> allGames)
+        private void SetAbilityToEditResults(List<GameResultDto> allGames)
         {
             List<GameResultDto> gamesToAllowEditingResults = allGames.Where(
                 game => game.HomeTeamId.HasValue
@@ -873,7 +891,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private static List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
+        private List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
         {
             if (allGames == null)
             {
@@ -898,7 +916,7 @@ namespace VolleyManagement.Services
             return games;
         }
 
-        private static byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
+        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
         {
             return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(2, numberOfRounds - 1));
         }

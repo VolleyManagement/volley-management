@@ -33,7 +33,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
             TeamsList = source
                         .Select(TeamNameViewModel.Map)
                         .OrderBy(model => model.DivisionName)
-                        .ThenBy(model => TeamNameViewModel.GetGroupName(model, divisions))
+                        .ThenBy(model => model.GroupName)
                         .ToList();
         }
 

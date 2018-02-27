@@ -31,10 +31,10 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         public string DivisionName { get; set; }
 
         /// <summary>
-        /// Gets or sets the group ID where team is playing
+        /// Gets or sets the group name where team is playing
         /// </summary>
-        [Display(Name = "GroupId")]
-        public int GroupId { get; set; }
+        [Display(Name = "Group")]
+        public string GroupName { get; set; }
 
         /// <summary>
         /// Maps Team to TeamNameViewModel
@@ -48,7 +48,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
                 Id = team.TeamId,
                 Name = team.TeamName,
                 DivisionName = team.DivisionName,
-                GroupId = team.GroupId                
+                GroupName = team.GroupName
             };
         }
 
@@ -67,19 +67,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         }
 
         /// <summary>
-        /// Returns team's group name
-        /// </summary>
-        /// <param name="team">Mapped team</param>
-        /// <param name="divisions">Divisions list in the current tournament</param>
-        /// <returns>String which contains group name</returns>
-        public static string GetGroupName(TeamNameViewModel team, IEnumerable<Division> divisions)
-        {
-            return GetGroups(team, divisions)
-                   .First(group => group.Id == team.GroupId)
-                   .Name;
-        }
-
-        /// <summary>
         /// Maps presentation entity to domain
         /// </summary>
         /// <returns>Domain object</returns>
@@ -91,23 +78,5 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
                 Name = Name
             };
         }
-
-        #region private
-
-        /// <summary>
-        /// Returns groups list in the division
-        /// </summary>
-        /// <param name="team">Mapped team</param>
-        /// <param name="divisions">Divisions list in the current tournament</param>
-        /// <returns>List of type Group</returns>
-        private static IEnumerable<Group> GetGroups(TeamNameViewModel team, IEnumerable<Division> divisions)
-        {
-            return divisions
-                   .Where(div => div.Name == team.DivisionName)
-                   .Select(res => res.Groups)
-                   .First();
-        }
-
-        #endregion
     }
 }

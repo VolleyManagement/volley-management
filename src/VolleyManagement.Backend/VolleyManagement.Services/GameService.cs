@@ -257,7 +257,7 @@ namespace VolleyManagement.Services
 
             if (game == null)
             {
-                throw new InvalidEnumArgumentException(id.ToString());
+                throw new ArgumentNullException($"game");
             }
 
             ValidateGameInRoundOnDelete(game);

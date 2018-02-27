@@ -87,7 +87,7 @@
         /// Method to get all feedbacks.
         /// </summary>
         /// <returns>All feedbacks.</returns>
-        public ICollection<Feedback> Get()
+        public IEnumerable<Feedback> Get()
         {
             _authService.CheckAccess(AuthOperations.Feedbacks.Read);
             return _getAllFeedbacksQuery.Execute(new GetAllCriteria());

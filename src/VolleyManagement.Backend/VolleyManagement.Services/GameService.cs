@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace VolleyManagement.Services
 {
     using System;
@@ -146,7 +148,8 @@ namespace VolleyManagement.Services
         /// <returns>List of game results of specified tournament.</returns>
         public ICollection<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            var allGames = ((List<GameResultDto>)(QueryAllTournamentGames(tournamentId)))
+            var allGames = (QueryAllTournamentGames(tournamentId))
+                            .ToList()
                             .FindAll(gr => gr.HasResult);
 
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
@@ -254,7 +257,7 @@ namespace VolleyManagement.Services
 
             if (game == null)
             {
-                throw new ArgumentNullException($"game");
+                throw new InvalidEnumArgumentException(id.ToString());
             }
 
             ValidateGameInRoundOnDelete(game);
@@ -837,7 +840,7 @@ namespace VolleyManagement.Services
             return nextGame;
         }
 
-        private int GetNextGameNumber(Game finishedGame, ICollection<Game> games)
+        private int GetNextGameNumber(Game finishedGame, IEnumerable<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
 

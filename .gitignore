@@ -109,7 +109,8 @@ csx
 AppPackages/
 
 # Cake Build files
-build/tools/
+build/tools/*
+!build/tools/packages.config
 
 # Others
 sql/

@@ -161,9 +161,18 @@
 
         private static bool IsOrdinaryRequiredSetScoreValid(Score setScore, int setOrderNumber = 0)
         {
-            return setOrderNumber == Constants.GameResult.MAX_SETS_COUNT
-                ? IsSetScoreValid(setScore, Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN)
-                : IsSetScoreValid(setScore, Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN);
+            byte defScoreToWin = 0;
+
+            if (setOrderNumber == Constants.GameResult.MAX_SETS_COUNT)
+            {
+                defScoreToWin = Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN;
+            }
+            else
+            {
+                defScoreToWin = Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
+            }
+
+            return IsSetScoreValid(setScore, defScoreToWin);
         }
 
         private static bool IsSetScoreValid(Score setScore, int minSetScore)

@@ -288,8 +288,8 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>View with list of existing teams and adding team form</returns>
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
-            var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var teams = new TournamentTeamsListViewModel(resultTeams as List<TeamTournamentDto>, tournamentId);
+            var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId).ToList();
+            var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
             var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }

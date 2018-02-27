@@ -580,7 +580,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateGamesInTournamentSchemeTwo(Game newGame, ICollection<GameResultDto> games)
+        private void ValidateGamesInTournamentSchemeTwo(Game newGame, IEnumerable<GameResultDto> games)
         {
             var tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -622,7 +622,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateGamesInTournamentSchemeOne(Game newGame, ICollection<GameResultDto> games)
+        private void ValidateGamesInTournamentSchemeOne(Game newGame, IEnumerable<GameResultDto> games)
         {
             List<GameResultDto> tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -853,7 +853,7 @@ namespace VolleyManagement.Services
             return finishedGame.Round == numberOfRounds - 1;
         }
 
-        private int GetNumberOfRounds(Game finishedGame, ICollection<Game> games)
+        private int GetNumberOfRounds(Game finishedGame, IEnumerable<Game> games)
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
@@ -861,7 +861,7 @@ namespace VolleyManagement.Services
                 + finishedGame.Round;
         }
 
-        private bool IsGameInLastRound(Game finishedGame, ICollection<Game> games)
+        private bool IsGameInLastRound(Game finishedGame, IEnumerable<Game> games)
         {
             byte roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;

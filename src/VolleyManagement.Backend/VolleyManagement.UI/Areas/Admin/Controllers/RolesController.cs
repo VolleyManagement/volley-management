@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Web.Mvc;
     using Contracts.Authorization;
     using Domain.RolesAggregate;
@@ -37,7 +38,7 @@
         {
             _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
-            var roles = _rolesService.GetAllRoles().ToList().ConvertAll(r => new RoleViewModel(r));
+            var roles = ((List<Role>)_rolesService.GetAllRoles()).ConvertAll(r => new RoleViewModel(r));
             return View(roles);
         }
 

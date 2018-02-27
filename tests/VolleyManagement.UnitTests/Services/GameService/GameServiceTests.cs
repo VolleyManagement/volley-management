@@ -1439,10 +1439,10 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetTournamentResults(TOURNAMENT_ID);
+            var actual = sut.GetTournamentResults(TOURNAMENT_ID).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new GameResultDtoComparer());
+            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
         }
 
         /// <summary>

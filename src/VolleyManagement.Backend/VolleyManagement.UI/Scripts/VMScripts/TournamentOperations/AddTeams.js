@@ -144,7 +144,7 @@ $(document).ready(function () {
             });
             privates.renderNewTournamentDivisionsRow(responseOptions);
 
-            if (options.length == 1) {
+            if (options.length === 1) {
                 privates.CheckIfEmptyGroupRowDraw();
             }
 

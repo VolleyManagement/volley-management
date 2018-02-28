@@ -8,41 +8,61 @@
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {
         private TeamStandingsDtoComparer teamsComparer;
-        private ComparerBy comparer;
+        private bool hasComparerByStatus = true;
 
-        public PivotStandingsComparer() : this(ComparerBy.All) { }
-
-        public PivotStandingsComparer(ComparerBy comparer)
+        public PivotStandingsComparer()
         {
-            this.teamsComparer = new TeamStandingsDtoComparer(comparer);
-            this.comparer = comparer;
+            this.teamsComparer = new TeamStandingsDtoComparer();
         }
-
+        public void WithPointsComparer()
+        {
+            CleanComparerFlags();
+            teamsComparer.HasComparerByPoints = true;
+        }
+        public void WithSetsComparer()
+        {
+            CleanComparerFlags();
+            teamsComparer.HasComparerByPoints = true;
+        }
+        public void WithBallsComparer()
+        {
+            CleanComparerFlags();
+            teamsComparer.HasComparerByBalls = true;
+        }
+        public void WithStatusComparer()
+        {
+            CleanComparerFlags();
+            hasComparerByStatus = true;
+        }
+        private void CleanComparerFlags()
+        {
+            teamsComparer.HasComparerByPoints = false;
+            teamsComparer.HasComparerByBalls = false;
+            teamsComparer.HasComparerBySets = false;
+            hasComparerByStatus = false;
+        }
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
             Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
             Assert.AreEqual(x.DivisionName, y.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
             Assert.AreEqual(x.LastUpdateTime, y.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
 
-            if (comparer == ComparerBy.All || comparer != ComparerBy.Status)
+            if (x.Teams.Count == y.Teams.Count)
             {
-                if (x.Teams.Count == y.Teams.Count)
+                for (var i = 0; i < x.Teams.Count; i++)
                 {
-                    for (var i = 0; i < x.Teams.Count; i++)
+                    if (teamsComparer.Compare(x.Teams[i], y.Teams[i]) != 0)
                     {
-                        if (teamsComparer.Compare(x.Teams[i], y.Teams[i]) != 0)
-                        {
-                            return 1;
-                        }
+                        return 1;
                     }
                 }
-                else
-                {
-                    Assert.Fail($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
-                }
+            }
+            else
+            {
+                Assert.Fail($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
             }
 
-            if (comparer == ComparerBy.All || comparer == ComparerBy.Status)
+            if (hasComparerByStatus)
             {
                 if (x.GameResults.Count == y.GameResults.Count)
                 {

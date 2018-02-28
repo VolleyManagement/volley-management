@@ -8,28 +8,30 @@
 
     internal class TeamStandingsDtoComparer : IComparer<TeamStandingsDto>
     {
-        private ComparerBy comparer;
+        public bool HasComparerByPoints { get; set; }
+        public bool HasComparerBySets { get; set; }
+        public bool HasComparerByBalls { get; set; }
 
-        public TeamStandingsDtoComparer() : this(ComparerBy.All) { }
-
-        public TeamStandingsDtoComparer(ComparerBy comparer)
+        public TeamStandingsDtoComparer()
         {
-            this.comparer = comparer;
+            HasComparerByPoints = true;
+            HasComparerBySets = true;
+            HasComparerByBalls = true;
         }
         public int Compare(TeamStandingsDto x, TeamStandingsDto y)
         {
             Assert.AreEqual(x.TeamName, y.TeamName, "TeamName do not match");
             Assert.AreEqual(x.TeamId, y.TeamId, $"[Team:{x.TeamName}] TeamId do not match");
 
-            if (comparer == ComparerBy.Points || comparer == ComparerBy.All)
+            if (HasComparerByPoints)
             {
                 Assert.AreEqual(x.Points, y.Points, $"[Team:{x.TeamName}] Points do not match");
             }
-            if (comparer == ComparerBy.Sets || comparer == ComparerBy.All)
+            if (HasComparerBySets)
             {
                 Assert.IsTrue(AreNullableFloatsEqual(x.SetsRatio, y.SetsRatio), $"[Team:{x.TeamName}] SetsRatio do not match. Actual:<{x.SetsRatio}>, Expected:<{y.SetsRatio}>");
             }
-            if (comparer == ComparerBy.Balls || comparer == ComparerBy.All)
+            if (HasComparerByBalls)
             {
                 Assert.IsTrue(AreNullableFloatsEqual(x.BallsRatio, y.BallsRatio), $"[Team:{x.TeamName}] SetsRatio do not match. Actual:<{x.BallsRatio}>, Expected:<{y.BallsRatio}>");
             }

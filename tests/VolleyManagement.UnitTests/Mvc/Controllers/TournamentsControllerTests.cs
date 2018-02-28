@@ -225,6 +225,29 @@
             Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 
+        [TestMethod]
+        public void ManageTournamentTeams_NotSortedTournamentTeams_ModelContainsSortedTournamentTeams()
+        {
+            // Arrange
+            var unorderedTournamentTeams = new TeamInTournamentTestFixture().WithUnorderedTeams().Build();
+            var orderedTournamentTeams = unorderedTournamentTeams
+                                          .OrderBy(model => model.DivisionName)
+                                          .ThenBy(model => model.GroupName)
+                                          .ToList();
+
+            SetupGetTournamentTeams(unorderedTournamentTeams, TEST_TOURNAMENT_ID);
+
+            // Act
+            var resultTeams = _tournamentServiceMock.Object.GetAllTournamentTeams(TEST_TOURNAMENT_ID);
+            var actual = new TournamentTeamsListViewModel(resultTeams, TEST_TOURNAMENT_ID)
+                         .TeamsList;
+
+            var expected = orderedTournamentTeams.Select(TeamNameViewModel.Map).ToList();
+
+            // Assert
+            Assert.IsTrue(new TeamNameViewModelComparer().AreEqual(expected, actual));
+        }
+
         #endregion
 
         #region ShowSchedule
@@ -381,7 +404,6 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var testDivisions = CreateTestDivisions();
 
             _tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()))
@@ -391,7 +413,7 @@
 
             // Act
             var jsonResult =
-                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, testDivisions, TEST_TOURNAMENT_ID));
+                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
             var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert

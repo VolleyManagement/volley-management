@@ -7,7 +7,7 @@
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {
         private TeamStandingsDtoComparer teamsComparer;
-        private bool hasComparerByStatus = true;
+        private bool hasComparerByGames = true;
 
         public PivotStandingsComparer()
         {
@@ -21,24 +21,24 @@
         public void WithSetsComparer()
         {
             CleanComparerFlags();
-            teamsComparer.HasComparerByPoints = true;
+            teamsComparer.HasComparerBySets = true;
         }
         public void WithBallsComparer()
         {
             CleanComparerFlags();
             teamsComparer.HasComparerByBalls = true;
         }
-        public void WithStatusComparer()
+        public void WithGamesComparer()
         {
             CleanComparerFlags();
-            hasComparerByStatus = true;
+            hasComparerByGames = true;
         }
         private void CleanComparerFlags()
         {
             teamsComparer.HasComparerByPoints = false;
             teamsComparer.HasComparerByBalls = false;
             teamsComparer.HasComparerBySets = false;
-            hasComparerByStatus = false;
+            hasComparerByGames = false;
         }
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
@@ -61,7 +61,7 @@
                 Assert.Fail($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
             }
 
-            if (hasComparerByStatus)
+            if (hasComparerByGames)
             {
                 if (x.GameResults.Count == y.GameResults.Count)
                 {

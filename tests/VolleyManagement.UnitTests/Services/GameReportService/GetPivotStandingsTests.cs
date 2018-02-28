@@ -506,7 +506,7 @@
            string message)
         {
             PivotStandingsComparer comparer = new PivotStandingsComparer();
-            comparer.WithStatusComparer();
+            comparer.WithGamesComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
     }

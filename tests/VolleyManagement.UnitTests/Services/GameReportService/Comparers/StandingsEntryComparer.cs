@@ -5,7 +5,6 @@
     using System.Diagnostics.CodeAnalysis;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using static System.FlagsAttribute;
 
     /// <summary>
     /// Represents a comparer for <see cref="StandingsEntry"/> objects.

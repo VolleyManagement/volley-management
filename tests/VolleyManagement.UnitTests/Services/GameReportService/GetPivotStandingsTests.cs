@@ -3,7 +3,6 @@
     using System;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.UnitTests.Services.GameReportService.Comparers;
 
     [TestClass]
     public class GetPivotStandingsTests : GameReportsServiceTestsBase

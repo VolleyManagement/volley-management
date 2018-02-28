@@ -159,7 +159,6 @@
     <Compile Include="Mvc\ViewModels\ScheduleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
-    <Compile Include="Services\GameReportService\Comparers\ComparerBy.cs" />
     <Compile Include="Services\TeamService\TeamInTournamentComparer.cs" />
     <Compile Include="WebApi\Standings\PivotStandingsViewModelTestFixture.cs" />
     <Compile Include="WebApi\Standings\DivisionStandingsViewModelTestFixture.cs" />

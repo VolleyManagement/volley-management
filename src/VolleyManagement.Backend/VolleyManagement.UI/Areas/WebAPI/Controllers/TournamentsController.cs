@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.WebApi.Controllers
+﻿namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -136,6 +136,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                                             .Select(item => item.Round)
                                                             .Distinct()
                                                             .OrderBy(i => i)
+                                                            .Select(GetRoundName)
                                                             .ToList()
                                     }).
                                     Distinct(new DivisionTitleComparer()).ToList(),
@@ -148,6 +149,11 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
             };
 
             return result;
+        }
+
+        private string GetRoundName(int roundNumber)
+        {
+            return $"Тур {roundNumber}";
         }
 
         private static (int Year, int Week) GetWeekOfYear(GameViewModel gr)

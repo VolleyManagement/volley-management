@@ -245,6 +245,28 @@
             ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void GetSchedule_PlayoffScheme_RoundNamesAreCreated()
+        {
+            // Arrange
+            const int TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
+            tournament.Scheme = TournamentSchemeEnum.PlayOff;
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
+            SetupGetTournamentResults(TOURNAMENT_ID, new GameServiceTestFixture().TestPlayoffWith5Rounds().Build());
+
+            var expected = new ScheduleViewModelTestFixture().With5RoundPlayoffGames().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Private
@@ -265,6 +287,31 @@
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
         {
             _gameServiceMock.Setup(t => t.GetTournamentGames(It.IsAny<int>())).Returns(expectedGames);
+        }
+
+        private void MockGetScheduleInfo(int tournamentId, TournamentScheduleDto tournament)
+        {
+            _tournamentServiceMock.Setup(tr => tr.GetTournamentScheduleInfo(tournamentId)).Returns(tournament);
+        }
+
+        private static TournamentScheduleDto CreateTournamentData(byte roundCount)
+        {
+            return new TournamentScheduleDto
+            {
+                Id = TOURNAMENT_ID,
+                Name = "Some tournament",
+                Scheme = TournamentSchemeEnum.One,
+                StartDate = new DateTime(1996, 07, 25),
+                Divisions = new List<DivisionScheduleDto>
+                {
+                    new DivisionScheduleDto
+                    {
+                        DivisionId     = 1,
+                        DivisionName   = "Division 1",
+                        NumberOfRounds = roundCount,
+                    },
+                },
+            };
         }
         #endregion
     }

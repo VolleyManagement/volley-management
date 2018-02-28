@@ -1,3 +1,5 @@
+using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
+
 namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
 {
     using System;
@@ -5,7 +7,6 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
     using System.Linq;
     using Domain;
     using Domain.GamesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// GameViewModel class.

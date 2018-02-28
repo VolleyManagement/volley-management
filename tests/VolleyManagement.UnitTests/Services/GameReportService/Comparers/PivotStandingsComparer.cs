@@ -7,36 +7,38 @@
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {
         private TeamStandingsDtoComparer teamsComparer;
-        private bool isGameResultComparer;
+        private bool hasComparerByResult;
 
         public PivotStandingsComparer()
         {
             this.teamsComparer = new TeamStandingsDtoComparer();
+            hasComparerByResult = true;
         }
         public void WithPointsComparer()
         {
-            teamsComparer.ArePointsComparer();
+            teamsComparer.HasComparerBySets = false;
+            teamsComparer.HasComparerByBalls = false;
+            hasComparerByResult = false;
         }
         public void WithSetRatioComparer()
         {
-            teamsComparer.AreSetsRatioComparer();
+            teamsComparer.HasComparerByPoints = false;
+            teamsComparer.HasComparerByBalls = false;
+            hasComparerByResult = false;
         }
         public void WithBallsRatioComparer()
         {
-            teamsComparer.AreBallsRatioComparer();
+            teamsComparer.HasComparerByPoints = false;
+            teamsComparer.HasComparerBySets = false;
+            hasComparerByResult = false;
         }
         public void WithGameResultComparer()
         {
-            isGameResultComparer = true;
+            teamsComparer.HasComparerByPoints = false;
+            teamsComparer.HasComparerBySets = false;
+            teamsComparer.HasComparerByBalls = false;
         }
-        public void WithAllComparer()
-        {
-            teamsComparer.ArePointsComparer();
-            teamsComparer.AreSetsRatioComparer();
-            teamsComparer.AreBallsRatioComparer();
-            isGameResultComparer = true;
-        }
-
+       
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
             Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
@@ -58,7 +60,7 @@
                 Assert.Fail($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
             }
 
-            if (isGameResultComparer)
+            if (hasComparerByResult)
             {
                 if (x.GameResults.Count == y.GameResults.Count)
                 {

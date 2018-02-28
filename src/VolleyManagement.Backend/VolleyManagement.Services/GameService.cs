@@ -341,15 +341,15 @@
 
         private void ValidateTeams(int? homeTeamId, int? awayTeamId, TournamentScheduleDto tournamentScheduleInfo)
         {
-            if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff
-                && GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
-                throw new ArgumentException(Resources.GameResultSameTeam);
+                if (!(homeTeamId == null && awayTeamId == null) &&
+                    GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
+                {
+                    throw new ArgumentException(Resources.GameResultSameTeam);
+                }
             }
-
-            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff
-                && !(homeTeamId == null && awayTeamId == null) 
-                && GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
+            else if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
                 throw new ArgumentException(Resources.GameResultSameTeam);
             }

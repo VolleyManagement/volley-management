@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace VolleyManagement.Services
 {
     using System;
@@ -257,7 +255,7 @@ namespace VolleyManagement.Services
 
             if (game == null)
             {
-                throw new ArgumentNullException($"game");
+                throw new ArgumentException("invalid game id");
             }
 
             ValidateGameInRoundOnDelete(game);

@@ -1860,13 +1860,13 @@
             {
                 sut.Delete(gameNullId);
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentException ex)
             {
                 exception = ex;
             }
 
             // Assert
-            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_INVALID_ID);
         }
         #endregion
 

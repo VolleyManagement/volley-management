@@ -226,7 +226,7 @@
         }
 
         [TestMethod]
-        public void ManageTournamentTeams_NotSortedTournamentTeams_ModelContainsSortedTournamentTeams()
+        public void ManageTournamentTeams_NotSortedTournamentTeams_ModelContainsSortedTournamentTeamsByDivisionAndGroupName()
         {
             // Arrange
             var unorderedTournamentTeams = new TeamInTournamentTestFixture().WithUnorderedTeams().Build();

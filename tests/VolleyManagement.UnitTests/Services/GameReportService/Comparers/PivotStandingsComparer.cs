@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.UnitTests.Services.GameReportService.Comparers;
 
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {

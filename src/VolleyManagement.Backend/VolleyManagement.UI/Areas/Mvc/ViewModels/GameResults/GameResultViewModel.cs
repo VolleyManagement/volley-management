@@ -82,33 +82,9 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets numbers of game in which home team has won
-        /// in order to proceed to current game.
-        /// </summary>
-        public byte HomeTeamPreviouslyWonGameNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets numbers of game in which away team has won
-        /// in order to proceed to current game.
-        /// </summary>
-        public byte AwayTeamPreviouslyWonGameNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whenever we take only team names,
-        /// not game number.
-        /// </summary>
-        public bool MustDisplayOnlyTeamNames { get; set; }
-
-        /// <summary>
         /// Gets display number of the game in the tournament
         /// </summary>
         public string DisplayGameNumber => "G" + GameNumber;
-
-        public string DisplayHomeTeamPreviouslyWonGameNumber => 
-            "Winner" + HomeTeamPreviouslyWonGameNumber;
-
-        public string DisplayAwayTeamPreviouslyWonGameNumber =>
-            "Winner" + AwayTeamPreviouslyWonGameNumber;
 
         public bool HasPenalty { get; set; }
 

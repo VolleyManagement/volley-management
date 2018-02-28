@@ -5,11 +5,6 @@
 
     @if (!Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
-        string homeTeamName = Model.MustDisplayOnlyTeamNames ? Resources.UI.TournamentViews.HomeTeamPlaceholder 
-            : Model.DisplayHomeTeamPreviouslyWonGameNumber;
-        string awayTeamName = Model.MustDisplayOnlyTeamNames ? Resources.UI.TournamentViews.AwayTeamPlaceholder 
-            : Model.DisplayAwayTeamPreviouslyWonGameNumber;
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-3 game-number">
@@ -17,10 +12,10 @@
                 </div>
                 <div class="col-md-7">
                     <div class="row">
-                        <strong> @homeTeamName </strong>
+                        <strong> @Model.HomeTeamName </strong>
                     </div>
                     <div class="row">
-                        <strong> @awayTeamName </strong>
+                        <strong> @Model.AwayTeamName </strong>
                     </div>
                 </div>
             </div>

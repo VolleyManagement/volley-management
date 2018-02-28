@@ -11,7 +11,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer
-    { 
+    {
         private bool HasComparerByPoints { get; set; } = true;
         private bool HasComparerByGames { get; set; } = true;
         private bool HasComparerBySets { get; set; } = true;
@@ -22,9 +22,9 @@
             HasComparerByPoints = false;
             HasComparerByGames = false;
             HasComparerBySets = false;
-            HasComparerByBalls = false;         
+            HasComparerByBalls = false;
         }
-        
+
         public void WithPointsComparer()
         {
             CleanComparerFlags();
@@ -59,11 +59,11 @@
         {
             Assert.AreEqual(x.TeamName, y.TeamName, "TeamNames do not match");
 
-         if(HasComparerByPoints)
+            if (HasComparerByPoints)
             {
                 PointsComparer(x, y);
             }
-          
+
             if (HasComparerByGames)
             {
                 GamesComparer(x, y);

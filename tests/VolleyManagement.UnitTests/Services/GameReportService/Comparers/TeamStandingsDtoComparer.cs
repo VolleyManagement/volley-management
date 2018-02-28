@@ -4,34 +4,32 @@
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using VolleyManagement.UnitTests.Services.GameReportService.Comparers;
 
     internal class TeamStandingsDtoComparer : IComparer<TeamStandingsDto>
     {
-        public bool HasComparerByPoints { get; set; }
-        public bool HasComparerBySets { get; set; }
-        public bool HasComparerByBalls { get; set; }
+        private ComparerBy comparer;
 
-        public TeamStandingsDtoComparer()
+        public TeamStandingsDtoComparer() : this(ComparerBy.All) { }
+
+        public TeamStandingsDtoComparer(ComparerBy comparer)
         {
-            HasComparerByPoints = true;
-            HasComparerBySets = true;
-            HasComparerByBalls = true;
+            this.comparer = comparer;
         }
-
         public int Compare(TeamStandingsDto x, TeamStandingsDto y)
         {
             Assert.AreEqual(x.TeamName, y.TeamName, "TeamName do not match");
             Assert.AreEqual(x.TeamId, y.TeamId, $"[Team:{x.TeamName}] TeamId do not match");
 
-            if (HasComparerByPoints)
+            if (comparer == ComparerBy.Points || comparer == ComparerBy.All)
             {
                 Assert.AreEqual(x.Points, y.Points, $"[Team:{x.TeamName}] Points do not match");
             }
-            if (HasComparerBySets)
+            if (comparer == ComparerBy.Sets || comparer == ComparerBy.All)
             {
                 Assert.IsTrue(AreNullableFloatsEqual(x.SetsRatio, y.SetsRatio), $"[Team:{x.TeamName}] SetsRatio do not match. Actual:<{x.SetsRatio}>, Expected:<{y.SetsRatio}>");
             }
-            if (HasComparerByBalls)
+            if (comparer == ComparerBy.Balls || comparer == ComparerBy.All)
             {
                 Assert.IsTrue(AreNullableFloatsEqual(x.BallsRatio, y.BallsRatio), $"[Team:{x.TeamName}] SetsRatio do not match. Actual:<{x.BallsRatio}>, Expected:<{y.BallsRatio}>");
             }

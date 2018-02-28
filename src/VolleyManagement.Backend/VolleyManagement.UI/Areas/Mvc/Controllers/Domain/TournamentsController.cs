@@ -774,7 +774,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// first round or bronze game.
         /// </summary>
         /// <param name="scheduleViewModel"></param>
-        private void FillPlayoffGamesTeamsNamesWithWinners(ScheduleViewModel scheduleViewModel)
+        private static void FillPlayoffGamesTeamsNamesWithWinners(ScheduleViewModel scheduleViewModel)
         {
             byte winnerCounter = 1;
             string winnerText = "Winner";

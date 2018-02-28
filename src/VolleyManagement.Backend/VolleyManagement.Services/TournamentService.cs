@@ -97,7 +97,7 @@
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
-            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery, 
+            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery,
             IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IAuthorizationService authService,
             IGameService gameService)
@@ -168,7 +168,11 @@
         /// <returns>Tournament teams</returns>
         public List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId)
         {
-            return _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+            var result = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+
+            result?.ForEach(t => t.GroupName = "You won't catch me!");
+
+            return result;
         }
 
         /// <summary>
@@ -210,7 +214,7 @@
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
         public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
         {
-            var result= _getTournamentDtoQuery
+            var result = _getTournamentDtoQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
 
             result.Divisions.ForEach(d =>
@@ -398,7 +402,7 @@
             _tournamentRepository.UnitOfWork.Commit();
         }
 
-        public byte CalculateNumberOfRounds(TournamentSchemeEnum  scheme, int teamCount)
+        public byte CalculateNumberOfRounds(TournamentSchemeEnum scheme, int teamCount)
         {
             byte numberOfRounds = 0;
 

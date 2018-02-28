@@ -447,7 +447,6 @@
         private static void AssertStandingsAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
             StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
-            standingsComparer.WithAllComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
         }
 

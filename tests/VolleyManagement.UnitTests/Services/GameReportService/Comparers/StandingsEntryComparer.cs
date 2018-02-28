@@ -5,32 +5,49 @@
     using System.Diagnostics.CodeAnalysis;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using static System.FlagsAttribute;
 
     /// <summary>
     /// Represents a comparer for <see cref="StandingsEntry"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer
-    {
-        private bool arePointsComparer;
-        private bool areGamesComparer;
-        private bool areSetsComparer;
-        private bool areBallsComparer;
+    { 
+        private bool HasComparerByPoints { get; set; } = true;
+        private bool HasComparerByGames { get; set; } = true;
+        private bool HasComparerBySets { get; set; } = true;
+        private bool HasComparerByBalls { get; set; } = true;
 
-        public void WithPointsComparer() => arePointsComparer = true;
-
-        public void WithGamesComparer() => areGamesComparer = true;
-
-        public void WithSetsComparer() => areSetsComparer = true;
-
-        public void WithBallsComparer() => areBallsComparer = true;
-
-        public void WithAllComparer()
+        public void CleanComparerFlags()
         {
-            WithPointsComparer();
-            WithGamesComparer();
-            WithSetsComparer();
-            WithBallsComparer(); 
+            HasComparerByPoints = false;
+            HasComparerByGames = false;
+            HasComparerBySets = false;
+            HasComparerByBalls = false;         
+        }
+        
+        public void WithPointsComparer()
+        {
+            CleanComparerFlags();
+            this.HasComparerByPoints = true;
+        }
+
+        public void WithGamesComparer()
+        {
+            CleanComparerFlags();
+            this.HasComparerByGames = true;
+        }
+
+        public void WithSetsComparer()
+        {
+            CleanComparerFlags();
+            this.HasComparerBySets = true;
+        }
+
+        public void WithBallsComparer()
+        {
+            CleanComparerFlags();
+            this.HasComparerByBalls = true;
         }
 
         /// <summary>
@@ -42,19 +59,21 @@
         public int Compare(StandingsEntry x, StandingsEntry y)
         {
             Assert.AreEqual(x.TeamName, y.TeamName, "TeamNames do not match");
-            if (arePointsComparer)
+
+         if(HasComparerByPoints)
             {
                 PointsComparer(x, y);
             }
-            if (areGamesComparer)
+          
+            if (HasComparerByGames)
             {
                 GamesComparer(x, y);
             }
-            if (areSetsComparer)
+            if (HasComparerBySets)
             {
                 SetsComparer(x, y);
             }
-            if (areBallsComparer)
+            if (HasComparerByBalls])
             {
                 BallsComparer(x, y);
             }

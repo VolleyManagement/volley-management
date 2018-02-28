@@ -387,6 +387,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 FillRoundNames(scheduleViewModel);
+                FillPlayoffGamesTeamsNamesWithWinners(scheduleViewModel);
             }
 
             for (byte i = 0; i < scheduleViewModel.Rounds.Count; i++)
@@ -766,6 +767,46 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             }
 
             scheduleViewModel.RoundNames = roundNames;
+        }
+
+        /// <summary>
+        /// Fills home/away teams names with "Winner#" if they participate not in 
+        /// first round or bronze game.
+        /// </summary>
+        /// <param name="scheduleViewModel"></param>
+        private void FillPlayoffGamesTeamsNamesWithWinners(ScheduleViewModel scheduleViewModel)
+        {
+            byte winnerCounter = 1;
+            string winnerText = "Winner";
+            bool mustDisplayOnlyTeamNames;
+
+            foreach (var pair in scheduleViewModel.Rounds)
+                pair.Value.ForEach(gameResult =>
+                {
+                    mustDisplayOnlyTeamNames = mustDisplayOnlyTeamNames = gameResult.IsFirstRoundGame
+                        || scheduleViewModel.IsBronzeMatch(gameResult);
+
+                    if (mustDisplayOnlyTeamNames)
+                    {
+                        FillGameResultViewModelTeamsNamesWithDefaultStrings(gameResult);
+                    }
+                    else
+                    {
+                        FillGameResultViewModelTeamsNamesWithString(gameResult, winnerText, ref winnerCounter);
+                    }
+                });
+        }
+
+        private void FillGameResultViewModelTeamsNamesWithString(GameResultViewModel gameResult, string lineToBeSetAsName, ref byte counter)
+        {
+            gameResult.HomeTeamName = lineToBeSetAsName + counter++;
+            gameResult.AwayTeamName = lineToBeSetAsName + counter++;
+        }
+
+        private void FillGameResultViewModelTeamsNamesWithDefaultStrings(GameResultViewModel gameResult)
+        {
+            gameResult.HomeTeamName = Resources.UI.TournamentViews.HomeTeamPlaceholder;
+            gameResult.AwayTeamName = Resources.UI.TournamentViews.AwayTeamPlaceholder;
         }
 
         #endregion

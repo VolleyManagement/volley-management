@@ -781,6 +781,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             bool mustDisplayOnlyTeamNames;
 
             foreach (var pair in scheduleViewModel.Rounds)
+            {
                 pair.Value.ForEach(gameResult =>
                 {
                     mustDisplayOnlyTeamNames = mustDisplayOnlyTeamNames = gameResult.IsFirstRoundGame
@@ -795,15 +796,16 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                         FillGameResultViewModelTeamsNamesWithString(gameResult, winnerText, ref winnerCounter);
                     }
                 });
+            }
         }
 
-        private void FillGameResultViewModelTeamsNamesWithString(GameResultViewModel gameResult, string lineToBeSetAsName, ref byte counter)
+        private static void FillGameResultViewModelTeamsNamesWithString(GameResultViewModel gameResult, string lineToBeSetAsName, ref byte counter)
         {
             gameResult.HomeTeamName = lineToBeSetAsName + counter++;
             gameResult.AwayTeamName = lineToBeSetAsName + counter++;
         }
 
-        private void FillGameResultViewModelTeamsNamesWithDefaultStrings(GameResultViewModel gameResult)
+        private static void FillGameResultViewModelTeamsNamesWithDefaultStrings(GameResultViewModel gameResult)
         {
             gameResult.HomeTeamName = Resources.UI.TournamentViews.HomeTeamPlaceholder;
             gameResult.AwayTeamName = Resources.UI.TournamentViews.AwayTeamPlaceholder;

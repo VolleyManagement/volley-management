@@ -3,6 +3,7 @@
     using System;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using VolleyManagement.UnitTests.Services.GameReportService.Comparers;
 
     [TestClass]
     public class GetPivotStandingsTests : GameReportsServiceTestsBase
@@ -475,8 +476,7 @@
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
-            comparer.WithPointsComparer();
+            PivotStandingsComparer comparer = new PivotStandingsComparer(ComparerBy.Points);
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
@@ -485,8 +485,7 @@
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
-            comparer.WithSetRatioComparer();
+            PivotStandingsComparer comparer = new PivotStandingsComparer(ComparerBy.Sets);
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
@@ -495,8 +494,7 @@
           TournamentStandings<PivotStandingsDto> actual,
           string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
-            comparer.WithBallsRatioComparer();
+            PivotStandingsComparer comparer = new PivotStandingsComparer(ComparerBy.Balls);
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
 
@@ -505,8 +503,7 @@
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
-            comparer.WithGameResultComparer();
+            PivotStandingsComparer comparer = new PivotStandingsComparer(ComparerBy.Status);
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
     }

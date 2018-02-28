@@ -8,9 +8,8 @@
     {
         private StandingsEntryComparer standingsComparer;
 
-        public StandingsDtoComparer()
+        public StandingsDtoComparer(): this(new StandingsEntryComparer())
         {
-            standingsComparer = new StandingsEntryComparer();
         }
 
         internal StandingsDtoComparer(StandingsEntryComparer standingsComparer)

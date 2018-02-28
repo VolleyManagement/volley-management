@@ -73,7 +73,7 @@
             {
                 SetsComparer(x, y);
             }
-            if (HasComparerByBalls])
+            if (HasComparerByBalls)
             {
                 BallsComparer(x, y);
             }

@@ -29,7 +29,6 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Index()
         {
-            //var users = _userService.GetAllUsers().ToList().ConvertAll(UserViewModel.Initialize);
             var users = _userService.GetAllUsers().Select(UserViewModel.Initialize).ToList();
 
             return View(users);

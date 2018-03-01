@@ -1,12 +1,11 @@
-﻿using System.Linq;
-
-namespace VolleyManagement.UI.Areas.Admin.Controllers
+﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
     using System.Web.Mvc;
     using Contracts;
     using Contracts.Exceptions;
     using Models;
+    using System.Linq;
     using System.Collections.Generic;
     using Domain.FeedbackAggregate;
 

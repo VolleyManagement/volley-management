@@ -39,7 +39,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult ActiveUsers()
         {
-            var activeUsers = _userService.GetAllActiveUsers().ToList().ConvertAll(UserViewModel.Initialize);
+            var activeUsers = _userService.GetAllActiveUsers().Select(UserViewModel.Initialize).ToList();
             return View(activeUsers);
         }
 

@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.ContributorService
+﻿using System.Linq;
+
+namespace VolleyManagement.UnitTests.Services.ContributorService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -50,7 +52,7 @@
 
 
             // Act
-            var actual = sut.Get();
+            var actual = sut.Get().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());

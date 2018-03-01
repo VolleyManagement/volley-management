@@ -302,7 +302,7 @@
             to.Email = from.Email;
             to.PersonName = from.PersonName;
             to.PhoneNumber = from.PhoneNumber;
-            to.LoginProviders = (from.Logins).ConvertAll(
+            to.LoginProviders = from.Logins.ConvertAll(
                                 l => new LoginProviderInfo
                                 {
                                     ProviderKey = l.ProviderKey,

@@ -96,7 +96,7 @@
             var role = _rolesService.GetRole(id);
             var result = new RoleDetailsViewModel(role);
 
-            result.Users = _rolesService.GetUsersInRole(id).ToList().ConvertAll(u => u.UserName);
+            result.Users = _rolesService.GetUsersInRole(id).Select(u => u.UserName).ToList();
 
             return View(result);
         }

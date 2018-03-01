@@ -146,9 +146,9 @@ namespace VolleyManagement.Services
         /// <returns>List of game results of specified tournament.</returns>
         public ICollection<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            var allGames = (QueryAllTournamentGames(tournamentId))
-                            .ToList()
-                            .FindAll(gr => gr.HasResult);
+            var allGames = QueryAllTournamentGames(tournamentId)
+                .Where(gr => gr.HasResult)
+                .ToList();
 
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });

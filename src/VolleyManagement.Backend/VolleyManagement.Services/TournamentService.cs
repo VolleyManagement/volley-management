@@ -170,8 +170,6 @@
         {
             var result = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
 
-            result?.ForEach(t => t.GroupName = "You won't catch me!");
-
             return result;
         }
 

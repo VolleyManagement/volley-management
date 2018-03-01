@@ -11,7 +11,13 @@
         {
             Assert.AreEqual(expected.Id, actual.Id, $"{messagePrefix}Division id do not match");
             Assert.AreEqual(expected.Name, actual.Name, $"{messagePrefix}Division name do not match");
-            CollectionAssert.AreEqual(expected.Rounds, actual.Rounds, $"{messagePrefix}Division Rounds collection do not match");
+
+            Assert.AreEqual(expected.Rounds.Count, actual.Rounds.Count, $"{messagePrefix}Number of Round entries does not match.");
+
+            for (var i = 0; i < expected.Rounds.Count; i++)
+            {
+                Assert.AreEqual(expected.Rounds[i], actual.Rounds[i], $"{messagePrefix}Round name does not match");
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
+﻿using System;
+
+namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
     using UI.Areas.WebApi.ViewModels.Games;
@@ -9,7 +11,7 @@
     [ExcludeFromCodeCoverage]
     internal class GameViewModelBuilder
     {
-         /// <summary>
+        /// <summary>
         /// Holds test game view model instance
         /// </summary>
         private GameViewModel _gameViewModel;
@@ -24,7 +26,7 @@
                 Id = 1,
                 HomeTeamName = "HomeTeam",
                 AwayTeamName = "AwayTeam",
-                GameDate = "2016-04-03T10:00:00+03:00",
+                Date = new DateTime(2016, 4, 3, 13, 0, 0, DateTimeKind.Utc),
                 Result = new GameViewModel.GameResult()
             };
         }
@@ -67,9 +69,9 @@
         /// </summary>
         /// <param name="date">Game date for test game view model</param>
         /// <returns>Game view model builder object</returns>
-        public GameViewModelBuilder WithGameDate(string date)
+        public GameViewModelBuilder WithGameDate(DateTime date)
         {
-            _gameViewModel.GameDate = date;
+            _gameViewModel.Date = date;
             return this;
         }
 

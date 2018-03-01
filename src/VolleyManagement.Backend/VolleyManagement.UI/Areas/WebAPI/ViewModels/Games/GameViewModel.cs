@@ -1,12 +1,11 @@
-using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
-
 namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
 {
+    using Domain;
+    using Domain.GamesAggregate;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Domain;
-    using Domain.GamesAggregate;
+    using WebAPI.ViewModels.Schedule;
 
     /// <summary>
     /// GameViewModel class.

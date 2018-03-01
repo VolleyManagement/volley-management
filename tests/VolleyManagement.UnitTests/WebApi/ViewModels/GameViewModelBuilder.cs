@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace VolleyManagement.UnitTests.WebApi.ViewModels
+﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using UI.Areas.WebApi.ViewModels.Games;
 

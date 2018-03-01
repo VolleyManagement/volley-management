@@ -1,18 +1,19 @@
-﻿using VolleyManagement.Domain.TournamentsAggregate;
+﻿
 
 namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
+    using Contracts;
+    using Domain.TournamentsAggregate;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Web.Http;
-    using Contracts;
     using ViewModels.GameReports;
     using ViewModels.Games;
     using ViewModels.Tournaments;
-    using WebAPI.ViewModels.Schedule;
     using WebAPI.ViewModels.GameReports;
+    using WebAPI.ViewModels.Schedule;
 
     /// <summary>
     /// The tournaments controller.
@@ -159,7 +160,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
             return result;
         }
 
-        private void ClearDivisionNames(ScheduleViewModel result)
+        private static void ClearDivisionNames(ScheduleViewModel result)
         {
             result.Schedule.ForEach(w =>
             {

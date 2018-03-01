@@ -1,26 +1,20 @@
-using VolleyManagement.Domain.GamesAggregate;
-
 namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
 {
     public class ScoreViewModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScoreViewModel"/> class that contains default score.
-        /// </summary>
         public ScoreViewModel()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScoreViewModel"/> class that contains specified score.
-        /// </summary>
-        /// <param name="home">Score of the home team.</param>
-        /// <param name="away">Score of the away team.</param>
-        /// <param name="isTechnicalDefeat">Indicating whether the technical defeat has taken place.</param>
-        public ScoreViewModel(byte home, byte away, bool isTechnicalDefeat = false)
+        public ScoreViewModel(byte home, byte away)
+            : this(home, away, false)
         {
-            Home              = home;
-            Away              = away;
+        }
+
+        public ScoreViewModel(byte home, byte away, bool isTechnicalDefeat)
+        {
+            Home = home;
+            Away = away;
             IsTechnicalDefeat = isTechnicalDefeat;
         }
 

@@ -38,7 +38,7 @@
         {
             _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
-            var roles = (_rolesService.GetAllRoles()).Select(r => new RoleViewModel(r)).ToList();
+            var roles = _rolesService.GetAllRoles().Select(r => new RoleViewModel(r)).ToList();
             return View(roles);
         }
 

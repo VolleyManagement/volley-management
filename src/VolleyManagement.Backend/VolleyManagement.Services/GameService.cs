@@ -819,7 +819,7 @@ namespace VolleyManagement.Services
         {
             // Assume that finished game is a semifinal game
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
-            Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
+            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             ValidateEditingSchemePlayoff(nextGame);
 
@@ -838,7 +838,7 @@ namespace VolleyManagement.Services
             return nextGame;
         }
 
-        private int GetNextGameNumber(Game finishedGame, IEnumerable<Game> games)
+        private static int GetNextGameNumber(Game finishedGame, IEnumerable<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
 
@@ -846,7 +846,7 @@ namespace VolleyManagement.Services
                 + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
         }
 
-        private bool IsSemiFinalGame(Game finishedGame, ICollection<Game> games)
+        private static bool IsSemiFinalGame(Game finishedGame, ICollection<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
             List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();

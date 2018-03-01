@@ -34,7 +34,6 @@ namespace VolleyManagement.UI.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var feedbacks = _feedbackService.Get().Select(f =>new RequestsViewModel(f)).ToList();
-            //var feedbacks = ((List<Feedback>)_feedbackService.Get()).ConvertAll(f => new RequestsViewModel(f));
             return View(feedbacks);
         }
 

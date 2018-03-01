@@ -15,7 +15,7 @@
         /// <param name="message">Message text</param>
         public void Write(LogLevelEnum level, string message)
         {
-            var logEntry = new LogEntry {Message = message};
+            var logEntry = new LogEntry { Message = message };
             SetCategory(logEntry, level);
             Logger.Write(logEntry);
         }

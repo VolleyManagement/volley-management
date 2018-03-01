@@ -1,6 +1,4 @@
-﻿
-
-namespace VolleyManagement.UI.Areas.WebApi.Controllers
+﻿namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
     using Contracts;
     using Domain.TournamentsAggregate;

@@ -192,10 +192,10 @@
             var expected = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
 
             // Act
-            var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
+            var actual = sut.GetAllTournamentTeams(It.IsAny<int>()).Select(x => x).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new TeamInTournamentComparer());
+            CollectionAssert.AreEqual(expected, actual, new TeamInTournamentComparer());
         }
 
         /// <summary>
@@ -235,10 +235,10 @@
             var expected = new DivisionTestFixture().TestDivisions().Build();
 
             // Act
-            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
+            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID).Select(x=>x).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new DivisionComparer());
+            CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
         }
 
         /// <summary>
@@ -278,10 +278,10 @@
             var expected = new GroupTestFixture().TestGroups().Build();
 
             // Act
-            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
+            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new GroupComparer());
+            CollectionAssert.AreEqual(expected, actual, new GroupComparer());
         }
 
         /// <summary>

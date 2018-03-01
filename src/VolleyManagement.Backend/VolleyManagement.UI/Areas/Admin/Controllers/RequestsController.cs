@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
+﻿using System.Linq;
+
+namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
     using System.Web.Mvc;
@@ -31,7 +33,8 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var feedbacks = ((List<Feedback>)_feedbackService.Get()).ConvertAll(f => new RequestsViewModel(f));
+            var feedbacks = _feedbackService.Get().Select(f =>new RequestsViewModel(f)).ToList();
+            //var feedbacks = ((List<Feedback>)_feedbackService.Get()).ConvertAll(f => new RequestsViewModel(f));
             return View(feedbacks);
         }
 

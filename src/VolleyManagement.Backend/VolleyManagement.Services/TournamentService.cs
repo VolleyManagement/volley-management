@@ -344,7 +344,7 @@
                     TournamentResources.CollectionIsEmpty);
             }
 
-            var tournamentId = GetTournamentByGroup(((List<TeamTournamentAssignmentDto>)(groupTeam))[0].GroupId).Id;
+            var tournamentId = GetTournamentByGroup(groupTeam.First().GroupId).Id;
             var allTeams = GetAllTournamentTeams(tournamentId);
             int numberOfTeamAlreadyExist = 0;
 

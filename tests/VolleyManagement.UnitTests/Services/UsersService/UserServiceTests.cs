@@ -67,10 +67,10 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetAllUsers();
+            var actual = sut.GetAllUsers().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new UserComparer());
+            CollectionAssert.AreEqual(expected, actual, new UserComparer());
         }
 
         [TestMethod]
@@ -157,10 +157,10 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetAdminsList();
+            var actual = sut.GetAdminsList().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new UserComparer());
+            CollectionAssert.AreEqual(expected, actual, new UserComparer());
         }
 
         private UserService BuildSUT()

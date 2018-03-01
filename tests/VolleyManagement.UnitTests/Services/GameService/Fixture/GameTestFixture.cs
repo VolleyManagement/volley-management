@@ -209,6 +209,54 @@
             return this;
         }
 
+        public GameTestFixture SameTeamsInOneGamePlayOffScheme()
+        {
+            _games.Clear();
+
+            _games.AddRange(
+                new List<Game>
+                {
+                    new Game
+                    {
+                        Id = 1,
+                        HomeTeamId = 1,
+                        AwayTeamId = 1,
+                        GameNumber = 1,
+                        Round = 1,
+                        TournamentId = 1,
+                        Result = new Result()
+                    },
+                    new Game
+                    {
+                        Id = 2,
+                        HomeTeamId = 3,
+                        AwayTeamId = 4,
+                        GameNumber = 2,
+                        Round = 1,
+                        TournamentId = 1,
+                        Result = new Result()
+                    },
+                    new Game
+                    {
+                        Id = 3,
+                        Round = 2,
+                        GameNumber = 3,
+                        TournamentId = 1,
+                        Result = new Result()
+                    },
+                    new Game
+                    {
+                        Id = 4,
+                        Round = 2,
+                        GameNumber = 4,
+                        TournamentId = 1,
+                        Result = new Result()
+                    }
+                });
+
+            return this;
+        }
+
         public GameTestFixture TestMinimumOddTeamsPlayOffSchedule()
         {
             _games.Clear();

@@ -1181,6 +1181,107 @@
             return this;
         }
 
+        public GameServiceTestFixture TestPlayoffWithFirstRoundScheduledOnly()
+        {
+            _gameResults.Clear();
+
+            var round1Date = DateTime.Parse(DATE_PLAYOFF_START);
+            _gameResults.AddRange(
+                new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id           = 1,
+                        GameNumber   = 1,
+                        HomeTeamId   = 1,
+                        HomeTeamName = "TeamNameA",
+                        AwayTeamId   = 2,
+                        AwayTeamName = "TeamNameB",
+                        Round        = 1,
+                        GameDate     = round1Date,
+                    },
+                    new GameResultDto
+                    {
+                        Id           = 2,
+                        GameNumber   = 2,
+                        HomeTeamId   = 3,
+                        HomeTeamName = "TeamNameC",
+                        AwayTeamId   = 4,
+                        AwayTeamName = "TeamNameD",
+                        Round        = 1,
+                        GameDate     = round1Date.AddHours(1),
+                    },
+                    new GameResultDto
+                    {
+                        Id           = 3,
+                        GameNumber   = 3,
+                        HomeTeamId   = 5,
+                        HomeTeamName = "TeamNameE",
+                        AwayTeamId   = 6,
+                        AwayTeamName = "TeamNameF",
+                        Round        = 1,
+                        GameDate     = round1Date.AddHours(2),
+                    },
+                    new GameResultDto
+                    {
+                        Id           = 4,
+                        GameNumber   = 4,
+                        HomeTeamId   = 7,
+                        HomeTeamName = "TeamNameG",
+                        AwayTeamId   = 8,
+                        AwayTeamName = "TeamNameH",
+                        Round        = 1,
+                        GameDate     = round1Date.AddHours(3),
+                    },
+                });
+
+            _gameResults.AddRange(
+                new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id         = 29,
+                        GameNumber = 29,
+                        Round      = 4,
+                    },
+                    new GameResultDto
+                    {
+                        Id         = 30,
+                        GameNumber = 30,
+                        Round      = 4,
+                    }
+                });
+
+            _gameResults.AddRange(
+                new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id         = 31,
+                        GameNumber = 31,
+                        Round      = 5,
+                    },
+                    new GameResultDto
+                    {
+                        Id         = 32,
+                        GameNumber = 32,
+                        Round      = 5,
+                    }
+                });
+
+            // Setup common properties
+            _gameResults.ForEach(gr =>
+            {
+                gr.TournamentId = 1;
+                gr.DivisionId = 1;
+                gr.DivisionName = "Division 1";
+                gr.GroupId = 1;
+                gr.Result = new Result();
+            });
+
+            return this;
+        }
+
         public GameServiceTestFixture TestMinimumEvenEmptyGamesPlayoff()
         {
             _gameResults.Clear();

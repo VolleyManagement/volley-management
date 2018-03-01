@@ -1194,5 +1194,73 @@
             };
             return this;
         }
+
+        public ScheduleViewModelTestFixture WithPlayoffWithFirstRoundScheduledOnly()
+        {
+            var round1Date = DateTime.Parse(DATE_PLAYOFF_START);
+            _schedule.Schedule = new List<WeekViewModel>
+            {
+                new WeekViewModel
+                {
+                    Days = new List<ScheduleDayViewModel>
+                    {
+                        new ScheduleDayViewModel
+                        {
+                            Date      = round1Date,
+                            Divisions = new List<DivisionTitleViewModel>
+                            {
+                                new DivisionTitleViewModel
+                                {
+                                    Rounds = new List<string>
+                                    {
+                                        "Четверть-финал",
+                                    },
+                                },
+                            },
+                            Games = new List<GameViewModel>
+                            {
+                                new GameViewModel
+                                {
+                                    Id           = 1,
+                                    HomeTeamName = "TeamNameA",
+                                    AwayTeamName = "TeamNameB",
+                                    Result       = null,
+                                    Round        = 1,
+                                    Date         = round1Date,
+                                },
+                                new GameViewModel
+                                {
+                                    Id           = 2,
+                                    HomeTeamName = "TeamNameC",
+                                    AwayTeamName = "TeamNameD",
+                                    Result       = null,
+                                    Round        = 1,
+                                    Date         = round1Date.AddHours(1),
+                                },
+                                new GameViewModel
+                                {
+                                    Id           = 3,
+                                    HomeTeamName = "TeamNameE",
+                                    AwayTeamName = "TeamNameF",
+                                    Result       = null,
+                                    Round        = 1,
+                                    Date         = round1Date.AddHours(2),
+                                },
+                                new GameViewModel
+                                {
+                                    Id           = 4,
+                                    HomeTeamName = "TeamNameG",
+                                    AwayTeamName = "TeamNameH",
+                                    Result       = null,
+                                    Round        = 1,
+                                    Date         = round1Date.AddHours(3),
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            return this;
+        }
     }
 }

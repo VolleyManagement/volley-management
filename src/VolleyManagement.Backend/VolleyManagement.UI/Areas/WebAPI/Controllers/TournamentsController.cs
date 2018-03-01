@@ -111,6 +111,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         public ScheduleViewModel GetSchedule(int tournamentId)
         {
             var games = _gameService.GetTournamentGames(tournamentId)
+                                    .Where(g => g.GameDate.HasValue)
                                     .Select(GameViewModel.Map);
             var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 

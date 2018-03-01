@@ -280,6 +280,28 @@
             ScheduleViewModelComparer.AssertAreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void GetSchedule_PlayoffScheme_NotScheduledGamesAreRemoved()
+        {
+            // Arrange
+            const int TEST_ROUND_COUNT = 3;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
+            tournament.Scheme = TournamentSchemeEnum.PlayOff;
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
+            SetupGetTournamentResults(TOURNAMENT_ID, new GameServiceTestFixture().TestPlayoffWithFirstRoundScheduledOnly().Build());
+
+            var expected = new ScheduleViewModelTestFixture().WithPlayoffWithFirstRoundScheduledOnly().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Private

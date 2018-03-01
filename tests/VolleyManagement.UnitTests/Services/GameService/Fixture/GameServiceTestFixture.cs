@@ -913,7 +913,7 @@
             return this;
         }
 
-        public GameServiceTestFixture TestTeamsEqualsPlayOffScheme()
+        public GameServiceTestFixture SameTeamsInOneGamePlayOffScheme()
         {
             _gameResults.Clear();
 

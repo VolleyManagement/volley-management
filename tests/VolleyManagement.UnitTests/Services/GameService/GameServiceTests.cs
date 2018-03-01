@@ -1646,6 +1646,10 @@
                 Times.AtLeastOnce());
         }
 
+        /// <summary>
+        /// Test method checks that 2 same teams(not null) can't be in one game in PlayOff scheme.
+        /// Argument exception thrown. 
+        /// </summary>
         [TestMethod]
         public void Edit_BothTeamsEqualInPlayOff_ArgumentExceptionThrown()
         {
@@ -1653,11 +1657,11 @@
 
             // Arrange
             var games = new GameTestFixture()
-                .TestTeamsEqualsPlayOffScheme()
+                .SameTeamsInOneGamePlayOffScheme()
                 .Build();
 
             var gameInfo = new GameServiceTestFixture()
-                .TestTeamsEqualsPlayOffScheme()
+                .SameTeamsInOneGamePlayOffScheme()
                 .Build();
 
             MockTournamentSchemePlayoff(
@@ -1694,11 +1698,11 @@
             MockDefaultTournament();
 
             var games = new GameTestFixture()
-                .TestTeamsEqualsPlayOffScheme()
+                .SameTeamsInOneGamePlayOffScheme()
                 .Build();
 
             var gameInfo = new GameServiceTestFixture()
-                .TestTeamsEqualsPlayOffScheme()
+                .SameTeamsInOneGamePlayOffScheme()
                 .Build();
 
             MockTournamentSchemePlayoff(

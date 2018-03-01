@@ -209,7 +209,7 @@
             return this;
         }
 
-        public GameTestFixture TestTeamsEqualsPlayOffScheme()
+        public GameTestFixture SameTeamsInOneGamePlayOffScheme()
         {
             _games.Clear();
 

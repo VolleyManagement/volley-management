@@ -87,7 +87,7 @@
         {
             if (requestedOperation == null)
             {
-                throw new ArgumentNullException($"Requested operation shouldn't be null!");
+                throw new ArgumentNullException("Requested operation shouldn't be null!");
             }
 
             return GetAllowedOperations(new List<AuthOperation> { requestedOperation });

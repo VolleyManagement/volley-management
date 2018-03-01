@@ -55,6 +55,7 @@
         private const string JSON_NO_RIGHTS_MESSAGE = "Please, login to apply team for the tournament.";
         private const string JSON_OK_MSG = "Your request was succesfully created. Please, wait until administrator confirm your request.";
         private const string INDEX_ACTION_NAME = "Index";
+        private const string ARCHIVED_ACTION_NAME = "Archived";
         private const string SHOW_SCHEDULE_ACTION_NAME = "ShowSchedule";
         private const string ROUTE_VALUES_KEY = "action";
         private const string MANAGE_TOURNAMENT_TEAMS = "/Teams/ManageTournamentTeams?tournamentId=";
@@ -1347,7 +1348,7 @@
 
             // Assert
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Once());
-            VerifyRedirect(INDEX_ACTION_NAME, result);
+            VerifyRedirect(ARCHIVED_ACTION_NAME, result);
         }
 
         #endregion

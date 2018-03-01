@@ -479,13 +479,11 @@
 
             var newGameDivisionId = (int?)0;
 
-            if (!(newGame.AwayTeamId == null && newGame.HomeTeamId == null && tournamentSсheduleInfo.Scheme == TournamentSchemeEnum.PlayOff))
+            if (IsNotPlayOffThemeAndBothTeamsNotNull(newGame, tournamentSсheduleInfo))
             {
                 newGameDivisionId = teamsInTournament
                     .First(t => t.TeamId == newGame.AwayTeamId || t.TeamId == newGame.HomeTeamId).DivisionId;
             }
-
-
 
             var gamesInSameRoundSameDivision = (
                         from game in games
@@ -502,6 +500,13 @@
                 newGame,
                 gamesInSameRoundSameDivision,
                 tournamentSсheduleInfo);
+        }
+
+        private static bool IsNotPlayOffThemeAndBothTeamsNotNull(Game newGame, TournamentScheduleDto tournamentSсheduleInfo)
+        {
+            return !(newGame.AwayTeamId == null &&
+                     newGame.HomeTeamId == null && 
+                     tournamentSсheduleInfo.Scheme == TournamentSchemeEnum.PlayOff);
         }
 
         private static void ValidateGameInRoundOnCreate(

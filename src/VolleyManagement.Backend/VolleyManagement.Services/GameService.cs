@@ -327,7 +327,7 @@
 
         private void ValidateGame(Game game, TournamentScheduleDto tournamentScheduleInfo)
         {
-            ValidateTeams(game.HomeTeamId, game.AwayTeamId);
+            ValidateTeams(game.HomeTeamId, game.AwayTeamId, tournamentScheduleInfo);
             ValidateGameInTournament(game, tournamentScheduleInfo);
         }
 
@@ -339,9 +339,17 @@
             ValidateSetScoresOrder(result.SetScores);
         }
 
-        private void ValidateTeams(int? homeTeamId, int? awayTeamId)
+        private void ValidateTeams(int? homeTeamId, int? awayTeamId, TournamentScheduleDto tournamentScheduleInfo)
         {
-            if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                if (!(homeTeamId == null && awayTeamId == null) &&
+                    GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
+                {
+                    throw new ArgumentException(Resources.GameResultSameTeam);
+                }
+            }
+            else if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
                 throw new ArgumentException(Resources.GameResultSameTeam);
             }
@@ -469,8 +477,13 @@
                     TournamentId = tournamentSсheduleInfo.Id
                 });
 
-            var newGameDivisionId = teamsInTournament
-                .First(t => t.TeamId == newGame.AwayTeamId || t.TeamId == newGame.HomeTeamId).DivisionId;
+            var newGameDivisionId = (int?)0;
+
+            if (IsNotPlayOffThemeAndBothTeamsNotNull(newGame, tournamentSсheduleInfo))
+            {
+                newGameDivisionId = teamsInTournament
+                    .First(t => t.TeamId == newGame.AwayTeamId || t.TeamId == newGame.HomeTeamId).DivisionId;
+            }
 
             var gamesInSameRoundSameDivision = (
                         from game in games
@@ -487,6 +500,13 @@
                 newGame,
                 gamesInSameRoundSameDivision,
                 tournamentSсheduleInfo);
+        }
+
+        private static bool IsNotPlayOffThemeAndBothTeamsNotNull(Game newGame, TournamentScheduleDto tournamentSсheduleInfo)
+        {
+            return !(newGame.AwayTeamId == null &&
+                     newGame.HomeTeamId == null && 
+                     tournamentSсheduleInfo.Scheme == TournamentSchemeEnum.PlayOff);
         }
 
         private static void ValidateGameInRoundOnCreate(

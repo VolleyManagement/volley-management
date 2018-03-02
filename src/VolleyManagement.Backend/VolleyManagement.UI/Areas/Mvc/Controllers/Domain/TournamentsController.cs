@@ -278,7 +278,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             }
 
             _tournamentService.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Archived");
         }
 
         /// <summary>

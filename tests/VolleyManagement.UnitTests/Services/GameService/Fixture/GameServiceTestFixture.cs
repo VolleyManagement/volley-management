@@ -912,7 +912,64 @@
 
             return this;
         }
+        
+        public GameServiceTestFixture SameTeamsInOneGamePlayOffScheme()
+        {
+            _gameResults.Clear();
 
+            _gameResults.AddRange(
+                new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id = 1,
+                        HomeTeamId = 1,
+                        AwayTeamId = 1,
+                        GameNumber = 1,
+                        Round = 1,
+                        TournamentId = 1,
+                        UrlToGameVideo = URL_A,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 2,
+                        HomeTeamId = 3,
+                        AwayTeamId = 4,
+                        GameNumber = 2,
+                        Round = 1,
+                        TournamentId = 1,
+                        UrlToGameVideo = URL_B,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 3,
+                        Round = 2,
+                        GameNumber = 3,
+                        TournamentId = 1,
+                        UrlToGameVideo = URL_C,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 4,
+                        Round = 2,
+                        GameNumber = 4,
+                        TournamentId = 1,
+                        UrlToGameVideo = URL_D,
+                    },
+                });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Builds instance of <see cref="GameServiceTestFixture"/>.
+        /// </summary>
+        /// <returns>Collection of <see cref="GameResultDto"/> objects filled with test data.</returns>
+        public List<GameResultDto> Build()
+        {
+            return _gameResults;
+        }
+        
         public GameServiceTestFixture WithOneWeekOneDivisionOneGame()
         {
             _gameResults.Clear();
@@ -1020,15 +1077,6 @@
                     UrlToGameVideo = URL_A,
                 });
             }
-        }
-
-        /// <summary>
-        /// Builds instance of <see cref="GameServiceTestFixture"/>.
-        /// </summary>
-        /// <returns>Collection of <see cref="GameResultDto"/> objects filled with test data.</returns>
-        public List<GameResultDto> Build()
-        {
-            return _gameResults;
         }
     }
 }

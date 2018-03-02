@@ -30,7 +30,11 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         public TournamentTeamsListViewModel(ICollection<TeamTournamentDto> source, int tournamentId)
         {
             TournamentId = tournamentId;
-            TeamsList = source.Select(TeamNameViewModel.Map).ToList();
+            TeamsList = source
+                        .Select(TeamNameViewModel.Map)
+                        .OrderBy(model => model.DivisionName)
+                        .ThenBy(model => model.GroupName)
+                        .ToList();
         }
 
         /// <summary>

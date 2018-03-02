@@ -1,9 +1,8 @@
-﻿using System.Linq;
-
-namespace VolleyManagement.UnitTests.Services.UsersService
+﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Diagnostics.CodeAnalysis;
     using Domain.UsersAggregate;
     using PlayerService;
@@ -25,25 +24,6 @@ namespace VolleyManagement.UnitTests.Services.UsersService
         {
             return AreEqual(x, y) ? 0 : 1;
         }
-
-        /// <summary>
-        /// Compare two users objects.
-        /// </summary>
-        /// <param name="x">First user to compare.</param>
-        /// <param name="y">Second user to compare.</param>
-        /// <returns>A signed integer that indicates
-        /// the relative values of users.</returns>
-        public bool Compare(ICollection<User> x, ICollection<User> y)
-        {
-            List<bool> b = new List<bool>();
-            for (int i = 0; i < x.Count; i++)
-            {
-                b.Add(AreEqual(x.ElementAt(i), y.ElementAt(i)));
-            }
-
-            return !b.Contains(false);
-        }
-
 
         /// <summary>
         /// Compare two users objects (non-generic implementation).

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace VolleyManagement.UnitTests
+﻿namespace VolleyManagement.UnitTests
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -70,7 +68,6 @@ namespace VolleyManagement.UnitTests
 
                 expectedEnumerator.Dispose();
                 actualEnumerator.Dispose();
-
             }
         }
     }

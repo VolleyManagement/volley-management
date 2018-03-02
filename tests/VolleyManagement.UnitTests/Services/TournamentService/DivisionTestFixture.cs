@@ -25,7 +25,7 @@
             _divisions.Add(new Division()
             {
                 Id = 1,
-                Name = "Division 1",
+                Name = "DivisionNameA",
                 TournamentId = 1,
                 Groups =
                 {
@@ -40,7 +40,7 @@
             _divisions.Add(new Division()
             {
                 Id = 2,
-                Name = "Division 2",
+                Name = "DivisionNameB",
                 TournamentId = 1,
                 Groups =
                 {

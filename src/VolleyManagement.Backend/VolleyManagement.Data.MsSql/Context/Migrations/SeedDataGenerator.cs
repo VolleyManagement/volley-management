@@ -159,8 +159,7 @@
                 Contributors091Atqc(),
                 Contributors096Net(),
                 Contributors103Net(),
-                Contributors122Net(),
-                Contributors297Net()
+                Contributors122Net()
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
@@ -447,25 +446,6 @@
             return contributors;
         }
 
-        private static ContributorTeamEntity Contributors297Net()
-        {
-            ContributorTeamEntity contributors = new ContributorTeamEntity
-            {
-                Name = "Lv-297 .NET",
-                CourseDirection = ".NET",
-                Contributors = new List<ContributorEntity>
-                {
-                    new ContributorEntity { Name = "Yurii Chornyi" },
-                    new ContributorEntity { Name = "Myrosav Vyspianskyi" },
-                    new ContributorEntity { Name = "Sofia Vizniak" },
-                    new ContributorEntity { Name = "Natalia Biduk" },
-                    new ContributorEntity { Name = "Ron Ben`" },
-                    new ContributorEntity { Name = "Andrii Pirko" },
-                    new ContributorEntity { Name = "Oleh Gerus" }
-                }
-            };
-            return contributors;
-        }
         #endregion
     }
 }

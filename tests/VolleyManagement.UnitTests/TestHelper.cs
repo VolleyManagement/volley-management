@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests
+﻿using System.Linq;
+
+namespace VolleyManagement.UnitTests
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -44,5 +46,26 @@
                 }
             }
         }
+
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer)
+        {
+            if (expected != null || actual != null)
+            {
+                if (expected == null || actual == null)
+                {
+                    Assert.Fail("One of the colection is null");
+                }
+
+                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
+
+                for (var i = 0; i < expected.Count; i++)
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(((IList<T>)expected)[i], ((IList<T>)actual)[i]) == 0,
+                        $"[Item#{i}] ");
+                }
+            }
+        }
     }
 }
+

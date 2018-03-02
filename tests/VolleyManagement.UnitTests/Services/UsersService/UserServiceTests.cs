@@ -61,16 +61,15 @@
 
             var expected = new UserServiceTestFixture()
                                             .TestUsers()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetAllUsers().ToList();
+            var actual = sut.GetAllUsers();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            TestHelper.AreEqual(expected, actual, new UserComparer());
         }
 
         [TestMethod]
@@ -152,15 +151,14 @@
 
             var expected = new UserServiceTestFixture()
                                             .TestUsers()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetAdminsList().ToList();
+            var actual = sut.GetAdminsList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            TestHelper.AreEqual(expected, actual, new UserComparer());
         }
 
         private UserService BuildSUT()

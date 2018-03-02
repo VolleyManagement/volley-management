@@ -1034,18 +1034,7 @@
                 GameNumber = gameNumber,
                 Round = round,
                 TournamentId = 1,
-                Result = new Result
-                {
-                    GameScore = new Score(0, 0),
-                    SetScores = new List<Score>
-                        {
-                            new Score(0, 0),
-                            new Score(0, 0),
-                            new Score(0, 0),
-                            new Score(0, 0),
-                            new Score(0, 0),
-                        },
-                },
+                Result = new Result(),
                 UrlToGameVideo = URL_A,
             });
         }
@@ -1062,18 +1051,7 @@
                     GameNumber = 1,
                     Round = round,
                     TournamentId = 1,
-                    Result = new Result
-                    {
-                        GameScore = new Score(0, 0),
-                        SetScores = new List<Score>
-                        {
-                            new Score(0, 0),
-                            new Score(0, 0),
-                            new Score(0, 0),
-                            new Score(0, 0),
-                            new Score(0, 0),
-                        },
-                    },
+                    Result = new Result(),
                     UrlToGameVideo = URL_A,
                 });
             }

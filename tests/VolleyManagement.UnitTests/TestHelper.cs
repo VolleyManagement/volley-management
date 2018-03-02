@@ -58,12 +58,19 @@ namespace VolleyManagement.UnitTests
 
                 Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
 
-                for (var i = 0; i < expected.Count; i++)
+                var expectedEnumerator = expected.GetEnumerator();
+                var actualEnumerator = actual.GetEnumerator();
+
+                while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
                 {
                     Assert.IsTrue(
-                        comparer.Compare(expected.ElementAt(i), actual.ElementAt(i)) == 0,
-                        $"[Item#{i}] ");
+                           comparer.Compare(expectedEnumerator.Current, actualEnumerator.Current) == 0,
+                           $"[Item#{expectedEnumerator.Current.ToString()}] ");
                 }
+
+                expectedEnumerator.Dispose();
+                actualEnumerator.Dispose();
+
             }
         }
     }

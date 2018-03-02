@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.UsersService
+﻿using System.Linq;
+
+namespace VolleyManagement.UnitTests.Services.UsersService
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -25,6 +27,25 @@
         }
 
         /// <summary>
+        /// Compare two users objects.
+        /// </summary>
+        /// <param name="x">First user to compare.</param>
+        /// <param name="y">Second user to compare.</param>
+        /// <returns>A signed integer that indicates
+        /// the relative values of users.</returns>
+        public bool Compare(ICollection<User> x, ICollection<User> y)
+        {
+            List<bool> b = new List<bool>();
+            for (int i = 0; i < x.Count; i++)
+            {
+                b.Add(AreEqual(x.ElementAt(i), y.ElementAt(i)));
+            }
+
+            return !b.Contains(false);
+        }
+
+
+        /// <summary>
         /// Compare two users objects (non-generic implementation).
         /// </summary>
         /// <param name="x">First user to compare.</param>
@@ -42,6 +63,7 @@
             }
 
             if (secondUser == null)
+
             {
                 return 1;
             }

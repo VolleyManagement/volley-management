@@ -168,9 +168,7 @@
         /// <returns>Tournament teams</returns>
         public List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId)
         {
-            var result = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
-
-            return result;
+            return _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>

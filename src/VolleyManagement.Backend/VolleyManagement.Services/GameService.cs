@@ -469,8 +469,6 @@
                     TournamentId = tournamentSсheduleInfo.Id
                 });
 
-            teamsInTournament?.ForEach(t => t.GroupName = "");
-
             var newGameDivisionId = teamsInTournament
                 .First(t => t.TeamId == newGame.AwayTeamId || t.TeamId == newGame.HomeTeamId).DivisionId;
 

@@ -6,7 +6,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
     using System.Linq;
     using System.Web;
     using Domain.TeamsAggregate;
-    using Domain.TournamentsAggregate;
 
     /// <summary>
     /// Represents team view model just with name and id

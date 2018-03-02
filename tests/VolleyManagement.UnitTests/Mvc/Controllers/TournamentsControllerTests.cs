@@ -372,7 +372,7 @@
         public void ShowSchedule_PlayoffScheme_TeamsNamesAreAssigned()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 3;
+            const int TEST_ROUND_COUNT = 6;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             tournament.Scheme = TournamentSchemeEnum.PlayOff;
 
@@ -383,24 +383,18 @@
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
 
+            byte secondSemiFinalGameNumber = (byte)(Math.Pow(2, TEST_ROUND_COUNT) - 2);
             var expectedTeamsNames = new List<string>
             {
+                // Every game in first round
                 "Team 1",
                 "Team 2",
-                "Team 1",
-                "Team 2",
-                "Team 1",
-                "Team 2",
-                "Team 1",
-                "Team 2",
-                "Winner1",
-                "Winner2",
-                "Winner3",
-                "Winner4",
-                "Team 1",
-                "Team 2",
-                "Winner5",
-                "Winner6",
+                // Bronze game
+                "Looser" + (secondSemiFinalGameNumber - 1),
+                "Looser" + secondSemiFinalGameNumber,
+                // Final game
+                "Winner" + (secondSemiFinalGameNumber - 1),
+                "Winner" + secondSemiFinalGameNumber 
             };
             var actualTeamsNames = new List<string>();
 
@@ -408,17 +402,17 @@
 
             // Act
             var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            var rounds = actual.Rounds.Values.ToList();
 
-            // Getting all names from rounds.
-            actual.Rounds.Values.ToList().ForEach(round =>
-            {
-                round.ForEach(gameResult =>
-                {
-                    actualTeamsNames.Add(gameResult.HomeTeamName);
-                    actualTeamsNames.Add(gameResult.AwayTeamName);
-                });
-            });
-            
+            var firstRoundGame = rounds.First().First();
+            var bronzeGame = rounds.Last().First(x => actual.IsBronzeMatch(x));
+            var finalGame = rounds.Last().First(x => actual.IsFinal(x));
+
+            // Getting all names from chosen rounds.
+            AddGameTeamsNamesToList(firstRoundGame, actualTeamsNames);
+            AddGameTeamsNamesToList(bronzeGame, actualTeamsNames);
+            AddGameTeamsNamesToList(finalGame, actualTeamsNames);
+
             // Assert
             CollectionAssert.AreEqual(actualTeamsNames, expectedTeamsNames);
         }
@@ -1716,6 +1710,12 @@
                     Value = r.ToString()
                 })
                 .ToList();
+        }
+
+        private void AddGameTeamsNamesToList(GameResultViewModel from, List<string> to)
+        {
+            to.Add(from.HomeTeamName);
+            to.Add(from.AwayTeamName);
         }
 
         private List<Group> CreateTestGroups()

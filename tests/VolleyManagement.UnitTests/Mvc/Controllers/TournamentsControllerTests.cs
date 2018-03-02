@@ -338,6 +338,65 @@
             CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
         }
 
+        /// <summary>
+        /// Test for ShowSchedule method.
+        /// Valid schedule is passed, no exception occurred.
+        /// </summary>
+        [TestMethod]
+        public void ShowSchedule_PlayoffScheme_TeamsNamesAreAssigned()
+        {
+            // Arrange
+            const int TEST_ROUND_COUNT = 3;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
+            tournament.Scheme = TournamentSchemeEnum.PlayOff;
+
+            SetupGetScheduleInfo(
+                TEST_TOURNAMENT_ID,
+                tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
+
+            var expectedTeamsNames = new List<string>
+            {
+                "Team 1",
+                "Team 2",
+                "Team 1",
+                "Team 2",
+                "Team 1",
+                "Team 2",
+                "Team 1",
+                "Team 2",
+                "Winner1",
+                "Winner2",
+                "Winner3",
+                "Winner4",
+                "Team 1",
+                "Team 2",
+                "Winner5",
+                "Winner6",
+            };
+            var actualTeamsNames = new List<string>();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
+
+            // Getting all names from rounds.
+            actual.Rounds.Values.ToList().ForEach(round =>
+            {
+                round.ForEach(gameResult =>
+                {
+                    actualTeamsNames.Add(gameResult.HomeTeamName);
+                    actualTeamsNames.Add(gameResult.AwayTeamName);
+                });
+            });
+            
+            // Assert
+            CollectionAssert.AreEqual(actualTeamsNames, expectedTeamsNames);
+        }
+
         #endregion
 
         #region AddTeamsToTournament

@@ -913,15 +913,6 @@
             return this;
         }
 
-        /// <summary>
-        /// Builds instance of <see cref="GameServiceTestFixture"/>.
-        /// </summary>
-        /// <returns>Collection of <see cref="GameResultDto"/> objects filled with test data.</returns>
-        public List<GameResultDto> Build()
-        {
-            return _gameResults;
-        }
-
         public GameServiceTestFixture WithOneWeekOneDivisionOneGame()
         {
             _gameResults.Clear();
@@ -955,6 +946,89 @@
             });
 
             return this;
+        }
+
+        public GameServiceTestFixture TestGamesWithNoNamesForPlayoffRounds(byte amountOfRounds)
+        {
+            _gameResults.Clear();
+            for (byte round = 1; round < amountOfRounds; ++round)
+            {
+                RepeatedlyAddGameResultDto(_gameResults, round, (int)Math.Pow(2, amountOfRounds - round));
+            }
+            AddBronzeGameResultDto(_gameResults, amountOfRounds);
+            AddFinalGameResultDto(_gameResults, amountOfRounds);
+
+            return this;
+        }
+
+        private static void AddBronzeGameResultDto(List<GameResultDto> gamesResults, byte round) =>
+            AddLastRoundGameResultDto(gamesResults, round, (byte)(Math.Pow(2, round) - 1));
+
+        private static void AddFinalGameResultDto(List<GameResultDto> gamesResults, byte round) =>
+            AddLastRoundGameResultDto(gamesResults, round, (byte)Math.Pow(2, round));
+
+        private static void AddLastRoundGameResultDto(List<GameResultDto> gamesResults, byte round, byte gameNumber)
+        {
+            gamesResults.Add(new GameResultDto
+            {
+                Id = 1,
+                HomeTeamName = "",
+                AwayTeamName = "",
+                GameNumber = gameNumber,
+                Round = round,
+                TournamentId = 1,
+                Result = new Result
+                {
+                    GameScore = new Score(0, 0),
+                    SetScores = new List<Score>
+                        {
+                            new Score(0, 0),
+                            new Score(0, 0),
+                            new Score(0, 0),
+                            new Score(0, 0),
+                            new Score(0, 0),
+                        },
+                },
+                UrlToGameVideo = URL_A,
+            });
+        }
+
+        private static void RepeatedlyAddGameResultDto(List<GameResultDto> gamesResults, byte round, int amountOfTimesToRepeat)
+        {
+            for (byte i = 0; i < amountOfTimesToRepeat; ++i)
+            {
+                gamesResults.Add(new GameResultDto
+                {
+                    Id = 1,
+                    HomeTeamName = "",
+                    AwayTeamName = "",
+                    GameNumber = 1,
+                    Round = round,
+                    TournamentId = 1,
+                    Result = new Result
+                    {
+                        GameScore = new Score(0, 0),
+                        SetScores = new List<Score>
+                        {
+                            new Score(0, 0),
+                            new Score(0, 0),
+                            new Score(0, 0),
+                            new Score(0, 0),
+                            new Score(0, 0),
+                        },
+                    },
+                    UrlToGameVideo = URL_A,
+                });
+            }
+        }
+
+        /// <summary>
+        /// Builds instance of <see cref="GameServiceTestFixture"/>.
+        /// </summary>
+        /// <returns>Collection of <see cref="GameResultDto"/> objects filled with test data.</returns>
+        public List<GameResultDto> Build()
+        {
+            return _gameResults;
         }
     }
 }

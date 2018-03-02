@@ -61,7 +61,7 @@ namespace VolleyManagement.UnitTests
                 for (var i = 0; i < expected.Count; i++)
                 {
                     Assert.IsTrue(
-                        comparer.Compare(((IList<T>)expected)[i], ((IList<T>)actual)[i]) == 0,
+                        comparer.Compare(expected.ElementAt(i), actual.ElementAt(i)) == 0,
                         $"[Item#{i}] ");
                 }
             }

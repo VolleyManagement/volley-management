@@ -770,42 +770,49 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         }
 
         /// <summary>
-        /// Fills home/away teams names with "Winner#" if they participate not in 
-        /// first round or bronze game.
+        /// Fills home/away teams names with "Winner#" (or "Looser#") if they participate not in 
+        /// first round. Oterwise sets with default values.
         /// </summary>
-        /// <param name="scheduleViewModel"></param>
+        /// <param name="scheduleViewModel">SheduleViewModel instance to change.</param>
         private static void FillPlayoffGamesTeamsNamesWithWinners(ScheduleViewModel scheduleViewModel)
         {
             byte winnerCounter = 1;
             string winnerText = "Winner";
-            bool mustDisplayOnlyTeamNames;
+            string looserText = "Looser";
 
             foreach (var pair in scheduleViewModel.Rounds)
             {
                 pair.Value.ForEach(gameResult =>
                 {
-                    mustDisplayOnlyTeamNames = mustDisplayOnlyTeamNames = gameResult.IsFirstRoundGame
-                        || scheduleViewModel.IsBronzeMatch(gameResult);
-
-                    if (mustDisplayOnlyTeamNames)
+                    if (gameResult.IsFirstRoundGame)
                     {
-                        FillGameResultViewModelTeamsNamesWithDefaultStrings(gameResult);
+                        FillGameTeamsNamesWithDefaultStrings(gameResult);
+                    }
+                    else if (scheduleViewModel.IsBronzeMatch(gameResult))
+                    {
+                        FillBronzeGameTeamsNamesWithString(gameResult, looserText, winnerCounter);
                     }
                     else
                     {
-                        FillGameResultViewModelTeamsNamesWithString(gameResult, winnerText, ref winnerCounter);
+                        FillGameTeamsNamesWithString(gameResult, winnerText, ref winnerCounter);
                     }
                 });
             }
         }
 
-        private static void FillGameResultViewModelTeamsNamesWithString(GameResultViewModel gameResult, string lineToBeSetAsName, ref byte counter)
+        private static void FillGameTeamsNamesWithString(GameResultViewModel gameResult, string lineToBeSetAsName, ref byte counter)
         {
             gameResult.HomeTeamName = lineToBeSetAsName + counter++;
             gameResult.AwayTeamName = lineToBeSetAsName + counter++;
         }
 
-        private static void FillGameResultViewModelTeamsNamesWithDefaultStrings(GameResultViewModel gameResult)
+        // Reusing general method for bronze game without changing 'winner counter'.
+        private static void FillBronzeGameTeamsNamesWithString(GameResultViewModel gameResult, string looserLine, byte counter)
+        {
+            FillGameTeamsNamesWithString(gameResult, looserLine, ref counter);
+        }
+
+        private static void FillGameTeamsNamesWithDefaultStrings(GameResultViewModel gameResult)
         {
             gameResult.HomeTeamName = Resources.UI.TournamentViews.HomeTeamPlaceholder;
             gameResult.AwayTeamName = Resources.UI.TournamentViews.AwayTeamPlaceholder;

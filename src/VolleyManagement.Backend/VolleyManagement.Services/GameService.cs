@@ -505,7 +505,7 @@
         private static bool IsNotPlayOffThemeAndBothTeamsNotNull(Game newGame, TournamentScheduleDto tournamentSсheduleInfo)
         {
             return !(newGame.AwayTeamId == null &&
-                     newGame.HomeTeamId == null && 
+                     newGame.HomeTeamId == null &&
                      tournamentSсheduleInfo.Scheme == TournamentSchemeEnum.PlayOff);
         }
 

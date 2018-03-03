@@ -1,21 +1,15 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.GameReportsAggregate;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
     using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
     using VolleyManagement.UnitTests.WebApi.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
@@ -52,7 +46,7 @@
         public void GetSchedule_TournamentWithOneWeekOneDivisionOneGame_ScheduleReturned()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().WithOneWeekOneDivisionOneGame().Build();
 
@@ -79,7 +73,7 @@
         public void GetSchedule_TournamentWithoutGames_EmptyScheduleReturned()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             SetupGetTournamentResults(TOURNAMENT_ID, new List<GameResultDto>());
             MockGetScheduleInfo(TOURNAMENT_ID, tournament);
@@ -104,7 +98,7 @@
         public void GetSchedule_TournamentWithTwoWeeksTwoDivisionsTwoGames_ScheduleReturned()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
             TestGamesWithResultInTwoWeeksTwoDivisionsTwoGames().
@@ -133,7 +127,7 @@
         public void GetSchedule_TournamentWithOneWeekTwoGameDaysTwoDivisionsTwoGames_ScheduleReturned()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
                 TestGamesWithResultInOneWeekTwoGameDaysTwoDivisionsTwoGames().
@@ -163,7 +157,7 @@
         public void GetSchedule_TournamentWithOneWeekOneGameDayTwoDivisionsTwoGames_ScheduleReturned()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
                 TestGamesWithResultInOneWeekOneGameDayTwoDivisionsTwoGames().
@@ -188,7 +182,7 @@
         public void GetSchedule_TournamentPlayedOverSeveralWeeks_ScheduleIsOrderedByWeekNumber()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
                 TestGamesWithResultInThreeWeeksTwoDivisionsThreeGames().
@@ -214,7 +208,7 @@
         public void GetSchedule_TournamentPlayedOverSeveralYears_ScheduleIsOrderedByYearThenByWeek()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture()
                                 .TestGamesInSeveralYearsAndWeeks()
@@ -238,7 +232,7 @@
         public void GetSchedule_TournamentHasFreeDayGame_FreeDayGameIsLast()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
 
             var testGames = new GameServiceTestFixture()
@@ -262,7 +256,7 @@
         public void GetSchedule_PlayoffScheme_RoundNamesAreCreated()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 5;
+            const byte TEST_ROUND_COUNT = 5;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             tournament.Scheme = TournamentSchemeEnum.PlayOff;
 
@@ -284,7 +278,7 @@
         public void GetSchedule_PlayoffScheme_NotScheduledGamesAreRemoved()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 3;
+            const byte TEST_ROUND_COUNT = 3;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             tournament.Scheme = TournamentSchemeEnum.PlayOff;
 

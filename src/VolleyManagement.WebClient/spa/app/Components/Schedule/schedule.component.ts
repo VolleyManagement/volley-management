@@ -49,7 +49,7 @@ export class ScheduleComponent implements OnInit {
         if (divisionHeader.Id === DummyDivisionHeader.DummyHeaderId) {
             return '\u00A0';//$nbsp to preserve space
         } else if (divisionHeader.Id === DummyDivisionHeader.PlayOffHeaderId) {
-            return `${divisionHeader.Rounds.join()}`;
+            return divisionHeader.Rounds.join();
         }
         return `${divisionHeader.Name}: ${divisionHeader.Rounds.join()}`;
     }
@@ -58,7 +58,7 @@ export class ScheduleComponent implements OnInit {
         if (divisionId === DummyDivisionHeader.DummyHeaderId) {
             return '';
         } else if (divisionId === DummyDivisionHeader.PlayOffHeaderId) {
-            return `division2`;
+            return 'division2';
         }
         let index = this.divisionsIds.indexOf(divisionId);
         return `division${++index}`;

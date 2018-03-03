@@ -35,12 +35,12 @@
             {
                 if (PlayerValidation.ValidateFirstName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerFirstName, nameof(Player.FirstName));
+                    throw new ArgumentException(nameof(Player.FirstName), Resources.ValidationPlayerFirstName);
                 }
 
                 _firstName = value;
             }
-        }
+        } 
 
         /// <summary>
         /// Gets or sets a value indicating where LastName.

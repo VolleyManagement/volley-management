@@ -382,19 +382,18 @@
             SetupGetTournamentResults(
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
-
-            byte secondSemiFinalGameNumber = (byte)(Math.Pow(2, TEST_ROUND_COUNT) - 2);
+            
             var expectedTeamsNames = new List<string>
             {
                 // Every game in first round
                 "Team 1",
                 "Team 2",
                 // Bronze game
-                "Looser" + (secondSemiFinalGameNumber - 1),
-                "Looser" + secondSemiFinalGameNumber,
+                "Looser61",
+                "Looser62",
                 // Final game
-                "Winner" + (secondSemiFinalGameNumber - 1),
-                "Winner" + secondSemiFinalGameNumber 
+                "Winner61",
+                "Winner62" 
             };
             var actualTeamsNames = new List<string>();
 

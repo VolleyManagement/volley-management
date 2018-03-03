@@ -1,5 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameService
-{
+﻿namespace VolleyManagement.UnitTests.Services.GameService {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
@@ -10,8 +9,7 @@
     /// Represents a comparer for <see cref="Score"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ScoreComparer : IEqualityComparer<Score>
-    {
+    internal class ScoreComparer : IEqualityComparer<Score> {
         /// <summary>
         /// Determines whether the specified object instances are considered equal.
         /// </summary>
@@ -34,7 +32,7 @@
         /// <returns>Hash code for the specified <see cref="Score"/> object.</returns>
         public int GetHashCode(Score obj)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             builder.Append(obj.Home);
             builder.Append(obj.Away);

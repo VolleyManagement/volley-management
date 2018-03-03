@@ -1331,6 +1331,43 @@
             VerifyCreateGame(newGame, Times.Once());
         }
 
+        [TestMethod]
+        public void Create_SameTeamInTheRound_ExceptionThrown()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var newGame = new GameBuilder()
+                            .TestFreeDayGame()
+                            .WithTournamentId(TOURNAMENT_ID)
+                            .WithId(2)
+                            .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeOne()
+                .Build();
+
+            MockGetTournamentResults(
+                newGame.TournamentId,
+                gameResults);
+
+            var sut = BuildSUT();
+
+            ArgumentException argumentException = null;
+
+            // Act
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                argumentException = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(argumentException, ExpectedExceptionMessages.SAME_TEAM_IN_ROUND);
+        }
+
         #endregion
 
         #region Get
@@ -1609,43 +1646,85 @@
                 Times.AtLeastOnce());
         }
 
+        /// <summary>
+        /// Test method checks that 2 same teams(not null) can't be in one game in PlayOff scheme.
+        /// Argument exception thrown. 
+        /// </summary>
         [TestMethod]
-        public void Edit_AddResultsToPlayoffTournamentWithMinimalEvenTeams_NewGameIsScheduled()
+        public void Edit_BothTeamsEqualInPlayOff_ArgumentExceptionThrown()
         {
-            // Arrange
-            MockDefaultTournament();
+            Exception exception = null;
 
-            List<Game> games = new GameTestFixture()
-                .TestMinimumEvenTeamsPlayOffSchedule()
+            // Arrange
+            var games = new GameTestFixture()
+                .SameTeamsInOneGamePlayOffScheme()
                 .Build();
 
-            List<GameResultDto> gameInfo = new GameServiceTestFixture()
-                .TestMinimumEvenEmptyGamesPlayoff()
+            var gameInfo = new GameServiceTestFixture()
+                .SameTeamsInOneGamePlayOffScheme()
                 .Build();
 
             MockTournamentSchemePlayoff(
                 gameInfo,
                 games);
 
-            Game finishedGame = BuildTestGameToEditInPlayoff();
+            var gameToEdit = new GameBuilder()
+                .WithId(1)
+                .WithGameNumber(1)
+                .WithRound(1)
+                .WithTheSameTeams()
+                .Build();
 
             var sut = BuildSUT();
 
             // Act
-            sut.Edit(finishedGame);
-
-            Game newScheduledGame = games
-                    .Where(g => g.GameNumber == 3)
-                    .SingleOrDefault();
+            try
+            {
+                sut.Edit(gameToEdit);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyEditGames(
-                new List<Game>
-                {
-                    finishedGame,
-                    newScheduledGame
-                },
-                Times.AtLeastOnce());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SAME_TEAM);
+        }
+
+        [TestMethod]
+        public void Edit_BothTeamsNotSetInPlayOff_GameEdited()
+        {
+            // Arrange
+            MockDefaultTournament();
+
+            var games = new GameTestFixture()
+                .SameTeamsInOneGamePlayOffScheme()
+                .Build();
+
+            var gameInfo = new GameServiceTestFixture()
+                .SameTeamsInOneGamePlayOffScheme()
+                .Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            var gameToEdit = new GameBuilder()
+                .WithId(3)
+                .WithGameNumber(3)
+                .WithRound(2)
+                .WithHomeTeamId(null)
+                .WithAwayTeamId(null)
+                .WithDefaultResult()
+                .Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Edit(gameToEdit);
+
+            // Assert
+            VerifyEditGame(gameToEdit, Times.Once());
         }
 
         [TestMethod]
@@ -1715,6 +1794,45 @@
                     finishedGame
                 },
                 Times.Once());
+        }
+
+        [TestMethod]
+        public void Edit_AddResultsToPlayoffTournamentWithMinimalEvenTeams_NewGameIsScheduled()
+        {
+            // Arrange
+            MockDefaultTournament();
+
+            List<Game> games = new GameTestFixture()
+                .TestMinimumEvenTeamsPlayOffSchedule()
+                .Build();
+
+            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+                .TestMinimumEvenEmptyGamesPlayoff()
+                .Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            Game finishedGame = BuildTestGameToEditInPlayoff();
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Edit(finishedGame);
+
+            Game newScheduledGame = games
+                .Where(g => g.GameNumber == 3)
+                .SingleOrDefault();
+
+            // Assert
+            VerifyEditGames(
+                new List<Game>
+                {
+                    finishedGame,
+                    newScheduledGame
+                },
+                Times.AtLeastOnce());
         }
 
         #endregion
@@ -2144,7 +2262,6 @@
                 })
                 .Build();
         }
-
         #endregion
 
         #region Mock Helpers

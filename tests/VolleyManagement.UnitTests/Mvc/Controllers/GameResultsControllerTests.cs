@@ -71,7 +71,7 @@
         #region Tests
 
         /// <summary>
-        /// Test for Create POST method. Valid model passed. Games result created.
+        /// Test for Create POST method. Valid model passed. Games result created. 
         /// </summary>
         [TestMethod]
         public void CreatePostAction_ValidModel_Created()
@@ -91,7 +91,7 @@
 
             // Act
             var result = sut.Create(gameResult) as RedirectToRouteResult;
-
+          
             // Assert
             TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameComparer());
         }
@@ -177,6 +177,7 @@
             // Arrange
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var testData = new GameServiceTestFixture().TestGameResults().Build();
+            
             var expected = new GameResultViewModelBuilder()
                 .WithTournamentId(TOURNAMENT_ID)
                 .WithAwayTeamName("TeamNameB")

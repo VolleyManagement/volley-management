@@ -38,7 +38,7 @@
         /// Gets or sets the list of possible tournament schemes.
         /// </summary>
         /// <value>The list of tournament schemes.</value>
-        public List<int> TournamentSchemeList { get; set; }
+        public List<string> TournamentSchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -279,13 +279,20 @@
         /// </summary>
         private void InitializeTournamentSchemeList()
         {
-            TournamentSchemeList = new List<int>();
+            TournamentSchemeList = new List<string>();
 
             foreach (TournamentSchemeEnum scheme in Enum.GetValues(typeof(TournamentSchemeEnum)))
             {
-                if (scheme != TournamentSchemeEnum.TwoAndHalf)
+                switch (scheme)
                 {
-                    TournamentSchemeList.Add((int)scheme);
+                    case TournamentSchemeEnum.TwoAndHalf:
+                        break;
+                    case TournamentSchemeEnum.PlayOff:
+                        TournamentSchemeList.Add(scheme.ToString());
+                        break;
+                    default:
+                        TournamentSchemeList.Add(((int)scheme).ToString());
+                        break;
                 }
             }
         }

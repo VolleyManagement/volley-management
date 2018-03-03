@@ -1,11 +1,11 @@
 namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
 {
+    using Domain;
+    using Domain.GamesAggregate;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Domain;
-    using Domain.GamesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using WebAPI.ViewModels.Schedule;
 
     /// <summary>
     /// GameViewModel class.
@@ -30,7 +30,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         /// <summary>
         /// Gets or sets the date and time of the game.
         /// </summary>
-        public string GameDate { get; set; }
+        public string GameDate => Date.ToString("yyyy-MM-ddTHH:mm:sszzz");
 
         /// <summary>
         /// Gets or sets the date and time of the game.
@@ -79,7 +79,6 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                 Id = gameResult.Id,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
-                GameDate = gameResult.GameDate.HasValue ? gameResult.GameDate.Value.ToString("yyyy-MM-ddTHH:mm:sszzz") : string.Empty,
                 Round = gameResult.Round,
                 Result = new GameResult
                 {

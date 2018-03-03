@@ -6,7 +6,6 @@ $(document).ready(function () {
     var divisionCounter = 0;
     var teamCounter = 0;
     var MAX_TEAMS_NUMBER = 0;
-    
 
     privates.tornamentTeamsTable = $("#tournamentRoster");
 
@@ -21,7 +20,7 @@ $(document).ready(function () {
     };
 
     privates.getAllGroupsOptions = function (callback) {
-        var actualDivisionCounter = $(document.activeElement).attr('counter');
+        var actualDivisionCounter = $(document.getElementsByName('divisions')).attr('counter');
         var divId = $("select[name='divisions'][counter='" + actualDivisionCounter + "'] :selected").val();
         $.getJSON("/Tournaments/GetAllAvailableGroups", { divisionId: divId }, callback);
     };
@@ -72,10 +71,9 @@ $(document).ready(function () {
     };
 
     privates.getTornamentDivisionRowMarkup = function (responseOptions) {
-
         var result = "<td><select name = 'divisions' counter = '" + divisionCounter + "'>" + responseOptions + "</select></td>"
-            + "<td class = 'markup' counter = '" + divisionCounter +"'></td>"
-            + "<td></td><td><button class='deleteTeamButton' counter = '" + divisionCounter +"'>Delete</button></td>";
+            + "<td class = 'markup' counter = '" + divisionCounter + "'></td>"
+            + "<td></td><td><button class='deleteTeamButton' counter = '" + divisionCounter + "'>Delete</button></td>";
         return result;
     };
 
@@ -85,13 +83,13 @@ $(document).ready(function () {
     };
 
     privates.getTornamentGroupRowMarkup = function (responseOptions, actualDivisionCounter) {
-        var result = "<td><select name='groups' counter = '" + actualDivisionCounter + "' >" + responseOptions + "</select></td>"
+        var result = "<td><select name='groups' counter = '" + actualDivisionCounter + "'>" + responseOptions + "</select></td>"
             + "<td><button class='deleteTeamButton' counter = '" + actualDivisionCounter + "'>Delete</button></td>";
         return result;
     };
 
     privates.renderNewTournamentGroupsRow = function (responseOptions) {
-        var actualDivisionCounter = $(document.activeElement).attr('counter');
+        var actualDivisionCounter = $(document.getElementsByName('divisions')).attr('counter');
         $("select[name ='divisions'][counter='" + actualDivisionCounter + "']:last", privates.tornamentTeamsTable).parent()
             .parent().append(privates.getTornamentGroupRowMarkup(responseOptions, actualDivisionCounter));
     };
@@ -115,9 +113,9 @@ $(document).ready(function () {
             });
 
             privates.renderNewTournamentTeamsRow(responseOptions);
-            
-            callbackDivisions(); 
-        });        
+
+            callbackDivisions();
+        });
     };
 
     privates.addTournamentDivisionsRow = function () {
@@ -131,19 +129,29 @@ $(document).ready(function () {
         }
 
         privates.getAllDivisionsOptions(function (options) {
-            var responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
+            var responseOptions = "";
+
+            if (options.length > 1) {
+                responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
+            }
 
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
             });
             privates.renderNewTournamentDivisionsRow(responseOptions);
+
+            if (options.length === 1) {
+                privates.CheckIfEmptyGroupRowDraw();
+                $(document.getElementsByName('divisions')).hide();
+            }
+
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
-            $('select[name="divisions"][counter="' + divisionCounter + '"]').on('change', privates.CheckIfEmptyGroupRowDraw);           
+            $('select[name="divisions"][counter="' + divisionCounter + '"]').on('change', privates.CheckIfEmptyGroupRowDraw);
         });
     };
 
     privates.CheckIfEmptyGroupRowDraw = function () {
-        var actualDivisionCounter = $(document.activeElement).attr('counter');
+        var actualDivisionCounter = $(document.getElementsByName('divisions')).attr('counter');
         var divId = $("select[name='divisions'][counter='" + actualDivisionCounter + "'] :selected").val();
 
         if (divId === "0") {
@@ -168,28 +176,35 @@ $(document).ready(function () {
         }
 
         privates.getAllGroupsOptions(function (options) {
+            var responseOptions = "";
 
-            var responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
-
+            if (options.length > 1) {
+                responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
+            }
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
             });
-       
             privates.RemoveGroupsAndDeleteRowButtonMarkup();
             privates.renderNewTournamentGroupsRow(responseOptions);
+
+            $(document.getElementsByName('groups')).hide();
+            if (options.length > 1) {
+                $(document.getElementsByName('groups')).show();
+                $(document.getElementsByName('divisions')).show();
+            }
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
         });
 
     };
 
     privates.RemoveGroupsAndDeleteRowButtonMarkup = function () {
-        var actualDivisionCounter = $(document.activeElement).attr('counter');
+        var actualDivisionCounter = $(document.getElementsByName('divisions')).attr('counter');
         var group = actualDivisionCounter;
         var deleteButton = actualDivisionCounter;
 
         $('select[name = "groups"][counter = "' + group + '"]').parent().remove();
         $('[class = "markup"][counter = "' + group + '"]').remove();
-        $('[class = "deleteTeamButton"][counter = "' + deleteButton +'"]').parent().remove();
+        $('[class = "deleteTeamButton"][counter = "' + deleteButton + '"]').parent().remove();
     };
 
     privates.HasDisabledAddTeamToTournamentButton = function () {
@@ -201,13 +216,13 @@ $(document).ready(function () {
     };
 
     currNs.onAddTeamToTournamentButtonClick = function () {
-        privates.addTournamentTeamsRow(privates.addTournamentDivisionsRow);        
+        privates.addTournamentTeamsRow(privates.addTournamentDivisionsRow);
     };
 
     currNs.onAddTeamsButtonButtonClick = function () {
         var teamData = privates.getJsonForTournamentTeamsSave();
 
-        if (teamData !== null) {    
+        if (teamData !== null) {
             $.post("/Tournaments/AddTeamsToTournament", teamData)
                 .done(privates.handleTeamsAddSuccess);
         }
@@ -243,7 +258,7 @@ $(document).ready(function () {
     $("#addTeamToTournamentButton").bind("click", function () {
         currNs.onAddTeamToTournamentButtonClick();
         teamCounter++;
-        privates.HasDisabledAddTeamToTournamentButton(); 
+        privates.HasDisabledAddTeamToTournamentButton();
     });
     $("#addTeamsButton").bind("click", currNs.onAddTeamsButtonButtonClick);
     $(".deleteTeamFromTournamentButton").bind("click", currNs.onDeleteTeamFromTournamentButtonClick);

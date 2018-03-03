@@ -6,6 +6,17 @@
 
     public class StandingsDtoComparer : IComparer<StandingsDto>
     {
+        private StandingsEntryComparer standingsComparer;
+
+        public StandingsDtoComparer(): this(new StandingsEntryComparer())
+        {
+        }
+
+        internal StandingsDtoComparer(StandingsEntryComparer standingsComparer)
+        {
+            this.standingsComparer = standingsComparer;
+        }
+
         public int Compare(StandingsDto x, StandingsDto y)
         {
             Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
@@ -14,7 +25,6 @@
 
             if (x.Standings.Count == y.Standings.Count)
             {
-                var standingsComparer = new StandingsEntryComparer();
                 for (var i = 0; i < x.Standings.Count; i++)
                 {
                     if (standingsComparer.Compare(x.Standings[i], y.Standings[i]) != 0)

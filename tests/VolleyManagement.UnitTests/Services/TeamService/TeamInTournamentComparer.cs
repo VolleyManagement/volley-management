@@ -58,6 +58,7 @@
             Assert.AreEqual(x.TeamName, y.TeamName, "TeamName should match.");
             Assert.AreEqual(x.DivisionId, y.DivisionId, "DivisionId should match.");
             Assert.AreEqual(x.GroupId, y.GroupId, "GroupId should match.");
+            Assert.AreEqual(x.GroupName, y.GroupName, "GroupName should match.");
 
             return true;
         }

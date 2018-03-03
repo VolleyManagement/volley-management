@@ -82,7 +82,6 @@
     <Compile Include="Mail\SendGridMailService.cs" />
     <Compile Include="RequestService.cs" />
     <Compile Include="CacheProvider.cs" />
-    <Compile Include="Mail\GmailAccountMailService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

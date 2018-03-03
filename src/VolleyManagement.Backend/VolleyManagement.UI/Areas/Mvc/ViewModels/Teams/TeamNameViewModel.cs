@@ -30,6 +30,12 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         public string DivisionName { get; set; }
 
         /// <summary>
+        /// Gets or sets the group name where team is playing
+        /// </summary>
+        [Display(Name = "Group")]
+        public string GroupName { get; set; }
+
+        /// <summary>
         /// Maps Team to TeamNameViewModel
         /// </summary>
         /// <param name="team">Domain team</param>
@@ -40,7 +46,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
             {
                 Id = team.TeamId,
                 Name = team.TeamName,
-                DivisionName = $"Division {team.DivisionId}"
+                DivisionName = team.DivisionName,
+                GroupName = team.GroupName
             };
         }
 

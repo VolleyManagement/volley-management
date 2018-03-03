@@ -1,16 +1,17 @@
-namespace VolleyManagement.UI.Areas.WebApi.Controllers
+﻿namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
+    using Contracts;
+    using Domain.TournamentsAggregate;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Web.Http;
-    using Contracts;
     using ViewModels.GameReports;
     using ViewModels.Games;
     using ViewModels.Tournaments;
-    using WebAPI.ViewModels.Schedule;
     using WebAPI.ViewModels.GameReports;
+    using WebAPI.ViewModels.Schedule;
 
     /// <summary>
     /// The tournaments controller.
@@ -108,7 +109,9 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         public ScheduleViewModel GetSchedule(int tournamentId)
         {
             var games = _gameService.GetTournamentGames(tournamentId)
+                                    .Where(g => g.GameDate.HasValue)
                                     .Select(GameViewModel.Map);
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 
             var resultGroupedByWeek = games.GroupBy(GetWeekOfYear)
                 .OrderBy(w => w.Key.Year)
@@ -136,6 +139,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                                             .Select(item => item.Round)
                                                             .Distinct()
                                                             .OrderBy(i => i)
+                                                            .Select(r => GetRoundName(r, tournament))
                                                             .ToList()
                                     }).
                                     Distinct(new DivisionTitleComparer()).ToList(),
@@ -146,6 +150,63 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                     }
                 ).ToList()
             };
+
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                ClearDivisionNames(result);
+            }
+
+            return result;
+        }
+
+        private static void ClearDivisionNames(ScheduleViewModel result)
+        {
+            result.Schedule.ForEach(w =>
+            {
+                w.Days.ForEach(d =>
+                {
+                    d.Divisions.ForEach(div =>
+                    {
+                        div.Id = 0;
+                        div.Name = null;
+                    });
+
+                    d.Games.ForEach(g =>
+                    {
+                        g.DivisionId = 0;
+                        g.DivisionName = null;
+                        g.GroupId = 0;
+                    });
+                });
+            });
+        }
+
+        private static string GetRoundName(int roundNumber, TournamentScheduleDto tournament)
+        {
+            string result;
+
+            if (tournament.Scheme != TournamentSchemeEnum.PlayOff)
+            {
+                result = $"Тур {roundNumber}";
+            }
+            else
+            {
+                var playoffRounds = new Dictionary<int, string>
+                {
+                    [1] = "Финал",
+                    [2] = "Полуфинал",
+                    [3] = "Четверть-финал",
+                    [4] = "Раунд 16",
+                    [5] = "Раунд 32",
+                    [6] = "Раунд 64",
+                    [7] = "Раунд 128"
+                };
+                var reversedRoundNumber = tournament.Divisions.First().NumberOfRounds - roundNumber + 1;
+                if (!playoffRounds.TryGetValue(reversedRoundNumber, out result))
+                {
+                    result = $"Тур {roundNumber}";
+                }
+            }
 
             return result;
         }

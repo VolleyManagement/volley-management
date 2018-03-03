@@ -111,6 +111,7 @@
                                      DivisionId = grp.DivisionId,
                                      DivisionName = grp.Division.Name,
                                      GroupId = grp.Id,
+                                     GroupName = grp.Name,
                                      TeamId = t.Id,
                                      TeamName = t.Name
                                  }))

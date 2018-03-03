@@ -61,6 +61,24 @@
             Assert.AreEqual(x.Id, y.Id, "Id should be equal");
             Assert.AreEqual(x.Name, y.Name, "Name should be equal");
             Assert.AreEqual(x.DivisionName, y.DivisionName, "DivisionName should be equal");
+            Assert.AreEqual(x.GroupName, y.GroupName, "GroupName should be equal");
+
+            return true;
+        }
+
+        /// <summary>
+        /// Finds out whether two lists of team objects have the same properties.
+        /// </summary>
+        /// <param name="x">The first list of object to compare.</param>
+        /// <param name="y">The second list of object to compare.</param>
+        /// <returns>True if given lists of team have the same properties.</returns>
+        public bool AreEqual(List<TeamNameViewModel> x, List<TeamNameViewModel> y)
+        {
+            for (int i = 0; i < x.Count; i++)
+            {
+                if (!AreEqual(x[i], y[i]))
+                    return false;
+            }
 
             return true;
         }

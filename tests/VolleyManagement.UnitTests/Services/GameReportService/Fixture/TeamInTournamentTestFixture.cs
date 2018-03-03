@@ -44,12 +44,30 @@
             return this;
         }
 
+        public TeamInTournamentTestFixture WithUnorderedTeams()
+        {
+            AddTeam(teamId: 4, teamName: "D", divisionId: 1, divisionName: "DivisionNameA", groupId: 1, groupName: "GroupNameC");
+            AddTeam(teamId: 5, teamName: "E", divisionId: 1, divisionName: "DivisionNameA", groupId: 2, groupName: "GroupNameA");
+            AddTeam(teamId: 6, teamName: "F", divisionId: 1, divisionName: "DivisionNameA", groupId: 3, groupName: "GroupNameD");
+
+            AddTeam(teamId: 11, teamName: "J", divisionId: 3, divisionName: "DivisionNameC", groupId: 7, groupName: "GroupNameC");
+            AddTeam(teamId: 12, teamName: "K", divisionId: 3, divisionName: "DivisionNameC", groupId: 8, groupName: "GroupNameB");
+            AddTeam(teamId: 13, teamName: "L", divisionId: 3, divisionName: "DivisionNameC", groupId: 9, groupName: "GroupNameA");
+
+            AddTeam(teamId: 7, teamName: "G", divisionId: 2, divisionName: "DivisionNameB", groupId: 4, groupName: "GroupNameA");
+            AddTeam(teamId: 8, teamName: "H", divisionId: 2, divisionName: "DivisionNameB", groupId: 5, groupName: "GroupNameC");
+            AddTeam(teamId: 9, teamName: "I", divisionId: 2, divisionName: "DivisionNameB", groupId: 6, groupName: "GroupNameB");
+            AddTeam(teamId: 10, teamName: "Z", divisionId: 2, divisionName: "DivisionNameB", groupId: 5, groupName: "GroupNameC");
+
+            return this;
+        }
+
         public List<TeamTournamentDto> Build()
         {
             return _teams;
         }
 
-        private void AddTeam(int teamId, string teamName, int divisionId = 1, int groupId = 1, string divisionName = "DivisionNameA")
+        private void AddTeam(int teamId, string teamName, int divisionId = 1, int groupId = 1, string divisionName = "DivisionNameA", string groupName = null)
         {
             _teams.Add(new TeamTournamentDto
             {
@@ -58,6 +76,7 @@
                 DivisionId = divisionId,
                 GroupId = groupId,
                 DivisionName = divisionName,
+                GroupName = groupName
             });
         }
     }

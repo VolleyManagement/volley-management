@@ -430,6 +430,37 @@
             CollectionAssert.AreEqual(actualTeamsNames, expectedBronzeGameTeamsNames);
         }
 
+        [TestMethod]
+        public void ShowSchedule_PlayoffScheme_TeamsNamesInFinalGameAreAssignedProperly()
+        {
+            // Arrange
+            const byte TEST_ROUND_COUNT = 5;
+            SetupPlayoffTournamentWithGames(TEST_ROUND_COUNT,
+                new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
+
+            byte firstSemiFinalGameNumber = GetFirstSemiFinalGameNumber(TEST_ROUND_COUNT);
+            var expectedFinalGameTeamsNames = new List<string>
+            {
+                "Winner" + firstSemiFinalGameNumber,
+                "Winner" + (firstSemiFinalGameNumber + 1)
+            };
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            var game = GetFinalGameFromSchedule(actual);
+
+            var actualTeamsNames = new List<string>
+            {
+                game.HomeTeamName,
+                game.AwayTeamName
+            };
+
+            // Assert
+            CollectionAssert.AreEqual(actualTeamsNames, expectedFinalGameTeamsNames);
+        }
+
         #endregion
 
         #region AddTeamsToTournament

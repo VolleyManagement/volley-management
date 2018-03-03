@@ -94,15 +94,14 @@
 
             var expected = new TeamServiceTestFixture()
                                             .TestTeams()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             // Act
             var sut = BuildSUT();
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TeamComparer());
+            TestHelper.AreEqual(expected, actual, new TeamComparer());
         }
 
         /// <summary>
@@ -565,7 +564,7 @@
             // Arrange
             var testData = new PlayerServiceTestFixture()
                 .Build();
-            MockGetTeamRosterQuery(testData.ToList());
+            MockGetTeamRosterQuery(testData);
 
             // Act
             var ts = BuildSUT();
@@ -613,7 +612,7 @@
             // Arrange
             var testData = new PlayerServiceTestFixture()
                     .Build();
-            MockGetTeamRosterQuery(testData.ToList());
+            MockGetTeamRosterQuery(testData);
 
             // Act
             var ts = BuildSUT();

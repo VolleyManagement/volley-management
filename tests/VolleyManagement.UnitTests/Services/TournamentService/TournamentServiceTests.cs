@@ -165,14 +165,13 @@
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             // Act
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
         #endregion
 
@@ -192,10 +191,10 @@
             var expected = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
 
             // Act
-            var actual = sut.GetAllTournamentTeams(It.IsAny<int>()).Select(x => x).ToList();
+            var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TeamInTournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TeamInTournamentComparer());
         }
 
         /// <summary>
@@ -235,10 +234,10 @@
             var expected = new DivisionTestFixture().TestDivisions().Build();
 
             // Act
-            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID).Select(x=>x).ToList();
+            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
+            TestHelper.AreEqual(expected, actual, new DivisionComparer());
         }
 
         /// <summary>
@@ -278,10 +277,10 @@
             var expected = new GroupTestFixture().TestGroups().Build();
 
             // Act
-            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID).ToList();
+            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GroupComparer());
+            TestHelper.AreEqual(expected, actual, new GroupComparer());
         }
 
         /// <summary>
@@ -1428,10 +1427,10 @@
             var expected = BuildActualTournamentsList();
 
             // Act
-            var actual = sut.GetActual().ToList();
+            var actual = sut.GetActual();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1451,10 +1450,10 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetActual().ToList();
+            var actual = sut.GetActual();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1478,10 +1477,10 @@
             var expected = BuildActualTournamentsList();
 
             // Act
-            var actual = sut.GetActual().ToList();
+            var actual = sut.GetActual();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
         #endregion
 
@@ -1506,10 +1505,10 @@
             var expected = BuildArchivedTournamentsList();
 
             // Act
-            var actual = sut.GetArchived().ToList();
+            var actual = sut.GetArchived();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1527,7 +1526,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.GetArchived().ToList();
+            sut.GetArchived();
 
             // Assert
             VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
@@ -1553,10 +1552,10 @@
                 .Build();
 
             // Act
-            var actual = sut.GetFinished().ToList();
+            var actual = sut.GetFinished();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1575,10 +1574,10 @@
             var expected = BuildActualTournamentsList();
 
             // Act
-            var actual = sut.GetFinished().ToList();
+            var actual = sut.GetFinished();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1602,10 +1601,10 @@
                 .Build();
 
             // Act
-            var actual = sut.GetFinished().ToList();
+            var actual = sut.GetFinished();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
         #endregion
 
@@ -1627,7 +1626,7 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
             int actualCount = actual.Count(t => t.State == TournamentStateEnum.NotStarted);

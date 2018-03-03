@@ -22,7 +22,6 @@
     using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
-    using System.Collections;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -85,7 +84,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new TournamentRequestComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentRequestComparer());
         }
 
         [TestMethod]

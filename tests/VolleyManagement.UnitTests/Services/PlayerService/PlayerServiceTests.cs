@@ -74,14 +74,13 @@
             var sut = BuildSUT();
             var expected = new PlayerServiceTestFixture()
                                             .TestPlayers()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             // Act
             var actual = sut.Get().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerComparer());
         }
 
         /// <summary>

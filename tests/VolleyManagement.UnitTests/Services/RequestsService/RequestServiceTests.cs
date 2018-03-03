@@ -89,7 +89,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new RequestComparer());
+            TestHelper.AreEqual(expected, actual, new RequestComparer());
         }
 
         [TestMethod]

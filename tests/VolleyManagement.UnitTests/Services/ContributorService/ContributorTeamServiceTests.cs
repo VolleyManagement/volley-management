@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace VolleyManagement.UnitTests.Services.ContributorService
+﻿namespace VolleyManagement.UnitTests.Services.ContributorService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;

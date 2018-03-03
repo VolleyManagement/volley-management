@@ -402,6 +402,12 @@
 
             // Act
             var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            if (actual == null)
+            {
+                throw new NullReferenceException("ScheduleViewModel is null after getting it from " +
+                    $"'ShowSchedule' method in TournamentController.");
+            }
+
             var rounds = actual.Rounds.Values.ToList();
 
             var firstRoundGame = rounds.First().First();

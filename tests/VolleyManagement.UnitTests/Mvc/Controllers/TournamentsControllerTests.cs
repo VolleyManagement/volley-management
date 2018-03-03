@@ -376,7 +376,6 @@
             SetupPlayoffTournamentWithGames(TEST_ROUND_COUNT, 
                 new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
 
-            //byte secondSemiFinalGameNumber = (byte)(Math.Pow(2, TEST_ROUND_COUNT) - 2);
             var expectedFirstRoundTeamsNames = new List<string>
             {
                 "Team 1",

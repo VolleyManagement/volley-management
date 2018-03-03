@@ -369,10 +369,10 @@
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowSchedule_PlayoffScheme_TeamsNamesAreAssigned()
+        public void ShowSchedule_PlayoffScheme_TeamsNamesAreAssignedProperly()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 6;
+            const byte TEST_ROUND_COUNT = 6;
             var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             tournament.Scheme = TournamentSchemeEnum.PlayOff;
 
@@ -382,18 +382,19 @@
             SetupGetTournamentResults(
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
-            
+
+            byte secondSemiFinalGameNumber = (byte)(Math.Pow(2, TEST_ROUND_COUNT) - 2);
             var expectedTeamsNames = new List<string>
             {
                 // Every game in first round
                 "Team 1",
                 "Team 2",
                 // Bronze game
-                "Looser61",
-                "Looser62",
+                "Looser" + (secondSemiFinalGameNumber - 1),
+                "Looser" + secondSemiFinalGameNumber,
                 // Final game
-                "Winner61",
-                "Winner62" 
+                "Winner" + (secondSemiFinalGameNumber - 1),
+                "Winner" + secondSemiFinalGameNumber
             };
             var actualTeamsNames = new List<string>();
 

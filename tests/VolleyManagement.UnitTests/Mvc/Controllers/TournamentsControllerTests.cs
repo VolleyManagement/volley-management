@@ -1786,12 +1786,6 @@
                 .ToList();
         }
 
-        private void AddGameTeamsNamesToList(GameResultViewModel from, List<string> to)
-        {
-            to.Add(from.HomeTeamName);
-            to.Add(from.AwayTeamName);
-        }
-
         private List<Group> CreateTestGroups()
         {
             return new GroupTestFixture().TestGroups().Build();

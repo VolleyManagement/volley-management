@@ -1,21 +1,15 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.GameReportsAggregate;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
     using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
     using VolleyManagement.UnitTests.WebApi.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
@@ -52,9 +46,11 @@
         public void GetSchedule_TournamentWithOneWeekOneDivisionOneGame_ScheduleReturned()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().WithOneWeekOneDivisionOneGame().Build();
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithOneWeekOneDivisionOneGame().Build();
 
@@ -77,9 +73,10 @@
         public void GetSchedule_TournamentWithoutGames_EmptyScheduleReturned()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             SetupGetTournamentResults(TOURNAMENT_ID, new List<GameResultDto>());
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
             var expected = new ScheduleViewModelTestFixture().WithEmptyResult().Build();
 
             var sut = BuildSUT();
@@ -101,12 +98,13 @@
         public void GetSchedule_TournamentWithTwoWeeksTwoDivisionsTwoGames_ScheduleReturned()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
             TestGamesWithResultInTwoWeeksTwoDivisionsTwoGames().
             Build();
 
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithTwoWeeksTwoDivisionsTwoGames().Build();
 
@@ -129,11 +127,13 @@
         public void GetSchedule_TournamentWithOneWeekTwoGameDaysTwoDivisionsTwoGames_ScheduleReturned()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
                 TestGamesWithResultInOneWeekTwoGameDaysTwoDivisionsTwoGames().
                 Build();
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
 
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithOneWeekTwoGameDaysTwoDivisionsTwoGames().Build();
@@ -157,12 +157,13 @@
         public void GetSchedule_TournamentWithOneWeekOneGameDayTwoDivisionsTwoGames_ScheduleReturned()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
                 TestGamesWithResultInOneWeekOneGameDayTwoDivisionsTwoGames().
                 Build();
 
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithOneWeekOneGameDayTwoDivisionsTwoGames().Build();
 
@@ -181,11 +182,13 @@
         public void GetSchedule_TournamentPlayedOverSeveralWeeks_ScheduleIsOrderedByWeekNumber()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture().
                 TestGamesWithResultInThreeWeeksTwoDivisionsThreeGames().
                 Build();
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
 
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithThreeWeeksTwoDivisionsThreeGames().Build();
@@ -205,11 +208,13 @@
         public void GetSchedule_TournamentPlayedOverSeveralYears_ScheduleIsOrderedByYearThenByWeek()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testGames = new GameServiceTestFixture()
                                 .TestGamesInSeveralYearsAndWeeks()
                                 .Build();
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
 
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithGamesInSeveralYearsAndWeeks().Build();
@@ -227,14 +232,60 @@
         public void GetSchedule_TournamentHasFreeDayGame_FreeDayGameIsLast()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
+
             var testGames = new GameServiceTestFixture()
                 .TestGamesForSeveralDivisionsAndFreeDayGameInOneDay()
                 .Build();
 
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithGamesInSeveralDivisionsAndFreeDayGameInOneDay().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetSchedule_PlayoffScheme_RoundNamesAreCreated()
+        {
+            // Arrange
+            const byte TEST_ROUND_COUNT = 5;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
+            tournament.Scheme = TournamentSchemeEnum.PlayOff;
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
+            SetupGetTournamentResults(TOURNAMENT_ID, new GameServiceTestFixture().TestPlayoffWith5Rounds().Build());
+
+            var expected = new ScheduleViewModelTestFixture().With5RoundPlayoffGames().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID);
+
+            // Assert
+            ScheduleViewModelComparer.AssertAreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetSchedule_PlayoffScheme_NotScheduledGamesAreRemoved()
+        {
+            // Arrange
+            const byte TEST_ROUND_COUNT = 3;
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
+            tournament.Scheme = TournamentSchemeEnum.PlayOff;
+
+            MockGetScheduleInfo(TOURNAMENT_ID, tournament);
+            SetupGetTournamentResults(TOURNAMENT_ID, new GameServiceTestFixture().TestPlayoffWithFirstRoundScheduledOnly().Build());
+
+            var expected = new ScheduleViewModelTestFixture().WithPlayoffWithFirstRoundScheduledOnly().Build();
 
             var sut = BuildSUT();
 
@@ -265,6 +316,31 @@
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
         {
             _gameServiceMock.Setup(t => t.GetTournamentGames(It.IsAny<int>())).Returns(expectedGames);
+        }
+
+        private void MockGetScheduleInfo(int tournamentId, TournamentScheduleDto tournament)
+        {
+            _tournamentServiceMock.Setup(tr => tr.GetTournamentScheduleInfo(tournamentId)).Returns(tournament);
+        }
+
+        private static TournamentScheduleDto CreateTournamentData(byte roundCount)
+        {
+            return new TournamentScheduleDto
+            {
+                Id = TOURNAMENT_ID,
+                Name = "Some tournament",
+                Scheme = TournamentSchemeEnum.One,
+                StartDate = new DateTime(1996, 07, 25),
+                Divisions = new List<DivisionScheduleDto>
+                {
+                    new DivisionScheduleDto
+                    {
+                        DivisionId     = 1,
+                        DivisionName   = "Division 1",
+                        NumberOfRounds = roundCount,
+                    },
+                },
+            };
         }
         #endregion
     }

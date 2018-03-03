@@ -52,10 +52,10 @@ namespace VolleyManagement.UnitTests.Services.ContributorService
 
 
             // Act
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());
+            TestHelper.AreEqual(expected, actual, new ContributorTeamComparer());
         }
 
         private ContributorTeamService BuildSUT()

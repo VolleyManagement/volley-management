@@ -101,8 +101,7 @@
 
             var expected = new FeedbackServiceTestFixture()
                                             .TestFeedbacks()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             var sut = BuildSUT();
 
@@ -110,7 +109,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual as ICollection, new FeedbackComparer());
+            TestHelper.AreEqual(expected, actual, new FeedbackComparer());
         }
 
         [TestMethod]

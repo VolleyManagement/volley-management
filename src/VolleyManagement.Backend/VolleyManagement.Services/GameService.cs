@@ -255,7 +255,7 @@ namespace VolleyManagement.Services
 
             if (game == null)
             {
-                throw new ArgumentException("invalid game id");
+                throw new ArgumentException(nameof(id), "invalid game id");
             }
 
             ValidateGameInRoundOnDelete(game);

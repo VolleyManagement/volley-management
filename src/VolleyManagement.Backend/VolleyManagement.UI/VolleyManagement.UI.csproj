@@ -416,6 +416,7 @@
     <Compile Include="Areas\WebAPI\ViewModels\Schedule\DivisionTitleViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleDayViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScoreViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Schedule\WeekViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Tournaments\TournamentViewModel.cs" />

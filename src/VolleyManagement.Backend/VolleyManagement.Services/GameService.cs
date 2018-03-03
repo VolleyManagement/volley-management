@@ -564,8 +564,12 @@ namespace VolleyManagement.Services
             Game newGame,
             TournamentScheduleDto tournamentScheduleInfo)
         {
-            if ((GameValidation.IsFreeDayGame(newGame)
-                && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                return;
+            }
+
+            if (GameValidation.IsFreeDayGame(newGame))
             {
                 if (game.HomeTeamId != newGame.HomeTeamId
                     && game.AwayTeamId != newGame.HomeTeamId)

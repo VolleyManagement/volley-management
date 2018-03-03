@@ -400,7 +400,7 @@
         }
 
         [TestMethod]
-        public void ShowSchedule_PlayoffScheme_TeamsNamesInBronzeAreAssignedProperly()
+        public void ShowSchedule_PlayoffScheme_TeamsNamesInBronzeGameAreAssignedProperly()
         {
             // Arrange
             const byte TEST_ROUND_COUNT = 6;
@@ -411,7 +411,7 @@
             var expectedBronzeGameTeamsNames = new List<string>
             {
                 "Looser" + firstSemiFinalGameNumber,
-                "Looser" + firstSemiFinalGameNumber + 1
+                "Looser" + (firstSemiFinalGameNumber + 1)
             };
 
             var sut = BuildSUT();

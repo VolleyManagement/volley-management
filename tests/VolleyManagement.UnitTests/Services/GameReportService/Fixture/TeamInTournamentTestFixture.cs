@@ -79,5 +79,18 @@
                 GroupName = groupName
             });
         }
+
+        public TeamInTournamentTestFixture With8TeamsPlayoff()
+        {
+            AddTeam(1, "A");
+            AddTeam(2, "B");
+            AddTeam(3, "C");
+            AddTeam(4, "D");
+            AddTeam(5, "E");
+            AddTeam(6, "F");
+            AddTeam(7, "G");
+            AddTeam(8, "H");
+            return this;
+        }
     }
 }

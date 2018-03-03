@@ -107,6 +107,11 @@
             return this;
         }
 
+        public GameBuilder WithDayOff()
+        {
+            return WithAwayTeamId(null);
+        }
+
         /// <summary>
         /// Sets empty null result in game.
         /// </summary>

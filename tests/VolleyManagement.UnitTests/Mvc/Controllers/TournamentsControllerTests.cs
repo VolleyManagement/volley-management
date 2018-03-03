@@ -369,58 +369,65 @@
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowSchedule_PlayoffScheme_TeamsNamesAreAssignedProperly()
+        public void ShowSchedule_PlayoffScheme_TeamsNamesInFirstRoundAreAssignedProperly()
         {
             // Arrange
             const byte TEST_ROUND_COUNT = 6;
-            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
-            tournament.Scheme = TournamentSchemeEnum.PlayOff;
-
-            SetupGetScheduleInfo(
-                TEST_TOURNAMENT_ID,
-                tournament);
-            SetupGetTournamentResults(
-                TEST_TOURNAMENT_ID,
+            SetupPlayoffTournamentWithGames(TEST_ROUND_COUNT, 
                 new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
 
-            byte secondSemiFinalGameNumber = (byte)(Math.Pow(2, TEST_ROUND_COUNT) - 2);
-            var expectedTeamsNames = new List<string>
+            //byte secondSemiFinalGameNumber = (byte)(Math.Pow(2, TEST_ROUND_COUNT) - 2);
+            var expectedFirstRoundTeamsNames = new List<string>
             {
-                // Every game in first round
                 "Team 1",
-                "Team 2",
-                // Bronze game
-                "Looser" + (secondSemiFinalGameNumber - 1),
-                "Looser" + secondSemiFinalGameNumber,
-                // Final game
-                "Winner" + (secondSemiFinalGameNumber - 1),
-                "Winner" + secondSemiFinalGameNumber
+                "Team 2"
             };
-            var actualTeamsNames = new List<string>();
 
             var sut = BuildSUT();
 
             // Act
             var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
-            if (actual == null)
+            var game = GetFirstRoundGamesFromSchedule(actual).First();
+
+            var actualTeamsNames = new List<string>
             {
-                throw new NullReferenceException("ScheduleViewModel is null after getting it from " +
-                    $"'ShowSchedule' method in TournamentController.");
-            }
-
-            var rounds = actual.Rounds.Values.ToList();
-
-            var firstRoundGame = rounds.First().First();
-            var bronzeGame = rounds.Last().First(x => actual.IsBronzeMatch(x));
-            var finalGame = rounds.Last().First(x => actual.IsFinal(x));
-
-            // Getting all names from chosen rounds.
-            AddGameTeamsNamesToList(firstRoundGame, actualTeamsNames);
-            AddGameTeamsNamesToList(bronzeGame, actualTeamsNames);
-            AddGameTeamsNamesToList(finalGame, actualTeamsNames);
+                game.HomeTeamName,
+                game.AwayTeamName
+            };
 
             // Assert
-            CollectionAssert.AreEqual(actualTeamsNames, expectedTeamsNames);
+            CollectionAssert.AreEqual(actualTeamsNames, expectedFirstRoundTeamsNames);
+        }
+
+        [TestMethod]
+        public void ShowSchedule_PlayoffScheme_TeamsNamesInBronzeAreAssignedProperly()
+        {
+            // Arrange
+            const byte TEST_ROUND_COUNT = 6;
+            SetupPlayoffTournamentWithGames(TEST_ROUND_COUNT,
+                new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
+
+            byte firstSemiFinalGameNumber = GetFirstSemiFinalGameNumber(TEST_ROUND_COUNT);
+            var expectedBronzeGameTeamsNames = new List<string>
+            {
+                "Looser" + firstSemiFinalGameNumber,
+                "Looser" + firstSemiFinalGameNumber + 1
+            };
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            var game = GetBronzeGameFromSchedule(actual);
+
+            var actualTeamsNames = new List<string>
+            {
+                game.HomeTeamName,
+                game.AwayTeamName
+            };
+
+            // Assert
+            CollectionAssert.AreEqual(actualTeamsNames, expectedBronzeGameTeamsNames);
         }
 
         #endregion
@@ -1635,6 +1642,37 @@
                 _tournamentRequestServiceMock.Object,
                 _currentUserServiceMock.Object);
         }
+
+        private List<List<GameResultViewModel>> GetRoundsGamesFromSchedule(ScheduleViewModel schedule) =>
+            schedule.Rounds.Values.ToList();
+
+        private List<GameResultViewModel> GetFirstRoundGamesFromSchedule(ScheduleViewModel schedule) =>
+            GetRoundsGamesFromSchedule(schedule).First();
+
+        private List<GameResultViewModel> GetLastRoundGamesFromSchedule(ScheduleViewModel schedule) =>
+            GetRoundsGamesFromSchedule(schedule).Last();
+
+        private GameResultViewModel GetFinalGameFromSchedule(ScheduleViewModel schedule) =>
+            GetLastRoundGamesFromSchedule(schedule).First(game => schedule.IsFinal(game));
+
+        private GameResultViewModel GetBronzeGameFromSchedule(ScheduleViewModel schedule) =>
+            GetLastRoundGamesFromSchedule(schedule).First(game => schedule.IsBronzeMatch(game));
+
+        private void SetupPlayoffTournamentWithGames(byte amountOfRounds, List<GameResultDto> gamesResults)
+        {
+            var tournament = CreateTournamentData(amountOfRounds);
+            tournament.Scheme = TournamentSchemeEnum.PlayOff;
+
+            SetupGetScheduleInfo(
+                TEST_TOURNAMENT_ID,
+                tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                gamesResults);
+        }
+
+        private byte GetFirstSemiFinalGameNumber(byte amountOfRounds) =>
+            (byte)(Math.Pow(2, amountOfRounds) - 3);
 
         private List<Tournament> MakeTestTournaments()
         {

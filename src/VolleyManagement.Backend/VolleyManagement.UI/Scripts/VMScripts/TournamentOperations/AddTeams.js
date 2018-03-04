@@ -152,7 +152,7 @@ $(document).ready(function () {
     };
 
     privates.CheckIfEmptyGroupRowDraw = function () {
-        if (actualDivisionOptions == 1) {
+        if (actualDivisionOptions === 1) {
             actualDivisionCounter = divisionCounter;
         }
         else {

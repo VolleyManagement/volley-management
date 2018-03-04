@@ -143,7 +143,7 @@ $(document).ready(function () {
 
             if (options.length === 1) {
                 privates.CheckIfEmptyGroupRowDraw();
-                $(document.getElementsByName('divisions')).hide();
+                $(document.getElementsByName('divisions')).hide().prop("disabled", true);
             }
 
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);

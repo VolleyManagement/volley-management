@@ -55,6 +55,7 @@
         private const string JSON_NO_RIGHTS_MESSAGE = "Please, login to apply team for the tournament.";
         private const string JSON_OK_MSG = "Your request was succesfully created. Please, wait until administrator confirm your request.";
         private const string INDEX_ACTION_NAME = "Index";
+        private const string ARCHIVED_ACTION_NAME = "Archived";
         private const string SHOW_SCHEDULE_ACTION_NAME = "ShowSchedule";
         private const string ROUTE_VALUES_KEY = "action";
         private const string MANAGE_TOURNAMENT_TEAMS = "/Teams/ManageTournamentTeams?tournamentId=";
@@ -181,9 +182,11 @@
         {
             // Arrange
             var expectedTeamsList = CreateExpectedTeamsList();
+            var testDivisions = CreateTestDivisions();
+            var testTeams = CreateTestTeams();
 
-            var testData = CreateTestTeams();
-            SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
+            SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
+            SetupGetTournamentDivisions(testDivisions, TEST_DIVISION_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
@@ -221,6 +224,29 @@
             // Assert
             Assert.AreEqual(returnedTeamsList.Model.TeamsList.Count, EMPTY_TEAMLIST_COUNT);
             Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
+        }
+
+        [TestMethod]
+        public void ManageTournamentTeams_NotSortedTournamentTeams_ModelContainsSortedTournamentTeamsByDivisionAndGroupName()
+        {
+            // Arrange
+            var unorderedTournamentTeams = new TeamInTournamentTestFixture().WithUnorderedTeams().Build();
+            var orderedTournamentTeams = unorderedTournamentTeams
+                                          .OrderBy(model => model.DivisionName)
+                                          .ThenBy(model => model.GroupName)
+                                          .ToList();
+
+            SetupGetTournamentTeams(unorderedTournamentTeams, TEST_TOURNAMENT_ID);
+
+            // Act
+            var resultTeams = _tournamentServiceMock.Object.GetAllTournamentTeams(TEST_TOURNAMENT_ID);
+            var actual = new TournamentTeamsListViewModel(resultTeams, TEST_TOURNAMENT_ID)
+                         .TeamsList;
+
+            var expected = orderedTournamentTeams.Select(TeamNameViewModel.Map).ToList();
+
+            // Assert
+            Assert.IsTrue(new TeamNameViewModelComparer().AreEqual(expected, actual));
         }
 
         #endregion
@@ -379,7 +405,7 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var testGroupData = CreateTestGroups();
+
             _tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()))
                 .Throws(new ArgumentException(string.Empty));
@@ -1322,7 +1348,7 @@
 
             // Assert
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Once());
-            VerifyRedirect(INDEX_ACTION_NAME, result);
+            VerifyRedirect(ARCHIVED_ACTION_NAME, result);
         }
 
         #endregion

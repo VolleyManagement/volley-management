@@ -134,6 +134,7 @@ $(document).ready(function () {
             if (options.length > 1) {
                 responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
             }
+
             actualDivisionOptions = options.length;
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
@@ -157,7 +158,6 @@ $(document).ready(function () {
         else {
             actualDivisionCounter = $(document.activeElement).attr('counter');
         }
-
         var divId = $("select[name='divisions'][counter='" + actualDivisionCounter + "'] :selected").val();
 
         if (divId === "0") {

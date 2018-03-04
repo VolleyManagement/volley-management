@@ -1016,7 +1016,7 @@
         }
 
         // Method is not mine: It has to be refactored 
-        private byte CalculateNumberOfRounds(int teamCount)
+        private static byte CalculateNumberOfRounds(int teamCount)
         {
             byte rounds = 0;
             for (byte i = 0; i < teamCount; i++)

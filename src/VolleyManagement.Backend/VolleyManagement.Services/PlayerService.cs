@@ -16,10 +16,12 @@
     using Domain.TeamsAggregate;
     using PlayerResources = Domain.Properties.Resources;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines PlayerService
     /// </summary>
     public class PlayerService : IPlayerService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;

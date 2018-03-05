@@ -16,7 +16,9 @@
     using VolleyManagement.UI.Infrastructure.IOC;
 
 #pragma warning disable SA1649 // File name must match first type name
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     public class VolleyManagementApplication : System.Web.HttpApplication
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
 #pragma warning restore SA1649 // File name must match first type name
     {
         /// <summary>
@@ -29,7 +31,9 @@
             ////Make sure the provider assembly is available to the running application.
             ////See http://go.microsoft.com/fwlink/?LinkId=260882 for more information.
 
+#pragma warning disable S1481 // Unused local variables should be removed
             var instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+#pragma warning restore S1481 // Unused local variables should be removed
         }
 
         /// <summary>
@@ -39,7 +43,9 @@
             "StyleCopPlus.StyleCopPlusRules",
             "SP0100:AdvancedNamingRules",
             Justification = "Sergii Diachenko: This is specific naming convention.")]
+#pragma warning disable S2325 // Methods and properties that don't access instance data should be static
         protected void Application_Start()
+#pragma warning restore S2325 // Methods and properties that don't access instance data should be static
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterIgnoreRoutes(RouteTable.Routes);

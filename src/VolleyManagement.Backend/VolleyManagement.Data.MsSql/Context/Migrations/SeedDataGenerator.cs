@@ -6,10 +6,12 @@
     using System.Data.Entity.Migrations;
     using System.Linq;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Generates and seeds test entity data
     /// </summary>
     internal static class SeedDataGenerator
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private const string ADMINISTRATOR_ROLE_NAME = "Administrator";
         private const string USER_ROLE_NAME = "User";

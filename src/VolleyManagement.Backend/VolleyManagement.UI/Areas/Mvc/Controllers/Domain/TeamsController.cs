@@ -14,10 +14,12 @@
     using Domain.RolesAggregate;
     using ViewModels.Teams;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines teams controller
     /// </summary>
     public class TeamsController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
 
@@ -251,6 +253,7 @@
             return Json(result, JsonRequestBehavior.DenyGet);
         }
 
+#pragma warning disable S2360 // Optional parameters should not be used
         /// <summary>
         /// Details action method for specific team.
         /// </summary>
@@ -258,6 +261,7 @@
         /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific team.</returns>
         public ActionResult Details(int id = 0, string returnUrl = "")
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             var team = _teamService.Get(id);
 

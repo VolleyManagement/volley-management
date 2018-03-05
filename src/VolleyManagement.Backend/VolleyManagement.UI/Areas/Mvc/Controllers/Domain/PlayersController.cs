@@ -14,10 +14,12 @@
     using Domain.RolesAggregate;
     using ViewModels.Players;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines player controller
     /// </summary>
     public class PlayersController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         /// <summary>
         /// User Id for anonym role.
@@ -58,6 +60,7 @@
             _requestService = requestService;
         }
 
+#pragma warning disable S2360 // Optional parameters should not be used
         /// <summary>
         /// Gets players from PlayerService
         /// </summary>
@@ -65,6 +68,7 @@
         /// <param name="textToSearch">Substring to search in full name of a player.</param>
         /// <returns>View with collection of players.</returns>
         public ActionResult Index(int? page, string textToSearch = "")
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             try
             {
@@ -84,6 +88,7 @@
             }
         }
 
+#pragma warning disable S2360 // Optional parameters should not be used
         /// <summary>
         /// Gets details for specific player
         /// </summary>
@@ -91,6 +96,7 @@
         /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific player.</returns>
         public ActionResult Details(int id, string returnUrl = "")
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             var player = _playerService.Get(id);
 

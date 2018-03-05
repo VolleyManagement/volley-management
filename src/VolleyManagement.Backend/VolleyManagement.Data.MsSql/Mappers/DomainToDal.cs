@@ -12,10 +12,12 @@
     using Domain.UsersAggregate;
     using Entities;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Maps Domain models to Dal.
     /// </summary>
     internal static class DomainToDal
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         /// <summary>
         /// Maps Tournament model.

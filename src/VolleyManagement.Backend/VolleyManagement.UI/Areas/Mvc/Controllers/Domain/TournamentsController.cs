@@ -18,10 +18,12 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using ViewModels.Teams;
     using ViewModels.Tournaments;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
     public class TournamentsController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private const int ANONYM = -1;
         private const int DAYS_TO_APPLYING_PERIOD_START = 14;

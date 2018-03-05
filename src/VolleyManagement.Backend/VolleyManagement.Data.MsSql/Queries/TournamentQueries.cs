@@ -12,10 +12,12 @@
     using System;
     using Entities;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Provides Object Query implementation for Tournaments
     /// </summary>
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
                                      IQuery<ICollection<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
                                      IQuery<ICollection<Division>, TournamentDivisionsCriteria>,
@@ -59,7 +61,6 @@
                 query = query.Where(t => t.Id != id);
             }
 
-            // ToDo: Use Automapper to substitute Select clause
             return query
                 .Select(GetTournamentMapping())
                 .FirstOrDefault();
@@ -103,7 +104,9 @@
         public ICollection<Tournament> Execute(OldTournamentsCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments
+#pragma warning disable S1125 // Boolean literals should not be redundant
                                       .Where(t => t.IsArchived == false)
+#pragma warning restore S1125 // Boolean literals should not be redundant
                                       .Where(t => t.GamesEnd <= criteria.CheckDate)
                                       .Select(GetTournamentMapping())
                                       .ToList();

@@ -67,7 +67,9 @@
         /// <param name="feedbackViewModel">Feedback view model.</param>
         /// <returns>Feedback creation view.</returns>
         [HttpPost]
+#pragma warning disable S4261 // Methods should be named according to their synchronicities
         public async Task<JsonResult> Create(FeedbackViewModel feedbackViewModel)
+#pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             FeedbackMessageViewModel result = new FeedbackMessageViewModel
             {
@@ -77,7 +79,7 @@
 
             try
             {
-                var isCaptchaValid = await _captchaManager.ValidateUserCaptcha(feedbackViewModel.CaptchaResponse);
+                var isCaptchaValid = await _captchaManager.ValidateUserCaptchaAsync(feedbackViewModel.CaptchaResponse);
                 if (isCaptchaValid)
                 {
                     if (ModelState.IsValid)

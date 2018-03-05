@@ -18,10 +18,12 @@
     using Domain.TeamsAggregate;
     using TournamentResources = Domain.Properties.Resources;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines TeamService
     /// </summary>
     public class TeamService : ITeamService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITeamRepository _teamRepository;
         private readonly IPlayerRepository _playerRepository;
@@ -33,6 +35,7 @@
         private readonly IQuery<ICollection<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
         private readonly IAuthorizationService _authService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamService"/> class.
         /// </summary>
@@ -55,6 +58,7 @@
             IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<ICollection<Player>, TeamPlayersCriteria> getTeamRosterQuery,
             IAuthorizationService authService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _teamRepository = teamRepository;
             _playerRepository = playerRepository;
@@ -87,7 +91,6 @@
             Player captain = GetPlayerById(teamToCreate.CaptainId);
             if (captain == null)
             {
-                // ToDo: Revisit this case
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
             }
 
@@ -118,7 +121,6 @@
 
             if (captain == null)
             {
-                // ToDo: Revisit this case
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
             }
 

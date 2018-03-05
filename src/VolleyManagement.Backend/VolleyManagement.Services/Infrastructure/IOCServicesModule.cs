@@ -8,7 +8,9 @@
     using Contracts.Authorization;
     using Crosscutting.Contracts.Infrastructure.IOC;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     public class IocServicesModule : IIocRegistrationModule
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         public void RegisterDependencies(IIocContainer container)
         {

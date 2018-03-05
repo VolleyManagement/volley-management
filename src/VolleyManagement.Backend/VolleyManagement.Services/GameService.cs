@@ -20,10 +20,12 @@ namespace VolleyManagement.Services
     using Domain.TournamentsAggregate;
     using GameResultConstants = Domain.Constants.GameResult;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines an implementation of <see cref="IGameService"/> contract.
     /// </summary>
     public class GameService : IGameService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Fields
 
@@ -48,6 +50,7 @@ namespace VolleyManagement.Services
 
         #region Constructor
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="GameService"/> class.
         /// </summary>
@@ -75,6 +78,7 @@ namespace VolleyManagement.Services
             IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
             ITournamentRepository tournamentRepository,
             IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -813,7 +817,9 @@ namespace VolleyManagement.Services
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
+#pragma warning disable S3240 // The simplest possible condition syntax should be used
             if (finishedGame.AwayTeamId == null)
+#pragma warning restore S3240 // The simplest possible condition syntax should be used
             {
                 winnerTeamId = finishedGame.HomeTeamId.Value;
             }

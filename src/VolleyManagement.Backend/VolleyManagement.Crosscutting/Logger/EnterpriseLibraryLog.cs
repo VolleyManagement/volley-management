@@ -35,6 +35,9 @@
                 case LogLevelEnum.Error:
                     logEntry.Categories.Add("Error");
                     break;
+                case LogLevelEnum.Debug:
+                    logEntry.Categories.Add("Debug");
+                    break;
             }
         }
     }

@@ -17,7 +17,9 @@
     using Domain.TournamentsAggregate;
     using Domain.UsersAggregate;
 
+#pragma warning disable S1200 // IoC registration
     public class IocDataAccessModule : IIocRegistrationModule
+#pragma warning restore S1200
     {
         public void RegisterDependencies(IIocContainer container)
         {

@@ -373,13 +373,13 @@
         {
             // Arrange
             const byte TEST_ROUND_COUNT = 6;
-            SetupPlayoffTournamentWithGames(TEST_ROUND_COUNT, 
+            SetupPlayoffTournamentWithGames(TEST_ROUND_COUNT,
                 new GameServiceTestFixture().TestGamesWithNoNamesForPlayoffRounds(TEST_ROUND_COUNT).Build());
 
             var expectedFirstRoundTeamsNames = new List<string>
             {
-                "Team 1",
-                "Team 2"
+                 "Team 1",
+                 "Team 2"
             };
 
             var sut = BuildSUT();
@@ -390,8 +390,8 @@
 
             var actualTeamsNames = new List<string>
             {
-                game.HomeTeamName,
-                game.AwayTeamName
+                 game.HomeTeamName,
+                 game.AwayTeamName
             };
 
             // Assert
@@ -1702,7 +1702,7 @@
         }
 
         private byte GetFirstSemiFinalGameNumber(byte amountOfRounds) =>
-            (byte)(Math.Pow(2, amountOfRounds) - 3);
+                (byte)(Math.Pow(2, amountOfRounds) - 3);
 
         private List<Tournament> MakeTestTournaments()
         {

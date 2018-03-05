@@ -8,14 +8,17 @@ indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[*.ts]
+indent_size = 4
+
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
 
 [*.cs]
-indent_style = space 
+indent_style = space
 indent_size = 4
 
 [*.cshtml]
-indent_style = space 
+indent_style = space
 indent_size = 4

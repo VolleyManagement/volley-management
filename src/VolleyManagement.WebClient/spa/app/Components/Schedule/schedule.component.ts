@@ -39,12 +39,6 @@ export class ScheduleComponent implements OnInit {
             });
     }
 
-    gameIsPlayed(gameResult: GameResult) {
-        return gameResult.AwayTeamName &&
-            gameResult.Result &&
-            (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
-    }
-
     getDivisionsHeaderText(divisionHeader: DivisionHeader): string {
         if (divisionHeader.Id === DummyDivisionHeader.DummyHeaderId) {
             return '\u00A0';//$nbsp to preserve space
@@ -58,14 +52,16 @@ export class ScheduleComponent implements OnInit {
         if (divisionId === DummyDivisionHeader.DummyHeaderId) {
             return '';
         } else if (divisionId === DummyDivisionHeader.PlayOffHeaderId) {
-            return 'division2';
+            return 'division7';
         }
         let index = this.divisionsIds.indexOf(divisionId);
         return `division${++index}`;
     }
 
-    isFreeDay(gameResult: GameResult): boolean {
-        return !gameResult.AwayTeamName;
+    getNumberOfEmptyDivisionHeaders(day: ScheduleDay, week: Week): Array<number> {
+        const maxHeaders = week.Days.map(item => item.Divisions.length).reduce(function (a, b) { return Math.max(a, b); });
+        const difference = maxHeaders - day.Divisions.length;
+        return difference > 0 ? new Array(difference) : new Array(0);
     }
 
     getGameTotalBallsScore(gameResult: Result): string {
@@ -81,10 +77,46 @@ export class ScheduleComponent implements OnInit {
         return result;
     }
 
-    getNumberOfEmptyDivisionHeaders(day: ScheduleDay, week: Week): Array<number> {
-        const maxHeaders = week.Days.map(item => item.Divisions.length).reduce(function (a, b) { return Math.max(a, b); });
-        const difference = maxHeaders - day.Divisions.length;
-        return difference > 0 ? new Array(difference) : new Array(0);
+    isGameNumberVisible(gameResult: GameResult): boolean {
+        return gameResult.GameNumber !== 0;
+    }
+
+    isVideoLinkVisible(gameResult: GameResult): boolean {
+        return !!gameResult.UrlToGameVideo;
+    }
+
+    isGameResultVisible(gameResult: GameResult) {
+        return gameResult.AwayTeamName &&
+            gameResult.Result &&
+            (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
+    }
+
+    isGameDateVisible(gameResult: GameResult): boolean {
+        return !!gameResult.GameDate &&
+            !this.isFreeDayVisible(gameResult) &&
+            !this.isGameResultVisible(gameResult);
+    }
+
+    isFreeDayVisible(gameResult: GameResult): boolean {
+        return !gameResult.AwayTeamName;
+    }
+
+    isHomeWinner(gameResult: GameResult): boolean {
+        if(!this.isGameResultVisible(gameResult)){
+            return false;
+        }
+        let score = gameResult.Result.TotalScore;
+
+        return score.Home > score.Away;
+    }
+
+    isAwayWinner(gameResult: GameResult): boolean {
+        if(!this.isGameResultVisible(gameResult)){
+            return false;
+        }
+        let score = gameResult.Result.TotalScore;
+
+        return score.Home < score.Away;
     }
 
     private _getSortedDivisionsIds() {

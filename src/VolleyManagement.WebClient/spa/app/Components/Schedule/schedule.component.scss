@@ -34,6 +34,7 @@
   $division14-date-bg-color: #ff9e74;
   $division15-date-bg-color: #fd7478;
   $division16-date-bg-color: #ea6b98;
+  $division-contrast-color: #feffc4;
   $game-schedule-border-color: #E8E8E8;
   $game-hover-bg-color: #009933;
   /* STYLES */
@@ -85,6 +86,9 @@
         td {
           border: none;
         }
+        .info-column {
+          width: 20px;
+        }
         .win {
           font-weight: bold;
         }
@@ -103,6 +107,9 @@
             }
           }
         }
+      }
+      .non-free-day {
+        height: 65px;
       }
     }
     .division1 {
@@ -159,6 +166,7 @@
       }
       &.game-sch {
         background-color: $division7-bg-color;
+        color: $division-contrast-color;
       }
     }
     .division8 {
@@ -234,13 +242,12 @@
       }
     }
     .videoIconCell {
-      width: 20px;
+      width: 18px;
       .videoLinkIcon {
         width: 16px;
         height: 16px;
         margin-left: 2px;
         position: relative;
-        top: -8px;
         text-decoration: none;
       }
       &:hover,

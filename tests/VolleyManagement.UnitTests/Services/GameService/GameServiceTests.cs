@@ -2506,7 +2506,7 @@
             return new GameComparer().Compare(x, y) == 0;
         }
 
-        private static void AssertPlaceholdersAreUsed(List<GameResultDto> actual, int numberOfGamesInFirstRound)
+        private static void AssertPlaceholdersAreUsed(ICollection<GameResultDto> actual, int numberOfGamesInFirstRound)
         {
             var firstRoundGames = actual.Where(g => g.Round == 1).ToList();
             Assert.AreEqual(numberOfGamesInFirstRound, firstRoundGames.Count,

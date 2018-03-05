@@ -13,9 +13,7 @@
     /// </summary>
     public class AuthorizationQueries : IQuery<ICollection<AuthOperation>, FindByUserIdCriteria>
     {
-        private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<UserEntity> _dalUsers;
-        private readonly DbSet<RoleEntity> _dalRoles;
         private readonly DbSet<RoleToOperationEntity> _dalRolesToOperations;
 
         /// <summary>
@@ -24,10 +22,9 @@
         /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/></param>
         public AuthorizationQueries(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            _dalUsers = _unitOfWork.Context.Users;
-            _dalRoles = _unitOfWork.Context.Roles;
-            _dalRolesToOperations = _unitOfWork.Context.RolesToOperations;
+            var unitoOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalUsers = unitoOfWork.Context.Users;
+            _dalRolesToOperations = unitoOfWork.Context.RolesToOperations;
         }
 
 

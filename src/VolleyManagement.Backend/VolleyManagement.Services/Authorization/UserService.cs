@@ -27,6 +27,7 @@
         private readonly IQuery<ICollection<User>, UniqueUserCriteria> _getAdminsListQuery;
         private readonly ICurrentUserService _currentUserService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
@@ -47,6 +48,7 @@
             IQuery<ICollection<User>, UniqueUserCriteria> getAdminsListQuery,
             IUserRepository userRepository,
             ICurrentUserService currentUserService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;

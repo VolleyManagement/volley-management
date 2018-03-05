@@ -11,10 +11,12 @@
     using Mappers;
     using Specifications;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
     /// </summary>
     internal class TournamentRepository : ITournamentRepository
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<TeamEntity> _dalTeams;

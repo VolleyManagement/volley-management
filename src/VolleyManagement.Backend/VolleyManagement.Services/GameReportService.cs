@@ -14,10 +14,12 @@
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Represents an implementation of IGameReportService contract.
     /// </summary>
     public class GameReportService : IGameReportService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Queries
 

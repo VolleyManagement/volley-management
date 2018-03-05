@@ -10,10 +10,12 @@
     using Entities;
     using System.Data.Entity;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Provides implementation of game result queries.
     /// </summary>
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
                                      IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>,
                                      IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria>,
                                      IQuery<ICollection<Game>, GamesByRoundCriteria>,
@@ -21,7 +23,6 @@
     {
         #region Fields
 
-        private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<GameResultEntity> _dalGameResults;
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<DivisionEntity> _dalDivisions;
@@ -37,11 +38,11 @@
         /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/>.</param>
         public GameResultQueries(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            _dalGameResults = _unitOfWork.Context.GameResults;
-            _dalTournaments = _unitOfWork.Context.Tournaments;
-            _dalDivisions = _unitOfWork.Context.Divisions;
-            _dalGroups = _unitOfWork.Context.Groups;
+            var vmUoW = (VolleyUnitOfWork)unitOfWork;
+            _dalGameResults = vmUoW.Context.GameResults;
+            _dalTournaments = vmUoW.Context.Tournaments;
+            _dalDivisions = vmUoW.Context.Divisions;
+            _dalGroups = vmUoW.Context.Groups;
         }
 
         #endregion

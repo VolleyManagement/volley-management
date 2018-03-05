@@ -14,10 +14,12 @@
     using Domain.TournamentsAggregate;
     using Domain.UsersAggregate;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines an implementation of <see cref="ITournamentRequestService"/> contract.
     /// </summary>
     public class TournamentRequestService : ITournamentRequestService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly IMailService _mailService;
         private readonly ITournamentRequestRepository _tournamentRequestRepository;

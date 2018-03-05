@@ -57,7 +57,6 @@
         {
             var query = _unitOfWork.Context.Users.Where(u => u.Id == criteria.Id);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
@@ -70,7 +69,6 @@
         {
             var query = _unitOfWork.Context.Users.Where(u => u.UserName == criteria.Name);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
@@ -83,7 +81,6 @@
         {
             var query = _unitOfWork.Context.Users.Where(u => u.Email == criteria.Email);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
@@ -99,7 +96,6 @@
                                                && l.LoginProvider == criteria.LoginProvider)
                                            .Select(l => l.User);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 

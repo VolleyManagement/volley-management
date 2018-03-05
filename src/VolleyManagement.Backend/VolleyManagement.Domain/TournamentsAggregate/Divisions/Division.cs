@@ -41,7 +41,7 @@
             {
                 if (DivisionValidation.ValidateName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationDivisionName, nameof(Name));
+                    throw new ArgumentException(Resources.ValidationDivisionName, nameof(value));
                 }
 
                 _name = value;

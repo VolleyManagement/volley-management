@@ -4,10 +4,12 @@ namespace VolleyManagement.Data.MsSql.Context
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Entities;
 
+#pragma warning disable S1200 // This class is a DB context - there could not be other way 
     /// <summary>
     /// Volley management database context
     /// </summary>
     public class VolleyManagementEntities : DbContext
+#pragma warning restore S1200
     {
         #region Constructor
 

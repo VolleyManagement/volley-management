@@ -35,7 +35,7 @@
             {
                 if (PlayerValidation.ValidateFirstName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerFirstName, nameof(Player.FirstName));
+                    throw new ArgumentException(Resources.ValidationPlayerFirstName, nameof(value));
                 }
 
                 _firstName = value;
@@ -57,7 +57,7 @@
             {
                 if (PlayerValidation.ValidateLastName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerLastName, nameof(Player.LastName));
+                    throw new ArgumentException(Resources.ValidationPlayerLastName, nameof(value));
                 }
 
                 _lastName = value;
@@ -79,7 +79,7 @@
             {
                 if (PlayerValidation.ValidateBirthYear(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(Player.BirthYear));
+                    throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(value));
                 }
 
                 _birthYear = value;
@@ -101,7 +101,7 @@
             {
                 if (PlayerValidation.ValidateHeight(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(Player.Height));
+                    throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(value));
                 }
 
                 _height = value;
@@ -123,7 +123,7 @@
             {
                 if (PlayerValidation.ValidateWeight(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(Player.Weight));
+                    throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(value));
                 }
 
                 _weight = value;

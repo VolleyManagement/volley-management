@@ -13,10 +13,12 @@
     using WebAPI.ViewModels.GameReports;
     using WebAPI.ViewModels.Schedule;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// The tournaments controller.
     /// </summary>
     public class TournamentsController : ApiController
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITournamentService _tournamentService;
         private readonly IGameReportService _gameReportService;

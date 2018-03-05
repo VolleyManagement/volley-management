@@ -24,10 +24,12 @@
     using TournamentConstants = Domain.Constants.Tournament;
     using TournamentResources = Domain.Properties.Resources;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines TournamentService
     /// </summary>
     public class TournamentService : ITournamentService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Const & Readonly
 
@@ -72,6 +74,7 @@
 
         #region Constructor
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
@@ -102,6 +105,7 @@
             IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IAuthorizationService authService,
             IGameService gameService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
@@ -587,18 +591,6 @@
                     TournamentConstants.APPLYING_END_DATE_AFTER_START_GAMES,
                     TournamentConstants.GAMES_START_CAPTURE);
             }
-
-            // ToDo: Revisit this requirement
-            ////double totalApplyingPeriodDays = (tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays;
-
-            ////// if registration period is little
-            ////if (totalApplyingPeriodDays < ExceptionParams.DAYS_BETWEEN_START_AND_END_APPLYING_DATE)
-            ////{
-            ////    throw new TournamentValidationException(
-            ////        MessageList.WrongThreeMonthRule,
-            ////        ExceptionParams.APPLYING_PERIOD_LESS_THREE_MONTH,
-            ////        ExceptionParams.APPLYING_END_CAPTURE);
-            ////}
         }
 
         private static void ValidateTournamentGamesPeriod(Tournament tournament)

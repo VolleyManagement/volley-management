@@ -963,11 +963,6 @@ namespace VolleyManagement.Services
             return games;
         }
 
-        private static byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
-        {
-            return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(2, numberOfRounds - 1));
-        }
-
         #endregion
 
         #region private methods
@@ -989,6 +984,49 @@ namespace VolleyManagement.Services
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
             _tournamentRepository.Update(tournament);
         }
+        private static void UpdateTeamNamesForPlayoff(IEnumerable<GameResultDto> allGames, int numberOfRounds)
+        {
+            foreach (var game in allGames.Where(game => game.HomeTeamId == null && game.AwayTeamId == null))
+            {
+                if (game.Round == 1)
+                {
+                    game.HomeTeamName = FIRST_TEAM_PLACEHOLDER;
+                    game.AwayTeamName = SECOND_TEAM_PLACEHOLDER;
+                }
+                else
+                {
+                    var prefix = IsBronzeGame(game, numberOfRounds)
+                                    ? LOOSER_PREFIX
+                                    : WINNER_PREFIX;
+                    var (home, away) = GetUpstreamGameNumbers(game, numberOfRounds);
+                    game.HomeTeamName = $"{prefix}{home}";
+                    game.AwayTeamName = $"{prefix}{away}";
+                }
+            }
+        }
+
+        private static bool IsBronzeGame(GameResultDto game, int numberOfRounds)
+        {
+            return game.Round == numberOfRounds
+                   && game.GameNumber % 2 != 0;
+        }
+
+        // Method is not mine: It has to be refactored 
+        private static byte CalculateNumberOfRounds(int teamCount)
+        {
+            byte rounds = 0;
+            for (byte i = 0; i < teamCount; i++)
+            {
+                if (Math.Pow(2, i) >= teamCount)
+                {
+                    rounds = i;
+                    break;
+                }
+            }
+
+            return rounds;
+        }
+
         private static void UpdateTeamNamesForPlayoff(IEnumerable<GameResultDto> allGames, int numberOfRounds)
         {
             foreach (var game in allGames.Where(game => game.HomeTeamId == null && game.AwayTeamId == null))

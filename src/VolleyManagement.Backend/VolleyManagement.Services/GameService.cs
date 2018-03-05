@@ -332,7 +332,7 @@ namespace VolleyManagement.Services
             ValidateGameInTournament(game, tournamentScheduleInfo);
         }
 
-        private void ValidateResult(Result result)
+        private static void ValidateResult(Result result)
         {
             ValidateSetsScore(result.GameScore, result.GameScore.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores);
@@ -340,7 +340,7 @@ namespace VolleyManagement.Services
             ValidateSetScoresOrder(result.SetScores);
         }
 
-        private void ValidateTeams(int? homeTeamId, int? awayTeamId, TournamentScheduleDto tournamentScheduleInfo)
+        private static void ValidateTeams(int? homeTeamId, int? awayTeamId, TournamentScheduleDto tournamentScheduleInfo)
         {
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
@@ -356,7 +356,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
+        private static void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
         {
             if (!ResultValidation.IsSetsScoreValid(setsScore, isTechnicalDefeat))
             {
@@ -368,7 +368,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
+        private static void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresMatched(setsScore, setScores))
             {
@@ -376,7 +376,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
+        private static void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
 
@@ -417,12 +417,9 @@ namespace VolleyManagement.Services
                             GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
                     }
 
-                    if (isPreviousOptionalSetUnplayed)
+                    if (isPreviousOptionalSetUnplayed && !ResultValidation.IsSetUnplayed(setScores[i]))
                     {
-                        if (!ResultValidation.IsSetUnplayed(setScores[i]))
-                        {
-                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-                        }
+                        throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
                     }
 
                     isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
@@ -430,7 +427,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateSetScoresOrder(IList<Score> setScores)
+        private static void ValidateSetScoresOrder(IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresOrdered(setScores))
             {
@@ -446,7 +443,7 @@ namespace VolleyManagement.Services
             }
 
             var allGamesInTournament = QueryAllTournamentGames(game.TournamentId);
-            var oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
+            var oldGameToUpdate = allGamesInTournament.SingleOrDefault(gr => gr.Id == game.Id);
 
             if (oldGameToUpdate != null)
             {
@@ -597,7 +594,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
+        private static void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
             if (gameToDelete.HasResult)
             {
@@ -605,7 +602,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateGamesInTournamentSchemeTwo(Game newGame, IEnumerable<GameResultDto> games)
+        private static void ValidateGamesInTournamentSchemeTwo(Game newGame, IEnumerable<GameResultDto> games)
         {
             var tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -671,7 +668,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void PutFreeDayTeamAsAway(Game game)
+        private static void PutFreeDayTeamAsAway(Game game)
         {
             if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
             {
@@ -679,7 +676,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateGameDateSet(Game game)
+        private static void ValidateGameDateSet(Game game)
         {
             if (!game.GameDate.HasValue)
             {
@@ -687,7 +684,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
+        private static void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
             if (DateTime.Compare(tournament.StartDate, game.GameDate.Value) > 0
                 || DateTime.Compare(tournament.EndDate, game.GameDate.Value) < 0)
@@ -696,7 +693,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void SwitchTeamsOrder(Game game)
+        private static void SwitchTeamsOrder(Game game)
         {
             if (!GameValidation.IsFreeDayGame(game))
             {
@@ -712,7 +709,7 @@ namespace VolleyManagement.Services
         private Game GetGameByNumber(int gameNumber, int tournamentId)
         {
             Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
-               .Execute(new GameByNumberCriteria()
+               .Execute(new GameByNumberCriteria
                {
                    TournamentId = tournamentId,
                    GameNumber = gameNumber
@@ -734,7 +731,7 @@ namespace VolleyManagement.Services
             List<Game> gamesToUpdate = new List<Game>();
 
             ICollection<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria()
+                .Execute(new GamesByRoundCriteria
                 {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
@@ -747,7 +744,7 @@ namespace VolleyManagement.Services
             // Schedule next games only if finished game is not in last round
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                Game oldGame = gamesInCurrentAndNextRounds.Where(gr => gr.Id == finishedGame.Id).SingleOrDefault();
+                Game oldGame = gamesInCurrentAndNextRounds.SingleOrDefault(gr => gr.Id == finishedGame.Id);
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue
@@ -764,7 +761,7 @@ namespace VolleyManagement.Services
             return gamesToUpdate;
         }
 
-        private List<Game> GetGamesToUpdate(Game finishedGame, ICollection<Game> gamesInCurrentAndNextRounds)
+        private static List<Game> GetGamesToUpdate(Game finishedGame, ICollection<Game> gamesInCurrentAndNextRounds)
         {
             List<Game> gamesToUpdate = new List<Game>();
 
@@ -789,7 +786,7 @@ namespace VolleyManagement.Services
             return gamesToUpdate;
         }
 
-        private void ClearGame(Game finishedGame, Game newGame)
+        private static void ClearGame(Game finishedGame, Game newGame)
         {
             if (finishedGame.GameNumber % 2 != 0)
             {
@@ -801,7 +798,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private Game GetNextWinnerGame(Game finishedGame, ICollection<Game> games)
+        private static Game GetNextWinnerGame(Game finishedGame, ICollection<Game> games)
         {
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
             if (IsSemiFinalGame(finishedGame, games))
@@ -810,8 +807,7 @@ namespace VolleyManagement.Services
             }
 
             Game nextGame = games
-                .Where(g => g.GameNumber == nextGameNumber)
-                .SingleOrDefault();
+                .SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
@@ -839,7 +835,7 @@ namespace VolleyManagement.Services
             return nextGame;
         }
 
-        private Game GetNextLoserGame(Game finishedGame, ICollection<Game> games)
+        private static Game GetNextLoserGame(Game finishedGame, ICollection<Game> games)
         {
             // Assume that finished game is a semifinal game
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
@@ -882,7 +878,7 @@ namespace VolleyManagement.Services
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
-            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count(), 2))
+            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count, 2))
                 + finishedGame.Round;
         }
 
@@ -892,7 +888,7 @@ namespace VolleyManagement.Services
             return roundNum == finishedGame.Round;
         }
 
-        private void ValidateEditingSchemePlayoff(Game nextGame)
+        private static void ValidateEditingSchemePlayoff(Game nextGame)
         {
             if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
                 && nextGame.Result.GameScore.Away != 0)
@@ -916,7 +912,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
+        private static List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
         {
             if (allGames == null)
             {
@@ -941,7 +937,7 @@ namespace VolleyManagement.Services
             return games;
         }
 
-        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
+        private static byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
         {
             return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(2, numberOfRounds - 1));
         }

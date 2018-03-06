@@ -106,6 +106,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return View(archivedTournaments);
         }
 
+
         /// <summary>
         /// Get finished tournaments
         /// </summary>
@@ -126,6 +127,18 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         public ActionResult Archive(int tournamentId)
         {
             _tournamentService.Archive(tournamentId);
+            return new EmptyResult();
+        }
+
+        /// <summary>
+        /// Unarchive current Tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>Index View of Tournament</returns>
+        [HttpPost]
+        public ActionResult UnArchive(int tournamentId)
+        {
+            _tournamentService.UnArchive(tournamentId);
             return new EmptyResult();
         }
 

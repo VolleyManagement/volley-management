@@ -1534,7 +1534,7 @@
 
             return this;
         }
-
+        
         public GameServiceTestFixture SameTeamsInOneGamePlayOffScheme()
         {
             _gameResults.Clear();
@@ -1591,7 +1591,7 @@
         {
             return _gameResults;
         }
-
+        
         public GameServiceTestFixture WithOneWeekOneDivisionOneGame()
         {
             _gameResults.Clear();
@@ -1626,7 +1626,7 @@
 
             return this;
         }
-
+        
         /// <summary>
         /// Resets game to default state in playoff tournament
         /// </summary>

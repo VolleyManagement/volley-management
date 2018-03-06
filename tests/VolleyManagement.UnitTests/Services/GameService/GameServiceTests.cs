@@ -53,6 +53,9 @@
         private const int SPECIFIC_GAME_ID = 2;
         private const int ANOTHER_GAME_ID = SPECIFIC_GAME_ID + 1;
 
+        private const string FIRST_TEAM_PLACEHOLDER = "<Team 1>";
+        private const string SECOND_TEAM_PLACEHOLDER = "<Team 2>";
+
         private readonly string _wrongRoundDate
             = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
 
@@ -1445,11 +1448,8 @@
             TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
         }
 
-        /// <summary>
-        /// Test for GetTournamentResults method. Game results of specified tournament are requested. Game results are returned.
-        /// </summary>
         [TestMethod]
-        public void GetTournamentGames_GamesRequsted_AllScheduledReturned()
+        public void GetTournamentGames_GamesRequested_AllScheduledReturned()
         {
             // Arrange
             var existingGames = new GameServiceTestFixture().TestGameResults().Build();
@@ -1465,6 +1465,69 @@
 
             // Assert
             TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
+        }
+
+        [TestMethod]
+        public void GetPlayoffTournamentGames_FirstRoundGameHasNoTeams_PlaceholdersAreUsed()
+        {
+            // Arrange
+            const int NUMBER_OF_GAMES_IN_FIRST_ROUND = 4;
+            var existingGames = new GameServiceTestFixture().TestEmptyPlayoffFor6Teams().Build();
+
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build());
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentGames(TOURNAMENT_ID);
+
+            // Assert
+            AssertPlaceholdersAreUsed(actual, NUMBER_OF_GAMES_IN_FIRST_ROUND);
+        }
+
+        [TestMethod]
+        public void GetPlayoffTournamentGames_NonFirstRoundGameHasNoTeams_GameDependenciesAreSet()
+        {
+            // Arrange
+            const int FIRST_SEMIFINAL_ID = 5;
+            const int SECOND_SEMIFINAL_ID = 6;
+            const int FINAL_ID = 8;
+            var existingGames = new GameServiceTestFixture().TestEmptyPlayoffFor6Teams().Build();
+
+            MockGetTournamentById(TOURNAMENT_ID, CreatePlayoffTournament());
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentGames(TOURNAMENT_ID);
+
+            // Assert
+            AssertWinnerGameDependenciesAreSet(actual, FIRST_SEMIFINAL_ID, 1, 2);
+            AssertWinnerGameDependenciesAreSet(actual, SECOND_SEMIFINAL_ID, 3, 4);
+            AssertWinnerGameDependenciesAreSet(actual, FINAL_ID, FIRST_SEMIFINAL_ID, SECOND_SEMIFINAL_ID);
+        }
+
+        [TestMethod]
+        public void GetPlayoffTournamentGames_BronzeGameHasNoTeams_GameDependenciesAreSetFromLoosers()
+        {
+            // Arrange
+            const int FIRST_SEMIFINAL_ID = 5;
+            const int SECOND_SEMIFINAL_ID = 6;
+            const int BRONZE_GAME_ID = 7;
+            var existingGames = new GameServiceTestFixture().TestEmptyPlayoffFor6Teams().Build();
+
+            MockGetTournamentById(TOURNAMENT_ID, CreatePlayoffTournament());
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentGames(TOURNAMENT_ID);
+
+            // Assert
+            AssertLooserGameDependenciesAreSet(actual, BRONZE_GAME_ID, FIRST_SEMIFINAL_ID, SECOND_SEMIFINAL_ID);
         }
 
         #endregion
@@ -1619,7 +1682,7 @@
                 .Build();
 
             List<GameResultDto> gameInfo = new GameServiceTestFixture()
-                .TestEmptyGamesInPlayoff()
+                .TestPlayoffGamesWithoutResults()
                 .Build();
 
             MockTournamentSchemePlayoff(
@@ -2301,10 +2364,10 @@
                 .Build();
         }
 
-        private static Game CreateGameToEdit(int ANOTHER_PLAYOFF_GAME_ID)
+        private static Game CreateGameToEdit(int anotherPlayoffGameId)
         {
             return new GameBuilder()
-                .WithId(ANOTHER_PLAYOFF_GAME_ID)
+                .WithId(anotherPlayoffGameId)
                 .WithGameNumber(4)
                 .WithRound(1)
                 .WithHomeTeamId(8)
@@ -2312,9 +2375,20 @@
                 .Build();
         }
 
+        private static TournamentScheduleDto CreatePlayoffTournament()
+        {
+            var result = new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
+
+            result.Divisions[0].NumberOfRounds = 3;
+            result.Divisions[0].TeamCount = 6;
+
+            return result;
+        }
+
         #endregion
 
         #region Mock Helpers
+
         private void MockGetById(GameResultDto gameResult)
         {
             _getByIdQueryMock
@@ -2430,6 +2504,70 @@
         private bool AreGamesEqual(Game x, Game y)
         {
             return new GameComparer().Compare(x, y) == 0;
+        }
+
+        private static void AssertPlaceholdersAreUsed(ICollection<GameResultDto> actual, int numberOfGamesInFirstRound)
+        {
+            var firstRoundGames = actual.Where(g => g.Round == 1).ToList();
+            Assert.AreEqual(numberOfGamesInFirstRound, firstRoundGames.Count,
+                $"This playoff tournament should have {numberOfGamesInFirstRound} games in first round.");
+            foreach (var game in firstRoundGames)
+            {
+                Assert.AreEqual(FIRST_TEAM_PLACEHOLDER, game.HomeTeamName,
+                    $"[GameId:{game.Id}] Placeholder should be used for Home team name");
+                Assert.AreEqual(SECOND_TEAM_PLACEHOLDER, game.AwayTeamName,
+                    $"[GameId:{game.Id}] Placeholder should be used for Away team name");
+            }
+        }
+
+        private static void AssertWinnerGameDependenciesAreSet(
+            IEnumerable<GameResultDto> games,
+            int gameId,
+            int upstreamHomeTeamGameNumber,
+            int upstreamAwayTeamGameNumber)
+        {
+            AssertGameDependenciesAreSet(
+                games,
+                gameId,
+                upstreamHomeTeamGameNumber,
+                upstreamAwayTeamGameNumber,
+                "Winner",
+                "Winner");
+        }
+
+        private static void AssertLooserGameDependenciesAreSet(
+            IEnumerable<GameResultDto> games,
+            int gameId,
+            int upstreamHomeTeamGameNumber,
+            int upstreamAwayTeamGameNumber)
+        {
+            AssertGameDependenciesAreSet(
+                games,
+                gameId,
+                upstreamHomeTeamGameNumber,
+                upstreamAwayTeamGameNumber,
+                "Looser",
+                "Looser");
+        }
+
+        private static void AssertGameDependenciesAreSet(
+            IEnumerable<GameResultDto> games,
+            int gameId,
+            int upstreamHomeTeamGameNumber,
+            int upstreamAwayTeamGameNumber,
+            string prefix,
+            string messagePrefix)
+        {
+            var game = games.FirstOrDefault(g => g.Id == gameId);
+            Assert.IsNotNull(game, $"Game with id={gameId} should exist");
+            Assert.AreEqual(
+                $"{prefix}{upstreamHomeTeamGameNumber}",
+                game.HomeTeamName,
+                $"[GameId:{game.Id}] {messagePrefix} of upstream game should be set as Home team name");
+            Assert.AreEqual(
+                $"{prefix}{upstreamAwayTeamGameNumber}",
+                game.AwayTeamName,
+                $"[GameId:{game.Id}] {messagePrefix} of upstream game should be set as Away team name");
         }
 
         private void VerifyCreateGame(Game game, Times times)

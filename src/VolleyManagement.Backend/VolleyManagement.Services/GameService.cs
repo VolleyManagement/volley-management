@@ -20,14 +20,16 @@ namespace VolleyManagement.Services
     using Domain.TournamentsAggregate;
     using GameResultConstants = Domain.Constants.GameResult;
 
-#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines an implementation of <see cref="IGameService"/> contract.
     /// </summary>
     public class GameService : IGameService
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Fields
+        private const string FIRST_TEAM_PLACEHOLDER = "<Team 1>";
+        private const string SECOND_TEAM_PLACEHOLDER = "<Team 2>";
+        private const string WINNER_PREFIX = "Winner";
+        private const string LOOSER_PREFIX = "Looser";
 
         private readonly IGameRepository _gameRepository;
         private readonly IAuthorizationService _authService;
@@ -50,7 +52,6 @@ namespace VolleyManagement.Services
 
         #region Constructor
 
-#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="GameService"/> class.
         /// </summary>
@@ -78,7 +79,6 @@ namespace VolleyManagement.Services
             IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
             ITournamentRepository tournamentRepository,
             IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -168,6 +168,14 @@ namespace VolleyManagement.Services
         public ICollection<GameResultDto> GetTournamentGames(int tournamentId)
         {
             var allGames = QueryAllTournamentGames(tournamentId);
+
+            var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
+
+            if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                UpdateTeamNamesForPlayoff(allGames, CalculateNumberOfRounds(tournamentInfo.Divisions[0].TeamCount));
+            }
 
             return allGames;
         }
@@ -713,7 +721,7 @@ namespace VolleyManagement.Services
         private Game GetGameByNumber(int gameNumber, int tournamentId)
         {
             Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
-               .Execute(new GameByNumberCriteria
+               .Execute(new GameByNumberCriteria()
                {
                    TournamentId = tournamentId,
                    GameNumber = gameNumber
@@ -804,7 +812,8 @@ namespace VolleyManagement.Services
 
         private static Game GetNextWinnerGame(Game finishedGame, ICollection<Game> games)
         {
-            int nextGameNumber = GetNextGameNumber(finishedGame, games);
+            var numberOfRounds = GetNumberOfRounds(finishedGame, games);
+            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
             if (IsSemiFinalGame(finishedGame, games))
             {
                 nextGameNumber++;
@@ -817,9 +826,7 @@ namespace VolleyManagement.Services
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
-#pragma warning disable S3240 // The simplest possible condition syntax should be used
             if (finishedGame.AwayTeamId == null)
-#pragma warning restore S3240 // The simplest possible condition syntax should be used
             {
                 winnerTeamId = finishedGame.HomeTeamId.Value;
             }
@@ -843,9 +850,10 @@ namespace VolleyManagement.Services
 
         private static Game GetNextLoserGame(Game finishedGame, ICollection<Game> games)
         {
+            var numberOfRounds = GetNumberOfRounds(finishedGame, games);
             // Assume that finished game is a semifinal game
-            int nextGameNumber = GetNextGameNumber(finishedGame, games);
-            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
+            Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
 
             ValidateEditingSchemePlayoff(nextGame);
 
@@ -864,12 +872,24 @@ namespace VolleyManagement.Services
             return nextGame;
         }
 
-        private static int GetNextGameNumber(Game finishedGame, IEnumerable<Game> games)
+        private static int GetNextGameNumber(int gameNumber, int numberOfRounds)
         {
-            int numberOfRounds = GetNumberOfRounds(finishedGame, games);
-
-            return ((finishedGame.GameNumber + 1) / 2)
+            return (gameNumber + 1) / 2
                 + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
+        }
+
+        private static (int Home, int Away) GetUpstreamGameNumbers(GameResultDto game, int numberOfRounds)
+        {
+            var gameNumber =
+            (game.Round == numberOfRounds &&
+             game.GameNumber % 2 == 0) //Final game - has to be adjusted because of Bronze game
+                ? game.GameNumber - 1
+                : game.GameNumber;
+
+            var away = 2 * gameNumber - Convert.ToInt32(Math.Pow(2, numberOfRounds));
+            var home = away - 1;
+
+            return (home, away);
         }
 
         private static bool IsSemiFinalGame(Game finishedGame, ICollection<Game> games)
@@ -933,7 +953,7 @@ namespace VolleyManagement.Services
 
             var games = new List<GameResultDto>();
 
-            int nextGameNumber = NextGameNumber(currentGame.GameNumber, numberOfRounds);
+            int nextGameNumber = GetNextGameNumber(currentGame.GameNumber, numberOfRounds);
             games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
             if (currentGame.Round == numberOfRounds - 1)
             {
@@ -941,11 +961,6 @@ namespace VolleyManagement.Services
             }
 
             return games;
-        }
-
-        private static byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
-        {
-            return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(2, numberOfRounds - 1));
         }
 
         #endregion
@@ -968,6 +983,48 @@ namespace VolleyManagement.Services
                });
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
             _tournamentRepository.Update(tournament);
+        }
+        private static void UpdateTeamNamesForPlayoff(IEnumerable<GameResultDto> allGames, int numberOfRounds)
+        {
+            foreach (var game in allGames.Where(game => game.HomeTeamId == null && game.AwayTeamId == null))
+            {
+                if (game.Round == 1)
+                {
+                    game.HomeTeamName = FIRST_TEAM_PLACEHOLDER;
+                    game.AwayTeamName = SECOND_TEAM_PLACEHOLDER;
+                }
+                else
+                {
+                    var prefix = IsBronzeGame(game, numberOfRounds)
+                                    ? LOOSER_PREFIX
+                                    : WINNER_PREFIX;
+                    var (home, away) = GetUpstreamGameNumbers(game, numberOfRounds);
+                    game.HomeTeamName = $"{prefix}{home}";
+                    game.AwayTeamName = $"{prefix}{away}";
+                }
+            }
+        }
+
+        private static bool IsBronzeGame(GameResultDto game, int numberOfRounds)
+        {
+            return game.Round == numberOfRounds
+                   && game.GameNumber % 2 != 0;
+        }
+
+        // Method is not mine: It has to be refactored 
+        private static byte CalculateNumberOfRounds(int teamCount)
+        {
+            byte rounds = 0;
+            for (byte i = 0; i < teamCount; i++)
+            {
+                if (Math.Pow(2, i) >= teamCount)
+                {
+                    rounds = i;
+                    break;
+                }
+            }
+
+            return rounds;
         }
 
         #endregion

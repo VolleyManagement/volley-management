@@ -47,6 +47,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         /// </summary>
         public int Round { get; set; }
 
+        public byte GameNumber { get; set; }
+
         /// <summary>
         /// Gets or sets the identifier of the division where game result belongs.
         /// </summary>
@@ -80,6 +82,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
                 Round = gameResult.Round,
+                GameNumber = gameResult.GameNumber,
                 Result = new GameResult
                 {
                     TotalScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },

@@ -392,6 +392,7 @@
             _game.HomeTeamId = 1;
             _game.AwayTeamId = null;
             _game.Round = 1;
+            _game.Result = null;
 
             return this;
         }

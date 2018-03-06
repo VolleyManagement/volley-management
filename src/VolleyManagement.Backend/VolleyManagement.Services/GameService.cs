@@ -194,7 +194,7 @@
 
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff
-                && game.Result != null)
+                && (game.Result != null || game.AwayTeamId == null))
             {
                 ScheduleNextGames(game, tournamentScheduleInfo);
             }
@@ -990,12 +990,15 @@
 
         private static void UpdateTeamNamesForPlayoff(IEnumerable<GameResultDto> allGames, int numberOfRounds)
         {
-            foreach (var game in allGames.Where(game => game.HomeTeamId == null && game.AwayTeamId == null))
+            foreach (var game in allGames.Where(game => game.HomeTeamId == null || game.AwayTeamId == null))
             {
                 if (game.Round == 1)
                 {
-                    game.HomeTeamName = FIRST_TEAM_PLACEHOLDER;
-                    game.AwayTeamName = SECOND_TEAM_PLACEHOLDER;
+                    if (game.HomeTeamId == null && game.AwayTeamId == null)
+                    {
+                        game.HomeTeamName = FIRST_TEAM_PLACEHOLDER;
+                        game.AwayTeamName = SECOND_TEAM_PLACEHOLDER;
+                    }
                 }
                 else
                 {
@@ -1003,8 +1006,14 @@
                                     ? LOOSER_PREFIX
                                     : WINNER_PREFIX;
                     var (home, away) = GetUpstreamGameNumbers(game, numberOfRounds);
-                    game.HomeTeamName = $"{prefix}{home}";
-                    game.AwayTeamName = $"{prefix}{away}";
+                    if (game.HomeTeamId == null)
+                    {
+                        game.HomeTeamName = $"{prefix}{home}";
+                    }
+                    if (game.AwayTeamId == null)
+                    {
+                        game.AwayTeamName = $"{prefix}{away}";
+                    }
                 }
             }
         }

@@ -1508,6 +1508,41 @@
             AssertWinnerGameDependenciesAreSet(actual, FINAL_ID, FIRST_SEMIFINAL_ID, SECOND_SEMIFINAL_ID);
         }
 
+
+
+        [TestMethod]
+        public void GetPlayoffTournamentGames_NonFirstRoundGameHasOnlyOneTeams_GameDependenciesAreSetForMissingTeam()
+        {
+            // Arrange
+            const string TEAM_NAME = "Team A";
+            var existingGames = new GameServiceTestFixture().TestEmptyPlayoffFor6Teams().Build();
+            var firstGameOfSecondRound = existingGames.Single(g => g.Id == 5);
+            firstGameOfSecondRound.HomeTeamId = 1;
+            firstGameOfSecondRound.HomeTeamName = TEAM_NAME;
+
+            MockGetTournamentById(TOURNAMENT_ID, CreatePlayoffTournament());
+            MockGetTournamentResults(TOURNAMENT_ID, existingGames);
+
+            const int DEPENDENT_GAME_ID = 5;
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentGames(TOURNAMENT_ID);
+
+            // Assert
+            var game = actual.FirstOrDefault(g => g.Id == DEPENDENT_GAME_ID);
+            Assert.IsNotNull(game, $"Game with id={DEPENDENT_GAME_ID} should exist");
+            Assert.AreEqual(
+                TEAM_NAME,
+                game.HomeTeamName,
+                $"[GameId:{game.Id}] Team name should be set");
+            Assert.AreEqual(
+                $"Winner2",
+                game.AwayTeamName,
+                $"[GameId:{game.Id}] Winner of upstream game should be set as Away team name");
+        }
+
         [TestMethod]
         public void GetPlayoffTournamentGames_BronzeGameHasNoTeams_GameDependenciesAreSetFromLoosers()
         {
@@ -1671,7 +1706,7 @@
         }
 
         [TestMethod]
-        public void Edit_AddResultsToGameInPlayoff_NewGameIsScheduled()
+        public void EditPlayOff_AddResultsToGame_NextGameIsScheduled()
         {
             // Arrange
             MockDefaultTournament();
@@ -1692,12 +1727,12 @@
 
             var sut = BuildSUT();
 
-            // Act
-            sut.Edit(finishedGame);
-
             Game newScheduledGame = games
                     .Where(g => g.GameNumber == 5)
                     .SingleOrDefault();
+
+            // Act
+            sut.Edit(finishedGame);
 
             // Assert
             VerifyEditGames(
@@ -1705,6 +1740,53 @@
                 {
                     finishedGame,
                     newScheduledGame
+                },
+                Times.AtLeastOnce());
+        }
+
+        [TestMethod]
+        public void EditPlayoff_AddedDayOffGame_NextGameIsScheduled()
+        {
+            // Arrange
+            MockDefaultTournament();
+
+            var games = new GameTestFixture().TestEmptyGamePlayoffSchedule().Build();
+
+            var gameInfo = new GameServiceTestFixture().TestPlayoffGamesWithoutResults().Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            Game dayOffGame = new GameBuilder()
+                .TestFreeDayGame()
+                .WithId(1)
+                .WithGameNumber(1)
+                .WithRound(1)
+                .Build();
+
+            var expectedNextGame = new Game
+            {
+                Id = 5,
+                Round = 2,
+                GameNumber = 5,
+                TournamentId = 1,
+                Result = new Result(),
+                HomeTeamId = dayOffGame.HomeTeamId,
+                AwayTeamId = null
+            };
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Edit(dayOffGame);
+
+            // Assert
+            VerifyEditGames(
+                new List<Game>
+                {
+                    dayOffGame,
+                    expectedNextGame
                 },
                 Times.AtLeastOnce());
         }

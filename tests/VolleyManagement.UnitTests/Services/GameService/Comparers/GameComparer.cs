@@ -55,17 +55,37 @@
         /// <returns>True if given <see cref="Game"/> objects are equal.</returns>
         internal bool AreEqual(Game x, Game y)
         {
-            return x.Id == y.Id
+            var result = x.Id == y.Id
                 && x.TournamentId == y.TournamentId
                 && x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
-                && new ScoreComparer().Equals(x.Result.GameScore, y.Result.GameScore)
-                && x.Result.GameScore.IsTechnicalDefeat == y.Result.GameScore.IsTechnicalDefeat
-                && x.Result.SetScores.SequenceEqual(y.Result.SetScores, new ScoreComparer())
-                && PenaltiesAreEqual(x.Result.Penalty, y.Result.Penalty)
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round
                 && x.GameNumber == y.GameNumber;
+
+            if (!result)
+            {
+                return false;
+            }
+
+            if (x.Result == null && y.Result == null)
+            {
+                return true;
+            }
+
+            if (x.Result != null && y.Result != null)
+            {
+                result = new ScoreComparer().Equals(x.Result.GameScore, y.Result.GameScore)
+                         && x.Result.GameScore.IsTechnicalDefeat == y.Result.GameScore.IsTechnicalDefeat
+                         && x.Result.SetScores.SequenceEqual(y.Result.SetScores, new ScoreComparer())
+                         && PenaltiesAreEqual(x.Result.Penalty, y.Result.Penalty);
+            }
+            else
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         private bool PenaltiesAreEqual(Penalty x, Penalty y)

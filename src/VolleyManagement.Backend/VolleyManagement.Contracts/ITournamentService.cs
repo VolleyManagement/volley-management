@@ -100,6 +100,13 @@
         /// <param name="id">Tournament id</param>
         void Archive(int id);
 
+
+        /// <summary>
+        /// Unarchive specific tournament
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        void UnArchive(int id);
+
         /// <summary>
         /// Archive old tournaments.
         /// </summary>

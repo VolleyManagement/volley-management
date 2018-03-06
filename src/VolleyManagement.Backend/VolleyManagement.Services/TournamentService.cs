@@ -302,6 +302,26 @@
             _tournamentRepository.UnitOfWork.Commit();
         }
 
+
+        /// <summary>
+        /// Unarchive tournament by id.
+        /// </summary>
+        /// <param name="id">The id of tournament to archive.</param>
+        public void UnArchive(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Tournaments.Archive);
+
+            var getTournamentToUnArchive = Get(id);
+
+            if (getTournamentToUnArchive == null)
+            {
+                throw new ArgumentException(
+                    TournamentResources.TournamentWasNotFound);
+            }
+
+            UnArchive(getTournamentToUnArchive);
+            _tournamentRepository.UnitOfWork.Commit();
+        }
         /// <summary>
         /// Method for autho-archiving old tournaments.
         /// Finds old tournaments to be archived.
@@ -474,6 +494,19 @@
 
             _tournamentRepository.Update(tournament);
         }
+
+
+        /// <summary>
+        /// Unarchive tournament.
+        /// </summary>
+        /// <param name="tournament">Tournament to archive.</param>
+        private void UnArchive(Tournament tournament)
+        {
+            tournament.IsArchived = false;
+
+            _tournamentRepository.Update(tournament);
+        }
+
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {

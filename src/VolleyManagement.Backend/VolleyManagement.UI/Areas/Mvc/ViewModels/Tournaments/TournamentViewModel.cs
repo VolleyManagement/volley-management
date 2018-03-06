@@ -207,6 +207,8 @@
         /// <returns> View model object </returns>
         /// 
 
+        public string AlarmMessage { get { return !this.IsArchived ? "Tournament was successfully archived": "Tournament was successfully unarchived"; } set { } }
+
         public bool  IsArchived { get; set; }
 
         public static TournamentViewModel Map(Tournament tournament)

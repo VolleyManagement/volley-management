@@ -62,17 +62,13 @@
                         </div>
                       </ng-template>
 
-                      <ng-template [ngIf]="setScore.IsEmpty">
-                        <div class="hidden"></div>
-                      </ng-template>
-
                     </td>
 
                     <td>
                       <div class="game-time">{{getGameTotalBallsScore(gameResult.Result)}}</div>
                     </td>
                   </ng-template>
-                  <!--If no result place ampty tds to avoid issues with table rendering-->
+                  <!--If no result place empty tds to avoid issues with table rendering-->
                   <ng-template [ngIf]="!isGameResultVisible(gameResult)">
                     <td></td>
                     <td></td>

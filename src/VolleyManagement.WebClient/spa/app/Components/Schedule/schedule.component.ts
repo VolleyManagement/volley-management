@@ -59,7 +59,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     getNumberOfEmptyDivisionHeaders(day: ScheduleDay, week: Week): Array<number> {
-        const maxHeaders = week.Days.map(item => item.Divisions.length).reduce(function (a, b) { return Math.max(a, b); });
+        const maxHeaders = week.Days.map(item => item.Divisions.length).reduce((a, b) => Math.max(a, b));
         const difference = maxHeaders - day.Divisions.length;
         return difference > 0 ? new Array(difference) : new Array(0);
     }
@@ -102,7 +102,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     isHomeWinner(gameResult: GameResult): boolean {
-        if(!this.isGameResultVisible(gameResult)){
+        if (!this.isGameResultVisible(gameResult)) {
             return false;
         }
         let score = gameResult.Result.TotalScore;
@@ -111,7 +111,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     isAwayWinner(gameResult: GameResult): boolean {
-        if(!this.isGameResultVisible(gameResult)){
+        if (!this.isGameResultVisible(gameResult)) {
             return false;
         }
         let score = gameResult.Result.TotalScore;

@@ -361,7 +361,7 @@
             // Assert
             CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
         }
-
+        
         #endregion
 
         #region AddTeamsToTournament
@@ -1574,7 +1574,7 @@
                 _tournamentRequestServiceMock.Object,
                 _currentUserServiceMock.Object);
         }
-
+        
         private List<Tournament> MakeTestTournaments()
         {
             return new TournamentServiceTestFixture().TestTournaments().Build();

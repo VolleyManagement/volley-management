@@ -205,10 +205,15 @@
         /// </summary>
         /// <param name="tournament"> Domain object </param>
         /// <returns> View model object </returns>
+        /// 
+
+        public bool  IsArchived { get; set; }
+
         public static TournamentViewModel Map(Tournament tournament)
         {
             var tournamentViewModel = new TournamentViewModel()
             {
+                IsArchived = tournament.IsArchived,
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,

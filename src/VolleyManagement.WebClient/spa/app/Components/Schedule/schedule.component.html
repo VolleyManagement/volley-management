@@ -8,95 +8,77 @@
 
         <div>
           <div class="games" *ngFor="let gameResult of day.Games;">
-            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}">
-              <tbody *ngIf="isFreeDay(gameResult)">
-                <tr class="team-sch">
-                  <td>
-                    <strong>{{ gameResult.HomeTeamName }}</strong>
-                  </td>
-                  <td>Выходной</td>
-                </tr>
-              </tbody>
-            </table>
-            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}" *ngIf="gameResult.AwayTeamName">
-
-              <tbody *ngIf="gameIsPlayed(gameResult)">
-
-                <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
-
-                  <td class="videoIconCell" *ngIf="gameResult.UrlToGameVideo" rowspan="3">
+            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}" [class.non-free-day]="!isFreeDayVisible(gameResult)">
+              <tr>
+                <!--First column: Game Number, video, etc-->
+                <td rowspan="3" class="info-column">
+                  <div *ngIf="isGameNumberVisible(gameResult)">#{{ gameResult.GameNumber }}</div>
+                  <div *ngIf="isVideoLinkVisible(gameResult)" class="videoIconCell">
                     <a href="{{gameResult.UrlToGameVideo}}" title="Перейти к видео" class="videoLinkIcon">
                       📹
                     </a>
-                  </td>
+                  </div>
+                </td>
 
-                  <td class="teamname" colspan="5">
-                    {{gameResult.HomeTeamName}}
-                  </td>
+                <!--Main content: Team names, results-->
 
-                  <td class="teamscore">
-                    {{gameResult.Result.TotalScore.Home}}
-                  </td>
+                <td class="teamname" colspan="5" [class.win]="isHomeWinner(gameResult)">
+                  {{gameResult.HomeTeamName}}
+                </td>
+                <td class="teamscore" *ngIf="isGameResultVisible(gameResult)" [class.win]="isHomeWinner(gameResult)">
+                  {{gameResult.Result.TotalScore.Home}}
+                </td>
+
+                <!--Right column: score, date, free day-->
+                <td *ngIf="isGameDateVisible(gameResult)" rowspan="2">
+                  {{gameResult.GameDate| localDate | date: 'HH:mm'}}
+                </td>
+                <td *ngIf="isFreeDayVisible(gameResult)">
+                  вых.
+                </td>
+              </tr>
+
+              <tr>
+                <td class="teamname" colspan="5" [class.win]="isAwayWinner(gameResult)">
+                  {{gameResult.AwayTeamName}}
+                </td>
+                <td class="teamscore" *ngIf="isGameResultVisible(gameResult)" [class.win]="isAwayWinner(gameResult)">
+                  {{gameResult.Result.TotalScore.Away}}
+                </td>
+
+                <tr class="sets">
+                  <ng-template [ngIf]="isGameResultVisible(gameResult)">
+                    <td class="set" *ngFor="let setScore of gameResult.Result.SetScores">
+
+                      <ng-template [ngIf]="!setScore.IsEmpty && !gameResult.Result.IsTechnicalDefeat">
+                        <div>
+                          {{setScore.Home}} : {{setScore.Away}}
+                        </div>
+                      </ng-template>
+
+                      <ng-template [ngIf]="!setScore.IsEmpty && gameResult.Result.IsTechnicalDefeat">
+                        <div>
+                          <span>техн.</span>
+                        </div>
+                      </ng-template>
+
+                    </td>
+
+                    <td>
+                      <div class="game-time">{{getGameTotalBallsScore(gameResult.Result)}}</div>
+                    </td>
+                  </ng-template>
+                  <!--If no result place empty tds to avoid issues with table rendering-->
+                  <ng-template [ngIf]="!isGameResultVisible(gameResult)">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </ng-template>
 
                 </tr>
-
-                <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home < gameResult.Result.TotalScore.Away">
-
-                  <td class="teamname" colspan="5">
-                    {{ gameResult.AwayTeamName }}
-                  </td>
-
-                  <td class="teamscore">
-                    {{ gameResult.Result.TotalScore.Away }}
-                  </td>
-
-                </tr>
-
-                <tr class="sets" *ngIf="gameResult.Result">
-
-                  <td class="set" *ngFor="let setScore of gameResult.Result.SetScores">
-
-                    <ng-template [ngIf]="!setScore.IsEmpty && !gameResult.Result.IsTechnicalDefeat">
-                      <div>
-                        {{setScore.Home}} : {{setScore.Away}}
-                      </div>
-                    </ng-template>
-
-                    <ng-template [ngIf]="!setScore.IsEmpty && gameResult.Result.IsTechnicalDefeat">
-                      <div>
-                        <span>техн.</span>
-                      </div>
-                    </ng-template>
-
-                    <ng-template [ngIf]="setScore.IsEmpty">
-                      <div class="hidden"></div>
-                    </ng-template>
-
-                  </td>
-
-                  <td>
-                    <div class="game-time">{{getGameTotalBallsScore(gameResult.Result)}}</div>
-                  </td>
-                </tr>
-              </tbody>
-
-              <tbody *ngIf="!gameResult.Result || (gameResult.Result.TotalScore.IsEmpty && !gameResult.Result.IsTechnicalDefeat)">
-                <tr class="team-sch">
-                  <td class="teamname">
-                    {{gameResult.HomeTeamName}}
-                  </td>
-                </tr>
-                <tr class="team-sch">
-                  <td class="teamname">
-                    {{gameResult.AwayTeamName}}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {{gameResult.GameDate| localDate | date: 'HH:mm'}}
-                  </td>
-                </tr>
-              </tbody>
             </table>
           </div>
         </div>

@@ -748,7 +748,7 @@
             return this;
         }
 
-        public GameServiceTestFixture TestEmptyGamesInPlayoff()
+        public GameServiceTestFixture TestPlayoffGamesWithoutResults()
         {
             _gameResults.Clear();
 
@@ -763,7 +763,6 @@
                         GameNumber = 1,
                         Round = 1,
                         TournamentId = 1,
-                        UrlToGameVideo = URL_A,
                     },
                     new GameResultDto
                     {
@@ -773,7 +772,6 @@
                         GameNumber = 2,
                         Round = 1,
                         TournamentId = 1,
-                        UrlToGameVideo = URL_B,
                     },
                     new GameResultDto
                     {
@@ -783,7 +781,6 @@
                         Round = 1,
                         GameNumber = 3,
                         TournamentId = 1,
-                        UrlToGameVideo = URL_C,
                     },
                     new GameResultDto
                     {
@@ -793,7 +790,74 @@
                         AwayTeamId = 8,
                         GameNumber = 4,
                         TournamentId = 1,
-                        UrlToGameVideo = URL_D,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 5,
+                        Round = 2,
+                        GameNumber = 5,
+                        TournamentId = 1,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 6,
+                        Round = 2,
+                        GameNumber = 6,
+                        TournamentId = 1,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 7,
+                        Round = 3,
+                        GameNumber = 7,
+                        TournamentId = 1,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 8,
+                        Round = 3,
+                        GameNumber = 8,
+                        TournamentId = 1,
+                    },
+                });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestEmptyPlayoffFor6Teams()
+        {
+            _gameResults.Clear();
+
+            _gameResults.AddRange(
+                new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id = 1,
+                        GameNumber = 1,
+                        Round = 1,
+                        TournamentId = 1,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 2,
+                        GameNumber = 2,
+                        Round = 1,
+                        TournamentId = 1,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 3,
+                        Round = 1,
+                        GameNumber = 3,
+                        TournamentId = 1,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 4,
+                        Round = 1,
+                        GameNumber = 4,
+                        TournamentId = 1,
                     },
                     new GameResultDto
                     {
@@ -1470,7 +1534,7 @@
 
             return this;
         }
-
+        
         public GameServiceTestFixture SameTeamsInOneGamePlayOffScheme()
         {
             _gameResults.Clear();
@@ -1527,7 +1591,7 @@
         {
             return _gameResults;
         }
-
+        
         public GameServiceTestFixture WithOneWeekOneDivisionOneGame()
         {
             _gameResults.Clear();
@@ -1562,7 +1626,7 @@
 
             return this;
         }
-
+        
         /// <summary>
         /// Resets game to default state in playoff tournament
         /// </summary>

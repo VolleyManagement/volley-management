@@ -26,6 +26,10 @@
     public class GameService : IGameService
     {
         #region Fields
+        private const string FIRST_TEAM_PLACEHOLDER = "<Team 1>";
+        private const string SECOND_TEAM_PLACEHOLDER = "<Team 2>";
+        private const string WINNER_PREFIX = "Winner";
+        private const string LOOSER_PREFIX = "Looser";
 
         private readonly IGameRepository _gameRepository;
         private readonly IAuthorizationService _authService;
@@ -163,6 +167,14 @@
         public List<GameResultDto> GetTournamentGames(int tournamentId)
         {
             var allGames = QueryAllTournamentGames(tournamentId);
+
+            var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
+
+            if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                UpdateTeamNamesForPlayoff(allGames, CalculateNumberOfRounds(tournamentInfo.Divisions[0].TeamCount));
+            }
 
             return allGames;
         }
@@ -802,7 +814,8 @@
 
         private Game GetNextWinnerGame(Game finishedGame, List<Game> games)
         {
-            int nextGameNumber = GetNextGameNumber(finishedGame, games);
+            var numberOfRounds = GetNumberOfRounds(finishedGame, games);
+            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
             if (IsSemiFinalGame(finishedGame, games))
             {
                 nextGameNumber++;
@@ -840,8 +853,9 @@
 
         private Game GetNextLoserGame(Game finishedGame, List<Game> games)
         {
+            var numberOfRounds = GetNumberOfRounds(finishedGame, games);
             // Assume that finished game is a semifinal game
-            int nextGameNumber = GetNextGameNumber(finishedGame, games);
+            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
             Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
 
             ValidateEditingSchemePlayoff(nextGame);
@@ -861,12 +875,24 @@
             return nextGame;
         }
 
-        private int GetNextGameNumber(Game finishedGame, List<Game> games)
+        private static int GetNextGameNumber(int gameNumber, int numberOfRounds)
         {
-            int numberOfRounds = GetNumberOfRounds(finishedGame, games);
-
-            return ((finishedGame.GameNumber + 1) / 2)
+            return (gameNumber + 1) / 2
                 + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
+        }
+
+        private static (int Home, int Away) GetUpstreamGameNumbers(GameResultDto game, int numberOfRounds)
+        {
+            var gameNumber =
+            (game.Round == numberOfRounds &&
+             game.GameNumber % 2 == 0) //Final game - has to be adjusted because of Bronze game
+                ? game.GameNumber - 1
+                : game.GameNumber;
+
+            var away = 2 * gameNumber - Convert.ToInt32(Math.Pow(2, numberOfRounds));
+            var home = away - 1;
+
+            return (home, away);
         }
 
         private bool IsSemiFinalGame(Game finishedGame, List<Game> games)
@@ -930,7 +956,7 @@
 
             var games = new List<GameResultDto>();
 
-            int nextGameNumber = NextGameNumber(currentGame.GameNumber, numberOfRounds);
+            int nextGameNumber = GetNextGameNumber(currentGame.GameNumber, numberOfRounds);
             games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
             if (currentGame.Round == numberOfRounds - 1)
             {
@@ -938,11 +964,6 @@
             }
 
             return games;
-        }
-
-        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
-        {
-            return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(2, numberOfRounds - 1));
         }
 
         #endregion
@@ -965,6 +986,49 @@
                });
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
             _tournamentRepository.Update(tournament);
+        }
+
+        private static void UpdateTeamNamesForPlayoff(IEnumerable<GameResultDto> allGames, int numberOfRounds)
+        {
+            foreach (var game in allGames.Where(game => game.HomeTeamId == null && game.AwayTeamId == null))
+            {
+                if (game.Round == 1)
+                {
+                    game.HomeTeamName = FIRST_TEAM_PLACEHOLDER;
+                    game.AwayTeamName = SECOND_TEAM_PLACEHOLDER;
+                }
+                else
+                {
+                    var prefix = IsBronzeGame(game, numberOfRounds)
+                                    ? LOOSER_PREFIX
+                                    : WINNER_PREFIX;
+                    var (home, away) = GetUpstreamGameNumbers(game, numberOfRounds);
+                    game.HomeTeamName = $"{prefix}{home}";
+                    game.AwayTeamName = $"{prefix}{away}";
+                }
+            }
+        }
+
+        private static bool IsBronzeGame(GameResultDto game, int numberOfRounds)
+        {
+            return game.Round == numberOfRounds
+                   && game.GameNumber % 2 != 0;
+        }
+
+        // Method is not mine: It has to be refactored 
+        private static byte CalculateNumberOfRounds(int teamCount)
+        {
+            byte rounds = 0;
+            for (byte i = 0; i < teamCount; i++)
+            {
+                if (Math.Pow(2, i) >= teamCount)
+                {
+                    rounds = i;
+                    break;
+                }
+            }
+
+            return rounds;
         }
 
         #endregion

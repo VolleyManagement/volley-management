@@ -23,7 +23,6 @@
         private const string TOURNAMENT_NAME = "Name";
 
         private Mock<IGameReportService> _gameReportServiceMock;
-        private Mock<ITournamentService> _tournamentServiceMock;
 
         /// <summary>
         /// Initializes test data.

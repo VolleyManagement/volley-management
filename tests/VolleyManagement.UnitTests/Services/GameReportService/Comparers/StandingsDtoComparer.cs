@@ -8,7 +8,7 @@
     {
         private StandingsEntryComparer standingsComparer;
 
-        public StandingsDtoComparer(): this(new StandingsEntryComparer())
+        public StandingsDtoComparer() : this(new StandingsEntryComparer())
         {
         }
 
@@ -25,13 +25,19 @@
 
             if (x.Standings.Count == y.Standings.Count)
             {
-                for (var i = 0; i < x.Standings.Count; i++)
+                var xEnumerator = x.Standings.GetEnumerator();
+                var yEnumerator = x.Standings.GetEnumerator();
+
+                while (xEnumerator.MoveNext() && yEnumerator.MoveNext())
                 {
-                    if (standingsComparer.Compare(x.Standings[i], y.Standings[i]) != 0)
+                    if (standingsComparer.Compare(xEnumerator.Current, yEnumerator.Current) != 0)
                     {
                         return 1;
                     }
                 }
+
+                xEnumerator.Dispose();
+                yEnumerator.Dispose();
             }
             else
             {

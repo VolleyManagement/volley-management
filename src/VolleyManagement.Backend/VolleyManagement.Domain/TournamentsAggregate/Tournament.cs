@@ -117,7 +117,7 @@
         /// <summary>
         /// Gets or sets divisions of the tournament
         /// </summary>
-        public List<Division> Divisions { get; set; }
+        public ICollection<Division> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether tournament is archived

@@ -1676,7 +1676,7 @@
         {
             var tournament = MakeTestTournament(tournamentId);
             tournament.Divisions = CreateTestDivisions();
-            tournament.Divisions.Remove(tournament.Divisions[1]);
+            tournament.Divisions.Remove(tournament.Divisions.ElementAt(1));
             return tournament;
         }
 
@@ -1687,10 +1687,10 @@
             for (int i = 0; i < 10; i++)
             {
                 tournament.Divisions.Add(new Division());
-                tournament.Divisions[i].Groups = new List<Group>();
+                tournament.Divisions.ElementAt(i).Groups = new List<Group>();
                 for (int j = 0; j < 10; j++)
                 {
-                    tournament.Divisions[i].Groups.Add(new Group());
+                    tournament.Divisions.ElementAt(i).Groups.Add(new Group());
                 }
             }
 

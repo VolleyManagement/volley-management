@@ -218,10 +218,10 @@
             var result = _getTournamentDtoQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
 
-            result.Divisions.ForEach(d =>
+            foreach (var item in result.Divisions)
             {
-                d.NumberOfRounds = CalculateNumberOfRounds(result.Scheme, d.TeamCount);
-            });
+                item.NumberOfRounds = CalculateNumberOfRounds(result.Scheme, item.TeamCount);
+            }
 
             return result;
         }
@@ -659,7 +659,7 @@
             }
         }
 
-        private void ValidateDivisions(List<Division> divisions)
+        private void ValidateDivisions(ICollection<Division> divisions)
         {
             ValidateDivisionCount(divisions.Count);
             ValidateUniqueDivisionNames(divisions);
@@ -677,7 +677,7 @@
             }
         }
 
-        private void ValidateUniqueDivisionNames(List<Division> divisions)
+        private void ValidateUniqueDivisionNames(ICollection<Division> divisions)
         {
             if (divisions.Select(d => new { Name = d.Name.ToUpper(CultureInfo.InvariantCulture) }).Distinct().Count() != divisions.Count)
             {
@@ -685,7 +685,7 @@
             }
         }
 
-        private void ValidateGroups(List<Division> divisions)
+        private void ValidateGroups(ICollection<Division> divisions)
         {
             foreach (var division in divisions)
             {
@@ -706,7 +706,7 @@
             }
         }
 
-        private void ValidateUniqueGroupNames(List<Group> groups)
+        private void ValidateUniqueGroupNames(ICollection<Group> groups)
         {
             if (groups.Select(g => new { Name = g.Name.ToUpper(CultureInfo.InvariantCulture) }).Distinct().Count() != groups.Count)
             {

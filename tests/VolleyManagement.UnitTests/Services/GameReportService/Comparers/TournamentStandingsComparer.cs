@@ -27,13 +27,19 @@
 
             if (x.Divisions.Count == y.Divisions.Count)
             {
-                for (var i = 0; i < x.Divisions.Count; i++)
+                var xEnumerator = x.Divisions.GetEnumerator();
+                var yEnumerator = x.Divisions.GetEnumerator();
+
+                while (xEnumerator.MoveNext() && yEnumerator.MoveNext())
                 {
-                    if (_groupItemComparer.Compare(x.Divisions[i], y.Divisions[i]) != 0)
+                    if (_groupItemComparer.Compare(xEnumerator.Current, yEnumerator.Current) != 0)
                     {
                         return 1;
                     }
                 }
+
+                xEnumerator.Dispose();
+                yEnumerator.Dispose();
             }
             else
             {

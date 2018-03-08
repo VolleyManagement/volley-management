@@ -27,7 +27,7 @@
         public List<Score> SetScores { get; set; }
 
         /// <summary>
-        /// Gets or sets penalty for game
+        /// Gets or sets penalty for games
         /// </summary>
         public Penalty Penalty { get; set; }
 

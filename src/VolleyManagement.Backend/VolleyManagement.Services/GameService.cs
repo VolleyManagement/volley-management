@@ -174,7 +174,7 @@ namespace VolleyManagement.Services
 
             if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
-                UpdateTeamNamesForPlayoff(allGames, CalculateNumberOfRounds(tournamentInfo.Divisions[0].TeamCount));
+                UpdateTeamNamesForPlayoff(allGames, CalculateNumberOfRounds(tournamentInfo.Divisions.First().TeamCount));
             }
 
             return allGames;
@@ -546,16 +546,12 @@ namespace VolleyManagement.Services
             string errorMessage = null;
             if (GameValidation.IsFreeDayGame(newGame))
             {
-                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
-                {
-                    errorMessage = Resources.SameFreeDayGameInRound;
-                }
-                else
-                {
-                    errorMessage = string.Format(
-                        Resources.SameTeamInRound,
-                        game.HomeTeamId);
-                }
+                errorMessage = tournamentScheduleInfo.Scheme !=
+                               TournamentSchemeEnum.PlayOff ?
+                               Resources.SameFreeDayGameInRound :
+                               string.Format(
+                               Resources.SameTeamInRound,
+                               game.HomeTeamId);
             }
             else
             {
@@ -853,7 +849,7 @@ namespace VolleyManagement.Services
             var numberOfRounds = GetNumberOfRounds(finishedGame, games);
             // Assume that finished game is a semifinal game
             int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
-            Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
+            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             ValidateEditingSchemePlayoff(nextGame);
 
@@ -923,7 +919,7 @@ namespace VolleyManagement.Services
             }
         }
 
-        private void SetAbilityToEditResults(List<GameResultDto> allGames)
+        private static void SetAbilityToEditResults(List<GameResultDto> allGames)
         {
             List<GameResultDto> gamesToAllowEditingResults = allGames.Where(
                 game => game.HomeTeamId.HasValue

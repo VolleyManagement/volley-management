@@ -68,6 +68,6 @@
         /// <summary>
         /// Gets or sets groups of the division.
         /// </summary>
-        public List<Group> Groups { get; set; }
+        public ICollection<Group> Groups { get; set; }
     }
 }

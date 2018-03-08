@@ -172,7 +172,7 @@
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
         }
 
-        private void UpdateDivisions(IEnumerable<DivisionEntity> old, List<Division> changed)
+        private void UpdateDivisions(IEnumerable<DivisionEntity> old, IEnumerable<Division> changed)
         {
             foreach (var item in old.ToList())
             {
@@ -190,7 +190,7 @@
             }
         }
 
-        private void UpdateGroups(IEnumerable<GroupEntity> old, List<Group> changed)
+        private void UpdateGroups(IEnumerable<GroupEntity> old, IEnumerable<Group> changed)
         {
             foreach (var item in old.ToList())
             {

@@ -163,14 +163,9 @@
         {
             byte defScoreToWin = 0;
 
-            if (setOrderNumber == Constants.GameResult.MAX_SETS_COUNT)
-            {
-                defScoreToWin = Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN;
-            }
-            else
-            {
-                defScoreToWin = Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
-            }
+            defScoreToWin = setOrderNumber == Constants.GameResult.MAX_SETS_COUNT ?
+                (byte)Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN :
+                (byte)Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
 
             return IsSetScoreValid(setScore, defScoreToWin);
         }

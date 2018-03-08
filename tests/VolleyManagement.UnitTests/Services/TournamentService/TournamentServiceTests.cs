@@ -1684,7 +1684,7 @@
             _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
         }
 
-        private void MockGetAllTournamentDivisionsQuery(List<Division> testData)
+        private void MockGetAllTournamentDivisionsQuery(ICollection<Division> testData)
         {
             _getAllTournamentDivisionsQuery.Setup(tr => tr.Execute(It.IsAny<TournamentDivisionsCriteria>())).Returns(testData);
         }

@@ -2461,8 +2461,8 @@
         {
             var result = new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
 
-            result.Divisions[0].NumberOfRounds = 3;
-            result.Divisions[0].TeamCount = 6;
+            result.Divisions.First().NumberOfRounds = 3;
+            result.Divisions.First().TeamCount = 6;
 
             return result;
         }

@@ -139,7 +139,7 @@
         /// </summary>
         /// <param name="from">List of groups to map</param>
         /// <returns>List of Dal entity</returns>
-        public static List<GroupEntity> Map(List<Group> from)
+        public static List<GroupEntity> Map(ICollection<Group> from)
         {
             var groups = new List<GroupEntity>();
             foreach (var item in from)

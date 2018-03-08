@@ -38,6 +38,9 @@
                 case LogLevelEnum.Debug:
                     logEntry.Categories.Add("Debug");
                     break;
+                default:
+                    logEntry.Categories.Add("Unknown");
+                    break;
             }
         }
     }

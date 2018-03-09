@@ -158,7 +158,7 @@
             {
                 GetCssClassWhenWin(awayScore, ref cssClass);
             }
-            else
+            else if (awayScore == THREE)
             {
                 GetCssClassWhenLoss(homeScore, ref cssClass);
             }

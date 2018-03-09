@@ -56,7 +56,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// Maps presentation list to domain list
         /// </summary>
         /// <returns>Domain list of teams</returns>
-        public List<Team> ToDomain()
+        public ICollection<Team> ToDomain()
         {
             return TeamsList.Select(t => t.ToDomain()).ToList();
         }
@@ -65,7 +65,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// Maps presentation list to domain list
         /// </summary>
         /// <returns>Domain list of teams and groups</returns>
-        public List<TeamTournamentAssignmentDto> ToGroupTeamDomain()
+        public ICollection<TeamTournamentAssignmentDto> ToGroupTeamDomain()
         {
             return GroupTeamList.Select(t => t.ToDomain()).ToList();
         }

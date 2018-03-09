@@ -20,13 +20,19 @@
             Assert.AreEqual(expected.Name, actual.Name, $"{messagePrefix}[Id:{expected.Id}]Name should be equal.");
 
             Assert.AreEqual(expected.Groups.Count, actual.Groups.Count, $"[Id:{expected.Id}]Number of Groups items should be equal.");
-            for (var i = 0; i < expected.Groups.Count; i++)
+
+            var expectedGroupsEnumerator = expected.Groups.GetEnumerator();
+            var actualGroupsEnumerator = actual.Groups.GetEnumerator();
+
+            while (expectedGroupsEnumerator.MoveNext() && actualGroupsEnumerator.MoveNext())
             {
-                GroupViewModelEqualityComparer.AssertAreEqual(
-                    expected.Groups[i],
-                    actual.Groups[i],
-                    $"[Id:{expected.Id}][Group#{i}]");
+                GroupViewModelEqualityComparer.AssertAreEqual(expectedGroupsEnumerator.Current,
+                    actualGroupsEnumerator.Current,
+                    $"[Id:{expectedGroupsEnumerator.Current.Id}][Group#{expectedGroupsEnumerator.Current.ToDomain().Id}]");
             }
+
+            expectedGroupsEnumerator.Dispose();
+            actualGroupsEnumerator.Dispose();
         }
     }
 }

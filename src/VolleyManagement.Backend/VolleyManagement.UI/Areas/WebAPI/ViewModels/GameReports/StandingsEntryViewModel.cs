@@ -150,6 +150,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <param name="firstEntry">First team standings entry</param>
         /// <param name="secondEntry">Second team standings entry</param>
         /// <returns>True if teams have same position</returns>
+#pragma warning disable S1244 // Want to check floating point not with exact values, but with range
         public static bool EntriesHaveSamePosition(StandingsEntryViewModel firstEntry, StandingsEntryViewModel secondEntry)
         {
             return firstEntry.Points == secondEntry.Points
@@ -157,4 +158,5 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
                 && firstEntry.BallsRatio == secondEntry.BallsRatio;
         }
     }
+#pragma warning restore S1244
 }

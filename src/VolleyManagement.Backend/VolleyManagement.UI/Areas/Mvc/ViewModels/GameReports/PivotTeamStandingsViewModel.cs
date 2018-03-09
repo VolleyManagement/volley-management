@@ -26,6 +26,7 @@
         /// <summary>
         /// Gets the sets ratio of the team.
         /// </summary>
+#pragma warning disable S1244 // Want to check floating point not with exact values, but with range
         public string SetsRatioText
         {
             get
@@ -37,7 +38,7 @@
                     SetsRatio) : "MAX";
             }
         }
-
+#pragma warning restore S1244
         /// <summary>
         /// Maps domain model of team standings to view model of team standings.
         /// </summary>

@@ -57,7 +57,7 @@
         /// <returns>View model of <see cref="GroupViewModel"/>.</returns>
         public static GroupViewModel Map(Group group)
         {
-            return new GroupViewModel()
+            return new GroupViewModel
             {
                 Id = group.Id,
                 Name = group.Name,
@@ -72,7 +72,7 @@
         /// <returns>Domain model of <see cref="Group"/>.</returns>
         public Group ToDomain()
         {
-            return new Group()
+            return new Group
             {
                 Id = Id,
                 Name = Name,

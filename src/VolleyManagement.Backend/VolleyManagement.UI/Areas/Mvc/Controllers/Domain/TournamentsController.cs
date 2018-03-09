@@ -698,7 +698,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             };
         }
 
-        private static List<SelectListItem> BuildTeamSelectList(IDictionary<int, List<TeamTournamentDto>> tournamentTeams, IDictionary<int, SelectListGroup> groups)
+        private static List<SelectListItem> BuildTeamSelectList(IEnumerable<KeyValuePair<int, List<TeamTournamentDto>>> tournamentTeams, IDictionary<int, SelectListGroup> groups)
         {
             var result = tournamentTeams.SelectMany(t => t.Value)
                 .Select(t => new SelectListItem

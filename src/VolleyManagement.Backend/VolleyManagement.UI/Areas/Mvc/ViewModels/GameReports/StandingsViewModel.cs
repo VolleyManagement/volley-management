@@ -21,12 +21,12 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
         /// <summary>
         /// Gets or sets the collection of entries in tournament's standings.
         /// </summary>
-        public List<DivisionStandingsViewModel> StandingsTable { get; set; }
+        public IList<DivisionStandingsViewModel> StandingsTable { get; set; }
 
         /// <summary>
         /// Gets or sets data for pivot table.
         /// </summary>
-        public List<PivotTableViewModel> PivotTable { get; set; }
+        public IList<PivotTableViewModel> PivotTable { get; set; }
 
         /// <summary>
         /// Gets or sets the message.

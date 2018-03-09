@@ -54,7 +54,7 @@
 
                 return realDate;
             }
-            catch (Exception)
+            catch (Exception e) when (e.Message != string.Empty)
             {
                 string message = string.Format("\"{0}\" is invalid.", bindingContext.ModelName);
                 bindingContext.ModelState.AddModelError(bindingContext.ModelName, message);

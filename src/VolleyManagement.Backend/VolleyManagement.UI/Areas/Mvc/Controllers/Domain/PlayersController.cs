@@ -29,7 +29,7 @@
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";
- 
+
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>
@@ -302,10 +302,10 @@
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             IQueryable<Player> allPlayers = _playerService.Get().OrderBy(p => p.LastName);
-            string trimResult="";
+            string trimResult = "";
             if (!string.IsNullOrEmpty(textToSearch))
             {
-                trimResult= textToSearch.Trim();
+                trimResult = textToSearch.Trim();
 
                 allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(trimResult)
                     || (p.FirstName + " " + p.LastName).Contains(trimResult));

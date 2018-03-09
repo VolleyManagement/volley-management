@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Web.Mvc;
     using Contracts.Authorization;
     using Domain.RolesAggregate;

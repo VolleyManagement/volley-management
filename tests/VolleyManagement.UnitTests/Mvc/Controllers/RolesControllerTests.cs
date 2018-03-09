@@ -113,10 +113,12 @@
         public void Edit_ChangeMembershipSuccessful_RedirectedToIndex()
         {
             // Arrange
-            var modifiedRolesModel = new ModifiedRoleViewModel();
-            modifiedRolesModel.RoleId = 1;
-            modifiedRolesModel.IdsToAdd = new[] { 1, 2 };
-            modifiedRolesModel.IdsToDelete = new[] { 3, 4 };
+            var modifiedRolesModel = new ModifiedRoleViewModel
+            {
+                RoleId = 1,
+                IdsToAdd = new[] {1, 2},
+                IdsToDelete = new[] {3, 4}
+            };
 
             var service = BuildSUT();
 
@@ -265,7 +267,7 @@
         {
             Assert.AreEqual(actual.Id, expected.Id, "Role ID does not match");
             Assert.AreEqual(actual.Name, expected.Name, "Role Names are different");
-            CollectionAssert.AreEqual(expected.Users, actual.Users, "Users lists are different");
+            TestHelper.AreEqual(expected.Users, actual.Users, "Users lists are different");
         }
 
         private static void AreEditModelsEqual(RoleEditViewModel actual, RoleEditViewModel expected)

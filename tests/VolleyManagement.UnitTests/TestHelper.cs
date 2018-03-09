@@ -70,6 +70,30 @@
                 actualEnumerator.Dispose();
             }
         }
+
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, string message)
+        {
+            if (expected != null || actual != null)
+            {
+                if (expected == null || actual == null)
+                {
+                    Assert.Fail("One of the colection is null");
+                }
+
+                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
+
+                var expectedEnumerator = expected.GetEnumerator();
+                var actualEnumerator = actual.GetEnumerator();
+
+                while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
+                {
+                    Assert.AreEqual(expectedEnumerator.Current, actualEnumerator.Current, message);
+                }
+
+                expectedEnumerator.Dispose();
+                actualEnumerator.Dispose();
+            }
+        }
     }
 }
 

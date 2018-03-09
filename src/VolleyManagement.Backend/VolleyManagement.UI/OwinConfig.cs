@@ -52,14 +52,14 @@
             {
                 app.UseGoogleAuthentication(
                     new GoogleOAuth2AuthenticationOptions
-                        {
-                            ClientId = googleId,
-                            ClientSecret = googleSecret
-                        });
+                    {
+                        ClientId = googleId,
+                        ClientSecret = googleSecret
+                    });
             }
         }
 
-        private static Task OnValidateIdentityAsync(CookieValidateIdentityContext ctx)
+        private static Task OnValidateIdentityAsync(Microsoft.Owin.Security.Provider.BaseContext<CookieAuthenticationOptions> ctx)
         {
             RegisterUserManagerInOwinContext(ctx.OwinContext);
             SecurityStampValidator.OnValidateIdentity<VolleyUserManager, UserModel, int>(

@@ -245,7 +245,6 @@
 
             // Assert
             TestHelper.AreEqual(expected, actual, new TeamNameViewModelComparer());
-            // Assert.IsTrue(new TeamNameViewModelComparer().AreEqual(expected, actual));
         }
 
         #endregion

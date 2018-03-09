@@ -50,7 +50,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <summary>
         /// Gets or sets list of GroupTeam
         /// </summary>
-        public List<GroupTeamViewModel> GroupTeamList { get; set; }
+        public ICollection<GroupTeamViewModel> GroupTeamList { get; set; }
 
         /// <summary>
         /// Maps presentation list to domain list

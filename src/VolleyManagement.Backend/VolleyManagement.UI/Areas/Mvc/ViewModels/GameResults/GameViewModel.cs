@@ -86,12 +86,12 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// List of rounds grouped by division for dropdown
         /// </summary>
-        public List<SelectListItem> RoundList { get; set; }
+        public ICollection<SelectListItem> RoundList { get; set; }
 
         /// <summary>
         /// List of teams grouped by division for dropdown
         /// </summary>
-        public List<SelectListItem> TeamList { get; set; }
+        public ICollection<SelectListItem> TeamList { get; set; }
 
         /// <summary>
         /// Mapper from GameResult to GameViewModel

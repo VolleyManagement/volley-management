@@ -8,7 +8,7 @@ namespace VolleyManagement.Data.MsSql.Entities
     /// </summary>
     public class TournamentEntity
     {
-        private List<DivisionEntity> _divisions;
+        private ICollection<DivisionEntity> _divisions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentEntity"/> class.
@@ -81,7 +81,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets collection of tournaments divisions
         /// </summary>
-        public virtual List<DivisionEntity> Divisions
+        public virtual ICollection<DivisionEntity> Divisions
         {
             get => _divisions;
             set => _divisions = value;

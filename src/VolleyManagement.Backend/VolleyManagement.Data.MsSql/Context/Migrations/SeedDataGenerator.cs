@@ -54,7 +54,7 @@
 
         private static void GenerateTournamentAdministratorOperations(int roleId, VolleyManagementEntities context)
         {
-            var operationIds = new List<short>()
+            var operationIds = new List<short>
             {
                 AuthOperations.Tournaments.Create,
                 AuthOperations.Tournaments.Edit,
@@ -82,7 +82,7 @@
 
         private static void GenerateAdministratorOperations(int roleId, VolleyManagementEntities context)
         {
-            var operationIds = new List<short>()
+            var operationIds = new List<short>
             {
                 AuthOperations.Tournaments.Create,
                 AuthOperations.Tournaments.Edit,

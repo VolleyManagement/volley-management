@@ -550,13 +550,14 @@ namespace VolleyManagement.Services
             TournamentScheduleDto tournamentScheduleInfo)
         {
             string errorMessage = null;
+            var s = (tournamentScheduleInfo.Scheme !=
+                     TournamentSchemeEnum.PlayOff
+                ? Resources.SameFreeDayGameInRound
+                : string.Format(
+                    Resources.SameTeamInRound,
+                    game.HomeTeamId));
             errorMessage = GameValidation.IsFreeDayGame(newGame)
-                ? (tournamentScheduleInfo.Scheme !=
-                   TournamentSchemeEnum.PlayOff
-                    ? Resources.SameFreeDayGameInRound
-                    : string.Format(
-                        Resources.SameTeamInRound,
-                        game.HomeTeamId))
+                ? s
                 : String.Format(
                     Resources.SameGameInRound,
                     game.HomeTeamName,

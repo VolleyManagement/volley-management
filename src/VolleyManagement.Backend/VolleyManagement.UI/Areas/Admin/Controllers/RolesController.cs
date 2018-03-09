@@ -77,7 +77,7 @@
                             modifiedRoles.IdsToDelete);
                 return RedirectToAction("Index");
             }
-            catch (Exception e)
+            catch (Exception e) when (e.Message != string.Empty)
             {
                 ModelState.AddModelError(string.Empty, e.Message);
                 return View();

@@ -23,6 +23,6 @@
         /// <summary>
         /// Gets or sets user names in current role
         /// </summary>
-        public List<string> Users { get; set; }
+        public ICollection<string> Users { get; set; }
     }
 }

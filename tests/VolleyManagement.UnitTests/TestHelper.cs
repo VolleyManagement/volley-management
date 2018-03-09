@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using VolleyManagement.UnitTests.Mvc.Comparers;
 
     /// <summary>
     /// Class for custom asserts.
@@ -64,6 +65,56 @@
                     Assert.IsTrue(
                            comparer.Compare(expectedEnumerator.Current, actualEnumerator.Current) == 0,
                            $"[Item#{expectedEnumerator.Current.ToString()}] ");
+                }
+
+                expectedEnumerator.Dispose();
+                actualEnumerator.Dispose();
+            }
+        }
+
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, string message)
+        {
+            if (expected != null || actual != null)
+            {
+                if (expected == null || actual == null)
+                {
+                    Assert.Fail("One of the colection is null");
+                }
+
+                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
+
+                var expectedEnumerator = expected.GetEnumerator();
+                var actualEnumerator = actual.GetEnumerator();
+
+                while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
+                {
+                    Assert.AreEqual(expectedEnumerator.Current, actualEnumerator.Current, message);
+                }
+
+                expectedEnumerator.Dispose();
+                actualEnumerator.Dispose();
+            }
+        }
+
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer, string message)
+        {
+            if (expected != null || actual != null)
+            {
+                if (expected == null || actual == null)
+                {
+                    Assert.Fail("One of the colection is null");
+                }
+
+                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
+
+                var expectedEnumerator = expected.GetEnumerator();
+                var actualEnumerator = actual.GetEnumerator();
+
+                while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(expectedEnumerator.Current, actualEnumerator.Current) == 0,
+                        message);
                 }
 
                 expectedEnumerator.Dispose();

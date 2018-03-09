@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}"
 EndProject
@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
 		SonarQube\volley-managementCSharp.ruleset = SonarQube\volley-managementCSharp.ruleset
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.API", "VolleyManagement.API\VolleyManagement.API.csproj", "{52BA8FEF-ECCC-44B6-AC86-FBA677CAB476}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{A0FE5D5B-B9C7-4C0F-9FA9-F0DD5119FCCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0FE5D5B-B9C7-4C0F-9FA9-F0DD5119FCCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0FE5D5B-B9C7-4C0F-9FA9-F0DD5119FCCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52BA8FEF-ECCC-44B6-AC86-FBA677CAB476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52BA8FEF-ECCC-44B6-AC86-FBA677CAB476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52BA8FEF-ECCC-44B6-AC86-FBA677CAB476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52BA8FEF-ECCC-44B6-AC86-FBA677CAB476}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

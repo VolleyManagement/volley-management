@@ -20,10 +20,12 @@ namespace VolleyManagement.Services
     using Domain.TournamentsAggregate;
     using GameResultConstants = Domain.Constants.GameResult;
 
-    /// <summary>
-    /// Defines an implementation of <see cref="IGameService"/> contract.
-    /// </summary>
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
+                             /// <summary>
+                             /// Defines an implementation of <see cref="IGameService"/> contract.
+                             /// </summary>
     public class GameService : IGameService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Fields
         private const string FIRST_TEAM_PLACEHOLDER = "<Team 1>";
@@ -812,7 +814,9 @@ namespace VolleyManagement.Services
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
+#pragma warning disable S3240 // The simplest possible condition syntax should be used
             if (finishedGame.AwayTeamId == null)
+#pragma warning restore S3240 // The simplest possible condition syntax should be used
             {
                 winnerTeamId = finishedGame.HomeTeamId.Value;
             }

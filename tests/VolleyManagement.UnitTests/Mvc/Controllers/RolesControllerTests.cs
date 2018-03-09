@@ -116,8 +116,8 @@
             var modifiedRolesModel = new ModifiedRoleViewModel
             {
                 RoleId = 1,
-                IdsToAdd = new[] {1, 2},
-                IdsToDelete = new[] {3, 4}
+                IdsToAdd = new[] { 1, 2 },
+                IdsToDelete = new[] { 3, 4 }
             };
 
             var service = BuildSUT();
@@ -274,12 +274,12 @@
         {
             Assert.AreEqual(actual.Id, expected.Id, "Role ID does not match");
             Assert.AreEqual(actual.Name, expected.Name, "Role Names are different");
-            CollectionAssert.AreEqual(
+            TestHelper.AreEqual(
                 expected.UsersInRole,
                 actual.UsersInRole,
                 new UserViewModelComparer(),
                 "Users in Role lists are different");
-            CollectionAssert.AreEqual(
+            TestHelper.AreEqual(
                 expected.UsersOutsideRole,
                 actual.UsersOutsideRole,
                 new UserViewModelComparer(),

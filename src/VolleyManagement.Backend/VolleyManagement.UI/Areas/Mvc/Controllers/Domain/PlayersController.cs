@@ -30,9 +30,6 @@
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";
 
-        private const string HTTP_NOT_FOUND_DESCRIPTION = @"While removing the player unexpected error occurred.
-                                                            Please contact the administrator";
-
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>
@@ -305,10 +302,10 @@
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             IQueryable<Player> allPlayers = _playerService.Get().OrderBy(p => p.LastName);
-            string trimResult="";
+            string trimResult = "";
             if (!string.IsNullOrEmpty(textToSearch))
             {
-                trimResult= textToSearch.Trim();
+                trimResult = textToSearch.Trim();
 
                 allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(trimResult)
                     || (p.FirstName + " " + p.LastName).Contains(trimResult));

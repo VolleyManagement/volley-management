@@ -24,7 +24,7 @@
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<Score> SetScores { get; set; }
+        public IList<Score> SetScores { get; set; }
 
         /// <summary>
         /// Gets or sets penalty for games

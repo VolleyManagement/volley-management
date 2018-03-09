@@ -84,6 +84,40 @@
                 && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
         }
 
+
+        private static bool IsSetScoreValid(Score score, Score setScore, ref bool hasMatchEnded)
+        {
+            if (setScore.Home > setScore.Away)
+            {
+                if (hasMatchEnded)
+                {
+                    return false;
+                }
+
+                score.Home++;
+
+                if (score.Home == Constants.GameResult.SETS_COUNT_TO_WIN)
+                {
+                    hasMatchEnded = true;
+                }
+            }
+            else if (setScore.Home < setScore.Away)
+            {
+                if (hasMatchEnded)
+                {
+                    return false;
+                }
+
+                score.Away++;
+
+                if (score.Away == Constants.GameResult.SETS_COUNT_TO_WIN)
+                {
+                    hasMatchEnded = true;
+                }
+            }
+
+            return true;
+        }
         /// <summary>
         /// Determines whether the set scores are listed in the correct order.
         /// </summary>
@@ -96,33 +130,9 @@
 
             foreach (var setScore in setScores)
             {
-                if (setScore.Home > setScore.Away)
+                if (!IsSetScoreValid(score, setScore, ref hasMatchEnded))
                 {
-                    if (hasMatchEnded)
-                    {
-                        return false;
-                    }
-
-                    score.Home++;
-
-                    if (score.Home == Constants.GameResult.SETS_COUNT_TO_WIN)
-                    {
-                        hasMatchEnded = true;
-                    }
-                }
-                else if (setScore.Home < setScore.Away)
-                {
-                    if (hasMatchEnded)
-                    {
-                        return false;
-                    }
-
-                    score.Away++;
-
-                    if (score.Away == Constants.GameResult.SETS_COUNT_TO_WIN)
-                    {
-                        hasMatchEnded = true;
-                    }
+                    return false;
                 }
             }
 

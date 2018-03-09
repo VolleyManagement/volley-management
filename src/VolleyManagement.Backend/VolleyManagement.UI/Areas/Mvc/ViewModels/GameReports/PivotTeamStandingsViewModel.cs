@@ -1,11 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Domain.GameReportsAggregate;
 
     /// <summary>
@@ -31,7 +27,7 @@
         {
             get
             {
-                return SetsRatio != float.PositiveInfinity ?
+                return !Single.IsPositiveInfinity(SetsRatio.Value) ?
                     string.Format(
                     CultureInfo.CurrentUICulture,
                     "{0:0.###}",

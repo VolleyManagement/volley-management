@@ -30,12 +30,11 @@
 
             if ((PageNumber > NumberOfPages) || (PageNumber < FIRST_PAGE))
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
 
             List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((PageNumber - 1) * Size)
                             .Take(Size)
-                            .ToList()
                             .Select(p => PlayerViewModel.Map(p)));
 
             List = new List<PlayerNameViewModel>();

@@ -102,7 +102,7 @@
         /// Convert current .Net Culture to the jQuery format.
         /// </summary>
         /// <returns>jQuery format of current culture.</returns>
-        public static string JqueryUICurrentDateFormat()
+        public static string JqueryUiCurrentDateFormat()
         {
             string currentFormat = DateTimeFormat.ShortDatePattern;
             List<char> changedTypes = new List<char>();

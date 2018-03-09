@@ -16,13 +16,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
     public class GameViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameViewModel"/> class
-        /// </summary>
-        public GameViewModel()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets id of a game
         /// </summary>
         public int Id { get; set; }

@@ -90,7 +90,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
             return results;
         }
 
-        private void SetCellValue(int i, int j, List<PivotGameResultViewModel> result)
+        private void SetCellValue(int i, int j, IEnumerable<PivotGameResultViewModel> result)
         {
             AllGameResults[(i * TeamsStandings.Count) + j] = new List<PivotGameResultViewModel>(result);
         }

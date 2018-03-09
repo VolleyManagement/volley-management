@@ -29,10 +29,7 @@
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";
-
-        private const string HTTP_NOT_FOUND_DESCRIPTION = @"While removing the player unexpected error occurred.
-                                                            Please contact the administrator";
-
+ 
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>

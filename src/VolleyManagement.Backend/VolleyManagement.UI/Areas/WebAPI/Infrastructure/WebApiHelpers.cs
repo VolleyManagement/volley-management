@@ -23,8 +23,6 @@
                 throw new ArgumentNullException("uri");
             }
 
-            var urlHelper = request.GetUrlHelper() ?? new UrlHelper(request);
-
             throw new NotSupportedException();
         }
     }

@@ -64,7 +64,7 @@
                                                     User user,
                                                     Tournament tournament)
         {
-            return new TournamentRequestViewModel()
+            return new TournamentRequestViewModel
             {
                 Id = request.Id,
                 PersonId = request.UserId,

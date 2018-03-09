@@ -137,12 +137,13 @@
                 return BadRequest(ModelState);
             }
 
-            switch (navigationProperty)
+            if (navigationProperty == "Teams")
             {
-                case "Teams":
-                    return AssignTeamToPlayer(playerToUpdate, link);
-                default:
-                    return StatusCode(HttpStatusCode.NotImplemented);
+                return AssignTeamToPlayer(playerToUpdate, link);
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.NotImplemented);
             }
         }
 

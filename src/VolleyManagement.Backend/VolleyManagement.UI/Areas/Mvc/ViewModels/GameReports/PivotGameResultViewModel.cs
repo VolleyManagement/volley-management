@@ -114,6 +114,37 @@
             return result;
         }
 
+        private static void GetCssClassWhenWin(byte? awayScore, ref string cssClass)
+        {
+            if (awayScore == ZERO)
+            {
+                cssClass = CssClassConstants.WIN_3_0;
+            }
+            else if (awayScore == ONE)
+            {
+                cssClass = CssClassConstants.WIN_3_1;
+            }
+            else if (awayScore == TWO)
+            {
+                cssClass = CssClassConstants.WIN_3_2;
+            }
+        }
+
+        private static void GetCssClassWhenLoss(byte? homeScore, ref string cssClass)
+        {
+            if (homeScore == TWO)
+            {
+                cssClass = CssClassConstants.LOSS_2_3;
+            }
+            else if (homeScore == ONE)
+            {
+                cssClass = CssClassConstants.LOSS_1_3;
+            }
+            else if (homeScore == ZERO)
+            {
+                cssClass = CssClassConstants.LOSS_0_3;
+            }
+        }
         /// <summary>
         /// According game score returns cascade style sheets class name
         /// </summary>
@@ -123,29 +154,13 @@
         private static string GetCssClass(byte? homeScore, byte? awayScore)
         {
             string cssClass = CssClassConstants.NORESULT;
-            if (homeScore == THREE && awayScore == ZERO)
+            if (homeScore == THREE)
             {
-                cssClass = CssClassConstants.WIN_3_0;
+                GetCssClassWhenWin(awayScore, ref cssClass);
             }
-            else if (homeScore == THREE && awayScore == ONE)
+            else
             {
-                cssClass = CssClassConstants.WIN_3_1;
-            }
-            else if (homeScore == THREE && awayScore == TWO)
-            {
-                cssClass = CssClassConstants.WIN_3_2;
-            }
-            else if (homeScore == TWO && awayScore == THREE)
-            {
-                cssClass = CssClassConstants.LOSS_2_3;
-            }
-            else if (homeScore == ONE && awayScore == THREE)
-            {
-                cssClass = CssClassConstants.LOSS_1_3;
-            }
-            else if (homeScore == ZERO && awayScore == THREE)
-            {
-                cssClass = CssClassConstants.LOSS_0_3;
+                GetCssClassWhenLoss(homeScore, ref cssClass);
             }
 
             return cssClass;

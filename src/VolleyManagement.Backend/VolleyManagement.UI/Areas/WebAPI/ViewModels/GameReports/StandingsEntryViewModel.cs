@@ -153,8 +153,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         public static bool EntriesHaveSamePosition(StandingsEntryViewModel firstEntry, StandingsEntryViewModel secondEntry)
         {
             return firstEntry.Points == secondEntry.Points
-                && firstEntry.SetsRatio == secondEntry.SetsRatio
-                && firstEntry.BallsRatio == secondEntry.BallsRatio;
+                && firstEntry.SetsRatio.Equals(secondEntry.SetsRatio)
+                && firstEntry.BallsRatio.Equals(secondEntry.BallsRatio);
         }
     }
 }

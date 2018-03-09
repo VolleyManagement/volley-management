@@ -73,7 +73,7 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
-                playersOnPage.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
+                playersOnPage.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
                 {
                     AuthOperations.Players.Create,
                     AuthOperations.Players.Edit,
@@ -263,10 +263,10 @@
         /// <returns>List of free players</returns>
         public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
         {
-            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
+            var decodeResult = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
             var query = _playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(searchString)
-                                   || (p.LastName + p.FirstName).Contains(searchString));
+                            .Where(p => (p.FirstName + p.LastName).Contains(decodeResult)
+                                   || (p.LastName + p.FirstName).Contains(decodeResult));
 
             if (includeTeam.HasValue)
             {
@@ -297,7 +297,6 @@
             }
 
             var result = query.OrderBy(p => p.LastName)
-                              .ToList()
                               .Select(p => PlayerNameViewModel.Map(p));
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -306,18 +305,19 @@
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             IQueryable<Player> allPlayers = _playerService.Get().OrderBy(p => p.LastName);
-
+            string trimResult="";
             if (!string.IsNullOrEmpty(textToSearch))
             {
-                textToSearch = textToSearch.Trim();
-                allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch)
-                    || (p.FirstName + " " + p.LastName).Contains(textToSearch));
+                trimResult= textToSearch.Trim();
+
+                allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(trimResult)
+                    || (p.FirstName + " " + p.LastName).Contains(trimResult));
             }
 
-            return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
+            return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, trimResult);
         }
 
-        private List<int> ParseIntList(string source)
+        private static List<int> ParseIntList(string source)
         {
             var splitted = source.Split(',');
             var result = new List<int>();

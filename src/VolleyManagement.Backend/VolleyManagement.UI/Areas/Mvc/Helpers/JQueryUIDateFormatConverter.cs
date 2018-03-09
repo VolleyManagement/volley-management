@@ -9,7 +9,7 @@
     /// Provides methods and properties to convert UI date format to jQuery UI date format.
     /// Represent properties to get current globalization settings.
     /// </summary>
-    public class JQueryUIDateFormatConverter
+    public static class JQueryUIDateFormatConverter
     {
         private static SortedDictionary<string, string> _replaceTokens = new SortedDictionary<string, string>(
                                                             new ReverseComparer<string>(Comparer<string>.Default))

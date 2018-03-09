@@ -3,6 +3,7 @@
     /// <summary>
     /// Database validation constraints
     /// </summary>
+#pragma warning disable S1144
     internal static class ValidationConstants
     {
         public const int EMPTY_DATABASE_ID_VALUE = 0;
@@ -118,3 +119,4 @@
         }
     }
 }
+#pragma warning restore S1144

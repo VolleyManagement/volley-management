@@ -60,7 +60,7 @@
 
         #region Exception processing
 
-        private bool IsXmlHttpRequest(RequestContext requestContext)
+        private static bool IsXmlHttpRequest(RequestContext requestContext)
         {
             return requestContext.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }

@@ -27,7 +27,6 @@
 #pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
-        private readonly IRolesService _rolesService;
         private readonly IUserService _userService;
         private readonly ICacheProvider _cacheProvider;
         private readonly ICurrentUserService _currentUserService;
@@ -51,7 +50,6 @@
                     IAuthorizationService authService)
         {
             _userManager = userManager;
-            _rolesService = rolesService;
             _cacheProvider = cacheProvider;
             _userService = userService;
             _currentUserService = currentUserService;
@@ -199,7 +197,7 @@
         {
             var properties = new AuthenticationProperties
             {
-                RedirectUri = Url.Action("ExternalLoginCallback", new { returnUrl = returnUrl })
+                RedirectUri = Url.Action("ExternalLoginCallback", new { returnUrl })
             };
             HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
             return new HttpUnauthorizedResult();

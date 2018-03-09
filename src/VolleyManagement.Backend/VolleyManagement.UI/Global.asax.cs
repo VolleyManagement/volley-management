@@ -24,7 +24,7 @@
         /// <summary>
         /// Fix problem Entity framework
         /// </summary>
-        public void FixEfProviderServicesProblem()
+        public static void FixEfProviderServicesProblem()
         {
             ////The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'
             ////for the 'System.Data.SqlClient' ADO.NET provider could not be loaded.

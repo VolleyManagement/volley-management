@@ -56,19 +56,11 @@
         /// <returns>View with collection of teams.</returns>
         public ActionResult Index()
         {
-            List<AuthOperation> requestedOperations = new List<AuthOperation>()
-            {
-                AuthOperations.Teams.Create,
-                AuthOperations.Teams.Edit,
-                AuthOperations.Teams.Delete
-            };
-
-            var teams = new TeamCollectionViewModel()
+            var teams = new TeamCollectionViewModel
             {
                 Teams = _teamService.Get()
-                                         .ToList()
-                                         .Select(t => TeamViewModel.Map(t, null, null)),
-                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
+                                          .Select(t => TeamViewModel.Map(t, null, null)),
+                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
                                                                           {
                                                                             AuthOperations.Teams.Create,
                                                                             AuthOperations.Teams.Edit,
@@ -283,7 +275,6 @@
         public JsonResult GetAllTeams()
         {
             var teams = _teamService.Get()
-                                         .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
         }
@@ -307,7 +298,7 @@
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            return RedirectToAction("Edit", "Teams", new { id = id });
+            return RedirectToAction("Edit", "Teams", new { id });
         }
 
         /// <summary>
@@ -328,7 +319,7 @@
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            return RedirectToAction("Edit", "Teams", new { id = id });
+            return RedirectToAction("Edit", "Teams", new { id });
         }
 
         /// <summary>

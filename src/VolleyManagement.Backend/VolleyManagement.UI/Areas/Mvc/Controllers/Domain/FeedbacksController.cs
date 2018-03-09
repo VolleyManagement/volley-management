@@ -22,7 +22,7 @@
         private readonly IUserService _userService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IFeedbackService _feedbackService;
-        private ICaptchaManager _captchaManager;
+        private readonly ICaptchaManager _captchaManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
@@ -123,7 +123,7 @@
             return currentUser.Email;
         }
 
-        private void GetDataSiteKey(FeedbackViewModel feedbackViewModel)
+        private static void GetDataSiteKey(FeedbackViewModel feedbackViewModel)
         {
             const string SECRET_KEY = "RecaptchaSiteKey";
             string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];

@@ -6,7 +6,7 @@ namespace VolleyManagement.UI
     /// <summary>
     /// Bundle configuration class
     /// </summary>
-    public class BundleConfig
+    public static class BundleConfig
     {
         /// <summary>
         /// Registers bundles

@@ -207,7 +207,7 @@
         /// <returns> View model object </returns>
         public static TournamentViewModel Map(Tournament tournament)
         {
-            var tournamentViewModel = new TournamentViewModel()
+            var tournamentViewModel = new TournamentViewModel
             {
                 Id = tournament.Id,
                 Name = tournament.Name,
@@ -221,7 +221,7 @@
                 ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd,
-                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferEnd == null ? false : true
+                IsTransferEnabled = tournament.TransferStart != null && tournament.TransferEnd != null
             };
 
             tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();

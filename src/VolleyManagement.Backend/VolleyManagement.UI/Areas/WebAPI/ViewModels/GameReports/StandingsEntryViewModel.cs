@@ -132,18 +132,13 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// </summary>
         /// <param name="entries">List of team standings entries</param>
         /// <returns>List of team standings entries with their position</returns>
-        public static List<StandingsEntryViewModel> SetPositions(List<StandingsEntryViewModel> entries)
+        public static IList<StandingsEntryViewModel> SetPositions(IList<StandingsEntryViewModel> entries)
         {
             for (int i = 0; i < entries.Count; i++)
             {
-                if (i == 0 || !EntriesHaveSamePosition(entries[i], entries[i - 1]))
-                {
-                    entries[i].Position = i + 1;
-                }
-                else
-                {
-                    entries[i].Position = entries[i - 1].Position;
-                }
+                entries[i].Position = i == 0 || !EntriesHaveSamePosition(entries[i], entries[i - 1])
+                    ? i + 1
+                    : entries[i - 1].Position;
             }
 
             return entries;

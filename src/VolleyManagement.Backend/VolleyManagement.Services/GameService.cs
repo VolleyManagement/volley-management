@@ -388,6 +388,36 @@ namespace VolleyManagement.Services
             }
         }
 
+        private static void ValidateSetScoresValuesHigherThanSetCountToWin(IList<Score> setScores, int i,
+            int setOrderNumber, ref bool isPreviousOptionalSetUnplayed, bool isTechnicalDefeat)
+        {
+            if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
+            {
+                if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
+                {
+                    throw new ArgumentException(
+                    string.Format(
+                    Resources.GameResultFifthSetScoreInvalid,
+                    GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
+                }
+
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.GameResultOptionalSetScores,
+                    GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                    GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+                    GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
+            }
+
+            if (isPreviousOptionalSetUnplayed && !ResultValidation.IsSetUnplayed(setScores[i]))
+            {
+                throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
+            }
+
+            isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
+        }
         private static void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
@@ -409,32 +439,8 @@ namespace VolleyManagement.Services
                 }
                 else
                 {
-                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
-                    {
-                        if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
-                        {
-                            throw new ArgumentException(
-                            string.Format(
-                            Resources.GameResultFifthSetScoreInvalid,
-                            GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
-                        }
-
-                        throw new ArgumentException(
-                            string.Format(
-                            Resources.GameResultOptionalSetScores,
-                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                            GameResultConstants.UNPLAYED_SET_HOME_SCORE,
-                            GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
-                    }
-
-                    if (isPreviousOptionalSetUnplayed && !ResultValidation.IsSetUnplayed(setScores[i]))
-                    {
-                        throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-                    }
-
-                    isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
+                    ValidateSetScoresValuesHigherThanSetCountToWin(setScores, i, setOrderNumber,
+                        ref isPreviousOptionalSetUnplayed, isTechnicalDefeat);
                 }
             }
         }
@@ -962,6 +968,22 @@ namespace VolleyManagement.Services
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
             _tournamentRepository.Update(tournament);
         }
+        private static void UpdateTeamNamesIfNotFirstRound(GameResultDto game, int numberOfRounds)
+        {
+            var prefix = IsBronzeGame(game, numberOfRounds)
+                                    ? LOOSER_PREFIX
+                                    : WINNER_PREFIX;
+            var (home, away) = GetUpstreamGameNumbers(game, numberOfRounds);
+
+            if (game.HomeTeamId == null)
+            {
+                game.HomeTeamName = $"{prefix}{home}";
+            }
+            if (game.AwayTeamId == null)
+            {
+                game.AwayTeamName = $"{prefix}{away}";
+            }
+        }
         private static void UpdateTeamNamesForPlayoff(IEnumerable<GameResultDto> allGames, int numberOfRounds)
         {
             foreach (var game in allGames.Where(game => game.HomeTeamId == null || game.AwayTeamId == null))
@@ -976,18 +998,7 @@ namespace VolleyManagement.Services
                 }
                 else
                 {
-                    var prefix = IsBronzeGame(game, numberOfRounds)
-                                    ? LOOSER_PREFIX
-                                    : WINNER_PREFIX;
-                    var (home, away) = GetUpstreamGameNumbers(game, numberOfRounds);
-                    if (game.HomeTeamId == null)
-                    {
-                        game.HomeTeamName = $"{prefix}{home}";
-                    }
-                    if (game.AwayTeamId == null)
-                    {
-                        game.AwayTeamName = $"{prefix}{away}";
-                    }
+                    UpdateTeamNamesIfNotFirstRound(game, numberOfRounds);
                 }
             }
         }

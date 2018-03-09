@@ -77,11 +77,22 @@
             Assert.AreEqual(x.UrlToGameVideo, y.UrlToGameVideo, "UrlToGameVideo should be equal.");
 
             ScoreViewModelComparer.AssertAreEqual(x.GameScore, y.GameScore);
-
             for (var i = 0; i < 5; i++)
             {
-                ScoreViewModelComparer.AssertAreEqual(x.SetScores[i], y.SetScores[i], $"[Set:{i+1}]");
+                ScoreViewModelComparer.AssertAreEqual(x.SetScores[i], y.SetScores[i], $"[Set:{i + 1}]");
             }
+
+            //var xSetScoresEnumerator = x.SetScores.GetEnumerator();
+            //var ySetScoresEnumerator = y.SetScores.GetEnumerator();
+
+            //while (xSetScoresEnumerator.MoveNext() && ySetScoresEnumerator.MoveNext())
+            //{
+            //    ScoreViewModelComparer.AssertAreEqual(xSetScoresEnumerator.Current, ySetScoresEnumerator.Current,
+            //        $"[Set:{x.Round + 1}]");
+            //}
+
+            //xSetScoresEnumerator.Dispose();
+            //ySetScoresEnumerator.Dispose();
 
             return true;
         }

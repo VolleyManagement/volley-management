@@ -45,7 +45,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <summary>
         /// Gets or sets list Of Teams
         /// </summary>
-        public List<TeamNameViewModel> TeamsList { get; set; }
+        public ICollection<TeamNameViewModel> TeamsList { get; set; }
 
         /// <summary>
         /// Gets or sets list of GroupTeam

@@ -244,7 +244,8 @@
             var expected = orderedTournamentTeams.Select(TeamNameViewModel.Map).ToList();
 
             // Assert
-            Assert.IsTrue(new TeamNameViewModelComparer().AreEqual(expected, actual));
+            TestHelper.AreEqual(expected, actual, new TeamNameViewModelComparer());
+            // Assert.IsTrue(new TeamNameViewModelComparer().AreEqual(expected, actual));
         }
 
         #endregion
@@ -361,7 +362,7 @@
             // Assert
             CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
         }
-        
+
         #endregion
 
         #region AddTeamsToTournament
@@ -1077,7 +1078,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions[0].IsGroupsCountMin, "Count of division's groups should be min.");
+            Assert.IsTrue(result.Divisions.First().IsGroupsCountMin, "Count of division's groups should be min.");
         }
 
         /// <summary>
@@ -1097,7 +1098,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions[0].IsGroupsCountMin, "Count of division's groups shouldn't be min.");
+            Assert.IsFalse(result.Divisions.First().IsGroupsCountMin, "Count of division's groups shouldn't be min.");
         }
 
         /// <summary>
@@ -1117,7 +1118,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions[0].IsGroupsCountMax, "Count of division's groups should be max.");
+            Assert.IsTrue(result.Divisions.First().IsGroupsCountMax, "Count of division's groups should be max.");
         }
 
         /// <summary>
@@ -1137,7 +1138,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions[0].IsGroupsCountMax, "Count of division's groups shouldn't be max.");
+            Assert.IsFalse(result.Divisions.First().IsGroupsCountMax, "Count of division's groups shouldn't be max.");
         }
 
         /// <summary>
@@ -1574,7 +1575,7 @@
                 _tournamentRequestServiceMock.Object,
                 _currentUserServiceMock.Object);
         }
-        
+
         private List<Tournament> MakeTestTournaments()
         {
             return new TournamentServiceTestFixture().TestTournaments().Build();

@@ -73,7 +73,6 @@
                         modifiedRoles.IdsToAdd,
                         modifiedRoles.IdsToDelete);
             return RedirectToAction("Index");
-
         }
 
         /// <summary>

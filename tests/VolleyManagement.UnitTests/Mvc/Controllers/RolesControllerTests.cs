@@ -136,32 +136,6 @@
             VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
-        [TestMethod]
-        public void Edit_ChangeMembershipFailed_EditViewWithErrorReturned()
-        {
-            // Arrange
-            var modifiedRolesModel = new ModifiedRoleViewModel();
-            modifiedRolesModel.RoleId = 1;
-            modifiedRolesModel.IdsToAdd = new[] { 1, 2 };
-            modifiedRolesModel.IdsToDelete = new[] { 3, 4 };
-
-            const string ANY_ERROR_MESSAGE = "some message";
-
-            _rolesServiceMock.Setup(
-                r => r.ChangeRoleMembership(It.IsAny<int>(), It.IsAny<int[]>(), It.IsAny<int[]>()))
-                .Throws(new Exception(ANY_ERROR_MESSAGE));
-
-            var service = BuildSUT();
-
-            // Act
-            service.Edit(modifiedRolesModel);
-
-            // Assert
-            AssertModelStateError(service.ModelState, ANY_ERROR_MESSAGE);
-
-            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
-        }
-
         #endregion
 
         #region Test Data

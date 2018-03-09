@@ -30,17 +30,18 @@
         private readonly IQuery<TournamentRequest, FindByTeamTournamentCriteria> _getTournamentRequestByAllQuery;
         private readonly IUserService _userService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentRequestService"/> class.
-        /// </summary>
-        /// <param name="tournamentRequestRepository"> Read the ITournamentRequestRepository instance</param>
-        /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
-        /// <param name="getAllTournamentRequestsQuery">Get list of all requests</param>
-        /// <param name="getTournamentRequestById">Get request by it's id</param>
-        /// <param name="getTournamentRequestByAll">Get list of all requests by team id and tournament id</param>
-        /// <param name="tournamentRepository">Read the ITournamentRepository instance</param>
-        /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
-        /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
+#pragma warning disable S107 // Methods should not have too many parameters
+                            /// <summary>
+                            /// Initializes a new instance of the <see cref="TournamentRequestService"/> class.
+                            /// </summary>
+                            /// <param name="tournamentRequestRepository"> Read the ITournamentRequestRepository instance</param>
+                            /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
+                            /// <param name="getAllTournamentRequestsQuery">Get list of all requests</param>
+                            /// <param name="getTournamentRequestById">Get request by it's id</param>
+                            /// <param name="getTournamentRequestByAll">Get list of all requests by team id and tournament id</param>
+                            /// <param name="tournamentRepository">Read the ITournamentRepository instance</param>
+                            /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
+                            /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
         public TournamentRequestService(
             ITournamentRequestRepository tournamentRequestRepository,
             IAuthorizationService authService,
@@ -50,6 +51,7 @@
             ITournamentRepository tournamentRepository,
             IMailService mailService,
             IUserService userService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _tournamentRequestRepository = tournamentRequestRepository;
             _authService = authService;

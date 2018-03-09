@@ -52,21 +52,22 @@ namespace VolleyManagement.Services
 
         #region Constructor
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameService"/> class.
-        /// </summary>
-        /// <param name="gameRepository">Instance of class which implements <see cref="IGameRepository"/>.</param>
-        /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
-        /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
-        /// of the specified tournament.</param>
-        /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
-        /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
-        /// <param name="authService">Authorization service</param>
-        /// <param name="gamesByTournamentIdInRoundsByNumbersQuery">Query which gets list of <see cref="Game"/> objects.</param>
-        /// <param name="gameNumberByTournamentIdQuery">Query which gets game by number</param>
-        /// <param name="getTournamentInstanceByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier</param>
-        /// <param name="tournamentRepository">Instance of class which implements <see cref="ITournamentRepository"/></param>
-        /// <param name="tournamentTeamsQuery"></param>
+#pragma warning disable S107 // Methods should not have too many parameters
+                            /// <summary>
+                            /// Initializes a new instance of the <see cref="GameService"/> class.
+                            /// </summary>
+                            /// <param name="gameRepository">Instance of class which implements <see cref="IGameRepository"/>.</param>
+                            /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
+                            /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
+                            /// of the specified tournament.</param>
+                            /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
+                            /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
+                            /// <param name="authService">Authorization service</param>
+                            /// <param name="gamesByTournamentIdInRoundsByNumbersQuery">Query which gets list of <see cref="Game"/> objects.</param>
+                            /// <param name="gameNumberByTournamentIdQuery">Query which gets game by number</param>
+                            /// <param name="getTournamentInstanceByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier</param>
+                            /// <param name="tournamentRepository">Instance of class which implements <see cref="ITournamentRepository"/></param>
+                            /// <param name="tournamentTeamsQuery"></param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
@@ -79,6 +80,7 @@ namespace VolleyManagement.Services
             IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
             ITournamentRepository tournamentRepository,
             IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;

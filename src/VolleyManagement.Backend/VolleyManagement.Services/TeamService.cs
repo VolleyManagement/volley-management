@@ -327,7 +327,7 @@
                     string.Format(
                     Resources.ValidationTeamName,
                     Domain.Constants.Team.MAX_NAME_LENGTH),
-                    nameof(Team.Name));
+                    nameof(teamName));
             }
         }
 
@@ -340,7 +340,7 @@
                     string.Format(
                     Resources.ValidationCoachName,
                     Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                    nameof(Team.Coach));
+                    nameof(teamCoachName));
             }
         }
 
@@ -353,7 +353,7 @@
                     string.Format(
                     TournamentResources.ValidationTeamAchievements,
                     Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                    nameof(Team.Achievements));
+                    nameof(teamAchievements));
             }
         }
 

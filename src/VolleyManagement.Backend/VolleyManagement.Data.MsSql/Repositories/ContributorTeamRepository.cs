@@ -65,7 +65,7 @@
         /// <param name="id">The id of contributor team to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -84,7 +84,7 @@
         /// <param name="newEntity">The contributor team for adding.</param>
         public void Add(ContributorTeam newEntity)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -93,7 +93,7 @@
         /// <param name="updatedEntity">Updated contributor team.</param>
         public void Update(ContributorTeam updatedEntity)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

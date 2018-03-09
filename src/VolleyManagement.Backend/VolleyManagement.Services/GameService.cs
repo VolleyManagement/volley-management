@@ -41,7 +41,6 @@ namespace VolleyManagement.Services
 
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
-        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
         private readonly IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
         private readonly IQuery<ICollection<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
@@ -53,21 +52,21 @@ namespace VolleyManagement.Services
         #region Constructor
 
 #pragma warning disable S107 // Methods should not have too many parameters
-                            /// <summary>
-                            /// Initializes a new instance of the <see cref="GameService"/> class.
-                            /// </summary>
-                            /// <param name="gameRepository">Instance of class which implements <see cref="IGameRepository"/>.</param>
-                            /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
-                            /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
-                            /// of the specified tournament.</param>
-                            /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
-                            /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
-                            /// <param name="authService">Authorization service</param>
-                            /// <param name="gamesByTournamentIdInRoundsByNumbersQuery">Query which gets list of <see cref="Game"/> objects.</param>
-                            /// <param name="gameNumberByTournamentIdQuery">Query which gets game by number</param>
-                            /// <param name="getTournamentInstanceByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier</param>
-                            /// <param name="tournamentRepository">Instance of class which implements <see cref="ITournamentRepository"/></param>
-                            /// <param name="tournamentTeamsQuery"></param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameService"/> class.
+        /// </summary>
+        /// <param name="gameRepository">Instance of class which implements <see cref="IGameRepository"/>.</param>
+        /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
+        /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
+        /// of the specified tournament.</param>
+        /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
+        /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
+        /// <param name="authService">Authorization service</param>
+        /// <param name="gamesByTournamentIdInRoundsByNumbersQuery">Query which gets list of <see cref="Game"/> objects.</param>
+        /// <param name="gameNumberByTournamentIdQuery">Query which gets game by number</param>
+        /// <param name="getTournamentInstanceByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier</param>
+        /// <param name="tournamentRepository">Instance of class which implements <see cref="ITournamentRepository"/></param>
+        /// <param name="tournamentTeamsQuery"></param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
@@ -88,7 +87,6 @@ namespace VolleyManagement.Services
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
             _gamesByTournamentIdInRoundsByNumbersQuery = gamesByTournamentIdInRoundsByNumbersQuery;
-            _gameNumberByTournamentIdQuery = gameNumberByTournamentIdQuery;
             _tournamentRepository = tournamentRepository;
             _tournamentTeamsQuery = tournamentTeamsQuery;
             _getTournamentInstanceByIdQuery = getTournamentInstanceByIdQuery;
@@ -546,23 +544,18 @@ namespace VolleyManagement.Services
             TournamentScheduleDto tournamentScheduleInfo)
         {
             string errorMessage = null;
-            if (GameValidation.IsFreeDayGame(newGame))
-            {
-                errorMessage = tournamentScheduleInfo.Scheme !=
-                               TournamentSchemeEnum.PlayOff ?
-                               Resources.SameFreeDayGameInRound :
-                               string.Format(
-                               Resources.SameTeamInRound,
-                               game.HomeTeamId);
-            }
-            else
-            {
-                errorMessage = String.Format(
+            errorMessage = GameValidation.IsFreeDayGame(newGame)
+                ? (tournamentScheduleInfo.Scheme !=
+                   TournamentSchemeEnum.PlayOff
+                    ? Resources.SameFreeDayGameInRound
+                    : string.Format(
+                        Resources.SameTeamInRound,
+                        game.HomeTeamId))
+                : String.Format(
                     Resources.SameGameInRound,
                     game.HomeTeamName,
                     game.AwayTeamName,
                     game.Round.ToString());
-            }
             throw new ArgumentException(errorMessage);
         }
 
@@ -716,17 +709,6 @@ namespace VolleyManagement.Services
 
         #region Schedule autogeneration methods
 
-        private Game GetGameByNumber(int gameNumber, int tournamentId)
-        {
-            Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
-               .Execute(new GameByNumberCriteria()
-               {
-                   TournamentId = tournamentId,
-                   GameNumber = gameNumber
-               });
-            return gameInCurrentTournament;
-        }
-
         private void ScheduleNextGames(Game finishedGame, TournamentScheduleDto tournamentScheduleInfo)
         {
             List<Game> gamesToUpdate = GetGamesToSchedule(finishedGame, tournamentScheduleInfo);
@@ -754,7 +736,6 @@ namespace VolleyManagement.Services
             // Schedule next games only if finished game is not in last round
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                Game oldGame = gamesInCurrentAndNextRounds.SingleOrDefault(gr => gr.Id == finishedGame.Id);
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue
@@ -890,10 +871,9 @@ namespace VolleyManagement.Services
             return (home, away);
         }
 
-        private static bool IsSemiFinalGame(Game finishedGame, ICollection<Game> games)
+        private static bool IsSemiFinalGame(Game finishedGame, IEnumerable<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
-            List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
             return finishedGame.Round == numberOfRounds - 1;
         }

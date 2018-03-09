@@ -20,7 +20,7 @@
         {
             if (allowedOperations == null)
             {
-                throw new ArgumentNullException("Allowed operations list shouldn't be null!");
+                throw new ArgumentNullException(nameof(allowedOperations), "Allowed operations list shouldn't be null!");
             }
             _allowedOperations = allowedOperations;
         }

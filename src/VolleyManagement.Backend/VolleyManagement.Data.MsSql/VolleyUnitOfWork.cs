@@ -5,10 +5,12 @@
     using Context;
     using Contracts;
 
-    /// <summary>
-    /// Defines Entity Framework implementation of the IUnitOfWork contract.
-    /// </summary>
+#pragma warning disable S3881 // "IDisposable" should be implemented correctly
+                             /// <summary>
+                             /// Defines Entity Framework implementation of the IUnitOfWork contract.
+                             /// </summary>
     internal class VolleyUnitOfWork : IUnitOfWork
+#pragma warning restore S3881 // "IDisposable" should be implemented correctly
     {
         /// <summary>
         /// Context of the data source.

@@ -207,7 +207,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, nameof(Team.Achievements)));
+                new ArgumentException(argExMessage, "teamAchievements"));
         }
 
         /// <summary>
@@ -262,7 +262,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Name"));
+                new ArgumentException(argExMessage, "teamName"));
         }
 
         /// <summary>
@@ -298,7 +298,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Name"));
+                new ArgumentException(argExMessage, "teamName"));
         }
 
         /// <summary>
@@ -334,7 +334,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Coach"));
+                new ArgumentException(argExMessage, "teamCoachName"));
         }
 
         /// <summary>
@@ -370,7 +370,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Coach"));
+                new ArgumentException(argExMessage, "teamCoachName"));
         }
 
         /// <summary>

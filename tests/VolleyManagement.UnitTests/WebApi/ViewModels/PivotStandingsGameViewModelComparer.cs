@@ -14,14 +14,19 @@
 
             Assert.AreEqual(expected.Results.Count, actual.Results.Count, $"{messagePrefix} AwayTeamId should match");
 
-            for (var i = 0; i < expected.Results.Count; i++)
-            {
-                var expectedResult = expected.Results[i];
-                var actualResult = actual.Results[i];
+            var expectedResultsEnumerator = expected.Results.GetEnumerator();
+            var actualResultsEnumerator = actual.Results.GetEnumerator();
 
+            int i = 0;
+            while (expectedResultsEnumerator.MoveNext() && actualResultsEnumerator.MoveNext())
+            {
                 string messagePrefix1 = $"{messagePrefix}[Result#{i}] ";
-                AssertShortGameResultsAreEqual(expectedResult, actualResult, messagePrefix1);
+                AssertShortGameResultsAreEqual(expectedResultsEnumerator.Current, actualResultsEnumerator.Current, messagePrefix1);
+                i++;
             }
+
+            expectedResultsEnumerator.Dispose();
+            actualResultsEnumerator.Dispose();
         }
 
         private static void AssertShortGameResultsAreEqual(

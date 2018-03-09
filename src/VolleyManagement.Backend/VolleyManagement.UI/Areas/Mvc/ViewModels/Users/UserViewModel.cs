@@ -75,7 +75,7 @@
         /// Gets or sets the Login Provider info list.
         /// </summary>
         [Display(Name = "LoginProviders", ResourceType = typeof(ViewModelResources))]
-        public List<string> LoginProviders { get; set; }
+        public ICollection<string> LoginProviders { get; set; }
 
         #region Factory Methods
 

@@ -698,7 +698,9 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             };
         }
 
+#pragma warning disable S4017 //Want to remove the nested type argument
         private static List<SelectListItem> BuildTeamSelectList(IEnumerable<KeyValuePair<int, List<TeamTournamentDto>>> tournamentTeams, IDictionary<int, SelectListGroup> groups)
+#pragma warning restore S4017
         {
             var result = tournamentTeams.SelectMany(t => t.Value)
                 .Select(t => new SelectListItem

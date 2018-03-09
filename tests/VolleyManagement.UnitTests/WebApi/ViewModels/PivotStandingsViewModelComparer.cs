@@ -24,16 +24,34 @@
                 Assert.AreEqual(expected.LastUpdateTime, actual.LastUpdateTime, "LastUpdateTime for division should match");
                 Assert.AreEqual(expected.DivisionName, actual.DivisionName, "DivisionName for division should match");
 
-                for (var i = 0; i < expected.TeamsStandings.Count; i++)
+
+                var expectedTeamsStandingsEnumerator = expected.TeamsStandings.GetEnumerator();
+                var actualTeamsStandingsEnumerator = actual.TeamsStandings.GetEnumerator();
+
+                int i = 0;
+                while (expectedTeamsStandingsEnumerator.MoveNext() && actualTeamsStandingsEnumerator.MoveNext())
                 {
-                    PivotStandingsEntryViewModelComparer.AssertAreEqual(expected.TeamsStandings[i], actual.TeamsStandings[i], $"[Team#{i}] ");
+                    PivotStandingsEntryViewModelComparer.AssertAreEqual(expectedTeamsStandingsEnumerator.Current, actualTeamsStandingsEnumerator.Current, $"[Team#{i}] ");
+                    i++;
                 }
 
+                expectedTeamsStandingsEnumerator.Dispose();
+                actualTeamsStandingsEnumerator.Dispose();
+
                 Assert.AreEqual(expected.GamesStandings.Count, actual.GamesStandings.Count, "Number of Games Standings divisions should match");
-                for (var i = 0; i < expected.GamesStandings.Count; i++)
+
+                var expectedGamesStandingsEnumerator = expected.GamesStandings.GetEnumerator();
+                var actualGamesStandingsEnumerator = actual.GamesStandings.GetEnumerator();
+
+
+                while (expectedGamesStandingsEnumerator.MoveNext() && actualGamesStandingsEnumerator.MoveNext())
                 {
-                    PivotStandingsGameViewModelComparer.AssertAreEqual(expected.GamesStandings[i], actual.GamesStandings[i], $"[Game#{i}] ");
+                    PivotStandingsGameViewModelComparer.AssertAreEqual(expectedGamesStandingsEnumerator.Current, actualGamesStandingsEnumerator.Current, $"[Game#{i}] ");
+                    i++;
                 }
+
+                expectedGamesStandingsEnumerator.Dispose();
+                actualGamesStandingsEnumerator.Dispose();
             }
 
             return 0;

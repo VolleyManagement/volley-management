@@ -145,7 +145,7 @@
                 sut.Index(null, string.Empty)).Model.List;
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerNameViewModelComparer());
             VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
         }
 
@@ -172,7 +172,7 @@
             var playersList = actual.Model.List;
 
             // Assert
-            CollectionAssert.AreEqual(expected, playersList, new PlayerNameViewModelComparer());
+            TestHelper.AreEqual(expected, playersList, new PlayerNameViewModelComparer());
             VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
             Assert.AreEqual(actual.Referer, sut.Request.RawUrl);
         }
@@ -504,12 +504,12 @@
             return new PlayerServiceTestFixture().TestPlayers().Build();
         }
 
-        private List<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
+        private ICollection<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
         {
             return players.Select(p => new PlayerNameViewModel { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName }).ToList();
         }
 
-        private List<PlayerNameViewModel> GetPlayerNameViewModelsWithPlayerName(List<PlayerNameViewModel> players, string name)
+        private List<PlayerNameViewModel> GetPlayerNameViewModelsWithPlayerName(ICollection<PlayerNameViewModel> players, string name)
         {
             return players.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
         }

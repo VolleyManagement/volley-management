@@ -67,7 +67,7 @@
         /// <summary>
         /// Gets list Of Players
         /// </summary>
-        public List<PlayerNameViewModel> List { get; private set; }
+        public ICollection<PlayerNameViewModel> List { get; private set; }
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object

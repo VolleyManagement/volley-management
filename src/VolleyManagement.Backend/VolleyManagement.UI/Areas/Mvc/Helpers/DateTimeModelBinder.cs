@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Helpers
 {
     using System;
-    using System.Web.Http;
     using System.Web.Mvc;
 
     /// <summary>
@@ -54,7 +53,7 @@
 
                 return realDate;
             }
-            catch (Exception e) when (e.Message != string.Empty)
+            catch (FormatException)
             {
                 string message = string.Format("\"{0}\" is invalid.", bindingContext.ModelName);
                 bindingContext.ModelState.AddModelError(bindingContext.ModelName, message);

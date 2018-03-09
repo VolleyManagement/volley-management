@@ -68,19 +68,12 @@
         {
             _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
-            try
-            {
-                _rolesService.ChangeRoleMembership(
-                            modifiedRoles.RoleId,
-                            modifiedRoles.IdsToAdd,
-                            modifiedRoles.IdsToDelete);
-                return RedirectToAction("Index");
-            }
-            catch (Exception e) when (e.Message != string.Empty)
-            {
-                ModelState.AddModelError(string.Empty, e.Message);
-                return View();
-            }
+            _rolesService.ChangeRoleMembership(
+                        modifiedRoles.RoleId,
+                        modifiedRoles.IdsToAdd,
+                        modifiedRoles.IdsToDelete);
+            return RedirectToAction("Index");
+
         }
 
         /// <summary>

@@ -28,27 +28,7 @@
 
             Assert.AreEqual(equalsResult, compareResult);
         }
-
-        public static void AreEqual<T>(List<T> expected, List<T> actual, IComparer<T> comparer)
-        {
-            if (expected != null || actual != null)
-            {
-                if (expected == null || actual == null)
-                {
-                    Assert.Fail(COLLECTION_IS_NULL_MESSAGE);
-                }
-
-                Assert.AreEqual(expected.Count, actual.Count, COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
-
-                for (var i = 0; i < expected.Count; i++)
-                {
-                    Assert.IsTrue(
-                        comparer.Compare(expected[i], actual[i]) == 0,
-                        $"[Item#{i}] ");
-                }
-            }
-        }
-
+        
         public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer) =>
             AreEqual(expected, actual, comparer, string.Empty);
 
@@ -91,4 +71,3 @@
         }
     }
 }
-

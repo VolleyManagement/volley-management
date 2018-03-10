@@ -169,4 +169,3 @@ $RECYCLE.BIN/
 VolleyManagement.UI/package-lock.json
 .sonarqube/
 src/.nuget/
-/src/VolleyManagement.WebClient

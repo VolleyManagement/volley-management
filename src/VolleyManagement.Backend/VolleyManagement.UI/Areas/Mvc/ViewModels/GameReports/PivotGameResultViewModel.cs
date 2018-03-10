@@ -7,11 +7,6 @@
     /// </summary>
     public class PivotGameResultViewModel
     {
-        private const byte ZERO = 0;
-        private const byte ONE = 1;
-        private const byte TWO = 2;
-        private const byte THREE = 3;
-
         /// <summary>
         /// Gets or sets the identifier of the home team which played the game.
         /// </summary>

@@ -11,6 +11,9 @@
     [ExcludeFromCodeCoverage]
     internal static class TestHelper
     {
+        private const string COLLECTION_IS_NULL_MESSAGE = "One of the collections is null.";
+        private const string COLLECTIONS_COUNT_UNEQUAL_MESSAGE = "Number of items in collections should match.";
+        
         /// <summary>
         /// Test equals of two objects with specific comparer.
         /// </summary>
@@ -25,102 +28,46 @@
 
             Assert.AreEqual(equalsResult, compareResult);
         }
+        
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer) =>
+            AreEqual(expected, actual, comparer, string.Empty);
 
-        public static void AreEqual<T>(List<T> expected, List<T> actual, IComparer<T> comparer)
-        {
-            if (expected != null || actual != null)
-            {
-                if (expected == null || actual == null)
-                {
-                    Assert.Fail("One of the colection is null");
-                }
-
-                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
-
-                for (var i = 0; i < expected.Count; i++)
-                {
-                    Assert.IsTrue(
-                        comparer.Compare(expected[i], actual[i]) == 0,
-                        $"[Item#{i}] ");
-                }
-            }
-        }
-
-        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer)
-        {
-            if (expected != null || actual != null)
-            {
-                if (expected == null || actual == null)
-                {
-                    Assert.Fail("One of the colection is null");
-                }
-
-                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
-
-                var expectedEnumerator = expected.GetEnumerator();
-                var actualEnumerator = actual.GetEnumerator();
-
-                while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
-                {
-                    Assert.IsTrue(
-                           comparer.Compare(expectedEnumerator.Current, actualEnumerator.Current) == 0,
-                           $"[Item#{expectedEnumerator.Current.ToString()}] ");
-                }
-
-                expectedEnumerator.Dispose();
-                actualEnumerator.Dispose();
-            }
-        }
-
-        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, string message)
-        {
-            if (expected != null || actual != null)
-            {
-                if (expected == null || actual == null)
-                {
-                    Assert.Fail("One of the colection is null");
-                }
-
-                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
-
-                var expectedEnumerator = expected.GetEnumerator();
-                var actualEnumerator = actual.GetEnumerator();
-
-                while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
-                {
-                    Assert.AreEqual(expectedEnumerator.Current, actualEnumerator.Current, message);
-                }
-
-                expectedEnumerator.Dispose();
-                actualEnumerator.Dispose();
-            }
-        }
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, string message) =>
+            AreEqual(expected, actual, null, message);
 
         public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer, string message)
         {
-            if (expected != null || actual != null)
+            if (expected == null || actual == null)
             {
-                if (expected == null || actual == null)
-                {
-                    Assert.Fail("One of the colection is null");
-                }
+                Assert.Fail(COLLECTION_IS_NULL_MESSAGE);
+            }
 
-                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
+            Assert.AreEqual(expected.Count, actual.Count, COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
 
-                var expectedEnumerator = expected.GetEnumerator();
-                var actualEnumerator = actual.GetEnumerator();
+            using (var expectedEnumerator = expected.GetEnumerator())
+            using (var actualEnumerator = actual.GetEnumerator())
+            {
+                string preparedErrorMessage;
 
                 while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
                 {
-                    Assert.IsTrue(
-                        comparer.Compare(expectedEnumerator.Current, actualEnumerator.Current) == 0,
-                        message);
-                }
+                    preparedErrorMessage = !string.IsNullOrEmpty(message) ? message
+                        : $"[Item#{expectedEnumerator.Current.ToString()}] ";
 
-                expectedEnumerator.Dispose();
-                actualEnumerator.Dispose();
+                    if (comparer == null)
+                    {
+                        Assert.AreEqual(expectedEnumerator.Current, 
+                            actualEnumerator.Current, 
+                            preparedErrorMessage);
+                    }
+                    else
+                    {
+                        Assert.IsTrue(
+                            comparer.Compare(expectedEnumerator.Current, actualEnumerator.Current) == 0,
+                            preparedErrorMessage);
+                    }
+                }
             }
         }
     }
 }
-

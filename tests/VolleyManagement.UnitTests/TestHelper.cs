@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Linq;
 
     /// <summary>
     /// Class for custom asserts.
@@ -11,6 +11,9 @@
     [ExcludeFromCodeCoverage]
     internal static class TestHelper
     {
+        private const string COLLECTION_IS_NULL_MESSAGE = "One of the collections is null.";
+        private const string COLLECTIONS_COUNT_UNEQUAL_MESSAGE = "Number of items in collections should match.";
+
         /// <summary>
         /// Test equals of two objects with specific comparer.
         /// </summary>
@@ -26,22 +29,38 @@
             Assert.AreEqual(equalsResult, compareResult);
         }
 
-        public static void AreEqual<T>(List<T> expected, List<T> actual, IComparer<T> comparer)
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer) =>
+            AreEqual(expected, actual, comparer, string.Empty);
+
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, string message) =>
+            AreEqual(expected, actual, null, message);
+
+        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer, string message)
         {
-            if (expected != null || actual != null)
+            if (expected == null || actual == null)
             {
-                if (expected == null || actual == null)
+                Assert.Fail(COLLECTION_IS_NULL_MESSAGE);
+            }
+
+            Assert.AreEqual(expected.Count, actual.Count, COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
+
+            string preparedErrorMessage;
+            foreach (var pair in expected.Zip(actual, (e, a) => new { Expected = e, Actual = a }))
+            {
+                preparedErrorMessage = !string.IsNullOrEmpty(message) ? message
+                        : $"[Item#{pair.Expected.ToString()}] ";
+
+                if (comparer == null)
                 {
-                    Assert.Fail("One of the colection is null");
+                    Assert.AreEqual(pair.Expected,
+                        pair.Actual,
+                        preparedErrorMessage);
                 }
-
-                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
-
-                for (var i = 0; i < expected.Count; i++)
+                else
                 {
                     Assert.IsTrue(
-                        comparer.Compare(expected[i], actual[i]) == 0,
-                        $"[Item#{i}] ");
+                        comparer.Compare(pair.Expected, pair.Actual) == 0,
+                        preparedErrorMessage);
                 }
             }
         }

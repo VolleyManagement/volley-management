@@ -76,7 +76,7 @@
         {
             get
             {
-                return !Single.IsPositiveInfinity(SetsRatio.Value) ?
+                return SetsRatio.HasValue && !Single.IsPositiveInfinity(SetsRatio.Value) ?
                     string.Format(
                     CultureInfo.CurrentUICulture,
                     "{0:0.###}",
@@ -102,7 +102,7 @@
         {
             get
             {
-                return !Single.IsPositiveInfinity(BallsRatio.Value) ?
+                return BallsRatio.HasValue && !Single.IsPositiveInfinity(BallsRatio.Value) ?
                     string.Format(
                     CultureInfo.CurrentUICulture,
                     "{0:0.###}",

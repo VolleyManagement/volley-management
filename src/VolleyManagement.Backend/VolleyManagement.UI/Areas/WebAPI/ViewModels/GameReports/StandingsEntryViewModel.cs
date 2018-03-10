@@ -1,5 +1,6 @@
 namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
+    using System;
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
 
@@ -150,13 +151,26 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <param name="firstEntry">First team standings entry</param>
         /// <param name="secondEntry">Second team standings entry</param>
         /// <returns>True if teams have same position</returns>
-#pragma warning disable S1244 // Want to check floating point not with exact values, but with range
         public static bool EntriesHaveSamePosition(StandingsEntryViewModel firstEntry, StandingsEntryViewModel secondEntry)
         {
             return firstEntry.Points == secondEntry.Points
-                && firstEntry.SetsRatio.Equals(secondEntry.SetsRatio)
-                && firstEntry.BallsRatio.Equals(secondEntry.BallsRatio);
+                && Equals3DigitPrecision(firstEntry.SetsRatio, secondEntry.SetsRatio)
+                && Equals3DigitPrecision(firstEntry.BallsRatio, secondEntry.BallsRatio);
+        }
+
+        public static bool Equals3DigitPrecision(float? left, float? right)
+        {
+            if (!left.HasValue && !right.HasValue)
+            {
+                return true;
+            }
+
+            if (left.HasValue && right.HasValue)
+            {
+                return Math.Abs(left.Value - right.Value) < 0.001;
+            }
+          
+            return false;
         }
     }
-#pragma warning restore S1244
 }

@@ -114,37 +114,6 @@
             return result;
         }
 
-        private static void GetCssClassWhenWin(byte? awayScore, ref string cssClass)
-        {
-            if (awayScore == ZERO)
-            {
-                cssClass = CssClassConstants.WIN_3_0;
-            }
-            else if (awayScore == ONE)
-            {
-                cssClass = CssClassConstants.WIN_3_1;
-            }
-            else if (awayScore == TWO)
-            {
-                cssClass = CssClassConstants.WIN_3_2;
-            }
-        }
-
-        private static void GetCssClassWhenLoss(byte? homeScore, ref string cssClass)
-        {
-            if (homeScore == TWO)
-            {
-                cssClass = CssClassConstants.LOSS_2_3;
-            }
-            else if (homeScore == ONE)
-            {
-                cssClass = CssClassConstants.LOSS_1_3;
-            }
-            else if (homeScore == ZERO)
-            {
-                cssClass = CssClassConstants.LOSS_0_3;
-            }
-        }
         /// <summary>
         /// According game score returns cascade style sheets class name
         /// </summary>
@@ -154,13 +123,35 @@
         private static string GetCssClass(byte? homeScore, byte? awayScore)
         {
             string cssClass = CssClassConstants.NORESULT;
-            if (homeScore == THREE)
+
+            if (homeScore.HasValue && awayScore.HasValue)
             {
-                GetCssClassWhenWin(awayScore, ref cssClass);
-            }
-            else if (awayScore == THREE)
-            {
-                GetCssClassWhenLoss(homeScore, ref cssClass);
+                int setDifference = homeScore.Value - awayScore.Value;
+
+                switch (setDifference)
+                {
+                    case 3:
+                        cssClass = CssClassConstants.WIN_3_0;
+                        break;
+                    case 2:
+                        cssClass = CssClassConstants.WIN_3_1;
+                        break;
+                    case 1:
+                        cssClass = CssClassConstants.WIN_3_2;
+                        break;
+                    case -1:
+                        cssClass = CssClassConstants.LOSS_2_3;
+                        break;
+                    case -2:
+                        cssClass = CssClassConstants.LOSS_1_3;
+                        break;
+                    case -3:
+                        cssClass = CssClassConstants.LOSS_0_3;
+                        break;
+                    default:
+                        cssClass = CssClassConstants.NORESULT;
+                        break;
+                }
             }
 
             return cssClass;

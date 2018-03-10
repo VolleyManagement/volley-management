@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Crosscutting
+﻿using System;
+
+namespace VolleyManagement.Crosscutting
 {
     using Contracts.Infrastructure;
     using Microsoft.Practices.EnterpriseLibrary.Logging;
@@ -39,8 +41,7 @@
                     logEntry.Categories.Add("Debug");
                     break;
                 default:
-                    logEntry.Categories.Add("Unknown");
-                    break;
+                    throw new InvalidOperationException();
             }
         }
     }

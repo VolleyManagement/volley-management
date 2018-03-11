@@ -1684,15 +1684,22 @@
         {
             var tournament = MakeTestTournament(tournamentId);
             tournament.Divisions = new List<Division>();
+            IEnumerator<Division> divEnumerator = default(IEnumerator<Division>);
             for (int i = 0; i < 10; i++)
             {
                 tournament.Divisions.Add(new Division());
-                tournament.Divisions.ElementAt(i).Groups = new List<Group>();
-                for (int j = 0; j < 10; j++)
+                divEnumerator = tournament.Divisions.GetEnumerator();
+                if (divEnumerator.MoveNext())
                 {
-                    tournament.Divisions.ElementAt(i).Groups.Add(new Group());
+                    divEnumerator.Current.Groups = new List<Group>();
+                    for (int j = 0; j < 10; j++)
+                    {
+                        divEnumerator.Current.Groups.Add(new Group());
+                    }
                 }
             }
+
+            divEnumerator.Dispose();
 
             return tournament;
         }

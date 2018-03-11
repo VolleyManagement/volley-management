@@ -22,19 +22,19 @@
         /// <summary>
         /// Gets the sets ratio of the team.
         /// </summary>
-#pragma warning disable S1244 // Want to check floating point not with exact values, but with range
         public string SetsRatioText
         {
             get
             {
-                return !Single.IsPositiveInfinity(SetsRatio.Value) ?
-                    string.Format(
-                    CultureInfo.CurrentUICulture,
-                    "{0:0.###}",
-                    SetsRatio) : "MAX";
+                return !Single.IsPositiveInfinity(SetsRatio.Value)
+                    ? string.Format(
+                        CultureInfo.CurrentUICulture,
+                        "{0:0.###}",
+                        SetsRatio)
+                    : "MAX";
             }
         }
-#pragma warning restore S1244
+
         /// <summary>
         /// Maps domain model of team standings to view model of team standings.
         /// </summary>

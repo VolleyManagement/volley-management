@@ -12,6 +12,7 @@
     internal class VolleyUnitOfWork : IUnitOfWork
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
     {
+
         /// <summary>
         /// Context of the data source.
         /// </summary>
@@ -59,7 +60,18 @@
         /// </summary>
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// IDisposable.Dispose method implementation.
+        /// </summary>
+        public void Dispose(bool isDispose)
+        {
+            if (isDispose)
+            {
+                _context.Dispose();
+            }
         }
     }
 }

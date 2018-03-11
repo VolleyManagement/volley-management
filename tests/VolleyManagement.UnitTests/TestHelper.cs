@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.UnitTests.Mvc.Comparers;
+    using System.Linq;
 
     /// <summary>
     /// Class for custom asserts.
@@ -44,28 +44,23 @@
 
             Assert.AreEqual(expected.Count, actual.Count, COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
 
-            using (var expectedEnumerator = expected.GetEnumerator())
-            using (var actualEnumerator = actual.GetEnumerator())
+            string preparedErrorMessage;
+            foreach (var pair in expected.Zip(actual, (e, a) => new { Expected = e, Actual = a }))
             {
-                string preparedErrorMessage;
+                preparedErrorMessage = !string.IsNullOrEmpty(message) ? message
+                        : $"[Item#{pair.Expected.ToString()}] ";
 
-                while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
+                if (comparer == null)
                 {
-                    preparedErrorMessage = !string.IsNullOrEmpty(message) ? message
-                        : $"[Item#{expectedEnumerator.Current.ToString()}] ";
-
-                    if (comparer == null)
-                    {
-                        Assert.AreEqual(expectedEnumerator.Current, 
-                            actualEnumerator.Current, 
-                            preparedErrorMessage);
-                    }
-                    else
-                    {
-                        Assert.IsTrue(
-                            comparer.Compare(expectedEnumerator.Current, actualEnumerator.Current) == 0,
-                            preparedErrorMessage);
-                    }
+                    Assert.AreEqual(pair.Expected,
+                        pair.Actual,
+                        preparedErrorMessage);
+                }
+                else
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(pair.Expected, pair.Actual) == 0,
+                        preparedErrorMessage);
                 }
             }
         }

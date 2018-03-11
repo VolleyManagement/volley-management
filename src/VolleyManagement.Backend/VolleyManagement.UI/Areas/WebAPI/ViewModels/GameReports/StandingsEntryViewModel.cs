@@ -9,6 +9,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
     /// </summary>
     public class StandingsEntryViewModel
     {
+        private const float TOLERANCE = 0.001f;
+
         /// <summary>
         /// Gets or sets the team's name.
         /// </summary>
@@ -154,11 +156,18 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         public static bool EntriesHaveSamePosition(StandingsEntryViewModel firstEntry, StandingsEntryViewModel secondEntry)
         {
             return firstEntry.Points == secondEntry.Points
-                && Equals3DigitPrecision(firstEntry.SetsRatio, secondEntry.SetsRatio)
-                && Equals3DigitPrecision(firstEntry.BallsRatio, secondEntry.BallsRatio);
+                && EqualsDigitPrecision(firstEntry.SetsRatio, secondEntry.SetsRatio, TOLERANCE)
+                && EqualsDigitPrecision(firstEntry.BallsRatio, secondEntry.BallsRatio, TOLERANCE);
         }
 
-        public static bool Equals3DigitPrecision(float? left, float? right)
+        /// <summary>
+        /// Compare float values with tolerance
+        /// </summary>
+        /// <param name="left">First value</param>
+        /// <param name="right">Second value</param>
+        /// <param name="tolerance">Accuracy of comparison</param>
+        /// <returns>True if values are equal by current tolerance</returns>
+        public static bool EqualsDigitPrecision(float? left, float? right, float tolerance)
         {
             if (!left.HasValue && !right.HasValue)
             {
@@ -167,9 +176,9 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 
             if (left.HasValue && right.HasValue)
             {
-                return Math.Abs(left.Value - right.Value) < 0.001;
+                return Math.Abs(left.Value - right.Value) < tolerance;
             }
-          
+
             return false;
         }
     }

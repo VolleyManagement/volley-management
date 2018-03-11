@@ -4,13 +4,12 @@
     using System.Threading.Tasks;
     using Context;
     using Contracts;
+    using System;
 
-#pragma warning disable S3881 // "IDisposable" should be implemented correctly
-                             /// <summary>
-                             /// Defines Entity Framework implementation of the IUnitOfWork contract.
-                             /// </summary>
+    /// <summary>
+    /// Defines Entity Framework implementation of the IUnitOfWork contract.
+    /// </summary>
     internal class VolleyUnitOfWork : IUnitOfWork
-#pragma warning restore S3881 // "IDisposable" should be implemented correctly
     {
 
         /// <summary>
@@ -61,14 +60,15 @@
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// IDisposable.Dispose method implementation.
         /// </summary>
-        public void Dispose(bool isDispose)
+        protected virtual void Dispose(bool disposing)
         {
-            if (isDispose)
+            if (disposing)
             {
                 _context.Dispose();
             }

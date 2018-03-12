@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -54,8 +53,10 @@
                 Assert.Fail($"[TeamName{x.TeamName}] Points should match");
             }
 
-            result = x.SetsRatio.GetValueOrDefault().CompareTo(y.SetsRatio.GetValueOrDefault());
-            if (result < -0.001f || result > 0.001f)
+            bool areEqualDigitPrecision = StandingsEntryViewModel.EqualsDigitPrecision(x.SetsRatio.GetValueOrDefault(),
+                y.SetsRatio.GetValueOrDefault(),
+                0.001f);
+            if (!areEqualDigitPrecision)
             {
                 Assert.Fail($"[TeamName{x.TeamName}] SetsRatio should match");
             }

@@ -25,26 +25,7 @@
                 throw new AssertFailedException("One instance is null");
             }
 
-            if (x.Divisions.Count == y.Divisions.Count)
-            {
-                var xEnumerator = x.Divisions.GetEnumerator();
-                var yEnumerator = x.Divisions.GetEnumerator();
-
-                while (xEnumerator.MoveNext() && yEnumerator.MoveNext())
-                {
-                    if (_groupItemComparer.Compare(xEnumerator.Current, yEnumerator.Current) != 0)
-                    {
-                        return 1;
-                    }
-                }
-
-                xEnumerator.Dispose();
-                yEnumerator.Dispose();
-            }
-            else
-            {
-                throw new AssertFailedException("Number of divisions do not match.");
-            }
+            TestHelper.AreEqual(x.Divisions, y.Divisions, _groupItemComparer);
 
             return 0;
         }

@@ -38,7 +38,6 @@
         {
             Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, $" AwayTeamId should match");
             Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, $" HomeTeamId should match");
-            Assert.AreEqual(x.Results.Count, y.Results.Count, $" AwayTeamId should match");
 
             TestHelper.AreEqual(x.Results, y.Results, new ShortGameResultViewModelComparer());
 

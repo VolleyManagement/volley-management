@@ -2,9 +2,13 @@
 
 Welcome to Volley Management project repository
 
-## Current Build Status
+## Status
 
-[![Build status](https://ci.appveyor.com/api/projects/status/fmfdph327qywmeju/branch/master?svg=true)](https://ci.appveyor.com/project/sdiachen/volleymanagement/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/5ei8xslncj5qtpdm/branch/master?svg=true)](https://ci.appveyor.com/project/sdiachen/volley-management/branch/master)
+
+![Sonar Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=alert_status) ![LoC](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=ncloc) ![Coverage](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=coverage)
+
+![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=sqale_rating) ![Security](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=security_rating) ![Reliability](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=reliability_rating)
 
 ## What is this repository for? ##
 

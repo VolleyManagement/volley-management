@@ -294,7 +294,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             _tournamentService.Delete(id);
             return RedirectToAction("Archived");
         }
-        
 
         public ActionResult Activate(int id)
         {

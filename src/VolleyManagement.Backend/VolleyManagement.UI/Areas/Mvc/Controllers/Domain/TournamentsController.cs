@@ -135,6 +135,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
         /// <returns>Index View of Tournament</returns>
+        
         [HttpPost]
         public ActionResult UnArchive(int tournamentId)
         {
@@ -293,7 +294,20 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             _tournamentService.Delete(id);
             return RedirectToAction("Archived");
         }
+        
 
+        public ActionResult Activate(int id)
+        {
+            var tournament = _tournamentService.Get(id);
+
+            if (tournament == null)
+            {
+                return HttpNotFound();
+            }
+
+            _tournamentService.UnArchive(id);
+            return RedirectToAction("Archived");
+        }
         /// <summary>
         /// Manage tournament teams action
         /// </summary>

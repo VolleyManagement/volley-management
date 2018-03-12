@@ -24,34 +24,12 @@
                 Assert.AreEqual(expected.LastUpdateTime, actual.LastUpdateTime, "LastUpdateTime for division should match");
                 Assert.AreEqual(expected.DivisionName, actual.DivisionName, "DivisionName for division should match");
 
-
-                var expectedTeamsStandingsEnumerator = expected.TeamsStandings.GetEnumerator();
-                var actualTeamsStandingsEnumerator = actual.TeamsStandings.GetEnumerator();
-
-                int i = 0;
-                while (expectedTeamsStandingsEnumerator.MoveNext() && actualTeamsStandingsEnumerator.MoveNext())
-                {
-                    PivotStandingsEntryViewModelComparer.AssertAreEqual(expectedTeamsStandingsEnumerator.Current, actualTeamsStandingsEnumerator.Current, $"[Team#{i}] ");
-                    i++;
-                }
-
-                expectedTeamsStandingsEnumerator.Dispose();
-                actualTeamsStandingsEnumerator.Dispose();
+                TestHelper.AreEqual(expected.TeamsStandings, actual.TeamsStandings, new PivotStandingsEntryViewModelComparer());
 
                 Assert.AreEqual(expected.GamesStandings.Count, actual.GamesStandings.Count, "Number of Games Standings divisions should match");
 
-                var expectedGamesStandingsEnumerator = expected.GamesStandings.GetEnumerator();
-                var actualGamesStandingsEnumerator = actual.GamesStandings.GetEnumerator();
-
-
-                while (expectedGamesStandingsEnumerator.MoveNext() && actualGamesStandingsEnumerator.MoveNext())
-                {
-                    PivotStandingsGameViewModelComparer.AssertAreEqual(expectedGamesStandingsEnumerator.Current, actualGamesStandingsEnumerator.Current, $"[Game#{i}] ");
-                    i++;
-                }
-
-                expectedGamesStandingsEnumerator.Dispose();
-                actualGamesStandingsEnumerator.Dispose();
+                TestHelper.AreEqual(expected.GamesStandings, actual.GamesStandings, new PivotStandingsGameViewModelComparer());
+ 
             }
 
             return 0;

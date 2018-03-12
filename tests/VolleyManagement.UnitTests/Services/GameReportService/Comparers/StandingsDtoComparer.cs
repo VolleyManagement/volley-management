@@ -23,26 +23,7 @@
             Assert.AreEqual(x.DivisionName, y.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
             Assert.AreEqual(x.LastUpdateTime, y.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
 
-            if (x.Standings.Count == y.Standings.Count)
-            {
-                var xEnumerator = x.Standings.GetEnumerator();
-                var yEnumerator = x.Standings.GetEnumerator();
-
-                while (xEnumerator.MoveNext() && yEnumerator.MoveNext())
-                {
-                    if (standingsComparer.Compare(xEnumerator.Current, yEnumerator.Current) != 0)
-                    {
-                        return 1;
-                    }
-                }
-
-                xEnumerator.Dispose();
-                yEnumerator.Dispose();
-            }
-            else
-            {
-                Assert.Fail($"[DivisionId={x.DivisionId}] Number of standing entries does not match.");
-            }
+            TestHelper.AreEqual(x.Standings, y.Standings, new StandingsEntryComparer());
 
             return 0;
         }

@@ -46,19 +46,7 @@
 
             Assert.AreEqual(expected.Divisions.Count, actual.Divisions.Count, $"[Id:{expected.Id}]Number of Divisions items should be equal.");
 
-            var expectedDivisionsEnumerator = expected.Divisions.GetEnumerator();
-            var actualDivisionsEnumerator = actual.Divisions.GetEnumerator();
-
-            while (expectedDivisionsEnumerator.MoveNext() && actualDivisionsEnumerator.MoveNext())
-            {
-                DivisionViewModelEqualityComparer.AssertAreEqual(
-                    expectedDivisionsEnumerator.Current,
-                    actualDivisionsEnumerator.Current,
-                    $"[Id:{expected.Id}][Div#{expectedDivisionsEnumerator.Current.ToDomain().Id}]");
-            }
-
-            expectedDivisionsEnumerator.Dispose();
-            actualDivisionsEnumerator.Dispose();
+            TestHelper.AreEqual(expected.Divisions, actual.Divisions, new DivisionViewModelComparer());
         }
     }
 }

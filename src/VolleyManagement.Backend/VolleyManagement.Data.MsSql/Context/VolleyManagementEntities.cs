@@ -1,8 +1,11 @@
 namespace VolleyManagement.Data.MsSql.Context
 {
+    using System;
+    using System.Configuration;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Entities;
+    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Volley management database context
@@ -19,12 +22,18 @@ namespace VolleyManagement.Data.MsSql.Context
             Database.SetInitializer(new VolleyManagementDatabaseInitializer());
         }
 
+        private static string GetConnectionString()
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json",true).Build();
+            return builder.GetConnectionString("VolleyManagementEntities") ?? ConfigurationManager.ConnectionStrings["VolleyManagementEntities"].ConnectionString;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VolleyManagementEntities" /> class.
         /// </summary>
         public VolleyManagementEntities()
-            : base("VolleyManagementEntities")
         {
+            this.Database.Connection.ConnectionString = GetConnectionString();
         }
 
         #endregion
@@ -631,5 +640,5 @@ namespace VolleyManagement.Data.MsSql.Context
         }
 
         #endregion
-     }
+    }
 }

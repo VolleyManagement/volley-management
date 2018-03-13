@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,20 +29,23 @@
             Assert.AreEqual(equalsResult, compareResult);
         }
 
-        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer) =>
+        public static void AreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual) =>
+            AreEqual(expected, actual, null, string.Empty);
+
+        public static void AreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, IComparer<T> comparer) =>
             AreEqual(expected, actual, comparer, string.Empty);
 
-        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, string message) =>
+        public static void AreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, string message) =>
             AreEqual(expected, actual, null, message);
 
-        public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer, string message)
+        public static void AreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, IComparer<T> comparer, string message)
         {
             if (expected == null || actual == null)
             {
                 Assert.Fail(COLLECTION_IS_NULL_MESSAGE);
             }
 
-            Assert.AreEqual(expected.Count, actual.Count, COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
+            Assert.AreEqual(expected.Count(), actual.Count(), COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
 
             string preparedErrorMessage;
             foreach (var pair in expected.Zip(actual, (e, a) => new { Expected = e, Actual = a }))

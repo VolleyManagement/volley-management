@@ -204,7 +204,7 @@
                    {
                        UserId = u.Id,
                        UserName = u.UserName,
-                       RoleIds = u.Roles.Select(r => r.Id)
+                       RoleIds = u.Roles.Select(r => r.Id).ToList()
                    };
         }
 

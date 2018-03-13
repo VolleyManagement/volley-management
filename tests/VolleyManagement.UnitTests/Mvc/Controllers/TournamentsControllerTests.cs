@@ -774,6 +774,24 @@
             VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
         }
 
+
+        /// <summary>
+        /// Test for UnArchive method. Service get Id of Tournament to activate
+        /// </summary>
+        [TestMethod]
+        public void UnArchive_GetTournamentToActive_ServiceMethodUnArchiveIsCalled()
+        {
+            // Arrange
+            MakeTestTournaments();
+            SetupUnArchiveTournament(TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
+
+            // Act
+            sut.UnArchive(TEST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyUnArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
+        }
         #endregion
 
         #region Details
@@ -1233,6 +1251,25 @@
         /// </summary>
         [TestMethod]
         public void DeleteTeamFromTournament_TeamExists_TeamDeleted()
+        {
+            // Arrange
+            _tournamentServiceMock
+                .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
+            var sut = BuildSUT();
+
+            // Act
+            var jsonResult = sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
+            var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
+
+            // Assert
+            Assert.IsTrue(result.HasDeleted);
+        }
+
+        /// <summary>
+        /// Test for Activate team from tournament method (POST action)
+        /// </summary>
+        [TestMethod]
+        public void ActivateTeamFromTournament_TeamExists_TeamActivated()
         {
             // Arrange
             _tournamentServiceMock
@@ -1762,6 +1799,11 @@
             _tournamentServiceMock.Setup(tr => tr.Archive(tournamentId));
         }
 
+        private void SetupUnArchiveTournament(int tournamentId)
+        {
+            _tournamentServiceMock.Setup(tr => tr.UnArchive(tournamentId));
+        }
+
         private void SetupGetActual(List<Tournament> tournaments)
         {
             _tournamentServiceMock.Setup(tr => tr.GetActual()).Returns(tournaments);
@@ -1866,6 +1908,11 @@
         private void VerifyArchiveTournament(int tournamentId, Times times)
         {
             _tournamentServiceMock.Verify(ts => ts.Archive(tournamentId), times);
+        }
+
+        private void VerifyUnArchiveTournament(int tournamentId, Times times)
+        {
+            _tournamentServiceMock.Verify(ts => ts.UnArchive(tournamentId), times);
         }
 
         private void VerifyCreate(Times times)

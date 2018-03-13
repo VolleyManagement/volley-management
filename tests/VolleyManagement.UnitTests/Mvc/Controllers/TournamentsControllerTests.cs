@@ -1266,25 +1266,6 @@
         }
 
         /// <summary>
-        /// Test for Activate team from tournament method (POST action)
-        /// </summary>
-        [TestMethod]
-        public void ActivateTeamFromTournament_TeamExists_TeamActivated()
-        {
-            // Arrange
-            _tournamentServiceMock
-                .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
-            var sut = BuildSUT();
-
-            // Act
-            var jsonResult = sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
-            var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
-
-            // Assert
-            Assert.IsTrue(result.HasDeleted);
-        }
-
-        /// <summary>
         /// Test for Delete team from tournament method (POST action)
         /// team is not exists
         /// </summary>
@@ -1318,7 +1299,7 @@
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
             var sut = BuildSUT();
-
+     
             // Act
             var result = sut.Delete(TEST_TOURNAMENT_ID);
 

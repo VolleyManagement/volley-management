@@ -3,7 +3,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Linq;
+
+    using static System.Linq.Enumerable;
 
     /// <summary>
     /// Class for custom asserts.

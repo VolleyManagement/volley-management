@@ -53,13 +53,9 @@
                 Assert.Fail($"[TeamName{x.TeamName}] Points should match");
             }
 
-            bool areEqualDigitPrecision = StandingsEntryViewModel.EqualsDigitPrecision(x.SetsRatio.GetValueOrDefault(),
+            Assert.AreEqual(x.SetsRatio.GetValueOrDefault(),
                 y.SetsRatio.GetValueOrDefault(),
-                0.001f);
-            if (!areEqualDigitPrecision)
-            {
-                Assert.Fail($"[TeamName{x.TeamName}] SetsRatio should match");
-            }
+                0.001, $"[TeamName{x.TeamName}] SetsRatio should match");
 
             return 0;
         }

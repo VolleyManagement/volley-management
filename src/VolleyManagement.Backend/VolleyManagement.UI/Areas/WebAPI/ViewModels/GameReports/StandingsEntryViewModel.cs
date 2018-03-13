@@ -1,8 +1,8 @@
 namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
-    using System;
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
+    using System;
 
     /// <summary>
     /// Represents a view model for <see cref="StandingsEntry"/>.
@@ -158,6 +158,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
             return firstEntry.Points == secondEntry.Points
                 && EqualsDigitPrecision(firstEntry.SetsRatio, secondEntry.SetsRatio, TOLERANCE)
                 && EqualsDigitPrecision(firstEntry.BallsRatio, secondEntry.BallsRatio, TOLERANCE);
+            //return true;
         }
 
         /// <summary>
@@ -181,5 +182,6 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 
             return false;
         }
+
     }
 }

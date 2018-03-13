@@ -31,12 +31,16 @@
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
-#pragma warning disable S2971 // Query does not work without ToList() in the middle of the chain
-            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((PageNumber - 1) * Size)
-                            .Take(Size)
-                            .ToList()
-                            .Select(p => PlayerViewModel.Map(p)));
-#pragma warning restore S2971 // Query does not work without ToList() in the middle of the chain
+            List<Player> list = new List<Player>();
+            foreach (var player in source.Skip((PageNumber - 1) * Size)
+                .Take(Size))
+            {
+                list.Add(player);
+            }
+
+            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(list
+                .Select(p => PlayerViewModel.Map(p)));
+
             List = new List<PlayerNameViewModel>();
             foreach (PlayerViewModel player in listOfPlayers)
             {

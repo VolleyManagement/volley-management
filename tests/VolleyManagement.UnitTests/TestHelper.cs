@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,8 +14,8 @@
     {
         private const string COLLECTION_IS_NULL_MESSAGE = "One of the collections is null.";
         private const string COLLECTIONS_COUNT_UNEQUAL_MESSAGE = "Number of items in collections should match.";
-        
-        /// <summary>
+
+       /// <summary>
         /// Test equals of two objects with specific comparer.
         /// </summary>
         /// <typeparam name="T">Type of object.</typeparam>
@@ -28,7 +29,7 @@
 
             Assert.AreEqual(equalsResult, compareResult);
         }
-        
+
         public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer) =>
             AreEqual(expected, actual, comparer, string.Empty);
 

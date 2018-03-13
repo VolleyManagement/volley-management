@@ -1683,25 +1683,22 @@
         private Tournament MakeTestTournamentWithTenDivisions(int tournamentId)
         {
             var tournament = MakeTestTournament(tournamentId);
-            tournament.Divisions = new List<Division>();
-            IEnumerator<Division> divEnumerator = default(IEnumerator<Division>);
-            for (int i = 0; i < 10; i++)
-            {
-                tournament.Divisions.Add(new Division());
-                divEnumerator = tournament.Divisions.GetEnumerator();
-                if (divEnumerator.MoveNext())
-                {
-                    divEnumerator.Current.Groups = new List<Group>();
-                    for (int j = 0; j < 10; j++)
-                    {
-                        divEnumerator.Current.Groups.Add(new Group());
-                    }
-                }
-            }
-
-            divEnumerator.Dispose();
+            tournament.Divisions = CreateDivisionWithTenGroups();
 
             return tournament;
+        }
+
+        private List<Division> CreateDivisionWithTenGroups()
+        {
+            Division divisionWithTenGroups = new Division();
+            List<Group> groups = new List<Group>();
+            List<Division> divisionsToCreate = new List<Division>();
+
+            groups.AddRange(Enumerable.Repeat(new Group(), 10));
+            divisionWithTenGroups.Groups = groups;
+            divisionsToCreate.AddRange(Enumerable.Repeat(divisionWithTenGroups, 10));
+
+            return divisionsToCreate;
         }
 
         private TournamentViewModel MakeTestTournamentViewModel()

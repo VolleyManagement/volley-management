@@ -1690,15 +1690,17 @@
 
         private List<Division> CreateDivisionWithTenGroups()
         {
-            Division divisionWithTenGroups = new Division();
-            List<Group> groups = new List<Group>();
-            List<Division> divisionsToCreate = new List<Division>();
+            List<Division> divisionsWithTenGroups = new List<Division>();
+            for (int i = 0; i < 10; i++)
+            {
+                divisionsWithTenGroups.Add(new Division());
+                for (int j = 0; j < 10; j++)
+                {
+                    divisionsWithTenGroups[i].Groups.Add(new Group());
+                }
+            }
 
-            groups.AddRange(Enumerable.Repeat(new Group(), 10));
-            divisionWithTenGroups.Groups = groups;
-            divisionsToCreate.AddRange(Enumerable.Repeat(divisionWithTenGroups, 10));
-
-            return divisionsToCreate;
+            return divisionsWithTenGroups;
         }
 
         private TournamentViewModel MakeTestTournamentViewModel()

@@ -190,7 +190,7 @@
         /// Gets or sets list of divisions
         /// </summary>
         [Display(Name = "Divisions", ResourceType = typeof(ViewModelResources))]
-        public ICollection<DivisionViewModel> Divisions { get; set; }
+        public IList<DivisionViewModel> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> object

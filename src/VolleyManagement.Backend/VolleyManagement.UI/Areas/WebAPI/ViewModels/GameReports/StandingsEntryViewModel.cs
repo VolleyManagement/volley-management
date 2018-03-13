@@ -158,7 +158,6 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
             return firstEntry.Points == secondEntry.Points
                 && EqualsDigitPrecision(firstEntry.SetsRatio, secondEntry.SetsRatio, TOLERANCE)
                 && EqualsDigitPrecision(firstEntry.BallsRatio, secondEntry.BallsRatio, TOLERANCE);
-            //return true;
         }
 
         /// <summary>

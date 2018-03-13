@@ -38,7 +38,7 @@
         /// Gets or sets the list of possible tournament schemes.
         /// </summary>
         /// <value>The list of tournament schemes.</value>
-        public ICollection<string> TournamentSchemeList { get; set; }
+        public IList<string> TournamentSchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Id.

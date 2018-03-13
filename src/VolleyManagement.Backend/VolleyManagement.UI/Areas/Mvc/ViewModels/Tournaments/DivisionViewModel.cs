@@ -52,7 +52,7 @@
         /// Gets or sets list of groups
         /// </summary>
         [Display(Name = "Groups", ResourceType = typeof(ViewModelResources))]
-        public ICollection<GroupViewModel> Groups { get; set; }
+        public IList<GroupViewModel> Groups { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether division is empty.

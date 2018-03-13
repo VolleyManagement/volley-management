@@ -28,6 +28,6 @@
         /// <summary>
         /// Gets or sets role Id user belongs to
         /// </summary>
-        public ICollection<int> RoleIds { get; set; }
+        public IEnumerable<int> RoleIds { get; set; }
     }
 }

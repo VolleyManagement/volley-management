@@ -33,7 +33,7 @@
         /// The get all users with roles.
         /// </summary>
         /// <returns> Collection of <see cref="UserInRoleDto"/></returns>
-        ICollection<UserInRoleDto> GetAllUsersWithRoles();
+        IEnumerable<UserInRoleDto> GetAllUsersWithRoles();
 
         /// <summary>
         /// The change role membership.

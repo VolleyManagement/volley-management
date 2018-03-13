@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Services.Authorization
 {
     using System.Collections.Generic;
-
+    using System.Linq;
     using Contracts.Authorization;
     using Data.Contracts;
     using Data.Queries.Common;
@@ -22,7 +22,7 @@
 
         private readonly IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria> _getUsersByRoleQuery;
 
-        private readonly IQuery<ICollection<UserInRoleDto>, GetAllCriteria> _getUserInRolesQuery;
+        private readonly IQuery<IEnumerable<UserInRoleDto>, GetAllCriteria> _getUserInRolesQuery;
 
         private readonly IRoleRepository _roleRepository;
 
@@ -42,7 +42,7 @@
             IQuery<ICollection<Role>, GetAllCriteria> getAllQuery,
             IQuery<Role, FindByIdCriteria> getByIdQuery,
             IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria> getUsersByRoleQuery,
-            IQuery<ICollection<UserInRoleDto>, GetAllCriteria> getUserInRolesQuery,
+            IQuery<IEnumerable<UserInRoleDto>, GetAllCriteria> getUserInRolesQuery,
             IRoleRepository roleRepository)
         {
             _getAllQuery = getAllQuery;
@@ -89,7 +89,7 @@
         /// The get all users with roles.
         /// </summary>
         /// <returns> Collection of <see cref="UserInRoleDto"/></returns>
-        public ICollection<UserInRoleDto> GetAllUsersWithRoles()
+        public IEnumerable<UserInRoleDto> GetAllUsersWithRoles()
         {
             return _getUserInRolesQuery.Execute(new GetAllCriteria());
         }

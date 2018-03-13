@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using Domain.Dto;
     using Domain.RolesAggregate;
+    using System.Linq;
 
     /// <summary>
     /// The role edit view model.

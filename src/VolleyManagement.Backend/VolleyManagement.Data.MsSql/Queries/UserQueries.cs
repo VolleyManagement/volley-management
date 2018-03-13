@@ -22,7 +22,7 @@
                              IQueryAsync<User, FindByEmailCriteria>,
                              IQueryAsync<User, FindByLoginInfoCriteria>,
                              IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria>,
-                             IQuery<ICollection<UserInRoleDto>, GetAllCriteria>,
+                             IQuery<IEnumerable<UserInRoleDto>, GetAllCriteria>,
                              IQuery<User, FindByIdCriteria>,
                              IQuery<ICollection<User>, GetAllCriteria>,
                              IQuery<ICollection<User>, UniqueUserCriteria>
@@ -119,11 +119,10 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="User"/>. </returns>
-        public ICollection<UserInRoleDto> Execute(GetAllCriteria criteria)
+        public IEnumerable<UserInRoleDto> Execute(GetAllCriteria criteria)
         {
             var users = _unitOfWork.Context.Users
-                                           .Select(GetUserInRoleMapper())
-                                           .ToList();
+                .Select(GetUserInRoleMapper());
 
             return users;
         }
@@ -205,7 +204,7 @@
                    {
                        UserId = u.Id,
                        UserName = u.UserName,
-                       RoleIds = u.Roles.Select(r => r.Id).ToList()
+                       RoleIds = u.Roles.Select(r => r.Id)
                    };
         }
 

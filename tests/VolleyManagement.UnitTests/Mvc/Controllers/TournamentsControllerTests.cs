@@ -1369,6 +1369,26 @@
             VerifyRedirect(ARCHIVED_ACTION_NAME, result);
         }
 
+        /// <summary>
+        /// Test for Activate method . Tournament with specified identifier exists.
+        /// Tournament is activate successfully and user is redirected to the Index page.
+        /// </summary>
+        [TestMethod]
+        public void Activation_ExistingTournament_TournamentIsActivated()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.Activate(TEST_TOURNAMENT_ID) as RedirectToRouteResult;
+
+            // Assert
+            VerifyActivate(TEST_TOURNAMENT_ID, Times.Once());
+            VerifyRedirect(ARCHIVED_ACTION_NAME, result);
+        }
+
         #endregion
 
         #region SwapRounds
@@ -1909,6 +1929,11 @@
         private void VerifyDelete(int tournamentId, Times times)
         {
             _tournamentServiceMock.Verify(ts => ts.Delete(tournamentId), times);
+        }
+
+        private void VerifyActivate(int tournamentId, Times times)
+        {
+            _tournamentServiceMock.Verify(ts => ts.UnArchive(tournamentId), times);
         }
 
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)

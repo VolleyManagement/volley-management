@@ -828,26 +828,28 @@
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
 
-            int winnerTeamId = 0;
-            if (finishedGame.AwayTeamId == null)
+            if (finishedGame.HomeTeamId != null)
             {
-                winnerTeamId = finishedGame.HomeTeamId.Value;
-            }
-            else
-            {
-                winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
-            }
+                int winnerTeamId = 0;
+                if (finishedGame.AwayTeamId == null)
+                {
+                    winnerTeamId = finishedGame.HomeTeamId.Value;
+                }
+                else
+                {
+                    winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
+                    finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+                }
 
-            if (finishedGame.GameNumber % 2 != 0)
-            {
-                nextGame.HomeTeamId = winnerTeamId;
+                if (finishedGame.GameNumber % 2 != 0)
+                {
+                    nextGame.HomeTeamId = winnerTeamId;
+                }
+                else
+                {
+                    nextGame.AwayTeamId = winnerTeamId;
+                }
             }
-            else
-            {
-                nextGame.AwayTeamId = winnerTeamId;
-            }
-
             return nextGame;
         }
 

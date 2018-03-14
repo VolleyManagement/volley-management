@@ -329,7 +329,7 @@
             _getRequestByAllQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByTeamTournamentCriteria>())).Returns(testData);
         }
 
-        private void VerifyAddedTeam(Times times)
+        private void VerifyAddedTeamToTournament(Times times)
         {
             _tournamentServiceMock.Verify(tr => tr.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()), times);
         }

@@ -220,7 +220,7 @@
             sut.Confirm(EXISTING_ID);
 
             // Assert
-            VerifyAddedTeam(Times.Once());
+            VerifyAddedTeamToTournament(Times.Once());
         }
 
         [TestMethod]

@@ -314,7 +314,8 @@
         /// <param name="tournamentId">Identifier of the tournament</param>
         public void RemoveAllGamesInTournament(int tournamentId)
         {
-            var gamesToRemove = GetTournamentResults(tournamentId);
+           // var gamesToRemove = GetTournamentResults(tournamentId);
+            var gamesToRemove = QueryAllTournamentGames(tournamentId);
             foreach (var game in gamesToRemove)
             {
                 _gameRepository.Remove(game.Id);

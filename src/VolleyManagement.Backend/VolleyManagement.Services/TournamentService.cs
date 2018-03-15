@@ -759,16 +759,37 @@
             int gamesCount = GetGamesCount(teamsCount);
             List<Game> games = new List<Game>();
 
-            for (int i = 1; i <= gamesCount; i++)
+            var existGames = _gameService.GetTournamentGames(tournamentId).Where(tr => tr.GameDate != null);
+
+            int index = 1;
+            foreach (var currGame in existGames)
             {
-                var game = new Game();
-                game.TournamentId = tournamentId;
-                game.HomeTeamId = null;
-                game.AwayTeamId = null;
-                game.Result = new Result();
-                game.Round = GetRoundNumber(roundsCount, gamesCount, i);
-                game.GameNumber = (byte)i;
-                game.GameDate = null;
+                var game = new Game
+                {
+                    TournamentId = tournamentId,
+                    HomeTeamId = currGame.HomeTeamId,
+                    AwayTeamId = currGame.AwayTeamId,
+                    Result = currGame.Result,
+                    GameNumber = (byte)(index),
+                    Round = GetRoundNumber(roundsCount, gamesCount, index++),
+                    GameDate = currGame.GameDate,
+                    UrlToGameVideo = currGame.UrlToGameVideo,
+                };
+                games.Add(game);
+            }
+
+            while (index < gamesCount)
+            {
+                var game = new Game
+                {
+                    TournamentId = tournamentId,
+                    HomeTeamId = null,
+                    AwayTeamId = null,
+                    Result = new Result(),
+                    GameNumber = (byte)(index),
+                    Round = GetRoundNumber(roundsCount, gamesCount, index++),
+                    GameDate = null
+                };
                 games.Add(game);
             }
 

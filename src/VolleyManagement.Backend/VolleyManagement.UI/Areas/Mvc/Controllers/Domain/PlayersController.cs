@@ -260,10 +260,12 @@
         /// <returns>List of free players</returns>
         public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
         {
-            var decodeResult = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
+#pragma warning disable S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
+            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
+#pragma warning restore S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
             var query = _playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(decodeResult)
-                                   || (p.LastName + p.FirstName).Contains(decodeResult));
+                .Where(p => (p.FirstName + p.LastName).Contains(searchString)
+                            || (p.LastName + p.FirstName).Contains(searchString));
 
             if (includeTeam.HasValue)
             {
@@ -294,7 +296,10 @@
             }
 
             var result = query.OrderBy(p => p.LastName)
-                              .Select(p => PlayerNameViewModel.Map(p));
+#pragma warning disable S2971 // "IEnumerable" LINQs should be simplified Enity franework error must be ToList()
+                .ToList()
+#pragma warning restore S2971 // "IEnumerable" LINQs should be simplified
+                .Select(p => PlayerNameViewModel.Map(p));
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

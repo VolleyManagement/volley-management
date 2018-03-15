@@ -21,7 +21,7 @@
     {
         private readonly IMailService _mailService;
         private readonly ITournamentRequestRepository _tournamentRequestRepository;
-        private readonly ITournamentRepository _tournamentRepository;
+        private readonly ITournamentService _tournamentService;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<List<TournamentRequest>, GetAllCriteria> _getAllTournamentRequestsQuery;
         private readonly IQuery<TournamentRequest, FindByIdCriteria> _getTournamentRequestByIdQuery;
@@ -45,7 +45,7 @@
             IQuery<List<TournamentRequest>, GetAllCriteria> getAllTournamentRequestsQuery,
             IQuery<TournamentRequest, FindByIdCriteria> getTournamentRequestById,
             IQuery<TournamentRequest, FindByTeamTournamentCriteria> getTournamentRequestByAll,
-            ITournamentRepository tournamentRepository,
+            ITournamentService tournamentService,
             IMailService mailService,
             IUserService userService)
         {
@@ -54,7 +54,7 @@
             _getAllTournamentRequestsQuery = getAllTournamentRequestsQuery;
             _getTournamentRequestByIdQuery = getTournamentRequestById;
             _getTournamentRequestByAllQuery = getTournamentRequestByAll;
-            _tournamentRepository = tournamentRepository;
+            _tournamentService = tournamentService;
             _mailService = mailService;
             _userService = userService;
         }
@@ -73,9 +73,16 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TournamentRequestNotFound, requestId);
             }
 
-            _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.GroupId);
-            _tournamentRepository.UnitOfWork.Commit();
-             NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
+            _tournamentService.AddTeamsToTournament(new List<TeamTournamentAssignmentDto>
+                                                        {
+                                                            new TeamTournamentAssignmentDto
+                                                            {
+                                                                TeamId = tournamentRequest.TeamId,
+                                                                GroupId = tournamentRequest.GroupId
+                                                            }
+                                                        });
+
+            NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
             _tournamentRequestRepository.Remove(requestId);
             _tournamentRequestRepository.UnitOfWork.Commit();
         }

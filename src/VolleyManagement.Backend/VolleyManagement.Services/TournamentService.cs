@@ -742,14 +742,28 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
-            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff
+                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
-                if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
+                var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
+
+                var existGames = _gameService.GetTournamentGames(tournamentId).Where(tr => !(tr.GameDate == null)).ToList();
+
+                GameResultDto game;
+                int count = existGames.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-                    _gameService.RemoveAllGamesInTournament(tournamentId);
-                    _gameService.AddGames(gamesToAdd);
+                    game = existGames[i];
+                    gamesToAdd[i].GameDate = game.GameDate;
+                    gamesToAdd[i].UrlToGameVideo = game.UrlToGameVideo;
+                    gamesToAdd[i].Result = game.Result;
+                    gamesToAdd[i].AwayTeamId = game.AwayTeamId;
+                    gamesToAdd[i].HomeTeamId = game.HomeTeamId;
+                    gamesToAdd[i].TournamentId = game.TournamentId;
                 }
+
+                _gameService.RemoveAllGamesInTournament(tournamentId);
+                _gameService.AddGames(gamesToAdd);
             }
         }
 

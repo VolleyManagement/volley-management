@@ -56,8 +56,11 @@
         /// <returns>Domain model of game result.</returns>
         public GameResultDto Execute(FindByIdCriteria criteria)
         {
-            return _dalGameResults
+            var gamesWithId = _dalGameResults
                 .Where(gr => gr.Id == criteria.Id)
+                .ToList();
+
+            return gamesWithId
                 .Select(gr => GetGameResultDtoMap()(gr))
                 .SingleOrDefault();
         }

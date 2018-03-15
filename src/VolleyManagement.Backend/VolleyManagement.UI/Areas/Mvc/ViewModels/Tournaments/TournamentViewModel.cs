@@ -205,7 +205,6 @@
         /// </summary>
         /// <param name="tournament"> Domain object </param>
         /// <returns> View model object </returns>
-        /// 
         public string AlarmMessage { get { return !this.IsArchived ? "Tournament was successfully archived": "Tournament was successfully unarchived"; } }
 
         public bool  IsArchived { get; set; }

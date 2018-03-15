@@ -301,8 +301,7 @@
             Archive(getTournamentToArchive);
             _tournamentRepository.UnitOfWork.Commit();
         }
-
-
+        
         /// <summary>
         /// Unarchive tournament by id.
         /// </summary>
@@ -495,7 +494,6 @@
             _tournamentRepository.Update(tournament);
         }
 
-
         /// <summary>
         /// Unarchive tournament.
         /// </summary>
@@ -506,7 +504,6 @@
 
             _tournamentRepository.Update(tournament);
         }
-
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {

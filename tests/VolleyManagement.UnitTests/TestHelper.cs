@@ -30,6 +30,9 @@
             Assert.AreEqual(equalsResult, compareResult);
         }
 
+        public static void AreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, IComparer<T> comparer) =>
+            AreEqual(expected.ToList(), actual.ToList(), comparer, string.Empty);
+
         public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual) =>
             AreEqual(expected, actual, null, string.Empty);
 

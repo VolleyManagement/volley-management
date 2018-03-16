@@ -20,7 +20,7 @@
         /// <summary>
         ///  Gets SimpleInjector container instance
         /// </summary>
-        internal Container InternalContainer { get; }
+        public Container InternalContainer { get; }
 
         /// <summary>
         /// Allows to register dependencies in particular tier of application

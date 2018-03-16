@@ -1,47 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+﻿using System.Web.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SimpleInjector;
-using SimpleInjector.Lifestyles;
-using SimpleInjector.Integration.AspNetCore;
 using SimpleInjector.Integration.AspNetCore.Mvc;
-using VolleyManagement.API.Infrastructure;
-using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
+using SimpleInjector.Integration.WebApi;
+using SimpleInjector.Lifestyles;
 using VolleyManagement.Data.MsSql.Infrastructure;
 using VolleyManagement.Services.Infrastructure;
 using VolleyManagement.UI.Infrastructure;
 using VolleyManagement.UI.Infrastructure.IOC;
-using VolleyManagement.Data.Contracts;
-using VolleyManagement.Domain.ContributorsAggregate;
-using VolleyManagement.Domain.FeedbackAggregate;
-using VolleyManagement.Domain.GamesAggregate;
-using VolleyManagement.Domain.PlayersAggregate;
-using VolleyManagement.Domain.RequestsAggregate;
-using VolleyManagement.Domain.RolesAggregate;
-using VolleyManagement.Domain.TeamsAggregate;
-using VolleyManagement.Domain.TournamentRequestAggregate;
-using VolleyManagement.Domain.TournamentsAggregate;
-using VolleyManagement.Domain.UsersAggregate;
-using VolleyManagement.Data.MsSql;
-using VolleyManagement.Data.MsSql.Context;
+
 
 namespace VolleyManagement.API
 {
     public class Startup
-    {
-        //private readonly Container container = new Container();
-        
+    {      
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -53,25 +30,31 @@ namespace VolleyManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            ConfigureIoc(services);
-            // IntegrateSimpleInjector(services);
+            IntegrateSimpleInjector(services);
         }
 
         private void IntegrateSimpleInjector(IServiceCollection services)
         {
-            // NOTE
-            // Wasn't able to reuse existing IocModules. Additional work required.
-            // Use core Ioc implementation for now.
+            var ioc = new SimpleInjectorContainer();
 
-            //container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+            ioc.InternalContainer.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            ioc
+                .Register(new IocDataAccessModule())
+                .Register(new IocServicesModule())
+                .Register(new IocUiModule());
 
-            //services.AddSingleton<IControllerActivator>(
-            //    new SimpleInjectorControllerActivator(container));
+            ioc.InternalContainer.Verify();
 
-            //services.EnableSimpleInjectorCrossWiring(container);
-            //services.UseSimpleInjectorAspNetRequestScoping(container);
+            GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(ioc.InternalContainer);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddSingleton<IControllerActivator>(
+                new SimpleInjectorControllerActivator(ioc.InternalContainer));
+
+            services.EnableSimpleInjectorCrossWiring(ioc.InternalContainer);
+            services.UseSimpleInjectorAspNetRequestScoping(ioc.InternalContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,13 +66,6 @@ namespace VolleyManagement.API
             }
 
             app.UseMvc();
-        }
-
-        private static void ConfigureIoc(IServiceCollection services)
-        {
-            new IocCoreDataAccessModule().RegisterDependencies(services);
-            new IocCoreServicesModule().RegisterDependencies(services);
-            new IocCoreApiModule().RegisterDependencies(services);
         }
     }
 }

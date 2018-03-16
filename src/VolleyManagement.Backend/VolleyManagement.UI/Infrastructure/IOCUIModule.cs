@@ -19,15 +19,16 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
-            
-            if (Is<IISDeployment>.Disabled)
-            {
+
+            // NOTE Getting error here. Need to setup getting values from appsetting.json in API Core application
+            //if (Is<IISDeployment>.Disabled)
+            //{
                 container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
-            }
-            else
-            {
-                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
-            }
+            //}
+            //else
+            //{
+            //    container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
+            //}
         }
     }
 }

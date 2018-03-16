@@ -81,7 +81,6 @@
     <Compile Include="FileService.cs" />
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
-    <Compile Include="Infrastructure\IocCoreServicesModule.cs" />
     <Compile Include="Infrastructure\IocServicesModule.cs" />
     <Compile Include="Mail\DebugMailService.cs" />
     <Compile Include="Mail\SendGridMailService.cs" />

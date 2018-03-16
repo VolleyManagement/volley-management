@@ -434,7 +434,6 @@
     <Compile Include="Infrastructure\CaptchaManager.cs" />
     <Compile Include="Infrastructure\CurrentUserService.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
-    <Compile Include="Infrastructure\IocCoreApiModule.cs" />
     <Compile Include="Infrastructure\IocUIModule.cs" />
     <Compile Include="Infrastructure\IOC\SimpleInjectorContainer.cs" />
     <Compile Include="Infrastructure\SimpleTraceLog.cs" />

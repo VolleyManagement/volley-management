@@ -749,22 +749,22 @@
             }
         }
 
-        private  List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
+        private List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
             int gamesCount = GetGamesCount(teamsCount);
             List<Game> games = new List<Game>();
 
-            var existGames = _gameService.GetTournamentGames(tournamentId)?
+            var scheduledGames = _gameService.GetTournamentGames(tournamentId)?
                .Where(tr => tr.AwayTeamId != null || tr.HomeTeamId != null);
 
-            if (existGames==null)
+            if (scheduledGames == null)
             {
-                existGames = new List<GameResultDto>();
+                scheduledGames = new List<GameResultDto>();
             }
 
             int index = 1;
-            foreach (var currGame in existGames)
+            foreach (var currGame in scheduledGames)
             {
                 var game = new Game
                 {

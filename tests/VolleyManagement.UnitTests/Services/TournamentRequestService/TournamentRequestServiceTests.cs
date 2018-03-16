@@ -14,7 +14,6 @@
     using Data.Queries.TournamentRequest;
     using Domain.RolesAggregate;
     using Domain.TournamentRequestAggregate;
-    using Domain.TournamentsAggregate;
     using Domain.UsersAggregate;
     using MailService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,6 +21,7 @@
     using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
+    using System.Collections;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -35,10 +35,10 @@
         private Mock<ITournamentRequestRepository> _tournamentRequestRepositoryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
         private Mock<IAuthorizationService> _authServiceMock;
-        private Mock<IQuery<List<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock;
+        private Mock<IQuery<ICollection<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock;
         private Mock<IQuery<TournamentRequest, FindByIdCriteria>> _getRequestByIdQueryMock;
         private Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>> _getRequestByAllQueryMock;
-        private Mock<ITournamentRepository> _tournamentRepositoryMock;
+        private Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private Mock<IMailService> _mailServiceMock;
         private Mock<IUserService> _userServiceMock;
 
@@ -52,20 +52,18 @@
 
             _authServiceMock = new Mock<IAuthorizationService>();
 
-            _getAllRequestsQueryMock = new Mock<IQuery<List<TournamentRequest>, GetAllCriteria>>();
+            _getAllRequestsQueryMock = new Mock<IQuery<ICollection<TournamentRequest>, GetAllCriteria>>();
 
             _getRequestByIdQueryMock = new Mock<IQuery<TournamentRequest, FindByIdCriteria>>();
 
             _getRequestByAllQueryMock = new Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>>();
 
-            _tournamentRepositoryMock = new Mock<ITournamentRepository>();
+            _tournamentServiceMock = new Mock<ITournamentService>();
 
             _mailServiceMock = new Mock<IMailService>();
 
             _userServiceMock = new Mock<IUserService>();
 
-            _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork)
-                    .Returns(_unitOfWorkMock.Object);
             _tournamentRequestRepositoryMock.Setup(tr => tr.UnitOfWork)
                 .Returns(_unitOfWorkMock.Object);
         }
@@ -84,7 +82,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentRequestComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentRequestComparer());
         }
 
         [TestMethod]
@@ -210,7 +208,9 @@
             // Arrange
             var expected = new TournamentRequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
-            _tournamentRepositoryMock.Setup(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()));
+
+            _tournamentServiceMock.Setup(tr => tr.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()));
+
             var emailMessage = new EmailMessageBuilder().Build();
             MockGetUser();
             MockRemoveTournamentRequest();
@@ -221,7 +221,7 @@
             sut.Confirm(EXISTING_ID);
 
             // Assert
-            VerifyAddedTeam(expected.Id, expected.TournamentId, expected.GroupId, Times.Once(), Times.AtLeastOnce());
+            VerifyAddedTeamToTournament(Times.Once());
         }
 
         [TestMethod]
@@ -291,7 +291,7 @@
                 _getAllRequestsQueryMock.Object,
                 _getRequestByIdQueryMock.Object,
                 _getRequestByAllQueryMock.Object,
-                _tournamentRepositoryMock.Object,
+                _tournamentServiceMock.Object,
                 _mailServiceMock.Object,
                 _userServiceMock.Object);
         }
@@ -330,10 +330,9 @@
             _getRequestByAllQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByTeamTournamentCriteria>())).Returns(testData);
         }
 
-        private void VerifyAddedTeam(int requestId, int tournamentId, int groupId, Times times, Times unitOfWorkTimes)
+        private void VerifyAddedTeamToTournament(Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(requestId, groupId), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
+            _tournamentServiceMock.Verify(tr => tr.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()), times);
         }
 
         private void MockAuthServiceThrownException(AuthOperation operation)

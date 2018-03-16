@@ -1268,7 +1268,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 0),
-                    SetScores = new List<Score> {(25, 15), (25, 16), (25, 19), (0, 0), (0, 0)}
+                    SetScores = new List<Score> { (25, 15), (25, 16), (25, 19), (0, 0), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
@@ -1286,7 +1286,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 1),
-                    SetScores = new List<Score> {(24, 26), (25, 19), (25, 18), (25, 23), (0, 0)}
+                    SetScores = new List<Score> { (24, 26), (25, 19), (25, 18), (25, 23), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_B),
                 Round = 2,
@@ -1304,7 +1304,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 2),
-                    SetScores = new List<Score> {(18, 25), (25, 10), (22, 25), (25, 15), (25, 12)}
+                    SetScores = new List<Score> { (18, 25), (25, 10), (22, 25), (25, 15), (25, 12) }
                 },
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3,
@@ -1322,7 +1322,7 @@
                 Result = new Result
                 {
                     GameScore = (2, 3),
-                    SetScores = new List<Score> {(25, 22), (26, 24), (23, 25), (17, 25), (13, 25)}
+                    SetScores = new List<Score> { (25, 22), (26, 24), (23, 25), (17, 25), (13, 25) }
                 },
                 GameDate = DateTime.Parse(DATE_D),
                 Round = 4,
@@ -1340,7 +1340,7 @@
                 Result = new Result
                 {
                     GameScore = (1, 3),
-                    SetScores = new List<Score> {(24, 26), (25, 22), (23, 25), (13, 25), (0, 0)}
+                    SetScores = new List<Score> { (24, 26), (25, 22), (23, 25), (13, 25), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_E),
                 Round = 5,
@@ -1358,7 +1358,7 @@
                 Result = new Result
                 {
                     GameScore = (0, 3),
-                    SetScores = new List<Score> {(14, 25), (27, 29), (22, 25), (0, 0), (0, 0)}
+                    SetScores = new List<Score> { (14, 25), (27, 29), (22, 25), (0, 0), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_F),
                 Round = 6,
@@ -1380,7 +1380,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 0),
-                    SetScores = new List<Score> {(25, 15), (25, 16), (25, 19), (0, 0), (0, 0)}
+                    SetScores = new List<Score> { (25, 15), (25, 16), (25, 19), (0, 0), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
@@ -1398,7 +1398,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 1),
-                    SetScores = new List<Score> {(24, 26), (25, 19), (25, 18), (25, 23), (0, 0)}
+                    SetScores = new List<Score> { (24, 26), (25, 19), (25, 18), (25, 23), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_B),
                 Round = 2,
@@ -1416,7 +1416,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 2),
-                    SetScores = new List<Score> {(18, 25), (25, 10), (22, 25), (25, 15), (25, 12)}
+                    SetScores = new List<Score> { (18, 25), (25, 10), (22, 25), (25, 15), (25, 12) }
                 },
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3,
@@ -1434,7 +1434,7 @@
                 Result = new Result
                 {
                     GameScore = (2, 3),
-                    SetScores = new List<Score> {(25, 22), (26, 24), (23, 25), (17, 25), (13, 25)}
+                    SetScores = new List<Score> { (25, 22), (26, 24), (23, 25), (17, 25), (13, 25) }
                 },
                 GameDate = DateTime.Parse(DATE_D),
                 Round = 4,
@@ -1452,7 +1452,7 @@
                 Result = new Result
                 {
                     GameScore = (1, 3),
-                    SetScores = new List<Score> {(24, 26), (25, 22), (23, 25), (13, 25), (0, 0)}
+                    SetScores = new List<Score> { (24, 26), (25, 22), (23, 25), (13, 25), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_E),
                 Round = 5,
@@ -1470,7 +1470,7 @@
                 Result = new Result
                 {
                     GameScore = (0, 3),
-                    SetScores = new List<Score> {(14, 25), (27, 29), (22, 25), (0, 0), (0, 0)}
+                    SetScores = new List<Score> { (14, 25), (27, 29), (22, 25), (0, 0), (0, 0) }
                 },
                 GameDate = DateTime.Parse(DATE_F),
                 Round = 6,
@@ -1478,7 +1478,7 @@
                 DivisionName = "DivisionNameB",
             });
         }
-        
+
         private void AddDivision1Group1EmptyResults()
         {
             _gameResults.Add(new GameResultDto

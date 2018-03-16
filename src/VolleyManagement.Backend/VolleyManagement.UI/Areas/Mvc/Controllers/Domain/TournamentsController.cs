@@ -18,10 +18,12 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using ViewModels.Teams;
     using ViewModels.Tournaments;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
     public class TournamentsController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private const int ANONYM = -1;
         private const int DAYS_TO_APPLYING_PERIOD_START = 14;
@@ -112,7 +114,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>Json result</returns>
         public JsonResult GetFinished()
         {
-            var result = _tournamentService.GetFinished().ToList()
+            var result = _tournamentService.GetFinished()
                  .Select(t => TournamentViewModel.Map(t));
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -162,7 +164,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         {
             var now = TimeProvider.Current.DateTimeNow;
 
-            var tournamentViewModel = new TournamentViewModel()
+            var tournamentViewModel = new TournamentViewModel
             {
                 Season = (short)now.Year,
                 ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
@@ -374,7 +376,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                      d => d.Key,
                      c => c.OrderBy(t => t.GameNumber).ThenBy(t => t.GameDate)
                     .Select(x => GameResultViewModel.Map(x)).ToList()),
-                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
+                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
                                                                           {
                                                                             AuthOperations.Games.Create,
                                                                             AuthOperations.Games.Edit,
@@ -393,7 +395,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 foreach (var game in scheduleViewModel.Rounds.ElementAt(i).Value)
                 {
-                    game.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
+                    game.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
                                                                           {
                                                                             AuthOperations.Games.Edit,
                                                                             AuthOperations.Games.Delete,
@@ -530,7 +532,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             try
             {
                 _gameService.SwapRounds(tournamentId, firstRoundNumber, secondRoundNumber);
-                return RedirectToAction("ShowSchedule", new { tournamentId = tournamentId });
+                return RedirectToAction("ShowSchedule", new { tournamentId });
             }
             catch (MissingEntityException ex)
             {
@@ -582,7 +584,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 }
                 else
                 {
-                    var tournamentRequest = new TournamentRequest()
+                    var tournamentRequest = new TournamentRequest
                     {
                         TeamId = groupTeam.TeamId,
                         UserId = userId,
@@ -696,7 +698,9 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             };
         }
 
-        private static List<SelectListItem> BuildTeamSelectList(Dictionary<int, List<TeamTournamentDto>> tournamentTeams, Dictionary<int, SelectListGroup> groups)
+#pragma warning disable S4017 // Method signatures should not contain nested generic types
+        private static List<SelectListItem> BuildTeamSelectList(IEnumerable<KeyValuePair<int, List<TeamTournamentDto>>> tournamentTeams, IDictionary<int, SelectListGroup> groups)
+#pragma warning restore S4017 // Method signatures should not contain nested generic types
         {
             var result = tournamentTeams.SelectMany(t => t.Value)
                 .Select(t => new SelectListItem
@@ -710,7 +714,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return result;
         }
 
-        private static List<SelectListItem> BuildRoundSelectList(List<DivisionScheduleDto> divisions, Dictionary<int, SelectListGroup> groups)
+        private static List<SelectListItem> BuildRoundSelectList(IEnumerable<DivisionScheduleDto> divisions, IDictionary<int, SelectListGroup> groups)
         {
             var result = divisions.SelectMany(d => Enumerable.Range(MIN_ROUND_NUMBER, d.NumberOfRounds)
                     .Select(i => (Round: i, DivId: d.DivisionId)))
@@ -725,7 +729,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return result;
         }
 
-        private static Dictionary<int, SelectListGroup> BuildSelectGroupsForDivisions(List<DivisionScheduleDto> divisions)
+        private static Dictionary<int, SelectListGroup> BuildSelectGroupsForDivisions(IEnumerable<DivisionScheduleDto> divisions)
         {
             return divisions.ToDictionary(
                 d => d.DivisionId,
@@ -739,7 +743,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// Fills round names for playoff scheme
         /// </summary>
         /// <param name="scheduleViewModel">View model which contains round names</param>
-        private void FillRoundNames(ScheduleViewModel scheduleViewModel)
+        private static void FillRoundNames(ScheduleViewModel scheduleViewModel)
         {
             var roundNames = new string[scheduleViewModel.MaxNumberOfRounds];
 

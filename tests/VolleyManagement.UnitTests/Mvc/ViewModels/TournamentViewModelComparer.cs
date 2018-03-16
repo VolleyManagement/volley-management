@@ -45,13 +45,8 @@
             }
 
             Assert.AreEqual(expected.Divisions.Count, actual.Divisions.Count, $"[Id:{expected.Id}]Number of Divisions items should be equal.");
-            for (var i = 0; i < expected.Divisions.Count; i++)
-            {
-                DivisionViewModelEqualityComparer.AssertAreEqual(
-                    expected.Divisions[i],
-                    actual.Divisions[i],
-                    $"[Id:{expected.Id}][Div#{i}]");
-            }
+
+            TestHelper.AreEqual(expected.Divisions, actual.Divisions, new DivisionViewModelComparer());
         }
     }
 }

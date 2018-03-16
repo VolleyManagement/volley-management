@@ -10,17 +10,17 @@
     using Data.Queries.Team;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Domain.PlayersAggregate;
+    using Domain.Properties;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.PlayerService;
+    using PlayerService;
     using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
@@ -49,8 +49,8 @@
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<Player, FindByFullNameCriteria>> _getPlayerByFullNameQueryMock;
         private Mock<IQuery<Team, FindByCaptainIdCriteria>> _getTeamByCaptainQueryMock;
-        private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
-        private Mock<IQuery<List<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock;
+        private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
+        private Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
@@ -70,8 +70,8 @@
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getPlayerByFullNameQueryMock = new Mock<IQuery<Player, FindByFullNameCriteria>>();
             _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
-            _getAllTeamsQueryMock = new Mock<IQuery<List<Team>, GetAllCriteria>>();
-            _getTeamRosterQueryMock = new Mock<IQuery<List<Player>, TeamPlayersCriteria>>();
+            _getAllTeamsQueryMock = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
+            _getTeamRosterQueryMock = new Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -94,15 +94,14 @@
 
             var expected = new TeamServiceTestFixture()
                                             .TestTeams()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             // Act
             var sut = BuildSUT();
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TeamComparer());
+            TestHelper.AreEqual(expected, actual, new TeamComparer());
         }
 
         /// <summary>
@@ -208,7 +207,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Achievements"));
+                new ArgumentException(argExMessage, "teamAchievements"));
         }
 
         /// <summary>
@@ -263,7 +262,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Name"));
+                new ArgumentException(argExMessage, "teamName"));
         }
 
         /// <summary>
@@ -299,7 +298,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Name"));
+                new ArgumentException(argExMessage, "teamName"));
         }
 
         /// <summary>
@@ -335,7 +334,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Coach"));
+                new ArgumentException(argExMessage, "teamCoachName"));
         }
 
         /// <summary>
@@ -371,7 +370,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "Coach"));
+                new ArgumentException(argExMessage, "teamCoachName"));
         }
 
         /// <summary>
@@ -565,7 +564,7 @@
             // Arrange
             var testData = new PlayerServiceTestFixture()
                 .Build();
-            MockGetTeamRosterQuery(testData.ToList());
+            MockGetTeamRosterQuery(testData);
 
             // Act
             var ts = BuildSUT();
@@ -613,7 +612,7 @@
             // Arrange
             var testData = new PlayerServiceTestFixture()
                     .Build();
-            MockGetTeamRosterQuery(testData.ToList());
+            MockGetTeamRosterQuery(testData);
 
             // Act
             var ts = BuildSUT();

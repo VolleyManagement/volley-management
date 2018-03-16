@@ -14,8 +14,8 @@
     /// </summary>
     public class AuthorizationService : IAuthorizationService
     {
-        private ICurrentUserService _userService;
-        private IQuery<List<AuthOperation>, FindByUserIdCriteria> _getOperationsQuery;
+        private readonly ICurrentUserService _userService;
+        private readonly IQuery<ICollection<AuthOperation>, FindByUserIdCriteria> _getOperationsQuery;
 
         #region Constructor
 
@@ -26,7 +26,7 @@
         /// <param name="getOperationsQuery">Implementation of authorization queries object</param>
         public AuthorizationService(
             ICurrentUserService userService,
-            IQuery<List<AuthOperation>, FindByUserIdCriteria> getOperationsQuery)
+            IQuery<ICollection<AuthOperation>, FindByUserIdCriteria> getOperationsQuery)
         {
             if (userService == null)
             {
@@ -63,11 +63,11 @@
         /// </summary>
         /// <param name="requestedOperations">Operations to check</param>
         /// <returns>An instance of <see cref="AllowedOperations"/> class</returns>
-        public AllowedOperations GetAllowedOperations(List<AuthOperation> requestedOperations)
+        public AllowedOperations GetAllowedOperations(ICollection<AuthOperation> requestedOperations)
         {
             if (requestedOperations == null)
             {
-                throw new ArgumentNullException("Requested operations list shouldn't be null!");
+                throw new ArgumentNullException(nameof(requestedOperations), "Requested operation shouldn't be null!");
             }
 
             var data = GetAllUserOperations()
@@ -87,7 +87,7 @@
         {
             if (requestedOperation == null)
             {
-                throw new ArgumentNullException("Requested operation shouldn't be null!");
+                throw new ArgumentNullException(nameof(requestedOperation), "Requested operation shouldn't be null!");
             }
 
             return GetAllowedOperations(new List<AuthOperation> { requestedOperation });
@@ -95,10 +95,10 @@
 
         #region Private
 
-        private List<AuthOperation> GetAllUserOperations()
+        private ICollection<AuthOperation> GetAllUserOperations()
         {
             var userId = _userService.GetCurrentUserId();
-            return _getOperationsQuery.Execute(new FindByUserIdCriteria() { UserId = userId });
+            return _getOperationsQuery.Execute(new FindByUserIdCriteria { UserId = userId });
         }
 
         #endregion

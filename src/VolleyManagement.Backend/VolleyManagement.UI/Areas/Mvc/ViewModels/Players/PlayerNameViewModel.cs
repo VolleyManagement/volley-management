@@ -34,7 +34,7 @@
         /// <returns> View model object </returns>
         public static PlayerNameViewModel Map(Player player)
         {
-            PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel()
+            PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel
             {
                 Id = player.Id,
                 FirstName = player.FirstName,
@@ -50,7 +50,7 @@
         /// <returns> View model object </returns>
         public static PlayerNameViewModel Map(PlayerViewModel player)
         {
-            PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel()
+            PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel
             {
                 Id = player.Id,
                 FirstName = player.FirstName,

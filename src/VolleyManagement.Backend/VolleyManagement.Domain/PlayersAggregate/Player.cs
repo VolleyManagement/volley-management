@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Domain.PlayersAggregate
 {
     using System;
-
     using Properties;
 
     /// <summary>
@@ -36,7 +35,7 @@
             {
                 if (PlayerValidation.ValidateFirstName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerFirstName, "FirstName");
+                    throw new ArgumentException(Resources.ValidationPlayerFirstName, nameof(value));
                 }
 
                 _firstName = value;
@@ -58,7 +57,7 @@
             {
                 if (PlayerValidation.ValidateLastName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerLastName, "LastName");
+                    throw new ArgumentException(Resources.ValidationPlayerLastName, nameof(value));
                 }
 
                 _lastName = value;
@@ -80,7 +79,7 @@
             {
                 if (PlayerValidation.ValidateBirthYear(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerBirthYear, "BirthYear");
+                    throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(value));
                 }
 
                 _birthYear = value;
@@ -102,7 +101,7 @@
             {
                 if (PlayerValidation.ValidateHeight(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerHeight, "Height");
+                    throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(value));
                 }
 
                 _height = value;
@@ -124,7 +123,7 @@
             {
                 if (PlayerValidation.ValidateWeight(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerWeight, "Weight");
+                    throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(value));
                 }
 
                 _weight = value;

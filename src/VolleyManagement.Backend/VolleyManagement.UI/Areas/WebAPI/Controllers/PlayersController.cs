@@ -34,10 +34,9 @@
         /// Gets players
         /// </summary>
         /// <returns> Player list. </returns>
-        public List<PlayerViewModel> GetPlayers()
+        public ICollection<PlayerViewModel> GetPlayers()
         {
             var result = _playerService.Get()
-                                .ToList()
                                 .Select(p => PlayerViewModel.Map(p));
 
             return result.ToList();
@@ -53,7 +52,6 @@
             var result = _playerService
                 .Get()
                 .Where(p => p.Id == key)
-                .ToList()
                 .Select(p => PlayerViewModel.Map(p))
                 .First();
 
@@ -139,12 +137,13 @@
                 return BadRequest(ModelState);
             }
 
-            switch (navigationProperty)
+            if (navigationProperty == "Teams")
             {
-                case "Teams":
-                    return AssignTeamToPlayer(playerToUpdate, link);
-                default:
-                    return StatusCode(HttpStatusCode.NotImplemented);
+                return AssignTeamToPlayer(playerToUpdate, link);
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.NotImplemented);
             }
         }
 

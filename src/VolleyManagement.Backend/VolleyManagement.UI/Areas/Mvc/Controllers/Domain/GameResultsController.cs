@@ -16,7 +16,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     public class GameResultsController : Controller
     {
         private readonly IGameService _gameService;
-        private readonly ITeamService _teamService;
         private readonly IAuthorizationService _authService;
 
         /// <summary>
@@ -28,7 +27,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         public GameResultsController(IGameService gameResultService, ITeamService teamService, IAuthorizationService authService)
         {
             _gameService = gameResultService;
-            _teamService = teamService;
             _authService = authService;
         }
 

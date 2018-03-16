@@ -2,12 +2,15 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
+    using System;
 
     /// <summary>
     /// Represents a view model for <see cref="StandingsEntry"/>.
     /// </summary>
     public class StandingsEntryViewModel
     {
+        private const float TOLERANCE = 0.001f;
+
         /// <summary>
         /// Gets or sets the team's name.
         /// </summary>
@@ -132,18 +135,13 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// </summary>
         /// <param name="entries">List of team standings entries</param>
         /// <returns>List of team standings entries with their position</returns>
-        public static List<StandingsEntryViewModel> SetPositions(List<StandingsEntryViewModel> entries)
+        public static IList<StandingsEntryViewModel> SetPositions(IList<StandingsEntryViewModel> entries)
         {
             for (int i = 0; i < entries.Count; i++)
             {
-                if (i == 0 || !EntriesHaveSamePosition(entries[i], entries[i - 1]))
-                {
-                    entries[i].Position = i + 1;
-                }
-                else
-                {
-                    entries[i].Position = entries[i - 1].Position;
-                }
+                entries[i].Position = i == 0 || !EntriesHaveSamePosition(entries[i], entries[i - 1])
+                    ? i + 1
+                    : entries[i - 1].Position;
             }
 
             return entries;
@@ -158,8 +156,31 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         public static bool EntriesHaveSamePosition(StandingsEntryViewModel firstEntry, StandingsEntryViewModel secondEntry)
         {
             return firstEntry.Points == secondEntry.Points
-                && firstEntry.SetsRatio == secondEntry.SetsRatio
-                && firstEntry.BallsRatio == secondEntry.BallsRatio;
+                && EqualsDigitPrecision(firstEntry.SetsRatio, secondEntry.SetsRatio, TOLERANCE)
+                && EqualsDigitPrecision(firstEntry.BallsRatio, secondEntry.BallsRatio, TOLERANCE);
         }
+
+        /// <summary>
+        /// Compare float values with tolerance
+        /// </summary>
+        /// <param name="left">First value</param>
+        /// <param name="right">Second value</param>
+        /// <param name="tolerance">Accuracy of comparison</param>
+        /// <returns>True if values are equal by current tolerance</returns>
+        public static bool EqualsDigitPrecision(float? left, float? right, float tolerance)
+        {
+            if (!left.HasValue && !right.HasValue)
+            {
+                return true;
+            }
+
+            if (left.HasValue && right.HasValue)
+            {
+                return Math.Abs(left.Value - right.Value) < tolerance;
+            }
+
+            return false;
+        }
+
     }
 }

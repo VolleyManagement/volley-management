@@ -14,10 +14,12 @@
     using Domain.RolesAggregate;
     using ViewModels.Teams;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines teams controller
     /// </summary>
     public class TeamsController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
 
@@ -54,19 +56,11 @@
         /// <returns>View with collection of teams.</returns>
         public ActionResult Index()
         {
-            List<AuthOperation> requestedOperations = new List<AuthOperation>()
-            {
-                AuthOperations.Teams.Create,
-                AuthOperations.Teams.Edit,
-                AuthOperations.Teams.Delete
-            };
-
-            var teams = new TeamCollectionViewModel()
+            var teams = new TeamCollectionViewModel
             {
                 Teams = _teamService.Get()
-                                         .ToList()
-                                         .Select(t => TeamViewModel.Map(t, null, null)),
-                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
+                                          .Select(t => TeamViewModel.Map(t, null, null)),
+                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
                                                                           {
                                                                             AuthOperations.Teams.Create,
                                                                             AuthOperations.Teams.Edit,
@@ -251,6 +245,7 @@
             return Json(result, JsonRequestBehavior.DenyGet);
         }
 
+#pragma warning disable S2360 // Optional parameters should not be used
         /// <summary>
         /// Details action method for specific team.
         /// </summary>
@@ -258,6 +253,7 @@
         /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific team.</returns>
         public ActionResult Details(int id = 0, string returnUrl = "")
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             var team = _teamService.Get(id);
 
@@ -279,7 +275,6 @@
         public JsonResult GetAllTeams()
         {
             var teams = _teamService.Get()
-                                         .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
         }
@@ -303,7 +298,7 @@
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            return RedirectToAction("Edit", "Teams", new { id = id });
+            return RedirectToAction("Edit", "Teams", new { id });
         }
 
         /// <summary>
@@ -324,7 +319,7 @@
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            return RedirectToAction("Edit", "Teams", new { id = id });
+            return RedirectToAction("Edit", "Teams", new { id });
         }
 
         /// <summary>

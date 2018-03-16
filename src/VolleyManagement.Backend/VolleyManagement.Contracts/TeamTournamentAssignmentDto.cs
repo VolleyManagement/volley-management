@@ -1,11 +1,5 @@
 ﻿namespace VolleyManagement.Contracts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Contains information about assignment team to tournament
     /// </summary>

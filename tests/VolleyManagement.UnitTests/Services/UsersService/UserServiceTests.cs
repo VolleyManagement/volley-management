@@ -6,18 +6,18 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using System.Collections;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
     using VolleyManagement.Services.Authorization;
-    using VolleyManagement.UnitTests.Services.PlayerService;
+    using PlayerService;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -28,10 +28,10 @@
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<ICacheProvider> _cacheProviderMock;
-        private Mock<IQuery<List<User>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<ICollection<User>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getByIdQueryMock;
-        private Mock<IQuery<List<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
+        private Mock<IQuery<ICollection<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
         private Mock<ICurrentUserService> _currentUserServiceMock;
 
         private UserServiceTestFixture _testFixture = new UserServiceTestFixture();
@@ -45,10 +45,10 @@
             _authServiceMock = new Mock<IAuthorizationService>();
             _userRepositoryMock = new Mock<IUserRepository>();
             _cacheProviderMock = new Mock<ICacheProvider>();
-            _getAllQueryMock = new Mock<IQuery<List<User>, GetAllCriteria>>();
+            _getAllQueryMock = new Mock<IQuery<ICollection<User>, GetAllCriteria>>();
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
-            _getAdminsListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
+            _getAdminsListQueryMock = new Mock<IQuery<ICollection<User>, UniqueUserCriteria>>();
             _currentUserServiceMock = new Mock<ICurrentUserService>();
         }
 
@@ -61,8 +61,7 @@
 
             var expected = new UserServiceTestFixture()
                                             .TestUsers()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             var sut = BuildSUT();
 
@@ -70,7 +69,7 @@
             var actual = sut.GetAllUsers();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            TestHelper.AreEqual(expected, actual, new UserComparer());
         }
 
         [TestMethod]
@@ -152,15 +151,14 @@
 
             var expected = new UserServiceTestFixture()
                                             .TestUsers()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
             var sut = BuildSUT();
 
             // Act
             var actual = sut.GetAdminsList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserComparer());
+            TestHelper.AreEqual(expected, actual, new UserComparer());
         }
 
         private UserService BuildSUT()
@@ -196,7 +194,7 @@
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
-        private void MockGetAdminsListQuery(List<User> testData)
+        private void MockGetAdminsListQuery(IEnumerable<User> testData)
         {
             _getAdminsListQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueUserCriteria>())).Returns(testData.ToList());
         }

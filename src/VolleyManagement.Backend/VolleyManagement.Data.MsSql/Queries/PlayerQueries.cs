@@ -16,7 +16,7 @@
     public class PlayerQueries : IQuery<Player, FindByIdCriteria>,
                                  IQuery<Player, FindByFullNameCriteria>,
                                  IQuery<IQueryable<Player>, GetAllCriteria>,
-                                 IQuery<List<Player>, TeamPlayersCriteria>
+                                 IQuery<ICollection<Player>, TeamPlayersCriteria>
     {
         #region Fields
 
@@ -81,7 +81,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Player"/>. </returns>
-        public List<Player> Execute(TeamPlayersCriteria criteria)
+        public ICollection<Player> Execute(TeamPlayersCriteria criteria)
         {
             return _unitOfWork.Context.Players
                                       .Where(p => p.TeamId == criteria.TeamId)

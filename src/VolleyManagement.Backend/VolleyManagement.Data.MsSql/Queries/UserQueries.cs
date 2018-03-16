@@ -21,11 +21,11 @@
                              IQueryAsync<User, FindByNameCriteria>,
                              IQueryAsync<User, FindByEmailCriteria>,
                              IQueryAsync<User, FindByLoginInfoCriteria>,
-                             IQuery<List<UserInRoleDto>, FindByRoleCriteria>,
-                             IQuery<List<UserInRoleDto>, GetAllCriteria>,
+                             IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria>,
+                             IQuery<IEnumerable<UserInRoleDto>, GetAllCriteria>,
                              IQuery<User, FindByIdCriteria>,
-                             IQuery<List<User>, GetAllCriteria>,
-                             IQuery<List<User>, UniqueUserCriteria>
+                             IQuery<ICollection<User>, GetAllCriteria>,
+                             IQuery<ICollection<User>, UniqueUserCriteria>
     {
         #region Fields
 
@@ -57,7 +57,6 @@
         {
             var query = _unitOfWork.Context.Users.Where(u => u.Id == criteria.Id);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
@@ -70,7 +69,6 @@
         {
             var query = _unitOfWork.Context.Users.Where(u => u.UserName == criteria.Name);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
@@ -83,7 +81,6 @@
         {
             var query = _unitOfWork.Context.Users.Where(u => u.Email == criteria.Email);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
@@ -99,7 +96,6 @@
                                                && l.LoginProvider == criteria.LoginProvider)
                                            .Select(l => l.User);
 
-            // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
@@ -108,7 +104,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="User"/>. </returns>
-        public List<UserInRoleDto> Execute(FindByRoleCriteria criteria)
+        public ICollection<UserInRoleDto> Execute(FindByRoleCriteria criteria)
         {
             var users = _unitOfWork.Context.Roles
                                            .Where(r => r.Id == criteria.RoleId)
@@ -123,11 +119,10 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="User"/>. </returns>
-        public List<UserInRoleDto> Execute(GetAllCriteria criteria)
+        public IEnumerable<UserInRoleDto> Execute(GetAllCriteria criteria)
         {
             var users = _unitOfWork.Context.Users
-                                           .Select(GetUserInRoleMapper())
-                                           .ToList();
+                .Select(GetUserInRoleMapper());
 
             return users;
         }
@@ -151,7 +146,7 @@
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>User entity list.</returns>
-        List<User> IQuery<List<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
+        ICollection<User> IQuery<ICollection<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Users.Select(GetUserMapping()).ToList();
         }
@@ -161,7 +156,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="User"/>. </returns>
-        public List<User> Execute(UniqueUserCriteria criteria)
+        public ICollection<User> Execute(UniqueUserCriteria criteria)
         {
             var users = _unitOfWork.Context.Roles
                                            .Where(r => r.Id == criteria.RoleId)

@@ -8,13 +8,13 @@
     using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.UI.Areas.Admin.Controllers;
-    using VolleyManagement.UI.Areas.Admin.Models;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    using VolleyManagement.UnitTests.Admin.ViewModels;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.UsersService;
+    using Contracts.Authorization;
+    using UI.Areas.Admin.Controllers;
+    using UI.Areas.Admin.Models;
+    using UI.Areas.Mvc.ViewModels.Players;
+    using ViewModels;
+    using Mvc.ViewModels;
+    using Services.UsersService;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

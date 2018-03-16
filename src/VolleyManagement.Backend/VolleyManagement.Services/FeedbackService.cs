@@ -26,7 +26,7 @@
         private readonly ICurrentUserService _currentUserService;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Feedback, FindByIdCriteria> _getFeedbackByIdQuery;
-        private readonly IQuery<List<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
+        private readonly IQuery<ICollection<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
 
         #endregion
 
@@ -49,7 +49,7 @@
             ICurrentUserService currentUserService,
             IAuthorizationService authService,
             IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
-            IQuery<List<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
+            IQuery<ICollection<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
         {
             _feedbackRepository = feedbackRepository;
             _userService = userService;
@@ -72,7 +72,7 @@
         {
             if (feedbackToCreate == null)
             {
-                throw new ArgumentNullException("feedback");
+                throw new ArgumentNullException(nameof(feedbackToCreate));
             }
 
             UpdateFeedbackDate(feedbackToCreate);
@@ -87,7 +87,7 @@
         /// Method to get all feedbacks.
         /// </summary>
         /// <returns>All feedbacks.</returns>
-        public List<Feedback> Get()
+        public ICollection<Feedback> Get()
         {
             _authService.CheckAccess(AuthOperations.Feedbacks.Read);
             return _getAllFeedbacksQuery.Execute(new GetAllCriteria());
@@ -171,17 +171,17 @@
         /// <param name="newStatusCode">Information about mail (body, receiver)</param>
         private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
         {
-                feedback.Status = newStatusCode;
-                if (ShouldChangeLastUpdateInfo(newStatusCode))
-                {
-                    int userId = _currentUserService.GetCurrentUserId();
-                    User user = _userService.GetUser(userId);
-                    feedback.UpdateDate = TimeProvider.Current.UtcNow;
-                    feedback.AdminName = user.PersonName;
-                }
+            feedback.Status = newStatusCode;
+            if (ShouldChangeLastUpdateInfo(newStatusCode))
+            {
+                int userId = _currentUserService.GetCurrentUserId();
+                User user = _userService.GetUser(userId);
+                feedback.UpdateDate = TimeProvider.Current.UtcNow;
+                feedback.AdminName = user.PersonName;
+            }
 
-                _feedbackRepository.Update(feedback);
-                _feedbackRepository.UnitOfWork.Commit();
+            _feedbackRepository.Update(feedback);
+            _feedbackRepository.UnitOfWork.Commit();
         }
 
         #endregion
@@ -231,7 +231,7 @@
                 feedback.Status,
                 feedback.Content);
 
-            IList<User> adminsList = _userService.GetAdminsList();
+            ICollection<User> adminsList = _userService.GetAdminsList();
 
             foreach (var admin in adminsList)
             {
@@ -240,12 +240,12 @@
             }
         }
 
-        private bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
+        private static bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
         {
             return newStatusCode == FeedbackStatusEnum.Closed || newStatusCode == FeedbackStatusEnum.Answered;
         }
 
-        private void UpdateFeedbackDate(Feedback feedbackToUpdate)
+        private static void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
         }

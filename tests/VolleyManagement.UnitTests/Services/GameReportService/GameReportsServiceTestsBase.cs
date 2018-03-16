@@ -21,8 +21,8 @@
         protected const int TOURNAMENT_ID = 1;
         protected const int TOP_TEAM_INDEX = 0;
 
-        private Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
-        private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
+        private Mock<IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
+        private Mock<IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock;
 
@@ -30,8 +30,8 @@
         {
             _tournamentScheduleDtoByIdQueryMock =
                 new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
-            _tournamentTeamsQueryMock = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
-            _tournamentGameResultsQueryMock = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
+            _tournamentTeamsQueryMock = new Mock<IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>>();
+            _tournamentGameResultsQueryMock = new Mock<IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>>();
             _tournamentByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
 
             MockTournamentByIdQuery(TOURNAMENT_ID, CreateSingleDivisionTournament(TOURNAMENT_ID));

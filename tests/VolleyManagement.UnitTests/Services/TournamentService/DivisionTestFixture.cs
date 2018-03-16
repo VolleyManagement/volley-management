@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.TournamentsAggregate;
-    using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Class for generating test list of divisions

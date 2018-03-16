@@ -4,17 +4,14 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Admin.Controllers;
-    using VolleyManagement.UI.Areas.Admin.Models;
-    using VolleyManagement.UnitTests.Mvc.Comparers;
+    using Contracts.Authorization;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
+    using UI.Areas.Admin.Controllers;
+    using UI.Areas.Admin.Models;
+    using Comparers;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -116,10 +113,12 @@
         public void Edit_ChangeMembershipSuccessful_RedirectedToIndex()
         {
             // Arrange
-            var modifiedRolesModel = new ModifiedRoleViewModel();
-            modifiedRolesModel.RoleId = 1;
-            modifiedRolesModel.IdsToAdd = new[] { 1, 2 };
-            modifiedRolesModel.IdsToDelete = new[] { 3, 4 };
+            var modifiedRolesModel = new ModifiedRoleViewModel
+            {
+                RoleId = 1,
+                IdsToAdd = new[] { 1, 2 },
+                IdsToDelete = new[] { 3, 4 }
+            };
 
             var service = BuildSUT();
 
@@ -133,32 +132,6 @@
                 Times.Once);
 
             AssertValidRedirectResult(actionResult);
-
-            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
-        }
-
-        [TestMethod]
-        public void Edit_ChangeMembershipFailed_EditViewWithErrorReturned()
-        {
-            // Arrange
-            var modifiedRolesModel = new ModifiedRoleViewModel();
-            modifiedRolesModel.RoleId = 1;
-            modifiedRolesModel.IdsToAdd = new[] { 1, 2 };
-            modifiedRolesModel.IdsToDelete = new[] { 3, 4 };
-
-            const string ANY_ERROR_MESSAGE = "some message";
-
-            _rolesServiceMock.Setup(
-                r => r.ChangeRoleMembership(It.IsAny<int>(), It.IsAny<int[]>(), It.IsAny<int[]>()))
-                .Throws(new Exception(ANY_ERROR_MESSAGE));
-
-            var service = BuildSUT();
-
-            // Act
-            service.Edit(modifiedRolesModel);
-
-            // Assert
-            AssertModelStateError(service.ModelState, ANY_ERROR_MESSAGE);
 
             VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
@@ -268,19 +241,19 @@
         {
             Assert.AreEqual(actual.Id, expected.Id, "Role ID does not match");
             Assert.AreEqual(actual.Name, expected.Name, "Role Names are different");
-            CollectionAssert.AreEqual(expected.Users, actual.Users, "Users lists are different");
+            TestHelper.AreEqual(expected.Users, actual.Users, "Users lists are different");
         }
 
         private static void AreEditModelsEqual(RoleEditViewModel actual, RoleEditViewModel expected)
         {
             Assert.AreEqual(actual.Id, expected.Id, "Role ID does not match");
             Assert.AreEqual(actual.Name, expected.Name, "Role Names are different");
-            CollectionAssert.AreEqual(
+            TestHelper.AreEqual(
                 expected.UsersInRole,
                 actual.UsersInRole,
                 new UserViewModelComparer(),
                 "Users in Role lists are different");
-            CollectionAssert.AreEqual(
+            TestHelper.AreEqual(
                 expected.UsersOutsideRole,
                 actual.UsersOutsideRole,
                 new UserViewModelComparer(),

@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
     using System.Collections.Generic;
-
     using Domain.RolesAggregate;
 
     /// <summary>
@@ -24,6 +23,6 @@
         /// <summary>
         /// Gets or sets user names in current role
         /// </summary>
-        public List<string> Users { get; set; }
+        public ICollection<string> Users { get; set; }
     }
 }

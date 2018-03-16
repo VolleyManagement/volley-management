@@ -5,12 +5,11 @@
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Domain.RolesAggregate;
     using VolleyManagement.Services.Authorization;
 
     /// <summary>
@@ -31,7 +30,7 @@
 
         private const byte BYTE_SIZE_SHIFT = 8;
 
-        private Mock<IQuery<List<AuthOperation>, FindByUserIdCriteria>> _getByIdQueryMock;
+        private Mock<IQuery<ICollection<AuthOperation>, FindByUserIdCriteria>> _getByIdQueryMock;
         private Mock<ICurrentUserService> _currentUserService;
         private Type[] _authOperationsAreas = typeof(AuthOperations).GetNestedTypes();
 
@@ -42,7 +41,7 @@
         [TestInitialize]
         public void TestInit()
         {
-            _getByIdQueryMock = new Mock<IQuery<List<AuthOperation>, FindByUserIdCriteria>>();
+            _getByIdQueryMock = new Mock<IQuery<ICollection<AuthOperation>, FindByUserIdCriteria>>();
             _currentUserService = new Mock<ICurrentUserService>();
         }
 

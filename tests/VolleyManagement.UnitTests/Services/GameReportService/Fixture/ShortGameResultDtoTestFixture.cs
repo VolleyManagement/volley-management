@@ -1,14 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using UI.Areas.Mvc.ViewModels.GameReports;
 
     [ExcludeFromCodeCoverage]
     internal class ShortGameResultDtoTestFixture

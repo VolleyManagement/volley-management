@@ -37,7 +37,7 @@
         /// <summary>
         /// Gets or sets contributors in ContributorTeam
         /// </summary>
-        public List<string> Contributors { get; set; }
+        public ICollection<string> Contributors { get; set; }
 
         #region Factory Methods
 

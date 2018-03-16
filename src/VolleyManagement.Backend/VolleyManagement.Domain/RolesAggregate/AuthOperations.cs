@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Domain.RolesAggregate
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Contains all operations under authorization control

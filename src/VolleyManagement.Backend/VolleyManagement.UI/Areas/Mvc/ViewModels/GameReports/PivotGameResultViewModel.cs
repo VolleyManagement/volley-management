@@ -7,11 +7,6 @@
     /// </summary>
     public class PivotGameResultViewModel
     {
-        private const byte ZERO = 0;
-        private const byte ONE = 1;
-        private const byte TWO = 2;
-        private const byte THREE = 3;
-
         /// <summary>
         /// Gets or sets the identifier of the home team which played the game.
         /// </summary>
@@ -123,29 +118,35 @@
         private static string GetCssClass(byte? homeScore, byte? awayScore)
         {
             string cssClass = CssClassConstants.NORESULT;
-            if (homeScore == THREE && awayScore == ZERO)
+
+            if (homeScore.HasValue && awayScore.HasValue)
             {
-                cssClass = CssClassConstants.WIN_3_0;
-            }
-            else if (homeScore == THREE && awayScore == ONE)
-            {
-                cssClass = CssClassConstants.WIN_3_1;
-            }
-            else if (homeScore == THREE && awayScore == TWO)
-            {
-                cssClass = CssClassConstants.WIN_3_2;
-            }
-            else if (homeScore == TWO && awayScore == THREE)
-            {
-                cssClass = CssClassConstants.LOSS_2_3;
-            }
-            else if (homeScore == ONE && awayScore == THREE)
-            {
-                cssClass = CssClassConstants.LOSS_1_3;
-            }
-            else if (homeScore == ZERO && awayScore == THREE)
-            {
-                cssClass = CssClassConstants.LOSS_0_3;
+                int setDifference = homeScore.Value - awayScore.Value;
+
+                switch (setDifference)
+                {
+                    case 3:
+                        cssClass = CssClassConstants.WIN_3_0;
+                        break;
+                    case 2:
+                        cssClass = CssClassConstants.WIN_3_1;
+                        break;
+                    case 1:
+                        cssClass = CssClassConstants.WIN_3_2;
+                        break;
+                    case -1:
+                        cssClass = CssClassConstants.LOSS_2_3;
+                        break;
+                    case -2:
+                        cssClass = CssClassConstants.LOSS_1_3;
+                        break;
+                    case -3:
+                        cssClass = CssClassConstants.LOSS_0_3;
+                        break;
+                    default:
+                        cssClass = CssClassConstants.NORESULT;
+                        break;
+                }
             }
 
             return cssClass;

@@ -7,6 +7,6 @@
     /// </summary>
     public class StandingsDto : DivisionStandingsDtoBase
     {
-        public List<StandingsEntry> Standings { get; set; } = new List<StandingsEntry>();
+        public ICollection<StandingsEntry> Standings { get; set; } = new List<StandingsEntry>();
     }
 }

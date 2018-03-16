@@ -5,6 +5,9 @@
     using Contracts;
     using Contracts.Exceptions;
     using Models;
+    using System.Linq;
+    using System.Collections.Generic;
+    using Domain.FeedbackAggregate;
 
     /// <summary>
     /// Provides Feedback management
@@ -29,7 +32,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var feedbacks = _feedbackService.Get().ConvertAll(f => new RequestsViewModel(f));
+            var feedbacks = _feedbackService.Get().Select(f =>new RequestsViewModel(f)).ToList();
             return View(feedbacks);
         }
 
@@ -93,9 +96,9 @@
             }
             catch (InvalidOperationException ex)
             {
-               return View(
-                   "ErrorPage",
-                   CreateErrorReply(ex));
+                return View(
+                    "ErrorPage",
+                    CreateErrorReply(ex));
             }
             catch (MissingEntityException ex)
             {

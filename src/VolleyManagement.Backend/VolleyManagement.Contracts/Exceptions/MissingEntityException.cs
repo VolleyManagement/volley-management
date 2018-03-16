@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Contracts.Exceptions
 {
     using System;
-
     using Domain;
 
     /// <summary>

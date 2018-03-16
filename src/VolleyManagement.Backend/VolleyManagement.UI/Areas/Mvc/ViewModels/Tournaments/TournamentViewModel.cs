@@ -38,7 +38,7 @@
         /// Gets or sets the list of possible tournament schemes.
         /// </summary>
         /// <value>The list of tournament schemes.</value>
-        public List<string> TournamentSchemeList { get; set; }
+        public IList<string> TournamentSchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -190,7 +190,7 @@
         /// Gets or sets list of divisions
         /// </summary>
         [Display(Name = "Divisions", ResourceType = typeof(ViewModelResources))]
-        public List<DivisionViewModel> Divisions { get; set; }
+        public IList<DivisionViewModel> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> object
@@ -211,7 +211,7 @@
 
         public static TournamentViewModel Map(Tournament tournament)
         {
-            var tournamentViewModel = new TournamentViewModel()
+            var tournamentViewModel = new TournamentViewModel
             {
                 IsArchived = tournament.IsArchived,
                 Id = tournament.Id,
@@ -226,7 +226,7 @@
                 ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd,
-                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferEnd == null ? false : true
+                IsTransferEnabled = tournament.TransferStart != null && tournament.TransferEnd != null
             };
 
             tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();

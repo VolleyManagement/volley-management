@@ -12,7 +12,7 @@
         /// Gets list of all feedbacks.
         /// </summary>
         /// <returns>Return list of all feedbacks.</returns>
-        List<Feedback> Get();
+        ICollection<Feedback> Get();
 
         /// <summary>
         /// Find feedback by id.

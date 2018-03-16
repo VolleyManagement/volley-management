@@ -25,20 +25,7 @@
                 throw new AssertFailedException("One instance is null");
             }
 
-            if (x.Divisions.Count == y.Divisions.Count)
-            {
-                for (var i = 0; i < x.Divisions.Count; i++)
-                {
-                    if (_groupItemComparer.Compare(x.Divisions[i], y.Divisions[i]) != 0)
-                    {
-                        return 1;
-                    }
-                }
-            }
-            else
-            {
-                throw new AssertFailedException("Number of divisions do not match.");
-            }
+            TestHelper.AreEqual(x.Divisions, y.Divisions, _groupItemComparer);
 
             return 0;
         }

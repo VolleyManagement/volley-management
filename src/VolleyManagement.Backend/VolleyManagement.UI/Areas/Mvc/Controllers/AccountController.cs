@@ -22,10 +22,11 @@
     /// Manages Sign In/Out process
     /// </summary>
     [Authorize]
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     public class AccountController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
-        private readonly IRolesService _rolesService;
         private readonly IUserService _userService;
         private readonly ICacheProvider _cacheProvider;
         private readonly ICurrentUserService _currentUserService;
@@ -49,7 +50,6 @@
                     IAuthorizationService authService)
         {
             _userManager = userManager;
-            _rolesService = rolesService;
             _cacheProvider = cacheProvider;
             _userService = userService;
             _currentUserService = currentUserService;
@@ -127,7 +127,9 @@
         /// </summary>
         /// <returns>View to represent</returns>
         [Authorize]
+#pragma warning disable S4261 // Methods should be named according to their synchronicities
         public async Task<ActionResult> Details()
+#pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             var user = await _userManager.FindByIdAsync(CurrentUserId);
             UserViewModel userViewModel = UserViewModel.Map(user);
@@ -139,7 +141,9 @@
         /// </summary>
         /// <returns> The <see cref="ActionResult"/>. </returns>
         [Authorize]
+#pragma warning disable S4261 // Methods should be named according to their synchronicities
         public async Task<ActionResult> Edit()
+#pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             var user = await _userManager.FindByIdAsync(CurrentUserId);
             UserEditViewModel userEditViewModel = UserEditViewModel.Map(user);
@@ -153,7 +157,9 @@
         /// <returns>Details action result</returns>
         [HttpPost]
         [Authorize]
+#pragma warning disable S4261 // Methods should be named according to their synchronicities
         public async Task<ActionResult> Edit(UserEditViewModel editViewModel)
+#pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.UI.AuthorizationRoles.Admin))
             {
@@ -191,7 +197,7 @@
         {
             var properties = new AuthenticationProperties
             {
-                RedirectUri = Url.Action("ExternalLoginCallback", new { returnUrl = returnUrl })
+                RedirectUri = Url.Action("ExternalLoginCallback", new { returnUrl })
             };
             HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
             return new HttpUnauthorizedResult();
@@ -204,7 +210,9 @@
         /// <returns> The <see cref="Task"/>. </returns>
         [AllowAnonymous]
         [RequireHttps]
+#pragma warning disable S4261 // Methods should be named according to their synchronicities
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+#pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             ExternalLoginInfo loginInfo = await AuthManager.GetExternalLoginInfoAsync();
             UserModel user = await _userManager.FindAsync(loginInfo.Login);

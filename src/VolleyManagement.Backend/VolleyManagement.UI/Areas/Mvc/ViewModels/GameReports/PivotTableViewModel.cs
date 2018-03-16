@@ -34,7 +34,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
         /// <summary>
         /// Gets or sets the ordered collection of teams according their position in tournament.
         /// </summary>
-        public List<PivotTeamStandingsViewModel> TeamsStandings { get; set; }
+        public IList<PivotTeamStandingsViewModel> TeamsStandings { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of games in tournament standings for pivot table.
@@ -90,7 +90,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
             return results;
         }
 
-        private void SetCellValue(int i, int j, List<PivotGameResultViewModel> result)
+        private void SetCellValue(int i, int j, IEnumerable<PivotGameResultViewModel> result)
         {
             AllGameResults[(i * TeamsStandings.Count) + j] = new List<PivotGameResultViewModel>(result);
         }

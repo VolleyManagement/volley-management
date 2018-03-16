@@ -27,7 +27,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// </summary>
         /// <param name="source">All needed teams</param>
         /// <param name="tournamentId">Tournament id</param>
-        public TournamentTeamsListViewModel(IEnumerable<TeamTournamentDto> source, int tournamentId)
+        public TournamentTeamsListViewModel(ICollection<TeamTournamentDto> source, int tournamentId)
         {
             TournamentId = tournamentId;
             TeamsList = source
@@ -45,18 +45,18 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <summary>
         /// Gets or sets list Of Teams
         /// </summary>
-        public List<TeamNameViewModel> TeamsList { get; set; }
+        public ICollection<TeamNameViewModel> TeamsList { get; set; }
 
         /// <summary>
         /// Gets or sets list of GroupTeam
         /// </summary>
-        public List<GroupTeamViewModel> GroupTeamList { get; set; }
+        public ICollection<GroupTeamViewModel> GroupTeamList { get; set; }
 
         /// <summary>
         /// Maps presentation list to domain list
         /// </summary>
         /// <returns>Domain list of teams</returns>
-        public List<Team> ToDomain()
+        public ICollection<Team> ToDomain()
         {
             return TeamsList.Select(t => t.ToDomain()).ToList();
         }
@@ -65,7 +65,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// Maps presentation list to domain list
         /// </summary>
         /// <returns>Domain list of teams and groups</returns>
-        public List<TeamTournamentAssignmentDto> ToGroupTeamDomain()
+        public ICollection<TeamTournamentAssignmentDto> ToGroupTeamDomain()
         {
             return GroupTeamList.Select(t => t.ToDomain()).ToList();
         }

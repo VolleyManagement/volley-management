@@ -40,15 +40,15 @@
         /// <summary>
         /// Adds new game.
         /// </summary>
-        /// <param name="newRequest">Request to add.</param>
-        public void Add(Request newRequest)
+        /// <param name="newEntity">Request to add.</param>
+        public void Add(Request newEntity)
         {
             var newRequestEntity = new RequestEntity();
 
-            DomainToDal.Map(newRequestEntity, newRequest);
+            DomainToDal.Map(newRequestEntity, newEntity);
             _dalRequest.Add(newRequestEntity);
             _unitOfWork.Commit();
-            newRequest.Id = newRequestEntity.Id;
+            newEntity.Id = newRequestEntity.Id;
         }
 
         /// <summary>

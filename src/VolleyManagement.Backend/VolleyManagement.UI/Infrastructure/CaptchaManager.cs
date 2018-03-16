@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="userResponseToken">Response of Captcha.</param>
         /// <returns>Captcha result</returns>
-        public async Task<bool> ValidateUserCaptcha(string userResponseToken)
+        public async Task<bool> ValidateUserCaptchaAsync(string userResponseToken)
         {
             var isCaptchaValid = false;
             using (var client = new HttpClient())

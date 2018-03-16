@@ -20,7 +20,7 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
             
-            if (Is<IISDeployment>.Disabled)
+            if (Is<IisDeployment>.Disabled)
             {
                 container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
             }

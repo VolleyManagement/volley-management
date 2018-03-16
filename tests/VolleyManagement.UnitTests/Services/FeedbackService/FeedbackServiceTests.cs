@@ -21,6 +21,7 @@
     using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
+    using System.Collections;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -50,7 +51,7 @@
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
-        private Mock<IQuery<List<Feedback>, GetAllCriteria>> _getAllFeedbacksQueryMock;
+        private Mock<IQuery<ICollection<Feedback>, GetAllCriteria>> _getAllFeedbacksQueryMock;
         private Mock<IQuery<Feedback, FindByIdCriteria>> _getFeedbackByIdQueryMock;
         private Mock<ICurrentUserService> _currentUserServiceMock;
         private Mock<IUserService> _userServiceMock;
@@ -70,7 +71,7 @@
             _feedbackServiceMock = new Mock<IFeedbackService>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _timeMock = new Mock<TimeProvider>();
-            _getAllFeedbacksQueryMock = new Mock<IQuery<List<Feedback>, GetAllCriteria>>();
+            _getAllFeedbacksQueryMock = new Mock<IQuery<ICollection<Feedback>, GetAllCriteria>>();
             _getFeedbackByIdQueryMock = new Mock<IQuery<Feedback, FindByIdCriteria>>();
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _userServiceMock = new Mock<IUserService>();
@@ -100,8 +101,7 @@
 
             var expected = new FeedbackServiceTestFixture()
                                             .TestFeedbacks()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             var sut = BuildSUT();
 
@@ -109,7 +109,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new FeedbackComparer());
+            TestHelper.AreEqual(expected, actual, new FeedbackComparer());
         }
 
         [TestMethod]
@@ -209,7 +209,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentNullException("feedback"));
+                new ArgumentNullException("feedbackToCreate"));
         }
 
         [TestMethod]

@@ -7,16 +7,7 @@
     /// </summary>
     public abstract class TimeProvider
     {
-        private static TimeProvider _current;
-
-        /// <summary>
-        /// Initializes static members of the <see cref="TimeProvider" /> class
-        /// </summary>
-        static TimeProvider()
-        {
-            _current =
-              new DefaultTimeProvider();
-        }
+        private static TimeProvider _current = new DefaultTimeProvider();
 
         /// <summary>
         /// Gets or sets current time provider

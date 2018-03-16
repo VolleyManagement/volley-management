@@ -4,6 +4,6 @@
 
     public class TournamentStandings<T>
     {
-        public List<T> Divisions { get; set; } = new List<T>();
+        public ICollection<T> Divisions { get; set; } = new List<T>();
     }
 }

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -12,14 +11,14 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.PlayerService;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.Players;
+    using ViewModels;
+    using Services.PlayerService;
 
     /// <summary>
     /// Tests for MVC PlayersController class.
@@ -146,7 +145,7 @@
                 sut.Index(null, string.Empty)).Model.List;
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerNameViewModelComparer());
             VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
         }
 
@@ -173,7 +172,7 @@
             var playersList = actual.Model.List;
 
             // Assert
-            CollectionAssert.AreEqual(expected, playersList, new PlayerNameViewModelComparer());
+            TestHelper.AreEqual(expected, playersList, new PlayerNameViewModelComparer());
             VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
             Assert.AreEqual(actual.Referer, sut.Request.RawUrl);
         }
@@ -505,12 +504,12 @@
             return new PlayerServiceTestFixture().TestPlayers().Build();
         }
 
-        private List<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
+        private ICollection<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
         {
             return players.Select(p => new PlayerNameViewModel { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName }).ToList();
         }
 
-        private List<PlayerNameViewModel> GetPlayerNameViewModelsWithPlayerName(List<PlayerNameViewModel> players, string name)
+        private List<PlayerNameViewModel> GetPlayerNameViewModelsWithPlayerName(ICollection<PlayerNameViewModel> players, string name)
         {
             return players.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
         }

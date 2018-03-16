@@ -368,7 +368,10 @@
             }
 
             var totalTeamCount = allTeams.Count + groupTeamCount;
+
+
             CreateSchedule(tournamentId, totalTeamCount);
+
 
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -742,11 +745,13 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
-            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff
+                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
-                if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
+                var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
+
+                if (Math.Abs(GetGamesCount(gamesToAdd.Count) - _gameService.GetTournamentGames(tournamentId).Count) > 1)
                 {
-                    var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
                     _gameService.RemoveAllGamesInTournament(tournamentId);
                     _gameService.AddGames(gamesToAdd);
                 }
@@ -759,7 +764,13 @@
             int gamesCount = GetGamesCount(teamsCount);
             List<Game> games = new List<Game>();
 
-            var existGames = _gameService.GetTournamentGames(tournamentId).Where(tr => tr.GameDate != null);
+            var existGames = _gameService.GetTournamentGames(tournamentId)?
+                .Where(tr => tr.AwayTeamId != null || tr.HomeTeamId != null);
+
+            if (existGames==null)
+            {
+                existGames = new List<GameResultDto>();
+            }
 
             int index = 1;
             foreach (var currGame in existGames)
@@ -778,7 +789,7 @@
                 games.Add(game);
             }
 
-            while (index < gamesCount)
+            while (index <= gamesCount)
             {
                 var game = new Game
                 {

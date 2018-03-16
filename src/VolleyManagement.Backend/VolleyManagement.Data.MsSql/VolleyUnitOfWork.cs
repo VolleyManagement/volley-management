@@ -4,12 +4,14 @@
     using System.Threading.Tasks;
     using Context;
     using Contracts;
+    using System;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
     /// </summary>
     internal class VolleyUnitOfWork : IUnitOfWork
     {
+
         /// <summary>
         /// Context of the data source.
         /// </summary>
@@ -29,7 +31,10 @@
         /// </summary>
         internal VolleyManagementEntities Context
         {
-            get { return _context; }
+            get
+            {
+                return _context;
+            }
         }
 
         /// <summary>
@@ -54,7 +59,19 @@
         /// </summary>
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// IDisposable.Dispose method implementation.
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
     }
 }

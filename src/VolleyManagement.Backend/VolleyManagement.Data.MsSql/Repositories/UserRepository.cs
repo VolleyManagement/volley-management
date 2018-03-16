@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using Contracts;
     using Domain.UsersAggregate;
@@ -33,7 +32,10 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get
+            {
+                return _unitOfWork;
+            }
         }
 
         /// <summary>
@@ -66,7 +68,7 @@
         /// <param name="id">The id of user to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         private void UpdateUserProviders(List<LoginInfoEntity> providers)
@@ -75,11 +77,10 @@
             {
                 string loginProviderName = providers[i].LoginProvider;
                 string providerKey = providers[i].ProviderKey;
-                var existProvider = _unitOfWork.Context.LoginProviders.Where(
-                                                            dlp =>
-                                                            dlp.LoginProvider == loginProviderName
-                                                            && dlp.ProviderKey == providerKey)
-                                                           .FirstOrDefault();
+                var existProvider = _unitOfWork.Context.LoginProviders
+                                                       .FirstOrDefault(dlp =>
+                                                        dlp.LoginProvider == loginProviderName
+                                                        && dlp.ProviderKey == providerKey);
                 if (existProvider != null)
                 {
                     providers[i] = existProvider;

@@ -1,8 +1,5 @@
 ﻿namespace VolleyManagement.Contracts
 {
-    using System.Collections.Generic;
-    using Domain.UsersAggregate;
-
     /// <summary>
     /// Helps to control active users
     /// </summary>

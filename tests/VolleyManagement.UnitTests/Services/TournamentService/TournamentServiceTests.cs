@@ -7,25 +7,25 @@
     using GameReportService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Division;
-    using VolleyManagement.Data.Queries.Group;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Data.Queries.Tournament;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using System.Collections;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Crosscutting.Contracts.Providers;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Division;
+    using Data.Queries.Group;
+    using Data.Queries.Team;
+    using Data.Queries.Tournament;
+    using Domain.GamesAggregate;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TeamService;
+    using Mvc.ViewModels;
+    using TeamService;
     using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
@@ -57,16 +57,16 @@
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<IGameService> _gameServiceMock;
         private Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock;
-        private Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<ICollection<Tournament>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock;
         private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
-        private Mock<IQuery<List<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
-        private Mock<IQuery<List<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
+        private Mock<IQuery<ICollection<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
+        private Mock<IQuery<ICollection<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
-        private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
+        private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
         private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
-        private Mock<IQuery<List<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
+        private Mock<IQuery<ICollection<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -81,16 +81,16 @@
             _authServiceMock = new Mock<IAuthorizationService>();
             _gameServiceMock = new Mock<IGameService>();
             _uniqueTournamentQueryMock = new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
-            _getAllQueryMock = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
+            _getAllQueryMock = new Mock<IQuery<ICollection<Tournament>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
             _getAllTournamentTeamsQuery = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
-            _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
-            _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
-            _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
+            _getAllTournamentDivisionsQuery = new Mock<IQuery<ICollection<Division>, TournamentDivisionsCriteria>>();
+            _getAllTournamentGroupsQuery = new Mock<IQuery<ICollection<Group>, DivisionGroupsCriteria>>();
+            _getAllTeamsQuery = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
             _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
-            _getOldTournamentsQuery = new Mock<IQuery<List<Tournament>, OldTournamentsCriteria>>();
+            _getOldTournamentsQuery = new Mock<IQuery<ICollection<Tournament>, OldTournamentsCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -165,14 +165,13 @@
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             // Act
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
         #endregion
 
@@ -195,7 +194,7 @@
             var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TeamInTournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TeamInTournamentComparer());
         }
 
         /// <summary>
@@ -238,7 +237,7 @@
             var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
+            TestHelper.AreEqual(expected, actual, new DivisionComparer());
         }
 
         /// <summary>
@@ -281,7 +280,7 @@
             var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GroupComparer());
+            TestHelper.AreEqual(expected, actual, new GroupComparer());
         }
 
         /// <summary>
@@ -1428,10 +1427,10 @@
             var expected = BuildActualTournamentsList();
 
             // Act
-            var actual = sut.GetActual().ToList();
+            var actual = sut.GetActual();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1451,10 +1450,10 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetActual().ToList();
+            var actual = sut.GetActual();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1478,10 +1477,10 @@
             var expected = BuildActualTournamentsList();
 
             // Act
-            var actual = sut.GetActual().ToList();
+            var actual = sut.GetActual();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
         #endregion
 
@@ -1506,10 +1505,10 @@
             var expected = BuildArchivedTournamentsList();
 
             // Act
-            var actual = sut.GetArchived().ToList();
+            var actual = sut.GetArchived();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1527,7 +1526,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.GetArchived().ToList();
+            sut.GetArchived();
 
             // Assert
             VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
@@ -1553,10 +1552,10 @@
                 .Build();
 
             // Act
-            var actual = sut.GetFinished().ToList();
+            var actual = sut.GetFinished();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1575,10 +1574,10 @@
             var expected = BuildActualTournamentsList();
 
             // Act
-            var actual = sut.GetFinished().ToList();
+            var actual = sut.GetFinished();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -1602,10 +1601,10 @@
                 .Build();
 
             // Act
-            var actual = sut.GetFinished().ToList();
+            var actual = sut.GetFinished();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentComparer());
         }
         #endregion
 
@@ -1627,7 +1626,7 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
             int actualCount = actual.Count(t => t.State == TournamentStateEnum.NotStarted);
@@ -1685,7 +1684,7 @@
             _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
         }
 
-        private void MockGetAllTournamentDivisionsQuery(List<Division> testData)
+        private void MockGetAllTournamentDivisionsQuery(ICollection<Division> testData)
         {
             _getAllTournamentDivisionsQuery.Setup(tr => tr.Execute(It.IsAny<TournamentDivisionsCriteria>())).Returns(testData);
         }

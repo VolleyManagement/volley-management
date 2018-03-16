@@ -12,6 +12,6 @@
         /// Gets all contributors team.
         /// </summary>
         /// <returns>Collection of contributors from the repository.</returns>
-        List<ContributorTeam> Find();
+        ICollection<ContributorTeam> Find();
     }
 }

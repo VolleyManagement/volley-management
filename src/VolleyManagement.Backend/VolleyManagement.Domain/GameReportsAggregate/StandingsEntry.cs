@@ -95,7 +95,7 @@
         /// </summary>
         public float? BallsRatio => CalculateRatio(BallsWon, BallsLost);
 
-        private float? CalculateRatio(int won, int lost)
+        private static float? CalculateRatio(int won, int lost)
         {
             var result = (float)won / lost;
             return float.IsNaN(result) ? (float?)null : result;

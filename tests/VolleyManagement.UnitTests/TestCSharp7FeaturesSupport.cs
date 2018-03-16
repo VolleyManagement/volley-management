@@ -91,7 +91,7 @@
                     return (1, 0);
                 }
 
-                var(p, pp) = Fib(i - 1);
+                var (p, pp) = Fib(i - 1);
                 return (p + pp, p);
             }
         }
@@ -109,7 +109,7 @@
             throw new IndexOutOfRangeException($"{nameof(number)} not found");
         }
 
-        private(string, string, string) LookupName(long id) // tuple return type
+        private (string, string, string) LookupName(long id) // tuple return type
         {
             var first = "First";
             var middle = "Middle";
@@ -117,7 +117,7 @@
             return (first, middle, last); // tuple literal
         }
 
-        private(string first, string middle, string last) LookupName1(long id) // tuple return type
+        private (string first, string middle, string last) LookupName1(long id) // tuple return type
         {
             var first = "First";
             var middle = "Middle";

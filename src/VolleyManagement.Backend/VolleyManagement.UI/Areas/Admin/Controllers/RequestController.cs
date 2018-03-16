@@ -3,7 +3,6 @@
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
-    using Contracts.Authorization;
     using Contracts.Exceptions;
     using Models;
 
@@ -35,7 +34,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var requests = new RequestCollectionViewModel()
+            var requests = new RequestCollectionViewModel
             {
                 Requests = _requestService.Get()
                 .Select(r => RequestViewModel.Map(r, _playerService.Get(r.PlayerId), _userService.GetUser(r.UserId)))

@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace VolleyManagement.UnitTests.Services.GameReportService
+﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
     using Domain.GameReportsAggregate;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
     /// <summary>
     /// As we've made SetsRatio and BallsRatio properties calculatable we have to test that

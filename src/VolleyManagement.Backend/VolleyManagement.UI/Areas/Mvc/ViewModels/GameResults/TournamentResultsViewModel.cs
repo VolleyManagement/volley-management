@@ -29,7 +29,7 @@
         /// <summary>
         /// Gets or sets the game results related to current tournament.
         /// </summary>
-        public List<GameResultViewModel> GameResults { get; set; }
+        public ICollection<GameResultViewModel> GameResults { get; set; }
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> object

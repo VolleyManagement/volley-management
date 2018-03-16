@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Contracts.Authentication.Models;
     using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
     using Domain.UsersAggregate;

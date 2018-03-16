@@ -165,24 +165,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 3 / 1,
-                BallsRatio = (float) 102 / 96
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)102 / 96
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 2,
-                SetsRatio = (float) 3 / 2,
-                BallsRatio = (float) 121 / 122
+                SetsRatio = (float)3 / 2,
+                BallsRatio = (float)121 / 122
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 1,
-                SetsRatio = (float) 3 / 6,
-                BallsRatio = (float) 218 / 223
+                SetsRatio = (float)3 / 6,
+                BallsRatio = (float)218 / 223
             });
 
             AddGameResult(new ShortGameResultDto
@@ -216,24 +216,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 4,
-                SetsRatio = (float) 6 / 4,
-                BallsRatio = (float) 234 / 220
+                SetsRatio = (float)6 / 4,
+                BallsRatio = (float)234 / 220
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 4,
-                SetsRatio = (float) 5 / 3,
-                BallsRatio = (float) 191 / 188
+                SetsRatio = (float)5 / 3,
+                BallsRatio = (float)191 / 188
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 4,
-                SetsRatio = (float) 7 / 11,
-                BallsRatio = (float) 408 / 425
+                SetsRatio = (float)7 / 11,
+                BallsRatio = (float)408 / 425
             });
 
             AddGameResult(new ShortGameResultDto
@@ -287,24 +287,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 3 / 0,
-                BallsRatio = (float) 76 / 72
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)76 / 72
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 3,
-                SetsRatio = (float) 3 / 1,
-                BallsRatio = (float) 98 / 98
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)98 / 98
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 0,
-                SetsRatio = (float) 1 / 6,
-                BallsRatio = (float) 170 / 174
+                SetsRatio = (float)1 / 6,
+                BallsRatio = (float)170 / 174
             });
 
             AddGameResult(new ShortGameResultDto
@@ -338,24 +338,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 3 / 1,
-                BallsRatio = (float) 101 / 82
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)101 / 82
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 3,
-                SetsRatio = (float) 3 / 1,
-                BallsRatio = (float) 104 / 98
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)104 / 98
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 0,
-                SetsRatio = (float) 2 / 6,
-                BallsRatio = (float) 180 / 205
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)180 / 205
             });
 
             AddGameResult(new ShortGameResultDto
@@ -389,24 +389,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 3,
-                SetsRatio = (float) 3 / 0,
-                BallsRatio = (float) 81 / 72
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)81 / 72
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 3 / 1,
-                BallsRatio = (float) 102 / 82
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)102 / 82
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 0,
-                SetsRatio = (float) 1 / 6,
-                BallsRatio = (float) 154 / 183
+                SetsRatio = (float)1 / 6,
+                BallsRatio = (float)154 / 183
             });
 
             AddGameResult(new ShortGameResultDto
@@ -440,24 +440,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 3,
-                SetsRatio = (float) 3 / 0,
-                BallsRatio = (float) 75 / 0
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)75 / 0
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 3 / 0,
-                BallsRatio = (float) 81 / 72
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)81 / 72
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 0,
-                SetsRatio = (float) 0 / 6,
-                BallsRatio = (float) 72 / 156
+                SetsRatio = (float)0 / 6,
+                BallsRatio = (float)72 / 156
             });
 
             AddGameResult(new ShortGameResultDto
@@ -491,24 +491,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 3,
-                SetsRatio = (float) 6 / 3,
-                BallsRatio = (float) 234 / 214
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 214
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 4 / 3,
-                BallsRatio = (float) 166 / 125
+                SetsRatio = (float)4 / 3,
+                BallsRatio = (float)166 / 125
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 1,
-                SetsRatio = (float) 2 / 6,
-                BallsRatio = (float) 143 / 204
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)143 / 204
             });
 
             AddGameResult(new ShortGameResultDto
@@ -551,24 +551,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 5,
-                SetsRatio = (float) 6 / 3,
-                BallsRatio = (float) 234 / 214
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 214
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 1,
-                SetsRatio = (float) 4 / 3,
-                BallsRatio = (float) 166 / 125
+                SetsRatio = (float)4 / 3,
+                BallsRatio = (float)166 / 125
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 1,
-                SetsRatio = (float) 2 / 6,
-                BallsRatio = (float) 143 / 204
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)143 / 204
             });
 
             AddGameResult(new ShortGameResultDto
@@ -611,24 +611,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 5,
-                SetsRatio = (float) 6 / 3,
-                BallsRatio = (float) 234 / 248
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 248
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 4 / 3,
-                BallsRatio = (float) 91 / 105
+                SetsRatio = (float)4 / 3,
+                BallsRatio = (float)91 / 105
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 1,
-                SetsRatio = (float) 2 / 6,
-                BallsRatio = (float) 157 / 129
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)157 / 129
             });
 
             AddGameResult(new ShortGameResultDto
@@ -671,24 +671,24 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 5,
-                SetsRatio = (float) 6 / 3,
-                BallsRatio = (float) 234 / 248
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 248
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = (float) 4 / 4,
-                BallsRatio = (float) 166 / 135
+                SetsRatio = (float)4 / 4,
+                BallsRatio = (float)166 / 135
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 1,
-                SetsRatio = (float) 3 / 6,
-                BallsRatio = (float) 187 / 204
+                SetsRatio = (float)3 / 6,
+                BallsRatio = (float)187 / 204
             });
 
             AddGameResult(new ShortGameResultDto
@@ -732,8 +732,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 1,
                     TeamName = "TeamNameA",
                     Points = 7,
-                    SetsRatio = (float) 9 / 7,
-                    BallsRatio = (float) 363 / 355,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355,
                 },
                 divisionId: 1,
                 divisionName: "DivisionNameA");
@@ -743,8 +743,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 5,
                     TeamName = "TeamNameE",
                     Points = 7,
-                    SetsRatio = (float) 9 / 7,
-                    BallsRatio = (float) 363 / 355,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355,
                 },
                 divisionId: 1,
                 divisionName: "DivisionNameA");
@@ -754,8 +754,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 3,
                     TeamName = "TeamNameC",
                     Points = 7,
-                    SetsRatio = (float) 9 / 7,
-                    BallsRatio = (float) 350 / 362,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362,
                 },
                 divisionId: 1,
                 divisionName: "DivisionNameA");
@@ -765,8 +765,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 4,
                     TeamName = "TeamNameD",
                     Points = 7,
-                    SetsRatio = (float) 9 / 7,
-                    BallsRatio = (float) 350 / 362,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362,
                 },
                 divisionId: 1,
                 divisionName: "DivisionNameA");
@@ -776,8 +776,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 2,
                     TeamName = "TeamNameB",
                     Points = 4,
-                    SetsRatio = (float) 6 / 10,
-                    BallsRatio = (float) 349 / 345,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345,
                 },
                 divisionId: 1,
                 divisionName: "DivisionNameA");
@@ -787,8 +787,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 6,
                     TeamName = "TeamNameF",
                     Points = 4,
-                    SetsRatio = (float) 6 / 10,
-                    BallsRatio = (float) 349 / 345,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345,
                 },
                 divisionId: 1,
                 divisionName: "DivisionNameA");
@@ -798,8 +798,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 7,
                     TeamName = "TeamNameG",
                     Points = 7,
-                    SetsRatio = (float) 9 / 7,
-                    BallsRatio = (float) 363 / 355,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355,
                 },
                 divisionId: 2,
                 divisionName: "DivisionNameB");
@@ -809,8 +809,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 9,
                     TeamName = "TeamNameI",
                     Points = 7,
-                    SetsRatio = (float) 9 / 7,
-                    BallsRatio = (float) 350 / 362,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362,
                 },
                 divisionId: 2,
                 divisionName: "DivisionNameB");
@@ -820,8 +820,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 8,
                     TeamName = "TeamNameH",
                     Points = 4,
-                    SetsRatio = (float) 6 / 10,
-                    BallsRatio = (float) 349 / 345,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345,
                 },
                 divisionId: 2,
                 divisionName: "DivisionNameB");
@@ -1023,8 +1023,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 2,
                     TeamName = "TeamNameB",
                     Points = 3,
-                    SetsRatio = (float) 3 / 3,
-                    BallsRatio = (float) 76 / 75,
+                    SetsRatio = (float)3 / 3,
+                    BallsRatio = (float)76 / 75,
                 },
                 divisionId: 1);
             AddTeamStandings( // A
@@ -1033,8 +1033,8 @@ namespace VolleyManagement.UnitTests.Services.GameReportService
                     TeamId = 1,
                     TeamName = "TeamNameA",
                     Points = 3,
-                    SetsRatio = (float) 3 / 3,
-                    BallsRatio = (float) 75 / 76,
+                    SetsRatio = (float)3 / 3,
+                    BallsRatio = (float)75 / 76,
                 },
                 divisionId: 1);
 

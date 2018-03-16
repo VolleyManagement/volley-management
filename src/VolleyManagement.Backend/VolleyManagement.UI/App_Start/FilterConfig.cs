@@ -6,7 +6,7 @@
     /// <summary>
     /// Filter configuration for ASP.NET application
     /// </summary>
-    public class FilterConfig
+    public static class FilterConfig
     {
         /// <summary>
         /// Register application filters

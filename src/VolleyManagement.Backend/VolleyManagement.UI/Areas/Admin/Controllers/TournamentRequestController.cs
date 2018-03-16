@@ -43,7 +43,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var requests = new TournamentRequestCollectionViewModel()
+            var requests = new TournamentRequestCollectionViewModel
             {
                  Requests = _requestService.Get().Select(r => TournamentRequestViewModel.Map(
                      r,

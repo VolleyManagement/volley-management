@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Data.Exceptions
 {
     using System;
-
     using Contracts;
 
     /// <summary>

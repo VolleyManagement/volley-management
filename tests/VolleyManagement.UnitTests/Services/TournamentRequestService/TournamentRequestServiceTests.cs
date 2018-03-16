@@ -21,6 +21,7 @@
     using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
+    using System.Collections;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -34,7 +35,7 @@
         private Mock<ITournamentRequestRepository> _tournamentRequestRepositoryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
         private Mock<IAuthorizationService> _authServiceMock;
-        private Mock<IQuery<List<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock;
+        private Mock<IQuery<ICollection<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock;
         private Mock<IQuery<TournamentRequest, FindByIdCriteria>> _getRequestByIdQueryMock;
         private Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>> _getRequestByAllQueryMock;
         private Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
@@ -51,7 +52,7 @@
 
             _authServiceMock = new Mock<IAuthorizationService>();
 
-            _getAllRequestsQueryMock = new Mock<IQuery<List<TournamentRequest>, GetAllCriteria>>();
+            _getAllRequestsQueryMock = new Mock<IQuery<ICollection<TournamentRequest>, GetAllCriteria>>();
 
             _getRequestByIdQueryMock = new Mock<IQuery<TournamentRequest, FindByIdCriteria>>();
 
@@ -81,7 +82,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentRequestComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentRequestComparer());
         }
 
         [TestMethod]

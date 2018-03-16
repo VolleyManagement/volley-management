@@ -8,8 +8,7 @@
     /// Stores Volley Users data
     /// </summary>
     public interface IVolleyUserStore
-        : IUserStore<UserModel, int>,
-          IUserEmailStore<UserModel, int>,
+        : IUserEmailStore<UserModel, int>,
           IUserLoginStore<UserModel, int>
     {
     }

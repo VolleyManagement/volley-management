@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-
     using Domain.PlayersAggregate;
     using Domain.TeamsAggregate;
 
@@ -20,20 +19,20 @@
         /// <summary>
         /// Create new player.
         /// </summary>
-        /// <param name="player">New player.</param>
-        void Create(Player player);
+        /// <param name="playerToCreate">New player.</param>
+        void Create(Player playerToCreate);
 
         /// <summary>
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        void Create(List<Player> playersToCreate);
+        void Create(ICollection<Player> playersToCreate);
 
         /// <summary>
         /// Edit player profile.
         /// </summary>
-        /// <param name="player">Updated player data.</param>
-        void Edit(Player player);
+        /// <param name="playerToEdit">Updated player data.</param>
+        void Edit(Player playerToEdit);
 
         /// <summary>
         /// Find player by id.

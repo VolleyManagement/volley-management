@@ -84,6 +84,40 @@
                 && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
         }
 
+
+        private static bool IsSetScoreValid(Score score, Score setScore, ref bool hasMatchEnded)
+        {
+            if (setScore.Home > setScore.Away)
+            {
+                if (hasMatchEnded)
+                {
+                    return false;
+                }
+
+                score.Home++;
+
+                if (score.Home == Constants.GameResult.SETS_COUNT_TO_WIN)
+                {
+                    hasMatchEnded = true;
+                }
+            }
+            else if (setScore.Home < setScore.Away)
+            {
+                if (hasMatchEnded)
+                {
+                    return false;
+                }
+
+                score.Away++;
+
+                if (score.Away == Constants.GameResult.SETS_COUNT_TO_WIN)
+                {
+                    hasMatchEnded = true;
+                }
+            }
+
+            return true;
+        }
         /// <summary>
         /// Determines whether the set scores are listed in the correct order.
         /// </summary>
@@ -96,33 +130,9 @@
 
             foreach (var setScore in setScores)
             {
-                if (setScore.Home > setScore.Away)
+                if (!IsSetScoreValid(score, setScore, ref hasMatchEnded))
                 {
-                    if (hasMatchEnded)
-                    {
-                        return false;
-                    }
-
-                    score.Home++;
-
-                    if (score.Home == Constants.GameResult.SETS_COUNT_TO_WIN)
-                    {
-                        hasMatchEnded = true;
-                    }
-                }
-                else if (setScore.Home < setScore.Away)
-                {
-                    if (hasMatchEnded)
-                    {
-                        return false;
-                    }
-
-                    score.Away++;
-
-                    if (score.Away == Constants.GameResult.SETS_COUNT_TO_WIN)
-                    {
-                        hasMatchEnded = true;
-                    }
+                    return false;
                 }
             }
 
@@ -161,17 +171,13 @@
 
         private static bool IsOrdinaryRequiredSetScoreValid(Score setScore, int setOrderNumber = 0)
         {
-            bool isValid = false;
-            if (setOrderNumber == Constants.GameResult.MAX_SETS_COUNT)
-            {
-                isValid = IsSetScoreValid(setScore, Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN);
-            }
-            else
-            {
-                isValid = IsSetScoreValid(setScore, Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN);
-            }
+            byte defScoreToWin = 0;
 
-            return isValid;
+            defScoreToWin = setOrderNumber == Constants.GameResult.MAX_SETS_COUNT ?
+                (byte)Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN :
+                (byte)Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
+
+            return IsSetScoreValid(setScore, defScoreToWin);
         }
 
         private static bool IsSetScoreValid(Score setScore, int minSetScore)

@@ -11,8 +11,8 @@
     using Moq;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.FeedbackService;
+    using ViewModels;
+    using Services.FeedbackService;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -56,7 +56,7 @@
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _captchaManagerMock = new Mock<ICaptchaManager>();
 
-            _captchaManagerMock.Setup(m => m.ValidateUserCaptcha(It.IsAny<string>())).Returns(Task.FromResult<bool>(true));
+            _captchaManagerMock.Setup(m => m.ValidateUserCaptchaAsync(It.IsAny<string>())).Returns(Task.FromResult<bool>(true));
         }
 
         #endregion
@@ -211,7 +211,7 @@
 
             // Act
             _captchaManagerMock
-                .Setup(cm => cm.ValidateUserCaptcha(It.IsAny<string>()))
+                .Setup(cm => cm.ValidateUserCaptchaAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult<bool>(false));
             var res = sut.Create(feedback).Result as JsonResult;
             var returnedDataResult = res.Data as FeedbackMessageViewModel;

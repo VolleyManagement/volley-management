@@ -745,22 +745,24 @@
             {
                 var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
 
-                if (Math.Abs(GetGamesCount(gamesToAdd.Count) - _gameService.GetTournamentGames(tournamentId).Count) > 1)
-                {
-                    _gameService.RemoveAllGamesInTournament(tournamentId);
-                    _gameService.AddGames(gamesToAdd);
-                }
+                //if (Math.Abs(GetGamesCount(gamesToAdd.Count) - _gameService.GetTournamentGames(tournamentId).Count) > 1)
+                //{
+                //    _gameService.RemoveAllGamesInTournament(tournamentId);
+                //    _gameService.AddGames(gamesToAdd);
+                //}
+                _gameService.RemoveAllGamesInTournament(tournamentId);
+                _gameService.AddGames(gamesToAdd);
             }
         }
 
-        private static List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
+        private  List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
             int gamesCount = GetGamesCount(teamsCount);
             List<Game> games = new List<Game>();
 
             var existGames = _gameService.GetTournamentGames(tournamentId)?
-                .Where(tr => tr.AwayTeamId != null || tr.HomeTeamId != null);
+               .Where(tr => tr.AwayTeamId != null || tr.HomeTeamId != null);
 
             if (existGames==null)
             {

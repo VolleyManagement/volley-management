@@ -744,12 +744,6 @@
                 && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
                 var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-
-                //if (Math.Abs(GetGamesCount(gamesToAdd.Count) - _gameService.GetTournamentGames(tournamentId).Count) > 1)
-                //{
-                //    _gameService.RemoveAllGamesInTournament(tournamentId);
-                //    _gameService.AddGames(gamesToAdd);
-                //}
                 _gameService.RemoveAllGamesInTournament(tournamentId);
                 _gameService.AddGames(gamesToAdd);
             }

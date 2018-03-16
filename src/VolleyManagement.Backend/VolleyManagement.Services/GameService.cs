@@ -21,9 +21,9 @@ namespace VolleyManagement.Services
     using GameResultConstants = Domain.Constants.GameResult;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
-                             /// <summary>
-                             /// Defines an implementation of <see cref="IGameService"/> contract.
-                             /// </summary>
+    /// <summary>
+    /// Defines an implementation of <see cref="IGameService"/> contract.
+    /// </summary>
     public class GameService : IGameService
 #pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
@@ -825,7 +825,7 @@ namespace VolleyManagement.Services
                 else
                 {
                     winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                    finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+                                   finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
                 }
 
                 if (finishedGame.GameNumber % 2 != 0)

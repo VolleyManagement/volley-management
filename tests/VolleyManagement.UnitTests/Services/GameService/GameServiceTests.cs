@@ -1674,7 +1674,7 @@
             {
                 sut.Edit(testGameForEdit);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 isExceprionThrown = true;
             }

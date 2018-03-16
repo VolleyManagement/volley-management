@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Domain.ContributorsAggregate;
     using UI.Areas.WebApi.ViewModels.ContributorsTeam;
 
     /// <summary>

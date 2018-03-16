@@ -2,7 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
+    using UI.Areas.WebAPI.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
     internal static class WeekViewModelComparer

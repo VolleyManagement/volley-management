@@ -72,11 +72,11 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <summary>
         /// Gets or sets the ordered collection of teams.
         /// </summary>
-        public List<PivotStandingsTeamViewModel> TeamsStandings { get; set; }
+        public ICollection<PivotStandingsTeamViewModel> TeamsStandings { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of games in tournament standings for pivot table.
         /// </summary>
-        public List<PivotStandingsGameViewModel> GamesStandings { get; set; }
+        public ICollection<PivotStandingsGameViewModel> GamesStandings { get; set; }
     }
 }

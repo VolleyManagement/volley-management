@@ -2,9 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Claims;
-    using System.Security.Principal;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
     using Comparers;
     using Contracts;

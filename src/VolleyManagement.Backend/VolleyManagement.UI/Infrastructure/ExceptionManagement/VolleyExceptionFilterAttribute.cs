@@ -5,10 +5,12 @@
     using System.Web.Routing;
     using Crosscutting.Contracts.Infrastructure;
 
+#pragma warning disable S3993 // Custom attributes should be marked with "System.AttributeUsageAttribute"
     /// <summary>
     /// The volley exception filter attribute.
     /// </summary>
     public class VolleyExceptionFilterAttribute : FilterAttribute, IExceptionFilter
+#pragma warning restore S3993 // Custom attributes should be marked with "System.AttributeUsageAttribute"
     {
         #region Fields
 
@@ -43,8 +45,6 @@
                                        ? BuildJsonResult(filterContext)
                                        : RedirectToErrorView(filterContext);
 
-            // filterContext.ExceptionHandled = true;
-
             // Log exception data
             if (_volleyAppBaseExceptionType.IsInstanceOfType(filterContext.Exception))
             {
@@ -60,7 +60,7 @@
 
         #region Exception processing
 
-        private bool IsXmlHttpRequest(RequestContext requestContext)
+        private static bool IsXmlHttpRequest(RequestContext requestContext)
         {
             return requestContext.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }
@@ -88,12 +88,12 @@
 
         private void LogVolleyManagementException(ExceptionContext filterContext)
         {
-            // TODO: Log error
+            // Do logging
         }
 
         private void LogUnhandledException(ExceptionContext filterContext)
         {
-            // TODO: Log error
+            // Do logging
         }
 
         #endregion

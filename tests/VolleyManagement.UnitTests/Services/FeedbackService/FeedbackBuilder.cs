@@ -2,7 +2,6 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Crosscutting.Contracts.Providers;
     using Domain.FeedbackAggregate;
 
     /// <summary>

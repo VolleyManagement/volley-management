@@ -4,15 +4,13 @@
     using System.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Areas.Admin.Controllers;
-    using VolleyManagement.UnitTests.Services.PlayerService;
-    using VolleyManagement.UnitTests.Services.UsersService;
+    using Contracts;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Domain.UsersAggregate;
+    using UI.Areas.Admin.Controllers;
+    using Services.PlayerService;
+    using Services.UsersService;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

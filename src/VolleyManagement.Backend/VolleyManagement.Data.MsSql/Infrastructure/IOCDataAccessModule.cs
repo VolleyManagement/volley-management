@@ -2,22 +2,24 @@
 {
     using System;
     using System.Linq;
-    using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Queries;
-    using VolleyManagement.Data.MsSql.Repositories;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RequestsAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Crosscutting.Contracts.Infrastructure.IOC;
+    using Contracts;
+    using Queries;
+    using Repositories;
+    using Domain.ContributorsAggregate;
+    using Domain.FeedbackAggregate;
+    using Domain.GamesAggregate;
+    using Domain.PlayersAggregate;
+    using Domain.RequestsAggregate;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentRequestAggregate;
+    using Domain.TournamentsAggregate;
+    using Domain.UsersAggregate;
 
+#pragma warning disable S1200 // IoC registration
     public class IocDataAccessModule : IIocRegistrationModule
+#pragma warning restore S1200
     {
         public void RegisterDependencies(IIocContainer container)
         {
@@ -25,7 +27,7 @@
             RegisterQueries(container);
         }
 
-        private void RegisterRepositories(IIocContainer container)
+        private static void RegisterRepositories(IIocContainer container)
         {
             container
                 .Register<IUnitOfWork, VolleyUnitOfWork>(IocLifetimeEnum.Scoped)
@@ -64,7 +66,7 @@
             }
         }
 
-        private bool InterfaceIsQuery(Type type)
+        private static bool InterfaceIsQuery(Type type)
         {
             var typeDefinition = type.GetGenericTypeDefinition();
             return typeDefinition == typeof(IQuery<,>) || typeDefinition == typeof(IQueryAsync<,>);

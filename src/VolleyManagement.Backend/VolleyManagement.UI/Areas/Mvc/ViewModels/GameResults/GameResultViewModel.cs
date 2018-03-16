@@ -64,7 +64,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<ScoreViewModel> SetScores { get; set; }
+        public IList<ScoreViewModel> SetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of the game.

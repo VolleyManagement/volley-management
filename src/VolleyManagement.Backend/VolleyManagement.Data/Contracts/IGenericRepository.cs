@@ -4,7 +4,7 @@
     /// Define methods to work with data from store.
     /// </summary>
     /// <typeparam name="T">The type from the store.</typeparam>
-    public interface IGenericRepository<T> : IRepository
+    public interface IGenericRepository<in T> : IRepository
         where T : class
     {
         /// <summary>

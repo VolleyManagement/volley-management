@@ -13,10 +13,12 @@
     using WebAPI.ViewModels.GameReports;
     using WebAPI.ViewModels.Schedule;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// The tournaments controller.
     /// </summary>
     public class TournamentsController : ApiController
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITournamentService _tournamentService;
         private readonly IGameReportService _gameReportService;
@@ -69,7 +71,7 @@
         /// <param name="id">Id of tournament</param>
         /// <returns>Standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/Standings")]
-        public List<DivisionStandingsViewModel> GetTournamentStandings(int id)
+        public IList<DivisionStandingsViewModel> GetTournamentStandings(int id)
         {
             var result = new List<DivisionStandingsViewModel>();
             var entries = _gameReportService.GetStandings(id);
@@ -94,7 +96,7 @@
         /// <param name="id">Id of tournament</param>
         /// <returns>Pivot standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/PivotStandings")]
-        public List<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
+        public IList<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
         {
             var pivotData = _gameReportService.GetPivotStandings(id);
             return pivotData.Divisions.Select(item => new PivotStandingsViewModel(item)).ToList();
@@ -119,19 +121,19 @@
                 .Select(w => new Tuple<int, List<GameViewModel>>(w.Key.Week, w.ToList()))
                 .ToList();
 
-            var result = new ScheduleViewModel()
+            var result = new ScheduleViewModel
             {
                 Schedule = resultGroupedByWeek.Select(it =>
-                    new WeekViewModel()
+                    new WeekViewModel
                     {
                         Days = it.Item2
                             .GroupBy(item => item.Date.DayOfWeek)
                             .Select(element =>
-                            new ScheduleDayViewModel()
+                            new ScheduleDayViewModel
                             {
-                                Date = element.ToList().Select(d => d.Date).First(),
-                                Divisions = element.ToList().Select(data =>
-                                    new DivisionTitleViewModel()
+                                Date = element.Select(d => d.Date).First(),
+                                Divisions = element.Select(data =>
+                                    new DivisionTitleViewModel
                                     {
                                         Id = data.DivisionId,
                                         Name = data.DivisionName,
@@ -161,24 +163,24 @@
 
         private static void ClearDivisionNames(ScheduleViewModel result)
         {
-            result.Schedule.ForEach(w =>
+            foreach (var resSchedule in result.Schedule)
             {
-                w.Days.ForEach(d =>
+                foreach (var daysResSchedule in resSchedule.Days)
                 {
-                    d.Divisions.ForEach(div =>
+                    foreach (var divDaysRes in daysResSchedule.Divisions)
                     {
-                        div.Id = 0;
-                        div.Name = null;
-                    });
+                        divDaysRes.Id = 0;
+                        divDaysRes.Name = null;
+                    }
 
-                    d.Games.ForEach(g =>
+                    foreach (var gamesDaysRes in daysResSchedule.Games)
                     {
-                        g.DivisionId = 0;
-                        g.DivisionName = null;
-                        g.GroupId = 0;
-                    });
-                });
-            });
+                        gamesDaysRes.DivisionId = 0;
+                        gamesDaysRes.DivisionName = null;
+                        gamesDaysRes.GroupId = 0;
+                    }
+                }
+            }
         }
 
         private static string GetRoundName(int roundNumber, TournamentScheduleDto tournament)

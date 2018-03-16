@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Services.Authorization
 {
     using System.Collections.Generic;
-
+    using System.Linq;
     using Contracts.Authorization;
     using Data.Contracts;
     using Data.Queries.Common;
@@ -16,13 +16,13 @@
     {
         #region Fields
 
-        private readonly IQuery<List<Role>, GetAllCriteria> _getAllQuery;
+        private readonly IQuery<ICollection<Role>, GetAllCriteria> _getAllQuery;
 
         private readonly IQuery<Role, FindByIdCriteria> _getByIdQuery;
 
-        private readonly IQuery<List<UserInRoleDto>, FindByRoleCriteria> _getUsersByRoleQuery;
+        private readonly IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria> _getUsersByRoleQuery;
 
-        private readonly IQuery<List<UserInRoleDto>, GetAllCriteria> _getUserInRolesQuery;
+        private readonly IQuery<IEnumerable<UserInRoleDto>, GetAllCriteria> _getUserInRolesQuery;
 
         private readonly IRoleRepository _roleRepository;
 
@@ -39,10 +39,10 @@
         /// <param name="getUserInRolesQuery"> Users In Role query. </param>
         /// <param name="roleRepository">Role repository</param>
         public RolesService(
-            IQuery<List<Role>, GetAllCriteria> getAllQuery,
+            IQuery<ICollection<Role>, GetAllCriteria> getAllQuery,
             IQuery<Role, FindByIdCriteria> getByIdQuery,
-            IQuery<List<UserInRoleDto>, FindByRoleCriteria> getUsersByRoleQuery,
-            IQuery<List<UserInRoleDto>, GetAllCriteria> getUserInRolesQuery,
+            IQuery<ICollection<UserInRoleDto>, FindByRoleCriteria> getUsersByRoleQuery,
+            IQuery<IEnumerable<UserInRoleDto>, GetAllCriteria> getUserInRolesQuery,
             IRoleRepository roleRepository)
         {
             _getAllQuery = getAllQuery;
@@ -60,7 +60,7 @@
         /// Returns all roles supported by the application
         /// </summary>
         /// <returns>List of roles</returns>
-        public List<Role> GetAllRoles()
+        public ICollection<Role> GetAllRoles()
         {
             return _getAllQuery.Execute(new GetAllCriteria());
         }
@@ -80,7 +80,7 @@
         /// </summary>
         /// <param name="roleId">Id of the role to look for</param>
         /// <returns>User in role</returns>
-        public List<UserInRoleDto> GetUsersInRole(int roleId)
+        public ICollection<UserInRoleDto> GetUsersInRole(int roleId)
         {
             return _getUsersByRoleQuery.Execute(new FindByRoleCriteria { RoleId = roleId });
         }
@@ -89,7 +89,7 @@
         /// The get all users with roles.
         /// </summary>
         /// <returns> Collection of <see cref="UserInRoleDto"/></returns>
-        public List<UserInRoleDto> GetAllUsersWithRoles()
+        public IEnumerable<UserInRoleDto> GetAllUsersWithRoles()
         {
             return _getUserInRolesQuery.Execute(new GetAllCriteria());
         }

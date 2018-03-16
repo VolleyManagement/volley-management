@@ -32,7 +32,7 @@
         {
             var cookieOptions = new CookieAuthenticationOptions { LoginPath = new PathString("/Account/Login") };
             cookieOptions.AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie;
-            cookieOptions.Provider = new CookieAuthenticationProvider { OnValidateIdentity = OnValidateIdentity };
+            cookieOptions.Provider = new CookieAuthenticationProvider { OnValidateIdentity = OnValidateIdentityAsync };
 
             app.UseCookieAuthentication(cookieOptions);
 
@@ -52,14 +52,14 @@
             {
                 app.UseGoogleAuthentication(
                     new GoogleOAuth2AuthenticationOptions
-                        {
-                            ClientId = googleId,
-                            ClientSecret = googleSecret
-                        });
+                    {
+                        ClientId = googleId,
+                        ClientSecret = googleSecret
+                    });
             }
         }
 
-        private Task OnValidateIdentity(CookieValidateIdentityContext ctx)
+        private static Task OnValidateIdentityAsync(Microsoft.Owin.Security.Provider.BaseContext<CookieAuthenticationOptions> ctx)
         {
             RegisterUserManagerInOwinContext(ctx.OwinContext);
             SecurityStampValidator.OnValidateIdentity<VolleyUserManager, UserModel, int>(
@@ -70,7 +70,7 @@
             return Task.FromResult(false);
         }
 
-        private void RegisterUserManagerInOwinContext(IOwinContext context)
+        private static void RegisterUserManagerInOwinContext(IOwinContext context)
         {
             var userManager = DependencyResolver.Current.GetService<VolleyUserManager>();
             context.Set(userManager);

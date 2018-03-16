@@ -62,8 +62,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
             MockGetTournaments(testData);
             var expected = new TournamentViewModelServiceTestFixture()
                                             .TestTournaments()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             var sut = BuildSUT();
 
@@ -72,7 +71,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            CollectionAssert.AreEqual(
+            TestHelper.AreEqual(
                 expected,
                 actual,
                 new TournamentViewModelComparer());

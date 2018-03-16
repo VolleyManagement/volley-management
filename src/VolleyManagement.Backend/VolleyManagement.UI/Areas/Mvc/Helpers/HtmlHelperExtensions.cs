@@ -22,13 +22,30 @@
         /// <param name="helper">The HTML helper instance that this method extends.</param>
         /// <param name="expression">An expression that identifies the object that contains the properties to render.</param>
         /// <param name="initialValue">Value to default initialize.</param>
+        /// <returns>TextBox for date representing.</returns>
+        public static MvcHtmlString TextBoxForShortDate<TModel, TProperty>(
+            this HtmlHelper<TModel> helper,
+            System.Linq.Expressions.Expression<Func<TModel, TProperty>> expression,
+            DateTime? initialValue)
+        {
+            return TextBoxForShortDate<TModel, TProperty>(helper, expression, initialValue, null);
+        }
+
+        /// <summary>
+        /// Helper to show TextBox for date.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TProperty">The type of the value.</typeparam>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
+        /// <param name="expression">An expression that identifies the object that contains the properties to render.</param>
+        /// <param name="initialValue">Value to default initialize.</param>
         /// <param name="htmlAttributes">Html attributes input must have.</param>
         /// <returns>TextBox for date representing.</returns>
         public static MvcHtmlString TextBoxForShortDate<TModel, TProperty>(
                                                                 this HtmlHelper<TModel> helper,
                                                                 System.Linq.Expressions.Expression<Func<TModel, TProperty>> expression,
                                                                 DateTime? initialValue,
-                                                                object htmlAttributes = null)
+                                                                object htmlAttributes)
         {
             DateTime initialNotNullValue = initialValue == null
                                             ? DateTime.Now

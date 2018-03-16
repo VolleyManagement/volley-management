@@ -1648,6 +1648,42 @@
         }
 
         /// <summary>
+        /// Test for Edit method. Game object in PlayOff contains valid data. 
+        /// No exceprtion returns and game is edited successfully
+        /// </summary>
+        [TestMethod]
+        public void Edit_GameTimeForPlayOffChanged_NoException()
+        {
+            //Arrange
+            bool isExceprionThrown = false;
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            var testGameForEdit = games[5];
+            testGameForEdit.GameDate = new DateTime(2016, 4, 3, 0, 0, 0);
+
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            //ActS
+            var sut = BuildSUT();
+            try
+            {
+                sut.Edit(testGameForEdit);
+            }
+            catch (Exception e)
+            {
+                isExceprionThrown = true;
+            }
+
+            //Assert
+            Assert.AreEqual(isExceprionThrown, false);
+            VerifyEditGame(testGameForEdit, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Edit method. Game object contains valid data. Game is edited successfully.
         /// </summary>
         [TestMethod]

@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Domain.GamesAggregate
 {
-    using System.Collections.Generic;
     using Data.Contracts;
 
     /// <summary>

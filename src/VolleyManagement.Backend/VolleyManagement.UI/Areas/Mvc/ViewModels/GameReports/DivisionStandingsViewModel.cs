@@ -9,7 +9,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
     /// </summary>
     public class DivisionStandingsViewModel : DivisionStandingsBase
     {
-        public List<StandingsEntryViewModel> StandingsEntries { get; set; } = new List<StandingsEntryViewModel>();
+        public IList<StandingsEntryViewModel> StandingsEntries { get; set; } = new List<StandingsEntryViewModel>();
 
         public static DivisionStandingsViewModel Map(StandingsDto standings)
         {

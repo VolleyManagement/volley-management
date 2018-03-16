@@ -5,6 +5,7 @@
     /// </summary>
     public enum LogLevelEnum
     {
+        Debug,
         Information,
         Error
     }

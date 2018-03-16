@@ -131,7 +131,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
             /// <summary>
             /// Gets or sets the set scores.
             /// </summary>
-            public List<ScoreViewModel> SetScores { get; set; }
+            public IList<ScoreViewModel> SetScores { get; set; }
 
             /// <summary>
             /// Gets or sets a value indicating whether the technical defeat has taken place.

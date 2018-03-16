@@ -11,10 +11,12 @@
     using Mappers;
     using Specifications;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
     /// </summary>
     internal class TournamentRepository : ITournamentRepository
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<TeamEntity> _dalTeams;
@@ -41,7 +43,10 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get
+            {
+                return _unitOfWork;
+            }
         }
 
         /// <summary>
@@ -167,7 +172,7 @@
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
         }
 
-        private void UpdateDivisions(List<DivisionEntity> old, List<Division> changed)
+        private void UpdateDivisions(IEnumerable<DivisionEntity> old, IEnumerable<Division> changed)
         {
             foreach (var item in old.ToList())
             {
@@ -185,32 +190,32 @@
             }
         }
 
-        private void UpdateGroups(List<GroupEntity> old, List<Group> changed)
+        private void UpdateGroups(IEnumerable<GroupEntity> old, IEnumerable<Group> changed)
         {
             foreach (var item in old.ToList())
             {
                 if (!Enumerable.Any(from element in changed
-                                   where item.Id == element.Id
-                                   select element))
+                                    where item.Id == element.Id
+                                    select element))
                 {
                     RemoveGroup(item.Id);
                 }
             }
         }
 
-        private void MapIdentifiers(Tournament to, TournamentEntity from)
+        private static void MapIdentifiers(Tournament to, TournamentEntity from)
         {
             to.Id = from.Id;
 
             foreach (DivisionEntity divisionEntity in from.Divisions)
             {
-                Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
+                Division divisionDomain = to.Divisions.First(d => d.Name == divisionEntity.Name);
                 divisionDomain.Id = divisionEntity.Id;
                 divisionDomain.TournamentId = divisionEntity.TournamentId;
 
                 foreach (GroupEntity groupEntity in divisionEntity.Groups)
                 {
-                    Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();
+                    Group groupDomain = divisionDomain.Groups.First(g => g.Name == groupEntity.Name);
                     groupDomain.Id = groupEntity.Id;
                     groupDomain.DivisionId = divisionEntity.Id;
                 }

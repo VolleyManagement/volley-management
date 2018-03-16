@@ -20,7 +20,6 @@
         /// class.
         /// </summary>
         public TournamentValidationException()
-            : base()
         {
         }
 

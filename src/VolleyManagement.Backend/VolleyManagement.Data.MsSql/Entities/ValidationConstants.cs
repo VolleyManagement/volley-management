@@ -3,6 +3,8 @@
     /// <summary>
     /// Database validation constraints
     /// </summary>
+
+#pragma warning disable S1144 // False positive: https://github.com/SonarSource/sonar-csharp/issues/904
     internal static class ValidationConstants
     {
         public const int EMPTY_DATABASE_ID_VALUE = 0;
@@ -117,4 +119,5 @@
             public const int MAX_USER_ENVIRONMENT_LENGTH = 320;
         }
     }
+#pragma warning restore S1144
 }

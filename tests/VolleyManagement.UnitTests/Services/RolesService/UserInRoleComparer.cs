@@ -56,14 +56,21 @@
                 return result;
             }
 
-            for (int i = 0; i < x.RoleIds.Count; i++)
+            var xEnumerator = x.RoleIds.GetEnumerator();
+            var yEnumerator = x.RoleIds.GetEnumerator();
+
+
+            while (xEnumerator.MoveNext() && yEnumerator.MoveNext())
             {
-                result = y.RoleIds[i] - x.RoleIds[i];
+                result = yEnumerator.Current - xEnumerator.Current;
                 if (result != 0)
                 {
                     break;
                 }
             }
+
+            xEnumerator.Dispose();
+            yEnumerator.Dispose();
 
             return result;
         }

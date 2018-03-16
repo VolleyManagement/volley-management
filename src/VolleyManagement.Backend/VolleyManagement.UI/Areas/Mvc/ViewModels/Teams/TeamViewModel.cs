@@ -68,7 +68,7 @@
         /// Gets or sets the roster of the team
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
-        public List<PlayerNameViewModel> Roster { get; set; }
+        public ICollection<PlayerNameViewModel> Roster { get; set; }
 
         /// <summary>
         /// Gets or sets the photo of the team

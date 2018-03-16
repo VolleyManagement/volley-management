@@ -9,13 +9,15 @@
     using Domain.TeamsAggregate;
     using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.UsersAggregate;
     using Entities;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Maps Domain models to Dal.
     /// </summary>
     internal static class DomainToDal
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         /// <summary>
         /// Maps Tournament model.
@@ -107,7 +109,7 @@
         /// <param name="from">Division Domain model</param>
         /// <param name="oldDivisions">Divisions which already exists in database</param>
         /// <returns>Division Entity model</returns>
-        public static DivisionEntity Map(Division from, ICollection<DivisionEntity> oldDivisions)
+        public static DivisionEntity Map(Division from, IEnumerable<DivisionEntity> oldDivisions)
         {
             if (from.Id == 0)
             {
@@ -121,7 +123,7 @@
             }
             else
             {
-                var division = oldDivisions.Where(d => d.Id == from.Id).SingleOrDefault();
+                var division = oldDivisions.SingleOrDefault(d => d.Id == from.Id);
                 var newGroups = from.Groups.Where(gr => gr.Id == 0);
                 foreach (var group in newGroups.ToList())
                 {
@@ -133,39 +135,11 @@
         }
 
         /// <summary>
-        /// Maps Division model
-        /// </summary>
-        /// <param name="to">Division entity model</param>
-        /// <param name="from">Division domain model</param>
-        public static void Map(DivisionEntity to, Division from)
-        {
-            to.Id = from.Id;
-            to.Name = from.Name;
-            to.TournamentId = from.TournamentId;
-        }
-
-        /// <summary>
-        /// Maps Division model
-        /// </summary>
-        /// <param name="from">Division domain model</param>
-        /// <returns>Dal division model</returns>
-        public static DivisionEntity Map(Division from)
-        {
-            return new DivisionEntity()
-            {
-                Id = from.Id,
-                Name = from.Name,
-                TournamentId = from.TournamentId,
-                Groups = from.Groups.Select(g => Map(g)).ToList()
-            };
-        }
-
-        /// <summary>
         /// Maps group models
         /// </summary>
         /// <param name="from">List of groups to map</param>
         /// <returns>List of Dal entity</returns>
-        public static List<GroupEntity> Map(List<Group> from)
+        public static List<GroupEntity> Map(ICollection<Group> from)
         {
             var groups = new List<GroupEntity>();
             foreach (var item in from)

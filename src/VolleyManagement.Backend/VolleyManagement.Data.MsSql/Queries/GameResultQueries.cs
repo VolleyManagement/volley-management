@@ -159,10 +159,12 @@
         /// <returns>Domain model of game result.</returns>
         public Game Execute(GameByNumberCriteria criteria)
         {
-            return _dalGameResults
-                .Where(gr => gr.TournamentId == criteria.TournamentId
-                && gr.GameNumber == criteria.GameNumber)
-                .Select(gr => GetGameMapping()(gr))
+            var gameResult = _dalGameResults
+                  .Where(gr => gr.TournamentId == criteria.TournamentId
+                               && gr.GameNumber == criteria.GameNumber)
+                  .ToList();
+
+            return gameResult.Select(gr => GetGameMapping()(gr))
                 .SingleOrDefault();
         }
 

@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql.Context.Migrations
+﻿namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System.Data.Entity.Migrations;
 
@@ -15,10 +15,10 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.TournamentTeam",
                 c => new
-                    {
-                        TournamentId = c.Int(nullable: false),
-                        TeamId = c.Int(nullable: false),
-                    })
+                {
+                    TournamentId = c.Int(nullable: false),
+                    TeamId = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => new { t.TournamentId, t.TeamId })
                 .ForeignKey("dbo.Tournaments", t => t.TournamentId)
                 .ForeignKey("dbo.Teams", t => t.TeamId)

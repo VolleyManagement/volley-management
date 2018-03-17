@@ -51,8 +51,7 @@
             if (googleId != null && googleSecret != null)
             {
                 app.UseGoogleAuthentication(
-                    new GoogleOAuth2AuthenticationOptions
-                    {
+                    new GoogleOAuth2AuthenticationOptions {
                         ClientId = googleId,
                         ClientSecret = googleSecret
                     });

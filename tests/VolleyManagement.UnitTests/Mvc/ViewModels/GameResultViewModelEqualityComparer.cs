@@ -30,7 +30,7 @@
         /// <returns>Hash code for the specified <see cref="GameResultViewModel"/>.</returns>
         public int GetHashCode(GameResultViewModel obj)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
             stringBuilder.Append(obj.AwayTeamId);
             stringBuilder.Append(obj.AwayTeamName);

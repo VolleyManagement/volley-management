@@ -1,7 +1,7 @@
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
     using System.Web.Optimization;
-    
+
 #pragma warning disable S1075 // URIs should not be hardcoded
     /// <summary>
     /// Bundle configuration class

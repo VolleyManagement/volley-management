@@ -32,7 +32,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var feedbacks = _feedbackService.Get().Select(f =>new RequestsViewModel(f)).ToList();
+            var feedbacks = _feedbackService.Get().Select(f => new RequestsViewModel(f)).ToList();
             return View(feedbacks);
         }
 
@@ -112,8 +112,7 @@
 
         private static OperationResultViewModel CreateErrorReply(Exception ex)
         {
-            return new OperationResultViewModel
-            {
+            return new OperationResultViewModel {
                 Message = ex.Message
             };
         }

@@ -67,8 +67,7 @@
 
         private ActionResult BuildJsonResult(ExceptionContext filterContext)
         {
-            return new JsonResult
-            {
+            return new JsonResult {
                 Data =
                                string.Format(
                                    "Unhandled exception occured. Message: {0}",

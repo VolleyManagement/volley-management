@@ -8,18 +8,18 @@
 
 @if (Model == null)
 {
-    @Html.ValidationMessage("LoadError", new {@class = "text-danger"})
+@Html.ValidationMessage("LoadError", new {@class = "text-danger"})
 }
 else
 {
     using (Html.BeginForm())
     {
-        @Html.Partial("_ScheduleOrEditGame", Model);
-        @Html.HiddenFor(model => model.Id);
-            
-        <input class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.Save" />
+@Html.Partial("_ScheduleOrEditGame", Model);
+@Html.HiddenFor(model => model.Id);
+
+<input class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.Save" />
     }
 
-    <br />
-    @Html.ActionLink(@Resources.UI.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
+<br />
+@Html.ActionLink(@Resources.UI.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
 }

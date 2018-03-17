@@ -39,8 +39,8 @@
         /// <returns>A signed integer that indicates the relative values of objects.</returns>
         public int Compare(object x, object y)
         {
-            ContributorsTeamViewModel firstViewModel = x as ContributorsTeamViewModel;
-            ContributorsTeamViewModel secondViewModel = y as ContributorsTeamViewModel;
+            var firstViewModel = x as ContributorsTeamViewModel;
+            var secondViewModel = y as ContributorsTeamViewModel;
 
             if (firstViewModel == null)
             {

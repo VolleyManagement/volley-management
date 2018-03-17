@@ -9,7 +9,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
     <tr id="player_@item.Id">
         <td>
             <label>Full name</label>
@@ -22,7 +22,7 @@
                    name="choosePlayerButton"
                    value="@Resources.UI.PlayerViews.AddPlayerToTeam"
                    onclick="VM.team.handlers.addPlayerToTeam('@item.FirstName'+ ' ' +'@item.LastName', @item.Id)" />
-        </td>  
+        </td>
     </tr>
 }
 </table>

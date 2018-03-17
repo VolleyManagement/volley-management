@@ -126,8 +126,7 @@
         /// <returns> View model object </returns>
         public static TournamentViewModel Map(Tournament tournament)
         {
-            var tournamentViewModel = new TournamentViewModel
-            {
+            var tournamentViewModel = new TournamentViewModel {
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,

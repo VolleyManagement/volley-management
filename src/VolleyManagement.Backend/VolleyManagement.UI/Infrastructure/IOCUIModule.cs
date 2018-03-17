@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Infrastructure
+﻿namespace VolleyManagement.UI.Infrastructure
 {
     using Contracts;
     using Contracts.Authorization;
@@ -19,7 +19,7 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
-            
+
             if (Is<IisDeployment>.Disabled)
             {
                 container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);

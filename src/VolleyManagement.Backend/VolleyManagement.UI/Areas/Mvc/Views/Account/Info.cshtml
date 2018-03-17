@@ -7,28 +7,28 @@
 <ul class="dropdown-menu dropdown-user">
     @if (Model.IsAuthenticated)
     {
-        <li>
-            <a href="@Url.Action("Details", "Account")"><i class="fa fa-user fa-fw"></i> User Profile</a>
-        </li>
+    <li>
+        <a href="@Url.Action("Details", "Account")"><i class="fa fa-user fa-fw"></i> User Profile</a>
+    </li>
         if (Model.Authorization.IsAllowed(AuthOperations.AdminDashboard.View))
         {
-            <li>
-                <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })"><i class="fa fa-list-alt"></i> Admin Dashboard</a>
-            </li>
+    <li>
+        <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })"><i class="fa fa-list-alt"></i> Admin Dashboard</a>
+    </li>
         }
-        <li>
-            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-        </li>
-        <li class="divider"></li>
-        <li>
-            <a href="@Url.Action("Logout", "Account")" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-        </li>
+    <li>
+        <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+        <a href="@Url.Action("Logout", "Account")" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+    </li>
     }
     else
     {
-        <li>
-            <a href="@Url.Action("Login", "Account", new { returnUrl = Model.ReturnUrl })"><i class="fa fa-sign-out fa-fw"></i> Login</a>
-        </li>
+    <li>
+        <a href="@Url.Action("Login", "Account", new { returnUrl = Model.ReturnUrl })"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+    </li>
     }
 
 </ul>

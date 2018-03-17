@@ -30,8 +30,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            Division firstDivision = x as Division;
-            Division secondDivision = y as Division;
+            var firstDivision = x as Division;
+            var secondDivision = y as Division;
 
             if (firstDivision == null)
             {

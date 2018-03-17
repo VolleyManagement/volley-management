@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using System;
     using System.Collections.Generic;
@@ -25,8 +25,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
             GamesStandings = pivotStandings.GameResults
                 .GroupBy(gr =>
                     (TeamAId: Math.Min(gr.HomeTeamId, gr.AwayTeamId), TeamBId: Math.Max(gr.HomeTeamId, gr.AwayTeamId)))
-                .Select(grouped => new PivotStandingsGameViewModel
-                {
+                .Select(grouped => new PivotStandingsGameViewModel {
                     HomeTeamId = grouped.Key.TeamAId,
                     AwayTeamId = grouped.Key.TeamBId,
                     Results = grouped.Select(r =>

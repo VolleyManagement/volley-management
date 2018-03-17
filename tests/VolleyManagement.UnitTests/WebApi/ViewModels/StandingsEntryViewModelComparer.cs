@@ -30,8 +30,8 @@
         /// <returns>A signed integer that indicates the relative values of entries.</returns>
         public int Compare(object x, object y)
         {
-            StandingsEntryViewModel firstEntry = x as StandingsEntryViewModel;
-            StandingsEntryViewModel secondEntry = y as StandingsEntryViewModel;
+            var firstEntry = x as StandingsEntryViewModel;
+            var secondEntry = y as StandingsEntryViewModel;
 
             if (firstEntry == null)
             {

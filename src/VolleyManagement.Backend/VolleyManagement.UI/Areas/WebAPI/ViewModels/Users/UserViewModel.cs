@@ -59,15 +59,14 @@
         /// <returns> View model object </returns>
         public static UserViewModel Map(User user)
         {
-            return new UserViewModel
-                       {
-                           Id = user.Id,
-                           UserName = user.UserName,
-                           Password = string.Empty,
-                           FullName = user.PersonName,
-                           CellPhone = user.PhoneNumber,
-                           Email = user.Email
-                       };
+            return new UserViewModel {
+                Id = user.Id,
+                UserName = user.UserName,
+                Password = string.Empty,
+                FullName = user.PersonName,
+                CellPhone = user.PhoneNumber,
+                Email = user.Email
+            };
         }
 
         /// <summary>
@@ -76,8 +75,7 @@
         /// <returns> Domain object </returns>
         public User ToDomain()
         {
-            return new User
-            {
+            return new User {
                 Id = Id,
                 UserName = UserName,
                 PhoneNumber = CellPhone,

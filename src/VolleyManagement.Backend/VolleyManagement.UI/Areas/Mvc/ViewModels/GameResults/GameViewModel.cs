@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
     using System.Collections.Generic;
@@ -100,8 +100,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>Complete GameViewModel</returns>
         public static GameViewModel Map(GameResultDto game)
         {
-            return new GameViewModel
-            {
+            return new GameViewModel {
                 Id = game.Id,
                 TournamentId = game.TournamentId,
                 HomeTeamId = game.HomeTeamId,
@@ -119,8 +118,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>Game domain model</returns>
         public Game ToDomain()
         {
-            return new Game
-            {
+            return new Game {
                 Id = Id,
                 Round = Round,
                 TournamentId = TournamentId,

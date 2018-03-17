@@ -178,15 +178,13 @@
 
             var result = query.ToList();
 
-            return result.Select(p => new TournamentScheduleDto
-            {
+            return result.Select(p => new TournamentScheduleDto {
                 Id = p.TournamentId,
                 Name = p.TournamentName,
                 StartDate = p.StartDate,
                 EndDate = p.EndDate,
                 Scheme = (TournamentSchemeEnum)p.Scheme,
-                Divisions = result.Select(d => new DivisionScheduleDto
-                {
+                Divisions = result.Select(d => new DivisionScheduleDto {
                     DivisionId = d.DivisionId,
                     DivisionName = d.DivisionName,
                     TeamCount = d.GroupTeamCount
@@ -202,8 +200,7 @@
         {
             return
                 t =>
-                new Tournament
-                {
+                new Tournament {
                     Id = t.Id,
                     Name = t.Name,
                     Description = t.Description,
@@ -230,8 +227,7 @@
         {
             return
                 d =>
-                new Division
-                {
+                new Division {
                     Id = d.Id,
                     Name = d.Name,
                     TournamentId = d.TournamentId,
@@ -247,8 +243,7 @@
         {
             return
                 g =>
-                new Group
-                {
+                new Group {
                     Id = g.Id,
                     Name = g.Name,
                     DivisionId = g.DivisionId,

@@ -163,7 +163,7 @@
         [TestMethod]
         public void Create_InvalidNullPlayer_ArgumentNullExceptionIsThrown()
         {
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             Player newPlayer = null;
@@ -214,7 +214,7 @@
         public void Create_NoNewPlayers_PlayersNotCreated()
         {
             // Arrange
-            bool gotException = false;
+            var gotException = false;
             var newPlayers = CreateListOfExistingPlayers();
             MockGetByIdQuery(newPlayers.First());
             var existingPlayers = CreateListOfExistingPlayersWithoutTeam().AsQueryable();
@@ -259,7 +259,7 @@
         [TestMethod]
         public void Create_OneOfThePlayersPlaysInAnotherTeam_ArgumentExceptionThown()
         {
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             var newPlayers = new List<Player>()
@@ -298,7 +298,7 @@
         public void Create_NoCreateRights_ExceptionThrown()
         {
             // Arrange
-            Player testPlayer = new PlayerBuilder().Build();
+            var testPlayer = new PlayerBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Players.Create);
             var sut = BuildSUT();
 
@@ -319,7 +319,7 @@
         public void Edit_NoEditRights_ExceptionThrown()
         {
             // Arrange
-            Player testPlayer = new PlayerBuilder().Build();
+            var testPlayer = new PlayerBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Players.Edit);
             var sut = BuildSUT();
 
@@ -375,7 +375,7 @@
         public void Delete_InvalidPlayerId_MissingEntityExceptionThrown()
         {
             const int PLAYER_ID = 1;
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             _playerRepositoryMock.Setup(p => p.Remove(It.IsAny<int>()))
@@ -404,7 +404,7 @@
         public void Delete_CaptainOfExistTeam_ValidationExceptionThrown()
         {
             const int PLAYER_ID = 1;
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             var existTeam = new TeamBuilder().WithCaptain(PLAYER_ID).Build();

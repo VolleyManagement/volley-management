@@ -1,4 +1,5 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameService {
+﻿namespace VolleyManagement.UnitTests.Services.GameService
+{
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
@@ -9,7 +10,8 @@
     /// Represents a comparer for <see cref="Score"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ScoreComparer : IEqualityComparer<Score> {
+    internal class ScoreComparer : IEqualityComparer<Score>
+    {
         /// <summary>
         /// Determines whether the specified object instances are considered equal.
         /// </summary>

@@ -137,11 +137,11 @@
 </div>
 
 <div class="editor-label">@Html.LabelFor(model => model.Divisions)</div>
-    @if (Model.IsNew)
+@if (Model.IsNew)
     {
-        <div id="Divisions">
-        </div>
-            <script>
+<div id="Divisions">
+</div>
+<script>
                 addNewDivisionInTournament({
                     maxDivisionsCount: @DivisionConstants.MAX_DIVISIONS_COUNT,
                     maxGroupsCount: @GroupConstants.MAX_GROUPS_COUNT,
@@ -156,74 +156,74 @@
                     addName: '@Resources.UI.TournamentViews.AddGroup',
                     removeName: '@Resources.UI.TournamentViews.RemoveGroup'
                     })
-            </script>
+</script>
     }
     else
     {
-        <div id="Divisions">
-            @for (int i = 0; i < Model.Divisions.Count; i++)
+<div id="Divisions">
+    @for (int i = 0; i < Model.Divisions.Count; i++)
             {
                 string divisionWrapperId = String.Format("Division_{0}_Id", i);
                 string divisionGroupsListWrapperId = String.Format("Division_{0}_Groups", i);
                 string removeDivisionGroupsListWrapperId = String.Format("Remove_{0}", divisionWrapperId);
 
-                <div id=@divisionWrapperId>
-                    @Html.HiddenFor(model => model.Divisions[i].Id)
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.Divisions[i].Name, new { Name = "Divisions[@i].Name", disabled = "disabled" })
-                        @Html.ValidationMessageFor(model => model.Divisions[i].Name)
-                        @if (Model.Divisions[i].IsEmpty)
+    <div id=@divisionWrapperId>
+        @Html.HiddenFor(model => model.Divisions[i].Id)
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Divisions[i].Name, new { Name = "Divisions[@i].Name", disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Divisions[i].Name)
+            @if (Model.Divisions[i].IsEmpty)
                         {
-                            <a id=@removeDivisionGroupsListWrapperId class="link-button" hidden="@Model.IsDivisionsCountMin"
-                               onclick="removeDivision(@i, @DivisionConstants.MAX_DIVISIONS_COUNT, @DivisionConstants.MIN_DIVISIONS_COUNT,
+            <a id=@removeDivisionGroupsListWrapperId class="link-button" hidden="@Model.IsDivisionsCountMin"
+               onclick="removeDivision(@i, @DivisionConstants.MAX_DIVISIONS_COUNT, @DivisionConstants.MIN_DIVISIONS_COUNT,
                                 @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT,
                                 '@Resources.UI.ViewModelResources.GroupDefaultName', '@Resources.UI.TournamentViews.RemoveGroup')">
-                                @Resources.UI.TournamentViews.RemoveDivision
-                            </a>
+                @Resources.UI.TournamentViews.RemoveDivision
+            </a>
                         }
-                    </div>
-                    <div class="division-groups-wrapper">
-                        <div class="editor-label">@Html.LabelFor(model => model.Divisions[i].Groups)</div>
-                        <div id=@divisionGroupsListWrapperId>
-                            @for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
+        </div>
+        <div class="division-groups-wrapper">
+            <div class="editor-label">@Html.LabelFor(model => model.Divisions[i].Groups)</div>
+            <div id=@divisionGroupsListWrapperId>
+                @for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
                             {
                                 string groupWrapperId = String.Format("Division_{0}_Group_{1}", i, j);
                                 string removeGroupWrapperId = String.Format("Remove_{0}", groupWrapperId);
 
-                                <div id=@groupWrapperId class="editor-field group-editor">
-                                    @Html.HiddenFor(model => model.Divisions[i].Groups[j].Id)
-                                    @Html.TextBoxFor(model => model.Divisions[i].Groups[j].Name, new { name= "Divisions[@i].Groups[@j].Name", disabled= "disabled" })
-                                    @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
+                <div id=@groupWrapperId class="editor-field group-editor">
+                    @Html.HiddenFor(model => model.Divisions[i].Groups[j].Id)
+                    @Html.TextBoxFor(model => model.Divisions[i].Groups[j].Name, new { name= "Divisions[@i].Groups[@j].Name", disabled= "disabled" })
+                    @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
 
-                                    @if (Model.Divisions[i].Groups[j].IsEmpty)
+                    @if (Model.Divisions[i].Groups[j].IsEmpty)
                                     {
-                                        <a id=@removeGroupWrapperId class="link-button" hidden="@Model.Divisions[i].IsGroupsCountMin"
-                                           onClick="removeGroup(@i, @j, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT)">
-                                            @Resources.UI.TournamentViews.RemoveGroup
-                                        </a>
+                    <a id=@removeGroupWrapperId class="link-button" hidden="@Model.Divisions[i].IsGroupsCountMin"
+                       onClick="removeGroup(@i, @j, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT)">
+                        @Resources.UI.TournamentViews.RemoveGroup
+                    </a>
                                     }
-                                </div>
+                </div>
                             }
-                        </div>
-                        @{
+            </div>
+            @{
                             string addGroupButtonId = String.Format("Add_Division_{0}_Group", i);
 
-                            <div class="add-group-button">
-                                <a id=@addGroupButtonId class="link-button" hidden="@Model.Divisions[i].IsGroupsCountMax"
-                                   onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT, 
+                <div class="add-group-button">
+                    <a id=@addGroupButtonId class="link-button" hidden="@Model.Divisions[i].IsGroupsCountMax"
+                       onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT,
                                    '@Resources.UI.ViewModelResources.GroupDefaultName', '@Resources.UI.TournamentViews.RemoveGroup')">
-                                    @Resources.UI.TournamentViews.AddGroup
-                                </a>
-                            </div>
-                        }
-                    </div>
+                        @Resources.UI.TournamentViews.AddGroup
+                    </a>
                 </div>
             }
         </div>
+    </div>
+            }
+</div>
     }
-    <div class="add-division-button">
-        <a id="Add_Division" class="link-button" hidden="@Model.IsDivisionsCountMax"
-           onClick="addNewDivisionInTournament({
+<div class="add-division-button">
+    <a id="Add_Division" class="link-button" hidden="@Model.IsDivisionsCountMax"
+       onClick="addNewDivisionInTournament({
                     maxDivisionsCount: @DivisionConstants.MAX_DIVISIONS_COUNT,
                     maxGroupsCount: @GroupConstants.MAX_GROUPS_COUNT,
                     minDivisionsCount: @DivisionConstants.MIN_DIVISIONS_COUNT,
@@ -237,6 +237,6 @@
                     addName: '@Resources.UI.TournamentViews.AddGroup',
                     removeName: '@Resources.UI.TournamentViews.RemoveGroup'
                     })">
-            @Resources.UI.TournamentViews.AddDivision
-        </a>
-    </div>
+        @Resources.UI.TournamentViews.AddDivision
+    </a>
+</div>

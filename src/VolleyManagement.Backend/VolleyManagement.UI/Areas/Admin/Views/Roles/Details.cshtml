@@ -16,17 +16,17 @@
         </tr>
         @if (Model.Users.Count == 0)
         {
-            <tr>
-                <td class="text-center">No Users</td>
-            </tr>
+        <tr>
+            <td class="text-center">No Users</td>
+        </tr>
         }
         else
         {
             foreach (var user in Model.Users)
             {
-            <tr>
-                <td>@user</td>
-            </tr>
+        <tr>
+            <td>@user</td>
+        </tr>
             }
         }
     </table>

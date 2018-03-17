@@ -71,8 +71,7 @@
                 return null;
             }
 
-            var teamViewModel = new TeamViewModel
-            {
+            var teamViewModel = new TeamViewModel {
                 Id = team.Id,
                 Name = team.Name,
                 Coach = team.Coach,
@@ -89,8 +88,7 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            return new Team
-            {
+            return new Team {
                 Id = Id,
                 Name = Name,
                 Coach = Coach,

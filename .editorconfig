@@ -19,10 +19,21 @@ indent_size = 2
 # Xml config files
 [*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
 indent_size = 2
+
+# CSS files
+[*.css]
 indent_size = 2
 
 # JSON files
 [*.json]
+indent_size = 2
+
+# JS files
+[*.js]
+indent_size = 2
+
+# TypeScript files
+[*.ts]
 indent_size = 2
 
 # CSharp code style settings:
@@ -86,12 +97,12 @@ dotnet_sort_system_directives_first                                = false : war
 
 # Newline settings
 csharp_new_line_before_open_brace                                  = accessors, anonymous_methods, anonymous_types, control_blocks, events, indexers, lambdas, local_functions, methods, object_collection, properties, types, namespaces
-csharp_new_line_before_else                                        = true : warning
-csharp_new_line_before_catch                                       = true : warning
-csharp_new_line_before_finally                                     = true : warning
-csharp_new_line_before_members_in_object_initializers              = true : warning
-csharp_new_line_before_members_in_anonymous_types                  = true : warning
-csharp_new_line_between_query_expression_clauses                   = true : warning
+csharp_new_line_before_else                                        = true
+csharp_new_line_before_catch                                       = true
+csharp_new_line_before_finally                                     = true
+csharp_new_line_before_members_in_object_initializers              = true
+csharp_new_line_before_members_in_anonymous_types                  = true
+csharp_new_line_between_query_expression_clauses                   = true
 
 # Indentation Options
 csharp_indent_case_contents                                        = true : warning

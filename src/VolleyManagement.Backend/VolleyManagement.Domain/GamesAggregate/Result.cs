@@ -41,7 +41,7 @@
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.DEFAULT_TECHNICAL_DEFEAT);
-            for (int i = 0; i < Constants.GameResult.MAX_SETS_COUNT; i++)
+            for (var i = 0; i < Constants.GameResult.MAX_SETS_COUNT; i++)
             {
                 SetScores.Add((
                        Constants.GameResult.EMPTY_SCORE,

@@ -174,8 +174,7 @@
         {
             return
                 t =>
-                new User
-                {
+                new User {
                     Id = t.Id,
                     UserName = t.UserName,
                     Email = t.Email,
@@ -184,13 +183,11 @@
                     IsBlocked = t.IsBlocked,
                     PlayerId = t.PlayerId,
                     LoginProviders = t.LoginProviders.Select(
-                                            l => new LoginProviderInfo
-                                            {
+                                            l => new LoginProviderInfo {
                                                 ProviderKey = l.ProviderKey,
                                                 LoginProvider = l.LoginProvider
                                             }),
-                    Roles = t.Roles.Select(r => new Role
-                    {
+                    Roles = t.Roles.Select(r => new Role {
                         Id = r.Id,
                         Name = r.Name
                     })
@@ -200,8 +197,7 @@
         private static Expression<Func<UserEntity, UserInRoleDto>> GetUserInRoleMapper()
         {
             return u =>
-                   new UserInRoleDto
-                   {
+                   new UserInRoleDto {
                        UserId = u.Id,
                        UserName = u.UserName,
                        RoleIds = u.Roles.Select(r => r.Id).ToList()

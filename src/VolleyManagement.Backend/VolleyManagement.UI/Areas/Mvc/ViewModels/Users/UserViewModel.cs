@@ -86,8 +86,7 @@
         /// <returns> View model object </returns>
         public static UserViewModel Map(User user)
         {
-            return new UserViewModel
-            {
+            return new UserViewModel {
                 Id = user.Id,
                 UserName = user.UserName,
                 Password = string.Empty,
@@ -104,8 +103,7 @@
         /// <returns> View model object </returns>
         public static UserViewModel Map(UserModel user)
         {
-            return new UserViewModel
-            {
+            return new UserViewModel {
                 Id = user.Id,
                 UserName = user.UserName,
                 Password = string.Empty,
@@ -122,8 +120,7 @@
         /// <returns> Domain object </returns>
         public User ToDomain()
         {
-            return new User
-            {
+            return new User {
                 Id = Id,
                 UserName = UserName,
                 PhoneNumber = CellPhone,

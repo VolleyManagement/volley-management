@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using Domain.GamesAggregate;
 
@@ -75,8 +75,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>Domain model of game.</returns>
         public Score ToDomain()
         {
-            return new Score
-            {
+            return new Score {
                 Home = Home,
                 Away = Away,
                 IsTechnicalDefeat = IsTechnicalDefeat

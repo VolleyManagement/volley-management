@@ -20,7 +20,7 @@
         {
             // Out variables
             var p = new Point { X = 2, Y = 3 };
-            p.GetCoordinates(out int x, out int y);
+            p.GetCoordinates(out var x, out var y);
             Debug.WriteLine($"({x}, {y})");
 
             // Same with var
@@ -98,7 +98,7 @@
 
         public ref int Find(int number, int[] numbers)
         {
-            for (int i = 0; i < numbers.Length; i++)
+            for (var i = 0; i < numbers.Length; i++)
             {
                 if (numbers[i] == number)
                 {

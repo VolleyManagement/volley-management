@@ -32,8 +32,8 @@
         /// <returns>A signed integer that indicates the relative values of schedules.</returns>
         public int Compare(object x, object y)
         {
-            ScheduleViewModel firstSchedule = x as ScheduleViewModel;
-            ScheduleViewModel secondSchedule = y as ScheduleViewModel;
+            var firstSchedule = x as ScheduleViewModel;
+            var secondSchedule = y as ScheduleViewModel;
 
             if (firstSchedule == null)
             {
@@ -77,7 +77,7 @@
                     return false;
                 }
 
-                for (int i = 0; i < x.Count; i++)
+                for (var i = 0; i < x.Count; i++)
                 {
                     if (!Enumerable.SequenceEqual(
                                         x[x.Keys.ElementAt(i)],

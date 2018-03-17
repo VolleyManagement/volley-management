@@ -1690,11 +1690,11 @@
 
         private List<Division> CreateDivisionWithTenGroups()
         {
-            List<Division> divisionsWithTenGroups = new List<Division>();
-            for (int i = 0; i < 10; i++)
+            var divisionsWithTenGroups = new List<Division>();
+            for (var i = 0; i < 10; i++)
             {
                 divisionsWithTenGroups.Add(new Division());
-                for (int j = 0; j < 10; j++)
+                for (var j = 0; j < 10; j++)
                 {
                     divisionsWithTenGroups[i].Groups.Add(new Group());
                 }

@@ -444,34 +444,34 @@
 
         private static void AssertStandingsAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
-            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            var standingsComparer = new StandingsEntryComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
         }
 
         private static void AssertPointsAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
-            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            var standingsComparer = new StandingsEntryComparer();
             standingsComparer.WithPointsComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
         }
 
         private static void AssertGamesAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
-            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            var standingsComparer = new StandingsEntryComparer();
             standingsComparer.WithGamesComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
         }
 
         private static void AssertSetsAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
-            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            var standingsComparer = new StandingsEntryComparer();
             standingsComparer.WithSetsComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
         }
 
         private static void AssertBallsAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
-            StandingsEntryComparer standingsComparer = new StandingsEntryComparer();
+            var standingsComparer = new StandingsEntryComparer();
             standingsComparer.WithBallsComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer(standingsComparer));
         }

@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
     using System;
     using System.Collections.Generic;
@@ -42,8 +42,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <returns>View model object</returns>
         public static TeamNameViewModel Map(TeamTournamentDto team)
         {
-            return new TeamNameViewModel
-            {
+            return new TeamNameViewModel {
                 Id = team.TeamId,
                 Name = team.TeamName,
                 DivisionName = team.DivisionName,
@@ -58,8 +57,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <returns>View model object</returns>
         public static TeamNameViewModel Map(Team team)
         {
-            return new TeamNameViewModel
-            {
+            return new TeamNameViewModel {
                 Id = team.Id,
                 Name = team.Name
             };
@@ -71,8 +69,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// <returns>Domain object</returns>
         public Team ToDomain()
         {
-            return new Team
-            {
+            return new Team {
                 Id = Id,
                 Name = Name
             };

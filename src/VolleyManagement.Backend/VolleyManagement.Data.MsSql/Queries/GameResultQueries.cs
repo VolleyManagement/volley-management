@@ -112,7 +112,7 @@
 
             var query = allGamesWithTeams.Union(gamesWithoutTeams);
 
-            List<GameResultDto> list = query.ToList()
+            var list = query.ToList()
                         .ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));
 
             return list;
@@ -174,8 +174,7 @@
 
         private static Converter<GameResultEntity, Game> GetGameMapping()
         {
-            return gr => new Game
-            {
+            return gr => new Game {
                 Id = gr.Id,
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
@@ -190,8 +189,7 @@
 
         private static Converter<GameResultEntity, GameResultDto> GetGameResultDtoMap()
         {
-            return gr => new GameResultDto
-            {
+            return gr => new GameResultDto {
                 Id = gr.Id,
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
@@ -208,8 +206,7 @@
 
         private static Result MapResult(GameResultEntity gr)
         {
-            return new Result
-            {
+            return new Result {
                 SetScores = new List<Score>
                 {
                     new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
@@ -228,8 +225,7 @@
             Penalty result;
 
             result = gr.PenaltyTeam != 0 ?
-                new Penalty
-                {
+                new Penalty {
                     IsHomeTeam = gr.PenaltyTeam == 1,
                     Amount = gr.PenaltyAmount,
                     Description = gr.PenaltyDescription

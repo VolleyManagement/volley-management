@@ -39,7 +39,7 @@
         /// <returns>Hash code for the specified <see cref="Game"/>.</returns>
         public int GetHashCode(Game obj)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
             stringBuilder.Append(obj.AwayTeamId);
             stringBuilder.Append(obj.GameDate);

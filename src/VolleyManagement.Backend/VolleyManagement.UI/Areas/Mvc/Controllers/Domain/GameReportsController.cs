@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System.Linq;
     using System.Web.Mvc;
@@ -37,7 +37,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 var mapedStandings = standings.Divisions
                     .Select(item =>
                     {
-                        var standingsTable = DivisionStandingsViewModel.Map(item);  
+                        var standingsTable = DivisionStandingsViewModel.Map(item);
                         TeamStandingsViewModelBase.SetPositions(standingsTable.StandingsEntries);
                         return standingsTable;
                     })
@@ -45,8 +45,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
                 var pivotTables = pivots.Divisions.Select(item => new PivotTableViewModel(item)).ToList();
 
-                var standingsViewModel = new StandingsViewModel
-                {
+                var standingsViewModel = new StandingsViewModel {
                     TournamentId = tournamentId,
                     TournamentName = tournamentName,
                     StandingsTable = mapedStandings,
@@ -57,8 +56,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             }
             else
             {
-                var standingsViewModel = new StandingsViewModel
-                {
+                var standingsViewModel = new StandingsViewModel {
                     TournamentId = tournamentId,
                     TournamentName = tournamentName,
                     Message = Resources.UI.GameReportViews.StandingsNotAvaliable

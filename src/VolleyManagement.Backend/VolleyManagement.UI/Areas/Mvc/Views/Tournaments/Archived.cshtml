@@ -21,17 +21,17 @@
     <tbody>
         @foreach (var tournament in Model)
         {
-            <tr>
-                <td>
-                    @Html.ActionLink(tournament.Name, "Details", new { id = tournament.Id })
-                </td>
-                <td>
-                    @Html.DisplaySeason(tournament.Season)
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "Delete", new { id = tournament.Id })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.ActionLink(tournament.Name, "Details", new { id = tournament.Id })
+            </td>
+            <td>
+                @Html.DisplaySeason(tournament.Season)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = tournament.Id })
+            </td>
+        </tr>
         }
     </tbody>
 </table>

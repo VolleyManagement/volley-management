@@ -52,7 +52,7 @@
 
         public static Uri GetCapchaRequestUrl(string userResponseToken)
         {
-            string secretKey = WebConfigurationManager.AppSettings[CONFIG_KEY_RECAPTCHA_SECERET];
+            var secretKey = WebConfigurationManager.AppSettings[CONFIG_KEY_RECAPTCHA_SECERET];
             return new Uri(string.Format(RECAPTCHA_VERIFY_URL_FORMAT,
                                          secretKey,
                                          userResponseToken));

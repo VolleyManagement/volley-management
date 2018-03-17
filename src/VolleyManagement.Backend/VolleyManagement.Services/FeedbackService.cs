@@ -174,8 +174,8 @@
             feedback.Status = newStatusCode;
             if (ShouldChangeLastUpdateInfo(newStatusCode))
             {
-                int userId = _currentUserService.GetCurrentUserId();
-                User user = _userService.GetUser(userId);
+                var userId = _currentUserService.GetCurrentUserId();
+                var user = _userService.GetUser(userId);
                 feedback.UpdateDate = TimeProvider.Current.UtcNow;
                 feedback.AdminName = user.PersonName;
             }
@@ -194,10 +194,10 @@
         /// <param name="emailTo">Recipient email.</param>
         private void NotifyUser(string emailTo)
         {
-            string body = Properties.Resources.FeedbackConfirmationLetterBody;
-            string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
+            var body = Properties.Resources.FeedbackConfirmationLetterBody;
+            var subject = Properties.Resources.FeedbackConfirmationLetterSubject;
 
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            var emailMessage = new EmailMessage(emailTo, subject, body);
             _mailService.Send(emailMessage);
         }
 
@@ -208,8 +208,8 @@
         /// <param name="message">Message for reply</param>
         private void NotifyUser(string emailTo, string message)
         {
-            string subject = Properties.Resources.FeedbacksEmailReplySubject;
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
+            var subject = Properties.Resources.FeedbacksEmailReplySubject;
+            var emailMessage = new EmailMessage(emailTo, subject, message);
             _mailService.Send(emailMessage);
         }
 
@@ -219,11 +219,11 @@
         /// <param name="feedback">Feedback to send.</param>
         private void NotifyAdmins(Feedback feedback)
         {
-            string subject = string.Format(
+            var subject = string.Format(
                 Properties.Resources.FeedbackEmailSubjectToAdmins,
                 feedback.Id);
 
-            string body = string.Format(
+            var body = string.Format(
                 Properties.Resources.FeedbackEmailBodyToAdmins,
                 feedback.Id,
                 feedback.Date,
@@ -231,11 +231,11 @@
                 feedback.Status,
                 feedback.Content);
 
-            ICollection<User> adminsList = _userService.GetAdminsList();
+            var adminsList = _userService.GetAdminsList();
 
             foreach (var admin in adminsList)
             {
-                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
+                var emailMessage = new EmailMessage(admin.Email, subject, body);
                 _mailService.Send(emailMessage);
             }
         }

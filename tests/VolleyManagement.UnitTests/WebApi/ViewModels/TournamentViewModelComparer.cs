@@ -30,8 +30,8 @@
         /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
         public int Compare(object x, object y)
         {
-            TournamentViewModel firstTournament = x as TournamentViewModel;
-            TournamentViewModel secondTournament = y as TournamentViewModel;
+            var firstTournament = x as TournamentViewModel;
+            var secondTournament = y as TournamentViewModel;
 
             if (firstTournament == null)
             {

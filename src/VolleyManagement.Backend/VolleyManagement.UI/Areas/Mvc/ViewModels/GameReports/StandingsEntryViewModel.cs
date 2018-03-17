@@ -120,8 +120,7 @@
         /// <returns>View model of <see cref="StandingsEntry"/>.</returns>
         public static StandingsEntryViewModel Map(StandingsEntry standingsEntry)
         {
-            return new StandingsEntryViewModel
-            {
+            return new StandingsEntryViewModel {
                 TeamName = standingsEntry.TeamName,
                 Points = standingsEntry.Points,
                 GamesTotal = standingsEntry.GamesTotal,

@@ -350,7 +350,7 @@
 
             var tournamentId = GetTournamentByGroup(groupTeam.First().GroupId).Id;
             var allTeams = GetAllTournamentTeams(tournamentId);
-            int numberOfTeamAlreadyExist = 0;
+            var numberOfTeamAlreadyExist = 0;
 
             foreach (var item in groupTeam)
             {
@@ -749,10 +749,10 @@
         private static List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
-            int gamesCount = GetGamesCount(teamsCount);
-            List<Game> games = new List<Game>();
+            var gamesCount = GetGamesCount(teamsCount);
+            var games = new List<Game>();
 
-            for (int i = 1; i <= gamesCount; i++)
+            for (var i = 1; i <= gamesCount; i++)
             {
                 var game = new Game();
                 game.TournamentId = tournamentId;
@@ -772,11 +772,11 @@
         {
             byte roundNumber = 1;
 
-            int roundStartGameNumber = 0;
-            int roundEndGameNumber = gamesCount / 2;
-            int numberOfGamesInRound = gamesCount / 2;
+            var roundStartGameNumber = 0;
+            var roundEndGameNumber = gamesCount / 2;
+            var numberOfGamesInRound = gamesCount / 2;
 
-            for (int i = 1; i <= roundsCount; i++)
+            for (var i = 1; i <= roundsCount; i++)
             {
                 if (gameNumber > roundStartGameNumber && gameNumber <= roundEndGameNumber)
                 {

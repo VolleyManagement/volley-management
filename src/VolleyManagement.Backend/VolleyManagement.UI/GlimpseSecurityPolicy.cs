@@ -1,4 +1,5 @@
 // Uncomment this class to provide custom runtime policy for Glimpse
+#pragma warning disable S125 // Sections of code should not be "commented out"
 /*
 using Glimpse.AspNet.Extensions;
 using Glimpse.Core.Extensibility;
@@ -28,3 +29,4 @@ namespace VolleyManagement.UI
         }
     }
 }*/
+#pragma warning restore S125 // Sections of code should not be "commented out"

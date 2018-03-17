@@ -14,15 +14,17 @@
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Represents an implementation of IGameReportService contract.
     /// </summary>
     public class GameReportService : IGameReportService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Queries
 
-        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
+        private readonly IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _tournamentByIdQuery;
 
@@ -37,8 +39,8 @@
         /// <param name="tournamentTeamsQuery">Query for getting tournament's game teams.</param>
         /// <param name="tournamentScheduleDtoByIdQuery">Get tournament data transfer object query.</param>
         public GameReportService(
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
+            IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery,
             IQuery<Tournament, FindByIdCriteria> tournamentByIdQuery)
         {
@@ -63,7 +65,7 @@
 
             var tournament = _tournamentByIdQuery.Execute(new FindByIdCriteria(tournamentId));
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            Dictionary<(int divisionId,string divisionName),List<TeamTournamentDto>> teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
+            Dictionary<(int divisionId, string divisionName), List<TeamTournamentDto>> teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
             foreach (var groupedTeams in teamsInTournamentByDivisions)
             {
@@ -135,7 +137,7 @@
 
         #region Private methods
 
-        private List<StandingsEntry> CalculateStandingsForDivision(List<TeamTournamentDto> teams, List<GameResultDto> gameResults)
+        private static List<StandingsEntry> CalculateStandingsForDivision(List<TeamTournamentDto> teams, IEnumerable<GameResultDto> gameResults)
         {
             var standings = CreateEntriesForTeams(teams);
 
@@ -219,6 +221,9 @@
                     awayTeamEntry.GamesWon++;
                     awayTeamEntry.GamesWithScoreThreeNil++;
                     break;
+                default:
+                    throw new InvalidOperationException();
+
             }
 
             var penalty = gameResult.Result.Penalty;
@@ -245,7 +250,7 @@
             }
         }
 
-        private void CalculateBallsStatistics(List<GameResultDto> gameResults, List<StandingsEntry> standings)
+        private static void CalculateBallsStatistics(List<GameResultDto> gameResults, List<StandingsEntry> standings)
         {
             foreach (var item in standings)
             {
@@ -270,7 +275,7 @@
             return result;
         }
 
-        private int GetTeamWonBalls(int teamId, List<GameResultDto> games)
+        private static int GetTeamWonBalls(int teamId, List<GameResultDto> games)
         {
             var wonBalls = games.Where(g => g.HomeTeamId == teamId)
                                 .Where(item => !item.Result.GameScore.IsTechnicalDefeat)
@@ -282,7 +287,7 @@
             return wonBalls;
         }
 
-        private int GetTeamLostBalls(int teamId, List<GameResultDto> games)
+        private static int GetTeamLostBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
             var lostBalls = results.Where(item => !item.Result.GameScore.IsTechnicalDefeat)
@@ -301,24 +306,23 @@
             return teamsByDivisions.GroupBy(t => (t.DivisionId, t.DivisionName)).ToDictionary(t => t.Key, t => t.ToList());
         }
 
-        private static List<GameResultDto> GetGamesResultsForDivision(List<GameResultDto> gameResults, List<TeamTournamentDto> teams)
+        private static List<GameResultDto> GetGamesResultsForDivision(IEnumerable<GameResultDto> gameResults, IEnumerable<TeamTournamentDto> teams)
         {
             var teamsIds = teams.Select(t => t.TeamId).ToList();
             return gameResults.Where(gr => teamsIds.Contains(gr.AwayTeamId.GetValueOrDefault()) &&
-                                            teamsIds.Contains(gr.HomeTeamId.GetValueOrDefault())).
-                               ToList();
+                                           teamsIds.Contains(gr.HomeTeamId.GetValueOrDefault())).ToList();
         }
 
         private static int CalculateHomeSetBallsForNonTechnicalDefeatSets(GameResultDto item)
         {
             return item.Result.SetScores.Where(s => !s.IsTechnicalDefeat)
-                                        .Sum(r => r.Home);
+                                                      .Sum(r => r.Home);
         }
 
         private static int CalculateAwaySetBallsForNonTechnicalDefeatSets(GameResultDto item)
         {
             return item.Result.SetScores.Where(s => !s.IsTechnicalDefeat)
-                                        .Sum(r => r.Away);
+                                                      .Sum(r => r.Away);
         }
 
         private static Func<GameResultDto, ShortGameResultDto> MapToShortGameResult()
@@ -329,7 +333,7 @@
                 AwayTeamId = g.AwayTeamId.GetValueOrDefault(),
                 HomeGameScore = g.HasResult ? g.Result.GameScore.Home : byte.MinValue,
                 AwayGameScore = g.HasResult ? g.Result.GameScore.Away : byte.MinValue,
-                IsTechnicalDefeat = g.HasResult ? g.Result.GameScore.IsTechnicalDefeat : false,
+                IsTechnicalDefeat = g.HasResult && g.Result.GameScore.IsTechnicalDefeat,
                 WasPlayed = g.HasResult,
                 RoundNumber = g.Round
             };

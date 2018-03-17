@@ -29,7 +29,7 @@
             {
                 if (!GroupValidation.ValidateName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationGroupName, "Name");
+                    throw new ArgumentException(Resources.ValidationGroupName, nameof(value));
                 }
 
                 _name = value;

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Services
+namespace VolleyManagement.Services
 {
     using System;
     using System.Collections.Generic;
@@ -20,12 +20,18 @@
     using Domain.TournamentsAggregate;
     using GameResultConstants = Domain.Constants.GameResult;
 
-    /// <summary>
-    /// Defines an implementation of <see cref="IGameService"/> contract.
-    /// </summary>
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
+                             /// <summary>
+                             /// Defines an implementation of <see cref="IGameService"/> contract.
+                             /// </summary>
     public class GameService : IGameService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Fields
+        private const string FIRST_TEAM_PLACEHOLDER = "<Team 1>";
+        private const string SECOND_TEAM_PLACEHOLDER = "<Team 2>";
+        private const string WINNER_PREFIX = "Winner";
+        private const string LOOSER_PREFIX = "Looser";
 
         private readonly IGameRepository _gameRepository;
         private readonly IAuthorizationService _authService;
@@ -37,17 +43,17 @@
 
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
-        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
-        private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
-        private readonly IQuery<List<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
+        private readonly IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
+        private readonly IQuery<ICollection<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
-        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
+        private readonly IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
 
         #endregion
 
         #region Constructor
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="GameService"/> class.
         /// </summary>
@@ -66,15 +72,16 @@
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
-            IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
+            IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
             IAuthorizationService authService,
-            IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
+            IQuery<ICollection<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
             IQuery<Game, GameByNumberCriteria> gameNumberByTournamentIdQuery,
             IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
             ITournamentRepository tournamentRepository,
-            IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
+            IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -82,7 +89,6 @@
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
             _gamesByTournamentIdInRoundsByNumbersQuery = gamesByTournamentIdInRoundsByNumbersQuery;
-            _gameNumberByTournamentIdQuery = gameNumberByTournamentIdQuery;
             _tournamentRepository = tournamentRepository;
             _tournamentTeamsQuery = tournamentTeamsQuery;
             _getTournamentInstanceByIdQuery = getTournamentInstanceByIdQuery;
@@ -144,10 +150,11 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>List of game results of specified tournament.</returns>
-        public List<GameResultDto> GetTournamentResults(int tournamentId)
+        public ICollection<GameResultDto> GetTournamentResults(int tournamentId)
         {
             var allGames = QueryAllTournamentGames(tournamentId)
-                            .FindAll(gr => gr.HasResult);
+                .Where(gr => gr.HasResult)
+                .ToList();
 
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
@@ -160,9 +167,17 @@
             return allGames;
         }
 
-        public List<GameResultDto> GetTournamentGames(int tournamentId)
+        public ICollection<GameResultDto> GetTournamentGames(int tournamentId)
         {
             var allGames = QueryAllTournamentGames(tournamentId);
+
+            var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
+
+            if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                UpdateTeamNamesForPlayoff(allGames, CalculateNumberOfRounds(tournamentInfo.Divisions.First().TeamCount));
+            }
 
             return allGames;
         }
@@ -182,7 +197,7 @@
 
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff
-                && game.Result != null)
+                && (game.Result != null || game.AwayTeamId == null))
             {
                 ScheduleNextGames(game, tournamentScheduleInfo);
             }
@@ -254,7 +269,7 @@
 
             if (game == null)
             {
-                throw new ArgumentNullException("game");
+                throw new ArgumentException("invalid game id", nameof(id));
             }
 
             ValidateGameInRoundOnDelete(game);
@@ -272,7 +287,7 @@
         {
             _authService.CheckAccess(AuthOperations.Games.SwapRounds);
 
-            List<Game> games = _gamesByTournamentIdRoundsNumberQuery.Execute(
+            ICollection<Game> games = _gamesByTournamentIdRoundsNumberQuery.Execute(
                 new TournamentRoundsGameResultsCriteria
                 {
                     TournamentId = tournamentId,
@@ -313,7 +328,7 @@
         /// Adds collection of new games.
         /// </summary>
         /// <param name="games">Collection of games to add</param>
-        public void AddGames(List<Game> games)
+        public void AddGames(ICollection<Game> games)
         {
             foreach (var game in games)
             {
@@ -331,7 +346,7 @@
             ValidateGameInTournament(game, tournamentScheduleInfo);
         }
 
-        private void ValidateResult(Result result)
+        private static void ValidateResult(Result result)
         {
             ValidateSetsScore(result.GameScore, result.GameScore.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores);
@@ -339,7 +354,7 @@
             ValidateSetScoresOrder(result.SetScores);
         }
 
-        private void ValidateTeams(int? homeTeamId, int? awayTeamId, TournamentScheduleDto tournamentScheduleInfo)
+        private static void ValidateTeams(int? homeTeamId, int? awayTeamId, TournamentScheduleDto tournamentScheduleInfo)
         {
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
@@ -355,7 +370,7 @@
             }
         }
 
-        private void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
+        private static void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
         {
             if (!ResultValidation.IsSetsScoreValid(setsScore, isTechnicalDefeat))
             {
@@ -367,7 +382,7 @@
             }
         }
 
-        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
+        private static void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresMatched(setsScore, setScores))
             {
@@ -375,7 +390,37 @@
             }
         }
 
-        private void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
+        private static void ValidateSetScoresValuesHigherThanSetCountToWin(IList<Score> setScores, int i,
+            int setOrderNumber, ref bool isPreviousOptionalSetUnplayed, bool isTechnicalDefeat)
+        {
+            if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
+            {
+                if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
+                {
+                    throw new ArgumentException(
+                    string.Format(
+                    Resources.GameResultFifthSetScoreInvalid,
+                    GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
+                }
+
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.GameResultOptionalSetScores,
+                    GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                    GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+                    GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
+            }
+
+            if (isPreviousOptionalSetUnplayed && !ResultValidation.IsSetUnplayed(setScores[i]))
+            {
+                throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
+            }
+
+            isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
+        }
+        private static void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
 
@@ -396,40 +441,13 @@
                 }
                 else
                 {
-                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
-                    {
-                        if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
-                        {
-                            throw new ArgumentException(
-                            string.Format(
-                            Resources.GameResultFifthSetScoreInvalid,
-                            GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
-                        }
-
-                        throw new ArgumentException(
-                            string.Format(
-                            Resources.GameResultOptionalSetScores,
-                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                            GameResultConstants.UNPLAYED_SET_HOME_SCORE,
-                            GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
-                    }
-
-                    if (isPreviousOptionalSetUnplayed)
-                    {
-                        if (!ResultValidation.IsSetUnplayed(setScores[i]))
-                        {
-                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
-                        }
-                    }
-
-                    isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
+                    ValidateSetScoresValuesHigherThanSetCountToWin(setScores, i, setOrderNumber,
+                        ref isPreviousOptionalSetUnplayed, isTechnicalDefeat);
                 }
             }
         }
 
-        private void ValidateSetScoresOrder(IList<Score> setScores)
+        private static void ValidateSetScoresOrder(IList<Score> setScores)
         {
             if (!ResultValidation.AreSetScoresOrdered(setScores))
             {
@@ -445,7 +463,7 @@
             }
 
             var allGamesInTournament = QueryAllTournamentGames(game.TournamentId);
-            var oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
+            var oldGameToUpdate = allGamesInTournament.SingleOrDefault(gr => gr.Id == game.Id);
 
             if (oldGameToUpdate != null)
             {
@@ -468,7 +486,7 @@
 
         private void ValidateGameInRound(
             Game newGame,
-            List<GameResultDto> games,
+            ICollection<GameResultDto> games,
             TournamentScheduleDto tournamentSсheduleInfo)
         {
             var teamsInTournament =
@@ -505,7 +523,7 @@
         private static bool IsNotPlayOffThemeAndBothTeamsNotNull(Game newGame, TournamentScheduleDto tournamentSсheduleInfo)
         {
             return !(newGame.AwayTeamId == null &&
-                     newGame.HomeTeamId == null && 
+                     newGame.HomeTeamId == null &&
                      tournamentSсheduleInfo.Scheme == TournamentSchemeEnum.PlayOff);
         }
 
@@ -534,27 +552,19 @@
             TournamentScheduleDto tournamentScheduleInfo)
         {
             string errorMessage = null;
-            if (GameValidation.IsFreeDayGame(newGame))
-            {
-                if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
-                {
-                    errorMessage = Resources.SameFreeDayGameInRound;
-                }
-                else
-                {
-                    errorMessage = string.Format(
-                        Resources.SameTeamInRound,
-                        game.HomeTeamId);
-                }
-            }
-            else
-            {
-                errorMessage = String.Format(
+            var tmpres = (tournamentScheduleInfo.Scheme !=
+                     TournamentSchemeEnum.PlayOff
+                ? Resources.SameFreeDayGameInRound
+                : string.Format(
+                    Resources.SameTeamInRound,
+                    game.HomeTeamId));
+            errorMessage = GameValidation.IsFreeDayGame(newGame)
+                ? tmpres
+                : String.Format(
                     Resources.SameGameInRound,
                     game.HomeTeamName,
                     game.AwayTeamName,
                     game.Round.ToString());
-            }
             throw new ArgumentException(errorMessage);
         }
 
@@ -563,8 +573,12 @@
             Game newGame,
             TournamentScheduleDto tournamentScheduleInfo)
         {
-            if ((GameValidation.IsFreeDayGame(newGame)
-                && (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)))
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                return;
+            }
+
+            if (GameValidation.IsFreeDayGame(newGame))
             {
                 if (game.HomeTeamId != newGame.HomeTeamId
                     && game.AwayTeamId != newGame.HomeTeamId)
@@ -592,7 +606,7 @@
             }
         }
 
-        private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
+        private static void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
             if (gameToDelete.HasResult)
             {
@@ -600,7 +614,7 @@
             }
         }
 
-        private void ValidateGamesInTournamentSchemeTwo(Game newGame, List<GameResultDto> games)
+        private static void ValidateGamesInTournamentSchemeTwo(Game newGame, IEnumerable<GameResultDto> games)
         {
             var tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -642,7 +656,7 @@
             }
         }
 
-        private void ValidateGamesInTournamentSchemeOne(Game newGame, List<GameResultDto> games)
+        private static void ValidateGamesInTournamentSchemeOne(Game newGame, IEnumerable<GameResultDto> games)
         {
             List<GameResultDto> tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
@@ -666,7 +680,7 @@
             }
         }
 
-        private void PutFreeDayTeamAsAway(Game game)
+        private static void PutFreeDayTeamAsAway(Game game)
         {
             if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
             {
@@ -674,7 +688,7 @@
             }
         }
 
-        private void ValidateGameDateSet(Game game)
+        private static void ValidateGameDateSet(Game game)
         {
             if (!game.GameDate.HasValue)
             {
@@ -682,7 +696,7 @@
             }
         }
 
-        private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
+        private static void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
             if (DateTime.Compare(tournament.StartDate, game.GameDate.Value) > 0
                 || DateTime.Compare(tournament.EndDate, game.GameDate.Value) < 0)
@@ -691,7 +705,7 @@
             }
         }
 
-        private void SwitchTeamsOrder(Game game)
+        private static void SwitchTeamsOrder(Game game)
         {
             if (!GameValidation.IsFreeDayGame(game))
             {
@@ -703,17 +717,6 @@
         #endregion
 
         #region Schedule autogeneration methods
-
-        private Game GetGameByNumber(int gameNumber, int tournamentId)
-        {
-            Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
-               .Execute(new GameByNumberCriteria()
-               {
-                   TournamentId = tournamentId,
-                   GameNumber = gameNumber
-               });
-            return gameInCurrentTournament;
-        }
 
         private void ScheduleNextGames(Game finishedGame, TournamentScheduleDto tournamentScheduleInfo)
         {
@@ -728,8 +731,8 @@
         {
             List<Game> gamesToUpdate = new List<Game>();
 
-            List<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria()
+            ICollection<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+                .Execute(new GamesByRoundCriteria
                 {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
@@ -742,7 +745,6 @@
             // Schedule next games only if finished game is not in last round
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                Game oldGame = gamesInCurrentAndNextRounds.Where(gr => gr.Id == finishedGame.Id).SingleOrDefault();
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue
@@ -759,7 +761,7 @@
             return gamesToUpdate;
         }
 
-        private List<Game> GetGamesToUpdate(Game finishedGame, List<Game> gamesInCurrentAndNextRounds)
+        private static List<Game> GetGamesToUpdate(Game finishedGame, ICollection<Game> gamesInCurrentAndNextRounds)
         {
             List<Game> gamesToUpdate = new List<Game>();
 
@@ -784,7 +786,7 @@
             return gamesToUpdate;
         }
 
-        private void ClearGame(Game finishedGame, Game newGame)
+        private static void ClearGame(Game finishedGame, Game newGame)
         {
             if (finishedGame.GameNumber % 2 != 0)
             {
@@ -796,23 +798,25 @@
             }
         }
 
-        private Game GetNextWinnerGame(Game finishedGame, List<Game> games)
+        private static Game GetNextWinnerGame(Game finishedGame, ICollection<Game> games)
         {
-            int nextGameNumber = GetNextGameNumber(finishedGame, games);
+            var numberOfRounds = GetNumberOfRounds(finishedGame, games);
+            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
             if (IsSemiFinalGame(finishedGame, games))
             {
                 nextGameNumber++;
             }
 
             Game nextGame = games
-                .Where(g => g.GameNumber == nextGameNumber)
-                .SingleOrDefault();
+                .SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
+#pragma warning disable S3240 // The simplest possible condition syntax should be used
             if (finishedGame.AwayTeamId == null)
+#pragma warning restore S3240 // The simplest possible condition syntax should be used
             {
                 winnerTeamId = finishedGame.HomeTeamId.Value;
             }
@@ -834,11 +838,12 @@
             return nextGame;
         }
 
-        private Game GetNextLoserGame(Game finishedGame, List<Game> games)
+        private static Game GetNextLoserGame(Game finishedGame, ICollection<Game> games)
         {
+            var numberOfRounds = GetNumberOfRounds(finishedGame, games);
             // Assume that finished game is a semifinal game
-            int nextGameNumber = GetNextGameNumber(finishedGame, games);
-            Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
+            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
+            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             ValidateEditingSchemePlayoff(nextGame);
 
@@ -857,37 +862,48 @@
             return nextGame;
         }
 
-        private int GetNextGameNumber(Game finishedGame, List<Game> games)
+        private static int GetNextGameNumber(int gameNumber, int numberOfRounds)
         {
-            int numberOfRounds = GetNumberOfRounds(finishedGame, games);
-
-            return ((finishedGame.GameNumber + 1) / 2)
+            return (gameNumber + 1) / 2
                 + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
         }
 
-        private bool IsSemiFinalGame(Game finishedGame, List<Game> games)
+        private static (int Home, int Away) GetUpstreamGameNumbers(GameResultDto game, int numberOfRounds)
+        {
+            var gameNumber =
+            (game.Round == numberOfRounds &&
+             game.GameNumber % 2 == 0) //Final game - has to be adjusted because of Bronze game
+                ? game.GameNumber - 1
+                : game.GameNumber;
+
+            var away = 2 * gameNumber - Convert.ToInt32(Math.Pow(2, numberOfRounds));
+            var home = away - 1;
+
+            return (home, away);
+        }
+
+        private static bool IsSemiFinalGame(Game finishedGame, IEnumerable<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
-            List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
             return finishedGame.Round == numberOfRounds - 1;
         }
 
-        private int GetNumberOfRounds(Game finishedGame, List<Game> games)
+        private static int GetNumberOfRounds(Game finishedGame, IEnumerable<Game> games)
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
-            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count(), 2))
+            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count, 2))
                 + finishedGame.Round;
         }
 
-        private bool IsGameInLastRound(Game finishedGame, List<Game> games)
+        private static bool IsGameInLastRound(Game finishedGame, IEnumerable<Game> games)
         {
             byte roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;
         }
 
-        private void ValidateEditingSchemePlayoff(Game nextGame)
+        private static void ValidateEditingSchemePlayoff(Game nextGame)
         {
             if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
                 && nextGame.Result.GameScore.Away != 0)
@@ -896,7 +912,7 @@
             }
         }
 
-        private void SetAbilityToEditResults(List<GameResultDto> allGames)
+        private static void SetAbilityToEditResults(List<GameResultDto> allGames)
         {
             List<GameResultDto> gamesToAllowEditingResults = allGames.Where(
                 game => game.HomeTeamId.HasValue
@@ -911,7 +927,7 @@
             }
         }
 
-        private List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
+        private static List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
         {
             if (allGames == null)
             {
@@ -926,7 +942,7 @@
 
             var games = new List<GameResultDto>();
 
-            int nextGameNumber = NextGameNumber(currentGame.GameNumber, numberOfRounds);
+            int nextGameNumber = GetNextGameNumber(currentGame.GameNumber, numberOfRounds);
             games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
             if (currentGame.Round == numberOfRounds - 1)
             {
@@ -936,16 +952,11 @@
             return games;
         }
 
-        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
-        {
-            return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(2, numberOfRounds - 1));
-        }
-
         #endregion
 
         #region private methods
 
-        private List<GameResultDto> QueryAllTournamentGames(int tournamentId)
+        private ICollection<GameResultDto> QueryAllTournamentGames(int tournamentId)
         {
             return _tournamentGameResultsQuery
                 .Execute(
@@ -955,12 +966,68 @@
         private void UpdateTournamentLastTimeUpdated(Game game)
         {
             var tournament = _getTournamentInstanceByIdQuery
-               .Execute(new FindByIdCriteria()
+               .Execute(new FindByIdCriteria
                {
                    Id = game.TournamentId
                });
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
             _tournamentRepository.Update(tournament);
+        }
+        private static void UpdateTeamNamesIfNotFirstRound(GameResultDto game, int numberOfRounds)
+        {
+            var prefix = IsBronzeGame(game, numberOfRounds)
+                                    ? LOOSER_PREFIX
+                                    : WINNER_PREFIX;
+            var (home, away) = GetUpstreamGameNumbers(game, numberOfRounds);
+
+            if (game.HomeTeamId == null)
+            {
+                game.HomeTeamName = $"{prefix}{home}";
+            }
+            if (game.AwayTeamId == null)
+            {
+                game.AwayTeamName = $"{prefix}{away}";
+            }
+        }
+        private static void UpdateTeamNamesForPlayoff(IEnumerable<GameResultDto> allGames, int numberOfRounds)
+        {
+            foreach (var game in allGames.Where(game => game.HomeTeamId == null || game.AwayTeamId == null))
+            {
+                if (game.Round == 1)
+                {
+                    if (game.HomeTeamId == null && game.AwayTeamId == null)
+                    {
+                        game.HomeTeamName = FIRST_TEAM_PLACEHOLDER;
+                        game.AwayTeamName = SECOND_TEAM_PLACEHOLDER;
+                    }
+                }
+                else
+                {
+                    UpdateTeamNamesIfNotFirstRound(game, numberOfRounds);
+                }
+            }
+        }
+
+        private static bool IsBronzeGame(GameResultDto game, int numberOfRounds)
+        {
+            return game.Round == numberOfRounds
+                   && game.GameNumber % 2 != 0;
+        }
+
+        // Method is not mine: It has to be refactored 
+        private static byte CalculateNumberOfRounds(int teamCount)
+        {
+            byte rounds = 0;
+            for (byte i = 0; i < teamCount; i++)
+            {
+                if (Math.Pow(2, i) >= teamCount)
+                {
+                    rounds = i;
+                    break;
+                }
+            }
+
+            return rounds;
         }
 
         #endregion

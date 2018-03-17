@@ -6,6 +6,7 @@ export interface GameResult {
     AwayTeamName: string;
     GameDate: string;
     Round: number;
+    GameNumber: number;
     Result: Result;
     DivisionId: number;
     GroupId: number;

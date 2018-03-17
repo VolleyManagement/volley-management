@@ -1,21 +1,24 @@
-namespace VolleyManagement.UI.Areas.WebApi.Controllers
+﻿namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
+    using Contracts;
+    using Domain.TournamentsAggregate;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Web.Http;
-    using Contracts;
     using ViewModels.GameReports;
     using ViewModels.Games;
     using ViewModels.Tournaments;
-    using WebAPI.ViewModels.Schedule;
     using WebAPI.ViewModels.GameReports;
+    using WebAPI.ViewModels.Schedule;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// The tournaments controller.
     /// </summary>
     public class TournamentsController : ApiController
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITournamentService _tournamentService;
         private readonly IGameReportService _gameReportService;
@@ -68,7 +71,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="id">Id of tournament</param>
         /// <returns>Standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/Standings")]
-        public List<DivisionStandingsViewModel> GetTournamentStandings(int id)
+        public IList<DivisionStandingsViewModel> GetTournamentStandings(int id)
         {
             var result = new List<DivisionStandingsViewModel>();
             var entries = _gameReportService.GetStandings(id);
@@ -93,7 +96,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="id">Id of tournament</param>
         /// <returns>Pivot standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/PivotStandings")]
-        public List<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
+        public IList<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
         {
             var pivotData = _gameReportService.GetPivotStandings(id);
             return pivotData.Divisions.Select(item => new PivotStandingsViewModel(item)).ToList();
@@ -108,7 +111,9 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         public ScheduleViewModel GetSchedule(int tournamentId)
         {
             var games = _gameService.GetTournamentGames(tournamentId)
+                                    .Where(g => g.GameDate.HasValue)
                                     .Select(GameViewModel.Map);
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 
             var resultGroupedByWeek = games.GroupBy(GetWeekOfYear)
                 .OrderBy(w => w.Key.Year)
@@ -116,19 +121,19 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 .Select(w => new Tuple<int, List<GameViewModel>>(w.Key.Week, w.ToList()))
                 .ToList();
 
-            var result = new ScheduleViewModel()
+            var result = new ScheduleViewModel
             {
                 Schedule = resultGroupedByWeek.Select(it =>
-                    new WeekViewModel()
+                    new WeekViewModel
                     {
                         Days = it.Item2
                             .GroupBy(item => item.Date.DayOfWeek)
                             .Select(element =>
-                            new ScheduleDayViewModel()
+                            new ScheduleDayViewModel
                             {
-                                Date = element.ToList().Select(d => d.Date).First(),
-                                Divisions = element.ToList().Select(data =>
-                                    new DivisionTitleViewModel()
+                                Date = element.Select(d => d.Date).First(),
+                                Divisions = element.Select(data =>
+                                    new DivisionTitleViewModel
                                     {
                                         Id = data.DivisionId,
                                         Name = data.DivisionName,
@@ -136,6 +141,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                                             .Select(item => item.Round)
                                                             .Distinct()
                                                             .OrderBy(i => i)
+                                                            .Select(r => GetRoundName(r, tournament))
                                                             .ToList()
                                     }).
                                     Distinct(new DivisionTitleComparer()).ToList(),
@@ -146,6 +152,63 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                     }
                 ).ToList()
             };
+
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                ClearDivisionNames(result);
+            }
+
+            return result;
+        }
+
+        private static void ClearDivisionNames(ScheduleViewModel result)
+        {
+            foreach (var resSchedule in result.Schedule)
+            {
+                foreach (var daysResSchedule in resSchedule.Days)
+                {
+                    foreach (var divDaysRes in daysResSchedule.Divisions)
+                    {
+                        divDaysRes.Id = 0;
+                        divDaysRes.Name = null;
+                    }
+
+                    foreach (var gamesDaysRes in daysResSchedule.Games)
+                    {
+                        gamesDaysRes.DivisionId = 0;
+                        gamesDaysRes.DivisionName = null;
+                        gamesDaysRes.GroupId = 0;
+                    }
+                }
+            }
+        }
+
+        private static string GetRoundName(int roundNumber, TournamentScheduleDto tournament)
+        {
+            string result;
+
+            if (tournament.Scheme != TournamentSchemeEnum.PlayOff)
+            {
+                result = $"Тур {roundNumber}";
+            }
+            else
+            {
+                var playoffRounds = new Dictionary<int, string>
+                {
+                    [1] = "Финал",
+                    [2] = "Полуфинал",
+                    [3] = "Четверть-финал",
+                    [4] = "Раунд 16",
+                    [5] = "Раунд 32",
+                    [6] = "Раунд 64",
+                    [7] = "Раунд 128"
+                };
+                var reversedRoundNumber = tournament.Divisions.First().NumberOfRounds - roundNumber + 1;
+                if (!playoffRounds.TryGetValue(reversedRoundNumber, out result))
+                {
+                    result = $"Тур {roundNumber}";
+                }
+            }
 
             return result;
         }

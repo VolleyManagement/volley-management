@@ -20,6 +20,6 @@ namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
         /// <summary>
         /// Gets or sets collection of round numbers
         /// </summary>
-        public List<int> Rounds { get; set; }
+        public ICollection<string> Rounds { get; set; }
     }
 }

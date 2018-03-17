@@ -1,11 +1,11 @@
 namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
 {
+    using Domain;
+    using Domain.GamesAggregate;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Domain;
-    using Domain.GamesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using WebAPI.ViewModels.Schedule;
 
     /// <summary>
     /// GameViewModel class.
@@ -30,7 +30,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         /// <summary>
         /// Gets or sets the date and time of the game.
         /// </summary>
-        public string GameDate { get; set; }
+        public string GameDate => Date.ToString("yyyy-MM-ddTHH:mm:sszzz");
 
         /// <summary>
         /// Gets or sets the date and time of the game.
@@ -46,6 +46,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         /// Gets or sets the round for the game.
         /// </summary>
         public int Round { get; set; }
+
+        public byte GameNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the division where game result belongs.
@@ -79,8 +81,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                 Id = gameResult.Id,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
-                GameDate = gameResult.GameDate.HasValue ? gameResult.GameDate.Value.ToString("yyyy-MM-ddTHH:mm:sszzz") : string.Empty,
                 Round = gameResult.Round,
+                GameNumber = gameResult.GameNumber,
                 Result = new GameResult
                 {
                     TotalScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
@@ -129,7 +131,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
             /// <summary>
             /// Gets or sets the set scores.
             /// </summary>
-            public List<ScoreViewModel> SetScores { get; set; }
+            public IList<ScoreViewModel> SetScores { get; set; }
 
             /// <summary>
             /// Gets or sets a value indicating whether the technical defeat has taken place.

@@ -13,7 +13,7 @@
     /// <summary>
     /// Provides Object Query implementation for Tournament Requests
     /// </summary>
-    public class TournamentRequestQueries : IQuery<List<TournamentRequest>, GetAllCriteria>,
+    public class TournamentRequestQueries : IQuery<ICollection<TournamentRequest>, GetAllCriteria>,
                                             IQuery<TournamentRequest, FindByIdCriteria>,
                                             IQuery<TournamentRequest, FindByTeamTournamentCriteria>
     {
@@ -43,7 +43,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The list <see cref="TournamentRequest"/>. </returns>
-        public List<TournamentRequest> Execute(GetAllCriteria criteria)
+        public ICollection<TournamentRequest> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.TournamentRequests.Select(GetRequestMapping()).ToList();
         }
@@ -83,7 +83,7 @@
         {
             return
                 t =>
-                new TournamentRequest()
+                new TournamentRequest
                 {
                     Id = t.Id,
                     UserId = t.UserId,

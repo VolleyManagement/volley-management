@@ -1,24 +1,26 @@
-﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Web.Http.Results;
+using VolleyManagement.Contracts;
+using VolleyManagement.Crosscutting.Contracts.Extensions;
+using VolleyManagement.Domain.GameReportsAggregate;
+using VolleyManagement.Domain.GamesAggregate;
+using VolleyManagement.Domain.TournamentsAggregate;
+using VolleyManagement.UI.Areas.WebApi.Controllers;
+using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
+using VolleyManagement.UnitTests.Services.GameReportService;
+using VolleyManagement.UnitTests.Services.GameService;
+using VolleyManagement.UnitTests.Services.TournamentService;
+using VolleyManagement.UnitTests.WebApi.Standings;
+using VolleyManagement.UnitTests.WebApi.ViewModels;
+using TournamentViewModelComparer = VolleyManagement.UnitTests.WebApi.ViewModels.TournamentViewModelComparer;
+
+namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Web.Http.Results;
-    using Contracts;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Services.TournamentService;
-    using Standings;
-    using UI.Areas.WebApi.ViewModels.Tournaments;
-    using VolleyManagement.Crosscutting.Contracts.Extensions;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UnitTests.Services.GameReportService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;
-    using TournamentViewModelComparer = ViewModels.TournamentViewModelComparer;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -32,21 +34,6 @@
         /// </summary>
         private const int SPECIFIC_TOURNAMENT_ID = 2;
         private const int TOURNAMENT_ID = 1;
-
-        /// <summary>
-        /// Count of empty list
-        /// </summary>
-        private const int EMPTY_LIST_COUNT = 0;
-
-        /// <summary>
-        /// Index of first element in collection
-        /// </summary>
-        private const int FIRST_ELEMENT_INDEX = 0;
-
-        /// <summary>
-        /// Index of second element in collection
-        /// </summary>
-        private const int SECOND_ELEMENT_INDEX = 1;
 
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
@@ -75,8 +62,7 @@
             MockGetTournaments(testData);
             var expected = new TournamentViewModelServiceTestFixture()
                                             .TestTournaments()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             var sut = BuildSUT();
 
@@ -85,7 +71,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            CollectionAssert.AreEqual(
+            TestHelper.AreEqual(
                 expected,
                 actual,
                 new TournamentViewModelComparer());
@@ -278,6 +264,7 @@
             // Assert
             TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
         }
+
         #endregion
 
         #region Private
@@ -308,11 +295,6 @@
         private void MockGetTournament(Tournament tournament, int id)
         {
             _tournamentServiceMock.Setup(tr => tr.Get(id)).Returns(tournament);
-        }
-
-        private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
-        {
-            _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
         }
         #endregion
     }

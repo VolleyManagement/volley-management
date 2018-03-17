@@ -1,18 +1,15 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.GameReportService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
-    using WebApi.Standings;
+    using Contracts;
+    using Domain.GameReportsAggregate;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.GameReports;
+    using ViewModels;
+    using Services.GameReportService;
 
     /// <summary>
     /// Tests for <see cref="GameReportsController"/> class.
@@ -26,7 +23,6 @@
         private const string TOURNAMENT_NAME = "Name";
 
         private Mock<IGameReportService> _gameReportServiceMock;
-        private Mock<ITournamentService> _tournamentServiceMock;
 
         /// <summary>
         /// Initializes test data.

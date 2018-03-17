@@ -2,11 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Data.Contracts;
+    using Domain.ContributorsAggregate;
     using VolleyManagement.Services;
 
     /// <summary>
@@ -46,15 +45,15 @@
 
             var sut = BuildSUT();
             var expected = new ContributorTeamServiceTestFixture()
-                                            .TestContributors()
-                                            .Build()
-                                            .ToList();
+                .TestContributors()
+                .Build();
+
 
             // Act
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());
+            TestHelper.AreEqual(expected, actual, new ContributorTeamComparer());
         }
 
         private ContributorTeamService BuildSUT()

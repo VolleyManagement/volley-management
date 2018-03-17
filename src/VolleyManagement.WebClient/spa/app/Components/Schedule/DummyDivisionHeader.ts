@@ -9,5 +9,6 @@ export class DummyDivisionHeader implements DivisionHeader {
         this.Id = DummyDivisionHeader.DummyHeaderId;
     }
 
-    public static readonly DummyHeaderId = 0;
+    public static readonly DummyHeaderId = -1;
+    public static readonly PlayOffHeaderId = 0;
 }

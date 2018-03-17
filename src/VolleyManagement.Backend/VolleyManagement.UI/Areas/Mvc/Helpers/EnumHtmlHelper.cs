@@ -30,7 +30,7 @@
             TProperty value = htmlHelper.ViewData.Model == null
                 ? default(TProperty)
                 : expression.Compile()(htmlHelper.ViewData.Model);
-            string selected = value == null ? string.Empty : value.ToString();
+            string selected = object.Equals(value, default(TProperty)) ? string.Empty : value.ToString();
             return htmlHelper.DropDownListFor(expression, CreateSelectList(expression.ReturnType, selected));
         }
 

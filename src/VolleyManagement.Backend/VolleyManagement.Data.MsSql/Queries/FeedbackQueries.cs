@@ -7,13 +7,12 @@
     using Contracts;
     using Data.Queries.Common;
     using Domain.FeedbackAggregate;
-    using Domain.TournamentsAggregate;
     using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Roles
     /// </summary>
-    public class FeedbackQueries : IQuery<List<Feedback>, GetAllCriteria>,
+    public class FeedbackQueries : IQuery<ICollection<Feedback>, GetAllCriteria>,
                                     IQuery<Feedback, FindByIdCriteria>
     {
         #region Fields
@@ -42,7 +41,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Feedback"/>. </returns>
-        public List<Feedback> Execute(GetAllCriteria criteria)
+        public ICollection<Feedback> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Feedbacks.Select(GetFeedbackMapping()).ToList();
         }
@@ -68,7 +67,7 @@
         {
             return
                 t =>
-                new Feedback()
+                new Feedback
                 {
                     Id = t.Id,
                     UsersEmail = t.UsersEmail,

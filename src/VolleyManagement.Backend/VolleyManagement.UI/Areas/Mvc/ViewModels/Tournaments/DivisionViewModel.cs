@@ -52,7 +52,7 @@
         /// Gets or sets list of groups
         /// </summary>
         [Display(Name = "Groups", ResourceType = typeof(ViewModelResources))]
-        public List<GroupViewModel> Groups { get; set; }
+        public IList<GroupViewModel> Groups { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether division is empty.
@@ -84,7 +84,7 @@
         /// <returns>View model of <see cref="Division"/>.</returns>
         public static DivisionViewModel Map(Division division)
         {
-            var divisionViewModel = new DivisionViewModel()
+            var divisionViewModel = new DivisionViewModel
             {
                 Id = division.Id,
                 Name = division.Name,
@@ -101,7 +101,7 @@
         /// <returns>Domain model of <see cref="Division"/>.</returns>
         public Division ToDomain()
         {
-            var division = new Division()
+            var division = new Division
             {
                 Id = Id,
                 Name = Name,

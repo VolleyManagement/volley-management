@@ -97,6 +97,10 @@ C# code style is controlled by SonarLint Code Analyzer. You will see errors and 
 
 If you feel that some particular rule is too strict or too lose. Also if you have ideas how it can be enhanced please log issue or contact Sergii Diachenko(mailto:sdiachenko AT outlook DOT com)
 
+### Angular
+
+This projects follows official [Angular Style Guide](https://angular.io/guide/styleguide)
+
 ### Unit Tests
 
 We put a lot of emphasis on writing useful unit tests which will communicate requirements, ease maintainability and serve as a safety net.

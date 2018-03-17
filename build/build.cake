@@ -13,14 +13,15 @@ var configuration = Argument("configuration", "Release");
 var sonarToken = HasArgument("sonar-token") 
     ? Argument<string>("sonar-token") 
     : EnvironmentVariable("SONAR_TOKEN");
+var localDev = Argument<bool>("local-dev", false);
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var rootPath        = "./../";
-var rootDir         = Directory(rootPath);
+var rootPath       = "./../";
+var rootDir        = Directory(rootPath);
 var buildDir       = rootDir + Directory("bin/") + Directory(configuration);
 var webBuildDir    = rootDir + Directory("src/VolleyManagement.Backend/VolleyManagement.UI/bin");
 var testsDir       = rootDir + Directory("bin/UnitTests/") + Directory(configuration);
@@ -44,10 +45,11 @@ else
 }
 
 // Variables
-var canRunSonar =   sonarToken != null //Has Sonar token
-                && (BuildSystem.IsRunningOnAppVeyor 
+var isCiForMasterOrPr = BuildSystem.IsRunningOnAppVeyor 
                    && (AppVeyor.Environment.Repository.Branch == "master" // master branch
-                    || AppVeyor.Environment.PullRequest.IsPullRequest)); // OR pull request
+                    || AppVeyor.Environment.PullRequest.IsPullRequest);
+var canRunSonar =   sonarToken != null //Has Sonar token
+                && (isCiForMasterOrPr || localDev);
 SonarEndSettings sonarEndSettings;
 
 //////////////////////////////////////////////////////////////////////
@@ -108,13 +110,13 @@ Task("SonarBegin")
             Organization = "volleymanagement",
             Login = sonarToken,
             VsTestReportsPath = testResultsFile,
-            Version = AppVeyor.Environment.Build.Version,
             DotCoverReportsPath = codeCoverageResultsFile
         };
 
         if (BuildSystem.IsRunningOnAppVeyor
             && AppVeyor.Environment.PullRequest.IsPullRequest)
         {
+            settings.Version = AppVeyor.Environment.Build.Version;
             settings.ArgumentCustomization = 
                 args => args.Append("/d:\"sonar.analysis.mode=preview\"")
                             .Append($"/d:\"sonar.github.pullRequest={AppVeyor.Environment.PullRequest.Number}\"")

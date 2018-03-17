@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Contracts;
     using Contracts.Authorization;
@@ -23,10 +24,12 @@
     using TournamentConstants = Domain.Constants.Tournament;
     using TournamentResources = Domain.Properties.Resources;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines TournamentService
     /// </summary>
     public class TournamentService : ITournamentService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Const & Readonly
 
@@ -57,20 +60,21 @@
         #region Query Objects
 
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
-        private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
+        private readonly IQuery<ICollection<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
-        private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
-        private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
-        private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
-        private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
+        private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
+        private readonly IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
+        private readonly IQuery<ICollection<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
+        private readonly IQuery<ICollection<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
         private readonly IQuery<Tournament, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
-        private readonly IQuery<List<Tournament>, OldTournamentsCriteria> _getOldTournamentsQuery;
+        private readonly IQuery<ICollection<Tournament>, OldTournamentsCriteria> _getOldTournamentsQuery;
 
         #endregion
 
         #region Constructor
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
@@ -90,17 +94,18 @@
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
-            IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
+            IQuery<ICollection<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
-            IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
-            IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
-            IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
+            IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
+            IQuery<ICollection<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
+            IQuery<ICollection<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
-            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery, 
-            IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
+            IQuery<ICollection<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery,
+            IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IAuthorizationService authService,
             IGameService gameService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
@@ -125,7 +130,7 @@
         /// Get all tournaments
         /// </summary>
         /// <returns>All tournaments</returns>
-        public List<Tournament> Get()
+        public ICollection<Tournament> Get()
         {
             ArchiveOld();
 
@@ -136,7 +141,7 @@
         /// Get only actual tournaments
         /// </summary>
         /// <returns>actual tournaments</returns>
-        public List<Tournament> GetActual()
+        public ICollection<Tournament> GetActual()
         {
             return GetFilteredTournaments(_actualStates);
         }
@@ -145,7 +150,7 @@
         /// Returns only archived tournaments
         /// </summary>
         /// <returns>Archived tournaments</returns>
-        public List<Tournament> GetArchived()
+        public ICollection<Tournament> GetArchived()
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
 
@@ -156,7 +161,7 @@
         /// Get only finished tournaments
         /// </summary>
         /// <returns>Finished tournaments</returns>
-        public List<Tournament> GetFinished()
+        public ICollection<Tournament> GetFinished()
         {
             return GetFilteredTournaments(_finishedStates);
         }
@@ -166,7 +171,7 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
-        public List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId)
+        public ICollection<TeamTournamentDto> GetAllTournamentTeams(int tournamentId)
         {
             return _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
         }
@@ -176,7 +181,7 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament to get divisions list</param>
         /// <returns>Tournament divisions</returns>
-        public List<Division> GetAllTournamentDivisions(int tournamentId)
+        public ICollection<Division> GetAllTournamentDivisions(int tournamentId)
         {
             return _getAllTournamentDivisionsQuery.Execute(new TournamentDivisionsCriteria { TournamentId = tournamentId });
         }
@@ -186,7 +191,7 @@
         /// </summary>
         /// <param name="divisionId">Id of Division to get group list</param>
         /// <returns>Tournament groups</returns>
-        public List<Group> GetAllTournamentGroups(int divisionId)
+        public ICollection<Group> GetAllTournamentGroups(int divisionId)
         {
             return _getAllTournamentGroupsQuery.Execute(new DivisionGroupsCriteria { DivisionId = divisionId });
         }
@@ -210,13 +215,13 @@
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
         public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
         {
-            var result= _getTournamentDtoQuery
+            var result = _getTournamentDtoQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
 
-            result.Divisions.ForEach(d =>
+            foreach (var item in result.Divisions)
             {
-                d.NumberOfRounds = CalculateNumberOfRounds(result.Scheme, d.TeamCount);
-            });
+                item.NumberOfRounds = CalculateNumberOfRounds(result.Scheme, item.TeamCount);
+            }
 
             return result;
         }
@@ -331,7 +336,7 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        public void AddTeamsToTournament(List<TeamTournamentAssignmentDto> groupTeam)
+        public void AddTeamsToTournament(ICollection<TeamTournamentAssignmentDto> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
 
@@ -343,7 +348,7 @@
                     TournamentResources.CollectionIsEmpty);
             }
 
-            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId).Id;
+            var tournamentId = GetTournamentByGroup(groupTeam.First().GroupId).Id;
             var allTeams = GetAllTournamentTeams(tournamentId);
             int numberOfTeamAlreadyExist = 0;
 
@@ -392,13 +397,13 @@
             }
 
             var allTeams = GetAllTournamentTeams(tournamentId);
-            var count = allTeams.Count() - 1;
+            var count = allTeams.Count - 1;
             CreateSchedule(tournamentId, count);
 
             _tournamentRepository.UnitOfWork.Commit();
         }
 
-        public byte CalculateNumberOfRounds(TournamentSchemeEnum  scheme, int teamCount)
+        public static byte CalculateNumberOfRounds(TournamentSchemeEnum scheme, int teamCount)
         {
             byte numberOfRounds = 0;
 
@@ -413,6 +418,8 @@
                 case TournamentSchemeEnum.PlayOff:
                     numberOfRounds = GetNumberOfRoundsByPlayOffScheme(teamCount);
                     break;
+                default:
+                    throw new InvalidOperationException("This scheme doesn't exist");
             }
 
             return numberOfRounds;
@@ -449,7 +456,7 @@
         /// </summary>
         /// <param name="teamCount">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private byte GetNumberOfRoundsByScheme1(int teamCount)
+        private static byte GetNumberOfRoundsByScheme1(int teamCount)
         {
             return Convert.ToByte((teamCount % 2 == 0) && (teamCount != 0) ? teamCount - 1 : teamCount);
         }
@@ -459,7 +466,7 @@
         /// </summary>
         /// <param name="teamCount">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private byte GetNumberOfRoundsByScheme2(int teamCount)
+        private static byte GetNumberOfRoundsByScheme2(int teamCount)
         {
             return Convert.ToByte(2 * GetNumberOfRoundsByScheme1(teamCount));
         }
@@ -493,7 +500,7 @@
             _gameService.RemoveAllGamesInTournament(tournamentId);
         }
 
-        private void RemoveAllTeamsFromTournament(List<TeamTournamentDto> allTeamsInTournament, int tournamentId)
+        private void RemoveAllTeamsFromTournament(ICollection<TeamTournamentDto> allTeamsInTournament, int tournamentId)
         {
             if (allTeamsInTournament != null)
             {
@@ -511,7 +518,7 @@
             }
         }
 
-        private void RemoveAllDivisionsFromTournament(List<Division> allDivisionsInTournament)
+        private void RemoveAllDivisionsFromTournament(ICollection<Division> allDivisionsInTournament)
         {
             if (allDivisionsInTournament != null)
             {
@@ -549,14 +556,14 @@
             }
         }
 
-        private void ValidateTournamentDates(Tournament tournament)
+        private static void ValidateTournamentDates(Tournament tournament)
         {
             ValidateTournamentApplyingPeriod(tournament);
             ValidateTournamentGamesPeriod(tournament);
             ValidateTournamentTrasferPeriod(tournament);
         }
 
-        private void ValidateTournamentApplyingPeriod(Tournament tournament)
+        private static void ValidateTournamentApplyingPeriod(Tournament tournament)
         {
             // if registration dates comes before current date
             if (TimeProvider.Current.UtcNow >= tournament.ApplyingPeriodStart)
@@ -584,21 +591,9 @@
                     TournamentConstants.APPLYING_END_DATE_AFTER_START_GAMES,
                     TournamentConstants.GAMES_START_CAPTURE);
             }
-
-            // ToDo: Revisit this requirement
-            ////double totalApplyingPeriodDays = (tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays;
-
-            ////// if registration period is little
-            ////if (totalApplyingPeriodDays < ExceptionParams.DAYS_BETWEEN_START_AND_END_APPLYING_DATE)
-            ////{
-            ////    throw new TournamentValidationException(
-            ////        MessageList.WrongThreeMonthRule,
-            ////        ExceptionParams.APPLYING_PERIOD_LESS_THREE_MONTH,
-            ////        ExceptionParams.APPLYING_END_CAPTURE);
-            ////}
         }
 
-        private void ValidateTournamentGamesPeriod(Tournament tournament)
+        private static void ValidateTournamentGamesPeriod(Tournament tournament)
         {
             // if games start date comes after end date
             if (tournament.GamesStart >= tournament.GamesEnd)
@@ -610,7 +605,7 @@
             }
         }
 
-        private void ValidateTournamentTrasferPeriod(Tournament tournament)
+        private static void ValidateTournamentTrasferPeriod(Tournament tournament)
         {
             // if there is no transfer period
             if (!tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
@@ -664,13 +659,13 @@
             }
         }
 
-        private void ValidateDivisions(List<Division> divisions)
+        private void ValidateDivisions(ICollection<Division> divisions)
         {
             ValidateDivisionCount(divisions.Count);
             ValidateUniqueDivisionNames(divisions);
         }
 
-        private void ValidateDivisionCount(int count)
+        private static void ValidateDivisionCount(int count)
         {
             if (!DivisionValidation.IsDivisionCountWithinRange(count))
             {
@@ -682,15 +677,15 @@
             }
         }
 
-        private void ValidateUniqueDivisionNames(List<Division> divisions)
+        private void ValidateUniqueDivisionNames(ICollection<Division> divisions)
         {
-            if (divisions.Select(d => new { Name = d.Name.ToUpper() }).Distinct().Count() != divisions.Count)
+            if (divisions.Select(d => new { Name = d.Name.ToUpper(CultureInfo.InvariantCulture) }).Distinct().Count() != divisions.Count)
             {
                 throw new ArgumentException(TournamentResources.DivisionNamesNotUnique);
             }
         }
 
-        private void ValidateGroups(List<Division> divisions)
+        private void ValidateGroups(ICollection<Division> divisions)
         {
             foreach (var division in divisions)
             {
@@ -699,7 +694,7 @@
             }
         }
 
-        private void ValidateGroupCount(int count)
+        private static void ValidateGroupCount(int count)
         {
             if (!GroupValidation.IsGroupCountWithinRange(count))
             {
@@ -711,15 +706,15 @@
             }
         }
 
-        private void ValidateUniqueGroupNames(List<Group> groups)
+        private void ValidateUniqueGroupNames(ICollection<Group> groups)
         {
-            if (groups.Select(g => new { Name = g.Name.ToUpper() }).Distinct().Count() != groups.Count)
+            if (groups.Select(g => new { Name = g.Name.ToUpper(CultureInfo.InvariantCulture) }).Distinct().Count() != groups.Count)
             {
                 throw new ArgumentException(TournamentResources.GroupNamesNotUnique);
             }
         }
 
-        private byte GetNumberOfRoundsByPlayOffScheme(int teamCount)
+        private static byte GetNumberOfRoundsByPlayOffScheme(int teamCount)
         {
             byte rounds = 0;
             for (byte i = 0; i < teamCount; i++)
@@ -734,7 +729,7 @@
             return rounds;
         }
 
-        private int GetGamesCount(int teamsCount)
+        private static int GetGamesCount(int teamsCount)
         {
             return (int)Math.Pow(GAMES_TO_PLAY_ONE_ROUND, GetNumberOfRoundsByPlayOffScheme((byte)teamsCount));
         }
@@ -742,18 +737,16 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
-            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff
+                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
-                if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
-                {
-                    var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-                    _gameService.RemoveAllGamesInTournament(tournamentId);
-                    _gameService.AddGames(gamesToAdd);
-                }
+                var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
+                _gameService.RemoveAllGamesInTournament(tournamentId);
+                _gameService.AddGames(gamesToAdd);
             }
         }
 
-        private List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
+        private static List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
             int gamesCount = GetGamesCount(teamsCount);
@@ -775,7 +768,7 @@
             return games;
         }
 
-        private byte GetRoundNumber(int roundsCount, int gamesCount, int gameNumber)
+        private static byte GetRoundNumber(int roundsCount, int gamesCount, int gameNumber)
         {
             byte roundNumber = 1;
 

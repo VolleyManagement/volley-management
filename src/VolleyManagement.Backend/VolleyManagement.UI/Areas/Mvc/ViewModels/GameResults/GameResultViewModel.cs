@@ -57,14 +57,14 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         public ScoreViewModel GameScore { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// Gets or sets a value indicating whenever the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
 
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<ScoreViewModel> SetScores { get; set; }
+        public IList<ScoreViewModel> SetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of the game.
@@ -77,7 +77,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         public int Round { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of the game in the tournament
+        /// Gets or sets the number of the game in the tournament.
         /// </summary>
         public byte GameNumber { get; set; }
 

@@ -15,7 +15,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
         {
             _pivotStandings = new List<PivotStandingsViewModel>
             {
-                new PivotStandingsViewModel()
+                new PivotStandingsViewModel
                 {
                         TeamsStandings = GetPivotTeamsStandings(),
                         GamesStandings = GetGameStandings(),
@@ -56,7 +56,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     TeamName = "TeamNameA",
                     Points = 3,
                     SetsRatio = (float)3 / 3,
-                },                
+                },
                 new PivotStandingsTeamViewModel
                 {
                     TeamId = 3,

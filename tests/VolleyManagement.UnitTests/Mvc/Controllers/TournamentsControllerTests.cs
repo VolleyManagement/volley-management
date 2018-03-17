@@ -13,22 +13,20 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Services.GameReportService;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.MailService;
-    using VolleyManagement.UnitTests.Services.TeamService;
-    using VolleyManagement.UnitTests.Services.TournamentRequestService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
+    using Contracts.Authorization;
+    using Domain.GamesAggregate;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentRequestAggregate;
+    using Domain.TournamentsAggregate;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.GameResults;
+    using UI.Areas.Mvc.ViewModels.Teams;
+    using UI.Areas.Mvc.ViewModels.Tournaments;
+    using ViewModels;
+    using Services.GameService;
+    using Services.TeamService;
+    using Services.TournamentService;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -182,9 +180,11 @@
         {
             // Arrange
             var expectedTeamsList = CreateExpectedTeamsList();
+            var testDivisions = CreateTestDivisions();
+            var testTeams = CreateTestTeams();
 
-            var testData = CreateTestTeams();
-            SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
+            SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
+            SetupGetTournamentDivisions(testDivisions, TEST_DIVISION_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
@@ -222,6 +222,29 @@
             // Assert
             Assert.AreEqual(returnedTeamsList.Model.TeamsList.Count, EMPTY_TEAMLIST_COUNT);
             Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
+        }
+
+        [TestMethod]
+        public void ManageTournamentTeams_NotSortedTournamentTeams_ModelContainsSortedTournamentTeamsByDivisionAndGroupName()
+        {
+            // Arrange
+            var unorderedTournamentTeams = new TeamInTournamentTestFixture().WithUnorderedTeams().Build();
+            var orderedTournamentTeams = unorderedTournamentTeams
+                                          .OrderBy(model => model.DivisionName)
+                                          .ThenBy(model => model.GroupName)
+                                          .ToList();
+
+            SetupGetTournamentTeams(unorderedTournamentTeams, TEST_TOURNAMENT_ID);
+
+            // Act
+            var resultTeams = _tournamentServiceMock.Object.GetAllTournamentTeams(TEST_TOURNAMENT_ID);
+            var actual = new TournamentTeamsListViewModel(resultTeams, TEST_TOURNAMENT_ID)
+                         .TeamsList;
+
+            var expected = orderedTournamentTeams.Select(TeamNameViewModel.Map).ToList();
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new TeamNameViewModelComparer());
         }
 
         #endregion
@@ -380,7 +403,7 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var testGroupData = CreateTestGroups();
+
             _tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()))
                 .Throws(new ArgumentException(string.Empty));
@@ -1054,7 +1077,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions[0].IsGroupsCountMin, "Count of division's groups should be min.");
+            Assert.IsTrue(result.Divisions.First().IsGroupsCountMin, "Count of division's groups should be min.");
         }
 
         /// <summary>
@@ -1074,7 +1097,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions[0].IsGroupsCountMin, "Count of division's groups shouldn't be min.");
+            Assert.IsFalse(result.Divisions.First().IsGroupsCountMin, "Count of division's groups shouldn't be min.");
         }
 
         /// <summary>
@@ -1094,7 +1117,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions[0].IsGroupsCountMax, "Count of division's groups should be max.");
+            Assert.IsTrue(result.Divisions.First().IsGroupsCountMax, "Count of division's groups should be max.");
         }
 
         /// <summary>
@@ -1114,7 +1137,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions[0].IsGroupsCountMax, "Count of division's groups shouldn't be max.");
+            Assert.IsFalse(result.Divisions.First().IsGroupsCountMax, "Count of division's groups shouldn't be max.");
         }
 
         /// <summary>
@@ -1653,25 +1676,31 @@
         {
             var tournament = MakeTestTournament(tournamentId);
             tournament.Divisions = CreateTestDivisions();
-            tournament.Divisions.Remove(tournament.Divisions[1]);
+            tournament.Divisions.Remove(tournament.Divisions.ElementAt(1));
             return tournament;
         }
 
         private Tournament MakeTestTournamentWithTenDivisions(int tournamentId)
         {
             var tournament = MakeTestTournament(tournamentId);
-            tournament.Divisions = new List<Division>();
+            tournament.Divisions = CreateDivisionWithTenGroups();
+
+            return tournament;
+        }
+
+        private List<Division> CreateDivisionWithTenGroups()
+        {
+            List<Division> divisionsWithTenGroups = new List<Division>();
             for (int i = 0; i < 10; i++)
             {
-                tournament.Divisions.Add(new Division());
-                tournament.Divisions[i].Groups = new List<Group>();
+                divisionsWithTenGroups.Add(new Division());
                 for (int j = 0; j < 10; j++)
                 {
-                    tournament.Divisions[i].Groups.Add(new Group());
+                    divisionsWithTenGroups[i].Groups.Add(new Group());
                 }
             }
 
-            return tournament;
+            return divisionsWithTenGroups;
         }
 
         private TournamentViewModel MakeTestTournamentViewModel()

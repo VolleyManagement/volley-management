@@ -1,9 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
     using System.Collections.Generic;
-
     using Domain.Dto;
     using Domain.RolesAggregate;
+    using System.Linq;
 
     /// <summary>
     /// The role edit view model.
@@ -24,12 +24,12 @@
         /// <summary>
         /// Gets or sets the users in role.
         /// </summary>
-        public List<UserViewModel> UsersInRole { get; set; }
+        public ICollection<UserViewModel> UsersInRole { get; set; }
 
         /// <summary>
         /// Gets or sets the users outside role.
         /// </summary>
-        public List<UserViewModel> UsersOutsideRole { get; set; }
+        public ICollection<UserViewModel> UsersOutsideRole { get; set; }
 
         /// <summary>
         /// Fills current instance with data provided by users in role collection

@@ -12,10 +12,10 @@
                 </div>
                 <div class="col-md-7">
                     <div class="row">
-                        <strong>  @Resources.UI.TournamentViews.HomeTeamPlaceholder </strong>
+                        <strong> @Model.HomeTeamName </strong>
                     </div>
                     <div class="row">
-                        <strong>  @Resources.UI.TournamentViews.AwayTeamPlaceholder </strong>
+                        <strong> @Model.AwayTeamName </strong>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     @Resources.UI.TournamentViews.TeamDayOff
                 </div>
             </div>
-                    
+
             if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
             {
                 <div class="row">
@@ -125,6 +125,15 @@
                     </div>
                 </div>
             }
+        }
+
+        if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                </div>
+            </div>
         }
     }
     else if (Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)

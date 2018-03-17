@@ -107,6 +107,11 @@
             return this;
         }
 
+        public GameBuilder WithDayOff()
+        {
+            return WithAwayTeamId(null);
+        }
+
         /// <summary>
         /// Sets empty null result in game.
         /// </summary>
@@ -185,7 +190,12 @@
         public GameBuilder WithSetScores(IEnumerable<Score> scores)
         {
             _game.Result.SetScores.Clear();
-            _game.Result.SetScores.AddRange(scores);
+            var scoresEnumerator = scores.GetEnumerator();
+            while (scoresEnumerator.MoveNext())
+            {
+                _game.Result.SetScores.Add(scoresEnumerator.Current);
+            }
+            scoresEnumerator.Dispose();
             return this;
         }
 
@@ -387,6 +397,7 @@
             _game.HomeTeamId = 1;
             _game.AwayTeamId = null;
             _game.Round = 1;
+            _game.Result = null;
 
             return this;
         }

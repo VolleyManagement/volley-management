@@ -73,6 +73,7 @@
             Assert.AreEqual(x.IsHomeTeamPenalty, y.IsHomeTeamPenalty, "IsHomeTeamPenalty should be equal.");
             Assert.AreEqual(x.PenaltyAmount, y.PenaltyAmount, "PenaltyAmount should be equal.");
             Assert.AreEqual(x.PenaltyDescrition, y.PenaltyDescrition, "PenaltyDescrition should be equal.");
+            Assert.AreEqual(x.HasResults, y.HasResults, "HasResults should be equal.");
 
             Assert.AreEqual(x.UrlToGameVideo, y.UrlToGameVideo, "UrlToGameVideo should be equal.");
 

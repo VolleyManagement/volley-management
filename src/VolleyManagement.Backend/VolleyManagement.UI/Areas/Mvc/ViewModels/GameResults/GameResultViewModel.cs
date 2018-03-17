@@ -88,6 +88,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 
         public bool HasPenalty { get; set; }
 
+        public bool HasResults => (!GameScore?.IsEmpty).GetValueOrDefault();
+
         public bool IsHomeTeamPenalty { get; set; }
 
         public byte PenaltyAmount { get; set; }

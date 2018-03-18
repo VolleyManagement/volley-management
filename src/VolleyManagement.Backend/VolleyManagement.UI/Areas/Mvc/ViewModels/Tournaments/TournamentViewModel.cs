@@ -173,6 +173,17 @@
         public bool IsTransferEnabled { get; set; }
 
         /// <summary>
+        /// Gets or sets the a value which indicates if tournament is archived
+        /// </summary>
+        public bool IsArchived { get; set; }
+
+        /// <summary>
+        /// Returns a message about state of tournament
+        /// </summary>
+        public string ArchivationState =>
+           $"Tournament {Name} is {(IsArchived ? "archived" : "active")}";
+
+        /// <summary>
         /// Gets or sets start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
@@ -205,10 +216,6 @@
         /// </summary>
         /// <param name="tournament"> Domain object </param>
         /// <returns> View model object </returns>
-        public string AlarmMessage { get { return !this.IsArchived ? "Tournament was successfully archived": "Tournament was successfully unarchived"; } }
-
-        public bool  IsArchived { get; set; }
-
         public static TournamentViewModel Map(Tournament tournament)
         {
             var tournamentViewModel = new TournamentViewModel

@@ -771,24 +771,7 @@
             // Assert
             VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
         }
-
-        /// <summary>
-        /// Test for UnArchive method. Service get Id of Tournament to activate
-        /// </summary>
-        [TestMethod]
-        public void UnArchive_GetTournamentToActive_ServiceMethodUnArchiveIsCalled()
-        {
-            // Arrange
-            MakeTestTournaments();
-            SetupUnArchiveTournament(TEST_TOURNAMENT_ID);
-            var sut = BuildSUT();
-
-            // Act
-            sut.UnArchive(TEST_TOURNAMENT_ID);
-
-            // Assert
-            VerifyActivateTournament(TEST_TOURNAMENT_ID, Times.Once());
-        }
+        
         #endregion
 
         #region Details
@@ -1805,7 +1788,7 @@
 
         private void SetupUnArchiveTournament(int tournamentId)
         {
-            _tournamentServiceMock.Setup(tr => tr.UnArchive(tournamentId));
+            _tournamentServiceMock.Setup(tr => tr.Activate(tournamentId));
         }
 
         private void SetupGetActual(List<Tournament> tournaments)
@@ -1931,7 +1914,7 @@
 
         private void VerifyActivateTournament(int tournamentId, Times times)
         {
-            _tournamentServiceMock.Verify(ts => ts.UnArchive(tournamentId), times);
+            _tournamentServiceMock.Verify(ts => ts.Activate(tournamentId), times);
         }
 
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)

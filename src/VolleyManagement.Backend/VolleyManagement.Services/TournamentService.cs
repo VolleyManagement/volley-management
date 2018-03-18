@@ -308,24 +308,25 @@
         }
         
         /// <summary>
-        /// Unarchive tournament by id.
+        /// Activate tournament by id.
         /// </summary>
         /// <param name="id">The id of tournament to archive.</param>
         public void Activate(int id)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Activate);
 
-            var getTournamentToUnArchive = Get(id);
+            var tournamentToActivate = Get(id);
 
-            if (getTournamentToUnArchive == null)
+            if (tournamentToActivate == null)
             {
                 throw new ArgumentException(
                     TournamentResources.TournamentWasNotFound);
             }
 
-            UnArchive(getTournamentToUnArchive);
+            Activate(tournamentToActivate);
             _tournamentRepository.UnitOfWork.Commit();
         }
+
         /// <summary>
         /// Method for autho-archiving old tournaments.
         /// Finds old tournaments to be archived.
@@ -502,10 +503,10 @@
         }
 
         /// <summary>
-        /// Unarchive tournament.
+        /// Activate tournament.
         /// </summary>
         /// <param name="tournament">Tournament to archive.</param>
-        private void UnArchive(Tournament tournament)
+        private void Activate(Tournament tournament)
         {
             tournament.IsArchived = false;
 

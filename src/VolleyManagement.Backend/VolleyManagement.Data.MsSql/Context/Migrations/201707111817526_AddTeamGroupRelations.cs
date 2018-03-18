@@ -19,7 +19,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .Index(t => t.GroupId)
                 .Index(t => t.TeamId);
 
-            string query_Group_Temp = @"(SELECT MIN(Groups.Id) AS GroupId, 
+            var query_Group_Temp = @"(SELECT MIN(Groups.Id) AS GroupId, 
                                                 Tournaments.Id AS TournId 
                                         FROM Tournaments  
                                             INNER JOIN Divisions ON Tournaments.Id = Divisions.TournamentId  
@@ -27,7 +27,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                                         GROUP BY Tournaments.Id)
                                         AS Group_Temp ";
 
-            string query_TournamentTeam_To_GroupTeam = @"INSERT INTO GroupTeam (GroupId, TeamId) 
+            var query_TournamentTeam_To_GroupTeam = @"INSERT INTO GroupTeam (GroupId, TeamId) 
                                                         SELECT Group_Temp.GroupId AS GroupId, 
                                                                Teams.Id AS TeamId 
                                                         FROM Groups 
@@ -56,7 +56,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             AddForeignKey("dbo.TournamentTeam", "TeamId", "dbo.Teams", "Id");
             AddForeignKey("dbo.TournamentTeam", "TournamentId", "dbo.Tournaments", "Id");
 
-            string query_GroupTeam_To_TournamentTeam = @"INSERT INTO TournamentTeam(TeamId, TournamentId) 
+            var query_GroupTeam_To_TournamentTeam = @"INSERT INTO TournamentTeam(TeamId, TournamentId) 
                                                          Select  Teams.Id, 
                                                                Tournaments.Id 
                                                          From Tournaments 

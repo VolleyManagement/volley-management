@@ -20,8 +20,8 @@
 
         public int Compare(object x, object y)
         {
-            UserViewModel firstUser = x as UserViewModel;
-            UserViewModel secondUser = y as UserViewModel;
+            var firstUser = x as UserViewModel;
+            var secondUser = y as UserViewModel;
 
             if (firstUser == null)
             {
@@ -39,7 +39,7 @@
         {
             var playerComparer = new PlayerViewModelComparer();
 
-            bool result = x.Id == y.Id &&
+            var result = x.Id == y.Id &&
                           x.Name == y.Name &&
                           x.PersonName == y.PersonName &&
                           x.Phone == y.Phone &&
@@ -54,7 +54,7 @@
             {
                 foreach (var xProvider in x.LoginProviders)
                 {
-                    bool providerFound = false;
+                    var providerFound = false;
                     foreach (var yProvider in y.LoginProviders)
                     {
                         if (yProvider.LoginProvider == xProvider.LoginProvider
@@ -76,7 +76,7 @@
             {
                 foreach (var xRole in x.Roles)
                 {
-                    bool roleFound = false;
+                    var roleFound = false;
                     foreach (var yRole in y.Roles)
                     {
                         if (yRole.Id == xRole.Id

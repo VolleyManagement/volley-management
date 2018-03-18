@@ -69,8 +69,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
                     }
                     else
                     {
-                        int rowTeamId = TeamsStandings[i].TeamId;
-                        int columnTeamId = TeamsStandings[j].TeamId;
+                        var rowTeamId = TeamsStandings[i].TeamId;
+                        var columnTeamId = TeamsStandings[j].TeamId;
                         results = GetAllResultsForTeams(rowTeamId, columnTeamId);
                         SetCellValue(i, j, results);
                     }

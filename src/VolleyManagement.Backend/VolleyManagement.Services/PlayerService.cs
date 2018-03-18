@@ -159,7 +159,7 @@
         public void Delete(int id)
         {
             _authService.CheckAccess(AuthOperations.Players.Delete);
-            Team playerTeam = GetPlayerLedTeam(id);
+            var playerTeam = GetPlayerLedTeam(id);
 
             if (playerTeam != null)
             {

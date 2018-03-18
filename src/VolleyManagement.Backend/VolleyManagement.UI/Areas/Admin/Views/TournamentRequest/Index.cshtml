@@ -17,19 +17,19 @@
         </tr>
         @if (Model.Requests.Count() == 0)
         {
-            <tr>
-                <td colspan="3" class="text-center">@Resources.UI.TournamentViews.NoApplication</td>
-            </tr>
+        <tr>
+            <td colspan="3" class="text-center">@Resources.UI.TournamentViews.NoApplication</td>
+        </tr>
         }
         else
         {
             foreach (var application in Model.Requests)
             {
-                <tr>
-                    <td>@application.Id</td>
-                    <td>
-                        @application.TeamTitle
-                        @Html.ActionLink(
+        <tr>
+            <td>@application.Id</td>
+            <td>
+                @application.TeamTitle
+                @Html.ActionLink(
                             Resources.UI.TournamentViews.Details,
                             "Details",
                             "Teams",
@@ -40,10 +40,10 @@
                                 returnUrl = "/Admin/TournamentRequest"
                             },
                             new { @class = "btn btn-info btn-xs" })
-                    </td>
-                    <td>
-                        @application.TournamentTitle
-                        @Html.ActionLink(
+            </td>
+            <td>
+                @application.TournamentTitle
+                @Html.ActionLink(
                             Resources.UI.TournamentViews.Details,
                             "Details",
                             "Tournaments",
@@ -53,16 +53,16 @@
                                 id = application.TournamentId
                             },
                             new { @class = "btn btn-info btn-xs" })
-                    </td>
-                    <td>
-                        @application.PersonName
-                        @Html.ActionLink(Resources.UI.TournamentViews.Details, "UserDetails", "Users", new { id = application.PersonId }, new { @class = "btn btn-info btn-xs" })
-                    </td>
-                    <td>
-                        @Html.ActionLink(Resources.UI.TournamentViews.Confirm, "Confirm", new { id = application.Id }, new { @class = "btn btn-success btn-xs" })
-                        @Html.ActionLink(Resources.UI.TournamentViews.Decline, "Decline", new { id = application.Id }, new { @class = "btn btn-danger btn-xs" })
-                    </td>
-                </tr>
+            </td>
+            <td>
+                @application.PersonName
+                @Html.ActionLink(Resources.UI.TournamentViews.Details, "UserDetails", "Users", new { id = application.PersonId }, new { @class = "btn btn-info btn-xs" })
+            </td>
+            <td>
+                @Html.ActionLink(Resources.UI.TournamentViews.Confirm, "Confirm", new { id = application.Id }, new { @class = "btn btn-success btn-xs" })
+                @Html.ActionLink(Resources.UI.TournamentViews.Decline, "Decline", new { id = application.Id }, new { @class = "btn btn-danger btn-xs" })
+            </td>
+        </tr>
             }
         }
     </table>

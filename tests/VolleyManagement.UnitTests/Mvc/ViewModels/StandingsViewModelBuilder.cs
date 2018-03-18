@@ -407,7 +407,7 @@
             const int teamsCount = 6;
             var table = new List<PivotGameResultViewModel>[teamsCount * teamsCount];
             _standingsViewModel.PivotTable[0].AllGameResults = table;
-            for (int i = 0; i < teamsCount; i++)
+            for (var i = 0; i < teamsCount; i++)
             {
                 for (var j = 0; j < teamsCount; j++)
                 {
@@ -655,7 +655,7 @@
             const int teamsCount = 6;
             var table = new List<PivotGameResultViewModel>[teamsCount * teamsCount];
             _standingsViewModel.PivotTable[1].AllGameResults = table;
-            for (int i = 0; i < teamsCount; i++)
+            for (var i = 0; i < teamsCount; i++)
             {
                 for (var j = 0; j < teamsCount; j++)
                 {
@@ -1141,14 +1141,14 @@
 
         private List<PivotGameResultViewModel>[] GetPivotTableTwoTeamsScoresCompletelyEqual()
         {
-            int rows = 9;
+            var rows = 9;
             var table = new List<PivotGameResultViewModel>[rows];
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
                 table[i] = new List<PivotGameResultViewModel>();
             }
 
-            for (int i = 0; i < rows; i += 4)
+            for (var i = 0; i < rows; i += 4)
             {
                 table[i] = new List<PivotGameResultViewModel>();
                 table[i].Add(new PivotGameResultViewModel
@@ -1207,14 +1207,14 @@
         
         private List<PivotGameResultViewModel>[] GetPivotTable()
         {
-            int rows = 9;
+            var rows = 9;
             var table = new List<PivotGameResultViewModel>[rows];
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
                 table[i] = new List<PivotGameResultViewModel>();
             }
 
-            for (int i = 0; i < rows; i += 4)
+            for (var i = 0; i < rows; i += 4)
             {
                 table[i] = new List<PivotGameResultViewModel>();
                 table[i].Add(new PivotGameResultViewModel

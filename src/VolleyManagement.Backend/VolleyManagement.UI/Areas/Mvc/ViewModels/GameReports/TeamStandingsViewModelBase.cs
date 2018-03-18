@@ -39,7 +39,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
         public static void SetPositions<T>(IList<T> entries)
             where T : TeamStandingsViewModelBase
         {
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
                 entries[i].Position = i + 1;
             }

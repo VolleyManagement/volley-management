@@ -134,7 +134,7 @@
                 throw new InvalidOperationException(ServiceResources.ExceptionMessages.UserBlockHimself);
             }
 
-            User user = GetUser(userId);
+            var user = GetUser(userId);
             if (user == null)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.UserNotFound);

@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
@@ -108,8 +108,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <returns>View model of <see cref="StandingsEntry"/>.</returns>
         public static StandingsEntryViewModel Map(StandingsEntry standingsEntry)
         {
-            return new StandingsEntryViewModel
-            {
+            return new StandingsEntryViewModel {
                 TeamName = standingsEntry.TeamName,
                 Points = standingsEntry.Points,
                 GamesTotal = standingsEntry.GamesTotal,
@@ -137,7 +136,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <returns>List of team standings entries with their position</returns>
         public static IList<StandingsEntryViewModel> SetPositions(IList<StandingsEntryViewModel> entries)
         {
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
                 entries[i].Position = i == 0 || !EntriesHaveSamePosition(entries[i], entries[i - 1])
                     ? i + 1

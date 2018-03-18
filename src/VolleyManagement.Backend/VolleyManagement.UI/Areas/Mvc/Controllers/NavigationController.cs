@@ -34,8 +34,8 @@
         public PartialViewResult Menu()
         {
             var authorization = _authService.GetAllowedOperations(AuthOperations.Tournaments.ViewArchived);
-            string controllerName = (string)Request.RequestContext.RouteData.Values["controller"];
-            List<MenuItemViewModel> items = new List<MenuItemViewModel>
+            var controllerName = (string)Request.RequestContext.RouteData.Values["controller"];
+            var items = new List<MenuItemViewModel>
                 {
                     new MenuItemViewModel { Name = "Tournaments", Controller = "Tournaments", Action = "Index" },
                     new MenuItemViewModel { Name = "Players", Controller = "Players", Action = "Index" },

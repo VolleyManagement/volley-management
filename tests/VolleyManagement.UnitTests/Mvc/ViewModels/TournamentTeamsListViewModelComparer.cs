@@ -32,8 +32,8 @@
         /// <returns>A signed integer that indicates the relative values of teams lists.</returns>
         public int Compare(object x, object y)
         {
-            TournamentTeamsListViewModel firstTeamList = x as TournamentTeamsListViewModel;
-            TournamentTeamsListViewModel secondTeamList = y as TournamentTeamsListViewModel;
+            var firstTeamList = x as TournamentTeamsListViewModel;
+            var secondTeamList = y as TournamentTeamsListViewModel;
 
             if (firstTeamList == null)
             {
@@ -57,7 +57,7 @@
         {
             var teamComparer = new TeamNameViewModelComparer();
 
-            bool result = x.TournamentId == y.TournamentId;
+            var result = x.TournamentId == y.TournamentId;
             if (result && x.TeamsList != null)
             {
                 result &= x.TeamsList.SequenceEqual(y.TeamsList, teamComparer);

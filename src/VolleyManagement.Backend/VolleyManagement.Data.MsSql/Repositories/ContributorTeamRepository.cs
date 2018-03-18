@@ -32,10 +32,7 @@
         /// <summary>
         /// Gets unit of work.
         /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get { return _unitOfWork; }
-        }
+        public IUnitOfWork UnitOfWork => _unitOfWork;
 
         /// <summary>
         /// Gets all teams with contributors inside.
@@ -44,13 +41,11 @@
         public ICollection<ContributorTeam> Find()
         {
             var result = _contribsSet.GroupBy(c => c.Team)
-                                     .Select(gr => new ContributorTeam
-                                     {
+                                     .Select(gr => new ContributorTeam {
                                          Id = gr.Key.Id,
                                          Name = gr.Key.Name,
                                          CourseDirection = gr.Key.CourseDirection,
-                                         Contributors = gr.Select(c => new Contributor
-                                         {
+                                         Contributors = gr.Select(c => new Contributor {
                                              Id = c.Id,
                                              Name = c.Name
                                          })

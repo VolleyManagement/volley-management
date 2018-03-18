@@ -73,10 +73,10 @@
 
         private void UpdateUserProviders(List<LoginInfoEntity> providers)
         {
-            for (int i = 0; i < providers.Count; i++)
+            for (var i = 0; i < providers.Count; i++)
             {
-                string loginProviderName = providers[i].LoginProvider;
-                string providerKey = providers[i].ProviderKey;
+                var loginProviderName = providers[i].LoginProvider;
+                var providerKey = providers[i].ProviderKey;
                 var existProvider = _unitOfWork.Context.LoginProviders
                                                        .FirstOrDefault(dlp =>
                                                         dlp.LoginProvider == loginProviderName

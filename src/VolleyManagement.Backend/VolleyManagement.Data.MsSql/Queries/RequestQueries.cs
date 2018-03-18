@@ -83,8 +83,7 @@
         {
             return
                 t =>
-                new Request
-                {
+                new Request {
                     Id = t.Id,
                     UserId = t.UserId,
                     PlayerId = t.PlayerId

@@ -10,51 +10,51 @@
 @Html.ValidationSummary()
 @using (Html.BeginForm())
 {
-    <input type="hidden" name="roleId" value="@Model.Id" />
-    <div class="panel panel-primary">
-        <div class="panel-heading">Add To @Model.Name</div>
-        <table class="table table-striped">
-            @if (Model.UsersOutsideRole.Count == 0)
+<input type="hidden" name="roleId" value="@Model.Id" />
+<div class="panel panel-primary">
+    <div class="panel-heading">Add To @Model.Name</div>
+    <table class="table table-striped">
+        @if (Model.UsersOutsideRole.Count == 0)
             {
-                <tr><td colspan="2">All Users Are Members</td></tr>
+        <tr><td colspan="2">All Users Are Members</td></tr>
             }
             else
             {
-                <tr><td>User</td><td>Add To Role</td></tr>
+        <tr><td>User</td><td>Add To Role</td></tr>
                 foreach (var user in Model.UsersOutsideRole)
                 {
-                    <tr>
-                        <td>@user.Name</td>
-                        <td>
-                            <input type="checkbox" name="IdsToAdd" value="@user.Id">
-                        </td>
-                    </tr>
+        <tr>
+            <td>@user.Name</td>
+            <td>
+                <input type="checkbox" name="IdsToAdd" value="@user.Id">
+            </td>
+        </tr>
                 }
             }
-        </table>
-    </div>
-    <div class="panel panel-primary">
-        <div class="panel-heading">Remove from @Model.Name</div>
-        <table class="table table-striped">
-            @if (Model.UsersInRole.Count == 0)
+    </table>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">Remove from @Model.Name</div>
+    <table class="table table-striped">
+        @if (Model.UsersInRole.Count == 0)
             {
-                <tr><td colspan="2">No Users Are Members</td></tr>
+        <tr><td colspan="2">No Users Are Members</td></tr>
             }
             else
             {
-                <tr><td>User ID</td><td>Remove From Role</td></tr>
+        <tr><td>User ID</td><td>Remove From Role</td></tr>
                 foreach (var user in Model.UsersInRole)
                 {
-                    <tr>
-                        <td>@user.Name</td>
-                        <td>
-                            <input type="checkbox" name="IdsToDelete" value="@user.Id">
-                        </td>
-                    </tr>
+        <tr>
+            <td>@user.Name</td>
+            <td>
+                <input type="checkbox" name="IdsToDelete" value="@user.Id">
+            </td>
+        </tr>
                 }
             }
-        </table>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    </table>
+</div>
+<button type="submit" class="btn btn-primary">Save</button>
 }
 

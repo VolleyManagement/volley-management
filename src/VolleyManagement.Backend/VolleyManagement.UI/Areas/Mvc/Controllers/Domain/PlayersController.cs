@@ -69,7 +69,7 @@
         {
             try
             {
-                PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
+                var playersOnPage = GetPlayersListViewModel(page, textToSearch);
                 playersOnPage.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
                 {
                     AuthOperations.Players.Create,
@@ -115,7 +115,7 @@
         /// Player and User. </returns>
         public string LinkWithUser(int playerId)
         {
-            int userId = _currentUserService.GetCurrentUserId();
+            var userId = _currentUserService.GetCurrentUserId();
             string message;
 
             if (userId != ANONYM)
@@ -194,8 +194,7 @@
                 return Json(new PlayerDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
 
-            return Json(new PlayerDeleteResultViewModel
-            {
+            return Json(new PlayerDeleteResultViewModel {
                 Message = Resources.UI.ViewModelResources.PlayerWasDeletedSuccessfully,
                 HasDeleted = true
             });
@@ -307,7 +306,7 @@
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             IQueryable<Player> allPlayers = _playerService.Get().OrderBy(p => p.LastName);
-            string trimResult = "";
+            var trimResult = "";
             if (!string.IsNullOrEmpty(textToSearch))
             {
                 trimResult = textToSearch.Trim();

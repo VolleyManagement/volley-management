@@ -38,7 +38,7 @@
 
         public int CompareInternal(GroupViewModel x, GroupViewModel y)
         {
-            int result = x.Id.CompareTo(y.Id);
+            var result = x.Id.CompareTo(y.Id);
             if (result != 0)
             {
                 Assert.Fail("Ids should be equal.");

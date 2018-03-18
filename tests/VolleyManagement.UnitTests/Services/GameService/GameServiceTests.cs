@@ -1656,7 +1656,6 @@
         public void Edit_ChangeTimeForPlayOffGameWithUnknownTeams_GameSaved()
         {
             //Arrange
-            bool isExceprionThrown = false;
             var testTournament = CreatePlayoffTournament();
             var games = new GameTestFixture()
                 .TestEmptyGamePlayoffSchedule()
@@ -1670,29 +1669,20 @@
 
             //Act
             var sut = BuildSUT();
-            try
-            {
-                sut.Edit(testGameForEdit);
-            }
-            catch (Exception)
-            {
-                isExceprionThrown = true;
-            }
+            sut.Edit(testGameForEdit);
 
             //Assert
-            Assert.AreEqual(isExceprionThrown, false);
             VerifyEditGame(testGameForEdit, Times.Once());
         }
 
         /// <summary>
-        /// Test for Edit method. Change time for game in second round with known teams. 
+        /// Test for Edit method. Change time for planned game in second round with defined teams. 
         /// No exceprtion returns and game is edited successfully.
         /// </summary>
         [TestMethod]
-        public void Edit_ChangeTimeForPlayOffGameWithKnownTeams_GameSaved()
+        public void Edit_ChangeTimeForPlayOffGameWithDefinedTeams_GameSaved()
         {
             //Arrange
-            bool isExceprionThrown = false;
             var testTournament = CreatePlayoffTournament();
             var games = new GameTestFixture()
                 .TestEmptyGamePlayoffSchedule()
@@ -1708,17 +1698,9 @@
 
             //Act
             var sut = BuildSUT();
-            try
-            {
-                sut.Edit(testGameForEdit);
-            }
-            catch (Exception)
-            {
-                isExceprionThrown = true;
-            }
+            sut.Edit(testGameForEdit);
 
-            //Assert
-            Assert.AreEqual(isExceprionThrown, false);
+            //Assert                    
             VerifyEditGame(testGameForEdit, Times.Once());
         }
 

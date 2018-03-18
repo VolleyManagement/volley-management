@@ -311,9 +311,9 @@
         /// Unarchive tournament by id.
         /// </summary>
         /// <param name="id">The id of tournament to archive.</param>
-        public void UnArchive(int id)
+        public void Activate(int id)
         {
-            _authService.CheckAccess(AuthOperations.Tournaments.Archive);
+            _authService.CheckAccess(AuthOperations.Tournaments.Activate);
 
             var getTournamentToUnArchive = Get(id);
 

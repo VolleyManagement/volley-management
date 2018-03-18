@@ -103,7 +103,7 @@
         /// Unarchive specific tournament
         /// </summary>
         /// <param name="id">Tournament id</param>
-        void UnArchive(int id);
+        void Activate(int id);
 
         /// <summary>
         /// Archive old tournaments.

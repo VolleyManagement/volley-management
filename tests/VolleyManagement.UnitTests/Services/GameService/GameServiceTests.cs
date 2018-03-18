@@ -1649,11 +1649,11 @@
         }
 
         /// <summary>
-        /// Test for Edit method. Game object in PlayOff contains valid data. 
-        /// No exceprtion returns and game is edited successfully
+        /// Test for Edit method. Change time for game in second round with unknown teams. 
+        /// No exceprtion returns and game is edited successfully.
         /// </summary>
         [TestMethod]
-        public void Edit_GameTimeForPlayOffChanged_NoException()
+        public void Edit_ChangeTimeForPlayOffGameWithUnknownTeams_GameSaved()
         {
             //Arrange
             bool isExceprionThrown = false;
@@ -1668,7 +1668,45 @@
             MockAllTournamentQueries(testTournament);
             MockGetTournamentResults(TOURNAMENT_ID, games);
 
-            //ActS
+            //Act
+            var sut = BuildSUT();
+            try
+            {
+                sut.Edit(testGameForEdit);
+            }
+            catch (Exception)
+            {
+                isExceprionThrown = true;
+            }
+
+            //Assert
+            Assert.AreEqual(isExceprionThrown, false);
+            VerifyEditGame(testGameForEdit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit method. Change time for game in second round with known teams. 
+        /// No exceprtion returns and game is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_ChangeTimeForPlayOffGameWithKnownTeams_GameSaved()
+        {
+            //Arrange
+            bool isExceprionThrown = false;
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            var testGameForEdit = games[5];
+            testGameForEdit.HomeTeamId = 1;
+            testGameForEdit.AwayTeamId = 3;
+            testGameForEdit.GameDate = new DateTime(2016, 4, 3, 0, 0, 0);
+
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            //Act
             var sut = BuildSUT();
             try
             {
@@ -1873,10 +1911,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SAME_TEAM);
         }
 
-        /// <summary>
-        /// Test method checks that 2 same teams(not null) can't be in one game in PlayOff scheme.
-        /// Argument exception thrown. 
-        /// </summary>
         [TestMethod]
         public void Edit_SeveralDayOffGamesInPlayoff_GameEdited()
         {

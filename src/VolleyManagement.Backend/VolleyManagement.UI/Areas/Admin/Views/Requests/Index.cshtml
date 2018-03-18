@@ -23,11 +23,11 @@
     <div id="popupContact">
         @using (Html.BeginForm("Reply", "Requests", FormMethod.Post))
         {
-            <img src="close.jpg" id="close">
-            <h2>Reply</h2>
-            <input type="hidden" name="feedbackId" required id="feedbackId" value="" />
-            <textarea name="feedbackMessage" required placeholder="Message" id="feedbackMessage"></textarea>
-            <input type="submit" id="submit" value="Send" />
+        <img src="close.jpg" id="close">
+        <h2>Reply</h2>
+        <input type="hidden" name="feedbackId" required id="feedbackId" value="" />
+        <textarea name="feedbackMessage" required placeholder="Message" id="feedbackMessage"></textarea>
+        <input type="submit" id="submit" value="Send" />
         }
     </div>
 </div>
@@ -44,34 +44,34 @@
         </tr>
         @if (Model.Count == 0)
         {
-            <tr>
-                <td colspan="3" class="text-center">No Requests</td>
-            </tr>
+        <tr>
+            <td colspan="3" class="text-center">No Requests</td>
+        </tr>
         }
         else
         {
             foreach (var feedback in Model)
             {
-                <tr>
-                    <td>@feedback.Id</td>
-                    <td>@feedback.UsersEmail</td>
-                    <td>@feedback.Content</td>
-                    <td>@feedback.Date</td>
-                    <td>@feedback.Status</td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
-                        @if (feedback.CanClose)
+        <tr>
+            <td>@feedback.Id</td>
+            <td>@feedback.UsersEmail</td>
+            <td>@feedback.Content</td>
+            <td>@feedback.Date</td>
+            <td>@feedback.Status</td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
+                @if (feedback.CanClose)
                         {
-                            <button id="popup" class="btn btn-danger btn-xs" onclick="div_show(@feedback.Id)">Reply</button>
-                            @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
+                <button id="popup" class="btn btn-danger btn-xs" onclick="div_show(@feedback.Id)">Reply</button>
+                @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
                         }
                         else
                         {
-                            <button id="popup" class="btn btn-danger btn-xs" disabled>Reply</button>
-                            @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs", @disabled = false, onclick = "javascript:return false;" })
+                <button id="popup" class="btn btn-danger btn-xs" disabled>Reply</button>
+                @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs", @disabled = false, onclick = "javascript:return false;" })
                         }
-                    </td>
-                </tr>
+            </td>
+        </tr>
             }
         }
     </table>

@@ -53,8 +53,7 @@
         /// <returns>Feedback creation view.</returns>
         public ActionResult Create()
         {
-            var feedbackViewModel = new FeedbackViewModel
-            {
+            var feedbackViewModel = new FeedbackViewModel {
                 UsersEmail = GetUserMail()
             };
             GetDataSiteKey(feedbackViewModel);
@@ -71,8 +70,7 @@
         public async Task<JsonResult> Create(FeedbackViewModel feedbackViewModel)
 #pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
-            FeedbackMessageViewModel result = new FeedbackMessageViewModel
-            {
+            var result = new FeedbackMessageViewModel {
                 ResultMessage = Resources.UI.TournamentController.CheckCaptcha,
                 OperationSuccessful = false
             };
@@ -109,9 +107,8 @@
         /// <returns>User email.</returns>
         private string GetUserMail()
         {
-            int userId = _currentUserService.GetCurrentUserId();
-            User currentUser = new User
-            {
+            var userId = _currentUserService.GetCurrentUserId();
+            var currentUser = new User {
                 Email = string.Empty
             };
 
@@ -126,7 +123,7 @@
         private static void GetDataSiteKey(FeedbackViewModel feedbackViewModel)
         {
             const string SECRET_KEY = "RecaptchaSiteKey";
-            string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
+            var secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
             feedbackViewModel.ReCapthaKey = secretKey;
         }
     }

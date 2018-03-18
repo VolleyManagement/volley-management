@@ -104,8 +104,8 @@
         /// <returns>jQuery format of current culture.</returns>
         public static string JqueryUiCurrentDateFormat()
         {
-            string currentFormat = DateTimeFormat.ShortDatePattern;
-            List<char> changedTypes = new List<char>();
+            var currentFormat = DateTimeFormat.ShortDatePattern;
+            var changedTypes = new List<char>();
             foreach (var kvp in _replaceTokens)
             {
                 if (!changedTypes.Contains(kvp.Key[0]) && currentFormat.Contains(kvp.Key))

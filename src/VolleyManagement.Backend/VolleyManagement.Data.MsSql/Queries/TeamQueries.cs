@@ -85,8 +85,7 @@
                           select grp)
                  .SelectMany(grp =>
                              grp.Teams.Select(
-                                 t => new TeamTournamentDto
-                                 {
+                                 t => new TeamTournamentDto {
                                      DivisionId = grp.DivisionId,
                                      DivisionName = grp.Division.Name,
                                      GroupId = grp.Id,
@@ -125,8 +124,7 @@
 
         private static Expression<Func<TeamEntity, Team>> GetTeamMapping()
         {
-            return t => new Team
-            {
+            return t => new Team {
                 Id = t.Id,
                 Name = t.Name,
                 Coach = t.Coach,

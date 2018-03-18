@@ -32,8 +32,8 @@
         /// <returns>A signed integer that indicates the relative values of <see cref="Game"/> x and y.</returns>
         public int Compare(object x, object y)
         {
-            Game firstGameResult = x as Game;
-            Game secondGameResult = y as Game;
+            var firstGameResult = x as Game;
+            var secondGameResult = y as Game;
 
             if (firstGameResult == null)
             {

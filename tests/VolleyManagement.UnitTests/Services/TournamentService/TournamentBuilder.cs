@@ -289,9 +289,9 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithDivisionsNonUniqueNameGroups()
         {
-            int startId = 1;
+            var startId = 1;
 
-            for (int i = 1; i <= _tournament.Divisions.Count; i++)
+            for (var i = 1; i <= _tournament.Divisions.Count; i++)
             {
                 _tournament.Divisions.ElementAt(i - 1).Groups = new List<Group>
                 {

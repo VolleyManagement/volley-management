@@ -48,8 +48,7 @@
         /// <returns> View model object </returns>
         public static ContributorsTeamViewModel Map(ContributorTeam contributorTeam)
         {
-            var contributorTeamViewModel = new ContributorsTeamViewModel
-            {
+            var contributorTeamViewModel = new ContributorsTeamViewModel {
                 Id = contributorTeam.Id,
                 Name = contributorTeam.Name,
                 CourseDirection = contributorTeam.CourseDirection

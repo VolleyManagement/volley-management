@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql.Context.Migrations
+﻿namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System.Data.Entity.Migrations;
 
@@ -16,11 +16,11 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.LoginProviders",
                 c => new
-                    {
-                        ProviderKey = c.String(nullable: false, maxLength: 128),
-                        LoginProvider = c.String(nullable: false, maxLength: 128),
-                        User_Id = c.Int(nullable: false),
-                    })
+                {
+                    ProviderKey = c.String(nullable: false, maxLength: 128),
+                    LoginProvider = c.String(nullable: false, maxLength: 128),
+                    User_Id = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => new { t.ProviderKey, t.LoginProvider })
                 .ForeignKey("dbo.Users", t => t.User_Id)
                 .Index(t => t.User_Id);

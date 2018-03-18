@@ -31,8 +31,8 @@ namespace VolleyManagement.UnitTests.Services.GameService
         /// <returns>A signed integer that indicates the relative values of <see cref="GameResultDto"/> x and y.</returns>
         public int Compare(object x, object y)
         {
-            GameResultDto firstGameResult = x as GameResultDto;
-            GameResultDto secondGameResult = y as GameResultDto;
+            var firstGameResult = x as GameResultDto;
+            var secondGameResult = y as GameResultDto;
 
             if (firstGameResult == null)
             {

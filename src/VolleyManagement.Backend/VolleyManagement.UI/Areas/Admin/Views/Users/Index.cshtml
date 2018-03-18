@@ -17,30 +17,30 @@
         </tr>
         @if (Model.Count == 0)
         {
-            <tr>
-                <td colspan="3" class="text-center">No registered users</td>
-            </tr>
+        <tr>
+            <td colspan="3" class="text-center">No registered users</td>
+        </tr>
         }
         else
-        { 
+        {
             foreach (var user in Model)
             {
-                <tr>
-                    <td>@user.Id</td>
-                    <td>@user.PersonName</td>
-                    <td>@user.Email</td>
-                    <td>
-                        @Html.ActionLink("Details", "UserDetails", new { id = user.Id }, new { @class = "btn btn-primary btn-xs" })
-                        @if (user.IsBlocked)
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.PersonName</td>
+            <td>@user.Email</td>
+            <td>
+                @Html.ActionLink("Details", "UserDetails", new { id = user.Id }, new { @class = "btn btn-primary btn-xs" })
+                @if (user.IsBlocked)
                         {
-                            <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@user.Id, false)">Unblock</button>                            
+                <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@user.Id, false)">Unblock</button>
                         }
                         else
                         {
-                            <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@user.Id, true)">Block</button>                            
+                <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@user.Id, true)">Block</button>
                         }
-                    </td>
-                </tr>
+            </td>
+        </tr>
             }
         }
     </table>

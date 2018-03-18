@@ -7,17 +7,17 @@
 <h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>@Resources.UI.TournamentViews.TournamentLegend</legend>
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>@Resources.UI.TournamentViews.TournamentLegend</legend>
 
-        @Html.HiddenFor(model => model.Id)
-		@Html.Partial("_CreateOrEdit", Model)
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("_CreateOrEdit", Model)
 
-        <p>
-            <input type="submit" value="@Resources.UI.TournamentViews.Save" />
-        </p>
-    </fieldset>
+    <p>
+        <input type="submit" value="@Resources.UI.TournamentViews.Save" />
+    </p>
+</fieldset>
 }
 
 <div>

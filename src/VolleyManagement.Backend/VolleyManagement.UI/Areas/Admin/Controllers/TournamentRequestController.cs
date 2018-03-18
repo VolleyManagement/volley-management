@@ -43,13 +43,12 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            var requests = new TournamentRequestCollectionViewModel
-            {
-                 Requests = _requestService.Get().Select(r => TournamentRequestViewModel.Map(
-                     r,
-                     _teamService.Get(r.TeamId),
-                     _userService.GetUserDetails(r.UserId),
-                     _tournamentService.GetTournamentByGroup(r.GroupId)))
+            var requests = new TournamentRequestCollectionViewModel {
+                Requests = _requestService.Get().Select(r => TournamentRequestViewModel.Map(
+                    r,
+                    _teamService.Get(r.TeamId),
+                    _userService.GetUserDetails(r.UserId),
+                    _tournamentService.GetTournamentByGroup(r.GroupId)))
             };
 
             return View(requests);
@@ -115,8 +114,7 @@
         /// <returns> The <see cref="ActionResult"/>.</returns>
         public ActionResult Decline(int id)
         {
-            var messageViewModel = new MessageViewModel
-            {
+            var messageViewModel = new MessageViewModel {
                 Id = id
             };
             return View(messageViewModel);

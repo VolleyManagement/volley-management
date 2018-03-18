@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -81,8 +81,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            var tournamentsCollections = new TournamentsCollectionsViewModel
-            {
+            var tournamentsCollections = new TournamentsCollectionsViewModel {
                 Authorization = _authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
             };
 
@@ -103,7 +102,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>View with collection of archived tournaments</returns>
         public ActionResult Archived()
         {
-            List<Tournament> archivedTournaments = _tournamentService.GetArchived().ToList();
+            var archivedTournaments = _tournamentService.GetArchived().ToList();
 
             return View(archivedTournaments);
         }
@@ -176,8 +175,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         {
             var now = TimeProvider.Current.DateTimeNow;
 
-            var tournamentViewModel = new TournamentViewModel
-            {
+            var tournamentViewModel = new TournamentViewModel {
                 Season = (short)now.Year,
                 ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
                 ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
@@ -356,16 +354,14 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             try
             {
                 _tournamentService.DeleteTeamFromTournament(teamId, tournamentId);
-                result = Json(new TeamDeleteFromTournamentViewModel
-                {
+                result = Json(new TeamDeleteFromTournamentViewModel {
                     Message = ViewModelResources.TeamWasDeletedSuccessfully,
                     HasDeleted = true
                 });
             }
             catch (MissingEntityException ex)
             {
-                result = Json(new TeamDeleteFromTournamentViewModel
-                {
+                result = Json(new TeamDeleteFromTournamentViewModel {
                     Message = ex.Message,
                     HasDeleted = false
                 });
@@ -389,8 +385,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 return View();
             }
 
-            var scheduleViewModel = new ScheduleViewModel
-            {
+            var scheduleViewModel = new ScheduleViewModel {
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
                 TournamentScheme = tournament.Scheme,
@@ -581,8 +576,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             }
 
             var noTournamentTeams = _tournamentService.GetAllNoTournamentTeams(tournamentId);
-            var tournamentApplyViewModel = new TournamentApplyViewModel
-            {
+            var tournamentApplyViewModel = new TournamentApplyViewModel {
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
                 Teams = noTournamentTeams.Select(TeamNameViewModel.Map)
@@ -601,7 +595,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             JsonResult result = null;
             try
             {
-                int userId = _currentUserService.GetCurrentUserId();
+                var userId = _currentUserService.GetCurrentUserId();
 
                 if (userId == ANONYM)
                 {
@@ -609,8 +603,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 }
                 else
                 {
-                    var tournamentRequest = new TournamentRequest
-                    {
+                    var tournamentRequest = new TournamentRequest {
                         TeamId = groupTeam.TeamId,
                         UserId = userId,
                         GroupId = groupTeam.GroupId
@@ -711,8 +704,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
             var groups = BuildSelectGroupsForDivisions(tournament.Divisions);
 
-            return new GameViewModel
-            {
+            return new GameViewModel {
                 TournamentId = tournamentId,
                 TournamentScheme = tournament.Scheme,
                 GameDate = tournament.StartDate,
@@ -728,8 +720,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 #pragma warning restore S4017 // Method signatures should not contain nested generic types
         {
             var result = tournamentTeams.SelectMany(t => t.Value)
-                .Select(t => new SelectListItem
-                {
+                .Select(t => new SelectListItem {
                     Text = t.TeamName,
                     Value = t.TeamId.ToString(),
                     Group = groups[t.DivisionId]
@@ -743,8 +734,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         {
             var result = divisions.SelectMany(d => Enumerable.Range(MIN_ROUND_NUMBER, d.NumberOfRounds)
                     .Select(i => (Round: i, DivId: d.DivisionId)))
-                .Select(r => new SelectListItem
-                {
+                .Select(r => new SelectListItem {
                     Text = r.Round.ToString(),
                     Value = r.Round.ToString(),
                     Group = groups[r.DivId]
@@ -758,8 +748,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         {
             return divisions.ToDictionary(
                 d => d.DivisionId,
-                d => new SelectListGroup
-                {
+                d => new SelectListGroup {
                     Name = d.DivisionName
                 });
         }

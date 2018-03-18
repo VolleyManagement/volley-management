@@ -55,7 +55,7 @@
             }
             catch (FormatException)
             {
-                string message = string.Format("\"{0}\" is invalid.", bindingContext.ModelName);
+                var message = string.Format("\"{0}\" is invalid.", bindingContext.ModelName);
                 bindingContext.ModelState.AddModelError(bindingContext.ModelName, message);
                 return null;
             }

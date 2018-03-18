@@ -30,13 +30,13 @@
         [TestMethod]
         public void FileExists_NoFile_FileNotFound()
         {
-            bool expected = false;
+            var expected = false;
 
             // Arrange
             var sut = BuildSUT();
 
             // Act
-            bool actual = sut.FileExists(null);
+            var actual = sut.FileExists(null);
 
             // Assert
             Assert.AreEqual(expected, actual, "There is no file on server");

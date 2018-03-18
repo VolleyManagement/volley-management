@@ -31,8 +31,8 @@
         /// <returns>A signed integer that indicates the relative values of requests.</returns>
         public int Compare(object x, object y)
         {
-            Request firstRequest = x as Request;
-            Request secondRequest = y as Request;
+            var firstRequest = x as Request;
+            var secondRequest = y as Request;
 
             if (firstRequest == null)
             {

@@ -56,8 +56,7 @@
         /// <returns>View with collection of teams.</returns>
         public ActionResult Index()
         {
-            var teams = new TeamCollectionViewModel
-            {
+            var teams = new TeamCollectionViewModel {
                 Teams = _teamService.Get()
                                           .Select(t => TeamViewModel.Map(t, null, null)),
                 AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
@@ -219,24 +218,21 @@
             try
             {
                 _teamService.Delete(id);
-                result = new TeamOperationResultViewModel
-                {
+                result = new TeamOperationResultViewModel {
                     Message = TEAM_DELETED_SUCCESSFULLY_DESCRIPTION,
                     OperationSuccessful = true
                 };
             }
             catch (MissingEntityException ex)
             {
-                result = new TeamOperationResultViewModel
-                {
+                result = new TeamOperationResultViewModel {
                     Message = ex.Message,
                     OperationSuccessful = false
                 };
             }
             catch (DataException)
             {
-                result = new TeamOperationResultViewModel
-                {
+                result = new TeamOperationResultViewModel {
                     Message = Resources.UI.TournamentController.TeamDelete,
                     OperationSuccessful = false
                 };

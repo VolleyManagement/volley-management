@@ -17,8 +17,7 @@
         /// <returns>Tournament view model</returns>
         public static TournamentViewModel Map(Tournament tournament)
         {
-            return new TournamentViewModel
-            {
+            return new TournamentViewModel {
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
@@ -37,8 +36,7 @@
         /// <returns>User view model</returns>
         public static UserViewModel Map(User user)
         {
-            return new UserViewModel
-            {
+            return new UserViewModel {
                 Id = user.Id,
                 UserName = user.UserName,
                 Password = string.Empty,

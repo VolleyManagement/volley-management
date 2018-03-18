@@ -24,8 +24,8 @@
         /// <param name="comparer">Specific comparer</param>
         public static void AreEqual<T>(T expected, T actual, IComparer<T> comparer)
         {
-            int equalsResult = 0;
-            int compareResult = comparer.Compare(expected, actual);
+            var equalsResult = 0;
+            var compareResult = comparer.Compare(expected, actual);
 
             Assert.AreEqual(equalsResult, compareResult);
         }

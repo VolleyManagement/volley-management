@@ -8,26 +8,26 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
-    <fieldset class="bs-example">
-        @Html.HiddenFor(u => Model.Id)
-        <div class="form-group">
-            @Html.LabelFor(u => Model.Email) 
-            @Html.TextBoxFor(u => Model.Email, new { @class = "form-control" })
-        </div>
+@Html.ValidationSummary(true)
+<fieldset class="bs-example">
+    @Html.HiddenFor(u => Model.Id)
+    <div class="form-group">
+        @Html.LabelFor(u => Model.Email)
+        @Html.TextBoxFor(u => Model.Email, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(u => Model.CellPhone)
-            @Html.TextBoxFor(u => Model.CellPhone, new { @class = "form-control" })
-        </div>
-        
-        <div class="form-group">
-            @Html.LabelFor(u => Model.FullName)
-            @Html.TextBoxFor(u => Model.FullName, new { @class = "form-control" })
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(u => Model.CellPhone)
+        @Html.TextBoxFor(u => Model.CellPhone, new { @class = "form-control" })
+    </div>
 
-        <p>
-            <input type="submit" class="btn btn-default" value="@Resources.UI.UserViews.Save" />
-        </p>
-    </fieldset>
+    <div class="form-group">
+        @Html.LabelFor(u => Model.FullName)
+        @Html.TextBoxFor(u => Model.FullName, new { @class = "form-control" })
+    </div>
+
+    <p>
+        <input type="submit" class="btn btn-default" value="@Resources.UI.UserViews.Save" />
+    </p>
+</fieldset>
 }

@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
 {
     using Domain;
     using Domain.GamesAggregate;
@@ -76,19 +76,16 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         /// <returns>View model of game.</returns>
         public static GameViewModel Map(GameResultDto gameResult)
         {
-            var game = new GameViewModel
-            {
+            var game = new GameViewModel {
                 Id = gameResult.Id,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
                 Round = gameResult.Round,
                 GameNumber = gameResult.GameNumber,
-                Result = new GameResult
-                {
+                Result = new GameResult {
                     TotalScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
                     IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
-                    SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
-                    {
+                    SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel {
                         Home = item.Home,
                         Away = item.Away,
                         IsTechnicalDefeat = item.IsTechnicalDefeat

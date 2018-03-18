@@ -12,7 +12,7 @@
 <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
 <script>
     var onSuccess = function () {
-        alert('@Model.AlarmMessage');
+        alert('@Model.ChangingStateMessage'.concat(' now.'));
     };
 </script>
 

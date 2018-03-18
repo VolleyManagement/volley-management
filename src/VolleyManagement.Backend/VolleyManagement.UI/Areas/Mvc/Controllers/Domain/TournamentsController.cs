@@ -282,6 +282,11 @@
             return RedirectToAction("Archived");
         }
         
+        /// <summary>
+        /// Activate tournament
+        /// </summary>
+        /// <param name="id">Identifier of tournament to activate</param>
+        /// <returns></returns>
         public ActionResult Activate(int id)
         {
             var tournament = _tournamentService.Get(id);

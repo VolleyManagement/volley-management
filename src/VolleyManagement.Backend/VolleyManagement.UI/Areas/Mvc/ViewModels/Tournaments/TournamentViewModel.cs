@@ -180,8 +180,8 @@
         /// <summary>
         /// Returns a message about state of tournament
         /// </summary>
-        public string ArchivationState =>
-           $"Tournament {Name} is {(IsArchived ? "archived" : "active")}";
+        public string ChangingStateMessage =>
+           $"Tournament {Name} is {(!IsArchived ? "archived" : "active")}";
 
         /// <summary>
         /// Gets or sets start of a transfer period

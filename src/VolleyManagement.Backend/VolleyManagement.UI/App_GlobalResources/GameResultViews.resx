@@ -195,6 +195,9 @@
   <data name="TechnicalDefeatField" xml:space="preserve">
     <value>Technical defeat:</value>
   </data>
+  <data name="PenaltyField" xml:space="preserve">
+    <value>Penalty:</value>
+  </data>
   <data name="TournamentResultsLegend" xml:space="preserve">
     <value>Tournament "{0}"</value>
   </data>

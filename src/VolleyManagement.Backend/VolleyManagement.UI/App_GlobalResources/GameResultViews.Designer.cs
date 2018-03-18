@@ -178,6 +178,15 @@ namespace Resources.UI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Penalty:.
+        /// </summary>
+        public static string PenaltyField {
+            get {
+                return ResourceManager.GetString("PenaltyField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to № s/s.
         /// </summary>
         public static string ResultNumberHeader {

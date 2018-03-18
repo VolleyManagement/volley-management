@@ -337,7 +337,7 @@
             });
 
             // Act
-            bool result = allowedOperations.IsAllowed(operationToCheck);
+            var result = allowedOperations.IsAllowed(operationToCheck);
 
             // Assert
             Assert.IsFalse(result);
@@ -351,7 +351,7 @@
             var allowedOperations = new AllowedOperations(new List<AuthOperation>());
 
             // Act
-            bool result = allowedOperations.IsAllowed(operationToCheck);
+            var result = allowedOperations.IsAllowed(operationToCheck);
 
             // Assert
             Assert.IsFalse(result);
@@ -369,7 +369,7 @@
             });
 
             // Act
-            bool result = allowedOperations.IsAllowed(operationToCheck);
+            var result = allowedOperations.IsAllowed(operationToCheck);
 
             // Assert
             Assert.IsTrue(result);
@@ -384,7 +384,7 @@
         {
             // Arrange
             var processedAreas = new Dictionary<byte, string>();
-            string errors = string.Empty;
+            var errors = string.Empty;
 
             // Act
             foreach (var area in _authOperationsAreas)
@@ -420,7 +420,7 @@
         public void AuthOperations_AllAreas_AllOperationsInAreaHasDifferentId()
         {
             // Arrange
-            string errors = string.Empty;
+            var errors = string.Empty;
 
             // Act
             foreach (var area in _authOperationsAreas)
@@ -455,7 +455,7 @@
         public void AuthOperations_AllAreas_AllOperationsInAreaHasSameAreaId()
         {
             // Arrange
-            string errors = string.Empty;
+            var errors = string.Empty;
 
             // Act
             foreach (var area in _authOperationsAreas)
@@ -494,7 +494,7 @@
             AuthOperation operation2 = Tuple.Create(AREA_1_ID, OPERATION_1_ID);
 
             // Act
-            bool result = operation1 == operation2;
+            var result = operation1 == operation2;
 
             // Assert
             Assert.IsTrue(result);
@@ -508,7 +508,7 @@
             AuthOperation operation2 = Tuple.Create(AREA_2_ID, OPERATION_1_ID);
 
             // Act
-            bool result = operation1 == operation2;
+            var result = operation1 == operation2;
 
             // Assert
             Assert.IsFalse(result);
@@ -522,7 +522,7 @@
             AuthOperation operation2 = Tuple.Create(AREA_1_ID, OPERATION_2_ID);
 
             // Act
-            bool result = operation1 == operation2;
+            var result = operation1 == operation2;
 
             // Assert
             Assert.IsFalse(result);

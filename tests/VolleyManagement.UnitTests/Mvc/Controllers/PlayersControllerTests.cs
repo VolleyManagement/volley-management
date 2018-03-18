@@ -242,14 +242,14 @@
         public void LinkWithUser_UserExists_SuccessfullMessageIsReturned()
         {
             // Arrange
-            string expected = LINK_SUCCESSFULL_MESSAGE;
+            var expected = LINK_SUCCESSFULL_MESSAGE;
             MockCurrenUserService(TEST_USER_ID);
             MockRequestService(TEST_USER_ID, TEST_PLAYER_ID);
 
             var sut = BuildSUT();
 
             // Act
-            string actual = sut.LinkWithUser(TEST_PLAYER_ID);
+            var actual = sut.LinkWithUser(TEST_PLAYER_ID);
 
             // Assert
             Assert.AreEqual(expected, actual);
@@ -259,14 +259,14 @@
         public void LinkWithUser_UserNotFound_ErrorMessageIsReturned()
         {
             // Arrange
-            string expected = LINK_ERROR_MESSAGE;
+            var expected = LINK_ERROR_MESSAGE;
             MockCurrenUserService(USER_INVALID_ID);
             MockRequestService(USER_INVALID_ID, TEST_PLAYER_ID);
 
             var sut = BuildSUT();
 
             // Act
-            string actual = sut.LinkWithUser(TEST_PLAYER_ID);
+            var actual = sut.LinkWithUser(TEST_PLAYER_ID);
 
             // Assert
             Assert.AreEqual(expected, actual);

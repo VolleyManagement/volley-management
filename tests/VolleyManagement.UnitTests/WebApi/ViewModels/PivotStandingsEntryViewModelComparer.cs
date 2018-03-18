@@ -35,7 +35,7 @@
 
         private int CompareInternal(PivotStandingsTeamViewModel x, PivotStandingsTeamViewModel y)
         {
-            int result = x.TeamName.CompareTo(y.TeamName);
+            var result = x.TeamName.CompareTo(y.TeamName);
             if (result != 0)
             {
                 Assert.Fail($"TeamName should match");

@@ -181,14 +181,14 @@
         [TestMethod]
         public void Create_InvalidAchievements_ArgumentExceptionThrown()
         {
-            string invalidAchievements = CreateInvalidTeamAchievements();
-            string argExMessage = string.Format(
+            var invalidAchievements = CreateInvalidTeamAchievements();
+            var argExMessage = string.Format(
                     Resources.ValidationTeamAchievements,
                         VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithAchievements(invalidAchievements)
                                         .Build();
-            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
             Exception exception = null;
@@ -236,14 +236,14 @@
         [TestMethod]
         public void Create_InvalidTeamName_ArgumentExceptionThrown()
         {
-            string invalidName = CreateInvalidTeamName();
-            string argExMessage = string.Format(
+            var invalidName = CreateInvalidTeamName();
+            var argExMessage = string.Format(
                     Resources.ValidationTeamName,
                         VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithName(invalidName)
                                         .Build();
-            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
             Exception exception = null;
@@ -272,14 +272,14 @@
         [TestMethod]
         public void Create_EmptyTeamName_ArgumentExceptionThrown()
         {
-            string invalidName = string.Empty;
-            string argExMessage = string.Format(
+            var invalidName = string.Empty;
+            var argExMessage = string.Format(
                     Resources.ValidationTeamName,
                     Domain.Constants.Team.MAX_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithName(invalidName)
                                         .Build();
-            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
             Exception exception = null;
@@ -308,14 +308,14 @@
         [TestMethod]
         public void Create_InvalidTeamCoachNameNotAllowedLength_ArgumentExceptionThrown()
         {
-            string invalidCoachName = CreateInvalidTeamCoachName();
-            string argExMessage = string.Format(
+            var invalidCoachName = CreateInvalidTeamCoachName();
+            var argExMessage = string.Format(
                     Resources.ValidationCoachName,
                         VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
-            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
             Exception exception = null;
@@ -344,14 +344,14 @@
         [TestMethod]
         public void Create_InvalidTeamCoachNameNotAllowedSymbols_ArgumentExceptionThrown()
         {
-            string invalidCoachName = "name%-)";
-            string argExMessage = string.Format(
+            var invalidCoachName = "name%-)";
+            var argExMessage = string.Format(
                     Resources.ValidationCoachName,
                         VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
-            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
             Exception exception = null;
@@ -401,12 +401,12 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().Build();
-            Player testPlayer = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
+            var testPlayer = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
 
             // Act
             var sut = BuildSUT();
-            bool gotException = false;
+            var gotException = false;
 
             try
             {
@@ -446,7 +446,7 @@
 
             // Act
             var sut = BuildSUT();
-            bool gotException = false;
+            var gotException = false;
 
             try
             {
@@ -536,7 +536,7 @@
 
             var sut = BuildSUT();
             Exception exception = null;
-            string argExMessage =
+            var argExMessage =
                    TournamentResources.TeamNameInTournamentNotUnique;
 
             // Act
@@ -587,7 +587,7 @@
 
             // Act
             var ts = BuildSUT();
-            bool gotException = false;
+            var gotException = false;
 
             try
             {
@@ -629,8 +629,8 @@
         public void Delete_TeamPassed_RosterPlayersUpdated()
         {
             // Arrange
-            IQueryable<Player> expectedRoster = new PlayerServiceTestFixture().TestPlayers().Build().AsQueryable<Player>();
-            int expectedCountOfPlayers = expectedRoster.Count();
+            var expectedRoster = new PlayerServiceTestFixture().TestPlayers().Build().AsQueryable<Player>();
+            var expectedCountOfPlayers = expectedRoster.Count();
             MockGetTeamRosterQuery(expectedRoster.ToList());
 
             // Act
@@ -706,7 +706,7 @@
 
             // Act
             var sut = BuildSUT();
-            bool gotException = false;
+            var gotException = false;
 
             try
             {
@@ -757,7 +757,7 @@
 
             var sut = BuildSUT();
             Exception exception = null;
-            string argExMessage =
+            var argExMessage =
                    TournamentResources.TeamNameInTournamentNotUnique;
 
             // Act
@@ -804,8 +804,8 @@
         public void UpdateRosterTeamId_InvalidPlayerId_MissingEntityExceptionThrown()
         {
             // Arrange
-            Player invalidPlayer = new PlayerBuilder().WithId(UNASSIGNED_ID).Build();
-            List<Player> roster = new List<Player> { invalidPlayer };
+            var invalidPlayer = new PlayerBuilder().WithId(UNASSIGNED_ID).Build();
+            var roster = new List<Player> { invalidPlayer };
 
             MockGetTeamByIdQuery(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
 
@@ -814,7 +814,7 @@
 
             // Act
             var ts = BuildSUT();
-            bool gotException = false;
+            var gotException = false;
 
             try
             {
@@ -838,20 +838,20 @@
         public void UpdateRosterTeamId_InvalidTeamId_MissingEntityExceptionThrown()
         {
             // Arrange
-            Player testPlayer = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
-            List<Player> roster = new List<Player> { testPlayer };
+            var testPlayer = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
+            var roster = new List<Player> { testPlayer };
 
             MockGetAllTeamsQuery(new TeamServiceTestFixture().TestTeams().Build());
 
-            Player testData = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(UNASSIGNED_ID).Build();
+            var testData = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(UNASSIGNED_ID).Build();
             MockGetPlayerByIdQuery(testData);
 
-            List<Player> rosterOfInvalidTeam = new List<Player> { testData };
+            var rosterOfInvalidTeam = new List<Player> { testData };
             MockGetTeamRosterQuery(rosterOfInvalidTeam);
 
             // Act
             var ts = BuildSUT();
-            bool gotException = false;
+            var gotException = false;
 
             try
             {
@@ -877,8 +877,8 @@
         public void UpdateRosterTeamId_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
         {
             // Arrange
-            Player captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
-            List<Player> roster = new List<Player> { captain };
+            var captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var roster = new List<Player> { captain };
             MockGetTeamRosterQuery(roster);
 
             MockGetPlayerByFullNameQuery(new PlayerBuilder()
@@ -894,7 +894,7 @@
 
             // Act
             var ts = BuildSUT();
-            bool gotException = false;
+            var gotException = false;
 
             try
             {
@@ -919,12 +919,12 @@
         public void UpdateRosterTeamId_PlayerIsNotCaptainOfExistingTeam_PlayerUpdated()
         {
             // Arrange
-            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
-            List<Player> testRoster = new List<Player> { testPlayer };
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var testRoster = new List<Player> { testPlayer };
             MockGetTeamRosterQuery(testRoster);
 
-            Player captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(ANOTHER_TEAM_ID).Build();
-            List<Player> roster = new List<Player> { captain };
+            var captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(ANOTHER_TEAM_ID).Build();
+            var roster = new List<Player> { captain };
             MockGetPlayerByFullNameQuery(captain);
 
             var teamToSet = new TeamBuilder().WithId(ANOTHER_TEAM_ID).Build();
@@ -949,11 +949,11 @@
             // Arrange
             var firstPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
             var secondPlayer = new PlayerBuilder().WithId(PLAYER_ID + 1).WithFirstName("Second").WithTeamId(SPECIFIC_TEAM_ID).Build();
-            List<Player> testRoster = new List<Player> { firstPlayer, secondPlayer };
+            var testRoster = new List<Player> { firstPlayer, secondPlayer };
             MockGetTeamRosterQuery(testRoster);
 
-            Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(null).Build();
-            List<Player> roster = new List<Player> { player };
+            var player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(null).Build();
+            var roster = new List<Player> { player };
             MockGetPlayerByFullNameQuery(player);
             MockGetPlayerByIdQuery(player);
 
@@ -976,15 +976,15 @@
         public void UpdateRosterTeamId_PlayerIsNotExist_MissingEntityExceptionThrown()
         {
             // Arrange
-            bool exception = false;
+            var exception = false;
 
             var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
             var testSecondPlayer = new PlayerBuilder().WithId(PLAYER_ID + 1).WithTeamId(SPECIFIC_TEAM_ID).Build();
-            List<Player> testRoster = new List<Player> { testPlayer, testSecondPlayer };
+            var testRoster = new List<Player> { testPlayer, testSecondPlayer };
             MockGetTeamRosterQuery(testRoster);
 
-            Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID + 1).WithTeamId(null).Build();
-            List<Player> roster = new List<Player> { player };
+            var player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID + 1).WithTeamId(null).Build();
+            var roster = new List<Player> { player };
 
             var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
@@ -1015,11 +1015,11 @@
             // Arrange
             var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
             var testSecondPlayer = new PlayerBuilder().WithId(PLAYER_ID + 1).WithTeamId(SPECIFIC_TEAM_ID).Build();
-            List<Player> testRoster = new List<Player> { testPlayer, testSecondPlayer };
+            var testRoster = new List<Player> { testPlayer, testSecondPlayer };
             MockGetTeamRosterQuery(testRoster);
 
-            Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID + 1).WithTeamId(null).Build();
-            List<Player> roster = new List<Player> { player };
+            var player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID + 1).WithTeamId(null).Build();
+            var roster = new List<Player> { player };
 
             var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
@@ -1205,8 +1205,8 @@
         /// <returns>Invalid Achievements</returns>
         private string CreateInvalidTeamAchievements()
         {
-            StringBuilder invalidAchievements = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH + 1; i++)
+            var invalidAchievements = new StringBuilder();
+            for (var i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH + 1; i++)
             {
                 invalidAchievements.Append("a");
             }
@@ -1220,8 +1220,8 @@
         /// <returns>Invalid team name</returns>
         private string CreateInvalidTeamName()
         {
-            StringBuilder invalidTeamName = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH + 1; i++)
+            var invalidTeamName = new StringBuilder();
+            for (var i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH + 1; i++)
             {
                 invalidTeamName.Append("a");
             }
@@ -1235,8 +1235,8 @@
         /// <returns>Invalid team coach name</returns>
         private string CreateInvalidTeamCoachName()
         {
-            StringBuilder invalidTeamCoachName = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH + 1; i++)
+            var invalidTeamCoachName = new StringBuilder();
+            for (var i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH + 1; i++)
             {
                 invalidTeamCoachName.Append("a");
             }

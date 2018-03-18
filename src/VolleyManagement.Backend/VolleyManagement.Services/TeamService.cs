@@ -88,7 +88,7 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
-            Player captain = GetPlayerById(teamToCreate.CaptainId);
+            var captain = GetPlayerById(teamToCreate.CaptainId);
             if (captain == null)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
@@ -117,7 +117,7 @@
         public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            Player captain = GetPlayerById(teamToEdit.CaptainId);
+            var captain = GetPlayerById(teamToEdit.CaptainId);
 
             if (captain == null)
             {
@@ -251,7 +251,7 @@
 
         private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
         {
-            Player player = GetPlayerByFullName(firstName, lastName);
+            var player = GetPlayerByFullName(firstName, lastName);
 
             if (player == null)
             {
@@ -278,7 +278,7 @@
                 }
             }
 
-            Team team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
+            var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
 
             if (team == null)
             {
@@ -292,7 +292,7 @@
 
         private void SetPlayerTeamIdToNull(int playerId)
         {
-            Player player = GetPlayerById(playerId);
+            var player = GetPlayerById(playerId);
 
             if (player == null)
             {

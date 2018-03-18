@@ -60,8 +60,8 @@
         {
             get
             {
-                DateTime now = TimeProvider.Current.UtcNow;
-                DateTime limitUpcomingTournamentsStartDate
+                var now = TimeProvider.Current.UtcNow;
+                var limitUpcomingTournamentsStartDate
                     = now.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
 
                 if (GamesStart > limitUpcomingTournamentsStartDate)

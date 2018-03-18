@@ -31,18 +31,18 @@
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
-            List<Player> list = new List<Player>();
+            var list = new List<Player>();
             foreach (var player in source.Skip((PageNumber - 1) * Size)
                 .Take(Size))
             {
                 list.Add(player);
             }
 
-            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(list
+            var listOfPlayers = new List<PlayerViewModel>(list
                 .Select(p => PlayerViewModel.Map(p)));
 
             List = new List<PlayerNameViewModel>();
-            foreach (PlayerViewModel player in listOfPlayers)
+            foreach (var player in listOfPlayers)
             {
                 List.Add(PlayerNameViewModel.Map(player));
             }

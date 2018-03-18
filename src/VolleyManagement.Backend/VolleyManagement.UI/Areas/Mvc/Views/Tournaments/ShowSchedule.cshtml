@@ -8,16 +8,16 @@
 
 @if (Model == null)
 {
-    @Html.ValidationMessage("LoadError")
+@Html.ValidationMessage("LoadError")
 }
 else
 {
     if (Model.TournamentScheme == TournamentSchemeEnum.PlayOff)
     {
-        @Html.Partial("_PlayoffSchedule", Model)
+@Html.Partial("_PlayoffSchedule", Model)
     }
     else
     {
-        @Html.Partial("_NonPlayoffSchedule", Model)
+@Html.Partial("_NonPlayoffSchedule", Model)
     }
 }

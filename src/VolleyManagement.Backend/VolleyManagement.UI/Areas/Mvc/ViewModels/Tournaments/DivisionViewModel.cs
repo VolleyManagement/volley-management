@@ -84,8 +84,7 @@
         /// <returns>View model of <see cref="Division"/>.</returns>
         public static DivisionViewModel Map(Division division)
         {
-            var divisionViewModel = new DivisionViewModel
-            {
+            var divisionViewModel = new DivisionViewModel {
                 Id = division.Id,
                 Name = division.Name,
                 IsEmpty = division.IsEmpty
@@ -101,8 +100,7 @@
         /// <returns>Domain model of <see cref="Division"/>.</returns>
         public Division ToDomain()
         {
-            var division = new Division
-            {
+            var division = new Division {
                 Id = Id,
                 Name = Name,
                 TournamentId = TournamentId

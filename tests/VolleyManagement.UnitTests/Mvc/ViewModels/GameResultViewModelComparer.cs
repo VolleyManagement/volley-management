@@ -33,8 +33,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            GameResultViewModel firstGameResult = x as GameResultViewModel;
-            GameResultViewModel secondGameResult = y as GameResultViewModel;
+            var firstGameResult = x as GameResultViewModel;
+            var secondGameResult = y as GameResultViewModel;
 
             if (firstGameResult == null)
             {

@@ -10,14 +10,14 @@
 
 @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Create))
 {
-    <p>
-        @Html.ActionLink(Resources.UI.TournamentViews.CreateNewTournament, "Create")
-    </p>
+<p>
+    @Html.ActionLink(Resources.UI.TournamentViews.CreateNewTournament, "Create")
+</p>
 }
 <p>
     <h3>
         @Resources.UI.TournamentViews.CurrentTournamentsHeader
-    </h3>    
+    </h3>
     @{Html.RenderPartial("TournamentsList", Model.CurrentTournaments);}
 </p>
 <p>
@@ -27,7 +27,7 @@
     @{Html.RenderPartial("TournamentsList", Model.UpcomingTournaments);}
 </p>
 <p>
-    @Html.ActionLink(Resources.UI.TournamentViews.FinishedTournaments, string.Empty, null, 
+    @Html.ActionLink(Resources.UI.TournamentViews.FinishedTournaments, string.Empty, null,
         new { @class = "showFinishedTournamenst"})
 </p>
 

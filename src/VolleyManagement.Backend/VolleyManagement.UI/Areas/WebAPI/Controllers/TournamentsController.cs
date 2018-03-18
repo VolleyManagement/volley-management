@@ -77,8 +77,7 @@
             var entries = _gameReportService.GetStandings(id);
             foreach (var entry in entries.Divisions)
             {
-                var standings = new DivisionStandingsViewModel
-                {
+                var standings = new DivisionStandingsViewModel {
                     LastUpdateTime = entry.LastUpdateTime,
                     DivisionName = entry.DivisionName,
                     StandingsTable = entry.Standings.Select(StandingsEntryViewModel.Map).ToList()
@@ -121,20 +120,16 @@
                 .Select(w => new Tuple<int, List<GameViewModel>>(w.Key.Week, w.ToList()))
                 .ToList();
 
-            var result = new ScheduleViewModel
-            {
+            var result = new ScheduleViewModel {
                 Schedule = resultGroupedByWeek.Select(it =>
-                    new WeekViewModel
-                    {
+                    new WeekViewModel {
                         Days = it.Item2
                             .GroupBy(item => item.Date.DayOfWeek)
                             .Select(element =>
-                            new ScheduleDayViewModel
-                            {
+                            new ScheduleDayViewModel {
                                 Date = element.Select(d => d.Date).First(),
                                 Divisions = element.Select(data =>
-                                    new DivisionTitleViewModel
-                                    {
+                                    new DivisionTitleViewModel {
                                         Id = data.DivisionId,
                                         Name = data.DivisionName,
                                         Rounds = element.Where(g => g.DivisionId == data.DivisionId)
@@ -193,8 +188,7 @@
             }
             else
             {
-                var playoffRounds = new Dictionary<int, string>
-                {
+                var playoffRounds = new Dictionary<int, string> {
                     [1] = "Финал",
                     [2] = "Полуфинал",
                     [3] = "Четверть-финал",

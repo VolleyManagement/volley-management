@@ -18,8 +18,8 @@
 
         public int Compare(object x, object y)
         {
-            TournamentRequestViewModel firstRequest = x as TournamentRequestViewModel;
-            TournamentRequestViewModel secondRequest = y as TournamentRequestViewModel;
+            var firstRequest = x as TournamentRequestViewModel;
+            var secondRequest = y as TournamentRequestViewModel;
 
             if (firstRequest == null)
             {

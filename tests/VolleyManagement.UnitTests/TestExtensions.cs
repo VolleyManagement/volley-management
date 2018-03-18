@@ -22,7 +22,7 @@
         public static T GetModelFromResponse<T>(HttpResponseMessage response)
             where T : class
         {
-            ObjectContent content = response.Content as ObjectContent;
+            var content = response.Content as ObjectContent;
             return (T)content.Value;
         }
 

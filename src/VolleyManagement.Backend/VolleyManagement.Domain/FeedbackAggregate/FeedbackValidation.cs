@@ -34,7 +34,7 @@
         /// <returns>Validity of user environment.</returns>
         public static bool ValidateUserEnvironment(string environment)
         {
-            bool result = false;
+            var result = false;
             if (environment != null)
             {
                 result = environment.Length

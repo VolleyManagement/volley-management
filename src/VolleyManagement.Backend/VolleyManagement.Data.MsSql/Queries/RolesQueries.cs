@@ -67,8 +67,7 @@
         {
             return
                 t =>
-                new Role
-                {
+                new Role {
                     Id = t.Id,
                     Name = t.Name
                 };

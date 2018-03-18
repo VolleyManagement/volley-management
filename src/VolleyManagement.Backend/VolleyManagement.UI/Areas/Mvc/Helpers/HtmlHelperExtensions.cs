@@ -47,14 +47,14 @@
                                                                 DateTime? initialValue,
                                                                 object htmlAttributes)
         {
-            DateTime initialNotNullValue = initialValue == null
+            var initialNotNullValue = initialValue == null
                                             ? DateTime.Now
                                             : new DateTime(
                                                 initialValue.Value.Year,
                                                 initialValue.Value.Month,
                                                 initialValue.Value.Day);
 
-            string dateStringInCurrentUICulture = initialNotNullValue.ToString(
+            var dateStringInCurrentUICulture = initialNotNullValue.ToString(
                 CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern,
                 CultureInfo.InvariantCulture);
             return new MvcHtmlString(

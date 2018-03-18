@@ -42,8 +42,7 @@
         /// <returns>View model of game result.</returns>
         internal static PivotTeamStandingsViewModel Map(TeamStandingsDto team)
         {
-            return new PivotTeamStandingsViewModel
-            {
+            return new PivotTeamStandingsViewModel {
                 TeamId = team.TeamId,
                 TeamName = team.TeamName,
                 Points = team.Points,

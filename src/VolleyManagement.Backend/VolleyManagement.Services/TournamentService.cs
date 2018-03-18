@@ -335,8 +335,10 @@
         /// </summary>
         public void ArchiveOld()
         {
-            var criteria = new OldTournamentsCriteria();
-            criteria.CheckDate = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD);
+            var criteria = new OldTournamentsCriteria 
+            {
+                CheckDate = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD)
+            };
 
             // Gets old tournaments that need to be archived
             var old = _getOldTournamentsQuery.Execute(criteria);
@@ -785,14 +787,16 @@
 
             for (var i = 1; i <= gamesCount; i++)
             {
-                var game = new Game();
-                game.TournamentId = tournamentId;
-                game.HomeTeamId = null;
-                game.AwayTeamId = null;
-                game.Result = new Result();
-                game.Round = GetRoundNumber(roundsCount, gamesCount, i);
-                game.GameNumber = (byte)i;
-                game.GameDate = null;
+                var game = new Game 
+                {
+                    TournamentId = tournamentId,
+                    HomeTeamId = null,
+                    AwayTeamId = null,
+                    Result = new Result(),
+                    Round = GetRoundNumber(roundsCount, gamesCount, i),
+                    GameNumber = (byte)i,
+                    GameDate = null
+                };
                 games.Add(game);
             }
 

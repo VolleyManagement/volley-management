@@ -1786,7 +1786,7 @@
             _tournamentServiceMock.Setup(tr => tr.Archive(tournamentId));
         }
 
-        private void SetupUnArchiveTournament(int tournamentId)
+        private void SetupActivateTournament(int tournamentId)
         {
             _tournamentServiceMock.Setup(tr => tr.Activate(tournamentId));
         }

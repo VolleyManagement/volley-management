@@ -131,18 +131,6 @@
         }
 
         /// <summary>
-        /// Unarchive current Tournament
-        /// </summary>
-        /// <param name="tournamentId">Tournament id</param>
-        /// <returns>Index View of Tournament</returns>        
-        [HttpPost]
-        public ActionResult UnArchive(int tournamentId)
-        {
-            _tournamentService.UnArchive(tournamentId);
-            return new EmptyResult();
-        }
-
-        /// <summary>
         /// Gets details for specific tournament
         /// </summary>
         /// <param name="id">Tournament id</param>
@@ -161,7 +149,8 @@
             {
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.ManageTeams,
-                AuthOperations.Tournaments.Archive
+                AuthOperations.Tournaments.Archive,
+                AuthOperations.Tournaments.Activate
             });
 
             return View(tournamentViewModel);
@@ -292,7 +281,7 @@
             _tournamentService.Delete(id);
             return RedirectToAction("Archived");
         }
-
+        
         public ActionResult Activate(int id)
         {
             var tournament = _tournamentService.Get(id);
@@ -302,7 +291,7 @@
                 return HttpNotFound();
             }
 
-            _tournamentService.UnArchive(id);
+            _tournamentService.Activate(id);
             return RedirectToAction("Archived");
         }
 

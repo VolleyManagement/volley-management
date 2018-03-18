@@ -295,6 +295,9 @@
 
   $(document).ready(function () {
     privates.formLoaded = $("#createForm").serialize();
+    $(function () {
+      $("input.disable").attr("readonly", true);
+    });
   });
 
   $("#backToSchedule").click(function () {

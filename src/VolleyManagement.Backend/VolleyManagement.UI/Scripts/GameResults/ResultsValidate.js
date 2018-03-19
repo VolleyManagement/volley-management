@@ -296,7 +296,8 @@
   $(document).ready(function () {
     privates.formLoaded = $("#createForm").serialize();
     $("input.disable").attr("readonly", true);
-   });
+    //make fields readonly when result is set and class is disable
+  });
 
   $("#backToSchedule").click(function () {
     var formChanged = $("#createForm").serialize();

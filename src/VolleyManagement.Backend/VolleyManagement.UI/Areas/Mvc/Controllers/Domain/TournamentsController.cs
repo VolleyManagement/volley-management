@@ -295,17 +295,12 @@
             {
                 _tournamentService.Activate(id);
             }
-            catch(Exception ex)
+            catch(Exception ex) when (ex is ArgumentException ||
+                                        ex is AuthorizationException)
             {
-                if (!(ex is ArgumentException) &&
-                    !(ex is AuthorizationException))
-                {
-                    throw;
-                }
-
                 failed = true;
             }
-
+            
             if(failed)
             {
                 return HttpNotFound();

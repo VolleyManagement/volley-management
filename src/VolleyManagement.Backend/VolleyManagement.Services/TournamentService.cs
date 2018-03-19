@@ -744,8 +744,11 @@
                 && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
                 var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-                _gameService.RemoveAllGamesInTournament(tournamentId);
-                _gameService.AddGames(gamesToAdd);
+                if (Math.Abs(GetGamesCount(gamesToAdd.Count) - _gameService.GetTournamentGames(tournamentId).Count) > 1)
+                {       
+                    _gameService.RemoveAllGamesInTournament(tournamentId);
+                    _gameService.AddGames(gamesToAdd);
+                }
             }
         }
 
@@ -755,13 +758,8 @@
             int gamesCount = GetGamesCount(teamsCount);
             List<Game> games = new List<Game>();
 
-            var scheduledGames = _gameService.GetTournamentGames(tournamentId)?
-               .Where(tr => tr.AwayTeamId != null || tr.HomeTeamId != null);
-
-            if (scheduledGames == null)
-            {
-                scheduledGames = new List<GameResultDto>();
-            }
+            var scheduledGames = _gameService.GetTournamentGames(tournamentId)
+                .Where(tr => tr.Round == 1);
 
             int index = 1;
             foreach (var currGame in scheduledGames)

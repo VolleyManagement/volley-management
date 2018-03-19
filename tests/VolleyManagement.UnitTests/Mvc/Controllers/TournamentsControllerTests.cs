@@ -1350,11 +1350,11 @@
         }
 
         /// <summary>
-        /// Test for Activate method . Tournament with specified identifier exists.
+        /// Test for Activate method. Tournament with specified identifier exists.
         /// Tournament is activate successfully and user is redirected to the Index page.
         /// </summary>
         [TestMethod]
-        public void Activation_ExistingTournament_TournamentIsActivated()
+        public void Activate_ExistingTournament_TournamentIsActivated()
         {
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);

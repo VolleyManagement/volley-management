@@ -1349,9 +1349,13 @@
             VerifyRedirect(ARCHIVED_ACTION_NAME, result);
         }
 
+        #endregion
+
+        #region Activate
+
         /// <summary>
         /// Test for Activate method. Tournament with specified identifier exists.
-        /// Tournament is activate successfully and user is redirected to the Index page.
+        /// Tournament is activated successfully and user is redirected to the Index page.
         /// </summary>
         [TestMethod]
         public void Activate_ExistingTournament_TournamentIsActivated()
@@ -1368,6 +1372,7 @@
             VerifyActivateTournament(TEST_TOURNAMENT_ID, Times.Once());
             VerifyRedirect(ARCHIVED_ACTION_NAME, result);
         }
+
 
         #endregion
 

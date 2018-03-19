@@ -100,7 +100,7 @@
         void Archive(int id);
 
         /// <summary>
-        /// Unarchive specific tournament
+        /// Activate specific tournament
         /// </summary>
         /// <param name="id">Tournament id</param>
         void Activate(int id);

@@ -289,11 +289,24 @@
         /// <returns></returns>
         public ActionResult Activate(int id)
         {
+            var failed = false;
+
             try
             {
                 _tournamentService.Activate(id);
             }
-            catch(Exception)
+            catch(Exception ex)
+            {
+                if (!(ex is ArgumentException) &&
+                    !(ex is AuthorizationException))
+                {
+                    throw;
+                }
+
+                failed = true;
+            }
+
+            if(failed)
             {
                 return HttpNotFound();
             }

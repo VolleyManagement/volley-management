@@ -1358,7 +1358,7 @@
         /// Tournament is activated successfully and user is redirected to the Index page.
         /// </summary>
         [TestMethod]
-        public void Activate_ExistingTournament_TournamentIsActivated()
+        public void Activate_ExistingTournament_TournamentIsActivatedAndUserIsRedirected()
         {
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
@@ -1373,6 +1373,24 @@
             VerifyRedirect(ARCHIVED_ACTION_NAME, result);
         }
 
+        /// <summary>
+        /// Test for Activate method. Tournament with specified identifier does not exist.
+        /// Tournament is not activated successfully and HttpNotFound is returned.
+        /// </summary>
+        [TestMethod]
+        public void Activate_UnExistingTournament_HttpNotFoundResultIsReturned()
+        {
+            // Arrange
+            SetupActivateTournamentToThrowException(TEST_TOURNAMENT_ID, new ArgumentException());
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.Activate(TEST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyActivateTournament(TEST_TOURNAMENT_ID, Times.Once());
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
 
         #endregion
 
@@ -1795,6 +1813,9 @@
         {
             _tournamentServiceMock.Setup(tr => tr.Activate(tournamentId));
         }
+
+        private void SetupActivateTournamentToThrowException(int tournamentId, Exception ex) =>
+            _tournamentServiceMock.Setup(tr => tr.Activate(tournamentId)).Throws(ex);
 
         private void SetupGetActual(List<Tournament> tournaments)
         {

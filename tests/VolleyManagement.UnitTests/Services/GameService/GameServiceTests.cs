@@ -1661,8 +1661,8 @@
                 .TestEmptyGamePlayoffSchedule()
                 .Build();
 
-            var testGameForEdit = games[5];
-            testGameForEdit.GameDate = new DateTime(2016, 4, 3, 0, 0, 0);
+            var testGameForEdit = games.FirstOrDefault(g => g.Round == 2);
+            testGameForEdit.GameDate = DateTime.Parse(TOURNAMENT_DATE_START);
 
             MockAllTournamentQueries(testTournament);
             MockGetTournamentResults(TOURNAMENT_ID, games);
@@ -1688,10 +1688,10 @@
                 .TestEmptyGamePlayoffSchedule()
                 .Build();
 
-            var testGameForEdit = games[5];
+            var testGameForEdit = games.FirstOrDefault(g => g.Round == 2); ;
             testGameForEdit.HomeTeamId = 1;
             testGameForEdit.AwayTeamId = 3;
-            testGameForEdit.GameDate = new DateTime(2016, 4, 3, 0, 0, 0);
+            testGameForEdit.GameDate = DateTime.Parse(TOURNAMENT_DATE_START);
 
             MockAllTournamentQueries(testTournament);
             MockGetTournamentResults(TOURNAMENT_ID, games);

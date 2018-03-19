@@ -1355,7 +1355,7 @@
 
         /// <summary>
         /// Test for Activate method. Tournament with specified identifier exists.
-        /// Tournament is activated successfully and user is redirected to the Index page.
+        /// Tournament is activated successfully and user is redirected to the Archived page.
         /// </summary>
         [TestMethod]
         public void Activate_ExistingTournament_TournamentIsActivatedAndUserIsRedirected()

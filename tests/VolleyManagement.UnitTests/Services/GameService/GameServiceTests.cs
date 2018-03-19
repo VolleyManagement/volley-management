@@ -1661,7 +1661,7 @@
                 .TestEmptyGamePlayoffSchedule()
                 .Build();
 
-            var testGameForEdit = games.FirstOrDefault(g => g.Round == 2);
+            var testGameForEdit = GetTestGameFromSecondRoundinPlayOff(games);
             testGameForEdit.GameDate = DateTime.Parse(TOURNAMENT_DATE_START);
 
             MockAllTournamentQueries(testTournament);
@@ -1688,7 +1688,7 @@
                 .TestEmptyGamePlayoffSchedule()
                 .Build();
 
-            var testGameForEdit = games.FirstOrDefault(g => g.Round == 2); ;
+            var testGameForEdit = GetTestGameFromSecondRoundinPlayOff(games);
             testGameForEdit.HomeTeamId = 1;
             testGameForEdit.AwayTeamId = 3;
             testGameForEdit.GameDate = DateTime.Parse(TOURNAMENT_DATE_START);
@@ -2507,6 +2507,10 @@
                 .WithHomeTeamId(8)
                 .WithDayOff()
                 .Build();
+        }
+        private static Game GetTestGameFromSecondRoundinPlayOff(IEnumerable<Game> games)
+        {
+            return games.FirstOrDefault(g => g.Round == 2);
         }
 
         private static TournamentScheduleDto CreatePlayoffTournament()

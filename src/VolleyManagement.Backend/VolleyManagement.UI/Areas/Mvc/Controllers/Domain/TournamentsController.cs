@@ -289,14 +289,15 @@
         /// <returns></returns>
         public ActionResult Activate(int id)
         {
-            var tournament = _tournamentService.Get(id);
-
-            if (tournament == null)
+            try
+            {
+                _tournamentService.Activate(id);
+            }
+            catch(Exception)
             {
                 return HttpNotFound();
             }
 
-            _tournamentService.Activate(id);
             return RedirectToAction("Archived");
         }
 

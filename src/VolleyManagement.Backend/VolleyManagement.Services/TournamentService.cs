@@ -323,7 +323,9 @@
                     TournamentResources.TournamentWasNotFound);
             }
 
-            Activate(tournamentToActivate);
+            tournamentToActivate.IsArchived = false;
+
+            _tournamentRepository.Update(tournamentToActivate);
             _tournamentRepository.UnitOfWork.Commit();
         }
 
@@ -500,17 +502,6 @@
         private void Archive(Tournament tournament)
         {
             tournament.IsArchived = true;
-
-            _tournamentRepository.Update(tournament);
-        }
-
-        /// <summary>
-        /// Activate tournament.
-        /// </summary>
-        /// <param name="tournament">Tournament to archive.</param>
-        private void Activate(Tournament tournament)
-        {
-            tournament.IsArchived = false;
 
             _tournamentRepository.Update(tournament);
         }

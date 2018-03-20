@@ -1366,7 +1366,25 @@
         #region Activate
 
         /// <summary>
-        /// Activate Tournament by given id.
+        /// Activate Tournament by id.
+        /// 'CheckAccess' is invoked.
+        /// </summary>
+        [TestMethod]
+        public void Activate_AnyState_CheckAccessInvoked()
+        {
+            // Arrange
+            MockGetByIdQuery(new TournamentBuilder().Build());
+            var sut = BuildSUT();
+
+            // Act
+            sut.Activate(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.Activate, Times.Once());
+        }
+
+        /// <summary>
+        /// Activate Tournament by id.
         /// Tournament exists and it's activated.
         /// </summary>
         [TestMethod]

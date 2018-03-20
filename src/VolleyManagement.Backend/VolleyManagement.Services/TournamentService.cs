@@ -36,6 +36,7 @@
         private const int MIN_TEAMS_TO_PLAY_ONE_ROUND = 2;
         private const int GAMES_TO_PLAY_ONE_ROUND = 2;
         private const int DONT_CREATE_SCHEDULE_TEAMS_COUNT = 1;
+        private const int FIRST_ROUND = 1;
 
         private static readonly TournamentStateEnum[] _actualStates =
             {
@@ -744,8 +745,8 @@
                 && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
                 var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-                if (Math.Abs(GetGamesCount(gamesToAdd.Count) - _gameService.GetTournamentGames(tournamentId).Count) > 1)
-                {       
+                if (_gameService.GetTournamentGames(tournamentId).Count != GetGamesCount(allTeamsCount))
+                {
                     _gameService.RemoveAllGamesInTournament(tournamentId);
                     _gameService.AddGames(gamesToAdd);
                 }
@@ -759,9 +760,10 @@
             List<Game> games = new List<Game>();
 
             var scheduledGames = _gameService.GetTournamentGames(tournamentId)
-                .Where(tr => tr.Round == 1);
+                   .Where(tr => tr.Round == FIRST_ROUND);
 
-            int index = 1;
+            byte gameNumber = 1;
+
             foreach (var currGame in scheduledGames)
             {
                 var game = new Game
@@ -770,15 +772,16 @@
                     HomeTeamId = currGame.HomeTeamId,
                     AwayTeamId = currGame.AwayTeamId,
                     Result = currGame.Result,
-                    GameNumber = (byte)(index),
-                    Round = GetRoundNumber(roundsCount, gamesCount, index++),
+                    GameNumber = gameNumber,
+                    Round = GetRoundNumber(roundsCount, gamesCount, gameNumber++),
                     GameDate = currGame.GameDate,
                     UrlToGameVideo = currGame.UrlToGameVideo,
                 };
+
                 games.Add(game);
             }
 
-            while (index <= gamesCount)
+            while (gameNumber <= gamesCount)
             {
                 var game = new Game
                 {
@@ -786,10 +789,11 @@
                     HomeTeamId = null,
                     AwayTeamId = null,
                     Result = new Result(),
-                    GameNumber = (byte)(index),
-                    Round = GetRoundNumber(roundsCount, gamesCount, index++),
+                    GameNumber = gameNumber,
+                    Round = GetRoundNumber(roundsCount, gamesCount, gameNumber++),
                     GameDate = null
                 };
+
                 games.Add(game);
             }
 

@@ -1327,10 +1327,10 @@
         {
             // Arrange
             var expectedTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
+                                    .WithArchivedParameter(false)
                                     .Build();
             var actualTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
+                                    .WithArchivedParameter(false)
                                     .Build();
             MockGetByIdQuery(actualTournament);
             MockGetUniqueTournamentQuery(expectedTournament);
@@ -1359,6 +1359,28 @@
 
             // Assert
             VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
+        }
+
+        #endregion
+
+        #region Activate
+
+        /// <summary>
+        /// Activate Turnament by given id.
+        /// Tournament exists and it's activated.
+        /// </summary>
+        [TestMethod]
+        public void Activate_TournamentExists_CommitInvoked()
+        {
+            // Arrange
+            MockGetByIdQuery(new TournamentBuilder().Build());
+            var sut = BuildSUT();
+
+            // Act
+            sut.Activate(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyCommit(Times.Once(), "The tournament was not activated.");
         }
 
         #endregion

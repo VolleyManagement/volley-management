@@ -7,19 +7,19 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Player;
-    using VolleyManagement.Domain.RequestsAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using System.Collections;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Player;
+    using Domain.RequestsAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.UsersService;
+    using UsersService;
 
     /// <summary>
     /// Tests for RequestService class.
@@ -45,7 +45,7 @@
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<IQuery<Request, FindByIdCriteria>> _getRequestByIdQueryMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock;
-        private Mock<IQuery<List<Request>, GetAllCriteria>> _getAllRequestsQueryMock;
+        private Mock<IQuery<ICollection<Request>, GetAllCriteria>> _getAllRequestsQueryMock;
         private Mock<IQuery<Request, UserToPlayerCriteria>> _getRequestUserPlayerQueryMock;
 
         private Mock<IUnitOfWork> _unitOfWorkMock;
@@ -66,7 +66,7 @@
             _authServiceMock = new Mock<IAuthorizationService>();
             _getRequestByIdQueryMock = new Mock<IQuery<Request, FindByIdCriteria>>();
             _getUserByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
-            _getAllRequestsQueryMock = new Mock<IQuery<List<Request>, GetAllCriteria>>();
+            _getAllRequestsQueryMock = new Mock<IQuery<ICollection<Request>, GetAllCriteria>>();
             _getRequestUserPlayerQueryMock = new Mock<IQuery<Request, UserToPlayerCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -89,7 +89,7 @@
             var actual = sut.Get();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new RequestComparer());
+            TestHelper.AreEqual(expected, actual, new RequestComparer());
         }
 
         [TestMethod]

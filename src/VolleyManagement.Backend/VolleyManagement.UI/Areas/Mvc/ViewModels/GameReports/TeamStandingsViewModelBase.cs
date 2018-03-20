@@ -36,10 +36,10 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
         /// <typeparam name="T">The element type of the list. Must be inheritor of <see cref="TeamStandingsViewModelBase"/></typeparam>
         /// <param name="entries">Collection of entries with team's tournament data</param>
         /// <returns>Collection of entries with team's tournament data with set position for every team</returns>
-        public static void SetPositions<T>(List<T> entries)
+        public static void SetPositions<T>(IList<T> entries)
             where T : TeamStandingsViewModelBase
         {
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
                 entries[i].Position = i + 1;
             }

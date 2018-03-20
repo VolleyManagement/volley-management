@@ -43,8 +43,7 @@
         /// <returns> View model object</returns>
         public static RequestViewModel Map(Request request, Player player, User user)
         {
-            return new RequestViewModel()
-            {
+            return new RequestViewModel {
                 Id = request.Id,
                 UserId = user.Id,
                 PlayerId = player.Id,

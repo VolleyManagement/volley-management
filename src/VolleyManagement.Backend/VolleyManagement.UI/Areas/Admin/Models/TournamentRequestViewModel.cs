@@ -64,8 +64,7 @@
                                                     User user,
                                                     Tournament tournament)
         {
-            return new TournamentRequestViewModel()
-            {
+            return new TournamentRequestViewModel {
                 Id = request.Id,
                 PersonId = request.UserId,
                 TeamId = request.TeamId,
@@ -82,8 +81,7 @@
         /// <returns>Domain object.</returns>
         public TournamentRequest ToDomain()
         {
-            return new TournamentRequest
-            {
+            return new TournamentRequest {
                 Id = Id,
                 TeamId = TeamId,
                 TournamentId = TournamentId,

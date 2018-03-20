@@ -33,8 +33,8 @@
         /// <returns>A signed integer that indicates the relative values of <see cref="StandingsViewModel"/> x and y.</returns>
         public int Compare(object x, object y)
         {
-            StandingsViewModel firstStandingsViewModel = x as StandingsViewModel;
-            StandingsViewModel secondStandingsViewModel = y as StandingsViewModel;
+            var firstStandingsViewModel = x as StandingsViewModel;
+            var secondStandingsViewModel = y as StandingsViewModel;
 
             if (firstStandingsViewModel == null)
             {

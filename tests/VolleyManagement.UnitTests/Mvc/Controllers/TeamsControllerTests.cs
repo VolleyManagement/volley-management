@@ -12,17 +12,16 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.PlayerService;
-    using VolleyManagement.UnitTests.Services.TeamService;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Domain.TeamsAggregate;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.Players;
+    using UI.Areas.Mvc.ViewModels.Teams;
+    using ViewModels;
+    using Services.PlayerService;
+    using Services.TeamService;
 
     /// <summary>
     /// Tests for MVC TeamsController class.

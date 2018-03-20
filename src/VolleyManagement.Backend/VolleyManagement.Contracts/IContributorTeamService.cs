@@ -12,6 +12,6 @@
         /// Gets list of all contributors team.
         /// </summary>
         /// <returns>Return list of all contributors.</returns>
-        List<ContributorTeam> Get();
+        ICollection<ContributorTeam> Get();
     }
 }

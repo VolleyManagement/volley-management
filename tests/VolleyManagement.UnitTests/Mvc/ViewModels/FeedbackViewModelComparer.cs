@@ -33,8 +33,8 @@
         /// values of feedback.</returns>
         public int Compare(object x, object y)
         {
-            FeedbackViewModel firstFeedback = x as FeedbackViewModel;
-            FeedbackViewModel secondFeedback = y as FeedbackViewModel;
+            var firstFeedback = x as FeedbackViewModel;
+            var secondFeedback = y as FeedbackViewModel;
 
             if (firstFeedback == null)
             {

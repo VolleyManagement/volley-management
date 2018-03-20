@@ -22,7 +22,7 @@
         private readonly IUserService _userService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IFeedbackService _feedbackService;
-        private ICaptchaManager _captchaManager;
+        private readonly ICaptchaManager _captchaManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
@@ -53,8 +53,7 @@
         /// <returns>Feedback creation view.</returns>
         public ActionResult Create()
         {
-            var feedbackViewModel = new FeedbackViewModel
-            {
+            var feedbackViewModel = new FeedbackViewModel {
                 UsersEmail = GetUserMail()
             };
             GetDataSiteKey(feedbackViewModel);
@@ -67,17 +66,18 @@
         /// <param name="feedbackViewModel">Feedback view model.</param>
         /// <returns>Feedback creation view.</returns>
         [HttpPost]
+#pragma warning disable S4261 // Methods should be named according to their synchronicities
         public async Task<JsonResult> Create(FeedbackViewModel feedbackViewModel)
+#pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
-            FeedbackMessageViewModel result = new FeedbackMessageViewModel
-            {
+            var result = new FeedbackMessageViewModel {
                 ResultMessage = Resources.UI.TournamentController.CheckCaptcha,
                 OperationSuccessful = false
             };
 
             try
             {
-                var isCaptchaValid = await _captchaManager.ValidateUserCaptcha(feedbackViewModel.CaptchaResponse);
+                var isCaptchaValid = await _captchaManager.ValidateUserCaptchaAsync(feedbackViewModel.CaptchaResponse);
                 if (isCaptchaValid)
                 {
                     if (ModelState.IsValid)
@@ -107,9 +107,8 @@
         /// <returns>User email.</returns>
         private string GetUserMail()
         {
-            int userId = _currentUserService.GetCurrentUserId();
-            User currentUser = new User
-            {
+            var userId = _currentUserService.GetCurrentUserId();
+            var currentUser = new User {
                 Email = string.Empty
             };
 
@@ -121,10 +120,10 @@
             return currentUser.Email;
         }
 
-        private void GetDataSiteKey(FeedbackViewModel feedbackViewModel)
+        private static void GetDataSiteKey(FeedbackViewModel feedbackViewModel)
         {
             const string SECRET_KEY = "RecaptchaSiteKey";
-            string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
+            var secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
             feedbackViewModel.ReCapthaKey = secretKey;
         }
     }

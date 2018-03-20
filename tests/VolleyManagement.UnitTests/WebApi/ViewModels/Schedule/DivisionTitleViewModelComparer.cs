@@ -14,9 +14,13 @@
 
             Assert.AreEqual(expected.Rounds.Count, actual.Rounds.Count, $"{messagePrefix}Number of Round entries does not match.");
 
-            for (var i = 0; i < expected.Rounds.Count; i++)
+            var expectedEnumerator = expected.Rounds.GetEnumerator();
+            var actualEnumerator = actual.Rounds.GetEnumerator();
+
+            while (expectedEnumerator.MoveNext() && actualEnumerator.MoveNext())
             {
-                Assert.AreEqual(expected.Rounds[i], actual.Rounds[i], $"{messagePrefix}Round name does not match");
+                Assert.AreEqual(expectedEnumerator.Current, actualEnumerator.Current,
+                    $"{messagePrefix}Round name does not match");
             }
         }
     }

@@ -31,7 +31,7 @@
         /// <returns>Hash code for the specified <see cref="StandingsEntryViewModel"/>.</returns>
         public int GetHashCode(StandingsEntryViewModel obj)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
             stringBuilder.Append(obj.TeamName);
             stringBuilder.Append(obj.Position);

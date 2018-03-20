@@ -32,8 +32,8 @@
         /// the relative values of users.</returns>
         public int Compare(object x, object y)
         {
-            User firstUser = x as User;
-            User secondUser = y as User;
+            var firstUser = x as User;
+            var secondUser = y as User;
 
             if (firstUser == null)
             {

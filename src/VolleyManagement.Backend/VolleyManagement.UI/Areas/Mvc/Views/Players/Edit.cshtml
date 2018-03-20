@@ -8,17 +8,17 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>@Resources.UI.PlayerViews.PlayerLegend</legend>
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>@Resources.UI.PlayerViews.PlayerLegend</legend>
 
-        @Html.HiddenFor(model => model.Id)
-        @Html.Partial("_CreateOrEdit", Model)
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("_CreateOrEdit", Model)
 
-        <p>
-            <input type="submit" value="@Resources.UI.PlayerViews.Save" />
-        </p>
-    </fieldset>
+    <p>
+        <input type="submit" value="@Resources.UI.PlayerViews.Save" />
+    </p>
+</fieldset>
 }
 
 <div>

@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,12 +9,11 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
     /// </summary>
     public class DivisionStandingsViewModel : DivisionStandingsBase
     {
-        public List<StandingsEntryViewModel> StandingsEntries { get; set; } = new List<StandingsEntryViewModel>();
+        public IList<StandingsEntryViewModel> StandingsEntries { get; set; } = new List<StandingsEntryViewModel>();
 
         public static DivisionStandingsViewModel Map(StandingsDto standings)
         {
-            return new DivisionStandingsViewModel
-            {
+            return new DivisionStandingsViewModel {
                 StandingsEntries = standings.Standings.Select(StandingsEntryViewModel.Map).ToList(),
                 LastUpdateTime = standings.LastUpdateTime
             };

@@ -7,6 +7,8 @@
     {
         public const string GAME = "Value cannot be null.\r\nParameter name: game";
 
+        public const string GAME_INVALID_ID = "invalid game id\r\nParameter name: id";
+
         public const string GAME_SAME_TEAM = "The team can not play with itself";
 
         public const string GAME_SETS_SCORE_INVALID =

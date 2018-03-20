@@ -54,8 +54,7 @@
         /// <returns> View model object </returns>
         public static UserEditViewModel Map(User user)
         {
-            return new UserEditViewModel
-            {
+            return new UserEditViewModel {
                 Id = user.Id,
                 FullName = user.PersonName,
                 CellPhone = user.PhoneNumber,
@@ -70,8 +69,7 @@
         /// <returns> View model object </returns>
         public static UserEditViewModel Map(UserModel user)
         {
-            return new UserEditViewModel
-            {
+            return new UserEditViewModel {
                 Id = user.Id,
                 FullName = user.PersonName,
                 CellPhone = user.PhoneNumber,

@@ -34,7 +34,7 @@
             }
         }
 
-        private string GetApiKey()
+        private static string GetApiKey()
         {
             return WebConfigurationManager.AppSettings[SG_API_KEY];
         }

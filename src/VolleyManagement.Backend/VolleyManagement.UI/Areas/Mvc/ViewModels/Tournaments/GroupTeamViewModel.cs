@@ -28,8 +28,7 @@
         /// <returns>View model object</returns>
         public static GroupTeamViewModel Map(TeamTournamentAssignmentDto groupTeam)
         {
-            return new GroupTeamViewModel
-            {
+            return new GroupTeamViewModel {
                 GroupId = groupTeam.GroupId,
                 TeamId = groupTeam.TeamId
             };
@@ -41,8 +40,7 @@
         /// <returns>Domain object</returns>
         public TeamTournamentAssignmentDto ToDomain()
         {
-            return new TeamTournamentAssignmentDto
-            {
+            return new TeamTournamentAssignmentDto {
                 GroupId = GroupId,
                 TeamId = TeamId
             };

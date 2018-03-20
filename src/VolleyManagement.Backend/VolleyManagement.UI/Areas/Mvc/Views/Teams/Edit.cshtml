@@ -12,16 +12,16 @@
         <div class="info float-left">
             @using (Html.BeginForm("AddPhoto", "Teams", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <input name="id" id="id" type="hidden" value="@Model.Id">
-                <input name="fileToUpload" id="fileToUpload" type="file">
-                <input name="button" id="uploadButton" style='background-image: url(@Model.PhotoPath); background-size: cover; padding-top: 70px;' type="button" value="Upload photo">
-                <input name="submit" id="uploadSubmit" type="submit" value="Submit Query">
+            <input name="id" id="id" type="hidden" value="@Model.Id">
+            <input name="fileToUpload" id="fileToUpload" type="file">
+            <input name="button" id="uploadButton" style='background-image: url(@Model.PhotoPath); background-size: cover; padding-top: 70px;' type="button" value="Upload photo">
+            <input name="submit" id="uploadSubmit" type="submit" value="Submit Query">
             }
 
             @using (Html.BeginForm("DeletePhoto", "Teams", FormMethod.Post))
             {
-                <input name="id" id="id" type="hidden" value="@Model.Id">
-                <input name="submitDelete" id="deleteSubmit" type="submit" value="Delete photo">
+            <input name="id" id="id" type="hidden" value="@Model.Id">
+            <input name="submitDelete" id="deleteSubmit" type="submit" value="Delete photo">
             }
         </div>
     </div>
@@ -29,18 +29,18 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
+@Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>@Resources.UI.TeamViews.TeamLegend</legend>
+<fieldset>
+    <legend>@Resources.UI.TeamViews.TeamLegend</legend>
 
-        @Html.HiddenFor(model => model.Id)
-        @Html.Partial("_CreateEdit", Model)
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("_CreateEdit", Model)
 
-        <p>
-            <button id="saveTeamButton">@Resources.UI.TeamViews.Save</button>
-        </p>
-    </fieldset>
+    <p>
+        <button id="saveTeamButton">@Resources.UI.TeamViews.Save</button>
+    </p>
+</fieldset>
 }
 
 <div>

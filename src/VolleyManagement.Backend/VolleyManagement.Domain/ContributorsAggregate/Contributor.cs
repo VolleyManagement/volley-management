@@ -1,8 +1,5 @@
 ﻿namespace VolleyManagement.Domain.ContributorsAggregate
 {
-    using System;
-    using Properties;
-
     /// <summary>
     /// Contributor domain class.
     /// </summary>

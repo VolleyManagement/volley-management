@@ -32,7 +32,7 @@
         /// <returns>Hash code for the specified <see cref="PivotTeamStandingsViewModel"/>.</returns>
         public int GetHashCode(PivotTeamStandingsViewModel obj)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
             stringBuilder.Append(obj.TeamId);
             stringBuilder.Append(obj.TeamName);

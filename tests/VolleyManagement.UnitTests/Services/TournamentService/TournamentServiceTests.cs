@@ -1366,7 +1366,7 @@
         #region Activate
 
         /// <summary>
-        /// Activate Turnament by given id.
+        /// Activate Tournament by given id.
         /// Tournament exists and it's activated.
         /// </summary>
         [TestMethod]

@@ -34,7 +34,7 @@
         /// <returns>Hash code for the specified <see cref="Score"/> object.</returns>
         public int GetHashCode(Score obj)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             builder.Append(obj.Home);
             builder.Append(obj.Away);

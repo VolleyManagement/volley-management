@@ -356,7 +356,7 @@
         public void Edit_NoEditRights_ExceptionThrown()
         {
             // Arrange
-            Tournament testTournament = new TournamentBuilder().Build();
+            var testTournament = new TournamentBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Edit);
             var sut = BuildSUT();
 
@@ -382,7 +382,7 @@
                                         .WithName("Non-Unique Tournament")
                                         .Build();
 
-            Tournament nonUniqueNameTournament = new TournamentBuilder()
+            var nonUniqueNameTournament = new TournamentBuilder()
                                                         .WithId(2)
                                                         .WithName("Non-Unique Tournament")
                                                         .Build();
@@ -675,12 +675,12 @@
         public void Create_TournamentNotExist_TournamentCreated()
         {
             // Arrange
-            DateTime applyingPeriodStart = DateTime.UtcNow.AddDays(1);
-            DateTime applyingPeriodEnd = applyingPeriodStart.AddDays(1);
-            DateTime gamesStart = applyingPeriodEnd.AddDays(1);
-            DateTime transferStart = gamesStart.AddDays(1);
-            DateTime transferEnd = transferStart.AddDays(1);
-            DateTime gamesEnd = transferEnd.AddDays(1);
+            var applyingPeriodStart = DateTime.UtcNow.AddDays(1);
+            var applyingPeriodEnd = applyingPeriodStart.AddDays(1);
+            var gamesStart = applyingPeriodEnd.AddDays(1);
+            var transferStart = gamesStart.AddDays(1);
+            var transferEnd = transferStart.AddDays(1);
+            var gamesEnd = transferEnd.AddDays(1);
 
             var newTournament = new TournamentBuilder().WithApplyingPeriodStart(applyingPeriodStart)
                                                        .WithApplyingPeriodEnd(applyingPeriodEnd)
@@ -822,7 +822,7 @@
         public void Create_NoCreateRights_ExceptionThrown()
         {
             // Arrange
-            Tournament testTournament = new TournamentBuilder().Build();
+            var testTournament = new TournamentBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Create);
             var sut = BuildSUT();
 
@@ -870,7 +870,7 @@
         [TestMethod]
         public void AddTeamsToTournament_InValidTeamList_ArgumentExceptionThrown()
         {
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             var tournament = new TournamentBuilder()
@@ -961,7 +961,7 @@
             MockGetTournamentByGroupId(tournament);
             var sut = BuildSUT();
             Exception exception = null;
-            string argExMessage =
+            var argExMessage =
                 TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique;
 
             // Act
@@ -992,7 +992,7 @@
 
             var sut = BuildSUT();
             Exception exception = null;
-            string argExMessage =
+            var argExMessage =
                 TournamentResources.CollectionIsEmpty;
 
             // Act
@@ -1063,7 +1063,7 @@
 
             Exception exception = null;
 
-            string argExMessage =
+            var argExMessage =
                 TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique;
 
             // Act
@@ -1119,7 +1119,7 @@
         [TestMethod]
         public void DeleteTeamFromTournament_TeamNotExist_MissingEntityExceptionThrown()
         {
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             _tournamentRepositoryMock
@@ -1632,7 +1632,7 @@
             var actual = sut.Get();
 
             // Assert
-            int actualCount = actual.Count(t => t.State == TournamentStateEnum.NotStarted);
+            var actualCount = actual.Count(t => t.State == TournamentStateEnum.NotStarted);
             Assert.AreEqual(EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT, actualCount);
         }
         #endregion

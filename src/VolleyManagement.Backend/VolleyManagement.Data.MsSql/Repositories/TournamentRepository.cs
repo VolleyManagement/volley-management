@@ -207,15 +207,15 @@
         {
             to.Id = from.Id;
 
-            foreach (DivisionEntity divisionEntity in from.Divisions)
+            foreach (var divisionEntity in from.Divisions)
             {
-                Division divisionDomain = to.Divisions.First(d => d.Name == divisionEntity.Name);
+                var divisionDomain = to.Divisions.First(d => d.Name == divisionEntity.Name);
                 divisionDomain.Id = divisionEntity.Id;
                 divisionDomain.TournamentId = divisionEntity.TournamentId;
 
-                foreach (GroupEntity groupEntity in divisionEntity.Groups)
+                foreach (var groupEntity in divisionEntity.Groups)
                 {
-                    Group groupDomain = divisionDomain.Groups.First(g => g.Name == groupEntity.Name);
+                    var groupDomain = divisionDomain.Groups.First(g => g.Name == groupEntity.Name);
                     groupDomain.Id = groupEntity.Id;
                     groupDomain.DivisionId = divisionEntity.Id;
                 }

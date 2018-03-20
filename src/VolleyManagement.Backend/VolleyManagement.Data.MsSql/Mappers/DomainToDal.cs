@@ -94,8 +94,7 @@
             to.LoginProviders = from.LoginProviders
                 .Select(l =>
                 {
-                    return new LoginInfoEntity
-                    {
+                    return new LoginInfoEntity {
                         LoginProvider = l.LoginProvider,
                         ProviderKey = l.ProviderKey
                     };
@@ -113,8 +112,7 @@
         {
             if (from.Id == 0)
             {
-                return new DivisionEntity
-                {
+                return new DivisionEntity {
                     Id = from.Id,
                     Name = from.Name,
                     TournamentId = from.TournamentId,
@@ -157,8 +155,7 @@
         /// <returns>Dal entity</returns>
         public static GroupEntity Map(Group from)
         {
-            return new GroupEntity
-            {
+            return new GroupEntity {
                 Id = from.Id,
                 Name = from.Name,
                 DivisionId = from.DivisionId

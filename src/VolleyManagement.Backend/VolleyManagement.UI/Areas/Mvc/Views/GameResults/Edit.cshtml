@@ -8,22 +8,22 @@
 
 @using (Html.BeginForm("Edit", "GameResults", FormMethod.Post, new { id = "createForm", name = "createForm" }))
 {
-    <hr />
+<hr />
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.Partial("_CreateOrEdit", Model)
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.Partial("_CreateOrEdit", Model)
 
-    @Html.HiddenFor(model => model.GameNumber);
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="@Resources.UI.GameResultViews.Save" class="btn btn-default" />
-            @Html.ActionLink(@Resources.UI.GameResultViews.Back, 
+@Html.HiddenFor(model => model.GameNumber);
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="@Resources.UI.GameResultViews.Save" class="btn btn-default" />
+        @Html.ActionLink(@Resources.UI.GameResultViews.Back,
                 "ShowSchedule",
                 "Tournaments",
-                new { tournamentId = Model.TournamentId }, 
+                new { tournamentId = Model.TournamentId },
                 new { @class = "btn btn-default", @id = "backToSchedule" })
-        </div>
     </div>
+</div>
 
 }
 

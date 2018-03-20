@@ -155,35 +155,35 @@
 
         private void NotifyUser(string emailTo)
         {
-            string body = Properties.Resources.TournamentRequestConfirmitionLetterBody;
-            string subject = Properties.Resources.TournamentRequestLetterSubject;
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            var body = Properties.Resources.TournamentRequestConfirmitionLetterBody;
+            var subject = Properties.Resources.TournamentRequestLetterSubject;
+            var emailMessage = new EmailMessage(emailTo, subject, body);
             _mailService.Send(emailMessage);
         }
 
         private void NotifyUser(string emailTo, string message)
         {
-            string subject = Properties.Resources.TournamentRequestLetterSubject;
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
+            var subject = Properties.Resources.TournamentRequestLetterSubject;
+            var emailMessage = new EmailMessage(emailTo, subject, message);
             _mailService.Send(emailMessage);
         }
 
         private void NotifyAdmins(TournamentRequest request)
         {
-            string subject = string.Format(
+            var subject = string.Format(
                 Properties.Resources.TournamentRequestEmailSubjectToAdmins,
                 request.Id);
 
-            string body = string.Format(
+            var body = string.Format(
                 Properties.Resources.TournamentRequestEmailBodyToAdmins,
                 request.Id,
                 request.UserId,
                 request.TournamentId,
                 request.TeamId);
-            ICollection<User> adminList = _userService.GetAdminsList();
+            var adminList = _userService.GetAdminsList();
             foreach (var admin in adminList)
             {
-                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
+                var emailMessage = new EmailMessage(admin.Email, subject, body);
                 _mailService.Send(emailMessage);
             }
         }

@@ -31,8 +31,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            TeamTournamentDto firstTeam = x as TeamTournamentDto;
-            TeamTournamentDto secondTeam = y as TeamTournamentDto;
+            var firstTeam = x as TeamTournamentDto;
+            var secondTeam = y as TeamTournamentDto;
 
             if (firstTeam == null)
             {

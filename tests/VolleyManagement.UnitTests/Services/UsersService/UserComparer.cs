@@ -34,8 +34,8 @@
         /// the relative values of users.</returns>
         public int Compare(object x, object y)
         {
-            User firstUser = x as User;
-            User secondUser = y as User;
+            var firstUser = x as User;
+            var secondUser = y as User;
 
             if (firstUser == null)
             {
@@ -60,7 +60,7 @@
         private bool AreEqual(User x, User y)
         {
             var playerComparer = new PlayerComparer();
-            bool result = x.Id == y.Id
+            var result = x.Id == y.Id
                           && x.PersonName == y.PersonName
                           && x.Email == y.Email
                           && x.UserName == y.UserName
@@ -76,7 +76,7 @@
             {
                 foreach (var xProvider in x.LoginProviders)
                 {
-                    bool providerFound = false;
+                    var providerFound = false;
                     foreach (var yProvider in y.LoginProviders)
                     {
                         if (yProvider.LoginProvider == xProvider.LoginProvider
@@ -98,7 +98,7 @@
             {
                 foreach (var xRole in x.Roles)
                 {
-                    bool roleFound = false;
+                    var roleFound = false;
                     foreach (var yRole in y.Roles)
                     {
                         if (yRole.Id == xRole.Id

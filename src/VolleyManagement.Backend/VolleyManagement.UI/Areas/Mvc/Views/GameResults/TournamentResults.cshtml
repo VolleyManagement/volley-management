@@ -24,26 +24,26 @@
     <legend>@legendText</legend>
     @if (Model.GameResults.Count == 0)
     {
-        <p>@Resources.UI.GameResultViews.NoGameResults</p>
+    <p>@Resources.UI.GameResultViews.NoGameResults</p>
     }
     else
     {
-        <table class="results">
-            <thead>
-                <tr class="results-header-row">
-                    <th class="results-header-cell">@Resources.UI.GameResultViews.ResultNumberHeader</th>
-                    <th class="results-header-cell">@Resources.UI.GameResultViews.GameResultHeader</th>
-                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set1ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set2ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set3ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set4ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set5ScoreHeader</th>
-                    <th class="results-operation-header-cell"></th>
-                    <th class="results-operation-header-cell"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var gameResult in Model.GameResults)
+    <table class="results">
+        <thead>
+            <tr class="results-header-row">
+                <th class="results-header-cell">@Resources.UI.GameResultViews.ResultNumberHeader</th>
+                <th class="results-header-cell">@Resources.UI.GameResultViews.GameResultHeader</th>
+                <th class="results-header-cell">@Resources.UI.GameResultViews.Set1ScoreHeader</th>
+                <th class="results-header-cell">@Resources.UI.GameResultViews.Set2ScoreHeader</th>
+                <th class="results-header-cell">@Resources.UI.GameResultViews.Set3ScoreHeader</th>
+                <th class="results-header-cell">@Resources.UI.GameResultViews.Set4ScoreHeader</th>
+                <th class="results-header-cell">@Resources.UI.GameResultViews.Set5ScoreHeader</th>
+                <th class="results-operation-header-cell"></th>
+                <th class="results-operation-header-cell"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var gameResult in Model.GameResults)
                 {
                     setsScoreText = gameResult.IsTechnicalDefeat
                         ? gameResult.GameScore.Home > gameResult.GameScore.Away
@@ -57,29 +57,29 @@
                     set4ScoreText = string.Format("{0}:{1}", gameResult.SetScores[3].Home, gameResult.SetScores[3].Away);
                     set5ScoreText = string.Format("{0}:{1}", gameResult.SetScores[4].Home, gameResult.SetScores[4].Away);
 
-                    <tr class="results-row">
-                        <td class="results-cell">@(++number)</td>
-                        <td class="results-cell game-score-cell">
-                            <div class="game-home-team">@gameResult.HomeTeamName</div>
-                            <div class="game-score">@setsScoreText</div>
-                            <div class="game-away-team">@gameResult.AwayTeamName</div>
-                        </td>
-                        <td class="results-cell">@set1ScoreText</td>
-                        <td class="results-cell">@set2ScoreText</td>
-                        <td class="results-cell">@set3ScoreText</td>
-                        <td class="results-cell">@set4ScoreText</td>
-                        <td class="results-cell">@set5ScoreText</td>
-                        <td class="results-first-operation-cell">
-                            @if (Model.Authorization.IsAllowed(AuthOperations.Games.EditResult))
+            <tr class="results-row">
+                <td class="results-cell">@(++number)</td>
+                <td class="results-cell game-score-cell">
+                    <div class="game-home-team">@gameResult.HomeTeamName</div>
+                    <div class="game-score">@setsScoreText</div>
+                    <div class="game-away-team">@gameResult.AwayTeamName</div>
+                </td>
+                <td class="results-cell">@set1ScoreText</td>
+                <td class="results-cell">@set2ScoreText</td>
+                <td class="results-cell">@set3ScoreText</td>
+                <td class="results-cell">@set4ScoreText</td>
+                <td class="results-cell">@set5ScoreText</td>
+                <td class="results-first-operation-cell">
+                    @if (Model.Authorization.IsAllowed(AuthOperations.Games.EditResult))
                             {
-                                @Html.ActionLink(Resources.UI.GameResultViews.Edit, "Edit", new { id = gameResult.Id }, null)
+                    @Html.ActionLink(Resources.UI.GameResultViews.Edit, "Edit", new { id = gameResult.Id }, null)
                             }
-                        </td>
-                        <td></td>
-                    </tr>
+                </td>
+                <td></td>
+            </tr>
                 }
-            </tbody>
-        </table>
+        </tbody>
+    </table>
     }
 </fieldset>
 

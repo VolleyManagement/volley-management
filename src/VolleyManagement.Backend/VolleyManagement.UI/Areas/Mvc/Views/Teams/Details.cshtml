@@ -9,7 +9,7 @@
 <div class="width">
     <div class="form radius front cab-form">
         <div class="info float-left">
-            <img src=@Model.Model.PhotoPath height="200" width="200"/>
+            <img src=@Model.Model.PhotoPath height="200" width="200" />
         </div>
     </div>
 </div>
@@ -34,13 +34,13 @@
     <ul>
         @foreach (var item in Model.Model.Roster)
         {
-            <li>
-                @Html.ActionLink(item.FirstName + " " + item.LastName,
+        <li>
+            @Html.ActionLink(item.FirstName + " " + item.LastName,
                                 "Details",
                                 "Players",
                                 new { id = item.Id, returnUrl = Model.CurrentReferrer },
                                 null)
-            </li>
+        </li>
         }
     </ul>
 </fieldset>

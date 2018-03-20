@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql.Context.Migrations
+﻿namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System.Data.Entity.Migrations;
 
@@ -15,11 +15,11 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.Requests",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserId = c.Int(nullable: false),
-                        PlayerId = c.Int(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserId = c.Int(nullable: false),
+                    PlayerId = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => t.Id);
         }
 

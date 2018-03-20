@@ -1,4 +1,4 @@
-namespace VolleyManagement.Services
+﻿namespace VolleyManagement.Services
 {
     using System;
     using System.Collections.Generic;
@@ -117,7 +117,7 @@ namespace VolleyManagement.Services
                 ValidateResult(game.Result);
             }
 
-            TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
+            var tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
             ValidateGame(game, tournamentScheduleInfo);
@@ -190,7 +190,7 @@ namespace VolleyManagement.Services
         {
             _authService.CheckAccess(AuthOperations.Games.Edit);
 
-            TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
+            var tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
             ValidateGame(game, tournamentScheduleInfo);
@@ -233,7 +233,7 @@ namespace VolleyManagement.Services
 
             ValidateResult(game.Result);
 
-            TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
+            var tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
             ValidateGame(game, tournamentScheduleInfo);
@@ -265,7 +265,7 @@ namespace VolleyManagement.Services
         {
             _authService.CheckAccess(AuthOperations.Games.Delete);
 
-            GameResultDto game = Get(id);
+            var game = Get(id);
 
             if (game == null)
             {
@@ -287,7 +287,7 @@ namespace VolleyManagement.Services
         {
             _authService.CheckAccess(AuthOperations.Games.SwapRounds);
 
-            ICollection<Game> games = _gamesByTournamentIdRoundsNumberQuery.Execute(
+            var games = _gamesByTournamentIdRoundsNumberQuery.Execute(
                 new TournamentRoundsGameResultsCriteria
                 {
                     TournamentId = tournamentId,
@@ -422,7 +422,7 @@ namespace VolleyManagement.Services
         }
         private static void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
         {
-            bool isPreviousOptionalSetUnplayed = false;
+            var isPreviousOptionalSetUnplayed = false;
 
             for (int i = 0, setOrderNumber = 1; i < setScores.Count; i++, setOrderNumber++)
             {
@@ -533,7 +533,7 @@ namespace VolleyManagement.Services
             TournamentScheduleDto tournamentScheduleInfo)
         {
             // We are sure that newGame is been created, not edited
-            foreach (GameResultDto game in gamesInRound)
+            foreach (var game in gamesInRound)
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
                 {
@@ -641,7 +641,7 @@ namespace VolleyManagement.Services
                 {
                     SwitchTeamsOrder(newGame);
 
-                    int switchedDuplicatesCount = tournamentGames
+                    var switchedDuplicatesCount = tournamentGames
                             .Count(x => GameValidation.AreSameOrderTeamsInGames(x, newGame));
 
                     if (switchedDuplicatesCount > 0)
@@ -658,7 +658,7 @@ namespace VolleyManagement.Services
 
         private static void ValidateGamesInTournamentSchemeOne(Game newGame, IEnumerable<GameResultDto> games)
         {
-            List<GameResultDto> tournamentGames = games
+            var tournamentGames = games
                 .Where(gr => gr.Round != newGame.Round)
                 .ToList();
 
@@ -709,7 +709,7 @@ namespace VolleyManagement.Services
         {
             if (!GameValidation.IsFreeDayGame(game))
             {
-                int? tempHomeId = game.HomeTeamId;
+                var tempHomeId = game.HomeTeamId;
                 game.HomeTeamId = game.AwayTeamId;
                 game.AwayTeamId = tempHomeId;
             }
@@ -720,8 +720,8 @@ namespace VolleyManagement.Services
 
         private void ScheduleNextGames(Game finishedGame, TournamentScheduleDto tournamentScheduleInfo)
         {
-            List<Game> gamesToUpdate = GetGamesToSchedule(finishedGame, tournamentScheduleInfo);
-            foreach (Game nextGame in gamesToUpdate)
+            var gamesToUpdate = GetGamesToSchedule(finishedGame, tournamentScheduleInfo);
+            foreach (var nextGame in gamesToUpdate)
             {
                 _gameRepository.Update(nextGame);
             }
@@ -729,9 +729,9 @@ namespace VolleyManagement.Services
 
         private List<Game> GetGamesToSchedule(Game finishedGame, TournamentScheduleDto torunamentScheduleInfo)
         {
-            List<Game> gamesToUpdate = new List<Game>();
+            var gamesToUpdate = new List<Game>();
 
-            ICollection<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+            var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
                 .Execute(new GamesByRoundCriteria
                 {
                     TournamentId = torunamentScheduleInfo.Id,
@@ -751,7 +751,7 @@ namespace VolleyManagement.Services
                     && finishedGame.Result.GameScore.Home == 0
                     && finishedGame.Result.GameScore.Away == 0)
                 {
-                    foreach (Game game in gamesToUpdate)
+                    foreach (var game in gamesToUpdate)
                     {
                         ClearGame(finishedGame, game);
                     }
@@ -763,9 +763,9 @@ namespace VolleyManagement.Services
 
         private static List<Game> GetGamesToUpdate(Game finishedGame, ICollection<Game> gamesInCurrentAndNextRounds)
         {
-            List<Game> gamesToUpdate = new List<Game>();
+            var gamesToUpdate = new List<Game>();
 
-            List<Game> gamesInCurrentRound = gamesInCurrentAndNextRounds
+            var gamesInCurrentRound = gamesInCurrentAndNextRounds
                         .Where(g => g.Round == finishedGame.Round)
                         .ToList();
 
@@ -801,19 +801,19 @@ namespace VolleyManagement.Services
         private static Game GetNextWinnerGame(Game finishedGame, ICollection<Game> games)
         {
             var numberOfRounds = GetNumberOfRounds(finishedGame, games);
-            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
+            var nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
             if (IsSemiFinalGame(finishedGame, games))
             {
                 nextGameNumber++;
             }
 
-            Game nextGame = games
+            var nextGame = games
                 .SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
 
-            int winnerTeamId = 0;
+            var winnerTeamId = 0;
 #pragma warning disable S3240 // The simplest possible condition syntax should be used
             if (finishedGame.AwayTeamId == null)
 #pragma warning restore S3240 // The simplest possible condition syntax should be used
@@ -842,12 +842,12 @@ namespace VolleyManagement.Services
         {
             var numberOfRounds = GetNumberOfRounds(finishedGame, games);
             // Assume that finished game is a semifinal game
-            int nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
-            Game nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+            var nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
+            var nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
             ValidateEditingSchemePlayoff(nextGame);
 
-            int loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
+            var loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
             if (finishedGame.GameNumber % 2 != 0)
@@ -884,14 +884,14 @@ namespace VolleyManagement.Services
 
         private static bool IsSemiFinalGame(Game finishedGame, IEnumerable<Game> games)
         {
-            int numberOfRounds = GetNumberOfRounds(finishedGame, games);
+            var numberOfRounds = GetNumberOfRounds(finishedGame, games);
 
             return finishedGame.Round == numberOfRounds - 1;
         }
 
         private static int GetNumberOfRounds(Game finishedGame, IEnumerable<Game> games)
         {
-            List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
+            var gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
             return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count, 2))
                 + finishedGame.Round;
@@ -899,7 +899,7 @@ namespace VolleyManagement.Services
 
         private static bool IsGameInLastRound(Game finishedGame, IEnumerable<Game> games)
         {
-            byte roundNum = games.Max(g => g.Round);
+            var roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;
         }
 
@@ -914,7 +914,7 @@ namespace VolleyManagement.Services
 
         private static void SetAbilityToEditResults(List<GameResultDto> allGames)
         {
-            List<GameResultDto> gamesToAllowEditingResults = allGames.Where(
+            var gamesToAllowEditingResults = allGames.Where(
                 game => game.HomeTeamId.HasValue
                 && game.GameDate.HasValue
                 && NextGames(allGames, game)
@@ -942,7 +942,7 @@ namespace VolleyManagement.Services
 
             var games = new List<GameResultDto>();
 
-            int nextGameNumber = GetNextGameNumber(currentGame.GameNumber, numberOfRounds);
+            var nextGameNumber = GetNextGameNumber(currentGame.GameNumber, numberOfRounds);
             games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
             if (currentGame.Round == numberOfRounds - 1)
             {

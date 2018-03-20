@@ -32,7 +32,7 @@
                 return false;
             }
 
-            Score score = new Score();
+            var score = new Score();
 
             foreach (var setScore in setScores)
             {
@@ -125,8 +125,8 @@
         /// <returns>True if set scores are listed in the correct order; otherwise, false.</returns>
         public static bool AreSetScoresOrdered(IList<Score> setScores)
         {
-            Score score = new Score();
-            bool hasMatchEnded = false;
+            var score = new Score();
+            var hasMatchEnded = false;
 
             foreach (var setScore in setScores)
             {
@@ -182,7 +182,7 @@
 
         private static bool IsSetScoreValid(Score setScore, int minSetScore)
         {
-            bool isValid = false;
+            var isValid = false;
 
             if (IsSetScoreGreaterThanMin(setScore, minSetScore))
             {

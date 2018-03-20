@@ -64,7 +64,7 @@
             const int FEEDBACK_ID = 1;
             var feedback = GetAnyFeedback(FEEDBACK_ID);
             MockGetFeedback(FEEDBACK_ID, feedback);
-            RequestsViewModel expected = new RequestsViewModel(feedback);
+            var expected = new RequestsViewModel(feedback);
 
             var sut = BuildSut();
 

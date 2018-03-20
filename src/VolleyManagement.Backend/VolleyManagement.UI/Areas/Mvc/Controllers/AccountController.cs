@@ -132,7 +132,7 @@
 #pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             var user = await _userManager.FindByIdAsync(CurrentUserId);
-            UserViewModel userViewModel = UserViewModel.Map(user);
+            var userViewModel = UserViewModel.Map(user);
             return View(userViewModel);
         }
 
@@ -146,7 +146,7 @@
 #pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             var user = await _userManager.FindByIdAsync(CurrentUserId);
-            UserEditViewModel userEditViewModel = UserEditViewModel.Map(user);
+            var userEditViewModel = UserEditViewModel.Map(user);
             return View(userEditViewModel);
         }
 
@@ -195,8 +195,7 @@
         [RequireHttps]
         public ActionResult GoogleLogin(string returnUrl)
         {
-            var properties = new AuthenticationProperties
-            {
+            var properties = new AuthenticationProperties {
                 RedirectUri = Url.Action("ExternalLoginCallback", new { returnUrl })
             };
             HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
@@ -214,18 +213,17 @@
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
 #pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
-            ExternalLoginInfo loginInfo = await AuthManager.GetExternalLoginInfoAsync();
-            UserModel user = await _userManager.FindAsync(loginInfo.Login);
+            var loginInfo = await AuthManager.GetExternalLoginInfoAsync();
+            var user = await _userManager.FindAsync(loginInfo.Login);
 
             if (user == null)
             {
-                user = new UserModel
-                {
+                user = new UserModel {
                     Email = loginInfo.Email,
                     UserName = loginInfo.DefaultUserName,
                     PersonName = loginInfo.ExternalIdentity.Name
                 };
-                IdentityResult result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user);
                 if (!result.Succeeded)
                 {
                     return View("Error", result.Errors);
@@ -240,7 +238,7 @@
                 }
             }
 
-            ClaimsIdentity ident = await _userManager.CreateIdentityAsync(
+            var ident = await _userManager.CreateIdentityAsync(
                                                         user,
                                                         DefaultAuthenticationTypes.ApplicationCookie);
 
@@ -259,7 +257,7 @@
 
         private bool IsBlocked(int userId)
         {
-            User currentUser = _userService.GetUser(userId);
+            var currentUser = _userService.GetUser(userId);
             return currentUser.IsBlocked;
         }
 

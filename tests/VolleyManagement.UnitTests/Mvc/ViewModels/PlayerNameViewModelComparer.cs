@@ -31,8 +31,8 @@
         /// <returns>A signed integer that indicates the relative values of players.</returns>
         public int Compare(object x, object y)
         {
-            PlayerNameViewModel firstPlayer = x as PlayerNameViewModel;
-            PlayerNameViewModel secondPlayer = y as PlayerNameViewModel;
+            var firstPlayer = x as PlayerNameViewModel;
+            var secondPlayer = y as PlayerNameViewModel;
 
             if (firstPlayer == null)
             {

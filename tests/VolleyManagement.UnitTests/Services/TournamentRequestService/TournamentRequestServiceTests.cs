@@ -243,7 +243,7 @@
             // Arrange
             var expected = new TournamentRequestBuilder().Build();
             MockGetRequestByIdQuery(expected);
-            EmailMessage emailMessage = new EmailMessageBuilder().Build();
+            var emailMessage = new EmailMessageBuilder().Build();
             MockMailService(emailMessage);
             MockGetUser();
             var sut = BuildSUT();
@@ -261,7 +261,7 @@
             // Arrange
             MockRequestServiceThrowsInvalidKeyValueException();
             Exception exception = null;
-            EmailMessage emailMessage = new EmailMessageBuilder().Build();
+            var emailMessage = new EmailMessageBuilder().Build();
             MockMailService(emailMessage);
             var expected = new TournamentRequestBuilder().Build();
             MockGetRequestByIdQuery(expected);
@@ -352,14 +352,14 @@
 
         private void MockUserService()
         {
-            User user = new UserBuilder().Build();
-            List<User> userList = new List<User> { user };
+            var user = new UserBuilder().Build();
+            var userList = new List<User> { user };
             _userServiceMock.Setup(tr => tr.GetAdminsList()).Returns(userList);
         }
 
         private void MockGetUser()
         {
-            User user = new UserBuilder().Build();
+            var user = new UserBuilder().Build();
             _userServiceMock.Setup(tr => tr.GetUser(It.IsAny<int>())).Returns(user);
         }
 

@@ -34,7 +34,7 @@
         {
             get
             {
-                string result = string.Empty;
+                var result = string.Empty;
                 if (HomeSetsScore != 0 || AwaySetsScore != 0)
                 {
                     result = HomeSetsScore + " : " + AwaySetsScore;
@@ -65,8 +65,7 @@
         /// <returns>View model of game result for pivot table.</returns>
         public static PivotGameResultViewModel Map(ShortGameResultDto game)
         {
-            return new PivotGameResultViewModel
-            {
+            return new PivotGameResultViewModel {
                 HomeTeamId = game.HomeTeamId,
                 AwayTeamId = game.AwayTeamId,
                 HomeSetsScore = game.HomeGameScore,
@@ -82,8 +81,7 @@
         /// <returns>List with special data for non playable game</returns>
         public static PivotGameResultViewModel GetNonPlayableCell()
         {
-            return new PivotGameResultViewModel
-            {
+            return new PivotGameResultViewModel {
                 HomeTeamId = 0,
                 AwayTeamId = 0,
                 HomeSetsScore = null,
@@ -117,11 +115,11 @@
         /// <returns>Name of the class with cascade style sheets settings</returns>
         private static string GetCssClass(byte? homeScore, byte? awayScore)
         {
-            string cssClass = CssClassConstants.NORESULT;
+            var cssClass = CssClassConstants.NORESULT;
 
             if (homeScore.HasValue && awayScore.HasValue)
             {
-                int setDifference = homeScore.Value - awayScore.Value;
+                var setDifference = homeScore.Value - awayScore.Value;
 
                 switch (setDifference)
                 {

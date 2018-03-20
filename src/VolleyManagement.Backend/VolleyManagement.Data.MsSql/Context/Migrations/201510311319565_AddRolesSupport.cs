@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql.Context.Migrations
+﻿namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System.Data.Entity.Migrations;
 
@@ -15,19 +15,19 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.Roles",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 256),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(nullable: false, maxLength: 256),
+                })
                 .PrimaryKey(t => t.Id);
 
             CreateTable(
                 "dbo.UserToRoleMap",
                 c => new
-                    {
-                        UserId = c.Int(nullable: false),
-                        RoleId = c.Int(nullable: false),
-                    })
+                {
+                    UserId = c.Int(nullable: false),
+                    RoleId = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.Users", t => t.UserId)
                 .ForeignKey("dbo.Roles", t => t.RoleId)

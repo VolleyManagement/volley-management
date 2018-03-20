@@ -81,7 +81,7 @@
                                 .WithTournamentId(TOURNAMENT_ID)
                                 .Build();
 
-            Game expectedGameResult = gameResult.ToDomain();
+            var expectedGameResult = gameResult.ToDomain();
 
             Game actualGameResult = null;
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))
@@ -106,7 +106,7 @@
             var game = new GameResultViewModelBuilder()
                                 .WithTournamentId(TOURNAMENT_ID)
                                 .Build();
-            Game expectedGameResult = game.ToDomain();
+            var expectedGameResult = game.ToDomain();
 
             Game actualGameResult = null;
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))

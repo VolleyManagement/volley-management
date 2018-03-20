@@ -728,8 +728,8 @@
 
         private void MockUserService()
         {
-            User user = new UserBuilder().Build();
-            List<User> userList = new List<User> { user };
+            var user = new UserBuilder().Build();
+            var userList = new List<User> { user };
             _userServiceMock.Setup(tr => tr.GetAdminsList()).Returns(userList);
         }
         #endregion

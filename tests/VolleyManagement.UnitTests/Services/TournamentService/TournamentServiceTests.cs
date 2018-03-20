@@ -1380,12 +1380,13 @@
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.Activate, Times.Once());
+            VerifyCheckAccess(AuthOperations.Tournaments.Activate, 
+                Times.Once());
         }
 
         /// <summary>
         /// Activate Tournament by id.
-        /// Tournament exists and it's activated.
+        /// Tournament exists and it's being activated.
         /// </summary>
         [TestMethod]
         public void Activate_TournamentExists_CommitInvoked()
@@ -1398,7 +1399,40 @@
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCommit(Times.Once(), "The tournament was not activated.");
+            VerifyCommit(Times.Once(), 
+                "The tournament was not activated.");
+        }
+
+        /// <summary>
+        /// Activate tournament by id.
+        /// Tournament does not exist.
+        /// 'Commit' is not invoked, 'ArgumentException' with proper message is thrown.
+        /// </summary>
+        [TestMethod]
+        public void Activate_TournamentDoesNotExist_CommitIsNotInvoked()
+        {
+            // Arrange
+            MockGetByIdQuery(null);
+            var sut = BuildSUT();
+            var expectedException = 
+                new ArgumentException(TournamentResources.TournamentWasNotFound);
+            Exception actualException = null;
+
+            // Act
+            try
+            {
+                sut.Activate(FIRST_TOURNAMENT_ID);
+            }
+            catch(Exception ex)
+            {
+                actualException = ex;
+            }
+
+            // Assert
+            VerifyCommit(Times.Never(), 
+                "Commit must not be invoked because the tournament does not exist.");
+            VerifyExceptionThrown(actualException, 
+                expectedException);
         }
 
         #endregion

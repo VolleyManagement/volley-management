@@ -1030,6 +1030,7 @@
             MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
 
             MockGetTournamentByGroupId(tournament);
+            MockGetTournamentGames(tournament.Id);
 
             var sut = BuildSUT();
 
@@ -1101,6 +1102,7 @@
 
             var testTeamsData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
             MockGetAllTournamentTeamsQuery(testTeamsData);
+            MockGetTournamentGames(tournament.Id);
 
             var sut = BuildSUT();
 

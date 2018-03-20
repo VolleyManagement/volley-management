@@ -374,10 +374,7 @@
             }
 
             var totalTeamCount = allTeams.Count + groupTeamCount;
-
-
             CreateSchedule(tournamentId, totalTeamCount);
-
 
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -741,26 +738,24 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
+            var scheduledGames = _gameService.GetTournamentGames(tournamentId)
+                   .Where(tr => tr.Round == FIRST_ROUND);
+
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff
-                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
+                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT
+                && scheduledGames.Count() != GetGamesCount(allTeamsCount))
             {
-                var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
-                if (_gameService.GetTournamentGames(tournamentId).Count != GetGamesCount(allTeamsCount))
-                {
-                    _gameService.RemoveAllGamesInTournament(tournamentId);
-                    _gameService.AddGames(gamesToAdd);
-                }
+                var gamesToAdd = GetAllGamesInPlayOffTournament(scheduledGames, tournamentId, allTeamsCount);
+                _gameService.RemoveAllGamesInTournament(tournamentId);
+                _gameService.AddGames(gamesToAdd);
             }
         }
 
-        private List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
+        private List<Game> GetAllGamesInPlayOffTournament(IEnumerable<GameResultDto> scheduledGames ,int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
             var gamesCount = GetGamesCount(teamsCount);
             var games = new List<Game>();
-
-            var scheduledGames = _gameService.GetTournamentGames(tournamentId)
-                   .Where(tr => tr.Round == FIRST_ROUND);
 
             byte gameNumber = 1;
 

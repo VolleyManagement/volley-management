@@ -1412,7 +1412,7 @@
         public void Activate_TournamentDoesNotExist_CommitIsNotInvoked()
         {
             // Arrange
-            MockGetByIdQuery(null);
+            MockGetByIdQuery(null as Tournament);
             var sut = BuildSUT();
             var expectedException = 
                 new ArgumentException(TournamentResources.TournamentWasNotFound);

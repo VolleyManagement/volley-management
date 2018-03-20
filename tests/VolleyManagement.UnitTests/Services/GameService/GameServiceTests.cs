@@ -1688,6 +1688,7 @@
                 .Build();
 
             var testGameForEdit = GetTestGameForEditFromSecondRoundInPlayOff(games);
+            DefineTeamsInGame(testGameForEdit);
 
             MockAllTournamentQueries(testTournament);
             MockGetTournamentResults(TOURNAMENT_ID, games);
@@ -2507,13 +2508,16 @@
         private static Game GetTestGameForEditFromSecondRoundInPlayOff(IEnumerable<Game> games)
         {
             var testTeam = games.FirstOrDefault(g => g.Round == 2);
-
-            testTeam.HomeTeamId = 1;
-            testTeam.AwayTeamId = 3;
             testTeam.GameDate = DateTime.Parse(TOURNAMENT_DATE_START);
 
-
             return testTeam;
+        }
+
+        private static void DefineTeamsInGame(Game game)
+        {
+            game.HomeTeamId = 1;
+            game.AwayTeamId = 3;
+
         }
 
         private static TournamentScheduleDto CreatePlayoffTournament()

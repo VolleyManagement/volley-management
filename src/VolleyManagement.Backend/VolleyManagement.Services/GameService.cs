@@ -238,8 +238,11 @@
 
             ValidateGame(game, tournamentScheduleInfo);
 
+            var gameInDtoToCheckVideo = Get(game.Id);
+
             // Add autogeneration
-            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff &&
+                game.UrlToGameVideo == gameInDtoToCheckVideo.UrlToGameVideo)
             {
                 ScheduleNextGames(game, tournamentScheduleInfo);
             }

@@ -851,7 +851,6 @@
             var tournament = new TournamentBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
             MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
-            MockGetTournamentGames(tournament.Id);
 
             var sut = BuildSUT();
 
@@ -932,7 +931,6 @@
 
             MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
-            MockGetTournamentGames(tournament.Id);
             var testTeamsData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
             MockGetAllTournamentTeamsQueryTwoCalls(new TeamInTournamentTestFixture().Build(), testTeamsData);
 
@@ -1030,7 +1028,6 @@
             MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
 
             MockGetTournamentByGroupId(tournament);
-            MockGetTournamentGames(tournament.Id);
 
             var sut = BuildSUT();
 
@@ -1102,7 +1099,6 @@
 
             var testTeamsData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
             MockGetAllTournamentTeamsQuery(testTeamsData);
-            MockGetTournamentGames(tournament.Id);
 
             var sut = BuildSUT();
 
@@ -1181,7 +1177,6 @@
             MockGetByIdQuery(tournament);
             var testTeamsData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
             MockGetAllTournamentTeamsQuery(testTeamsData);
-            MockGetTournamentGames(tournament.Id);
 
             var sut = BuildSUT();
 
@@ -1679,10 +1674,11 @@
             _getByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
-        private void MockGetTournamentGames(int tournamentId)
+        private void MockGetTournamentGames(int tournamentId, List<GameResultDto> testData)
         {
-            _gameServiceMock.Setup(tr => tr.GetTournamentGames(tournamentId)).Returns(new List<GameResultDto>());
+            _gameServiceMock.Setup(tr => tr.GetTournamentGames(tournamentId)).Returns(testData);
         }
+
         private void MockGetUniqueTournamentQuery(Tournament testData)
         {
             _uniqueTournamentQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueTournamentCriteria>())).Returns(testData);
@@ -1845,6 +1841,30 @@
             return tournaments;
         }
 
+        private List<GameResultDto> GetGames()
+        {
+            return new List<GameResultDto>
+            {
+                new GameResultDto {
+                    Id = 1,           
+                    HomeTeamId = null,
+                    AwayTeamId = null,
+                    GameNumber = 1,
+                    Round = 1,
+                    Result = new Result(),
+                    GameDate = null
+                },
+                new GameResultDto {
+                    Id = 2,
+                    HomeTeamId = null,
+                    AwayTeamId = null,
+                    GameNumber = 2,
+                    Round = 2,
+                    Result = new Result(),
+                    GameDate = null
+                }
+            };
+        }
         private List<TeamTournamentDto> CreateTeamsInTournament()
         {
             var existingTeams = new List<TeamTournamentDto>

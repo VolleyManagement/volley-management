@@ -21,9 +21,9 @@
     using GameResultConstants = Domain.Constants.GameResult;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
-                             /// <summary>
-                             /// Defines an implementation of <see cref="IGameService"/> contract.
-                             /// </summary>
+    /// <summary>
+    /// Defines an implementation of <see cref="IGameService"/> contract.
+    /// </summary>
     public class GameService : IGameService
 #pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
@@ -813,28 +813,30 @@
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
 
+            if (finishedGame.HomeTeamId != null)
+            {
             var winnerTeamId = 0;
 #pragma warning disable S3240 // The simplest possible condition syntax should be used
-            if (finishedGame.AwayTeamId == null)
+                if (finishedGame.AwayTeamId == null)
 #pragma warning restore S3240 // The simplest possible condition syntax should be used
-            {
-                winnerTeamId = finishedGame.HomeTeamId.Value;
-            }
-            else
-            {
-                winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
-                finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
-            }
+                {
+                    winnerTeamId = finishedGame.HomeTeamId.Value;
+                }
+                else
+                {
+                    winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
+                                   finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+                }
 
-            if (finishedGame.GameNumber % 2 != 0)
-            {
-                nextGame.HomeTeamId = winnerTeamId;
+                if (finishedGame.GameNumber % 2 != 0)
+                {
+                    nextGame.HomeTeamId = winnerTeamId;
+                }
+                else
+                {
+                    nextGame.AwayTeamId = winnerTeamId;
+                }
             }
-            else
-            {
-                nextGame.AwayTeamId = winnerTeamId;
-            }
-
             return nextGame;
         }
 

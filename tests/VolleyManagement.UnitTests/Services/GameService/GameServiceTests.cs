@@ -1649,6 +1649,61 @@
         }
 
         /// <summary>
+        /// Test for Edit method. Change time for game in second round with unknown teams. 
+        /// No exceprtion returns and game is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_ChangeTimeForPlayOffGameWithUnknownTeams_GameSaved()
+        {
+            //Arrange
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            var testGameForEdit = GetTestGameForEditFromSecondRoundInPlayOff(games);
+            SetDafaultTimeForGame(testGameForEdit);
+
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            //Act
+            var sut = BuildSUT();
+            sut.Edit(testGameForEdit);
+
+            //Assert
+            VerifyEditGame(testGameForEdit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit method. Change time for planned game in second round with defined teams. 
+        /// No exceprtion returns and game is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_ChangeTimeForPlayOffGameWithDefinedTeams_GameSaved()
+        {
+            //Arrange
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            var testGameForEdit = GetTestGameForEditFromSecondRoundInPlayOff(games);
+            SetDafaultTimeForGame(testGameForEdit);
+            SetTeamsInGame(testGameForEdit);
+
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            //Act
+            var sut = BuildSUT();
+            sut.Edit(testGameForEdit);
+
+            //Assert                    
+            VerifyEditGame(testGameForEdit, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Edit method. Game object contains valid data. Game is edited successfully.
         /// </summary>
         [TestMethod]
@@ -1837,10 +1892,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SAME_TEAM);
         }
 
-        /// <summary>
-        /// Test method checks that 2 same teams(not null) can't be in one game in PlayOff scheme.
-        /// Argument exception thrown. 
-        /// </summary>
         [TestMethod]
         public void Edit_SeveralDayOffGamesInPlayoff_GameEdited()
         {
@@ -2455,6 +2506,23 @@
                 .WithHomeTeamId(8)
                 .WithDayOff()
                 .Build();
+        }
+        private static Game GetTestGameForEditFromSecondRoundInPlayOff(IEnumerable<Game> games)
+        {
+            var testTeam = games.FirstOrDefault(g => g.Round == 2);
+
+            return testTeam;
+        }
+
+        private static void SetDafaultTimeForGame(Game game)
+        {
+            game.GameDate = DateTime.Parse(TOURNAMENT_DATE_START);
+        }
+
+        private static void SetTeamsInGame(Game game)
+        {
+            game.HomeTeamId = 1;
+            game.AwayTeamId = 3;
         }
 
         private static TournamentScheduleDto CreatePlayoffTournament()

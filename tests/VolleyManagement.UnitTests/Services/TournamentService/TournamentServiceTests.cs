@@ -1386,7 +1386,7 @@
 
         /// <summary>
         /// Activate Tournament by id.
-        /// Tournament exists and it's being activated.
+        /// Tournament exists and 'unit of work' commit is invoked.
         /// </summary>
         [TestMethod]
         public void Activate_TournamentExists_CommitInvoked()

@@ -306,7 +306,7 @@
             Archive(getTournamentToArchive);
             _tournamentRepository.UnitOfWork.Commit();
         }
-        
+
         /// <summary>
         /// Activate tournament by id.
         /// </summary>
@@ -323,10 +323,11 @@
                     TournamentResources.TournamentWasNotFound);
             }
 
-            tournamentToActivate.IsArchived = false;
 
             _tournamentRepository.Update(tournamentToActivate);
             _tournamentRepository.UnitOfWork.Commit();
+
+            tournamentToActivate.IsArchived = false;
         }
 
         /// <summary>
@@ -337,8 +338,7 @@
         /// </summary>
         public void ArchiveOld()
         {
-            var criteria = new OldTournamentsCriteria 
-            {
+            var criteria = new OldTournamentsCriteria {
                 CheckDate = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD)
             };
 
@@ -778,8 +778,7 @@
 
             for (var i = 1; i <= gamesCount; i++)
             {
-                var game = new Game 
-                {
+                var game = new Game {
                     TournamentId = tournamentId,
                     HomeTeamId = null,
                     AwayTeamId = null,

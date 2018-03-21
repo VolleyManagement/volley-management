@@ -1385,6 +1385,36 @@
         }
 
         /// <summary>
+        /// Activate tournament.
+        /// Tournament exists, but user have no right to perform such an action.
+        /// 'AuthorizationException' is thrown.
+        /// </summary>
+        [TestMethod]
+        public void Activate_NoAccessRight_ExceptionIsThrown()
+        {
+            // Arrange
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Activate);
+
+            var expectedException = new AuthorizationException();
+            Exception actualException = null;
+            var sut = BuildSUT();
+
+            // Act
+            try
+            {
+                sut.Activate(FIRST_TOURNAMENT_ID);
+            }
+            catch(Exception ex)
+            {
+                actualException = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(actualException,
+                expectedException);
+        }
+
+        /// <summary>
         /// Activate Tournament by id.
         /// Tournament exists, it's updated in database and 'unit of work' commit is invoked.
         /// </summary>

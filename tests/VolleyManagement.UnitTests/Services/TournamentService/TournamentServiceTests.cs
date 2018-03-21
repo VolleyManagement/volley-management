@@ -1393,7 +1393,8 @@
 
             // Assert
             Assert.IsFalse(testTournament.IsArchived);
-            VerifyEditTournament(testTournament, Times.Once());
+            VerifyEditTournament(testTournament, 
+                Times.Once());
         }
         
         [TestMethod]

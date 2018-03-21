@@ -1364,11 +1364,7 @@
         #endregion
 
         #region Activate
-
-        /// <summary>
-        /// Activate Tournament by id.
-        /// 'CheckAccess' is invoked.
-        /// </summary>
+        
         [TestMethod]
         public void Activate_AnyState_CheckAccessInvoked()
         {
@@ -1383,12 +1379,7 @@
             VerifyCheckAccess(AuthOperations.Tournaments.Activate, 
                 Times.Once());
         }
-
-        /// <summary>
-        /// Activate tournament by id.
-        /// Tournament exists, but user have no right to perform such an action.
-        /// 'AuthorizationException' is thrown.
-        /// </summary>
+        
         [TestMethod]
         public void Activate_NoAccessRight_ExceptionIsThrown()
         {
@@ -1413,10 +1404,7 @@
             VerifyExceptionThrown(actualException,
                 expectedException);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         [TestMethod]
         public void Activate_TournamentExists_ArchivedPropertyEqualsFalse()
         {
@@ -1433,11 +1421,7 @@
             // Assert
             Assert.IsFalse(tournamentData.IsArchived);
         }
-
-        /// <summary>
-        /// Activate Tournament by id.
-        /// Tournament exists, it's updated in database and 'unit of work' commit is invoked.
-        /// </summary>
+        
         [TestMethod]
         public void Activate_TournamentExists_ChangesCommited()
         {
@@ -1452,12 +1436,7 @@
             // Assert
             VerifyEditTournament(testTournament, Times.Once());
         }
-
-        /// <summary>
-        /// Activate tournament by id.
-        /// Tournament does not exist.
-        /// 'Commit' is not invoked, 'ArgumentException' with proper message is thrown.
-        /// </summary>
+        
         [TestMethod]
         public void Activate_TournamentDoesNotExist_CommitIsNotInvoked()
         {

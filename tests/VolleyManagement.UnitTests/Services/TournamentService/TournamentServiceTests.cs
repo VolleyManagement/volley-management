@@ -1385,7 +1385,7 @@
         }
 
         /// <summary>
-        /// Activate tournament.
+        /// Activate tournament by id.
         /// Tournament exists, but user have no right to perform such an action.
         /// 'AuthorizationException' is thrown.
         /// </summary>
@@ -1412,6 +1412,26 @@
             // Assert
             VerifyExceptionThrown(actualException,
                 expectedException);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void Activate_TournamentExists_ArchivedPropertyEqualsFalse()
+        {
+            // Arrange
+            var tournamentData = new TournamentBuilder()
+                .WithArchivedParameter(true)
+                .Build();
+            MockGetByIdQuery(tournamentData);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Activate(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            Assert.IsFalse(tournamentData.IsArchived);
         }
 
         /// <summary>

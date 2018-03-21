@@ -1423,7 +1423,7 @@
         }
         
         [TestMethod]
-        public void Activate_TournamentExists_ChangesCommited()
+        public void Activate_TournamentExists_ChangesSavedAndCommitted()
         {
             // Arrange
             var testTournament = new TournamentBuilder().Build();
@@ -1438,7 +1438,7 @@
         }
         
         [TestMethod]
-        public void Activate_TournamentDoesNotExist_CommitIsNotInvoked()
+        public void Activate_TournamentDoesNotExist_ExceptionIsThrownAndChangesAreNotCommitted()
         {
             // Arrange
             var testTournament = null as Tournament;

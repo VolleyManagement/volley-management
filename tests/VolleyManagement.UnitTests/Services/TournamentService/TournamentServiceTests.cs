@@ -1381,49 +1381,7 @@
         }
         
         [TestMethod]
-        public void Activate_NoAccessRight_ExceptionIsThrown()
-        {
-            // Arrange
-            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Activate);
-
-            var expectedException = new AuthorizationException();
-            Exception actualException = null;
-            var sut = BuildSUT();
-
-            // Act
-            try
-            {
-                sut.Activate(FIRST_TOURNAMENT_ID);
-            }
-            catch(Exception ex)
-            {
-                actualException = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(actualException,
-                expectedException);
-        }
-        
-        [TestMethod]
-        public void Activate_TournamentExists_ArchivedPropertyEqualsFalse()
-        {
-            // Arrange
-            var tournamentData = new TournamentBuilder()
-                .WithArchivedParameter(true)
-                .Build();
-            MockGetByIdQuery(tournamentData);
-            var sut = BuildSUT();
-
-            // Act
-            sut.Activate(FIRST_TOURNAMENT_ID);
-
-            // Assert
-            Assert.IsFalse(tournamentData.IsArchived);
-        }
-        
-        [TestMethod]
-        public void Activate_TournamentExists_ChangesSavedAndCommitted()
+        public void Activate_TournamentExists_IsArchivedSettedAndChangeSaved()
         {
             // Arrange
             var testTournament = new TournamentBuilder().Build();
@@ -1434,15 +1392,15 @@
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
+            Assert.IsFalse(testTournament.IsArchived);
             VerifyEditTournament(testTournament, Times.Once());
         }
         
         [TestMethod]
-        public void Activate_TournamentDoesNotExist_ExceptionIsThrownAndChangesAreNotCommitted()
+        public void Activate_TournamentDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            var testTournament = null as Tournament;
-            MockGetByIdQuery(testTournament);
+            MockGetByIdQuery(null as Tournament);
             var sut = BuildSUT();
             var expectedException = 
                 new ArgumentException(TournamentResources.TournamentWasNotFound);
@@ -1459,8 +1417,6 @@
             }
 
             // Assert
-            VerifyEditTournament(testTournament, 
-                Times.Never());
             VerifyExceptionThrown(actualException, 
                 expectedException);
         }

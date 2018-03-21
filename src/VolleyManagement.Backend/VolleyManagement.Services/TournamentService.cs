@@ -36,7 +36,6 @@
         private const int MIN_TEAMS_TO_PLAY_ONE_ROUND = 2;
         private const int GAMES_TO_PLAY_ONE_ROUND = 2;
         private const int DONT_CREATE_SCHEDULE_TEAMS_COUNT = 1;
-        private const int FIRST_ROUND = 1;
 
         private static readonly TournamentStateEnum[] _actualStates =
             {

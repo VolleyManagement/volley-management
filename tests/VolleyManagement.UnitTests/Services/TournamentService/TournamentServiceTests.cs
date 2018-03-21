@@ -1386,21 +1386,21 @@
 
         /// <summary>
         /// Activate Tournament by id.
-        /// Tournament exists and 'unit of work' commit is invoked.
+        /// Tournament exists, it's updated in database and 'unit of work' commit is invoked.
         /// </summary>
         [TestMethod]
-        public void Activate_TournamentExists_CommitInvoked()
+        public void Activate_TournamentExists_ChangesCommited()
         {
             // Arrange
-            MockGetByIdQuery(new TournamentBuilder().Build());
+            var testTournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 
             // Act
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCommit(Times.Once(), 
-                "The tournament was not activated.");
+            VerifyEditTournament(testTournament, Times.Once());
         }
 
         /// <summary>
@@ -1412,7 +1412,8 @@
         public void Activate_TournamentDoesNotExist_CommitIsNotInvoked()
         {
             // Arrange
-            MockGetByIdQuery(null as Tournament);
+            var testTournament = null as Tournament;
+            MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
             var expectedException = 
                 new ArgumentException(TournamentResources.TournamentWasNotFound);
@@ -1429,8 +1430,8 @@
             }
 
             // Assert
-            VerifyCommit(Times.Never(), 
-                "Commit must not be invoked because the tournament does not exist.");
+            VerifyEditTournament(testTournament, 
+                Times.Never());
             VerifyExceptionThrown(actualException, 
                 expectedException);
         }

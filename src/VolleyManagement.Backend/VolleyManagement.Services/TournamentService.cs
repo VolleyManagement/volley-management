@@ -760,6 +760,7 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
+
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff
                 && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
@@ -786,6 +787,7 @@
                     GameNumber = (byte)i,
                     GameDate = null
                 };
+
                 games.Add(game);
             }
 

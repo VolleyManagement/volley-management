@@ -1381,14 +1381,11 @@
         }
 
         [TestMethod]
-        public void Activate_TournamentExists_IsArchivedSettedAndChangeSaved()
+        public void Activate_TournamentExists_IsArchivedEqualsFalse()
         {
             // Arrange
             var testTournament = new TournamentBuilder()
                 .WithArchivedParameter(true)
-                .Build();
-            var savedTournament = new TournamentBuilder()
-                .WithArchivedParameter(false)
                 .Build();
             MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
@@ -1397,8 +1394,7 @@
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsTrue(TournamentsAreEqual(testTournament, savedTournament));
-            VerifyCommit(Times.Once(), "Commit should have happended once.");
+            Assert.IsFalse(testTournament.IsArchived);
         }
 
         [TestMethod]

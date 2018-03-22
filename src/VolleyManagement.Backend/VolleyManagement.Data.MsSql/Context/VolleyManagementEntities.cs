@@ -1,3 +1,5 @@
+﻿using System;
+
 namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
@@ -21,11 +23,13 @@ namespace VolleyManagement.Data.MsSql.Context
             Database.SetInitializer(new VolleyManagementDatabaseInitializer());
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VolleyManagementEntities" /> class.
-        /// </summary>
+        [Obsolete("Needed for EF to properly instantiate DB context. Not intented to be called directly")]
         public VolleyManagementEntities()
-            : base("VolleyManagementEntities")
+        {
+        }
+
+        public VolleyManagementEntities(string nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 

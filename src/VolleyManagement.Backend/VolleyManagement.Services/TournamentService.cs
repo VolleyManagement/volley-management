@@ -737,6 +737,7 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
+
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff
                 && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
@@ -754,14 +755,16 @@
 
             for (var i = 1; i <= gamesCount; i++)
             {
-                var game = new Game();
-                game.TournamentId = tournamentId;
-                game.HomeTeamId = null;
-                game.AwayTeamId = null;
-                game.Result = new Result();
-                game.Round = GetRoundNumber(roundsCount, gamesCount, i);
-                game.GameNumber = (byte)i;
-                game.GameDate = null;
+                var game = new Game {
+                    TournamentId = tournamentId,
+                    HomeTeamId = null,
+                    AwayTeamId = null,
+                    Result = new Result(),
+                    Round = GetRoundNumber(roundsCount, gamesCount, i),
+                    GameNumber = (byte)i,
+                    GameDate = null
+                };
+
                 games.Add(game);
             }
 

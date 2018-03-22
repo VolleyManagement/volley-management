@@ -2301,7 +2301,7 @@
         public void RemoveAllGamesInTournament_GamesExists_GamesRemoved()
         {
             // Arrange
-            var gamesInTournament = new GameServiceTestFixture().TestGameResults().Build();
+            var gamesInTournament = new GameServiceTestFixture().TestGamesWithoutResult().Build();
 
             MockGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
             MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());

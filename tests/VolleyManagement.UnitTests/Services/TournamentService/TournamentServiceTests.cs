@@ -1398,7 +1398,7 @@
 
             // Assert
             Assert.IsTrue(TournamentsAreEqual(testTournament, savedTournament));
-            VerifyCommit(Times.Once(), "Commit should have happended.");
+            VerifyCommit(Times.Once(), "Commit should have happended once.");
         }
 
         [TestMethod]

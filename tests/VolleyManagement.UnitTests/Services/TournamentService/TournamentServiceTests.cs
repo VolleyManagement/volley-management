@@ -1364,7 +1364,7 @@
         #endregion
 
         #region Activate
-        
+
         [TestMethod]
         public void Activate_AnyState_CheckAccessInvoked()
         {
@@ -1376,15 +1376,20 @@
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.Activate, 
+            VerifyCheckAccess(AuthOperations.Tournaments.Activate,
                 Times.Once());
         }
-        
+
         [TestMethod]
         public void Activate_TournamentExists_IsArchivedSettedAndChangeSaved()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
+            var testTournament = new TournamentBuilder()
+                .WithArchivedParameter(true)
+                .Build();
+            var savedTournament = new TournamentBuilder()
+                .WithArchivedParameter(false)
+                .Build();
             MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 
@@ -1392,18 +1397,17 @@
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsFalse(testTournament.IsArchived);
-            VerifyEditTournament(testTournament, 
-                Times.Once());
+            Assert.IsTrue(TournamentsAreEqual(testTournament, savedTournament));
+            VerifyCommit(Times.Once(), "Commit should have happended.");
         }
-        
+
         [TestMethod]
         public void Activate_TournamentDoesNotExist_ExceptionThrown()
         {
             // Arrange
             MockGetByIdQuery(null as Tournament);
             var sut = BuildSUT();
-            var expectedException = 
+            var expectedException =
                 new ArgumentException(TournamentResources.TournamentWasNotFound);
             Exception actualException = null;
 
@@ -1412,13 +1416,13 @@
             {
                 sut.Activate(FIRST_TOURNAMENT_ID);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 actualException = ex;
             }
 
             // Assert
-            VerifyExceptionThrown(actualException, 
+            VerifyExceptionThrown(actualException,
                 expectedException);
         }
 

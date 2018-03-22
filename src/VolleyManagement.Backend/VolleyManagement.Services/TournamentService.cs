@@ -323,11 +323,10 @@
                     TournamentResources.TournamentWasNotFound);
             }
 
+            tournamentToActivate.IsArchived = false;
 
             _tournamentRepository.Update(tournamentToActivate);
             _tournamentRepository.UnitOfWork.Commit();
-
-            tournamentToActivate.IsArchived = false;
         }
 
         /// <summary>

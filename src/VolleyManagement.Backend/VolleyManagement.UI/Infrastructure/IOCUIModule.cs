@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Infrastructure
+﻿using VolleyManagement.Crosscutting.Contracts.Providers;
+
+namespace VolleyManagement.UI.Infrastructure
 {
     using Contracts;
     using Contracts.Authorization;
@@ -18,7 +20,8 @@
                 .Register<ICurrentUserService, CurrentUserService>(IocLifetimeEnum.Scoped)
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
-                .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
+                .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton)
+                .Register<IConfigurationProvider, MvcUiConfigurationProvider>(IocLifetimeEnum.Singleton);
 
             if (Is<IisDeployment>.Disabled)
             {

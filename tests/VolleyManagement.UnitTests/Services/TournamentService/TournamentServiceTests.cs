@@ -1387,6 +1387,9 @@
             var testTournament = new TournamentBuilder()
                 .WithArchivedParameter(true)
                 .Build();
+            var savedTournament = new TournamentBuilder()
+                 .WithArchivedParameter(false)
+                 .Build();
             MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 
@@ -1394,7 +1397,7 @@
             sut.Activate(FIRST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsFalse(testTournament.IsArchived);
+            VerifyEditTournament(savedTournament, Times.Once());
         }
 
         [TestMethod]

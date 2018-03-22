@@ -1381,7 +1381,7 @@
         }
 
         [TestMethod]
-        public void Activate_TournamentExists_IsArchivedEqualsFalse()
+        public void Activate_TournamentExists_IsArchivedEqualsFalseAndChangesSaved()
         {
             // Arrange
             var testTournament = new TournamentBuilder()
@@ -1948,7 +1948,8 @@
 
         private void VerifyEditTournament(Tournament tournament, Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => 
+                TournamentsAreEqual(t, tournament))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

@@ -32,17 +32,6 @@
         }
 
         /// <summary>
-        /// Gets unit of work.
-        /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
-
-        /// <summary>
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
@@ -58,7 +47,6 @@
 
             _dalPlayers.Add(newPlayer);
             _unitOfWork.Commit();
-            newEntity.Id = newPlayer.Id;
         }
 
         /// <summary>
@@ -82,6 +70,7 @@
             }
 
             DomainToDal.Map(playerToUpdate, updatedEntity);
+            _unitOfWork.Commit();
         }
 
         /// <summary>
@@ -93,6 +82,7 @@
             var dalToRemove = new PlayerEntity { Id = id };
             _dalPlayers.Attach(dalToRemove);
             _dalPlayers.Remove(dalToRemove);
+            _unitOfWork.Commit();
         }
     }
 }

@@ -107,7 +107,6 @@
 
             captain.TeamId = teamToCreate.Id;
             _playerRepository.Update(captain);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -146,7 +145,6 @@
 
             captain.TeamId = teamToEdit.Id;
             _playerRepository.Update(captain);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -287,7 +285,6 @@
 
             player.TeamId = teamId;
             _playerRepository.Update(player);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         private void SetPlayerTeamIdToNull(int playerId)
@@ -301,7 +298,6 @@
 
             player.TeamId = null;
             _playerRepository.Update(player);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         private Team GetPlayerLedTeam(int playerId)

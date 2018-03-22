@@ -75,7 +75,6 @@
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
-            _playerRepositoryMock.Setup(pr => pr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         #endregion
@@ -1160,19 +1159,16 @@
         private void VerifyCreateTeam(Team team, Times times)
         {
             _teamRepositoryMock.Verify(tr => tr.Add(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyEditTeam(Team team, Times times)
         {
             _teamRepositoryMock.Verify(tr => tr.Update(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyEditPlayer(int playerId, int teamId, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => p.Id == playerId && p.TeamId == teamId)), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyDeleteTeam(int teamId, Times times)

@@ -77,14 +77,13 @@
             }
 
             _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void Create(ICollection<Player> playersToCreate)
+        public void CreateBulk(ICollection<Player> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
@@ -102,8 +101,6 @@
                 {
                     _playerRepository.Add(player);
                 }
-
-                _playerRepository.UnitOfWork.Commit();
             }
         }
 
@@ -148,8 +145,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
             }
-
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -171,7 +166,6 @@
             try
             {
                 _playerRepository.Remove(id);
-                _playerRepository.UnitOfWork.Commit();
             }
             catch (InvalidKeyValueException ex)
             {

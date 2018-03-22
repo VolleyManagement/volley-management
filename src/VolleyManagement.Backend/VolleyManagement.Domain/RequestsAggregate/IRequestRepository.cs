@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines specific contract for RequestRepository
     /// </summary>
-    public interface IRequestRepository : IGenericRepository<Request>
+    public interface IRequestRepository : IGenericRepository<Request>, IRepository
     {
     }
 }

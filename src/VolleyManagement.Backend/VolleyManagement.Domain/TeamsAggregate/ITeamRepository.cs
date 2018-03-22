@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines specific contract for PlayerRepository
     /// </summary>
-    public interface ITeamRepository : IGenericRepository<Team>
+    public interface ITeamRepository : IGenericRepository<Team>, IRepository
     {
     }
 }

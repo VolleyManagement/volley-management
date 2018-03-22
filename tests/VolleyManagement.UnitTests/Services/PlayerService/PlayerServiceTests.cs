@@ -56,7 +56,6 @@
             _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
-            _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
@@ -199,11 +198,10 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newPlayers);
+            sut.CreateBulk(newPlayers);
 
             // Assert
             VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -223,7 +221,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newPlayers);
+            sut.CreateBulk(newPlayers);
 
             // Assert
             Assert.IsFalse(gotException);
@@ -246,11 +244,10 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newPlayers);
+            sut.CreateBulk(newPlayers);
 
             // Assert
             VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -277,7 +274,7 @@
             // Act
             try
             {
-                sut.Create(newPlayers);
+                sut.CreateBulk(newPlayers);
             }
             catch (ArgumentException)
             {
@@ -551,7 +548,6 @@
         private void VerifyCreatePlayer(Player player, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Add(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyCreatePlayers(Times times)
@@ -562,13 +558,11 @@
         private void VerifyEditPlayer(Player player, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyDeletePlayer(int playerId, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(id => id == playerId)), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyDeletePlayer(int playerId, Times repositoryTimes, Times unitOfWorkTimes)

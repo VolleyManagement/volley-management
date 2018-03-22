@@ -737,9 +737,9 @@
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
             var tournament = Get(tournamentId);
-           
+
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff
-                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)             
+                && allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
             {
                 var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
                 _gameService.RemoveAllGamesInTournament(tournamentId);
@@ -747,7 +747,7 @@
             }
         }
 
-        private List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
+        private static List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
             var gamesCount = GetGamesCount(teamsCount);

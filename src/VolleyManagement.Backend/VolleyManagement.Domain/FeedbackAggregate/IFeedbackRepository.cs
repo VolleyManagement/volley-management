@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines a contract for Feedback.
     /// </summary>
-    public interface IFeedbackRepository : IGenericRepository<Feedback>
+    public interface IFeedbackRepository : IGenericRepository<Feedback>, IRepository
     {
     }
 }

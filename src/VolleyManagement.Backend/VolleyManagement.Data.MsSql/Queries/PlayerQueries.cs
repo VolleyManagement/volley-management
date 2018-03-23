@@ -101,8 +101,7 @@
                 LastName = p.LastName,
                 BirthYear = p.BirthYear,
                 Height = p.Height,
-                Weight = p.Weight,
-                TeamId = p.TeamId
+                Weight = p.Weight
             };
         }
 

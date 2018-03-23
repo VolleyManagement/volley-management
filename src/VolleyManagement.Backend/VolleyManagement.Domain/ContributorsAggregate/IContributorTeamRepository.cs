@@ -6,7 +6,7 @@
     /// <summary>
     /// Defines specific contract for ContributorRepository
     /// </summary>
-    public interface IContributorTeamRepository : IGenericRepository<ContributorTeam>
+    public interface IContributorTeamRepository : IGenericRepository<ContributorTeam>, IRepository
     {
         /// <summary>
         /// Gets all contributors team.

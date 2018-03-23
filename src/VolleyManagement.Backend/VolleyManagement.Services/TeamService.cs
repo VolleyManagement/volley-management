@@ -94,20 +94,16 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
             }
 
-            // Check if captain in teamToCreate is captain of another team
-            if (captain.TeamId != null)
-            {
-                var existTeam = GetPlayerLedTeam(captain.Id);
-                VerifyExistingTeamOrThrow(existTeam);
-            }
+            // Check if captain in teamToCreate is captain of another team           
+            var existTeam = GetPlayerLedTeam(captain.Id);
+            VerifyExistingTeamOrThrow(existTeam);         
 
             ValidateTeam(teamToCreate);
 
             _teamRepository.Add(teamToCreate);
 
-            captain.TeamId = teamToCreate.Id;
+            teamToCreate.CaptainId = captain.Id;
             _playerRepository.Update(captain);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -125,11 +121,8 @@
             }
 
             // Check if captain in teamToCreate is captain of another team
-            if ((captain.TeamId != null) && (captain.TeamId != teamToEdit.Id))
-            {
-                var existTeam = GetPlayerLedTeam(captain.Id);
-                VerifyExistingTeamOrThrow(existTeam);
-            }
+            var existTeam = GetPlayerLedTeam(captain.Id);
+            VerifyExistingTeamOrThrow(existTeam);
 
             ValidateTeam(teamToEdit);
 
@@ -144,9 +137,8 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
 
-            captain.TeamId = teamToEdit.Id;
+            teamToEdit.CaptainId = captain.Id;
             _playerRepository.Update(captain);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -174,16 +166,10 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId, ex);
             }
-
-            IEnumerable<Player> roster = GetTeamRoster(teamId);
-
-            foreach (var player in roster)
-            {
-                player.TeamId = null;
-                _playerRepository.Update(player);
-            }
-
+           
             _teamRepository.UnitOfWork.Commit();
+
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -213,28 +199,30 @@
         /// <param name="teamId">Id of team which should be set to player</param>
         public void UpdateRosterTeamId(ICollection<Player> roster, int teamId)
         {
-            if (GetTeamRoster(teamId).Count > 1)
-            {
-                foreach (var player in GetTeamRoster(teamId))
-                {
-                    if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
-                    {
-                        SetPlayerTeamIdToNull(player.Id);
-                    }
-                }
-            }
+            //if (GetTeamRoster(teamId).Count > 1)
+            //{
+            //    foreach (var player in GetTeamRoster(teamId))
+            //    {
+            //        if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
+            //        {
+            //            SetPlayerTeamIdToNull(player.Id);
+            //        }
+            //    }
+            //}
 
-            foreach (var player in roster)
-            {
-                UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
-            }
+            //foreach (var player in roster)
+            //{
+            //    UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
+            //}
+
+            throw new NotSupportedException();
         }
 
         private static bool ValidateTwoTeamsName(Team teamToValidate, ICollection<Team> getExistingTeams)
         {
             var existingTeams = from ex in getExistingTeams
                                 where ex.Id != teamToValidate.Id
-                                where String.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
+                                where string.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
                                 select ex;
             return existingTeams.Count() != 0;
         }
@@ -249,60 +237,55 @@
             }
         }
 
-        private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
-        {
-            var player = GetPlayerByFullName(firstName, lastName);
+        //private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
+        //{
+        //    var player = GetPlayerByFullName(firstName, lastName);
 
-            if (player == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
-            }
+        //    if (player == null)
+        //    {
+        //        throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
+        //    }
 
-            // Check if player plays in another team
-            if (player.TeamId != null && player.TeamId != teamId)
-            {
-                throw new ArgumentException(
-                    TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
-            }
+        //    // Check if player plays in another team
+        //    //if (player.TeamId != null && player.TeamId != teamId)
+        //    //{
+        //    //    throw new ArgumentException(
+        //    //        TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
+        //    //}
 
-            // Check if player is captain of another team
-            if (player.TeamId != null)
-            {
-                var existingTeam = GetPlayerLedTeam(player.Id);
+        //    // Check if player is captain of another team
+        //    var existingTeam = GetPlayerLedTeam(player.Id);
 
-                if (existingTeam != null && teamId != existingTeam.Id)
-                {
-                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
-                    throw ex;
-                }
-            }
+        //    if (existingTeam != null && teamId != existingTeam.Id)
+        //    {
+        //        var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
+        //        ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
+        //        throw ex;
+        //    }
 
-            var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
+        //    var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
 
-            if (team == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
-            }
+        //    if (team == null)
+        //    {
+        //        throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
+        //    }
 
-            player.TeamId = teamId;
-            _playerRepository.Update(player);
-            _playerRepository.UnitOfWork.Commit();
-        }
+        //     player.TeamId = teamId;
+        //    _playerRepository.Update(player);
+        //}
 
-        private void SetPlayerTeamIdToNull(int playerId)
-        {
-            var player = GetPlayerById(playerId);
+        //private void SetPlayerTeamIdToNull(int playerId)
+        //{
+        //    var player = GetPlayerById(playerId);
 
-            if (player == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
-            }
+        //    if (player == null)
+        //    {
+        //        throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
+        //    }
 
-            player.TeamId = null;
-            _playerRepository.Update(player);
-            _playerRepository.UnitOfWork.Commit();
-        }
+        //    player.TeamId = null;
+        //    _playerRepository.Update(player);
+        //}
 
         private Team GetPlayerLedTeam(int playerId)
         {
@@ -314,10 +297,10 @@
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
-        private Player GetPlayerByFullName(string firstName, string lastName)
-        {
-            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
-        }
+        //private Player GetPlayerByFullName(string firstName, string lastName)
+        //{
+        //    return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
+        //}
 
         private static void ValidateTeamName(string teamName)
         {

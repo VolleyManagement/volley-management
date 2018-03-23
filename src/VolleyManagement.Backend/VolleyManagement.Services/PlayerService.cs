@@ -77,14 +77,13 @@
             }
 
             _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void Create(ICollection<Player> playersToCreate)
+        public void CreateBulk(ICollection<Player> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
@@ -102,8 +101,6 @@
                 {
                     _playerRepository.Add(player);
                 }
-
-                _playerRepository.UnitOfWork.Commit();
             }
         }
 
@@ -148,8 +145,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
             }
-
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -171,7 +166,6 @@
             try
             {
                 _playerRepository.Remove(id);
-                _playerRepository.UnitOfWork.Commit();
             }
             catch (InvalidKeyValueException ex)
             {
@@ -186,12 +180,13 @@
         /// <returns>Player's team</returns>
         public Team GetPlayerTeam(Player player)
         {
-            if (player.TeamId == null)
-            {
-                return null;
-            }
+            //if (player.TeamId == null)
+            //{
+            //    return null;
+            //}
 
-            return GetTeamById(player.TeamId.GetValueOrDefault());
+            //return GetTeamById(player.TeamId.GetValueOrDefault());
+            throw new NotSupportedException();
         }
 
         private Team GetPlayerLedTeam(int playerId)
@@ -199,10 +194,10 @@
             return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
         }
 
-        private Team GetTeamById(int id)
-        {
-            return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
+        //private Team GetTeamById(int id)
+        //{
+        //    return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        //}
 
         private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
         {
@@ -216,20 +211,21 @@
         /// <returns> Return true if Player has TeamId </returns>
         private bool ValidateExistingPlayers(ICollection<Player> playersToCreate)
         {
-            var existingPlayers = Get().ToList();
+            //var existingPlayers = Get().ToList();
 
-            var teamId = playersToCreate.First().Id != 0
-                ? Get(playersToCreate.First(t => t.Id != 0).Id).TeamId
-                : null;
+            //var teamId = playersToCreate.First().Id != 0
+            //    ? Get(playersToCreate.First(t => t.Id != 0).Id).TeamId
+            //    : null;
 
-            var isExistingPlayers = existingPlayers
-                    .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => String.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
-                                  && String.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
-                                  && allPlayer.TeamId != null
-                                  && allPlayer.TeamId != teamId));
+            //var isExistingPlayers = existingPlayers
+            //        .Select(allPlayer => playersToCreate
+            //        .FirstOrDefault(t => String.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
+            //                      && String.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
+            //                      && allPlayer.TeamId != null
+            //                      && allPlayer.TeamId != teamId));
 
-            return isExistingPlayers.Any(t => t != null);
+            //return isExistingPlayers.Any(t => t != null);
+            throw new NotSupportedException();
         }
     }
 }

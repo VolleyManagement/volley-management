@@ -129,6 +129,7 @@
             }
 
             return message;
+
         }
 
         /// <summary>
@@ -249,59 +250,59 @@
             }
         }
 
-        /// <summary>
-        /// Returns list of free players which are satisfy specified search string, team and exclude list
-        /// </summary>
-        /// <param name="searchString">Name of player</param>
-        /// <param name="excludeList">list of players ids should be excluded from result</param>
-        /// <param name="includeList">list of players ids should be included to result</param>
-        /// <param name="includeTeam">Id of team which players should be included to the search result</param>
-        /// <returns>List of free players</returns>
-        public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
-        {
-#pragma warning disable S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
-            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
-#pragma warning restore S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
-            var query = _playerService.Get()
-                .Where(p => (p.FirstName + p.LastName).Contains(searchString)
-                            || (p.LastName + p.FirstName).Contains(searchString));
+//        /// <summary>
+//        /// Returns list of free players which are satisfy specified search string, team and exclude list
+//        /// </summary>
+//        /// <param name="searchString">Name of player</param>
+//        /// <param name="excludeList">list of players ids should be excluded from result</param>
+//        /// <param name="includeList">list of players ids should be included to result</param>
+//        /// <param name="includeTeam">Id of team which players should be included to the search result</param>
+//        /// <returns>List of free players</returns>
+//        public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
+//        {
+//#pragma warning disable S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
+//            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
+//#pragma warning restore S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
+//            var query = _playerService.Get()
+//                .Where(p => (p.FirstName + p.LastName).Contains(searchString)
+//                            || (p.LastName + p.FirstName).Contains(searchString));
 
-            if (includeTeam.HasValue)
-            {
-                if (string.IsNullOrEmpty(includeList))
-                {
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value);
-                }
-                else
-                {
-                    var selectedIds = ParseIntList(includeList);
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
-                }
-            }
-            else if (string.IsNullOrEmpty(includeList))
-            {
-                query = query.Where(p => p.TeamId == null);
-            }
-            else
-            {
-                var selectedIds = ParseIntList(includeList);
-                query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
-            }
+//            if (includeTeam.HasValue)
+//            {
+//                if (string.IsNullOrEmpty(includeList))
+//                {
+//                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value);
+//                }
+//                else
+//                {
+//                    var selectedIds = ParseIntList(includeList);
+//                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
+//                }
+//            }
+//            else if (string.IsNullOrEmpty(includeList))
+//            {
+//                query = query.Where(p => p.TeamId == null);
+//            }
+//            else
+//            {
+//                var selectedIds = ParseIntList(includeList);
+//                query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
+//            }
 
-            if (!string.IsNullOrEmpty(excludeList))
-            {
-                var selectedIds = ParseIntList(excludeList);
-                query = query.Where(p => !selectedIds.Contains(p.Id));
-            }
+//            if (!string.IsNullOrEmpty(excludeList))
+//            {
+//                var selectedIds = ParseIntList(excludeList);
+//                query = query.Where(p => !selectedIds.Contains(p.Id));
+//            }
 
-            var result = query.OrderBy(p => p.LastName)
-#pragma warning disable S2971 // "IEnumerable" LINQs should be simplified Enity franework error must be ToList()
-                .ToList()
-#pragma warning restore S2971 // "IEnumerable" LINQs should be simplified
-                .Select(p => PlayerNameViewModel.Map(p));
+//            var result = query.OrderBy(p => p.LastName)
+//#pragma warning disable S2971 // "IEnumerable" LINQs should be simplified Enity franework error must be ToList()
+//                .ToList()
+//#pragma warning restore S2971 // "IEnumerable" LINQs should be simplified
+//                .Select(p => PlayerNameViewModel.Map(p));
 
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
+//            return Json(result, JsonRequestBehavior.AllowGet);
+//        }
 
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {

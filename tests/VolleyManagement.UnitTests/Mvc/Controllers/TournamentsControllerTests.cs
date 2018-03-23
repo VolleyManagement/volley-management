@@ -754,6 +754,10 @@
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
+        #endregion
+
+        #region Archive
+
         /// <summary>
         /// Test for Archive method. Service get Id of Tournament to archive
         /// </summary>

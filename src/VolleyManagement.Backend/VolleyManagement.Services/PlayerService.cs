@@ -194,10 +194,10 @@
             return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
         }
 
-        private Team GetTeamById(int id)
-        {
-            return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
+        //private Team GetTeamById(int id)
+        //{
+        //    return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        //}
 
         private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
         {

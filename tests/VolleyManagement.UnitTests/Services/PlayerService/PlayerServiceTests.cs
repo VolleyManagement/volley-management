@@ -447,7 +447,6 @@
         public void Edit_PlayerPassed_PlayerUpdated()
         {
             // Arrange
-            int? teamId = null;
             var expectedPlayer = new PlayerBuilder().Build();
 
             // Act

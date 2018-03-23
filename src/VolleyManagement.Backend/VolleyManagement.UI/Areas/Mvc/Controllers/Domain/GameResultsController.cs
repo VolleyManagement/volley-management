@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +16,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     public class GameResultsController : Controller
     {
         private readonly IGameService _gameService;
-        private readonly ITeamService _teamService;
         private readonly IAuthorizationService _authService;
 
         /// <summary>
@@ -28,7 +27,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         public GameResultsController(IGameService gameResultService, ITeamService teamService, IAuthorizationService authService)
         {
             _gameService = gameResultService;
-            _teamService = teamService;
             _authService = authService;
         }
 
@@ -40,8 +38,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>View with game results of the specified tournament.</returns>
         public ActionResult TournamentResults(int tournamentId, string tournamentName)
         {
-            var tournamentResults = new TournamentResultsViewModel
-            {
+            var tournamentResults = new TournamentResultsViewModel {
                 Id = tournamentId,
                 Name = tournamentName,
                 GameResults = _gameService.GetTournamentResults(tournamentId).Select(gr => GameResultViewModel.Map(gr)).ToList(),
@@ -62,8 +59,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>View with empty fields of game result.</returns>
         public ActionResult Create(int tournamentId)
         {
-            var gameResultViewModel = new GameResultViewModel
-            {
+            var gameResultViewModel = new GameResultViewModel {
                 TournamentId = tournamentId,
             };
 
@@ -161,8 +157,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 return Json(new GameDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
 
-            return Json(new GameDeleteResultViewModel
-            {
+            return Json(new GameDeleteResultViewModel {
                 Message = Resources.UI.GameResultsController.GameWasDeletedSuccessfully,
                 HasDeleted = true
             });

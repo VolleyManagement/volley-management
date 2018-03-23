@@ -9,19 +9,19 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
+@Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>@Resources.UI.TeamViews.TeamLegend</legend>
+<fieldset>
+    <legend>@Resources.UI.TeamViews.TeamLegend</legend>
 
-        @Html.Partial("_CreateEdit", Model)
+    @Html.Partial("_CreateEdit", Model)
 
-        <p>
-            <button id="createTeamButton">@Resources.UI.TeamViews.Create</button>
-        </p>
-    </fieldset>
+    <p>
+        <button id="createTeamButton">@Resources.UI.TeamViews.Create</button>
+    </p>
+</fieldset>
 
-    <div>
-        @Html.ActionLink(Resources.UI.TeamViews.BackToList, "Index")
-    </div>
+<div>
+    @Html.ActionLink(Resources.UI.TeamViews.BackToList, "Index")
+</div>
 }

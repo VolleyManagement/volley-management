@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.TournamentsAggregate;
-    using UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// Class for generating test data
@@ -24,65 +23,65 @@
         public TournamentServiceTestFixture TestTournaments()
         {
             _tournaments.Add(new Tournament()
-                {
-                    Id = 1,
-                    Name = "Tournament 1",
-                    Description = "Tournament 1 description",
-                    Season = 2014,
-                    Scheme = TournamentSchemeEnum.One,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
-                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
-                    GamesStart = new DateTime(2015, 06, 30),
-                    GamesEnd = new DateTime(2015, 11, 30),
-                    TransferStart = new DateTime(2015, 08, 20),
-                    TransferEnd = new DateTime(2015, 09, 10)
-                });
+            {
+                Id = 1,
+                Name = "Tournament 1",
+                Description = "Tournament 1 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.One,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
+                ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                GamesStart = new DateTime(2015, 06, 30),
+                GamesEnd = new DateTime(2015, 11, 30),
+                TransferStart = new DateTime(2015, 08, 20),
+                TransferEnd = new DateTime(2015, 09, 10)
+            });
             _tournaments.Add(new Tournament()
-                {
-                    Id = 2,
-                    Name = "Tournament 2",
-                    Description = "Tournament 2 description",
-                    Season = 2014,
-                    Scheme = TournamentSchemeEnum.Two,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
-                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
-                    GamesStart = new DateTime(2015, 06, 30),
-                    GamesEnd = new DateTime(2015, 11, 30),
-                    TransferStart = new DateTime(2015, 08, 20),
-                    TransferEnd = new DateTime(2015, 09, 10)
-                });
+            {
+                Id = 2,
+                Name = "Tournament 2",
+                Description = "Tournament 2 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.Two,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
+                ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                GamesStart = new DateTime(2015, 06, 30),
+                GamesEnd = new DateTime(2015, 11, 30),
+                TransferStart = new DateTime(2015, 08, 20),
+                TransferEnd = new DateTime(2015, 09, 10)
+            });
             _tournaments.Add(new Tournament()
-                {
-                    Id = 3,
-                    Name = "Tournament 3",
-                    Description = "Tournament 3 description",
-                    Season = 2014,
-                    Scheme = TournamentSchemeEnum.TwoAndHalf,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
-                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
-                    GamesStart = new DateTime(2015, 06, 30),
-                    GamesEnd = new DateTime(2015, 11, 30),
-                    TransferStart = new DateTime(2015, 08, 20),
-                    TransferEnd = new DateTime(2015, 09, 10)
-                });
+            {
+                Id = 3,
+                Name = "Tournament 3",
+                Description = "Tournament 3 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.TwoAndHalf,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')",
+                ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                GamesStart = new DateTime(2015, 06, 30),
+                GamesEnd = new DateTime(2015, 11, 30),
+                TransferStart = new DateTime(2015, 08, 20),
+                TransferEnd = new DateTime(2015, 09, 10)
+            });
             _tournaments.Add(new Tournament()
-                {
-                    Id = 4,
-                    Name = "Tournament 4",
-                    Description = "Tournament 4 description",
-                    Season = 2014,
-                    Scheme = TournamentSchemeEnum.PlayOff,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('4')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
-                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
-                    GamesStart = new DateTime(2015, 06, 30),
-                    GamesEnd = new DateTime(2015, 11, 30),
-                    TransferStart = new DateTime(2015, 08, 20),
-                    TransferEnd = new DateTime(2015, 09, 10)
-                });
+            {
+                Id = 4,
+                Name = "Tournament 4",
+                Description = "Tournament 4 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.PlayOff,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('4')",
+                ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                GamesStart = new DateTime(2015, 06, 30),
+                GamesEnd = new DateTime(2015, 11, 30),
+                TransferStart = new DateTime(2015, 08, 20),
+                TransferEnd = new DateTime(2015, 09, 10)
+            });
             return this;
         }
 

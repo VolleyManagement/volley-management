@@ -7,7 +7,7 @@
     /// </summary>
     public class DivisionEntity
     {
-        private List<GroupEntity> _groups;
+        private ICollection<GroupEntity> _groups;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DivisionEntity"/> class.
@@ -40,7 +40,7 @@
         /// <summary>
         /// Gets or sets division's groups
         /// </summary>
-        public virtual List<GroupEntity> Groups
+        public virtual ICollection<GroupEntity> Groups
         {
             get => _groups;
             set => _groups = value;

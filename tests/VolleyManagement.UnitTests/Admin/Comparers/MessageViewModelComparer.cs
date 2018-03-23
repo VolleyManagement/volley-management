@@ -18,8 +18,8 @@
 
         public int Compare(object x, object y)
         {
-            MessageViewModel firstMessage = x as MessageViewModel;
-            MessageViewModel secondMessage = y as MessageViewModel;
+            var firstMessage = x as MessageViewModel;
+            var secondMessage = y as MessageViewModel;
 
             if (firstMessage == null)
             {

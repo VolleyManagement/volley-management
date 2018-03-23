@@ -11,13 +11,13 @@
 <div>
     @using (@Html.BeginForm("Index"))
     {
-        @Html.Label(Resources.UI.PlayerViews.SearchTitle)
-        @Html.TextBox("textToSearch", Model.Model.TextToSearch)
+    @Html.Label(Resources.UI.PlayerViews.SearchTitle)
+    @Html.TextBox("textToSearch", Model.Model.TextToSearch)
     }
 </div>
 @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Create))
 {
-    @Html.ActionLink(Resources.UI.PlayerViews.CreateNewPlayer, "Create")
+@Html.ActionLink(Resources.UI.PlayerViews.CreateNewPlayer, "Create")
 }
 
 <table class="table">
@@ -30,23 +30,23 @@
 
     @foreach (var item in Model.Model.List)
     {
-        <tr>
-            <td>
-                @Html.ActionLink(item.FirstName+" "+item.LastName, "Details", new { id = item.Id, returnUrl = Model.Referer },
+    <tr>
+        <td>
+            @Html.ActionLink(item.FirstName+" "+item.LastName, "Details", new { id = item.Id, returnUrl = Model.Referer },
                 new { @class = "playerName", @id = item.Id + "playerName" })
-            </td>
-            <td>            
+        </td>
+        <td>
             @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
             {
-                @Html.ActionLink(Resources.UI.PlayerViews.Edit, "Edit", new { id = item.Id }) @:|
+            @Html.ActionLink(Resources.UI.PlayerViews.Edit, "Edit", new { id = item.Id })  @:|
             }
             @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Delete))
             {
-                @Html.ActionLink(Resources.UI.PlayerViews.Delete, "Delete", new { id = item.Id },
+            @Html.ActionLink(Resources.UI.PlayerViews.Delete, "Delete", new { id = item.Id },
                         new { @class = "delete", @id = item.Id })
             }
-            </td>        
-        </tr>
+        </td>
+    </tr>
     }
 
 </table>
@@ -59,41 +59,41 @@
 
 @if (Model.Model.PageNumber != firstPage && Model.Model.List.Count != 0)
 {
-    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.Model.TextToSearch });
+@Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.Model.TextToSearch });
 }
 
 @if (pageBefore > firstPage && Model.Model.List.Count != 0)
 {
     if (pageBefore > secondPage)
     {
-    <b>...</b>
+<b>...</b>
     }
-    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.Model.TextToSearch });
+@Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.Model.TextToSearch });
 }
 
 @if (Model.Model.List.Count != 0)
 {
-    @Model.Model.PageNumber
+@Model.Model.PageNumber
 }
 
 @if (pageAfter < Model.Model.NumberOfPages && Model.Model.List.Count != 0)
 {
-    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.Model.TextToSearch });
+@Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.Model.TextToSearch });
                                                                                                                   if (pageAfter < Model.Model.NumberOfPages - 1)
                                                                                                                   {
-    <b>...</b>
+<b>...</b>
                                                                                                                   }
 }
 
 @if (Model.Model.PageNumber != Model.Model.NumberOfPages && Model.Model.List.Count != 0)
 {
-    @Html.ActionLink(Model.Model.NumberOfPages.ToString(), "Index", new { page = (Model.Model.NumberOfPages), textToSearch = Model.Model.TextToSearch })
+@Html.ActionLink(Model.Model.NumberOfPages.ToString(), "Index", new { page = (Model.Model.NumberOfPages), textToSearch = Model.Model.TextToSearch })
 }
 
 
 @if (Model.Model.List.Count == 0)
 {
-    <p>@Resources.UI.PlayerViews.NotFoundPlayerMessage</p>
+<p>@Resources.UI.PlayerViews.NotFoundPlayerMessage</p>
 }
 
 @Html.Hidden("DeleteConfirmationMessage", Resources.UI.PlayerViews.DeleteConfirmationMessage)

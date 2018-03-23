@@ -30,8 +30,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            Team firstTeam = x as Team;
-            Team secondTeam = y as Team;
+            var firstTeam = x as Team;
+            var secondTeam = y as Team;
 
             if (firstTeam == null)
             {

@@ -2,11 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Domain.TeamsAggregate;
-    using PlayerService;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using Contracts;
 
     /// <summary>
     /// Class for generating test data

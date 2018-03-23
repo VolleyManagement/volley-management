@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
-    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.WebApi.ViewModels.GameReports;
 
@@ -26,16 +24,12 @@
                 Assert.AreEqual(expected.LastUpdateTime, actual.LastUpdateTime, "LastUpdateTime for division should match");
                 Assert.AreEqual(expected.DivisionName, actual.DivisionName, "DivisionName for division should match");
 
-                for (var i = 0; i < expected.TeamsStandings.Count; i++)
-                {
-                    PivotStandingsEntryViewModelComparer.AssertAreEqual(expected.TeamsStandings[i], actual.TeamsStandings[i], $"[Team#{i}] ");
-                }
+                TestHelper.AreEqual(expected.TeamsStandings, actual.TeamsStandings, new PivotStandingsEntryViewModelComparer());
 
                 Assert.AreEqual(expected.GamesStandings.Count, actual.GamesStandings.Count, "Number of Games Standings divisions should match");
-                for (var i = 0; i < expected.GamesStandings.Count; i++)
-                {
-                    PivotStandingsGameViewModelComparer.AssertAreEqual(expected.GamesStandings[i], actual.GamesStandings[i], $"[Game#{i}] ");
-                }
+
+                TestHelper.AreEqual(expected.GamesStandings, actual.GamesStandings, new PivotStandingsGameViewModelComparer());
+ 
             }
 
             return 0;

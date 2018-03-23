@@ -1,11 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Domain.GameReportsAggregate;
 
     /// <summary>
@@ -30,11 +26,12 @@
         {
             get
             {
-                return SetsRatio != float.PositiveInfinity ?
-                    string.Format(
-                    CultureInfo.CurrentUICulture,
-                    "{0:0.###}",
-                    SetsRatio) : "MAX";
+                return !Single.IsPositiveInfinity(SetsRatio.Value)
+                    ? string.Format(
+                        CultureInfo.CurrentUICulture,
+                        "{0:0.###}",
+                        SetsRatio)
+                    : "MAX";
             }
         }
 
@@ -45,8 +42,7 @@
         /// <returns>View model of game result.</returns>
         internal static PivotTeamStandingsViewModel Map(TeamStandingsDto team)
         {
-            return new PivotTeamStandingsViewModel
-            {
+            return new PivotTeamStandingsViewModel {
                 TeamId = team.TeamId,
                 TeamName = team.TeamName,
                 Points = team.Points,

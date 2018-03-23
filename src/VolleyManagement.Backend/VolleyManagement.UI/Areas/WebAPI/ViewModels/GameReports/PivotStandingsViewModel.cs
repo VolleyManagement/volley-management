@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using System;
     using System.Collections.Generic;
@@ -25,8 +25,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
             GamesStandings = pivotStandings.GameResults
                 .GroupBy(gr =>
                     (TeamAId: Math.Min(gr.HomeTeamId, gr.AwayTeamId), TeamBId: Math.Max(gr.HomeTeamId, gr.AwayTeamId)))
-                .Select(grouped => new PivotStandingsGameViewModel
-                {
+                .Select(grouped => new PivotStandingsGameViewModel {
                     HomeTeamId = grouped.Key.TeamAId,
                     AwayTeamId = grouped.Key.TeamBId,
                     Results = grouped.Select(r =>
@@ -72,11 +71,11 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <summary>
         /// Gets or sets the ordered collection of teams.
         /// </summary>
-        public List<PivotStandingsTeamViewModel> TeamsStandings { get; set; }
+        public ICollection<PivotStandingsTeamViewModel> TeamsStandings { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of games in tournament standings for pivot table.
         /// </summary>
-        public List<PivotStandingsGameViewModel> GamesStandings { get; set; }
+        public ICollection<PivotStandingsGameViewModel> GamesStandings { get; set; }
     }
 }

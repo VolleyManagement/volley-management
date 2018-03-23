@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql.Context.Migrations
+﻿namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System.Data.Entity.Migrations;
 
@@ -15,25 +15,25 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.GameResults",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        TournamentId = c.Int(nullable: false),
-                        HomeTeamId = c.Int(nullable: false),
-                        AwayTeamId = c.Int(nullable: false),
-                        HomeSetsScore = c.Byte(nullable: false),
-                        AwaySetsScore = c.Byte(nullable: false),
-                        IsTechnicalDefeat = c.Boolean(nullable: false),
-                        HomeSet1Score = c.Byte(nullable: false),
-                        AwaySet1Score = c.Byte(nullable: false),
-                        HomeSet2Score = c.Byte(nullable: false),
-                        AwaySet2Score = c.Byte(nullable: false),
-                        HomeSet3Score = c.Byte(nullable: false),
-                        AwaySet3Score = c.Byte(nullable: false),
-                        HomeSet4Score = c.Byte(nullable: false),
-                        AwaySet4Score = c.Byte(nullable: false),
-                        HomeSet5Score = c.Byte(nullable: false),
-                        AwaySet5Score = c.Byte(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    TournamentId = c.Int(nullable: false),
+                    HomeTeamId = c.Int(nullable: false),
+                    AwayTeamId = c.Int(nullable: false),
+                    HomeSetsScore = c.Byte(nullable: false),
+                    AwaySetsScore = c.Byte(nullable: false),
+                    IsTechnicalDefeat = c.Boolean(nullable: false),
+                    HomeSet1Score = c.Byte(nullable: false),
+                    AwaySet1Score = c.Byte(nullable: false),
+                    HomeSet2Score = c.Byte(nullable: false),
+                    AwaySet2Score = c.Byte(nullable: false),
+                    HomeSet3Score = c.Byte(nullable: false),
+                    AwaySet3Score = c.Byte(nullable: false),
+                    HomeSet4Score = c.Byte(nullable: false),
+                    AwaySet4Score = c.Byte(nullable: false),
+                    HomeSet5Score = c.Byte(nullable: false),
+                    AwaySet5Score = c.Byte(nullable: false),
+                })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Teams", t => t.AwayTeamId)
                 .ForeignKey("dbo.Teams", t => t.HomeTeamId)

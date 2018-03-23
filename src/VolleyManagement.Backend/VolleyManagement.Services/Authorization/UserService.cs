@@ -21,12 +21,13 @@
         private readonly IAuthorizationService _authService;
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
         private readonly IUserRepository _userRepository;
-        private readonly IQuery<List<User>, GetAllCriteria> _getAllUsersQuery;
+        private readonly IQuery<ICollection<User>, GetAllCriteria> _getAllUsersQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
         private readonly ICacheProvider _cacheProvider;
-        private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
+        private readonly IQuery<ICollection<User>, UniqueUserCriteria> _getAdminsListQuery;
         private readonly ICurrentUserService _currentUserService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
@@ -41,12 +42,13 @@
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
-            IQuery<List<User>, GetAllCriteria> getAllUsersQuery,
+            IQuery<ICollection<User>, GetAllCriteria> getAllUsersQuery,
             IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
             ICacheProvider cacheProvider,
-            IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery,
+            IQuery<ICollection<User>, UniqueUserCriteria> getAdminsListQuery,
             IUserRepository userRepository,
             ICurrentUserService currentUserService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;
@@ -92,7 +94,7 @@
         /// Get all users collection.
         /// </summary>
         /// <returns>Use collection.</returns>
-        public List<User> GetAllUsers()
+        public ICollection<User> GetAllUsers()
         {
             _authService.CheckAccess(AuthOperations.AllUsers.ViewList);
             return _getAllUsersQuery.Execute(new GetAllCriteria());
@@ -102,7 +104,7 @@
         /// Get all users collection.
         /// </summary>
         /// <returns>Use collection.</returns>
-        public List<User> GetAllActiveUsers()
+        public ICollection<User> GetAllActiveUsers()
         {
             _authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
             var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
@@ -114,7 +116,7 @@
         /// Gets list of users which role is Admin.
         /// </summary>
         /// <returns>List of User entities.</returns>
-        public List<User> GetAdminsList()
+        public ICollection<User> GetAdminsList()
         {
             return _getAdminsListQuery.Execute(
                 new UniqueUserCriteria { RoleId = 1 });
@@ -132,7 +134,7 @@
                 throw new InvalidOperationException(ServiceResources.ExceptionMessages.UserBlockHimself);
             }
 
-            User user = GetUser(userId);
+            var user = GetUser(userId);
             if (user == null)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.UserNotFound);

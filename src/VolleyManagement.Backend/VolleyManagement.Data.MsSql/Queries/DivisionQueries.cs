@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Data.MsSql.Queries
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Contracts;
@@ -56,8 +55,7 @@
         {
             return
                 d =>
-                new Division
-                {
+                new Division {
                     Id = d.Id,
                     Name = d.Name,
                     TournamentId = d.TournamentId,
@@ -73,8 +71,7 @@
         {
             return
                 g =>
-                new Group
-                {
+                new Group {
                     Id = g.Id,
                     Name = g.Name,
                     DivisionId = g.DivisionId,

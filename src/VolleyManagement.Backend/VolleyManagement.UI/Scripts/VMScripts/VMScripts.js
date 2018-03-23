@@ -1,10 +1,10 @@
-﻿var VM = (function() {
+﻿var VM = (function () {
 
     'use strict';
 
     var privates = {};
-    
-    privates.getNamespace = function(namespace, createIfNotExist, basicNamespace) {
+
+    privates.getNamespace = function (namespace, createIfNotExist, basicNamespace) {
 
         var currentNs,
             nsNames,
@@ -33,12 +33,12 @@
     };
 
     return {
-        
-        getNamespace: function(namespace, createIfNotExist) {
+
+        getNamespace: function (namespace, createIfNotExist) {
             return privates.getNamespace(namespace, createIfNotExist);
         },
 
-        addNamespace: function(namespace) {
+        addNamespace: function (namespace) {
             return privates.getNamespace(namespace, true);
         }
     };

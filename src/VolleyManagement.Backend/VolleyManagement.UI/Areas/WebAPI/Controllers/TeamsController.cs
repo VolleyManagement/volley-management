@@ -59,8 +59,7 @@
         public IEnumerable<TeamViewModel> GetTeams()
         {
             return _teamService.Get()
-                                .ToList()
-                                .Select(t => TeamViewModel.Map(t));
+                               .Select(t => TeamViewModel.Map(t));
         }
 
         /// <summary>

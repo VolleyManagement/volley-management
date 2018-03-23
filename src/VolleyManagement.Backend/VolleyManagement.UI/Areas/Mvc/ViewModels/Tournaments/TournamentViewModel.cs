@@ -38,7 +38,7 @@
         /// Gets or sets the list of possible tournament schemes.
         /// </summary>
         /// <value>The list of tournament schemes.</value>
-        public List<string> TournamentSchemeList { get; set; }
+        public IList<string> TournamentSchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -190,7 +190,7 @@
         /// Gets or sets list of divisions
         /// </summary>
         [Display(Name = "Divisions", ResourceType = typeof(ViewModelResources))]
-        public List<DivisionViewModel> Divisions { get; set; }
+        public IList<DivisionViewModel> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> object
@@ -207,8 +207,7 @@
         /// <returns> View model object </returns>
         public static TournamentViewModel Map(Tournament tournament)
         {
-            var tournamentViewModel = new TournamentViewModel()
-            {
+            var tournamentViewModel = new TournamentViewModel {
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
@@ -221,7 +220,7 @@
                 ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd,
-                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferEnd == null ? false : true
+                IsTransferEnabled = tournament.TransferStart != null && tournament.TransferEnd != null
             };
 
             tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();
@@ -235,8 +234,7 @@
         /// <returns> Domain object </returns>
         public Tournament ToDomain()
         {
-            var tournament = new Tournament
-            {
+            var tournament = new Tournament {
                 Id = Id,
                 Name = Name,
                 Description = Description,
@@ -265,8 +263,8 @@
             SeasonsList = new Dictionary<short, string>();
             const short YEARS_RANGE = 16;
             const short YEARS_BEFORE_TODAY = 5;
-            short year = (short)(DateTime.Now.Year - YEARS_BEFORE_TODAY);
-            for (int i = 0; i < YEARS_RANGE; i++, year++)
+            var year = (short)(DateTime.Now.Year - YEARS_BEFORE_TODAY);
+            for (var i = 0; i < YEARS_RANGE; i++, year++)
             {
                 var str = string.Format("{0}/{1}", year, year + 1);
 

@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Crosscutting.Specifications
 {
     using System;
-
     using Contracts.Specifications;
 
     /// <summary>

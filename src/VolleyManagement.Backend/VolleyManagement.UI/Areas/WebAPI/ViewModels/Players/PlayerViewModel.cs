@@ -100,8 +100,7 @@
         /// <returns> View model object </returns>
         public static PlayerViewModel Map(Player player)
         {
-            var playerViewModel = new PlayerViewModel
-            {
+            var playerViewModel = new PlayerViewModel {
                 Id = player.Id,
                 FirstName = player.FirstName,
                 LastName = player.LastName,
@@ -120,8 +119,7 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player
-            {
+            return new Player {
                 Id = Id,
                 FirstName = FirstName,
                 LastName = LastName,

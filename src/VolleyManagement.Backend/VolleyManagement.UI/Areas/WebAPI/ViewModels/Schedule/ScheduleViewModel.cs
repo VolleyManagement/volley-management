@@ -10,6 +10,6 @@ namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
         /// <summary>
         /// Gets or sets collection of <see cref="WeekViewModel"/>containing schedule grouped by weeks
         /// </summary>
-        public List<WeekViewModel> Schedule { get; set; }
+        public IList<WeekViewModel> Schedule { get; set; }
     }
 }

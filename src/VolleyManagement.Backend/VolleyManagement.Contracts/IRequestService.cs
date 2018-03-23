@@ -12,7 +12,7 @@
         /// Gets list of all requests.
         /// </summary>
         /// <returns>Return list of all requests.</returns>
-        List<Request> Get();
+        ICollection<Request> Get();
 
         /// <summary>
         /// Find request by id.

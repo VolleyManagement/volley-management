@@ -7,17 +7,17 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Team;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.TeamService;
+    using TeamService;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -74,14 +74,13 @@
             var sut = BuildSUT();
             var expected = new PlayerServiceTestFixture()
                                             .TestPlayers()
-                                            .Build()
-                                            .ToList();
+                                            .Build();
 
             // Act
             var actual = sut.Get().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerComparer());
         }
 
         /// <summary>
@@ -164,7 +163,7 @@
         [TestMethod]
         public void Create_InvalidNullPlayer_ArgumentNullExceptionIsThrown()
         {
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             Player newPlayer = null;
@@ -215,7 +214,7 @@
         public void Create_NoNewPlayers_PlayersNotCreated()
         {
             // Arrange
-            bool gotException = false;
+            var gotException = false;
             var newPlayers = CreateListOfExistingPlayers();
             MockGetByIdQuery(newPlayers.First());
             var existingPlayers = CreateListOfExistingPlayersWithoutTeam().AsQueryable();
@@ -260,7 +259,7 @@
         [TestMethod]
         public void Create_OneOfThePlayersPlaysInAnotherTeam_ArgumentExceptionThown()
         {
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             var newPlayers = new List<Player>()
@@ -299,7 +298,7 @@
         public void Create_NoCreateRights_ExceptionThrown()
         {
             // Arrange
-            Player testPlayer = new PlayerBuilder().Build();
+            var testPlayer = new PlayerBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Players.Create);
             var sut = BuildSUT();
 
@@ -320,7 +319,7 @@
         public void Edit_NoEditRights_ExceptionThrown()
         {
             // Arrange
-            Player testPlayer = new PlayerBuilder().Build();
+            var testPlayer = new PlayerBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Players.Edit);
             var sut = BuildSUT();
 
@@ -376,7 +375,7 @@
         public void Delete_InvalidPlayerId_MissingEntityExceptionThrown()
         {
             const int PLAYER_ID = 1;
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             _playerRepositoryMock.Setup(p => p.Remove(It.IsAny<int>()))
@@ -405,7 +404,7 @@
         public void Delete_CaptainOfExistTeam_ValidationExceptionThrown()
         {
             const int PLAYER_ID = 1;
-            bool gotException = false;
+            var gotException = false;
 
             // Arrange
             var existTeam = new TeamBuilder().WithCaptain(PLAYER_ID).Build();

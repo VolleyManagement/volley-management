@@ -32,8 +32,8 @@
         /// the relative values of feedbacks.</returns>
         public int Compare(object x, object y)
         {
-            Feedback firstFeedback = x as Feedback;
-            Feedback secondFeedback = y as Feedback;
+            var firstFeedback = x as Feedback;
+            var secondFeedback = y as Feedback;
 
             if (firstFeedback == null)
             {

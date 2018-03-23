@@ -1,12 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using UI.Areas.WebApi.ViewModels.GameReports;
 
     /// <summary>
@@ -34,8 +30,8 @@
         /// <returns>A signed integer that indicates the relative values of entries.</returns>
         public int Compare(object x, object y)
         {
-            StandingsEntryViewModel firstEntry = x as StandingsEntryViewModel;
-            StandingsEntryViewModel secondEntry = y as StandingsEntryViewModel;
+            var firstEntry = x as StandingsEntryViewModel;
+            var secondEntry = y as StandingsEntryViewModel;
 
             if (firstEntry == null)
             {

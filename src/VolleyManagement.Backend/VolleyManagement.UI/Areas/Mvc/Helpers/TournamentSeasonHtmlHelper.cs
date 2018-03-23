@@ -15,7 +15,7 @@
         /// <returns>html string with a displayed season</returns>
         public static MvcHtmlString DisplaySeason(this HtmlHelper html, short seasonDate)
         {
-            TagBuilder tag = new TagBuilder("label");
+            var tag = new TagBuilder("label");
             tag.SetInnerText(string.Format("{0}/{1}", seasonDate, ++seasonDate));
             return new MvcHtmlString(tag.ToString());
         }

@@ -2,26 +2,27 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using Contracts;
     using Data.Queries.Common;
     using Data.Queries.GameResult;
     using Domain.GamesAggregate;
     using Entities;
+    using System.Data.Entity;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Provides implementation of game result queries.
     /// </summary>
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
-                                     IQuery<List<GameResultDto>, TournamentGameResultsCriteria>,
-                                     IQuery<List<Game>, TournamentRoundsGameResultsCriteria>,
-                                     IQuery<List<Game>, GamesByRoundCriteria>,
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
+                                     IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>,
+                                     IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria>,
+                                     IQuery<ICollection<Game>, GamesByRoundCriteria>,
                                      IQuery<Game, GameByNumberCriteria>
     {
         #region Fields
 
-        private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<GameResultEntity> _dalGameResults;
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<DivisionEntity> _dalDivisions;
@@ -37,11 +38,11 @@
         /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/>.</param>
         public GameResultQueries(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            _dalGameResults = _unitOfWork.Context.GameResults;
-            _dalTournaments = _unitOfWork.Context.Tournaments;
-            _dalDivisions = _unitOfWork.Context.Divisions;
-            _dalGroups = _unitOfWork.Context.Groups;
+            var vmUoW = (VolleyUnitOfWork)unitOfWork;
+            _dalGameResults = vmUoW.Context.GameResults;
+            _dalTournaments = vmUoW.Context.Tournaments;
+            _dalDivisions = vmUoW.Context.Divisions;
+            _dalGroups = vmUoW.Context.Groups;
         }
 
         #endregion
@@ -55,9 +56,11 @@
         /// <returns>Domain model of game result.</returns>
         public GameResultDto Execute(FindByIdCriteria criteria)
         {
-            return _dalGameResults
+            var gamesWithId = _dalGameResults
                 .Where(gr => gr.Id == criteria.Id)
-                .ToList()
+                .ToList();
+
+            return gamesWithId
                 .Select(gr => GetGameResultDtoMap()(gr))
                 .SingleOrDefault();
         }
@@ -67,7 +70,7 @@
         /// </summary>
         /// <param name="criteria">Tournament's game results criteria.</param>
         /// <returns>List of domain models of game result.</returns>
-        public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
+        public ICollection<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
             var tournamentId = criteria.TournamentId;
 
@@ -109,7 +112,7 @@
 
             var query = allGamesWithTeams.Union(gamesWithoutTeams);
 
-            List<GameResultDto> list = query.ToList()
+            var list = query.ToList()
                         .ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));
 
             return list;
@@ -120,7 +123,7 @@
         /// </summary>
         /// <param name="criteria">Tournament's and round`s game results criteria.</param>
         /// <returns>List of Game of game result.</returns>
-        public List<Game> Execute(TournamentRoundsGameResultsCriteria criteria)
+        public ICollection<Game> Execute(TournamentRoundsGameResultsCriteria criteria)
         {
             // Method ToList() used because it gives opportunity to load
             // specified game results into memory and then convert them.
@@ -139,7 +142,7 @@
         /// </summary>
         /// <param name="criteria">Tournament and round number criteria</param>
         /// <returns>Collection of games which satisfy the criteria</returns>
-        public List<Game> Execute(GamesByRoundCriteria criteria)
+        public ICollection<Game> Execute(GamesByRoundCriteria criteria)
         {
             var games = _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId
@@ -156,11 +159,12 @@
         /// <returns>Domain model of game result.</returns>
         public Game Execute(GameByNumberCriteria criteria)
         {
-            return _dalGameResults
-                .Where(gr => gr.TournamentId == criteria.TournamentId
-                && gr.GameNumber == criteria.GameNumber)
-                .ToList()
-                .Select(gr => GetGameMapping()(gr))
+            var gameResult = _dalGameResults
+                  .Where(gr => gr.TournamentId == criteria.TournamentId
+                               && gr.GameNumber == criteria.GameNumber)
+                  .ToList();
+
+            return gameResult.Select(gr => GetGameMapping()(gr))
                 .SingleOrDefault();
         }
 
@@ -170,8 +174,7 @@
 
         private static Converter<GameResultEntity, Game> GetGameMapping()
         {
-            return gr => new Game
-            {
+            return gr => new Game {
                 Id = gr.Id,
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
@@ -186,8 +189,7 @@
 
         private static Converter<GameResultEntity, GameResultDto> GetGameResultDtoMap()
         {
-            return gr => new GameResultDto
-            {
+            return gr => new GameResultDto {
                 Id = gr.Id,
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
@@ -204,8 +206,7 @@
 
         private static Result MapResult(GameResultEntity gr)
         {
-            return new Result
-            {
+            return new Result {
                 SetScores = new List<Score>
                 {
                     new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
@@ -222,24 +223,19 @@
         private static Penalty MapPenalty(GameResultEntity gr)
         {
             Penalty result;
-            if (gr.PenaltyTeam != 0)
-            {
-                result = new Penalty
-                {
+
+            result = gr.PenaltyTeam != 0 ?
+                new Penalty {
                     IsHomeTeam = gr.PenaltyTeam == 1,
                     Amount = gr.PenaltyAmount,
                     Description = gr.PenaltyDescription
-                };
-            }
-            else
-            {
-                result = null;
-            }
+                }
+                : null;
 
             return result;
         }
 
-        private GameResultDto Map(GameResultEntity gr, string divisionName, int divisionId, int groupId)
+        private static GameResultDto Map(GameResultEntity gr, string divisionName, int divisionId, int groupId)
         {
             var result = GetGameResultDtoMap()(gr);
             result.DivisionName = divisionName;

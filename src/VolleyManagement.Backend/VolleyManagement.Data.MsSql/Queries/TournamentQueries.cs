@@ -4,25 +4,27 @@
     using Data.Queries.Common;
     using Data.Queries.Tournament;
     using Domain.TournamentsAggregate;
-    using Entities;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Data.Queries.Division;
+    using Data.Queries.Group;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Queries.Division;
-    using VolleyManagement.Data.Queries.Group;
+    using System;
+    using Entities;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Provides Object Query implementation for Tournaments
     /// </summary>
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
-                                     IQuery<List<Tournament>, GetAllCriteria>,
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
+                                     IQuery<ICollection<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
-                                     IQuery<List<Division>, TournamentDivisionsCriteria>,
-                                     IQuery<List<Group>, DivisionGroupsCriteria>,
+                                     IQuery<ICollection<Division>, TournamentDivisionsCriteria>,
+                                     IQuery<ICollection<Group>, DivisionGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
                                      IQuery<Tournament, TournamentByGroupCriteria>,
-                                     IQuery<List<Tournament>, OldTournamentsCriteria>
+                                     IQuery<ICollection<Tournament>, OldTournamentsCriteria>
     {
         #region Fields
 
@@ -59,8 +61,9 @@
                 query = query.Where(t => t.Id != id);
             }
 
-            // ToDo: Use Automapper to substitute Select clause
-            return query.Select(GetTournamentMapping()).FirstOrDefault();
+            return query
+                .Select(GetTournamentMapping())
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -76,7 +79,9 @@
                              where g.Id == criteria.GroupId
                              select t;
 
-            return tournament.Select(GetTournamentMapping()).FirstOrDefault();
+            return tournament
+                .Select(GetTournamentMapping())
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -84,9 +89,11 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public List<Tournament> Execute(GetAllCriteria criteria)
+        public ICollection<Tournament> Execute(GetAllCriteria criteria)
         {
-            return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
+            return _unitOfWork.Context.Tournaments
+                .Select(GetTournamentMapping())
+                .ToList();
         }
 
         /// <summary>
@@ -94,10 +101,12 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public List<Tournament> Execute(OldTournamentsCriteria criteria)
+        public ICollection<Tournament> Execute(OldTournamentsCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments
+#pragma warning disable S1125 // Boolean literals should not be redundant
                                       .Where(t => t.IsArchived == false)
+#pragma warning restore S1125 // Boolean literals should not be redundant
                                       .Where(t => t.GamesEnd <= criteria.CheckDate)
                                       .Select(GetTournamentMapping())
                                       .ToList();
@@ -108,11 +117,12 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Division"/>. </returns>
-        public List<Division> Execute(TournamentDivisionsCriteria criteria)
+        public ICollection<Division> Execute(TournamentDivisionsCriteria criteria)
         {
             return _unitOfWork.Context.Divisions
                                       .Where(d => d.TournamentId == criteria.TournamentId)
-                                      .Select(GetDivisionMapping()).ToList();
+                                      .Select(GetDivisionMapping())
+                                      .ToList();
         }
 
         /// <summary>
@@ -120,11 +130,12 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Division"/>. </returns>
-        public List<Group> Execute(DivisionGroupsCriteria criteria)
+        public ICollection<Group> Execute(DivisionGroupsCriteria criteria)
         {
             return _unitOfWork.Context.Groups
                                       .Where(d => d.DivisionId == criteria.DivisionId)
-                                      .Select(GetGroupMapping()).ToList();
+                                      .Select(GetGroupMapping())
+                                      .ToList();
         }
 
         /// <summary>
@@ -167,15 +178,13 @@
 
             var result = query.ToList();
 
-            return result.Select(p => new TournamentScheduleDto
-            {
+            return result.Select(p => new TournamentScheduleDto {
                 Id = p.TournamentId,
                 Name = p.TournamentName,
                 StartDate = p.StartDate,
                 EndDate = p.EndDate,
                 Scheme = (TournamentSchemeEnum)p.Scheme,
-                Divisions = result.Select(d => new DivisionScheduleDto
-                {
+                Divisions = result.Select(d => new DivisionScheduleDto {
                     DivisionId = d.DivisionId,
                     DivisionName = d.DivisionName,
                     TeamCount = d.GroupTeamCount
@@ -191,8 +200,7 @@
         {
             return
                 t =>
-                new Tournament
-                {
+                new Tournament {
                     Id = t.Id,
                     Name = t.Name,
                     Description = t.Description,
@@ -219,8 +227,7 @@
         {
             return
                 d =>
-                new Division
-                {
+                new Division {
                     Id = d.Id,
                     Name = d.Name,
                     TournamentId = d.TournamentId,
@@ -236,8 +243,7 @@
         {
             return
                 g =>
-                new Group
-                {
+                new Group {
                     Id = g.Id,
                     Name = g.Name,
                     DivisionId = g.DivisionId,

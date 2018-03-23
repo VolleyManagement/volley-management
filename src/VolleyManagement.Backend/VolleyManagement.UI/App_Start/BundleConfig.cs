@@ -1,11 +1,12 @@
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
     using System.Web.Optimization;
 
+#pragma warning disable S1075 // URIs should not be hardcoded
     /// <summary>
     /// Bundle configuration class
     /// </summary>
-    public class BundleConfig
+    public static class BundleConfig
     {
         /// <summary>
         /// Registers bundles
@@ -14,7 +15,6 @@ namespace VolleyManagement.UI
         public static void RegisterBundles(BundleCollection bundles)
         {
             //// NOTE: Bundles {version} parameters doesn't work correctly with min files
-
             bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
                 .Include("~/Scripts/UserActions.js"));
 
@@ -135,4 +135,5 @@ namespace VolleyManagement.UI
 
         #endregion
     }
+#pragma warning restore S1075 // URIs should not be hardcoded
 }

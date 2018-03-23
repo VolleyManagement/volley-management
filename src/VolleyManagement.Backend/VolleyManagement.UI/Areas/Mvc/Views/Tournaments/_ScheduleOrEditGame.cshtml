@@ -13,47 +13,47 @@
 
 @if (Model.TournamentScheme != TournamentSchemeEnum.PlayOff)
 {
-    <div class="editor-label">
-        @Html.LabelFor(model => model.DivisionId)
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(model => model.DivisionId, Model.DivisionList, new { @class = "form-control division-select" })
-    </div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.DivisionId)
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.DivisionId, Model.DivisionList, new { @class = "form-control division-select" })
+</div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Round)
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(model => model.Round, Model.RoundList, new { @class = "form-control round-select" })
-    </div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.Round)
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.Round, Model.RoundList, new { @class = "form-control round-select" })
+</div>
 }
 else
 {
-    @Html.HiddenFor(model => model.Round)
-    @Html.HiddenFor(model => model.GameNumber);
+@Html.HiddenFor(model => model.Round)
+@Html.HiddenFor(model => model.GameNumber);
 }
 
 
 @if (!(Model.TournamentScheme == TournamentSchemeEnum.PlayOff && !Model.IsFirstRoundGame))
 {
-    <div class="editor-label">
-        @Html.LabelFor(model => model.HomeTeamId)
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(model => model.HomeTeamId, Model.TeamList, new { @class = "form-control home-team-select" })
-    </div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.HomeTeamId)
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.HomeTeamId, Model.TeamList, new { @class = "form-control home-team-select" })
+</div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.AwayTeamId)
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(model => model.AwayTeamId, Model.TeamList, $"<{Resources.UI.TournamentViews.FreeDay}>", new { @class = "form-control away-team-select" })
-    </div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.AwayTeamId)
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.AwayTeamId, Model.TeamList, $"<{Resources.UI.TournamentViews.FreeDay}>", new { @class = "form-control away-team-select" })
+</div>
 }
 else
 {
-    @Html.HiddenFor(model => model.HomeTeamId);
-    @Html.HiddenFor(model => model.AwayTeamId);
+@Html.HiddenFor(model => model.HomeTeamId);
+@Html.HiddenFor(model => model.AwayTeamId);
 }
 
 <script type="text/javascript">
@@ -64,7 +64,7 @@ else
             dayNames: @JQueryUIDateFormatConverter.DayNames,
             dayNamesShort: @JQueryUIDateFormatConverter.AbbreviatedDayNames,
             dayNamesMin: @JQueryUIDateFormatConverter.ShortestDayNames,
-            dateFormat: '@JQueryUIDateFormatConverter.JqueryUICurrentDateFormat()'
+            dateFormat: '@JQueryUIDateFormatConverter.JqueryUiCurrentDateFormat()'
         });
 
         $("#GameDate").datepicker();

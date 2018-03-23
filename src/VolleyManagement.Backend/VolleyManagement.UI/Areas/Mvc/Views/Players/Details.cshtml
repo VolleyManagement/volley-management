@@ -34,7 +34,7 @@
 <p>
     @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
     {
-        @Html.ActionLink(Resources.UI.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
+    @Html.ActionLink(Resources.UI.PlayerViews.Edit, "Edit", new { id = Model.Model.Id })  @:|
 }
     <a href="@Model.Referer">@Resources.UI.PlayerViews.Back</a>
     <br />

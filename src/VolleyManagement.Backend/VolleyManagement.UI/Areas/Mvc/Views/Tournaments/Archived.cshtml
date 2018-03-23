@@ -6,7 +6,6 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
 <table class="table" @ViewBag.TableId>
     <thead>
         <tr>
@@ -21,17 +20,20 @@
     <tbody>
         @foreach (var tournament in Model)
         {
-        <tr>
-            <td>
-                @Html.ActionLink(tournament.Name, "Details", new { id = tournament.Id })
-            </td>
-            <td>
-                @Html.DisplaySeason(tournament.Season)
-            </td>
-            <td>
-                @Html.ActionLink("Delete", "Delete", new { id = tournament.Id })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink(tournament.Name, "Details", new { id = tournament.Id })
+                </td>
+                <td>
+                    @Html.DisplaySeason(tournament.Season)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = tournament.Id })
+                </td>
+                <td>
+                    @Html.ActionLink("Activate", "Activate", new { id = tournament.Id })
+                </td>
+            </tr>
         }
     </tbody>
 </table>

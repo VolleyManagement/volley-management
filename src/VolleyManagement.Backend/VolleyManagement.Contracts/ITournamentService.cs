@@ -100,6 +100,12 @@
         void Archive(int id);
 
         /// <summary>
+        /// Activate specific tournament
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        void Activate(int id);
+
+        /// <summary>
         /// Archive old tournaments.
         /// </summary>
         void ArchiveOld();

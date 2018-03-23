@@ -149,7 +149,8 @@
             {
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.ManageTeams,
-                AuthOperations.Tournaments.Archive
+                AuthOperations.Tournaments.Archive,
+                AuthOperations.Tournaments.Activate
             });
 
             return View(tournamentViewModel);
@@ -278,6 +279,25 @@
             }
 
             _tournamentService.Delete(id);
+            return RedirectToAction("Archived");
+        }
+        
+        /// <summary>
+        /// Activate tournament
+        /// </summary>
+        /// <param name="id">Identifier of tournament to activate</param>
+        /// <returns></returns>
+        public ActionResult Activate(int id)
+        {
+            try
+            {
+                _tournamentService.Activate(id);
+            }
+            catch(ArgumentException)
+            {
+                return HttpNotFound();
+            }
+
             return RedirectToAction("Archived");
         }
 

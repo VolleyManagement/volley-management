@@ -28,18 +28,8 @@
             ICurrentUserService userService,
             IQuery<ICollection<AuthOperation>, FindByUserIdCriteria> getOperationsQuery)
         {
-            if (userService == null)
-            {
-                throw new ArgumentException("userService");
-            }
-
-            if (getOperationsQuery == null)
-            {
-                throw new ArgumentException("getFeaturesQuery");
-            }
-
-            _userService = userService;
-            _getOperationsQuery = getOperationsQuery;
+            _userService = userService ?? throw new ArgumentException("userService");
+            _getOperationsQuery = getOperationsQuery ?? throw new ArgumentException("getFeaturesQuery");
         }
 
         #endregion

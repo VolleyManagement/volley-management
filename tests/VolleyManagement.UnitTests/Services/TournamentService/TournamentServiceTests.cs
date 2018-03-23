@@ -1318,34 +1318,52 @@
         #endregion
 
         #region Archive
-
-        /// <summary>
-        /// Test for Archive(int id) tournament method.
-        /// </summary>
+        
         [TestMethod]
-        public void Archive_NotArchivedTournament_CommitInvoked()
+        public void Archive_TournamentExists_IsArchivedEqualsTrueAndChangesSaved()
         {
             // Arrange
             var expectedTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
+                                    .WithArchivedParameter(true)
                                     .Build();
             var actualTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
+                                    .WithArchivedParameter(false)
                                     .Build();
             MockGetByIdQuery(actualTournament);
-            MockGetUniqueTournamentQuery(expectedTournament);
             var sut = BuildSUT();
 
             // Act
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCommit(Times.Once(), "The tournament was not archived.");
+            VerifyEditTournament(expectedTournament, Times.Once());
+        }
+        
+        [TestMethod]
+        public void Archive_TournamentDoesNotExist_ExceptionThrown()
+        {
+            // Arrange
+            MockGetByIdQuery(null as Tournament);
+            var sut = BuildSUT();
+            var expectedException =
+                new ArgumentException(TournamentResources.TournamentWasNotFound);
+            Exception actualException = null;
+
+            // Act
+            try
+            {
+                sut.Archive(FIRST_TOURNAMENT_ID);
+            }
+            catch (Exception ex)
+            {
+                actualException = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(actualException,
+                expectedException);
         }
 
-        /// <summary>
-        /// Test for Archive() method with any state. Whetever 'CheckAccess' method invokes
-        /// </summary>
         [TestMethod]
         public void Archive_AnyState_AuthorizationCheckInvoked()
         {
@@ -1359,6 +1377,70 @@
 
             // Assert
             VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
+        }
+
+        #endregion
+
+        #region Activate
+
+        [TestMethod]
+        public void Activate_AnyState_CheckAccessInvoked()
+        {
+            // Arrange
+            MockGetByIdQuery(new TournamentBuilder().Build());
+            var sut = BuildSUT();
+
+            // Act
+            sut.Activate(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.Activate,
+                Times.Once());
+        }
+
+        [TestMethod]
+        public void Activate_TournamentExists_IsArchivedEqualsFalseAndChangesSaved()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder()
+                .WithArchivedParameter(true)
+                .Build();
+            var savedTournament = new TournamentBuilder()
+                 .WithArchivedParameter(false)
+                 .Build();
+            MockGetByIdQuery(testTournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Activate(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyEditTournament(savedTournament, Times.Once());
+        }
+
+        [TestMethod]
+        public void Activate_TournamentDoesNotExist_ExceptionThrown()
+        {
+            // Arrange
+            MockGetByIdQuery(null as Tournament);
+            var sut = BuildSUT();
+            var expectedException =
+                new ArgumentException(TournamentResources.TournamentWasNotFound);
+            Exception actualException = null;
+
+            // Act
+            try
+            {
+                sut.Activate(FIRST_TOURNAMENT_ID);
+            }
+            catch (Exception ex)
+            {
+                actualException = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(actualException,
+                expectedException);
         }
 
         #endregion
@@ -1884,7 +1966,8 @@
 
         private void VerifyEditTournament(Tournament tournament, Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => 
+                TournamentsAreEqual(t, tournament))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

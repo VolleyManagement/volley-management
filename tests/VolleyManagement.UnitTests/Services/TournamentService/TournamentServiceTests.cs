@@ -1339,7 +1339,30 @@
             VerifyEditTournament(expectedTournament, Times.Once());
         }
         
+        [TestMethod]
+        public void Archive_TournamentDoesNotExist_ExceptionThrown()
+        {
+            // Arrange
+            MockGetByIdQuery(null as Tournament);
+            var sut = BuildSUT();
+            var expectedException =
+                new ArgumentException(TournamentResources.TournamentWasNotFound);
+            Exception actualException = null;
 
+            // Act
+            try
+            {
+                sut.Archive(FIRST_TOURNAMENT_ID);
+            }
+            catch (Exception ex)
+            {
+                actualException = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(actualException,
+                expectedException);
+        }
 
         [TestMethod]
         public void Archive_AnyState_AuthorizationCheckInvoked()

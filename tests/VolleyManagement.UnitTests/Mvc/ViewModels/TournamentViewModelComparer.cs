@@ -28,6 +28,7 @@
             Assert.AreEqual(expected.IsTransferEnabled, actual.IsTransferEnabled, $"[Id:{expected.Id}]IsTransferEnabled should be equal.");
             Assert.AreEqual(expected.ApplyingPeriodStart, actual.ApplyingPeriodStart, $"[Id:{expected.Id}]ApplyingPeriodStart should be equal.");
             Assert.AreEqual(expected.ApplyingPeriodEnd, actual.ApplyingPeriodEnd, $"[Id:{expected.Id}]ApplyingPeriodEnd should be equal.");
+            Assert.AreEqual(expected.IsArchived, actual.IsArchived, $"[Id:{expected.Id}]IsArchived should be equal.");
             Assert.AreEqual(expected.GamesEnd.Date, actual.GamesEnd.Date, $"[Id:{expected.Id}]GamesEnd should be equal.");
             Assert.AreEqual(expected.GamesStart.Date, actual.GamesStart.Date, $"[Id:{expected.Id}]GamesStart should be equal.");
             Assert.AreEqual(expected.TransferEnd?.Date, actual.TransferEnd?.Date, $"[Id:{expected.Id}]TransferEnd should be equal.");

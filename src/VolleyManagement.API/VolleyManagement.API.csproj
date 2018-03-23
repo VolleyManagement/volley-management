@@ -11,6 +11,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.4" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
     <PackageReference Include="SimpleInjector" Version="4.0.12" />
     <PackageReference Include="SimpleInjector.Extensions.LifetimeScoping" Version="4.0.0" />

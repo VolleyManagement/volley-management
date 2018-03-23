@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,12 +14,14 @@ using VolleyManagement.Data.MsSql.Infrastructure;
 using VolleyManagement.Services.Infrastructure;
 using VolleyManagement.UI.Infrastructure;
 using VolleyManagement.UI.Infrastructure.IOC;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Google;
+using VolleyManagement.Services.Authentication;
 
 namespace VolleyManagement.API
 {
     public class Startup
-    {      
+    {
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,7 +32,9 @@ namespace VolleyManagement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            SetupGoogleProvider(services);
             services.AddMvc();
+            services.AddCors();
             IntegrateSimpleInjector(services);
         }
 
@@ -65,7 +70,23 @@ namespace VolleyManagement.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvc();
+        }
+
+        private void SetupGoogleProvider(IServiceCollection services)
+        {
+            services.
+                AddAuthentication(
+                v =>
+                {
+                    v.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                    v.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                }).AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
         }
     }
 }

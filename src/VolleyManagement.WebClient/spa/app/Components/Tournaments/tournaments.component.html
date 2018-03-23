@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <td width="400">
+        Name
+      </td>
+      <td width="100">
+        Season
+      </td>
+    </tr>
+  </thead>
+  <tbody *ngFor="let tournament of data;">
+    <tr>
+      <td>
+        {{tournament.Name}}
+      </td>
+      <td>
+        {{tournament.Season}}
+      </td>
+    </tr>
+  </tbody>
+</table>

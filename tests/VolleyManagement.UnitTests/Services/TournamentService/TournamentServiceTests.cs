@@ -1338,10 +1338,9 @@
             // Assert
             VerifyEditTournament(expectedTournament, Times.Once());
         }
+        
 
-        /// <summary>
-        /// Test for Archive() method with any state. Whetever 'CheckAccess' method invokes
-        /// </summary>
+
         [TestMethod]
         public void Archive_AnyState_AuthorizationCheckInvoked()
         {

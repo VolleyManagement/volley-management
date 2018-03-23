@@ -432,6 +432,7 @@
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Infrastructure\IocUIModule.cs" />
     <Compile Include="Infrastructure\IOC\SimpleInjectorContainer.cs" />
+    <Compile Include="Infrastructure\MvcUiConfigurationProvider.cs" />
     <Compile Include="Infrastructure\SimpleTraceLog.cs" />
     <Compile Include="OwinConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

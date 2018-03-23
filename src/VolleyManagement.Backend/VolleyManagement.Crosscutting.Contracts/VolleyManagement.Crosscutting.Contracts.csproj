@@ -69,6 +69,7 @@
     <Compile Include="Infrastructure\Logger\LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\DefaultTimeProvider.cs" />
+    <Compile Include="Providers\IConfigurationProvider.cs" />
     <Compile Include="Providers\TimeProvider.cs" />
     <Compile Include="Specifications\ISpecification.cs" />
   </ItemGroup>

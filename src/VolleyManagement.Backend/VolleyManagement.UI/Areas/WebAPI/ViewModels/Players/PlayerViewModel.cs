@@ -106,8 +106,7 @@
                 LastName = player.LastName,
                 BirthYear = player.BirthYear,
                 Height = player.Height,
-                Weight = player.Weight,
-                TeamId = player.TeamId
+                Weight = player.Weight
             };
 
             return playerViewModel;
@@ -125,8 +124,7 @@
                 LastName = LastName,
                 BirthYear = BirthYear,
                 Height = Height,
-                Weight = Weight,
-                TeamId = TeamId
+                Weight = Weight
             };
         }
         #endregion

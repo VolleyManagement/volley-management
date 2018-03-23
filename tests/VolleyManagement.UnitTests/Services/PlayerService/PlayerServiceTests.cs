@@ -101,42 +101,42 @@
             TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
         }
 
-        /// <summary>
-        /// Test for GetPlayerTeam() method. The method should return existing player team by player object
-        /// </summary>
-        [TestMethod]
-        public void GetPlayerTeam_TeamExist_TeamReturned()
-        {
-            // Arrange
-            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            var testPlayer = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
-            MockGetTeamByIdQuery(testTeam);
-            var sut = BuildSUT();
-            var expected = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+        ///// <summary>
+        ///// Test for GetPlayerTeam() method. The method should return existing player team by player object
+        ///// </summary>
+        //[TestMethod]
+        //public void GetPlayerTeam_TeamExist_TeamReturned()
+        //{
+        //    // Arrange
+        //    var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+        //    var testPlayer = new PlayerBuilder().Build();
+        //    MockGetTeamByIdQuery(testTeam);
+        //    var sut = BuildSUT();
+        //    var expected = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
 
-            // Act
-            var actual = sut.GetPlayerTeam(testPlayer);
+        //    // Act
+        //    var actual = sut.GetPlayerTeam(testPlayer);
 
-            // Assert
-            TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());
-        }
+        //    // Assert
+        //    TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());
+        //}
 
-        /// <summary>
-        /// Test for GetPlayerTeam() method. The method should return null by player object with no team
-        /// </summary>
-        [TestMethod]
-        public void GetPlayerTeam_PlayerWithNoTeam_NullReturned()
-        {
-            // Arrange
-            var testPlayer = new PlayerBuilder().WithNoTeam().Build();
-            var sut = BuildSUT();
+        ///// <summary>
+        ///// Test for GetPlayerTeam() method. The method should return null by player object with no team
+        ///// </summary>
+        //[TestMethod]
+        //public void GetPlayerTeam_PlayerWithNoTeam_NullReturned()
+        //{
+        //    // Arrange
+        //    var testPlayer = new PlayerBuilder().Build();
+        //    var sut = BuildSUT();
 
-            // Act
-            var actual = sut.GetPlayerTeam(testPlayer);
+        //    // Act
+        //    var actual = sut.GetPlayerTeam(testPlayer);
 
-            // Assert
-            Assert.IsNull(actual);
-        }
+        //    // Assert
+        //    Assert.IsNull(actual);
+        //}
 
         /// <summary>
         /// Test for Create() method. The method should create a new player.
@@ -145,7 +145,7 @@
         public void Create_PlayerPassed_PlayerCreated()
         {
             // Arrange
-            var newPlayer = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var newPlayer = new PlayerBuilder().Build();
 
             // Act
             var sut = BuildSUT();
@@ -183,108 +183,108 @@
             VerifyCreatePlayer(newPlayer, Times.Never());
         }
 
-        /// <summary>
-        /// Test for Create() method with List. The method should create new players
-        /// </summary>
-        [TestMethod]
-        public void Create_AllPlayersAreNew_PlayersCreated()
-        {
-            // Arrange
-            var newPlayers = CreateSeveralPlayers();
-            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
-            MockGetByIdQuery(newPlayers.First());
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
+        ///// <summary>
+        ///// Test for Create() method with List. The method should create new players
+        ///// </summary>
+        //[TestMethod]
+        //public void Create_AllPlayersAreNew_PlayersCreated()
+        //{
+        //    // Arrange
+        //    var newPlayers = CreateSeveralPlayers();
+        //    var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
+        //    MockGetByIdQuery(newPlayers.First());
+        //    _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+        //        .Returns(existingPlayers);
 
-            // Act
-            var sut = BuildSUT();
-            sut.CreateBulk(newPlayers);
+        //    // Act
+        //    var sut = BuildSUT();
+        //    sut.CreateBulk(newPlayers);
 
-            // Assert
-            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
-        }
+        //    // Assert
+        //    VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
+        //}
 
-        /// <summary>
-        /// Test for Create() method with List. The method should throw ArgumentNullException.
-        /// Players must not be created
-        /// </summary>
-        [TestMethod]
-        public void Create_NoNewPlayers_PlayersNotCreated()
-        {
-            // Arrange
-            var gotException = false;
-            var newPlayers = CreateListOfExistingPlayers();
-            MockGetByIdQuery(newPlayers.First());
-            var existingPlayers = CreateListOfExistingPlayersWithoutTeam().AsQueryable();
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
+        ///// <summary>
+        ///// Test for Create() method with List. The method should throw ArgumentNullException.
+        ///// Players must not be created
+        ///// </summary>
+        //[TestMethod]
+        //public void Create_NoNewPlayers_PlayersNotCreated()
+        //{
+        //    // Arrange
+        //    var gotException = false;
+        //    var newPlayers = CreateListOfExistingPlayers();
+        //    MockGetByIdQuery(newPlayers.First());
+        //    var existingPlayers = CreateListOfExistingPlayersWithoutTeam().AsQueryable();
+        //    _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+        //        .Returns(existingPlayers);
 
-            // Act
-            var sut = BuildSUT();
-            sut.CreateBulk(newPlayers);
+        //    // Act
+        //    var sut = BuildSUT();
+        //    sut.CreateBulk(newPlayers);
 
-            // Assert
-            Assert.IsFalse(gotException);
-            VerifyCreatePlayers(Times.Never());
-        }
+        //    // Assert
+        //    Assert.IsFalse(gotException);
+        //    VerifyCreatePlayers(Times.Never());
+        //}
 
-        /// <summary>
-        /// Test for Create() method. The method should create new players
-        /// Players must be created
-        /// </summary>
-        [TestMethod]
-        public void Create_TwoOfThreePlayersAreNew_PlayersCreated()
-        {
-            // Arrange
-            var newPlayers = CreateTwoOfThreeNewPlayers();
-            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
-            MockGetByIdQuery(newPlayers.First());
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
+        ///// <summary>
+        ///// Test for Create() method. The method should create new players
+        ///// Players must be created
+        ///// </summary>
+        //[TestMethod]
+        //public void Create_TwoOfThreePlayersAreNew_PlayersCreated()
+        //{
+        //    // Arrange
+        //    var newPlayers = CreateTwoOfThreeNewPlayers();
+        //    var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
+        //    MockGetByIdQuery(newPlayers.First());
+        //    _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+        //        .Returns(existingPlayers);
 
-            // Act
-            var sut = BuildSUT();
-            sut.CreateBulk(newPlayers);
+        //    // Act
+        //    var sut = BuildSUT();
+        //    sut.CreateBulk(newPlayers);
 
-            // Assert
-            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
-        }
+        //    // Assert
+        //    VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
+        //}
 
-        /// <summary>
-        /// Test for Create() method. The method should throw Argument Exception
-        /// </summary>
-        [TestMethod]
-        public void Create_OneOfThePlayersPlaysInAnotherTeam_ArgumentExceptionThown()
-        {
-            var gotException = false;
+        ///// <summary>
+        ///// Test for Create() method. The method should throw Argument Exception
+        ///// </summary>
+        //[TestMethod]
+        //public void Create_OneOfThePlayersPlaysInAnotherTeam_ArgumentExceptionThown()
+        //{
+        //    var gotException = false;
 
-            // Arrange
-            var newPlayers = new List<Player>()
-            {
-                new PlayerBuilder()
-                    .WithFirstName("First").WithLastName("Last").WithTeamId(SPECIFIC_TEAM_ID).Build()
-            };
-            var existingPlayers = CreateSeveralPlayers().AsQueryable();
-            MockGetByIdQuery(newPlayers.First());
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
+        //    // Arrange
+        //    var newPlayers = new List<Player>()
+        //    {
+        //        new PlayerBuilder()
+        //            .WithFirstName("First").WithLastName("Last").Build()
+        //    };
+        //    var existingPlayers = CreateSeveralPlayers().AsQueryable();
+        //    MockGetByIdQuery(newPlayers.First());
+        //    _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+        //        .Returns(existingPlayers);
 
-            var sut = BuildSUT();
+        //    var sut = BuildSUT();
 
-            // Act
-            try
-            {
-                sut.CreateBulk(newPlayers);
-            }
-            catch (ArgumentException)
-            {
-                gotException = true;
-            }
+        //    // Act
+        //    try
+        //    {
+        //        sut.CreateBulk(newPlayers);
+        //    }
+        //    catch (ArgumentException)
+        //    {
+        //        gotException = true;
+        //    }
 
-            // Assert
-            Assert.IsTrue(gotException);
-            VerifyCreatePlayers(Times.Never());
-        }
+        //    // Assert
+        //    Assert.IsTrue(gotException);
+        //    VerifyCreatePlayers(Times.Never());
+        //}
 
         /// <summary>
         /// Test for Create() method with no rights for such action. The method should throw AuthorizationException
@@ -434,7 +434,7 @@
             // Arrange
             _playerRepositoryMock.Setup(pr => pr.Update(It.IsAny<Player>())).Throws(new InvalidKeyValueException());
             var sut = BuildSUT();
-            var playerWithWrongId = new PlayerBuilder().WithTeamId(null).Build();
+            var playerWithWrongId = new PlayerBuilder().Build();
 
             // Act
             sut.Edit(playerWithWrongId);
@@ -448,10 +448,10 @@
         {
             // Arrange
             int? teamId = null;
-            var expectedPlayer = new PlayerBuilder().WithTeamId(teamId).Build();
+            var expectedPlayer = new PlayerBuilder().Build();
 
             // Act
-            var playerToEdit = new PlayerBuilder().WithTeamId(teamId).Build();
+            var playerToEdit = new PlayerBuilder().Build();
             var sut = BuildSUT();
             sut.Edit(playerToEdit);
 
@@ -499,7 +499,7 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("First").WithLastName("Last").WithTeamId(null).Build(),
+                new PlayerBuilder().WithFirstName("First").WithLastName("Last").Build(),
                 new PlayerBuilder().WithId(0).WithFirstName("New Second").WithLastName("Last").Build(),
                 new PlayerBuilder().WithId(0).WithFirstName("New Hank").WithLastName("Ripper").Build()
             });
@@ -511,11 +511,11 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").WithTeamId(null).Build(),
+                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").Build(),
                 new PlayerBuilder().WithFirstName("Van").WithLastName("Van")
-                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID).Build(),
+                    .WithId(SPECIFIC_PLAYER_ID).Build(),
                 new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper")
-                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID + 2).Build()
+                    .WithId(SPECIFIC_PLAYER_ID + 2).Build()
             });
             return newPlayers;
         }

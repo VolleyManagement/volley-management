@@ -1318,29 +1318,25 @@
         #endregion
 
         #region Archive
-
-        /// <summary>
-        /// Test for Archive(int id) tournament method.
-        /// </summary>
+        
         [TestMethod]
-        public void Archive_NotArchivedTournament_CommitInvoked()
+        public void Archive_TournamentExists_IsArchivedEqualsTrueAndChangesSaved()
         {
             // Arrange
             var expectedTournament = new TournamentBuilder()
-                                    .WithArchivedParameter(false)
+                                    .WithArchivedParameter(true)
                                     .Build();
             var actualTournament = new TournamentBuilder()
                                     .WithArchivedParameter(false)
                                     .Build();
             MockGetByIdQuery(actualTournament);
-            MockGetUniqueTournamentQuery(expectedTournament);
             var sut = BuildSUT();
 
             // Act
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCommit(Times.Once(), "The tournament was not archived.");
+            VerifyEditTournament(expectedTournament, Times.Once());
         }
 
         /// <summary>

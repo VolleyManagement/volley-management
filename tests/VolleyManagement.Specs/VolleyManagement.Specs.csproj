@@ -100,7 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\IOC\PerScenarioLifeStyleScope.cs" />
+    <Compile Include="Infrastructure\TestDbAdapter.cs" />
     <Compile Include="Infrastructure\MockCurrentUserService.cs" />
     <Compile Include="Infrastructure\IntegrationTestConfigurationProvider.cs" />
     <Compile Include="Infrastructure\IntegrationTestInitializer.cs" />
@@ -112,6 +112,7 @@
       <DependentUpon>CreatePlayer.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestFixture\InitialStateTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

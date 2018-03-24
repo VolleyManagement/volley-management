@@ -63,7 +63,7 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player { Id = Id, FirstName = FirstName, LastName = LastName };
+            return new Player (Id, FirstName, LastName);
         }
 
         #endregion

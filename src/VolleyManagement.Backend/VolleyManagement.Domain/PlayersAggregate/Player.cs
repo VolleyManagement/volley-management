@@ -15,6 +15,52 @@
         private short? _weight;
 
         /// <summary>
+        /// Initializes a new instance of the Player
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="firstName">Fisrt Name</param>
+        /// <param name="lastName">Last Name</param>
+        public Player(int id, string firstName, string lastName) : this(id, firstName, lastName, null, null, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Player
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="firstName">First Name</param>
+        /// <param name="lastName">Last Name</param>
+        /// <param name="birthYear">BirthYear</param>
+        /// <param name="height">Height</param>
+        /// <param name="weight">Weight</param>
+        public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight)
+            : this(id, firstName, lastName, birthYear, height, weight, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Player
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="firstName">First Name</param>
+        /// <param name="lastName">Last Name</param>
+        /// <param name="birthYear">BirthYear</param>
+        /// <param name="height">Height</param>
+        /// <param name="weight">Weight</param>
+        public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            BirthYear = birthYear;
+            Height = height;
+            Weight = weight;
+            TeamId = teamId;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
         /// <value>Id of player.</value>
@@ -26,12 +72,9 @@
         /// <value>First name.</value>
         public string FirstName
         {
-            get
-            {
-                return _firstName;
-            }
+            get => _firstName;
 
-            set
+            private set
             {
                 if (PlayerValidation.ValidateFirstName(value))
                 {
@@ -48,12 +91,9 @@
         /// <value>Last name.</value>
         public string LastName
         {
-            get
-            {
-                return _lastName;
-            }
+            get => _lastName;
 
-            set
+            private set
             {
                 if (PlayerValidation.ValidateLastName(value))
                 {
@@ -70,12 +110,9 @@
         /// <value>Birth year.</value>
         public short? BirthYear
         {
-            get
-            {
-                return _birthYear;
-            }
+            get => _birthYear;
 
-            set
+            private set
             {
                 if (PlayerValidation.ValidateBirthYear(value))
                 {
@@ -92,12 +129,9 @@
         /// <value>The height.</value>
         public short? Height
         {
-            get
-            {
-                return _height;
-            }
+            get => _height;
 
-            set
+            private set
             {
                 if (PlayerValidation.ValidateHeight(value))
                 {
@@ -114,12 +148,9 @@
         /// <value>The weight.</value>
         public short? Weight
         {
-            get
-            {
-                return _weight;
-            }
+            get => _weight;
 
-            set
+            private set
             {
                 if (PlayerValidation.ValidateWeight(value))
                 {

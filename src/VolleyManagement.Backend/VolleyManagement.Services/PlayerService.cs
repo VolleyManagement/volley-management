@@ -77,7 +77,6 @@
             }
 
             _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -102,8 +101,6 @@
                 {
                     _playerRepository.Add(player);
                 }
-
-                _playerRepository.UnitOfWork.Commit();
             }
         }
 
@@ -148,8 +145,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
             }
-
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -171,7 +166,6 @@
             try
             {
                 _playerRepository.Remove(id);
-                _playerRepository.UnitOfWork.Commit();
             }
             catch (InvalidKeyValueException ex)
             {

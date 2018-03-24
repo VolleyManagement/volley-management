@@ -56,7 +56,6 @@
             _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
-            _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
@@ -203,7 +202,6 @@
 
             // Assert
             VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -250,7 +248,6 @@
 
             // Assert
             VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -264,8 +261,8 @@
             // Arrange
             var newPlayers = new List<Player>()
             {
-                new PlayerBuilder()
-                    .WithFirstName("First").WithLastName("Last").WithTeamId(SPECIFIC_TEAM_ID).Build()
+                new PlayerBuilder(1, "First", "Last")
+                    .WithTeamId(SPECIFIC_TEAM_ID).Build()
             };
             var existingPlayers = CreateSeveralPlayers().AsQueryable();
             MockGetByIdQuery(newPlayers.First());
@@ -478,9 +475,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithId(0).WithFirstName("First").WithLastName("Last").Build(),
-                new PlayerBuilder().WithId(0).WithFirstName("Second").WithLastName("Last").Build(),
-                new PlayerBuilder().WithId(0).WithFirstName("Name").WithLastName("Name").Build()
+                new PlayerBuilder(0, "First", "Last").WithTeamId(1).Build(),
+                new PlayerBuilder(0, "Second", "Last").WithTeamId(1).Build(),
+                new PlayerBuilder(0, "Name", "Name").WithTeamId(1).Build()
             });
             return newPlayers;
         }
@@ -490,9 +487,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").Build(),
-                new PlayerBuilder().WithFirstName("Van").WithLastName("Van").WithId(SPECIFIC_PLAYER_ID).Build(),
-                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper").WithId(SPECIFIC_PLAYER_ID + 2).Build()
+                new PlayerBuilder(SPECIFIC_PLAYER_ID - 1, "Ant", "Man").Build(),
+                new PlayerBuilder(SPECIFIC_PLAYER_ID, "Van", "Van").Build(),
+                new PlayerBuilder(SPECIFIC_PLAYER_ID + 2, "Hank", "Ripper").Build()
             });
             return newPlayers;
         }
@@ -502,9 +499,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("First").WithLastName("Last").WithTeamId(null).Build(),
-                new PlayerBuilder().WithId(0).WithFirstName("New Second").WithLastName("Last").Build(),
-                new PlayerBuilder().WithId(0).WithFirstName("New Hank").WithLastName("Ripper").Build()
+                new PlayerBuilder(1, "First", "Last").WithTeamId(null).Build(),
+                new PlayerBuilder(0, "New Second", "Last").Build(),
+                new PlayerBuilder(0, "New Hank", "Ripper").Build()
             });
             return newPlayers;
         }
@@ -514,11 +511,12 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").WithTeamId(null).Build(),
-                new PlayerBuilder().WithFirstName("Van").WithLastName("Van")
-                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID).Build(),
-                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper")
-                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID + 2).Build()
+                new PlayerBuilder(SPECIFIC_PLAYER_ID - 1, "Ant", "Man")
+                    .WithTeamId(null).Build(),
+                new PlayerBuilder(SPECIFIC_PLAYER_ID, "Van", "Van")
+                    .WithTeamId(null).Build(),
+                new PlayerBuilder(SPECIFIC_PLAYER_ID + 2, "Hank", "Ripper")
+                    .WithTeamId(null).Build()
             });
             return newPlayers;
         }
@@ -551,7 +549,6 @@
         private void VerifyCreatePlayer(Player player, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Add(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyCreatePlayers(Times times)
@@ -562,13 +559,11 @@
         private void VerifyEditPlayer(Player player, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyDeletePlayer(int playerId, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(id => id == playerId)), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyDeletePlayer(int playerId, Times repositoryTimes, Times unitOfWorkTimes)

@@ -95,15 +95,7 @@
 
         private static Expression<Func<PlayerEntity, Player>> GetPlayerMapping()
         {
-            return p => new Player {
-                Id = p.Id,
-                FirstName = p.FirstName,
-                LastName = p.LastName,
-                BirthYear = p.BirthYear,
-                Height = p.Height,
-                Weight = p.Weight,
-                TeamId = p.TeamId
-            };
+            return p => new Player(p.Id, p.FirstName, p.LastName, p.BirthYear, p.Height, p.Weight, p.TeamId);
         }
 
         #endregion

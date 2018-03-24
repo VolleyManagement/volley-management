@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines specific contract for TournamentRequestRepository
     /// </summary>
-    public interface ITournamentRequestRepository : IGenericRepository<TournamentRequest>
+    public interface ITournamentRequestRepository : IGenericRepository<TournamentRequest>, IRepository
     {
     }
 }

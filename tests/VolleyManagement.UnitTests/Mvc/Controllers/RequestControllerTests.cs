@@ -205,7 +205,7 @@
 
         private Player GetPlayer()
         {
-            return new Player();
+            return new PlayerBuilder().Build();
         }
 
         #endregion
@@ -233,7 +233,7 @@
 
         private void SetupPlayerService(int id)
         {
-            _playerServiceMock.Setup(m => m.Get(id)).Returns(new Player());
+            _playerServiceMock.Setup(m => m.Get(id)).Returns(new PlayerBuilder().Build());
         }
 
         private void SetupPlayerServiceReturnsNullPlayer(int id)

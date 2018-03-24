@@ -26,7 +26,7 @@
                 LastName = "LastName",
                 BirthYear = 1983,
                 Height = 186,
-                Weight = 95,
+                Weight = 96,
                 TeamId = 1
             };
         }

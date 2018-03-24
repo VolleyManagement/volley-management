@@ -89,9 +89,39 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.When("I execute CreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.Then("new player should be succesfully added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 11
     testRunner.Then("new player gets new Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 11
+ testRunner.Then("new player should be succesfully added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.TheoryAttribute(DisplayName="Create player with all attributes")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create Player")]
+        [Xunit.TraitAttribute("Description", "Create player with all attributes")]
+        [Xunit.InlineDataAttribute("John", "Smith", "190", "85", "1985", new string[0])]
+        [Xunit.InlineDataAttribute("Jane", "Doe", "180", "55", "1995", new string[0])]
+        public virtual void CreatePlayerWithAllAttributes(string firstName, string lastName, string height, string weight, string birthYear, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create player with all attributes", exampleTags);
+#line 17
+this.ScenarioSetup(scenarioInfo);
+#line 18
+ testRunner.Given(string.Format("first name is {0}", firstName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 19
+    testRunner.And(string.Format("last name is {0}", lastName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+    testRunner.And(string.Format("height is {0}", height), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
+    testRunner.And(string.Format("weight is {0}", weight), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
+    testRunner.And(string.Format("year of birth is {0}", birthYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+ testRunner.When("I execute CreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
+    testRunner.Then("new player gets new Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
+ testRunner.Then("new player should be succesfully added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

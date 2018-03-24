@@ -1,4 +1,5 @@
-﻿using VolleyManagement.Crosscutting.Contracts.Providers;
+﻿using System;
+using VolleyManagement.Crosscutting.Contracts.Providers;
 
 namespace VolleyManagement.Specs.Infrastructure
 {
@@ -7,9 +8,17 @@ namespace VolleyManagement.Specs.Infrastructure
         public const string IT_CONNECTION_STRING =
             @"data source=(localdb)\mssqllocaldb;initial catalog=VolleyManagement-integrationtests;integrated security=True";
 
+        private const string APPVEYOR_DB_CONNECTION_STRING =
+            @"Server=(local)\SQL2017;Database=VolleyManagement-integrationtests;User ID=sa;Password=Password12!";
+
         public string GetVolleyManagementEntitiesConnectionString()
         {
-            return IT_CONNECTION_STRING;
+            return IsRunningOnAppVeyor() ? APPVEYOR_DB_CONNECTION_STRING : IT_CONNECTION_STRING;
+        }
+
+        private static bool IsRunningOnAppVeyor()
+        {
+            return Environment.GetEnvironmentVariable("APPVEYOR") != null;
         }
     }
 }

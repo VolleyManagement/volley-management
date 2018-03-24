@@ -47,7 +47,7 @@ var isCiForMasterOrPr = BuildSystem.IsRunningOnAppVeyor &&
         AppVeyor.Environment.PullRequest.IsPullRequest);
 var canRunSonar = sonarToken != null //Has Sonar token
     && (isCiForMasterOrPr || localDev);
-var canRunIntegrationTests = localDev;
+var canRunIntegrationTests = localDev || isCiForMasterOrPr;
 SonarEndSettings sonarEndSettings;
 
 var suffix = BuildSystem.IsRunningOnAppVeyor ? $"_AppVeyor_{AppVeyor.Environment.JobId}" : string.Empty;
@@ -180,7 +180,7 @@ Task("SonarBegin")
         }
 
         sonarEndSettings = settings.GetEndSettings();
-        SonarBegin (settings);
+        SonarBegin(settings);
     });
 
 Task("SonarEnd")

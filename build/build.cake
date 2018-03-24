@@ -55,7 +55,7 @@ var suffix = BuildSystem.IsRunningOnAppVeyor ? $"_AppVeyor_{AppVeyor.Environment
 utResults = utsDir + File($"UT_Results{suffix}.trx");
 utCoverageResults = utsDir + File($"UT_Coverage{suffix}.dcvr");
 
-specResults = specsDir + File($"IT_Results{suffix}.trx");
+specResults = specsDir + File($"IT_Results{suffix}.xml");
 specCoverageResults = specsDir + File($"IT_Coverage{suffix}.dcvr");
 
 combinedCoverageResults = testsDir + File($"CoverageResults{suffix}.html");

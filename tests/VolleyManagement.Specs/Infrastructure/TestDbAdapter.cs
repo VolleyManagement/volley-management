@@ -22,14 +22,14 @@ namespace VolleyManagement.Specs.Infrastructure
         };
 
         public static VolleyManagementEntities Context =>
-            new VolleyManagementEntities(IntegrationTestConfigurationProvider.IT_CONNECTION_STRING);
+            new VolleyManagementEntities(IntegrationTestConfigurationProvider.GetVolleyManagementEntitiesConnectionString());
 
         /// <summary>
         /// Cleans DB tables to initial state
         /// </summary> 
         public static void Respawn()
         {
-            Checkpoint.Reset(IntegrationTestConfigurationProvider.IT_CONNECTION_STRING).Wait();
+            Checkpoint.Reset(IntegrationTestConfigurationProvider.GetVolleyManagementEntitiesConnectionString()).Wait();
         }
     }
 }

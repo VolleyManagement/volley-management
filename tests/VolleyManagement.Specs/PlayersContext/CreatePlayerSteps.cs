@@ -83,7 +83,7 @@ namespace VolleyManagement.Specs.PlayersContext
         public void ThenNewPlayerShouldBeSuccesfullyAdded()
         {
             PlayerEntity actualPlayer;
-            using (var ctx = new VolleyManagementEntities(IntegrationTestConfigurationProvider.IT_CONNECTION_STRING))
+            using (var ctx = TestDbAdapter.Context)
             {
                 actualPlayer = ctx.Players.SingleOrDefault(p => p.Id == _addedPlayerId);
             }

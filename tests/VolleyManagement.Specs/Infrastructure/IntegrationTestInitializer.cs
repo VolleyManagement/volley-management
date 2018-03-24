@@ -47,7 +47,7 @@ namespace VolleyManagement.Specs.Infrastructure
 
             // Provide connection string for integration test DB
             VolleyManagementDbContextFactory.ConnectionNameOrString =
-                IntegrationTestConfigurationProvider.IT_CONNECTION_STRING;
+                IntegrationTestConfigurationProvider.GetVolleyManagementEntitiesConnectionString();
 
             // Consider a first test - make sure IoC dependencies can be resolved
             IocProvider.Instance.Verify();

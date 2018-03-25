@@ -3,7 +3,6 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>
@@ -31,8 +30,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            TeamViewModel firstTeam = x as TeamViewModel;
-            TeamViewModel secondTeam = y as TeamViewModel;
+            var firstTeam = x as TeamViewModel;
+            var secondTeam = y as TeamViewModel;
 
             if (firstTeam == null)
             {

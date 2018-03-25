@@ -34,9 +34,9 @@
     <div class="display-label">@Html.LabelFor(model => model.RegulationsLink)</div>
     @if (!string.IsNullOrEmpty(Model.RegulationsLink))
     {
-        <div class="display-field">
-            <a href=@Model.RegulationsLink target="_blank">@Model.RegulationsLink</a>
-        </div>
+    <div class="display-field">
+        <a href=@Model.RegulationsLink target="_blank">@Model.RegulationsLink</a>
+    </div>
     }
 
     <div class="display-label">@Html.LabelFor(model => model.ApplyingPeriodStart)</div>
@@ -53,22 +53,22 @@
 
     @if (Model.IsTransferEnabled)
     {
-        <div class="display-label">@Html.LabelFor(model => model.TransferStart)</div>
-        <div class="display-field">@(((DateTime)Model.TransferStart).ToShortDateString())</div>
+    <div class="display-label">@Html.LabelFor(model => model.TransferStart)</div>
+    <div class="display-field">@(((DateTime)Model.TransferStart).ToShortDateString())</div>
 
-        <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
-        <div class="display-field">@(((DateTime)Model.TransferEnd).ToShortDateString())</div>
+    <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
+    <div class="display-field">@(((DateTime)Model.TransferEnd).ToShortDateString())</div>
     }
     @if (Model.Divisions.Count > 1 || Model.Divisions[0].Groups.Count > 1)
     {
-        <div class="display-label">@Html.LabelFor(model => model.Divisions)</div>
+    <div class="display-label">@Html.LabelFor(model => model.Divisions)</div>
         for (int i = 0; i < Model.Divisions.Count; i++)
         {
-            <div class="display-field">@Html.DisplayFor(model => model.Divisions[i].Name)</div>
-            <div class="display-label">&nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.Divisions[i].Groups)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Divisions[i].Name)</div>
+    <div class="display-label">&nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.Divisions[i].Groups)</div>
             for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
             {
-                <div class="display-field">&nbsp;&nbsp;&nbsp;@Html.DisplayFor(model => model.Divisions[i].Groups[j].Name)</div>
+    <div class="display-field">&nbsp;&nbsp;&nbsp;@Html.DisplayFor(model => model.Divisions[i].Groups[j].Name)</div>
             }
         }
     }
@@ -91,14 +91,14 @@
     </div>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ManageTeams))
     {
-        <div>
-            @Html.ActionLink(
+    <div>
+        @Html.ActionLink(
             Resources.UI.TournamentViews.ManageTeams,
             "ManageTournamentTeams",
             "Tournaments",
             new { tournamentId = Model.Id },
             null)
-        </div>
+    </div>
     }
     <div>
         @Html.ActionLink(
@@ -114,8 +114,8 @@
     </div>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Archive))
     {
-        <div>
-            @Ajax.ActionLink(
+    <div>
+        @Ajax.ActionLink(
                 "Archive Tournament",
                 "Archive",
                 "Tournaments",
@@ -127,13 +127,13 @@
                     OnSuccess = "onArchiveSuccess"
                 }
                 )
-        </div>
+    </div>
     }
 </fieldset>
 <p>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Edit))
     {
-        @Html.ActionLink(Resources.UI.TournamentViews.Edit, "Edit", new { id = Model.Id }) @:|
+    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "Edit", new { id = Model.Id })  @:|
     }
     @Html.ActionLink(Resources.UI.TournamentViews.BackToList, "Index")
 </p>

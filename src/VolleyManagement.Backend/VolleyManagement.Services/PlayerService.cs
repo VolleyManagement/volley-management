@@ -16,10 +16,12 @@
     using Domain.TeamsAggregate;
     using PlayerResources = Domain.Properties.Resources;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines PlayerService
     /// </summary>
     public class PlayerService : IPlayerService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
@@ -82,7 +84,7 @@
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void Create(List<Player> playersToCreate)
+        public void Create(ICollection<Player> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
@@ -157,7 +159,7 @@
         public void Delete(int id)
         {
             _authService.CheckAccess(AuthOperations.Players.Delete);
-            Team playerTeam = GetPlayerLedTeam(id);
+            var playerTeam = GetPlayerLedTeam(id);
 
             if (playerTeam != null)
             {
@@ -202,7 +204,7 @@
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
-        private IEnumerable<Player> GetNewPlayers(List<Player> playersToCreate)
+        private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
         {
             return playersToCreate.Where(p => p.Id == 0);
         }
@@ -212,7 +214,7 @@
         /// </summary>
         /// <param name="playersToCreate">List of Players</param>
         /// <returns> Return true if Player has TeamId </returns>
-        private bool ValidateExistingPlayers(List<Player> playersToCreate)
+        private bool ValidateExistingPlayers(ICollection<Player> playersToCreate)
         {
             var existingPlayers = Get().ToList();
 
@@ -222,8 +224,8 @@
 
             var isExistingPlayers = existingPlayers
                     .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
-                                  && t.LastName.ToLower().Equals(allPlayer.LastName.ToLower())
+                    .FirstOrDefault(t => String.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
+                                  && String.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
                                   && allPlayer.TeamId != null
                                   && allPlayer.TeamId != teamId));
 

@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using Domain.GameReportsAggregate;
 
@@ -9,13 +9,19 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
     {
         public ShortGameResultViewModel() { }
 
-        public ShortGameResultViewModel(byte roundNumber, byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat = false)
+        public ShortGameResultViewModel(byte roundNumber, byte homeSetScore, byte awaySetScore)
+           : this(homeSetScore, awaySetScore, false) { }
+
+        public ShortGameResultViewModel(byte roundNumber, byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat)
             : this(homeSetScore, awaySetScore, isTechnicalDefeat)
         {
             RoundNumber = roundNumber;
         }
 
-        public ShortGameResultViewModel(byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat = false)
+        public ShortGameResultViewModel(byte homeSetScore, byte awaySetScore)
+            : this(homeSetScore, awaySetScore, false) { }
+
+        public ShortGameResultViewModel(byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat)
         {
             HomeSetsScore = homeSetScore;
             AwaySetsScore = awaySetScore;
@@ -45,8 +51,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 
         public static ShortGameResultViewModel CreatePlannedGame(byte roundNumber)
         {
-            return new ShortGameResultViewModel
-            {
+            return new ShortGameResultViewModel {
                 RoundNumber = roundNumber
             };
         }

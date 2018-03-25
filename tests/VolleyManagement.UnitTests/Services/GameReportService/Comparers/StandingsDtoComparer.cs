@@ -8,7 +8,7 @@
     {
         private StandingsEntryComparer standingsComparer;
 
-        public StandingsDtoComparer(): this(new StandingsEntryComparer())
+        public StandingsDtoComparer() : this(new StandingsEntryComparer())
         {
         }
 
@@ -23,20 +23,7 @@
             Assert.AreEqual(x.DivisionName, y.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
             Assert.AreEqual(x.LastUpdateTime, y.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
 
-            if (x.Standings.Count == y.Standings.Count)
-            {
-                for (var i = 0; i < x.Standings.Count; i++)
-                {
-                    if (standingsComparer.Compare(x.Standings[i], y.Standings[i]) != 0)
-                    {
-                        return 1;
-                    }
-                }
-            }
-            else
-            {
-                Assert.Fail($"[DivisionId={x.DivisionId}] Number of standing entries does not match.");
-            }
+            TestHelper.AreEqual(x.Standings, y.Standings, new StandingsEntryComparer());
 
             return 0;
         }

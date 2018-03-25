@@ -26,7 +26,7 @@
         private readonly ICurrentUserService _currentUserService;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Feedback, FindByIdCriteria> _getFeedbackByIdQuery;
-        private readonly IQuery<List<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
+        private readonly IQuery<ICollection<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
 
         #endregion
 
@@ -49,7 +49,7 @@
             ICurrentUserService currentUserService,
             IAuthorizationService authService,
             IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
-            IQuery<List<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
+            IQuery<ICollection<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
         {
             _feedbackRepository = feedbackRepository;
             _userService = userService;
@@ -72,7 +72,7 @@
         {
             if (feedbackToCreate == null)
             {
-                throw new ArgumentNullException("feedback");
+                throw new ArgumentNullException(nameof(feedbackToCreate));
             }
 
             UpdateFeedbackDate(feedbackToCreate);
@@ -87,7 +87,7 @@
         /// Method to get all feedbacks.
         /// </summary>
         /// <returns>All feedbacks.</returns>
-        public List<Feedback> Get()
+        public ICollection<Feedback> Get()
         {
             _authService.CheckAccess(AuthOperations.Feedbacks.Read);
             return _getAllFeedbacksQuery.Execute(new GetAllCriteria());
@@ -171,17 +171,17 @@
         /// <param name="newStatusCode">Information about mail (body, receiver)</param>
         private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
         {
-                feedback.Status = newStatusCode;
-                if (ShouldChangeLastUpdateInfo(newStatusCode))
-                {
-                    int userId = _currentUserService.GetCurrentUserId();
-                    User user = _userService.GetUser(userId);
-                    feedback.UpdateDate = TimeProvider.Current.UtcNow;
-                    feedback.AdminName = user.PersonName;
-                }
+            feedback.Status = newStatusCode;
+            if (ShouldChangeLastUpdateInfo(newStatusCode))
+            {
+                var userId = _currentUserService.GetCurrentUserId();
+                var user = _userService.GetUser(userId);
+                feedback.UpdateDate = TimeProvider.Current.UtcNow;
+                feedback.AdminName = user.PersonName;
+            }
 
-                _feedbackRepository.Update(feedback);
-                _feedbackRepository.UnitOfWork.Commit();
+            _feedbackRepository.Update(feedback);
+            _feedbackRepository.UnitOfWork.Commit();
         }
 
         #endregion
@@ -194,10 +194,10 @@
         /// <param name="emailTo">Recipient email.</param>
         private void NotifyUser(string emailTo)
         {
-            string body = Properties.Resources.FeedbackConfirmationLetterBody;
-            string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
+            var body = Properties.Resources.FeedbackConfirmationLetterBody;
+            var subject = Properties.Resources.FeedbackConfirmationLetterSubject;
 
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            var emailMessage = new EmailMessage(emailTo, subject, body);
             _mailService.Send(emailMessage);
         }
 
@@ -208,8 +208,8 @@
         /// <param name="message">Message for reply</param>
         private void NotifyUser(string emailTo, string message)
         {
-            string subject = Properties.Resources.FeedbacksEmailReplySubject;
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
+            var subject = Properties.Resources.FeedbacksEmailReplySubject;
+            var emailMessage = new EmailMessage(emailTo, subject, message);
             _mailService.Send(emailMessage);
         }
 
@@ -219,11 +219,11 @@
         /// <param name="feedback">Feedback to send.</param>
         private void NotifyAdmins(Feedback feedback)
         {
-            string subject = string.Format(
+            var subject = string.Format(
                 Properties.Resources.FeedbackEmailSubjectToAdmins,
                 feedback.Id);
 
-            string body = string.Format(
+            var body = string.Format(
                 Properties.Resources.FeedbackEmailBodyToAdmins,
                 feedback.Id,
                 feedback.Date,
@@ -231,21 +231,21 @@
                 feedback.Status,
                 feedback.Content);
 
-            IList<User> adminsList = _userService.GetAdminsList();
+            var adminsList = _userService.GetAdminsList();
 
             foreach (var admin in adminsList)
             {
-                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
+                var emailMessage = new EmailMessage(admin.Email, subject, body);
                 _mailService.Send(emailMessage);
             }
         }
 
-        private bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
+        private static bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
         {
             return newStatusCode == FeedbackStatusEnum.Closed || newStatusCode == FeedbackStatusEnum.Answered;
         }
 
-        private void UpdateFeedbackDate(Feedback feedbackToUpdate)
+        private static void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
         }

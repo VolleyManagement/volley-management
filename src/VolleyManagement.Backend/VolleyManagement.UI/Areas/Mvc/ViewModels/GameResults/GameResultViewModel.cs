@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
     using System.Collections.Generic;
@@ -64,7 +64,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<ScoreViewModel> SetScores { get; set; }
+        public IList<ScoreViewModel> SetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of the game.
@@ -139,8 +139,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>View model of game result.</returns>
         public static GameResultViewModel Map(GameResultDto gameResult)
         {
-            var result = new GameResultViewModel
-            {
+            var result = new GameResultViewModel {
                 Id = gameResult.Id,
                 TournamentId = gameResult.TournamentId,
                 HomeTeamId = gameResult.HomeTeamId,
@@ -154,8 +153,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
                 IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
-                SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
-                {
+                SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel {
                     Home = item.Home,
                     Away = item.Away,
                     IsTechnicalDefeat = item.IsTechnicalDefeat
@@ -183,8 +181,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
             var penalty = MapPenalty();
             var gameScore = GameScore.ToDomain();
             gameScore.IsTechnicalDefeat = IsTechnicalDefeat;
-            return new Game
-            {
+            return new Game {
                 Id = Id,
                 TournamentId = TournamentId,
                 HomeTeamId = HomeTeamId,
@@ -192,8 +189,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 Round = Convert.ToByte(Round),
                 GameDate = GameDate,
                 GameNumber = GameNumber,
-                Result = new Result
-                {
+                Result = new Result {
                     GameScore = gameScore,
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList(),
                     Penalty = penalty
@@ -208,8 +204,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 
             if (HasPenalty)
             {
-                result = new Penalty
-                {
+                result = new Penalty {
                     IsHomeTeam = IsHomeTeamPenalty,
                     Amount = PenaltyAmount,
                     Description = PenaltyDescrition

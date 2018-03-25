@@ -475,7 +475,7 @@
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
+            var comparer = new PivotStandingsComparer();
             comparer.WithPointsComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
@@ -485,7 +485,7 @@
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
+            var comparer = new PivotStandingsComparer();
             comparer.WithSetsComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
@@ -495,7 +495,7 @@
           TournamentStandings<PivotStandingsDto> actual,
           string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
+            var comparer = new PivotStandingsComparer();
             comparer.WithBallsComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }
@@ -505,7 +505,7 @@
            TournamentStandings<PivotStandingsDto> actual,
            string message)
         {
-            PivotStandingsComparer comparer = new PivotStandingsComparer();
+            var comparer = new PivotStandingsComparer();
             comparer.WithGamesComparer();
             AssertTournamentStandingsAreEqual(expected, actual, message, comparer);
         }

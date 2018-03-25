@@ -17,11 +17,11 @@ namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
         /// <summary>
         /// Gets or sets collection of <see cref="GameViewModel"/>containing games played in this day
         /// </summary>
-        public List<GameViewModel> Games { get; set; }
+        public IList<GameViewModel> Games { get; set; }
 
         /// <summary>
         /// Gets or sets collection of <see cref="DivisionTitleViewModel"/>containing divisions played in this day info
         /// </summary>
-        public List<DivisionTitleViewModel> Divisions{ get; set; }
+        public IList<DivisionTitleViewModel> Divisions { get; set; }
     }
 }

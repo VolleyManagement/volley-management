@@ -31,8 +31,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            TeamViewModel firstTeam = x as TeamViewModel;
-            TeamViewModel secondTeam = y as TeamViewModel;
+            var firstTeam = x as TeamViewModel;
+            var secondTeam = y as TeamViewModel;
 
             if (firstTeam == null)
             {
@@ -56,7 +56,7 @@
         {
             var playerComparer = new PlayerNameViewModelComparer();
 
-            bool result = x.Id == y.Id &&
+            var result = x.Id == y.Id &&
                    x.Name == y.Name &&
                    x.Coach == y.Coach &&
                    x.Achievements == y.Achievements &&
@@ -76,7 +76,7 @@
             {
                 foreach (var xPlayer in x.Roster)
                 {
-                    bool playerFound = false;
+                    var playerFound = false;
                     foreach (var yPlayer in y.Roster)
                     {
                         if (playerComparer.AreEqual(xPlayer, yPlayer))

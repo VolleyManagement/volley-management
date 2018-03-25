@@ -10,9 +10,9 @@
 <h2>List of teams</h2>
 @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Create))
 {
-    <p>
-        @Html.ActionLink(Resources.UI.TeamViews.Create, "Create")
-    </p>
+<p>
+    @Html.ActionLink(Resources.UI.TeamViews.Create, "Create")
+</p>
 }
 
 <div vm_scope='team_list'>
@@ -26,22 +26,22 @@
 
         @foreach (var item in Model.Model.Teams)
         {
-            <tr vm_teamid='@item.Id' vm_teamname='@item.Name'>
-                <td class="teamList">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Delete))
+        <tr vm_teamid='@item.Id' vm_teamname='@item.Name'>
+            <td class="teamList">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Delete))
                     {
-                        <button class='deleteTeamButton'>@Resources.UI.TeamViews.Delete</button>
+                <button class='deleteTeamButton'>@Resources.UI.TeamViews.Delete</button>
                     }
-                    @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
+                @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
                     {
-                        @Html.ActionLink(@Resources.UI.TeamViews.Details, "Details", new { id = item.Id, returnUrl = Model.Referer }, null)
+                @Html.ActionLink(@Resources.UI.TeamViews.Details, "Details", new { id = item.Id, returnUrl = Model.Referer }, null)
                     }
-                </td>
-                <td></td>
-            </tr>
+            </td>
+            <td></td>
+        </tr>
         }
 
     </table>

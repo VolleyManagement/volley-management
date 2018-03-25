@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Data.Queries.GameResult
 {
-    using System.Collections.Generic;
     using Contracts;
 
     /// <summary>

@@ -23,8 +23,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            TeamNameViewModel firstTeam = x as TeamNameViewModel;
-            TeamNameViewModel secondTeam = y as TeamNameViewModel;
+            var firstTeam = x as TeamNameViewModel;
+            var secondTeam = y as TeamNameViewModel;
 
             if (firstTeam == null)
             {
@@ -74,7 +74,7 @@
         /// <returns>True if given lists of team have the same properties.</returns>
         public bool AreEqual(List<TeamNameViewModel> x, List<TeamNameViewModel> y)
         {
-            for (int i = 0; i < x.Count; i++)
+            for (var i = 0; i < x.Count; i++)
             {
                 if (!AreEqual(x[i], y[i]))
                     return false;
@@ -101,7 +101,7 @@
         /// <returns>integer hash code</returns>
         public int GetHashCode(TeamNameViewModel obj)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             builder.Append(obj.Id);
             builder.Append(obj.Name);

@@ -73,8 +73,7 @@
         /// <returns> The <see cref="UserViewModel"/>. </returns>
         public static UserViewModel Initialize(User user)
         {
-            return new UserViewModel
-            {
+            return new UserViewModel {
                 Id = user.Id,
                 Name = user.UserName,
                 Email = user.Email,
@@ -91,8 +90,7 @@
         /// <returns> View model object </returns>
         public static UserViewModel Map(User user)
         {
-            var userViewModel = new UserViewModel
-            {
+            var userViewModel = new UserViewModel {
                 Id = user.Id,
                 Name = user.UserName,
                 Email = user.Email,

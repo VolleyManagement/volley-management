@@ -1,246 +1,243 @@
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input[type="text"],
 input[type="password"] {
-    max-width: 280px;
+  max-width: 280px;
 }
 
 /* styles for validation helpers */
 .field-validation-error {
-    color: #b94a48;
+  color: #b94a48;
 }
 
 .field-validation-valid {
-    display: none;
+  display: none;
 }
 
 input.input-validation-error {
-    border: 1px solid #b94a48;
+  border: 1px solid #b94a48;
 }
 
 input[type="checkbox"].input-validation-error {
-    border: 0 none;
+  border: 0 none;
 }
 
 .validation-summary-errors {
-    color: #b94a48;
+  color: #b94a48;
 }
 
 .validation-summary-valid {
-    display: none;
+  display: none;
 }
 
 div#content {
-    padding: 1em;
-    float: left;
-    width: 88em;
+  padding: 1em;
+  float: left;
+  width: 88em;
 }
 
 div#menu {
-    float: left;
-    width: 8em;
-    padding: .3em;
+  float: left;
+  width: 8em;
+  padding: .3em;
 }
 
-    div#menu a {
-        font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial;
-        display: block;
-        text-decoration: none;
-        padding: .6em;
-        color: black;
-        border-bottom: 1px solid silver;
+  div#menu a {
+    font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial;
+    display: block;
+    text-decoration: none;
+    padding: .6em;
+    color: black;
+    border-bottom: 1px solid silver;
+  }
+
+    div#menu a.selected {
+      background-color: #666;
+      color: white;
     }
 
-        div#menu a.selected {
-            background-color: #666;
-            color: white;
-        }
+    div#menu a:hover {
+      background-color: #CCC;
+    }
 
-        div#menu a:hover {
-            background-color: #CCC;
-        }
-
-        div#menu a.selected:hover {
-            background-color: #666
-        }
+    div#menu a.selected:hover {
+      background-color: #666
+    }
 
 .form-control {
-    display: inline-block;
-    width: auto;
+  display: inline-block;
+  width: auto;
 }
 
 .color-red {
-    color: red;
+  color: red;
 }
 
 div .division-groups-wrapper {
-    padding-left: 25px;
+  padding-left: 25px;
 }
 
 div .group-editor {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 div .add-group-button {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 div .add-division-button {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .link-button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 table.results {
-    margin: 0 0 20px 0;
+  margin: 0 0 20px 0;
 }
 
 tr.results-header-row, tr.standings-header-row {
-    background-color: #222;
-    color: #fff;
-    font-weight: bold;
+  background-color: #222;
+  color: #fff;
+  font-weight: bold;
 }
 
 th.results-header-cell, th.standings-header-cell {
-    padding: 3px 5px;
-    border: 1px solid #fff;
-    text-align: center;
+  padding: 3px 5px;
+  border: 1px solid #fff;
+  text-align: center;
 }
 
 th.results-operation-header-cell {
-    border: none;
-    background-color: #fff;
+  border: none;
+  background-color: #fff;
 }
 
 tr.results-row:nth-child(odd), tr.standings-row:nth-child(odd) {
-    background-color: #e5e5e5;
+  background-color: #e5e5e5;
 }
 
 tr.results-row:nth-child(even), tr.standings-row:nth-child(even) {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 td.results-cell, td.standings-cell {
-    padding: 3px 5px;
-    border: 1px solid #fff;
-    text-align: center;
-    vertical-align: middle;
+  padding: 3px 5px;
+  border: 1px solid #fff;
+  text-align: center;
+  vertical-align: middle;
 }
 
 td.game-score-cell {
-    width: 400px;
-    text-align: left;
+  width: 400px;
+  text-align: left;
 }
 
 td.results-first-operation-cell {
-    padding: 3px 5px 3px 25px;
-    border: none;
-    background-color: #fff;
-    color: #000;
+  padding: 3px 5px 3px 25px;
+  border: none;
+  background-color: #fff;
+  color: #000;
 }
 
 td.results-operation-cell {
-    padding: 3px 5px;
-    border: none;
-    background-color: #fff;
-    color: #000;
+  padding: 3px 5px;
+  border: none;
+  background-color: #fff;
+  color: #000;
 }
 
 div.game-home-team {
-    display: inline-block;
-    padding-right: 3px;
-    text-align: right;
-    width: 174px;
+  display: inline-block;
+  padding-right: 3px;
+  text-align: right;
+  width: 174px;
 }
 
 div.game-score {
-    display: inline-block;
-    padding: 0 3px;
-    font-weight: bold;
-    text-align: center;
-    width: 40px;
+  display: inline-block;
+  padding: 0 3px;
+  font-weight: bold;
+  text-align: center;
+  width: 40px;
 }
 
 div.game-away-team {
-    display: inline-block;
-    padding-left: 3px;
-    text-align: left;
+  display: inline-block;
+  padding-left: 3px;
+  text-align: left;
 }
 
 div.game-number {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 table.standings {
-    margin: 0 0 20px 0;
-    font-size: 13px;
+  margin: 0 0 20px 0;
+  font-size: 13px;
 }
 
 .win_3_0 {
-    background-color: #2b5536;
-    margin: 0;
+  background-color: #2b5536;
+  margin: 0;
 }
 
 .win_3_1 {
-    background-color: #a1d07e;
-    margin: 0;
+  background-color: #a1d07e;
+  margin: 0;
 }
 
 .win_3_2 {
-    background-color: #dfe282;
-    padding: 0;
+  background-color: #dfe282;
+  padding: 0;
 }
 
 .loss_2_3 {
-    background-color: #fed280;
-    margin: 0;
+  background-color: #fed280;
+  margin: 0;
 }
 
 .loss_1_3 {
-    background-color: #fb9d75;
-    margin: 0;
+  background-color: #fb9d75;
+  margin: 0;
 }
 
 .loss_0_3 {
-    background-color: #f8696b;
-    margin: 0;
-}
-
-.noresult {
+  background-color: #f8696b;
+  margin: 0;
 }
 
 .non-playable {
-    background-color: #000000;
-    color: #000000;
-    margin: 0;
+  background-color: #000000;
+  color: #000000;
+  margin: 0;
 }
 
 .feedback-link {
-    margin-left: 30px;
-    font-size: 14px;
-    padding: 5px;
-    border-radius: 3px;
+  margin-left: 30px;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 3px;
 }
 
 .feedback-text-area {
-    width: 280px;
-    height: 120px;
+  width: 280px;
+  height: 120px;
 }
 
 .videoLinkIcon {
-    width: 16px;
-    height: 16px;
-    text-decoration: none;
+  width: 16px;
+  height: 16px;
+  text-decoration: none;
 }
 
-    .videoLinkIcon:hover,
-    .videoLinkIcon:focus {
-        text-decoration: none;
-    }
+  .videoLinkIcon:hover,
+  .videoLinkIcon:focus {
+    text-decoration: none;
+  }

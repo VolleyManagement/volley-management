@@ -23,9 +23,7 @@
                 throw new ArgumentNullException("uri");
             }
 
-            var urlHelper = request.GetUrlHelper() ?? new UrlHelper(request);
-
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace VolleyManagement.API
             ioc
                 .Register(new IocDataAccessModule())
                 .Register(new IocServicesModule())
-                .Register(new IocUiModule());
+                .Register(new IocCoreUIModule());
 
             ioc.InternalContainer.Verify();
 

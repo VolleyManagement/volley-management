@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Contracts.Authorization;
     using Domain.PlayersAggregate;
 
@@ -30,16 +29,20 @@
 
             if ((PageNumber > NumberOfPages) || (PageNumber < FIRST_PAGE))
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+            var list = new List<Player>();
+            foreach (var player in source.Skip((PageNumber - 1) * Size)
+                .Take(Size))
+            {
+                list.Add(player);
             }
 
-            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((PageNumber - 1) * Size)
-                            .Take(Size)
-                            .ToList()
-                            .Select(p => PlayerViewModel.Map(p)));
+            var listOfPlayers = new List<PlayerViewModel>(list
+                .Select(p => PlayerViewModel.Map(p)));
 
             List = new List<PlayerNameViewModel>();
-            foreach (PlayerViewModel player in listOfPlayers)
+            foreach (var player in listOfPlayers)
             {
                 List.Add(PlayerNameViewModel.Map(player));
             }
@@ -68,7 +71,7 @@
         /// <summary>
         /// Gets list Of Players
         /// </summary>
-        public List<PlayerNameViewModel> List { get; private set; }
+        public ICollection<PlayerNameViewModel> List { get; private set; }
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object

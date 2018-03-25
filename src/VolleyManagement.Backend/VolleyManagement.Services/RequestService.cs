@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Services
 {
-    using System;
     using System.Collections.Generic;
     using Contracts;
     using Contracts.Authorization;
@@ -25,7 +24,7 @@
         private readonly IUserService _userService;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Request, FindByIdCriteria> _getRequestByIdQuery;
-        private readonly IQuery<List<Request>, GetAllCriteria> _getAllRequestsQuery;
+        private readonly IQuery<ICollection<Request>, GetAllCriteria> _getAllRequestsQuery;
         private readonly IQuery<Request, UserToPlayerCriteria> _getRequestUserPlayerQuery;
 
         #endregion
@@ -48,7 +47,7 @@
             IUserService userService,
             IAuthorizationService authService,
             IQuery<Request, FindByIdCriteria> getRequestByIdQuery,
-            IQuery<List<Request>, GetAllCriteria> getAllRequestsQuery,
+            IQuery<ICollection<Request>, GetAllCriteria> getAllRequestsQuery,
             IQuery<Request, UserToPlayerCriteria> getRequestUserPlayerQuery)
         {
             _requestRepository = requestRepository;
@@ -134,7 +133,7 @@
         /// Method for getting all requests.
         /// </summary>
         /// <returns>All requests.</returns>
-        public List<Request> Get()
+        public ICollection<Request> Get()
         {
             _authService.CheckAccess(AuthOperations.Requests.ViewList);
             return _getAllRequestsQuery.Execute(new GetAllCriteria());
@@ -152,8 +151,8 @@
 
         private void DeleteRequest(int requestId)
         {
-                _requestRepository.Remove(requestId);
-                _requestRepository.UnitOfWork.Commit();
+            _requestRepository.Remove(requestId);
+            _requestRepository.UnitOfWork.Commit();
         }
     }
 }

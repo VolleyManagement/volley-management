@@ -6,7 +6,7 @@
     /// <summary>
     /// The route config.
     /// </summary>
-    public class RouteConfig
+    public static class RouteConfig
     {
         /// <summary>
         /// Registers all routes needed to be Ignored.

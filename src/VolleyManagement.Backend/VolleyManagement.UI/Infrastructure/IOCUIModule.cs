@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Infrastructure
+﻿namespace VolleyManagement.UI.Infrastructure
 {
     using Contracts;
     using Contracts.Authorization;
@@ -6,6 +6,8 @@ namespace VolleyManagement.UI.Infrastructure
     using Crosscutting.Contracts.FeatureToggles;
     using Crosscutting.Contracts.Infrastructure;
     using Crosscutting.Contracts.Infrastructure.IOC;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.UI.Infrastructure;
     using FeatureToggle.Core.Fluent;
     using Services;
     using Services.Mail;
@@ -18,17 +20,17 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<ICurrentUserService, CurrentUserService>(IocLifetimeEnum.Scoped)
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
-                .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
+                .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton)
+                .Register<IConfigurationProvider, MvcUiConfigurationProvider>(IocLifetimeEnum.Singleton);
 
-            // NOTE Getting error here. Need to setup getting values from appsetting.json in API Core application
-            //if (Is<IISDeployment>.Disabled)
-            //{
+            if (Is<IisDeployment>.Disabled)
+            {
                 container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
-            //}
-            //else
-            //{
-            //    container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
-            //}
+            }
+            else
+            {
+                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
+            }
         }
     }
 }

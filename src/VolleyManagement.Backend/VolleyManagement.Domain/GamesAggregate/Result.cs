@@ -24,10 +24,10 @@
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<Score> SetScores { get; set; }
+        public IList<Score> SetScores { get; set; }
 
         /// <summary>
-        /// Gets or sets penalty for game
+        /// Gets or sets penalty for games
         /// </summary>
         public Penalty Penalty { get; set; }
 
@@ -41,7 +41,7 @@
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.DEFAULT_TECHNICAL_DEFEAT);
-            for (int i = 0; i < Constants.GameResult.MAX_SETS_COUNT; i++)
+            for (var i = 0; i < Constants.GameResult.MAX_SETS_COUNT; i++)
             {
                 SetScores.Add((
                        Constants.GameResult.EMPTY_SCORE,

@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
-    using System.Collections.Generic;
+    using System;
     using System.Globalization;
     using Domain.GameReportsAggregate;
 
@@ -76,7 +76,7 @@
         {
             get
             {
-                return SetsRatio != float.PositiveInfinity ?
+                return SetsRatio.HasValue && !Single.IsPositiveInfinity(SetsRatio.Value) ?
                     string.Format(
                     CultureInfo.CurrentUICulture,
                     "{0:0.###}",
@@ -102,7 +102,7 @@
         {
             get
             {
-                return BallsRatio != float.PositiveInfinity ?
+                return BallsRatio.HasValue && !Single.IsPositiveInfinity(BallsRatio.Value) ?
                     string.Format(
                     CultureInfo.CurrentUICulture,
                     "{0:0.###}",
@@ -120,8 +120,7 @@
         /// <returns>View model of <see cref="StandingsEntry"/>.</returns>
         public static StandingsEntryViewModel Map(StandingsEntry standingsEntry)
         {
-            return new StandingsEntryViewModel
-            {
+            return new StandingsEntryViewModel {
                 TeamName = standingsEntry.TeamName,
                 Points = standingsEntry.Points,
                 GamesTotal = standingsEntry.GamesTotal,

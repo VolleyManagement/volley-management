@@ -14,47 +14,51 @@
     using Domain.TournamentsAggregate;
     using Domain.UsersAggregate;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines an implementation of <see cref="ITournamentRequestService"/> contract.
     /// </summary>
     public class TournamentRequestService : ITournamentRequestService
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly IMailService _mailService;
         private readonly ITournamentRequestRepository _tournamentRequestRepository;
-        private readonly ITournamentRepository _tournamentRepository;
+        private readonly ITournamentService _tournamentService;
         private readonly IAuthorizationService _authService;
-        private readonly IQuery<List<TournamentRequest>, GetAllCriteria> _getAllTournamentRequestsQuery;
+        private readonly IQuery<ICollection<TournamentRequest>, GetAllCriteria> _getAllTournamentRequestsQuery;
         private readonly IQuery<TournamentRequest, FindByIdCriteria> _getTournamentRequestByIdQuery;
         private readonly IQuery<TournamentRequest, FindByTeamTournamentCriteria> _getTournamentRequestByAllQuery;
         private readonly IUserService _userService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentRequestService"/> class.
-        /// </summary>
-        /// <param name="tournamentRequestRepository"> Read the ITournamentRequestRepository instance</param>
-        /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
-        /// <param name="getAllTournamentRequestsQuery">Get list of all requests</param>
-        /// <param name="getTournamentRequestById">Get request by it's id</param>
-        /// <param name="getTournamentRequestByAll">Get list of all requests by team id and tournament id</param>
-        /// <param name="tournamentRepository">Read the ITournamentRepository instance</param>
-        /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
-        /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
+#pragma warning disable S107 // Methods should not have too many parameters
+                            /// <summary>
+                            /// Initializes a new instance of the <see cref="TournamentRequestService"/> class.
+                            /// </summary>
+                            /// <param name="tournamentRequestRepository"> Read the ITournamentRequestRepository instance</param>
+                            /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
+                            /// <param name="getAllTournamentRequestsQuery">Get list of all requests</param>
+                            /// <param name="getTournamentRequestById">Get request by it's id</param>
+                            /// <param name="getTournamentRequestByAll">Get list of all requests by team id and tournament id</param>
+                            /// <param name="tournamentRepository">Read the ITournamentRepository instance</param>
+                            /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
+                            /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
         public TournamentRequestService(
             ITournamentRequestRepository tournamentRequestRepository,
             IAuthorizationService authService,
-            IQuery<List<TournamentRequest>, GetAllCriteria> getAllTournamentRequestsQuery,
+            IQuery<ICollection<TournamentRequest>, GetAllCriteria> getAllTournamentRequestsQuery,
             IQuery<TournamentRequest, FindByIdCriteria> getTournamentRequestById,
             IQuery<TournamentRequest, FindByTeamTournamentCriteria> getTournamentRequestByAll,
-            ITournamentRepository tournamentRepository,
+            ITournamentService tournamentService,
             IMailService mailService,
             IUserService userService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _tournamentRequestRepository = tournamentRequestRepository;
             _authService = authService;
             _getAllTournamentRequestsQuery = getAllTournamentRequestsQuery;
             _getTournamentRequestByIdQuery = getTournamentRequestById;
             _getTournamentRequestByAllQuery = getTournamentRequestByAll;
-            _tournamentRepository = tournamentRepository;
+            _tournamentService = tournamentService;
             _mailService = mailService;
             _userService = userService;
         }
@@ -73,9 +77,16 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TournamentRequestNotFound, requestId);
             }
 
-            _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.GroupId);
-            _tournamentRepository.UnitOfWork.Commit();
-             NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
+            _tournamentService.AddTeamsToTournament(new List<TeamTournamentAssignmentDto>
+                                                        {
+                                                            new TeamTournamentAssignmentDto
+                                                            {
+                                                                TeamId = tournamentRequest.TeamId,
+                                                                GroupId = tournamentRequest.GroupId
+                                                            }
+                                                        });
+
+            NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
             _tournamentRequestRepository.Remove(requestId);
             _tournamentRequestRepository.UnitOfWork.Commit();
         }
@@ -120,7 +131,7 @@
         /// Gets list of all requests.
         /// </summary>
         /// <returns>Return list of all requests.</returns>
-        public List<TournamentRequest> Get()
+        public ICollection<TournamentRequest> Get()
         {
             _authService.CheckAccess(AuthOperations.TournamentRequests.ViewList);
             return _getAllTournamentRequestsQuery.Execute(new GetAllCriteria());
@@ -144,35 +155,35 @@
 
         private void NotifyUser(string emailTo)
         {
-            string body = Properties.Resources.TournamentRequestConfirmitionLetterBody;
-            string subject = Properties.Resources.TournamentRequestLetterSubject;
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            var body = Properties.Resources.TournamentRequestConfirmitionLetterBody;
+            var subject = Properties.Resources.TournamentRequestLetterSubject;
+            var emailMessage = new EmailMessage(emailTo, subject, body);
             _mailService.Send(emailMessage);
         }
 
         private void NotifyUser(string emailTo, string message)
         {
-            string subject = Properties.Resources.TournamentRequestLetterSubject;
-            EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
+            var subject = Properties.Resources.TournamentRequestLetterSubject;
+            var emailMessage = new EmailMessage(emailTo, subject, message);
             _mailService.Send(emailMessage);
         }
 
         private void NotifyAdmins(TournamentRequest request)
         {
-            string subject = string.Format(
+            var subject = string.Format(
                 Properties.Resources.TournamentRequestEmailSubjectToAdmins,
                 request.Id);
 
-            string body = string.Format(
+            var body = string.Format(
                 Properties.Resources.TournamentRequestEmailBodyToAdmins,
                 request.Id,
                 request.UserId,
                 request.TournamentId,
                 request.TeamId);
-            IList<User> adminList = _userService.GetAdminsList();
+            var adminList = _userService.GetAdminsList();
             foreach (var admin in adminList)
             {
-                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
+                var emailMessage = new EmailMessage(admin.Email, subject, body);
                 _mailService.Send(emailMessage);
             }
         }

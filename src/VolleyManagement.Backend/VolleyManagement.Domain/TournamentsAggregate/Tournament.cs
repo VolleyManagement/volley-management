@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using Crosscutting.Contracts.Providers;
-    using Properties;
 
     /// <summary>
     /// Tournament domain class.
@@ -61,8 +60,8 @@
         {
             get
             {
-                DateTime now = TimeProvider.Current.UtcNow;
-                DateTime limitUpcomingTournamentsStartDate
+                var now = TimeProvider.Current.UtcNow;
+                var limitUpcomingTournamentsStartDate
                     = now.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
 
                 if (GamesStart > limitUpcomingTournamentsStartDate)
@@ -118,7 +117,7 @@
         /// <summary>
         /// Gets or sets divisions of the tournament
         /// </summary>
-        public List<Division> Divisions { get; set; }
+        public ICollection<Division> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether tournament is archived

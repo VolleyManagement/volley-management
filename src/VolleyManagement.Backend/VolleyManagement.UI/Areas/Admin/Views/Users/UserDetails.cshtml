@@ -7,15 +7,16 @@
 
 <br />
 <div class="panel panel-primary">
-    <div class="panel-heading">User @Model.Id
+    <div class="panel-heading">
+        User @Model.Id
         <div class="pull-right">
             @if (Model.IsBlocked)
             {
-                <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@Model.Id, false)">Unblock</button>
+            <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@Model.Id, false)">Unblock</button>
             }
             else
             {
-                <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@Model.Id, true)">Block</button>
+            <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@Model.Id, true)">Block</button>
             }
         </div>
     </div>
@@ -58,10 +59,10 @@
 
         @foreach (var provider in Model.LoginProviders)
         {
-            <tr>
-                <td>@provider.LoginProvider</td>
-                <td>@provider.ProviderKey</td>
-            </tr>
+        <tr>
+            <td>@provider.LoginProvider</td>
+            <td>@provider.ProviderKey</td>
+        </tr>
         }
 
     </table>
@@ -69,65 +70,65 @@
     <div class="panel-heading"> @Html.LabelFor(model => Model.Roles)</div>
     @if (Model.Roles.Count() == 0)
     {
-        <table class="table table-striped">
-            <tr>
-                <td colspan="3" class="text-center">No roles assigned to user</td>
-            </tr>
-        </table>
+    <table class="table table-striped">
+        <tr>
+            <td colspan="3" class="text-center">No roles assigned to user</td>
+        </tr>
+    </table>
     }
     else
     {
-        <table class="table table-striped">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
 
-            @foreach (var role in Model.Roles)
+        @foreach (var role in Model.Roles)
             {
-                <tr>
-                    <td>@role.Id</td>
-                    <td>@role.Name</td>
-                </tr>
+        <tr>
+            <td>@role.Id</td>
+            <td>@role.Name</td>
+        </tr>
             }
-        </table>
+    </table>
     }
-   
+
 
     <div class="panel-heading"> @Html.LabelFor(model => Model.Player)</div>
     <table class="table table-striped">
         @if (Model.Player == null)
         {
-               <tr>
-                   <td colspan="3" class="text-center">No player assigned to user</td>
-               </tr>
+        <tr>
+            <td colspan="3" class="text-center">No player assigned to user</td>
+        </tr>
         }
         else
         {
-            <tr>
-                <td>@Html.LabelFor(model => Model.Player.FirstName)</td>
-                <td>@Model.Player.FirstName</td>
+        <tr>
+            <td>@Html.LabelFor(model => Model.Player.FirstName)</td>
+            <td>@Model.Player.FirstName</td>
 
-            </tr>
+        </tr>
 
-            <tr>
-                <td> @Html.LabelFor(model => Model.Player.LastName)</td>
-                <td> @Model.Player.LastName</td>
-            </tr>
+        <tr>
+            <td> @Html.LabelFor(model => Model.Player.LastName)</td>
+            <td> @Model.Player.LastName</td>
+        </tr>
 
-            <tr>
-                <td> @Html.LabelFor(model => Model.Player.BirthYear)</td>
-                <td> @Model.Player.BirthYear</td>
-            </tr>
+        <tr>
+            <td> @Html.LabelFor(model => Model.Player.BirthYear)</td>
+            <td> @Model.Player.BirthYear</td>
+        </tr>
 
-            <tr>
-                <td>@Html.LabelFor(model => Model.Player.Height)</td>
-                <td>@Model.Player.Height</td>
-            </tr>
-            <tr>
-                <td> @Html.LabelFor(model => Model.Player.Weight)</td>
-                <td> @Model.Player.Weight </td>
-            </tr>
+        <tr>
+            <td>@Html.LabelFor(model => Model.Player.Height)</td>
+            <td>@Model.Player.Height</td>
+        </tr>
+        <tr>
+            <td> @Html.LabelFor(model => Model.Player.Weight)</td>
+            <td> @Model.Player.Weight </td>
+        </tr>
         }
     </table>
 

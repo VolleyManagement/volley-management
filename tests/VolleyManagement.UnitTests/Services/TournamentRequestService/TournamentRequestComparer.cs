@@ -19,8 +19,8 @@
         /// <returns>A signed integer that indicates the relative values of requests.</returns>
         public int Compare(object x, object y)
         {
-            TournamentRequest firstTournamentRequest = x as TournamentRequest;
-            TournamentRequest secondTournamentRequest = y as TournamentRequest;
+            var firstTournamentRequest = x as TournamentRequest;
+            var secondTournamentRequest = y as TournamentRequest;
 
             if (firstTournamentRequest == null)
             {

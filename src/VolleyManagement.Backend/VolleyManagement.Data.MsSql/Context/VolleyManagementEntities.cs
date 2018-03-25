@@ -1,3 +1,5 @@
+﻿using System;
+
 namespace VolleyManagement.Data.MsSql.Context
 {
     using System;
@@ -7,10 +9,12 @@ namespace VolleyManagement.Data.MsSql.Context
     using Entities;
     using Microsoft.Extensions.Configuration;
 
+#pragma warning disable S1200 // This class is a DB context - there could not be other way 
     /// <summary>
     /// Volley management database context
     /// </summary>
     public class VolleyManagementEntities : DbContext
+#pragma warning restore S1200
     {
         #region Constructor
 
@@ -22,18 +26,14 @@ namespace VolleyManagement.Data.MsSql.Context
             Database.SetInitializer(new VolleyManagementDatabaseInitializer());
         }
 
-        private static string GetConnectionString()
-        {
-            var builder = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json",true).Build();
-            return builder.GetConnectionString("VolleyManagementEntities") ?? ConfigurationManager.ConnectionStrings["VolleyManagementEntities"].ConnectionString;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VolleyManagementEntities" /> class.
-        /// </summary>
+        [Obsolete("Needed for EF to properly instantiate DB context. Not intented to be called directly")]
         public VolleyManagementEntities()
         {
-            this.Database.Connection.ConnectionString = GetConnectionString();
+        }
+
+        public VolleyManagementEntities(string nameOrConnectionString)
+            : base(nameOrConnectionString)
+        {
         }
 
         #endregion
@@ -459,11 +459,11 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasMany(u => u.Roles)
                 .WithMany(r => r.Users)
                 .Map(m =>
-                        {
-                            m.MapLeftKey(VolleyDatabaseMetadata.ROLE_TO_USER_FK);
-                            m.MapRightKey(VolleyDatabaseMetadata.USER_TO_ROLE_FK);
-                            m.ToTable(VolleyDatabaseMetadata.USERS_TO_ROLES_TABLE_NAME);
-                        });
+                {
+                    m.MapLeftKey(VolleyDatabaseMetadata.ROLE_TO_USER_FK);
+                    m.MapRightKey(VolleyDatabaseMetadata.USER_TO_ROLE_FK);
+                    m.ToTable(VolleyDatabaseMetadata.USERS_TO_ROLES_TABLE_NAME);
+                });
         }
 
         private static void ConfigureGroupTeamRelationship(DbModelBuilder modelBuilder)

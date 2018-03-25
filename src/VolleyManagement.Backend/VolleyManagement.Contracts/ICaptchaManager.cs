@@ -12,6 +12,6 @@
         /// </summary>
         /// <param name="userResponseToken">Response captcha token from user.</param>
         /// <returns>Captcha result</returns>
-        Task<bool> ValidateUserCaptcha(string userResponseToken);
+        Task<bool> ValidateUserCaptchaAsync(string userResponseToken);
     }
 }

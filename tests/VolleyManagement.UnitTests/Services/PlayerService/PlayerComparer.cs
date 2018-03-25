@@ -30,8 +30,8 @@
         /// <returns>A signed integer that indicates the relative values of players.</returns>
         public int Compare(object x, object y)
         {
-            Player firstPlayer = x as Player;
-            Player secondPlayer = y as Player;
+            var firstPlayer = x as Player;
+            var secondPlayer = y as Player;
 
             if (firstPlayer == null)
             {

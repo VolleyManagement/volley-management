@@ -9,7 +9,7 @@
     /// Compares User instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer
+    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer, IComparer<UI.Areas.Admin.Models.UserViewModel>
     {
         public int Compare(UserViewModel x, UserViewModel y)
         {
@@ -45,6 +45,18 @@
             }
 
             result = string.CompareOrdinal(x.UserName, y.UserName);
+            return result;
+        }
+
+        public int Compare(UI.Areas.Admin.Models.UserViewModel x, UI.Areas.Admin.Models.UserViewModel y)
+        {
+            var result = y.Id - x.Id;
+            if (result != 0)
+            {
+                return result;
+            }
+
+            result = string.CompareOrdinal(x.Email, y.Email);
             return result;
         }
     }

@@ -190,7 +190,12 @@
         public GameBuilder WithSetScores(IEnumerable<Score> scores)
         {
             _game.Result.SetScores.Clear();
-            _game.Result.SetScores.AddRange(scores);
+            var scoresEnumerator = scores.GetEnumerator();
+            while (scoresEnumerator.MoveNext())
+            {
+                _game.Result.SetScores.Add(scoresEnumerator.Current);
+            }
+            scoresEnumerator.Dispose();
             return this;
         }
 

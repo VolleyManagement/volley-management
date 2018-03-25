@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using VolleyManagement.API.Infrastructure;
+﻿using FeatureToggle.Core.Fluent;
 using VolleyManagement.Contracts;
 using VolleyManagement.Contracts.Authorization;
 using VolleyManagement.Contracts.ExternalResources;
@@ -11,8 +7,9 @@ using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
 using VolleyManagement.Crosscutting.Contracts.Providers;
 using VolleyManagement.Services;
 using VolleyManagement.Services.Mail;
+using VolleyManagement.UI.Infrastructure;
 
-namespace VolleyManagement.UI.Infrastructure
+namespace VolleyManagement.API.Infrastructure
 {
     public class IocCoreUIModule : IIocRegistrationModule
     {
@@ -25,14 +22,14 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton)
                 .Register<IConfigurationProvider, ApiUiConfigurationProvider>(IocLifetimeEnum.Singleton);
 
-            //if (Is<IisDeployment>.Disabled)
-            //{
-            container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
-            //}
-            //else
-            //{
-            //    container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
-            //}
+            if (Is<Crosscutting.Contracts.FeatureToggles.Core.IisDeployment>.Disabled)
+            {
+                container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
+            }
+            else
+            {
+                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
+            }
         }
     }
 }

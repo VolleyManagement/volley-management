@@ -1,4 +1,4 @@
-namespace VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC
+﻿namespace VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC
 {
     using System;
 
@@ -32,5 +32,12 @@ namespace VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC
         /// <param name="lifetime">Life time of instance for implementation type</param>
         /// <returns>Current application IOC container</returns>
         IIocContainer Register(Type contract, Type implementation, IocLifetimeEnum lifetime);
+
+        /// <summary>
+        /// Resolves instance of specified type
+        /// </summary>
+        /// <typeparam name="T">Type to resolve</typeparam>
+        /// <returns>Resolved instance</returns>
+        T Get<T>() where T : class;
     }
 }

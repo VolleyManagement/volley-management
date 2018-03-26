@@ -1,19 +1,20 @@
-﻿namespace VolleyManagement.UI
+﻿using SimpleInjector.Integration.Web;
+using SimpleInjector.Integration.Web.Mvc;
+using SimpleInjector.Integration.WebApi;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Optimization;
+using System.Web.Routing;
+using VolleyManagement.Crosscutting.IOC;
+using VolleyManagement.Data.MsSql.Infrastructure;
+using VolleyManagement.Services.Infrastructure;
+using VolleyManagement.UI.Helpers;
+using VolleyManagement.UI.Infrastructure;
+
+namespace VolleyManagement.UI
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Web.Http;
-    using System.Web.Mvc;
-    using System.Web.Optimization;
-    using System.Web.Routing;
-    using SimpleInjector.Integration.Web;
-    using SimpleInjector.Integration.Web.Mvc;
-    using SimpleInjector.Integration.WebApi;
-    using VolleyManagement.Data.MsSql.Infrastructure;
-    using VolleyManagement.Services.Infrastructure;
-    using VolleyManagement.UI.Helpers;
-    using VolleyManagement.UI.Infrastructure;
-    using VolleyManagement.UI.Infrastructure.IOC;
 
 #pragma warning disable SA1649 // File name must match first type name
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)

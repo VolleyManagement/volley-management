@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web.Http;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -10,13 +8,12 @@ using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Integration.WebApi;
 using SimpleInjector.Lifestyles;
+using System.Web.Http;
+using Microsoft.AspNetCore.Authentication.Google;
+using VolleyManagement.API.Infrastructure;
 using VolleyManagement.Data.MsSql.Infrastructure;
 using VolleyManagement.Services.Infrastructure;
-using VolleyManagement.UI.Infrastructure;
 using VolleyManagement.UI.Infrastructure.IOC;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Google;
-using VolleyManagement.Services.Authentication;
 
 namespace VolleyManagement.API
 {

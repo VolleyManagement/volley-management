@@ -1,4 +1,5 @@
-﻿using FeatureToggle.Core.Fluent;
+﻿using FeatureToggle;
+using FeatureToggle.Core.Fluent;
 using VolleyManagement.Contracts;
 using VolleyManagement.Contracts.Authorization;
 using VolleyManagement.Contracts.ExternalResources;

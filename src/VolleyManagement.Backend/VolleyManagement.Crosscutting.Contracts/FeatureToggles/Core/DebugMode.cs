@@ -7,14 +7,14 @@ namespace VolleyManagement.Crosscutting.Contracts.FeatureToggles.Core
 
     public class DebugMode : IFeatureToggle
     {
-        private const string FEATURE = "DebugMode";
+        private const string FEATURE = "FeatureToggle.DebugMode";
 
         public bool FeatureEnabled
         {
             get
             {
                 var builder = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json", true).Build();
-                var featureValue = builder[$"Features:{FEATURE}"];
+                var featureValue = builder[$"AppSettings:{FEATURE}"];
                 return !string.IsNullOrWhiteSpace(featureValue) && bool.Parse(featureValue);
             }
         }

@@ -1,9 +1,29 @@
 vm-menu {
   width: 20%;
   display: inline-block;
+  flex: 0 0 12em;
+  order: -1;
 }
 
 vm-tournaments {
   width: 60%;
   display: inline-block;
+  flex: 1;
+}
+
+.body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.contentBody {
+  display: flex;
+  flex: 1;
+}
+
+.header {
+  width: 99%;
+  margin: auto;
+  text-align: center;
 }

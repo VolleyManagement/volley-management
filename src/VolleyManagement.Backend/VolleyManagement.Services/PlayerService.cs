@@ -75,8 +75,9 @@
             {
                 throw new ArgumentNullException("playerToCreate");
             }
-
-            _playerRepository.Add(playerToCreate);
+             
+            _playerRepository.Add(playerToCreate.FirstName, playerToCreate.LastName, 
+                playerToCreate.BirthYear, playerToCreate.Height, playerToCreate.Weight, playerToCreate.TeamId);
         }
 
         /// <summary>
@@ -99,7 +100,8 @@
             {
                 foreach (var player in newPlayersToCreate)
                 {
-                    _playerRepository.Add(player);
+                    _playerRepository.Add(player.FirstName, player.LastName,
+                        player.BirthYear, player.Height, player.Weight, player.TeamId);
                 }
             }
         }

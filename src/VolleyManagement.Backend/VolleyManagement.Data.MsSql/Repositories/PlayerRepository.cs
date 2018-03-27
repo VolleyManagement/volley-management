@@ -35,19 +35,23 @@
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
-        public void Add(Player newEntity)
+        public Player Add(string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
         {
-            var newPlayer = new PlayerEntity();
-            DomainToDal.Map(newPlayer, newEntity);
+            var newPlayer = new Player(firstName, lastName, birthYear, height, weight, teamId);
+            var newEntity = new PlayerEntity();
 
-            if (!_dbStorageSpecification.IsSatisfiedBy(newPlayer))
+            DomainToDal.Map(newEntity, newPlayer);
+
+            if (!_dbStorageSpecification.IsSatisfiedBy(newEntity))
             {
                 throw new InvalidEntityException();
             }
 
-            _dalPlayers.Add(newPlayer);
+            _dalPlayers.Add(newEntity);
             _unitOfWork.Commit();
-            newEntity.Id = newPlayer.Id;
+            newPlayer.Id = newEntity.Id;
+
+            return newPlayer;
         }
 
         /// <summary>
@@ -71,6 +75,7 @@
             }
 
             DomainToDal.Map(playerToUpdate, updatedEntity);
+            _unitOfWork.Commit();
         }
 
         /// <summary>

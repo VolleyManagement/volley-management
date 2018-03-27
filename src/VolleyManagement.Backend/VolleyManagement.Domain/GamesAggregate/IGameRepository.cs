@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines a contract for GameRepository.
     /// </summary>
-    public interface IGameRepository : IGenericRepository<Game>, IRepository
+    public interface IGameRepository : IGenericRepository<Game>
     {
     }
 }

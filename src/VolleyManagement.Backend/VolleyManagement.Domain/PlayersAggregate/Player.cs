@@ -43,6 +43,20 @@
         /// <summary>
         /// Initializes a new instance of the Player
         /// </summary>
+        /// <param name="firstName">First Name</param>
+        /// <param name="lastName">Last Name</param>
+        /// <param name="birthYear">BirthYear</param>
+        /// <param name="height">Height</param>
+        /// <param name="weight">Weight</param>
+        public Player(string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
+            : this(0, firstName, lastName, birthYear, height, weight, teamId)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Player
+        /// </summary>
         /// <param name="id">Id</param>
         /// <param name="firstName">First Name</param>
         /// <param name="lastName">Last Name</param>

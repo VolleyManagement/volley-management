@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines specific contract for TournamentRepository
     /// </summary>
-    public interface ITournamentRepository : IGenericRepository<Tournament>, IRepository
+    public interface ITournamentRepository : IGenericRepository<Tournament>
     {
         /// <summary>
         /// Adds selected teams to tournament

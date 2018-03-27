@@ -4,17 +4,22 @@ $(document).ready(function () {
   var currNs = VM.addNamespace("tournament.scheduleEdit"),
     me = {},
     divisionDD;
-
+  var count = 0;
   me.updateDropdownStates = function () {
     var dropDowns = [
       $(".round-select")[0],
       $(".home-team-select")[0],
       $(".away-team-select")[0]
     ];
-
+    var divIdH = $(".home-team-select :selected").val();
+    var divIdA = $(".away-team-select :selected").val();
+ 
     dropDowns.forEach(function (dd) {
-      me.updateStateForDropDown(dd);
+      count++;
+      if (count!=3 || divIdH===divIdA)
+        me.updateStateForDropDown(dd);      
     });
+
   }
 
   me.updateStateForDropDown = function (dropdown) {

@@ -31,7 +31,7 @@
             var testDomainModel = new PlayerBuilder()
                 .WithId(1)
                 .WithFirstName("FirstName")
-                .WithLastName("SecondName")
+                .WithLastName("LastName")
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)

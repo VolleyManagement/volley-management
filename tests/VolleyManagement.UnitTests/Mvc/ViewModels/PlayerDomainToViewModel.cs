@@ -32,8 +32,8 @@
                 .WithFirstName("FirstName")
                 .WithLastName("LastName")
                 .WithBirthYear(1983)
-                .WithWeight(186)
-                .WithHeight(95)
+                .WithHeight(186)
+                .WithWeight(95)
                 .Build();
 
             // Act

@@ -103,7 +103,8 @@
                 LastName = player.LastName,
                 BirthYear = player.BirthYear,
                 Height = player.Height,
-                Weight = player.Weight            
+                Weight = player.Weight,
+                TeamId = player.TeamId
             };
 
             return playerViewModel;

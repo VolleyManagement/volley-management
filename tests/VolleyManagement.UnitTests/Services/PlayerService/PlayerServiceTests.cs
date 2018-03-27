@@ -261,10 +261,7 @@
             // Arrange
             var newPlayers = new List<Player>()
             {
-                new PlayerBuilder()
-                    .WithFirstName("First")
-                    .WithLastName("Last")
-                    .WithTeamId(SPECIFIC_TEAM_ID).Build()
+                new PlayerBuilder().WithFirstName("First").WithLastName("Last").WithTeamId(SPECIFIC_TEAM_ID).Build()
             };
             var existingPlayers = CreateSeveralPlayers().AsQueryable();
             MockGetByIdQuery(newPlayers.First());
@@ -479,7 +476,7 @@
             {
                 new PlayerBuilder().WithId(0).WithFirstName("First").WithLastName("Last").Build(),
                 new PlayerBuilder().WithId(0).WithFirstName("Second").WithLastName("Last").Build(),
-                new PlayerBuilder().WithId(0).WithFirstName("Name").WithLastName("Name").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("Name").WithLastName("Name").Build()
             });
             return newPlayers;
         }
@@ -514,8 +511,10 @@
             newPlayers.AddRange(new List<Player>
             {
                 new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").WithTeamId(null).Build(),
-                new PlayerBuilder().WithFirstName("Van").WithLastName("Van").WithTeamId(null).WithId(SPECIFIC_PLAYER_ID).Build(),
-                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper").WithTeamId(null).WithId(SPECIFIC_PLAYER_ID + 2).Build(),
+                new PlayerBuilder().WithFirstName("Van").WithLastName("Van")
+                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID).Build(),
+                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper")
+                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID + 2).Build(),
             });
             return newPlayers;
         }

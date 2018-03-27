@@ -34,13 +34,13 @@
         }
 
         /// <summary>
-        /// Sets player test fisrt name
+        /// Sets player test first name
         /// </summary>
         /// <param name="firstName">Test player first name</param>
         /// <returns>Player builder object</returns>
-        public PlayerBuilder WithFirstName(string fisrtName)
+        public PlayerBuilder WithFirstName(string firstName)
         {
-            _player.FirstName = fisrtName;
+            _player.FirstName = firstName;
             return this;
         }
 
@@ -69,7 +69,7 @@
         /// <summary>
         /// Sets player test height
         /// </summary>
-        /// <param name="height">Test player birth year</param>
+        /// <param name="height">Test player height</param>
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithHeight(short? height)
         {

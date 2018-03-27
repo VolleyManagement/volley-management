@@ -947,7 +947,7 @@
         {
             // Arrange
             var firstPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
-            var secondPlayer = new PlayerBuilder(PLAYER_ID + 1, "Second", "Last").WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var secondPlayer = new PlayerBuilder().WithId(PLAYER_ID + 1).WithFirstName("Second").WithTeamId(SPECIFIC_TEAM_ID).Build();
             var testRoster = new List<Player> { firstPlayer, secondPlayer };
             MockGetTeamRosterQuery(testRoster);
 

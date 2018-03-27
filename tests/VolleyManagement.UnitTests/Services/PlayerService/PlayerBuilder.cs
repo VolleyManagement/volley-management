@@ -19,7 +19,7 @@
         /// </summary>
         public PlayerBuilder()
         {
-            _player = new Player(1, "FirstName", "LastName", 1983, 186, 96, 1);
+            _player = new Player(1, "FirstName", "LastName", 1983, 186, 95, 1);
         }
 
         /// <summary>

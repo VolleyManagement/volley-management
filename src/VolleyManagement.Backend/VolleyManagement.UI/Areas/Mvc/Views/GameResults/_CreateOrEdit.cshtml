@@ -5,7 +5,10 @@
 
 @Html.ValidationMessage("ValidationMessage", new { @class = "text-danger", name = "ValidationMessage" })
 @Html.HiddenFor(model => model.TournamentId)
-
+@if (Model.AllowEditResult)
+{
+    <div><p>Allow</p></div>
+}
 <div class="form-group">
     @Resources.UI.GameResultViews.TeamsFields
 

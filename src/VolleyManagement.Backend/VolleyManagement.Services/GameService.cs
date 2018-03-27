@@ -288,8 +288,7 @@
             _authService.CheckAccess(AuthOperations.Games.SwapRounds);
 
             var games = _gamesByTournamentIdRoundsNumberQuery.Execute(
-                new TournamentRoundsGameResultsCriteria
-                {
+                new TournamentRoundsGameResultsCriteria {
                     TournamentId = tournamentId,
                     FirstRoundNumber = firstRoundNumber,
                     SecondRoundNumber = secondRoundNumber
@@ -490,8 +489,7 @@
             TournamentScheduleDto tournamentSсheduleInfo)
         {
             var teamsInTournament =
-                _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria
-                {
+                _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria {
                     TournamentId = tournamentSсheduleInfo.Id
                 });
 
@@ -732,8 +730,7 @@
             var gamesToUpdate = new List<Game>();
 
             var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria
-                {
+                .Execute(new GamesByRoundCriteria {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
                     {
@@ -815,7 +812,7 @@
 
             if (finishedGame.HomeTeamId != null)
             {
-            var winnerTeamId = 0;
+                var winnerTeamId = 0;
 #pragma warning disable S3240 // The simplest possible condition syntax should be used
                 if (finishedGame.AwayTeamId == null)
 #pragma warning restore S3240 // The simplest possible condition syntax should be used
@@ -907,11 +904,11 @@
 
         private static void ValidateEditingSchemePlayoff(Game nextGame)
         {
-            if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
-                && nextGame.Result.GameScore.Away != 0)
-            {
-                throw new ArgumentException(Resources.PlayoffGameEditingError);
-            }
+            //if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
+            //    && nextGame.Result.GameScore.Away != 0)
+            //{
+            //    throw new ArgumentException(Resources.PlayoffGameEditingError);
+            //}
         }
 
         private static void SetAbilityToEditResults(List<GameResultDto> allGames)
@@ -923,7 +920,7 @@
                 .All(next => next.Result.GameScore.Home == 0 && next.Result.GameScore.Away == 0))
                 .ToList();
 
-            foreach (var game in gamesToAllowEditingResults)
+            foreach (var game in allGames)
             {
                 game.AllowEditResult = true;
             }
@@ -968,8 +965,7 @@
         private void UpdateTournamentLastTimeUpdated(Game game)
         {
             var tournament = _getTournamentInstanceByIdQuery
-               .Execute(new FindByIdCriteria
-               {
+               .Execute(new FindByIdCriteria {
                    Id = game.TournamentId
                });
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;

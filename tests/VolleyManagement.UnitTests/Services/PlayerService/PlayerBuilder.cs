@@ -23,31 +23,6 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerBuilder"/> class
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <param name="firstName">First Name</param>
-        /// <param name="lastName">Last Name</param>
-        public PlayerBuilder(int id, string firstName, string lastName)
-        {
-            _player = new Player(id, firstName, lastName);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerBuilder"/> class
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <param name="firstName">First Name</param>
-        /// <param name="lastName">Last Name</param>
-        /// <param name="birthYear">BirthYear</param>
-        /// <param name="height">Height</param>
-        /// <param name="weight">Weight</param>
-        public PlayerBuilder(int id, string firstName, string lastName, short birthYear, short height, short weight)
-        {
-            _player = new Player(id, firstName, lastName, birthYear, height, weight);
-        }
-
-        /// <summary>
         /// Sets player test Id
         /// </summary>
         /// <param name="id">Test player Id</param>
@@ -58,6 +33,60 @@
             return this;
         }
 
+        /// <summary>
+        /// Sets player test fisrt name
+        /// </summary>
+        /// <param name="firstName">Test player first name</param>
+        /// <returns>Player builder object</returns>
+        public PlayerBuilder WithFirstName(string fisrtName)
+        {
+            _player.FirstName = fisrtName;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets player test last name
+        /// </summary>
+        /// <param name="lastName">Test player last name</param>
+        /// <returns>Player builder object</returns>
+        public PlayerBuilder WithLastName(string lastName)
+        {
+            _player.LastName = lastName;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets player test birth year
+        /// </summary>
+        /// <param name="birthYear">Test player birth year</param>
+        /// <returns>Player builder object</returns>
+        public PlayerBuilder WithBirthYear(short? birthYear)
+        {
+            _player.BirthYear = birthYear;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets player test height
+        /// </summary>
+        /// <param name="height">Test player birth year</param>
+        /// <returns>Player builder object</returns>
+        public PlayerBuilder WithHeight(short? height)
+        {
+            _player.Height = height;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets player test weight
+        /// </summary>
+        /// <param name="weight">Test player weight</param>
+        /// <returns>Player builder object</returns>
+        public PlayerBuilder WithWeight(short? weight)
+        {
+            _player.Weight = weight;
+            return this;
+        }
         /// <summary>
         /// Sets player test teamId
         /// </summary>

@@ -27,7 +27,13 @@
                 .WithWeight(95)
                 .Build();
 
-            var testDomainModel = new PlayerBuilder(1, "FirstName", "LastName", 1983, 186, 95)
+            var testDomainModel = new PlayerBuilder()
+                .WithId(1)
+                .WithFirstName("FirstName")
+                .WithLastName("LastName")
+                .WithBirthYear(1983)
+                .WithWeight(186)
+                .WithHeight(95)
                 .Build();
 
             // Act

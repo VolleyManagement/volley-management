@@ -665,7 +665,10 @@
 
         private Player CreatePlayer(int id)
         {
-            return new PlayerBuilder(id, PLAYER_FIRSTNAME, PLAYER_LASTNAME)
+            return new PlayerBuilder()
+                        .WithId(id)
+                        .WithFirstName(PLAYER_FIRSTNAME)
+                        .WithLastName(PLAYER_LASTNAME)
                         .WithTeamId(SPECIFIED_TEAM_ID)
                         .Build();
         }

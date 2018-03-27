@@ -74,7 +74,7 @@
         {
             get => _firstName;
 
-            private set
+            set
             {
                 if (PlayerValidation.ValidateFirstName(value))
                 {
@@ -93,7 +93,7 @@
         {
             get => _lastName;
 
-            private set
+            set
             {
                 if (PlayerValidation.ValidateLastName(value))
                 {
@@ -112,7 +112,7 @@
         {
             get => _birthYear;
 
-            private set
+            set
             {
                 if (PlayerValidation.ValidateBirthYear(value))
                 {
@@ -131,7 +131,7 @@
         {
             get => _height;
 
-            private set
+            set
             {
                 if (PlayerValidation.ValidateHeight(value))
                 {
@@ -150,7 +150,7 @@
         {
             get => _weight;
 
-            private set
+            set
             {
                 if (PlayerValidation.ValidateWeight(value))
                 {

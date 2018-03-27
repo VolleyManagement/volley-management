@@ -374,8 +374,11 @@
 
         private Player CreatePlayer(int id)
         {
-            return new PlayerBuilder(id, PLAYER_FIRSTNAME, PLAYER_LASTNAME)
-                        .WithTeamId(SPECIFIED_TEAM_ID)
+            return new PlayerBuilder()
+                        .WithId(id)
+                        .WithFirstName(PLAYER_FIRSTNAME)
+                        .WithLastName(PLAYER_LASTNAME)
+                        .WithTeamId(SPECIFIED_PLAYER_ID)
                         .Build();
         }
 
@@ -436,7 +439,7 @@
 
         private MessageViewModel CreateMessageViewModel()
         {
-            return new MessageViewModel 
+            return new MessageViewModel
             {
                 Id = REQUEST_ID,
                 Message = TEST_MESSAGE
@@ -445,7 +448,7 @@
 
         private MessageViewModel SetupMessageViewModel()
         {
-            return new MessageViewModel 
+            return new MessageViewModel
             {
                 Id = REQUEST_ID,
             };

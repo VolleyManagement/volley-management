@@ -110,7 +110,7 @@
         {
             // Arrange
             var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            var testPlayer = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var testPlayer = new PlayerBuilder().Build();
             MockGetTeamByIdQuery(testTeam);
             var sut = BuildSUT();
             var expected = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
@@ -129,7 +129,7 @@
         public void GetPlayerTeam_PlayerWithNoTeam_NullReturned()
         {
             // Arrange
-            var testPlayer = new PlayerBuilder().WithNoTeam().Build();
+            var testPlayer = new PlayerBuilder().Build();
             var sut = BuildSUT();
 
             // Act
@@ -146,7 +146,7 @@
         public void Create_PlayerPassed_PlayerCreated()
         {
             // Arrange
-            var newPlayer = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var newPlayer = new PlayerBuilder().Build();
 
             // Act
             var sut = BuildSUT();
@@ -265,7 +265,7 @@
             var newPlayers = new List<Player>()
             {
                 new PlayerBuilder()
-                    .WithFirstName("First").WithLastName("Last").WithTeamId(SPECIFIC_TEAM_ID).Build()
+                    .WithFirstName("First").WithLastName("Last").Build()
             };
             var existingPlayers = CreateSeveralPlayers().AsQueryable();
             MockGetByIdQuery(newPlayers.First());
@@ -437,7 +437,7 @@
             // Arrange
             _playerRepositoryMock.Setup(pr => pr.Update(It.IsAny<Player>())).Throws(new InvalidKeyValueException());
             var sut = BuildSUT();
-            var playerWithWrongId = new PlayerBuilder().WithTeamId(null).Build();
+            var playerWithWrongId = new PlayerBuilder().Build();
 
             // Act
             sut.Edit(playerWithWrongId);
@@ -450,11 +450,10 @@
         public void Edit_PlayerPassed_PlayerUpdated()
         {
             // Arrange
-            int? teamId = null;
-            var expectedPlayer = new PlayerBuilder().WithTeamId(teamId).Build();
+            var expectedPlayer = new PlayerBuilder().Build();
 
             // Act
-            var playerToEdit = new PlayerBuilder().WithTeamId(teamId).Build();
+            var playerToEdit = new PlayerBuilder().Build();
             var sut = BuildSUT();
             sut.Edit(playerToEdit);
 
@@ -502,7 +501,7 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("First").WithLastName("Last").WithTeamId(null).Build(),
+                new PlayerBuilder().WithFirstName("First").WithLastName("Last").Build(),
                 new PlayerBuilder().WithId(0).WithFirstName("New Second").WithLastName("Last").Build(),
                 new PlayerBuilder().WithId(0).WithFirstName("New Hank").WithLastName("Ripper").Build()
             });
@@ -514,11 +513,11 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").WithTeamId(null).Build(),
+                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").Build(),
                 new PlayerBuilder().WithFirstName("Van").WithLastName("Van")
-                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID).Build(),
+                    .WithId(SPECIFIC_PLAYER_ID).Build(),
                 new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper")
-                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID + 2).Build()
+                    .WithId(SPECIFIC_PLAYER_ID + 2).Build()
             });
             return newPlayers;
         }

@@ -129,11 +129,5 @@
                 _weight = value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating where Team.
-        /// </summary>
-        /// <value>The player team.</value>
-        public int? TeamId { get; set; }
     }
 }

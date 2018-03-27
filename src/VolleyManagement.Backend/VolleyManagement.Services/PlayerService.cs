@@ -190,7 +190,7 @@
             {
                 return null;
             }
-
+           
             return GetTeamById(player.TeamId.GetValueOrDefault());
         }
 

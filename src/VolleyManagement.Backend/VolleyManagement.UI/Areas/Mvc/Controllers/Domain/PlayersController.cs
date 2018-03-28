@@ -102,8 +102,9 @@
                 return HttpNotFound();
             }
 
-            var model = new PlayerRefererViewModel(player, returnUrl);
-            model.AllowedOperations = _authService.GetAllowedOperations(AuthOperations.Players.Edit);
+            var model = new PlayerRefererViewModel(player, returnUrl) {
+                AllowedOperations = _authService.GetAllowedOperations(AuthOperations.Players.Edit)
+            };
             return View(model);
         }
 

@@ -180,7 +180,7 @@
 
             // Assert
             Assert.IsTrue(gotException);
-            VerifyCreatePlayer(newPlayer, Times.Never());
+            VerifyCreatePlayers(Times.Never());
         }
 
         /// <summary>
@@ -544,14 +544,35 @@
             return new PlayerComparer().Compare(x, y) == 0;
         }
 
-        private void VerifyCreatePlayer(Player player, Times times)
+        private void VerifyCreatePlayerByParameters(string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId, Times times)
         {
-            _playerRepositoryMock.Verify(pr => pr.Add(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
+            _playerRepositoryMock.Verify(pr => pr.Add(firstName,
+                lastName,
+                birthYear,
+                height,
+                weight,
+                teamId),
+                times);
         }
+
+        private void VerifyCreatePlayer(Player testPlayer, Times times) =>
+            VerifyCreatePlayerByParameters(testPlayer.FirstName,
+                testPlayer.LastName,
+                testPlayer.BirthYear,
+                testPlayer.Height,
+                testPlayer.Weight,
+                testPlayer.TeamId,
+                times);
 
         private void VerifyCreatePlayers(Times times)
         {
-            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<Player>()), times);
+            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<short?>(),
+                It.IsAny<short?>(),
+                It.IsAny<short?>(),
+                It.IsAny<int?>()), 
+                times);
         }
 
         private void VerifyEditPlayer(Player player, Times times)

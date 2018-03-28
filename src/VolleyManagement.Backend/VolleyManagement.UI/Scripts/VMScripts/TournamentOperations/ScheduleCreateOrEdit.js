@@ -6,16 +6,14 @@ $(document).ready(function () {
     divisionDD;
   var HomeTeamId = $(".home-team-select :selected").val();
   var AwayTeamId = $(".away-team-select :selected").val();
-
   me.updateDropdownStates = function () {
     var dropDowns = [
       $(".round-select")[0],
       $(".home-team-select")[0],
       $(".away-team-select")[0]
     ];
-   
+
     dropDowns.forEach(function (dd) {
-      if (dd !== dropDowns[2] || HomeTeamId === AwayTeamId)
         me.updateStateForDropDown(dd);      
     });
 
@@ -39,15 +37,17 @@ $(document).ready(function () {
     }
 
     options = $(dropdown).find("option");
-    for (i = 0; i < options.length; i++) {
-      child = $(options[i]);
-      var parent = child.parent();
-      if (parent.is("optgroup")) {
-        if (!parent.hasClass("hidden")) {
-          $(dropdown).value = child.value;
+    if (HomeTeamId === AwayTeamId) {
+      for (i = 0; i < options.length; i++) {
+        child = $(options[i]);
+        var parent = child.parent();
+        if (parent.is("optgroup")) {
+          if (!parent.hasClass("hidden")) {
+            $(dropdown).value = child.value;
+          }
+        } else {
+          $(dropdown).val(null);
         }
-      } else {
-        $(dropdown).val(null);
       }
     }
   }

@@ -152,11 +152,9 @@
 
             if (tournamentInfo != null && tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
-                gameResultsDto.AllowEditResult = new ValueTuple<bool, bool>(true, false);
-                if (ValidateEditingSchemePlayoff(gameResultsDto))
-                {
-                    gameResultsDto.AllowEditResult = new ValueTuple<bool, bool>(true, true);
-                }
+                gameResultsDto.AllowEditResult = ValidateEditingSchemePlayoff(gameResultsDto)
+                    ? (true, true)
+                    : (true, false);
             }
 
             return gameResultsDto;
@@ -501,7 +499,7 @@
             }
         }
 
-        private void ValidateGameInRound(Game newGame,ICollection<GameResultDto> games,
+        private void ValidateGameInRound(Game newGame, ICollection<GameResultDto> games,
             TournamentScheduleDto tournamentSсheduleInfo)
         {
             var teamsInTournament =

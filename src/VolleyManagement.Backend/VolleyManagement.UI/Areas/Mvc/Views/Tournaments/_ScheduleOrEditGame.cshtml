@@ -29,6 +29,9 @@
 }
 else
 {
+<div class="editor-field" style="display: none">
+    @Html.DropDownListFor(model => model.DivisionId, Model.DivisionList, new { @class = "form-control division-select" })
+</div>
 @Html.HiddenFor(model => model.Round)
 @Html.HiddenFor(model => model.GameNumber);
 }

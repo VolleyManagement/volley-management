@@ -30,11 +30,14 @@
             </div>
         }
 
-        <div class="row">
-            <div class="col-md-2">
-                @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+        if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                </div>
             </div>
-        </div>
+        }
     }
     else if (!Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
     {
@@ -63,11 +66,14 @@
             </div>
         }
 
-        <div class="row">
-            <div class="col-md-2">
-                @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+        if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                </div>
             </div>
-        </div>
+        }
     }
     else if (Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
@@ -165,7 +171,7 @@
                 </div>
             </div>
 
-            if (Model.AllowEditResult)
+            if (Model.AllowEditResult && Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
             {
                 <div class="row">
                     <div class="col-md-2">
@@ -216,7 +222,7 @@
                 }
             </div>
 
-            if (Model.AllowEditResult)
+            if (Model.AllowEditResult && Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
             {
                 <div class="row">
                     <div class="col-md-2">
@@ -227,7 +233,6 @@
         }
         else
         {
-
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-3 game-number">
@@ -251,19 +256,17 @@
                         @Model.ShortGameDate
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-2">
-                        @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                    </div>
-                </div>
             }
-            else
+
+            if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
             {
                 <div class="row">
+                    @if(Model.GameDate.HasValue)
+                    {
+                        <div class="col-md-2">
+                            @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+                        </div>
+                    }
                     <div class="col-md-2">
                         @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
                     </div>

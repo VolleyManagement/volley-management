@@ -71,9 +71,9 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
             };
         }
 
-        public TournamentBuilder WithArchiveParameter(bool isArchive)
+        public TournamentBuilder WithArchivedParameter(bool isArchived)
         {
-            _tournament.IsArchived = isArchive;
+            _tournament.IsArchived = isArchived;
             return this;
         }
 

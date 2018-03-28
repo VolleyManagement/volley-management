@@ -23,11 +23,6 @@ namespace VolleyManagement.Data.MsSql.Context
             Database.SetInitializer(new VolleyManagementDatabaseInitializer());
         }
 
-        [Obsolete("Needed for EF to properly instantiate DB context. Not intented to be called directly")]
-        public VolleyManagementEntities()
-        {
-        }
-
         public VolleyManagementEntities(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {

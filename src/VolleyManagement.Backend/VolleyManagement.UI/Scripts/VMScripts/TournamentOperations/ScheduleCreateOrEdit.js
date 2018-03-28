@@ -14,7 +14,7 @@ $(document).ready(function () {
     ];
 
     dropDowns.forEach(function (dd) {
-        me.updateStateForDropDown(dd);      
+      me.updateStateForDropDown(dd);
     });
 
   }

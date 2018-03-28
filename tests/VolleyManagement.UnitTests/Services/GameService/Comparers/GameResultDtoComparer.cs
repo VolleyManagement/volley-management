@@ -99,6 +99,7 @@ namespace VolleyManagement.UnitTests.Services.GameService
             Assert.AreEqual(x.GameDate, y.GameDate, $"[Id:{x.Id}] GameDate should be equal.");
             Assert.AreEqual(x.Round, y.Round, $"[Id:{x.Id}] Round number should be equal.");
             Assert.AreEqual(x.GameNumber, y.GameNumber, $"[Id:{x.Id}] GameNumber should be equal.");
+            Assert.AreEqual(x.AllowEditResult,y.AllowEditResult, $"[Id:{x.Id}] AllowEditResult should be equal.");
             return true;
         }
     }

@@ -76,6 +76,8 @@
 
             Assert.AreEqual(x.UrlToGameVideo, y.UrlToGameVideo, "UrlToGameVideo should be equal.");
 
+            Assert.AreEqual(x.AllowEditResult,y.AllowEditResult, "AllowEditResult should be equal.");
+
             ScoreViewModelComparer.AssertAreEqual(x.GameScore, y.GameScore);
             for (var i = 0; i < 5; i++)
             {

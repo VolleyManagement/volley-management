@@ -305,7 +305,8 @@
             _authService.CheckAccess(AuthOperations.Games.SwapRounds);
 
             var games = _gamesByTournamentIdRoundsNumberQuery.Execute(
-                new TournamentRoundsGameResultsCriteria {
+                new TournamentRoundsGameResultsCriteria 
+                {
                     TournamentId = tournamentId,
                     FirstRoundNumber = firstRoundNumber,
                     SecondRoundNumber = secondRoundNumber
@@ -500,13 +501,12 @@
             }
         }
 
-        private void ValidateGameInRound(
-            Game newGame,
-            ICollection<GameResultDto> games,
+        private void ValidateGameInRound(Game newGame,ICollection<GameResultDto> games,
             TournamentScheduleDto tournamentSсheduleInfo)
         {
             var teamsInTournament =
-                _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria {
+                _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria 
+                {
                     TournamentId = tournamentSсheduleInfo.Id
                 });
 
@@ -575,7 +575,7 @@
                     game.HomeTeamId));
             errorMessage = GameValidation.IsFreeDayGame(newGame)
                 ? tmpres
-                : String.Format(
+                : string.Format(
                     Resources.SameGameInRound,
                     game.HomeTeamName,
                     game.AwayTeamName,
@@ -747,7 +747,8 @@
             var gamesToUpdate = new List<Game>();
 
             var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria {
+                .Execute(new GamesByRoundCriteria 
+                {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
                     {
@@ -1045,8 +1046,9 @@
                         Convert.ToByte(game.Round + 1)
                     }
                 });
-            Game gameone = new Game();
-            gameone.Round = game.Round;
+            var gameone = new Game {
+                Round = game.Round
+            };
             var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
             var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
             var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);

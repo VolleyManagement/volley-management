@@ -142,7 +142,24 @@
         /// <returns>Instance of <see cref="GameResultDto"/> or null if nothing is obtained.</returns>
         public GameResultDto Get(int id)
         {
-            return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            var gameResultsDto = _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            TournamentScheduleDto tournamentInfo = null;
+            if (gameResultsDto!=null)
+            {
+                tournamentInfo = _tournamentScheduleDtoByIdQuery
+                    .Execute(new TournamentScheduleInfoCriteria { TournamentId = gameResultsDto.TournamentId });
+            }
+
+            if (tournamentInfo != null && tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                gameResultsDto.AllowEditResult = new ValueTuple<bool, bool>(true, false);
+                if (ValidateEditingSchemePlayoff(gameResultsDto))
+                {
+                    gameResultsDto.AllowEditResult = new ValueTuple<bool, bool>(true, true);
+                }
+            }
+
+            return gameResultsDto;
         }
 
         /// <summary>
@@ -807,9 +824,6 @@
             var nextGame = games
                 .SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
-            // Check if next game can be scheduled
-            ValidateEditingSchemePlayoff(nextGame);
-
             if (finishedGame.HomeTeamId != null)
             {
                 var winnerTeamId = 0;
@@ -843,8 +857,6 @@
             // Assume that finished game is a semifinal game
             var nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
             var nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
-
-            ValidateEditingSchemePlayoff(nextGame);
 
             var loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
@@ -902,15 +914,6 @@
             return roundNum == finishedGame.Round;
         }
 
-        private static void ValidateEditingSchemePlayoff(Game nextGame)
-        {
-            //if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
-            //    && nextGame.Result.GameScore.Away != 0)
-            //{
-            //    throw new ArgumentException(Resources.PlayoffGameEditingError);
-            //}
-        }
-
         private static void SetAbilityToEditResults(List<GameResultDto> allGames)
         {
             var gamesToAllowEditingResults = allGames.Where(
@@ -920,9 +923,21 @@
                 .All(next => next.Result.GameScore.Home == 0 && next.Result.GameScore.Away == 0))
                 .ToList();
 
-            foreach (var game in allGames)
+            var gamesToAllowEditingResultsExceptTotalScore = allGames.Where(
+                game => game.HomeTeamId.HasValue
+                && game.GameDate.HasValue
+                && NextGames(allGames, game)
+                .All(next => next.Result.GameScore.Home < 4 && next.Result.GameScore.Away < 4))
+                .ToList();
+
+            foreach (var game in gamesToAllowEditingResults)
             {
-                game.AllowEditResult = true;
+                game.AllowEditResult = new ValueTuple<bool, bool>(true, false);
+            }
+
+            foreach (var game in gamesToAllowEditingResultsExceptTotalScore)
+            {
+                game.AllowEditResult = new ValueTuple<bool, bool>(true, true);
             }
         }
 
@@ -945,7 +960,11 @@
             games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
             if (currentGame.Round == numberOfRounds - 1)
             {
-                games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber + 1));
+                var lastGame = allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber + 1);
+                if (lastGame != null)
+                {
+                    games.Add(lastGame);
+                }
             }
 
             return games;
@@ -1010,6 +1029,33 @@
         {
             return game.Round == numberOfRounds
                    && game.GameNumber % 2 != 0;
+        }
+
+        private bool ValidateEditingSchemePlayoff(GameResultDto game)
+        {
+            var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
+
+            var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+                .Execute(new GamesByRoundCriteria {
+                    TournamentId = tournamentInfo.Id,
+                    RoundNumbers = new List<byte>
+                    {
+                        game.Round,
+                        Convert.ToByte(game.Round + 1)
+                    }
+                });
+            Game gameone = new Game();
+            gameone.Round = game.Round;
+            var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
+            var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
+            var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+            if (nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
+            {
+                return true;
+            }
+            return false;
+
         }
 
         // Method is not mine: It has to be refactored 

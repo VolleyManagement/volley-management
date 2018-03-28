@@ -152,7 +152,7 @@
 
             if (tournamentInfo != null && tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
-                gameResultsDto.AllowEditResult = ValidateEditingSchemePlayoff(gameResultsDto)
+                gameResultsDto.AllowEditResult = ValidateEditingSchemePlayoff(gameResultsDto, tournamentInfo)
                     ? (true, true)
                     : (true, false);
             }
@@ -1030,12 +1030,9 @@
                    && game.GameNumber % 2 != 0;
         }
 
-        private bool ValidateEditingSchemePlayoff(GameResultDto game)
+        private bool ValidateEditingSchemePlayoff(GameResultDto game, TournamentScheduleDto tournamentInfo)
         {
-            var tournamentInfo = _tournamentScheduleDtoByIdQuery
-                .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
-
-            var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+           var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
                 .Execute(new GamesByRoundCriteria {
                     TournamentId = tournamentInfo.Id,
                     RoundNumbers = new List<byte>

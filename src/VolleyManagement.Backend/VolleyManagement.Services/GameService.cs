@@ -144,7 +144,7 @@
         {
             var gameResultsDto = _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
             TournamentScheduleDto tournamentInfo = null;
-            if (gameResultsDto!=null)
+            if (gameResultsDto != null)
             {
                 tournamentInfo = _tournamentScheduleDtoByIdQuery
                     .Execute(new TournamentScheduleInfoCriteria { TournamentId = gameResultsDto.TournamentId });
@@ -1050,7 +1050,7 @@
             var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
             var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
             var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
-            if (nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
+            if (nextGame != null && nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
             {
                 return true;
             }

@@ -58,6 +58,7 @@ Minimum sofware requirements:
 
 * .NET 4.7
 * VS 2017 any edition
+* SpecFlow extension for VS 2017
 * SQL Server 2008-2016 (2016 LocalDB is default but you can change connection string)
 
 All dependencies are managed via NuGet so you don't need to take any additional steps to acquire dependencies.

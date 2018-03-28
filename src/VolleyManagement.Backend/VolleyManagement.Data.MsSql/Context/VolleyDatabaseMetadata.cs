@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides various DB names
     /// </summary>
-    internal static class VolleyDatabaseMetadata
+    public static class VolleyDatabaseMetadata
     {
         public const string DATE_COLUMN_TYPE = "date";
 

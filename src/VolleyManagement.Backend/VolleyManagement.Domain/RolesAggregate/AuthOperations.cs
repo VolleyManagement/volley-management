@@ -55,6 +55,11 @@
             /// Archive Tournament operation
             /// </summary>
             public static readonly AuthOperation Archive = Tuple.Create(TOURNAMENTS, 6);
+
+            /// <summary>
+            /// Activate Tournament operation
+            /// </summary>
+            public static readonly AuthOperation Activate = Tuple.Create(TOURNAMENTS, 7);
         }
 
         /// <summary>

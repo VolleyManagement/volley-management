@@ -20,7 +20,7 @@
         /// <param name="id">Id</param>
         /// <param name="firstName">Fisrt Name</param>
         /// <param name="lastName">Last Name</param>
-        public Player(int id, string firstName, string lastName) : this(id, firstName, lastName, null, null, null)
+        public Player(int id, string firstName, string lastName) : this(id, firstName, lastName, null, null, null, null)
         {
 
         }
@@ -34,37 +34,51 @@
         /// <param name="birthYear">BirthYear</param>
         /// <param name="height">Height</param>
         /// <param name="weight">Weight</param>
-        public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight)
-            : this(id, firstName, lastName, birthYear, height, weight, null)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Player
-        /// </summary>
-        /// <param name="firstName">First Name</param>
-        /// <param name="lastName">Last Name</param>
-        /// <param name="birthYear">BirthYear</param>
-        /// <param name="height">Height</param>
-        /// <param name="weight">Weight</param>
-        public Player(string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
-            : this(0, firstName, lastName, birthYear, height, weight, teamId)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Player
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <param name="firstName">First Name</param>
-        /// <param name="lastName">Last Name</param>
-        /// <param name="birthYear">BirthYear</param>
-        /// <param name="height">Height</param>
-        /// <param name="weight">Weight</param>
+        /// <param name="teamId">Id of the team, which roster this player is member of.</param>
         public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
         {
+            if (PlayerValidation.ValidateId(id))
+            {
+                throw new ArgumentException(Resources.ValidationPlayerId,
+                    nameof(id));
+            }
+
+            if (PlayerValidation.ValidateFirstName(firstName))
+            {
+                throw new ArgumentException(Resources.ValidationPlayerFirstName,
+                    nameof(firstName));
+            }
+
+            if (PlayerValidation.ValidateLastName(lastName))
+            {
+                throw new ArgumentException(Resources.ValidationPlayerLastName,
+                    nameof(lastName));
+            }
+
+            if (PlayerValidation.ValidateBirthYear(birthYear))
+            {
+                throw new ArgumentException(Resources.ValidationPlayerBirthYear, 
+                    nameof(birthYear));
+            }
+
+            if (PlayerValidation.ValidateHeight(height))
+            {
+                throw new ArgumentException(Resources.ValidationPlayerHeight, 
+                    nameof(height));
+            }
+
+            if (PlayerValidation.ValidateWeight(weight))
+            {
+                throw new ArgumentException(Resources.ValidationPlayerWeight, 
+                    nameof(weight));
+            }
+
+            if (PlayerValidation.ValidateTeamId(teamId))
+            {
+                throw new ArgumentException(Resources.ValidationTeamId,
+                    nameof(teamId));
+            }
+
             Id = id;
             FirstName = firstName;
             LastName = lastName;

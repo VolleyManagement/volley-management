@@ -29,6 +29,7 @@
         private const int SPECIFIC_PLAYER_ID = 2;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int NUMBER_OF_PLAYERS = 3;
+        private const int DEFAULT_PLAYER_ID = 1;
 
         private PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
 
@@ -474,9 +475,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder(0, "First","Last").Build(),
-                new PlayerBuilder(0, "Second","Last").Build(),
-                new PlayerBuilder(0, "Name","Name").Build()
+                new PlayerBuilder(0, "First", "Last").Build(),
+                new PlayerBuilder(0, "Second", "Last").Build(),
+                new PlayerBuilder(0, "Name", "Name").Build()
             });
             return newPlayers;
         }
@@ -486,7 +487,7 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder(0, "Ant","Man").Build(),
+                new PlayerBuilder(DEFAULT_PLAYER_ID, "Ant","Man").Build(),
                 new PlayerBuilder(SPECIFIC_PLAYER_ID, "Van","Van").Build(),
                 new PlayerBuilder(SPECIFIC_PLAYER_ID + 2, "Hank","Ripper").Build()
             });
@@ -498,7 +499,7 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder(0, "First","Last").WithTeamId(null).Build(),
+                new PlayerBuilder(DEFAULT_PLAYER_ID, "First","Last").WithTeamId(null).Build(),
                 new PlayerBuilder(0, "New Second","Last").Build(),
                 new PlayerBuilder(0, "New Hank","Ripper").Build()
             });

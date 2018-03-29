@@ -405,7 +405,7 @@
             var actual = TestExtensions.GetModel<PlayerViewModel>(sut.Edit(TEST_PLAYER_ID));
 
             // Assert
-            TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>
@@ -516,7 +516,12 @@
 
         private Player MakeTestPlayer(int playerId)
         {
-            return new PlayerBuilder(playerId).Build();
+            return new PlayerBuilder(playerId)
+                .WithBirthYear(1983)
+                .WithHeight(186)
+                .WithWeight(95)
+                .WithTeamId(1)
+                .Build();
         }
 
         private PlayerViewModel MakeTestPlayerViewModel()

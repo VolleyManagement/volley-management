@@ -75,9 +75,20 @@
             {
                 throw new ArgumentNullException("playerToCreate");
             }
-             
-            _playerRepository.Add(playerToCreate.FirstName, playerToCreate.LastName, 
-                playerToCreate.BirthYear, playerToCreate.Height, playerToCreate.Weight, playerToCreate.TeamId);
+
+            var firstName = playerToCreate.FirstName;
+            var lastName = playerToCreate.LastName;
+            var birthYear = playerToCreate.BirthYear;
+            var height = playerToCreate.Height;
+            var weight = playerToCreate.Weight;
+            var teamId = playerToCreate.TeamId;
+
+            _playerRepository.Add(firstName, 
+                lastName, 
+                birthYear, 
+                height, 
+                weight, 
+                teamId);
         }
 
         /// <summary>

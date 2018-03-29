@@ -323,12 +323,9 @@
         {
             var splitted = source.Split(',');
             var result = new List<int>();
-#pragma warning disable IDE0018 // Inline variable declaration
-            int parsed;
-#pragma warning restore IDE0018 // Inline variable declaration
             foreach (var i in splitted)
             {
-                if (int.TryParse(i, out parsed))
+                if (int.TryParse(i, out int parsed))
                 {
                     result.Add(parsed);
                 }

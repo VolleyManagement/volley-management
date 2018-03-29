@@ -1023,29 +1023,31 @@
 
         private bool ValidateEditingSchemePlayoff(GameResultDto game)
         {
-            if (game != null&& game.TournamentId!=null)
+            if (game != null && game.TournamentId >= 0)
             {
                 var tournamentInfo = _tournamentScheduleDtoByIdQuery
                     .Execute(new TournamentScheduleInfoCriteria {TournamentId = game.TournamentId});
-
-                var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                    .Execute(new GamesByRoundCriteria {
-                        TournamentId = tournamentInfo.Id,
-                        RoundNumbers = new List<byte> 
-                        {
-                            game.Round,
-                            Convert.ToByte(game.Round + 1)
-                        }
-                    });
-                var gameone = new Game {
-                    Round = game.Round
-                };
-                var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
-                var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
-                var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
-                if (nextGame != null && nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
+                if (tournamentInfo!=null)
                 {
-                    return false;
+                    var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+                        .Execute(new GamesByRoundCriteria {
+                            TournamentId = tournamentInfo.Id,
+                            RoundNumbers = new List<byte>
+                            {
+                                game.Round,
+                                Convert.ToByte(game.Round + 1)
+                            }
+                        });
+                    var gameone = new Game {
+                        Round = game.Round
+                    };
+                    var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
+                    var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
+                    var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+                    if (nextGame != null && nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;

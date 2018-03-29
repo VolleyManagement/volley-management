@@ -129,7 +129,7 @@
         public void GetUserDetails_UserExists_UserReturned()
         {
             // Arrange
-            var player = new PlayerBuilder().WithId(EXISTING_ID).Build();
+            var player = new PlayerBuilder(EXISTING_ID).Build();
             var expected = new UserBuilder().WithId(EXISTING_ID).WithPlayer(player).Build();
             MockGetUserByIdQuery(expected);
             MockGetPlayerByIdQuery(player);

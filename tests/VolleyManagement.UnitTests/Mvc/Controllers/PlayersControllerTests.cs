@@ -516,7 +516,7 @@
 
         private Player MakeTestPlayer(int playerId)
         {
-            return new PlayerBuilder().WithId(playerId).Build();
+            return new PlayerBuilder(playerId).Build();
         }
 
         private PlayerViewModel MakeTestPlayerViewModel()

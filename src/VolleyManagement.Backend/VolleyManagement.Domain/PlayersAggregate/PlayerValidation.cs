@@ -80,6 +80,6 @@
         /// <param name="teamId"></param>
         /// <returns></returns>
         internal static bool TeamIdIsInvalid(int? teamId) =>
-            NullableIsInvalid(teamId, IdIsInvalid(teamId.Value));
+            NullableIsInvalid(teamId, teamId < MIN_ID);
     }
 }

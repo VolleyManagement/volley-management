@@ -112,10 +112,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CreatePlayer.feature</DependentUpon>
     </Compile>
-    <Compile Include="PlayersContext\DeletePlayer.feature.cs">
+    <Compile Include="PlayersContext\EditPlayerSteps.cs" />
+    <Compile Include="PlayersContext\RemovePlayer.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DeletePlayer.feature</DependentUpon>
+      <DependentUpon>RemovePlayer.feature</DependentUpon>
     </Compile>
     <Compile Include="PlayersContext\EditPlayer.feature.cs">
       <AutoGen>True</AutoGen>
@@ -123,10 +124,18 @@
       <DependentUpon>EditPlayer.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PlayersContext\RemovePlayerSteps.cs" />
+    <Compile Include="TeamsContext\RemoveTeamSteps.cs" />
     <Compile Include="TeamsContext\CreateTeams.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CreateTeams.feature</DependentUpon>
+    </Compile>
+    <Compile Include="TeamsContext\CreateTeamsSteps.cs" />
+    <Compile Include="TeamsContext\RemoveTeam.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RemoveTeam.feature</DependentUpon>
     </Compile>
     <Compile Include="TestFixture\InitialStateTestFixture.cs" />
   </ItemGroup>
@@ -141,9 +150,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreatePlayer.feature.cs</LastGenOutput>
     </None>
-    <None Include="PlayersContext\DeletePlayer.feature">
+    <None Include="PlayersContext\RemovePlayer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeletePlayer.feature.cs</LastGenOutput>
+      <LastGenOutput>RemovePlayer.feature.cs</LastGenOutput>
     </None>
     <None Include="PlayersContext\EditPlayer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -152,6 +161,10 @@
     <None Include="TeamsContext\CreateTeams.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreateTeams.feature.cs</LastGenOutput>
+    </None>
+    <None Include="TeamsContext\RemoveTeam.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RemoveTeam.feature.cs</LastGenOutput>
     </None>
     <None Include="VolleyManagement.Specs.ruleset" />
   </ItemGroup>

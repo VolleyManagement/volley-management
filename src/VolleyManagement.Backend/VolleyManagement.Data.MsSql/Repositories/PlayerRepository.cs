@@ -37,10 +37,14 @@
         /// <param name="newEntity">The player for adding.</param>
         public Player Add(string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
         {
-            var newPlayer = new Player(firstName, lastName, birthYear, height, weight, teamId);
-            var newEntity = new PlayerEntity();
-
-            DomainToDal.Map(newEntity, newPlayer);
+            var newEntity = new PlayerEntity {
+                FirstName = firstName,
+                LastName = lastName,
+                BirthYear = birthYear,
+                Height = height,
+                Weight = weight,
+                TeamId = teamId
+            };
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newEntity))
             {
@@ -49,9 +53,13 @@
 
             _dalPlayers.Add(newEntity);
             _unitOfWork.Commit();
-            newPlayer.Id = newEntity.Id;
 
-            return newPlayer;
+            return new Player(newEntity.Id, newEntity.FirstName, newEntity.LastName) {
+                BirthYear = newEntity.BirthYear,
+                Height = newEntity.Height,
+                Weight = newEntity.Weight,
+                TeamId = newEntity.TeamId
+            };
         }
 
         /// <summary>

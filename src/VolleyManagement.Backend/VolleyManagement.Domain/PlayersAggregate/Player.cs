@@ -3,6 +3,8 @@
     using System;
     using Properties;
 
+    using static PlayerValidation;
+
     /// <summary>
     /// Player domain class.
     /// </summary>
@@ -37,43 +39,43 @@
         /// <param name="teamId">Id of the team, which roster this player is member of.</param>
         public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
         {
-            if (PlayerValidation.ValidateId(id))
+            if (IdIsInvalid(id))
             {
                 throw new ArgumentException(Resources.ValidationPlayerId,
                     nameof(id));
             }
 
-            if (PlayerValidation.ValidateFirstName(firstName))
+            if (FirstNameIsInvalid(firstName))
             {
                 throw new ArgumentException(Resources.ValidationPlayerFirstName,
                     nameof(firstName));
             }
 
-            if (PlayerValidation.ValidateLastName(lastName))
+            if (LastNameIsInvalid(lastName))
             {
                 throw new ArgumentException(Resources.ValidationPlayerLastName,
                     nameof(lastName));
             }
 
-            if (PlayerValidation.ValidateBirthYear(birthYear))
+            if (BirthYearIsInvalid(birthYear))
             {
                 throw new ArgumentException(Resources.ValidationPlayerBirthYear, 
                     nameof(birthYear));
             }
 
-            if (PlayerValidation.ValidateHeight(height))
+            if (HeightIsInvalid(height))
             {
                 throw new ArgumentException(Resources.ValidationPlayerHeight, 
                     nameof(height));
             }
 
-            if (PlayerValidation.ValidateWeight(weight))
+            if (WeightIsInvalid(weight))
             {
                 throw new ArgumentException(Resources.ValidationPlayerWeight, 
                     nameof(weight));
             }
 
-            if (PlayerValidation.ValidateTeamId(teamId))
+            if (TeamIdIsInvalid(teamId))
             {
                 throw new ArgumentException(Resources.ValidationTeamId,
                     nameof(teamId));
@@ -104,7 +106,7 @@
 
             set
             {
-                if (PlayerValidation.ValidateFirstName(value))
+                if (FirstNameIsInvalid(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerFirstName, nameof(value));
                 }
@@ -123,7 +125,7 @@
 
             set
             {
-                if (PlayerValidation.ValidateLastName(value))
+                if (LastNameIsInvalid(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerLastName, nameof(value));
                 }
@@ -142,7 +144,7 @@
 
             set
             {
-                if (PlayerValidation.ValidateBirthYear(value))
+                if (BirthYearIsInvalid(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(value));
                 }
@@ -161,7 +163,7 @@
 
             set
             {
-                if (PlayerValidation.ValidateHeight(value))
+                if (HeightIsInvalid(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(value));
                 }
@@ -180,7 +182,7 @@
 
             set
             {
-                if (PlayerValidation.ValidateWeight(value))
+                if (WeightIsInvalid(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(value));
                 }

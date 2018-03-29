@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Domain.PlayersAggregate
 {
+    using System;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -7,6 +8,14 @@
     /// </summary>
     public static class PlayerValidation
     {
+        /// <summary>
+        /// Vallidates player id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool ValidateId(int id) =>
+            id < 0;
+
         /// <summary>
         /// Validates player first name.
         /// </summary>
@@ -61,5 +70,13 @@
             return weight.HasValue
                 && weight <= Constants.Player.MIN_WEIGHT && weight >= Constants.Player.MAX_WEIGHT;
         }
+
+        /// <summary>
+        /// Validates player team id.
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        internal static bool ValidateTeamId(int? teamId) =>
+            teamId.HasValue && ValidateId(teamId.Value);
     }
 }

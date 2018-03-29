@@ -1377,20 +1377,63 @@
         #region Get
 
         /// <summary>
-        /// Test for Get method. Existing game is requested. Game is returned.
+        /// Test for Get method. Existing game in PlayOff is requested.
+        /// Game is returned with WithAllowEditTotalScore = true.
         /// </summary>
         [TestMethod]
-        public void Get_ExistingGame_GameReturned()
+        public void Get_ExistingGameWithoutNextGamePlanned_GameReturned()
         {
             // Arrange
-            var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestGames()
+                .Build();
 
-            MockGetById(expected);
+            var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                                     .WithAllowEditTotalScore(true)
+                                                     .Build();
+            var actual = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                                   .Build();
+
+            MockGetById(actual);
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
 
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.Get(GAME_RESULT_ID);
+            actual = sut.Get(GAME_RESULT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
+        }
+
+        /// <summary>
+        /// Test for Get method. Existing game in PlayOff is requested.
+        /// Game is returned with WithAllowEditTotalScore = false, because next game is planned.
+        /// </summary>
+        [TestMethod]
+        public void Get_ExistingGameWithNextGamePlanned_GameReturned()
+        {
+            // Arrange
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                .Build();
+            var actual = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                .Build();
+
+            MockGetById(actual);
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            var sut = BuildSUT();
+
+            // Act
+            actual = sut.Get(GAME_RESULT_ID);
 
             // Assert
             TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());

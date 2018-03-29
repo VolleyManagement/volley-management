@@ -143,18 +143,9 @@
         public GameResultDto Get(int id)
         {
             var gameResultsDto = _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
-            TournamentScheduleDto tournamentInfo = null;
             if (gameResultsDto != null)
             {
-                tournamentInfo = _tournamentScheduleDtoByIdQuery
-                    .Execute(new TournamentScheduleInfoCriteria { TournamentId = gameResultsDto.TournamentId });
-            }
-
-            if (tournamentInfo != null && tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
-            {
-                gameResultsDto.AllowEditResult = ValidateEditingSchemePlayoff(gameResultsDto, tournamentInfo)
-                    ? (true, true)
-                    : (true, false);
+                gameResultsDto.AllowEditTotalScore = ValidateEditingSchemePlayoff(gameResultsDto);
             }
 
             return gameResultsDto;
@@ -915,28 +906,28 @@
 
         private static void SetAbilityToEditResults(List<GameResultDto> allGames)
         {
-            var gamesToAllowEditingResults = allGames.Where(
+            var gamesToAllowEditTotalScore = allGames.Where(
                 game => game.HomeTeamId.HasValue
                 && game.GameDate.HasValue
                 && NextGames(allGames, game)
                 .All(next => next.Result.GameScore.Home == 0 && next.Result.GameScore.Away == 0))
                 .ToList();
 
-            var gamesToAllowEditingResultsExceptTotalScore = allGames.Where(
+            var gamesNotAllowEditTotalScore = allGames.Where(
                 game => game.HomeTeamId.HasValue
                 && game.GameDate.HasValue
                 && NextGames(allGames, game)
                 .All(next => next.Result.GameScore.Home < 4 && next.Result.GameScore.Away < 4))
                 .ToList();
 
-            foreach (var game in gamesToAllowEditingResults)
+            foreach (var game in gamesToAllowEditTotalScore)
             {
-                game.AllowEditResult = new ValueTuple<bool, bool>(true, false);
+                game.AllowEditTotalScore = true;
             }
 
-            foreach (var game in gamesToAllowEditingResultsExceptTotalScore)
+            foreach (var game in gamesNotAllowEditTotalScore)
             {
-                game.AllowEditResult = new ValueTuple<bool, bool>(true, true);
+                game.AllowEditTotalScore = false;
             }
         }
 
@@ -1030,29 +1021,34 @@
                    && game.GameNumber % 2 != 0;
         }
 
-        private bool ValidateEditingSchemePlayoff(GameResultDto game, TournamentScheduleDto tournamentInfo)
+        private bool ValidateEditingSchemePlayoff(GameResultDto game)
         {
-           var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria {
-                    TournamentId = tournamentInfo.Id,
-                    RoundNumbers = new List<byte>
-                    {
-                        game.Round,
-                        Convert.ToByte(game.Round + 1)
-                    }
-                });
-            var gameone = new Game {
-                Round = game.Round
-            };
-            var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
-            var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
-            var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
-            if (nextGame != null && nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
+            if (game != null&& game.TournamentId!=null)
             {
-                return true;
-            }
-            return false;
+                var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                    .Execute(new TournamentScheduleInfoCriteria {TournamentId = game.TournamentId});
 
+                var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+                    .Execute(new GamesByRoundCriteria {
+                        TournamentId = tournamentInfo.Id,
+                        RoundNumbers = new List<byte> 
+                        {
+                            game.Round,
+                            Convert.ToByte(game.Round + 1)
+                        }
+                    });
+                var gameone = new Game {
+                    Round = game.Round
+                };
+                var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
+                var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
+                var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+                if (nextGame != null && nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         // Method is not mine: It has to be refactored 

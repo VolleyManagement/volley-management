@@ -8,7 +8,7 @@
 @{
     string classNameToDisable = "";
 }
-@if (Model.AllowEditResult.allowEditExceptTotalScore)
+@if (!Model.AllowEditTotalScore)
 {
     classNameToDisable = " disable";
 }

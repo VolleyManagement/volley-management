@@ -101,9 +101,9 @@
 
 
         /// <summary>
-        /// Gets or sets two values indicating if game is in PlayOff tournament and is allowed to edit all except total score.
+        /// Gets or sets allow edit results in PlayOff tournament only.
         /// </summary>
-        public (bool isPlayOff, bool allowEditExceptTotalScore) AllowEditResult { get; set; }
+        public bool AllowEditTotalScore { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether gets an identifier whether this game is a first round game.
@@ -152,7 +152,7 @@
                 UrlToGameVideo = gameResult.UrlToGameVideo,
                 GameScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
                 IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
-                AllowEditResult = gameResult.AllowEditResult,
+                AllowEditTotalScore = gameResult.AllowEditTotalScore,
                 SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel {
                     Home = item.Home,
                     Away = item.Away,

@@ -63,9 +63,9 @@
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets two values indicating if game is in PlayOff tournament and is allowed to edit all except total score.
+        /// Gets or sets allow edit results in PlayOff tournament only.
         /// </summary>
-        public (bool isPlayOff, bool allowEditExceptTotalScore) AllowEditResult { get; set; }
+        public bool AllowEditTotalScore { get; set; }
 
         /// <summary>
         /// Gets or sets a value of game result

@@ -10,11 +10,10 @@
     /// </summary>
     public class Player
     {
-        private string _firstName;
-        private string _lastName;
         private short? _birthYear;
         private short? _height;
         private short? _weight;
+        private int? _teamId;
 
         /// <summary>
         /// Initializes a new instance of the Player
@@ -57,30 +56,6 @@
                     nameof(lastName));
             }
 
-            if (BirthYearIsInvalid(birthYear))
-            {
-                throw new ArgumentException(Resources.ValidationPlayerBirthYear, 
-                    nameof(birthYear));
-            }
-
-            if (HeightIsInvalid(height))
-            {
-                throw new ArgumentException(Resources.ValidationPlayerHeight, 
-                    nameof(height));
-            }
-
-            if (WeightIsInvalid(weight))
-            {
-                throw new ArgumentException(Resources.ValidationPlayerWeight, 
-                    nameof(weight));
-            }
-
-            if (TeamIdIsInvalid(teamId))
-            {
-                throw new ArgumentException(Resources.ValidationTeamId,
-                    nameof(teamId));
-            }
-
             Id = id;
             FirstName = firstName;
             LastName = lastName;
@@ -94,45 +69,19 @@
         /// Gets or sets a value indicating where Id.
         /// </summary>
         /// <value>Id of player.</value>
-        public int Id { get; set; }
+        public int Id { get; }
 
         /// <summary>
         /// Gets or sets a value indicating where FirstName.
         /// </summary>
         /// <value>First name.</value>
-        public string FirstName
-        {
-            get => _firstName;
-
-            set
-            {
-                if (FirstNameIsInvalid(value))
-                {
-                    throw new ArgumentException(Resources.ValidationPlayerFirstName, nameof(value));
-                }
-
-                _firstName = value;
-            }
-        }
+        public string FirstName { get; }
 
         /// <summary>
         /// Gets or sets a value indicating where LastName.
         /// </summary>
         /// <value>Last name.</value>
-        public string LastName
-        {
-            get => _lastName;
-
-            set
-            {
-                if (LastNameIsInvalid(value))
-                {
-                    throw new ArgumentException(Resources.ValidationPlayerLastName, nameof(value));
-                }
-
-                _lastName = value;
-            }
-        }
+        public string LastName { get; }
 
         /// <summary>
         /// Gets or sets a value indicating where BirthYear.
@@ -195,6 +144,19 @@
         /// Gets or sets a value indicating where Team.
         /// </summary>
         /// <value>The player team.</value>
-        public int? TeamId { get; set; }
+        public int? TeamId
+        {
+            get => _teamId;
+            set
+            {
+                if (TeamIdIsInvalid(value))
+                {
+                    throw new ArgumentException(Resources.ValidationTeamId,
+                        nameof(value));
+                }
+
+                _teamId = value;
+            }
+        }
     }
 }

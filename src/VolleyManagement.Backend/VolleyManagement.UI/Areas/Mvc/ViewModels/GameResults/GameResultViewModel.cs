@@ -108,24 +108,12 @@
         /// <summary>
         /// Gets a value indicating whether gets an identifier whether this game is a first round game.
         /// </summary>
-        public bool IsFirstRoundGame
-        {
-            get
-            {
-                return Round == 1;
-            }
-        }
+        public bool IsFirstRoundGame => Round == 1;
 
         /// <summary>
         /// Gets the format of game date
         /// </summary>
-        public string ShortGameDate
-        {
-            get
-            {
-                return GameDate.HasValue ? GameDate.Value.ToString("d MMM dddd H:mm") : string.Empty;
-            }
-        }
+        public string ShortGameDate => GameDate.HasValue ? GameDate.Value.ToString("d MMM dddd H:mm") : string.Empty;
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object

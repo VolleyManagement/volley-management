@@ -162,15 +162,7 @@
                 .Where(gr => gr.HasResult)
                 .ToList();
 
-            var tournamentInfo = _tournamentScheduleDtoByIdQuery
-                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
-
-            if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
-            {
-                SetAbilityToEditResults(allGames);
-            }
-
-            return allGames;
+           return allGames;
         }
 
         public ICollection<GameResultDto> GetTournamentGames(int tournamentId)
@@ -903,63 +895,7 @@
             var roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;
         }
-
-        private static void SetAbilityToEditResults(List<GameResultDto> allGames)
-        {
-            var gamesToAllowEditTotalScore = allGames.Where(
-                game => game.HomeTeamId.HasValue
-                && game.GameDate.HasValue
-                && NextGames(allGames, game)
-                .All(next => next.Result.GameScore.Home == 0 && next.Result.GameScore.Away == 0))
-                .ToList();
-
-            var gamesNotAllowEditTotalScore = allGames.Where(
-                game => game.HomeTeamId.HasValue
-                && game.GameDate.HasValue
-                && NextGames(allGames, game)
-                .All(next => next.Result.GameScore.Home < 4 && next.Result.GameScore.Away < 4))
-                .ToList();
-
-            foreach (var game in gamesToAllowEditTotalScore)
-            {
-                game.AllowEditTotalScore = true;
-            }
-
-            foreach (var game in gamesNotAllowEditTotalScore)
-            {
-                game.AllowEditTotalScore = false;
-            }
-        }
-
-        private static List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
-        {
-            if (allGames == null)
-            {
-                throw new ArgumentNullException(nameof(allGames));
-            }
-
-            var numberOfRounds = Convert.ToByte(Math.Sqrt(allGames.Count));
-            if (currentGame.Round == numberOfRounds)
-            {
-                return new List<GameResultDto>();
-            }
-
-            var games = new List<GameResultDto>();
-
-            var nextGameNumber = GetNextGameNumber(currentGame.GameNumber, numberOfRounds);
-            games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
-            if (currentGame.Round == numberOfRounds - 1)
-            {
-                var lastGame = allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber + 1);
-                if (lastGame != null)
-                {
-                    games.Add(lastGame);
-                }
-            }
-
-            return games;
-        }
-
+       
         #endregion
 
         #region private methods

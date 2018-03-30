@@ -7,6 +7,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0E146539-A134-4E21-AF45-A91ED0D15D50}</ProjectGuid>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VolleyManagement.Specs</RootNamespace>
@@ -101,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditTeamSteps.cs" />
     <Compile Include="Infrastructure\TestDbAdapter.cs" />
     <Compile Include="Infrastructure\MockCurrentUserService.cs" />
     <Compile Include="Infrastructure\IntegrationTestConfigurationProvider.cs" />
@@ -135,6 +137,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ManageTeamPlayers.feature</DependentUpon>
     </Compile>
+    <Compile Include="TeamsContext\ManageTeamPlayersSteps.cs" />
     <Compile Include="TeamsContext\RemoveTeamSteps.cs" />
     <Compile Include="TeamsContext\CreateTeams.feature.cs">
       <AutoGen>True</AutoGen>

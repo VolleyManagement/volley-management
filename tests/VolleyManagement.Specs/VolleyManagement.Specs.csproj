@@ -125,6 +125,16 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlayersContext\RemovePlayerSteps.cs" />
+    <Compile Include="TeamsContext\EditTeam.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditTeam.feature</DependentUpon>
+    </Compile>
+    <Compile Include="TeamsContext\ManageTeamPlayers.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ManageTeamPlayers.feature</DependentUpon>
+    </Compile>
     <Compile Include="TeamsContext\RemoveTeamSteps.cs" />
     <Compile Include="TeamsContext\CreateTeams.feature.cs">
       <AutoGen>True</AutoGen>
@@ -161,6 +171,14 @@
     <None Include="TeamsContext\CreateTeams.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreateTeams.feature.cs</LastGenOutput>
+    </None>
+    <None Include="TeamsContext\EditTeam.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>EditTeam.feature.cs</LastGenOutput>
+    </None>
+    <None Include="TeamsContext\ManageTeamPlayers.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ManageTeamPlayers.feature.cs</LastGenOutput>
     </None>
     <None Include="TeamsContext\RemoveTeam.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

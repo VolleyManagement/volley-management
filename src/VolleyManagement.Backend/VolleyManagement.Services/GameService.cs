@@ -959,7 +959,7 @@
 
         private bool ValidateEditingSchemePlayoff(GameResultDto game)
         {
-            if (game != null && game.TournamentId >= 0)
+            if (game.TournamentId > 0)
             {
                 var tournamentInfo = _tournamentScheduleDtoByIdQuery
                     .Execute(new TournamentScheduleInfoCriteria {TournamentId = game.TournamentId});

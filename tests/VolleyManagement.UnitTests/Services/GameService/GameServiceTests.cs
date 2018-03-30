@@ -1413,7 +1413,7 @@
         /// Game is returned with WithAllowEditTotalScore = false, because next game is planned.
         /// </summary>
         [TestMethod]
-        public void Get_ExistingGameWithNextGamePlanned_GameReturned()
+        public void Get_ExistingGameWithNextGamePlanned_GameReturnedWithAllowEditTotalScore()
         {
             // Arrange
             var testTournament = CreatePlayoffTournament();

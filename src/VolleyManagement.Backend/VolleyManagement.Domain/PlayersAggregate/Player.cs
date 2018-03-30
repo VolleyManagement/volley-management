@@ -10,6 +10,8 @@
     /// </summary>
     public class Player
     {
+        private string _firstName;
+        private string _lastName;
         private short? _birthYear;
         private short? _height;
         private short? _weight;
@@ -44,18 +46,6 @@
                     nameof(id));
             }
 
-            if (FirstNameIsInvalid(firstName))
-            {
-                throw new ArgumentException(Resources.ValidationPlayerFirstName,
-                    nameof(firstName));
-            }
-
-            if (LastNameIsInvalid(lastName))
-            {
-                throw new ArgumentException(Resources.ValidationPlayerLastName,
-                    nameof(lastName));
-            }
-
             Id = id;
             FirstName = firstName;
             LastName = lastName;
@@ -75,13 +65,42 @@
         /// Gets or sets a value indicating where FirstName.
         /// </summary>
         /// <value>First name.</value>
-        public string FirstName { get; }
+        public string FirstName
+        {
+            get => _firstName;
+
+            set
+            {
+                if (FirstNameIsInvalid(value))
+                {
+                    throw new ArgumentException(Resources.ValidationPlayerFirstName,
+                        nameof(value));
+                }
+
+                _firstName = value;
+
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating where LastName.
         /// </summary>
         /// <value>Last name.</value>
-        public string LastName { get; }
+        public string LastName
+        {
+            get => _lastName;
+
+            set
+            {
+                if (LastNameIsInvalid(value))
+                {
+                    throw new ArgumentException(Resources.ValidationPlayerLastName,
+                        nameof(value));
+                }
+
+                _lastName = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating where BirthYear.

@@ -262,7 +262,7 @@
             // Arrange
             var newPlayers = new List<Player>()
             {
-                new PlayerBuilder(SPECIFIC_TEAM_ID, "First","Last").Build()
+                new PlayerBuilder(1, "First","Last").WithTeamId(SPECIFIC_TEAM_ID).Build()
             };
             var existingPlayers = CreateSeveralPlayers().AsQueryable();
             MockGetByIdQuery(newPlayers.First());

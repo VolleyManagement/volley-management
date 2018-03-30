@@ -68,7 +68,7 @@
         /// Create a new player.
         /// </summary>
         /// <param name="playerToCreate">A Player to create.</param>
-        public void Create(Player playerToCreate)
+        public Player Create(Player playerToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
@@ -83,7 +83,7 @@
             var weight = playerToCreate.Weight;
             var teamId = playerToCreate.TeamId;
 
-            _playerRepository.Add(firstName, 
+            return _playerRepository.Add(firstName, 
                 lastName, 
                 birthYear, 
                 height, 

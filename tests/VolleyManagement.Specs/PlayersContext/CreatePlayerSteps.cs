@@ -16,12 +16,12 @@ namespace VolleyManagement.Specs.PlayersContext
     public class CreatePlayerSteps
     {
         private int _addedPlayerId;
-        private readonly Player _player;
+        private Player _player;
         private readonly IPlayerService _playerService;
 
         public CreatePlayerSteps()
         {
-            _player = new Player();
+            _player = new Player(int.MaxValue, "First", "Last", null, null, null, null);
 
             _playerService = IocProvider.Get<IPlayerService>();
         }
@@ -68,15 +68,15 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             var playerToAdd = Mapper.Map<Player>(_player);
 
-            _playerService.Create(playerToAdd);
+            _player = _playerService.Create(playerToAdd);
 
-            _addedPlayerId = playerToAdd.Id;
+            _addedPlayerId = _player.Id;
         }
 
         [Then(@"new player gets new Id")]
         public void ThenNewPlayerGetsNewId()
         {
-            Assert.NotEqual(default(int), _player.Id);
+            Assert.NotEqual(int.MaxValue, _player.Id);
         }
 
         [Then(@"new player should be succesfully added")]

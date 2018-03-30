@@ -20,7 +20,7 @@
         /// Create new player.
         /// </summary>
         /// <param name="playerToCreate">New player.</param>
-        void Create(Player playerToCreate);
+        Player Create(Player playerToCreate);
 
         /// <summary>
         /// Create new players.

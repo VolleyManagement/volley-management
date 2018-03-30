@@ -40,7 +40,7 @@
         /// <param name="teamId">Id of the team, which roster this player is member of.</param>
         public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
         {
-            if (IdIsInvalid(id))
+            if (ValidateId(id))
             {
                 throw new ArgumentException(Resources.ValidationPlayerId,
                     nameof(id));
@@ -71,7 +71,7 @@
 
             set
             {
-                if (FirstNameIsInvalid(value))
+                if (ValidateFirstName(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerFirstName,
                         nameof(value));
@@ -92,7 +92,7 @@
 
             set
             {
-                if (LastNameIsInvalid(value))
+                if (ValidateLastName(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerLastName,
                         nameof(value));
@@ -112,7 +112,7 @@
 
             set
             {
-                if (BirthYearIsInvalid(value))
+                if (ValidateBirthYear(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(value));
                 }
@@ -131,7 +131,7 @@
 
             set
             {
-                if (HeightIsInvalid(value))
+                if (ValidateHeight(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(value));
                 }
@@ -150,7 +150,7 @@
 
             set
             {
-                if (WeightIsInvalid(value))
+                if (ValidateWeight(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(value));
                 }
@@ -168,7 +168,7 @@
             get => _teamId;
             set
             {
-                if (TeamIdIsInvalid(value))
+                if (ValidateTeamId(value))
                 {
                     throw new ArgumentException(Resources.ValidationTeamId,
                         nameof(value));

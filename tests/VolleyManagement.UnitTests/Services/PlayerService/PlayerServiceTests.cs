@@ -475,9 +475,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder(0, "First", "Last").Build(),
-                new PlayerBuilder(0, "Second", "Last").Build(),
-                new PlayerBuilder(0, "Name", "Name").Build()
+                new PlayerBuilder(0, "First", "Last").WithTeamId(1).Build(),
+                new PlayerBuilder(0, "Second", "Last").WithTeamId(1).Build(),
+                new PlayerBuilder(0, "Name", "Name").WithTeamId(1).Build()
             });
             return newPlayers;
         }
@@ -487,9 +487,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder(DEFAULT_PLAYER_ID, "Ant","Man").Build(),
-                new PlayerBuilder(SPECIFIC_PLAYER_ID, "Van","Van").Build(),
-                new PlayerBuilder(SPECIFIC_PLAYER_ID + 2, "Hank","Ripper").Build()
+                new PlayerBuilder(DEFAULT_PLAYER_ID, "Ant", "Man").Build(),
+                new PlayerBuilder(SPECIFIC_PLAYER_ID, "Van", "Van").Build(),
+                new PlayerBuilder(SPECIFIC_PLAYER_ID + 2, "Hank", "Ripper").Build()
             });
             return newPlayers;
         }
@@ -499,9 +499,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder(DEFAULT_PLAYER_ID, "First","Last").WithTeamId(null).Build(),
-                new PlayerBuilder(0, "New Second","Last").Build(),
-                new PlayerBuilder(0, "New Hank","Ripper").Build()
+                new PlayerBuilder(DEFAULT_PLAYER_ID, "First", "Last").WithTeamId(null).Build(),
+                new PlayerBuilder(0, "New Second", "Last").Build(),
+                new PlayerBuilder(0, "New Hank", "Ripper").Build()
             });
             return newPlayers;
         }
@@ -570,7 +570,7 @@
                 It.IsAny<short?>(),
                 It.IsAny<short?>(),
                 It.IsAny<short?>(),
-                It.IsAny<int?>()), 
+                It.IsAny<int?>()),
                 times);
         }
 

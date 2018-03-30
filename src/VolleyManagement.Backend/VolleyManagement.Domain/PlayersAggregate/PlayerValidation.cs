@@ -14,7 +14,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        internal static bool IdIsInvalid(int id) =>
+        internal static bool ValidateId(int id) =>
             id < MIN_ID;
 
         /// <summary>
@@ -22,7 +22,7 @@
         /// </summary>
         /// <param name="firstName">Player first name for validation</param>
         /// <returns>Validity of Player first name</returns>
-        internal static bool FirstNameIsInvalid(string firstName)
+        public static bool ValidateFirstName(string firstName)
         {
             return string.IsNullOrEmpty(firstName) || !Regex.IsMatch(firstName, NAME_VALIDATION_REGEX)
                 || firstName.Length > MAX_FIRST_NAME_LENGTH;
@@ -33,7 +33,7 @@
         /// </summary>
         /// <param name="lastName">Player last name for validation</param>
         /// <returns>Validity of Player last name</returns>
-        internal static bool LastNameIsInvalid(string lastName)
+        internal static bool ValidateLastName(string lastName)
         {
             return string.IsNullOrEmpty(lastName) || !Regex.IsMatch(lastName, NAME_VALIDATION_REGEX)
                 || lastName.Length > MAX_LAST_NAME_LENGTH;
@@ -55,7 +55,7 @@
         /// </summary>
         /// <param name="birthYear">Player birth year for validation</param>
         /// <returns>Validity of Player birth year.</returns>
-        internal static bool BirthYearIsInvalid(short? birthYear) =>
+        internal static bool ValidateBirthYear(short? birthYear) =>
             NullableIsInvalid(birthYear, birthYear <= MIN_BIRTH_YEAR && birthYear >= MAX_BIRTH_YEAR);
 
         /// <summary>
@@ -63,7 +63,7 @@
         /// </summary>
         /// <param name="height">Player height for validation</param>
         /// <returns>Validity of Player height.</returns>
-        internal static bool HeightIsInvalid(short? height) =>
+        internal static bool ValidateHeight(short? height) =>
             NullableIsInvalid(height, height <= MIN_HEIGHT && height >= MAX_HEIGHT);
 
         /// <summary>
@@ -71,7 +71,7 @@
         /// </summary>
         /// <param name="weight">Player weight for validation</param>
         /// <returns>Validity of Player weight.</returns>
-        internal static bool WeightIsInvalid(short? weight) =>
+        internal static bool ValidateWeight(short? weight) =>
             NullableIsInvalid(weight, weight <= MIN_WEIGHT && weight >= MAX_WEIGHT);
 
         /// <summary>
@@ -79,7 +79,7 @@
         /// </summary>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        internal static bool TeamIdIsInvalid(int? teamId) =>
+        internal static bool ValidateTeamId(int? teamId) =>
             NullableIsInvalid(teamId, teamId < MIN_ID);
     }
 }

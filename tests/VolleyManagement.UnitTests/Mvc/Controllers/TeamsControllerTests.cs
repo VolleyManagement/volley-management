@@ -669,7 +669,6 @@
                         .WithId(id)
                         .WithFirstName(PLAYER_FIRSTNAME)
                         .WithLastName(PLAYER_LASTNAME)
-                        .WithTeamId(SPECIFIED_TEAM_ID)
                         .Build();
         }
 

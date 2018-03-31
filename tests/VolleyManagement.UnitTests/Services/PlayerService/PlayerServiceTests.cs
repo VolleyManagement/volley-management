@@ -40,6 +40,7 @@
         private Mock<IQuery<Team, FindByIdCriteria>> _getTeamByIdQueryMock;
         private Mock<IQuery<Team, FindByCaptainIdCriteria>> _getTeamByCaptainQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
+        private Mock<IQuery<int, FindByPlayerCriteria>> _getPlayerTeam;
 
         /// <summary>
         /// Initializes test data.
@@ -55,6 +56,7 @@
             _getTeamByIdQueryMock = new Mock<IQuery<Team, FindByIdCriteria>>();
             _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _getPlayerTeam = new Mock<IQuery<int, FindByPlayerCriteria>>();
 
             _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -467,6 +469,7 @@
                 _playerRepositoryMock.Object,
                 _getTeamByIdQueryMock.Object,
                 _getPlayerByIdQueryMock.Object,
+                _getPlayerTeam.Object,
                 _getAllPlayersQueryMock.Object,
                 _getTeamByCaptainQueryMock.Object,
                 _authServiceMock.Object);

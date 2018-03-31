@@ -54,7 +54,7 @@
         /// <returns>Collection of team's players</returns>
         ICollection<Player> GetTeamRoster(int teamId);
 
-         /// <summary>	
+         /// <summary>
          /// Sets team id to roster	
          /// </summary>	
          /// <param name="roster">Players to set the team id</param>	

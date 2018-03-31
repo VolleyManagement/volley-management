@@ -270,22 +270,22 @@
             {
                 if (string.IsNullOrEmpty(includeList))
                 {
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value);
+                    query = query.Where(p => IsFreePlayer(p, includeTeam));
                 }
                 else
                 {
                     var selectedIds = ParseIntList(includeList);
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
+                    query = query.Where(p => IsFreePlayer(p, includeTeam) || selectedIds.Contains(p.Id));
                 }
             }
             else if (string.IsNullOrEmpty(includeList))
             {
-                query = query.Where(p => p.TeamId == null);
+                query = query.Where(p => IsFreePlayer(p, null));
             }
             else
             {
                 var selectedIds = ParseIntList(includeList);
-                query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
+                query = query.Where(p => IsFreePlayer(p, null) || selectedIds.Contains(p.Id));
             }
 
             if (!string.IsNullOrEmpty(excludeList))
@@ -332,6 +332,20 @@
             }
 
             return result;
+        }
+
+        private bool IsFreePlayer(Player player, int? includeTeam)
+        {
+            var teamId = _playerService.GetPlayerTeam(player).Id;
+
+            if (includeTeam.HasValue)
+            {
+                return teamId == null || teamId == includeTeam.Value;
+            }
+            else
+            {
+                return teamId == null;
+            }
         }
     }
 }

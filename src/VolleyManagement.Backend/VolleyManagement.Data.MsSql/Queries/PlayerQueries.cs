@@ -103,7 +103,7 @@
                                       .Select(t => t.TeamId.GetValueOrDefault())
                                       .SingleOrDefault();
         }
-
+        
         #endregion
 
         #region Mapping

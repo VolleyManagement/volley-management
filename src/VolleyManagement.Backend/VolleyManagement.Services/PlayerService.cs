@@ -236,5 +236,20 @@
             return isExistingPlayers.Any(t => t != null);
 
         }
+
+        public void AssingPlayerToTeam(Player player, int? teamId)
+        {
+            _authService.CheckAccess(AuthOperations.Players.Edit);
+            try
+            {
+                _playerRepository.UpdateTeam(player, teamId);
+            }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
+            }
+
+            _playerRepository.UnitOfWork.Commit();
+        }
     }
 }

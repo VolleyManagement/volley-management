@@ -192,8 +192,7 @@
             {
                 teamId = WebApiHelpers.GetKeyFromUri<int>(Request, link);
                 _teamService.Get(teamId);
-                playerToUpdate.TeamId = teamId;
-                _playerService.Edit(playerToUpdate);
+                _playerService.AssingPlayerToTeam(playerToUpdate, teamId);
             }
             catch (MissingEntityException ex)
             {

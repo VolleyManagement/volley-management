@@ -26,9 +26,12 @@
 #pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITeamRepository _teamRepository;
+        private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
+        private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
+        private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
         private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<ICollection<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
         private readonly IAuthorizationService _authService;
@@ -53,15 +56,19 @@
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
-            IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
+            IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
+        IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<ICollection<Player>, TeamPlayersCriteria> getTeamRosterQuery,
             IAuthorizationService authService)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             _teamRepository = teamRepository;
+            _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
+            _getPlayerByNameQuery = getPlayerByNameQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
+            _getPlayerTeamQuery = getPlayerTeamQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getTeamRosterQuery = getTeamRosterQuery;
             _authService = authService;
@@ -183,6 +190,30 @@
             return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId });
         }
 
+        /// <summary>
+        /// Sets team id to roster
+        /// </summary>
+        /// <param name="roster">Players to set the team</param>
+        /// <param name="teamId">Id of team which should be set to player</param>
+        public void UpdateRosterTeamId(ICollection<Player> roster, int teamId)
+        {
+            if (GetTeamRoster(teamId).Count > 1)
+            {
+                foreach (var player in GetTeamRoster(teamId))
+                {
+                    if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
+                    {
+                        SetPlayerTeamIdToNull(player.Id);
+                    }
+                }
+            }
+
+            foreach (var player in roster)
+            {
+                UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
+            }
+        }
+
         private static bool ValidateTwoTeamsName(Team teamToValidate, ICollection<Team> getExistingTeams)
         {
             var existingTeams = from ex in getExistingTeams
@@ -202,6 +233,59 @@
             }
         }
 
+        private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
+        {
+            var player = GetPlayerByFullName(firstName, lastName);
+
+            if (player == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
+            }
+            var playerTeamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = player.Id });
+            // Check if player plays in another team
+            if (playerTeamId != default(int) && playerTeamId != teamId)
+            {
+                throw new ArgumentException(
+                    TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
+            }
+
+            // Check if player is captain of another team
+            if (playerTeamId != default(int))
+            {
+                var existingTeam = GetPlayerLedTeam(player.Id);
+
+                if (existingTeam != null && teamId != existingTeam.Id)
+                {
+                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
+                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
+                    throw ex;
+                }
+            }
+
+            var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
+
+            if (team == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
+            }
+
+            _playerRepository.UpdateTeam(player, teamId);
+            _playerRepository.UnitOfWork.Commit();
+        }
+
+        private void SetPlayerTeamIdToNull(int playerId)
+        {
+            var player = GetPlayerById(playerId);
+
+            if (player == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
+            }
+
+            _playerRepository.UpdateTeam(player, null);
+            _playerRepository.UnitOfWork.Commit();
+        }
+
         private Team GetPlayerLedTeam(int playerId)
         {
             return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
@@ -210,6 +294,14 @@
         private Player GetPlayerById(int id)
         {
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        private Player GetPlayerByFullName(string firstName, string lastName)
+        {
+            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria {
+                FirstName = firstName,
+                LastName = lastName
+            });
         }
 
         private static void ValidateTeamName(string teamName)

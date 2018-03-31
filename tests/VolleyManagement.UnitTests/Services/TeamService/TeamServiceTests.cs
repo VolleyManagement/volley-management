@@ -49,6 +49,7 @@
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<Player, FindByFullNameCriteria>> _getPlayerByFullNameQueryMock;
         private Mock<IQuery<Team, FindByCaptainIdCriteria>> _getTeamByCaptainQueryMock;
+        private Mock<IQuery<int, FindByPlayerCriteria>> _getTeamByPlayerMock;
         private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
         private Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
@@ -70,6 +71,7 @@
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getPlayerByFullNameQueryMock = new Mock<IQuery<Player, FindByFullNameCriteria>>();
             _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
+            _getTeamByPlayerMock = new Mock<IQuery<int, FindByPlayerCriteria>>();
             _getAllTeamsQueryMock = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTeamRosterQueryMock = new Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -878,6 +880,7 @@
                 _getPlayerByIdQueryMock.Object,
                 _getPlayerByFullNameQueryMock.Object,
                 _getTeamByCaptainQueryMock.Object,
+                _getTeamByPlayerMock.Object,
                 _getAllTeamsQueryMock.Object,
                 _getTeamRosterQueryMock.Object,
                 _authServiceMock.Object);

@@ -21,9 +21,9 @@
         /// <returns>Builder object with collection of players</returns>
         public PlayerServiceTestFixture TestPlayers()
         {
-            _players.Add(new Player(1, "FirstNameA", "LastNameA", 1989, 211, 120, null));
-            _players.Add(new Player(2, "FirstNameB", "LastNameB", 1984, 205, 99, null));
-            _players.Add(new Player(3, "FirstNameC", "LastNameC", 1969, 169, 79, null));
+            _players.Add(new Player(1, "FirstNameA", "LastNameA", 1989, 211, 120));
+            _players.Add(new Player(2, "FirstNameB", "LastNameB", 1984, 205, 99));
+            _players.Add(new Player(3, "FirstNameC", "LastNameC", 1969, 169, 79));
 
             return this;
         }

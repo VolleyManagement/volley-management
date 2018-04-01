@@ -103,8 +103,7 @@
                 LastName = player.LastName,
                 BirthYear = player.BirthYear,
                 Height = player.Height,
-                Weight = player.Weight,
-                TeamId = player.TeamId
+                Weight = player.Weight
             };
 
             return playerViewModel;
@@ -116,7 +115,7 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player(Id, FirstName, LastName, BirthYear, Height, Weight, TeamId);
+            return new Player(Id, FirstName, LastName, BirthYear, Height, Weight);
         }
         #endregion
     }

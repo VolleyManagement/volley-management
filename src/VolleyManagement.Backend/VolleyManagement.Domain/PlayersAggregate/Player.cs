@@ -22,7 +22,7 @@
         /// <param name="id">Id</param>
         /// <param name="firstName">Fisrt Name</param>
         /// <param name="lastName">Last Name</param>
-        public Player(int id, string firstName, string lastName) : this(id, firstName, lastName, null, null, null, null)
+        public Player(int id, string firstName, string lastName) : this(id, firstName, lastName, null, null, null)
         {
 
         }
@@ -36,7 +36,7 @@
         /// <param name="birthYear">BirthYear</param>
         /// <param name="height">Height</param>
         /// <param name="weight">Weight</param>
-        public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
+        public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight)
         {
             if (ValidateId(id))
             {
@@ -50,7 +50,6 @@
             BirthYear = birthYear;
             Height = height;
             Weight = weight;
-            TeamId = teamId;
         }
 
         /// <summary>
@@ -157,23 +156,5 @@
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating where Team.
-        /// </summary>
-        /// <value>The player team.</value>
-        public int? TeamId
-        {
-            get => _teamId;
-            set
-            {
-                if (ValidateTeamId(value))
-                {
-                    throw new ArgumentException(Resources.ValidationTeamId,
-                        nameof(value));
-                }
-
-                _teamId = value;
-            }
-        }
     }
 }

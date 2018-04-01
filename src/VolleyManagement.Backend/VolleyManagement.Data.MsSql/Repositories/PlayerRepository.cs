@@ -35,15 +35,14 @@
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
-        public Player Add(string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
+        public Player Add(string firstName, string lastName, short? birthYear, short? height, short? weight)
         {
             var newEntity = new PlayerEntity {
                 FirstName = firstName,
                 LastName = lastName,
                 BirthYear = birthYear,
                 Height = height,
-                Weight = weight,
-                TeamId = teamId
+                Weight = weight
             };
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newEntity))
@@ -57,8 +56,7 @@
             return new Player(newEntity.Id, newEntity.FirstName, newEntity.LastName) {
                 BirthYear = newEntity.BirthYear,
                 Height = newEntity.Height,
-                Weight = newEntity.Weight,
-                TeamId = newEntity.TeamId
+                Weight = newEntity.Weight
             };
         }
 

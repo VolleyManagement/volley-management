@@ -3,7 +3,6 @@ using FluentAssertions;
 using System.Linq;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
-using VolleyManagement.Data.MsSql.Context;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
@@ -21,7 +20,7 @@ namespace VolleyManagement.Specs.PlayersContext
 
         public CreatePlayerSteps()
         {
-            _player = new Player(int.MaxValue, "First", "Last", null, null, null, null);
+            _player = new Player(int.MaxValue, "First", "Last", null, null, null);
 
             _playerService = IocProvider.Get<IPlayerService>();
         }
@@ -76,6 +75,7 @@ namespace VolleyManagement.Specs.PlayersContext
         [Then(@"new player gets new Id")]
         public void ThenNewPlayerGetsNewId()
         {
+            Assert.NotEqual(default(int), _player.Id);
             Assert.NotEqual(int.MaxValue, _player.Id);
         }
 

@@ -84,14 +84,12 @@
             var birthYear = playerToCreate.BirthYear;
             var height = playerToCreate.Height;
             var weight = playerToCreate.Weight;
-            var teamId = playerToCreate.TeamId;
 
             return _playerRepository.Add(firstName, 
                 lastName, 
                 birthYear, 
                 height, 
-                weight, 
-                teamId);
+                weight);
         }
 
         /// <summary>
@@ -115,7 +113,7 @@
                 foreach (var player in newPlayersToCreate)
                 {
                     _playerRepository.Add(player.FirstName, player.LastName,
-                        player.BirthYear, player.Height, player.Weight, player.TeamId);
+                        player.BirthYear, player.Height, player.Weight);
                 }
             }
         }
@@ -236,8 +234,8 @@
 
             var isExistingPlayers = existingPlayers
                     .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => String.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
-                                  && String.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
+                    .FirstOrDefault(t => string.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
+                                  && string.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
                                   && _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = allPlayer.Id }) != teamId));
 
             return isExistingPlayers.Any(t => t != null);
@@ -255,8 +253,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
             }
-
-            _playerRepository.UnitOfWork.Commit();
         }
     }
 }

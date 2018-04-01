@@ -118,7 +118,7 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player(Id, FirstName, LastName, BirthYear, Height, Weight, TeamId);
+            return new Player(Id, FirstName, LastName, BirthYear, Height, Weight);
         }
         #endregion
     }

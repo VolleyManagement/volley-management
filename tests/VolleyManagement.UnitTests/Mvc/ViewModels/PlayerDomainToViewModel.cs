@@ -32,7 +32,6 @@
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)
-                .WithTeamId(1)
                 .Build();
 
             // Act

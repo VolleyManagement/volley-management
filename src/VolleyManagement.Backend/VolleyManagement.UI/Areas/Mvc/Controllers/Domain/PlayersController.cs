@@ -29,6 +29,7 @@
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";
+        private const int FREE_PLAYER = 0;
 
         /// <summary>
         /// Holds PlayerService instance
@@ -338,14 +339,7 @@
         {
             var teamId = _playerService.GetPlayerTeam(player).Id;
 
-            if (includeTeam.HasValue)
-            {
-                return teamId == null || teamId == includeTeam.Value;
-            }
-            else
-            {
-                return teamId == null;
-            }
+            return includeTeam.HasValue ? teamId == FREE_PLAYER || teamId == includeTeam.Value : teamId == FREE_PLAYER;
         }
     }
 }

@@ -229,7 +229,7 @@
         {
             var existingTeams = from ex in getExistingTeams
                                 where ex.Id != teamToValidate.Id
-                                where String.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
+                                where string.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
                                 select ex;
             return existingTeams.Count() != 0;
         }

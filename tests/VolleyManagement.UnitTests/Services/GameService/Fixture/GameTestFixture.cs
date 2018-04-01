@@ -27,7 +27,7 @@
         /// <returns>Instance of <see cref="GameTestFixture"/>.</returns>
         public GameTestFixture TestGames()
         {
-            _games.Add(new Game
+            _games.Add(new Game 
             {
                 Id = 1,
                 TournamentId = 1,
@@ -38,7 +38,7 @@
                 Round = 1,
                 GameNumber = 1
             });
-            _games.Add(new Game
+            _games.Add(new Game 
             {
                 Id = 2,
                 TournamentId = 1,
@@ -49,7 +49,7 @@
                 Round = 1,
                 GameNumber = 2
             });
-            _games.Add(new Game
+            _games.Add(new Game 
             {
                 Id = 3,
                 TournamentId = 1,
@@ -60,13 +60,64 @@
                 Round = 2,
                 GameNumber = 3
             });
-            _games.Add(new Game
+            _games.Add(new Game 
             {
                 Id = 4,
                 TournamentId = 1,
                 HomeTeamId = null,
                 AwayTeamId = null,
                 Result = new Result(),
+                GameDate = DateTime.Parse(DATE_D),
+                Round = 2,
+                GameNumber = 4
+            });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Generates <see cref="Game"/> objects filled with test data.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameTestFixture"/>.</returns>
+        public GameTestFixture TestGamesWithResults()
+        {
+            var r=new Result(){GameScore = new Score(3,2)};
+            _games.Add(new Game {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = r,
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 1
+            });
+            _games.Add(new Game {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = r,
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 1,
+                GameNumber = 2
+            });
+            _games.Add(new Game {
+                Id = 3,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = r,
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 2,
+                GameNumber = 3
+            });
+            _games.Add(new Game {
+                Id = 4,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = r,
                 GameDate = DateTime.Parse(DATE_D),
                 Round = 2,
                 GameNumber = 4

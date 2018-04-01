@@ -5,7 +5,13 @@
 
 @Html.ValidationMessage("ValidationMessage", new { @class = "text-danger", name = "ValidationMessage" })
 @Html.HiddenFor(model => model.TournamentId)
-
+@{
+    string classNameToDisable = "";
+}
+@if (!Model.AllowEditTotalScore)
+{
+    classNameToDisable = " disable";
+}
 <div class="form-group">
     @Resources.UI.GameResultViews.TeamsFields
 
@@ -21,9 +27,9 @@
 
 <div class="form-group">
     @Resources.UI.GameResultViews.SetsScoreFields
-    @Html.EditorFor(model => model.GameScore.Home, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.GameScore.Home, new { htmlAttributes = new { @class = "form-control"+classNameToDisable } })
 
-    @Html.EditorFor(model => model.GameScore.Away, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.GameScore.Away, new { htmlAttributes = new { @class = "form-control" + classNameToDisable } })
 </div>
 
 <div class="form-group">
@@ -55,18 +61,18 @@
 
 @for (int i = 0; i < Model.SetScores.Count; i++)
 {
-<div class="form-group">
-    @string.Format(Resources.UI.GameResultViews.SetFields, i + 1)
-    @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-group">
+        @string.Format(Resources.UI.GameResultViews.SetFields, i + 1)
+        @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
 
-    @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
-    @Resources.UI.GameResultViews.SetTechnicalDefeat @Html.CheckBoxFor(model => model.SetScores[i].IsTechnicalDefeat, new { htmlAttributes = new { @class = "form-control" } })
-</div>
+        @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
+        @Resources.UI.GameResultViews.SetTechnicalDefeat @Html.CheckBoxFor(model => model.SetScores[i].IsTechnicalDefeat, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
 }
 
 <div class="form-group">
     @Html.LabelFor(model => model.UrlToGameVideo, @Resources.UI.GameResultViews.UrlToGameVideo)
-    @Html.EditorFor(model => model.UrlToGameVideo, new { htmlAttributes = new { @class = "form-control",  style="display: inline-block; width: 84%;" } })
+    @Html.EditorFor(model => model.UrlToGameVideo, new { htmlAttributes = new { @class = "form-control, video-input" } })
 </div>
 
 

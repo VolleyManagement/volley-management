@@ -69,27 +69,6 @@
             return this;
         }
         /// <summary>
-        /// Sets player test teamId
-        /// </summary>
-        /// <param name="teamId">Test player weight</param>
-        /// <returns>Player builder object</returns>
-        public PlayerBuilder WithTeamId(int? teamId)
-        {
-            _player.TeamId = teamId;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets player test teamId = null
-        /// </summary>
-        /// <returns>Player builder object</returns>
-        public PlayerBuilder WithNoTeam()
-        {
-            _player.TeamId = null;
-            return this;
-        }
-
-        /// <summary>
         /// Builds test player
         /// </summary>
         /// <returns>Test player</returns>

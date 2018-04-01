@@ -163,19 +163,6 @@
         /// Gets or sets a value indicating where Team.
         /// </summary>
         /// <value>The player team.</value>
-        public int? TeamId
-        {
-            get => _teamId;
-            set
-            {
-                if (ValidateTeamId(value))
-                {
-                    throw new ArgumentException(Resources.ValidationTeamId,
-                        nameof(value));
-                }
-
-                _teamId = value;
-            }
-        }
+        public int? TeamId { get; set; }
     }
 }

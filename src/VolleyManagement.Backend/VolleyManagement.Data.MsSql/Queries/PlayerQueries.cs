@@ -9,11 +9,13 @@
     using Data.Queries.Player;
     using Domain.PlayersAggregate;
     using Entities;
+    using Data.Queries.Team;
 
     /// <summary>
     /// Provides Query Object implementation for Player entity
     /// </summary>
     public class PlayerQueries : IQuery<Player, FindByIdCriteria>,
+                                 IQuery<int, FindByPlayerCriteria>,
                                  IQuery<Player, FindByFullNameCriteria>,
                                  IQuery<IQueryable<Player>, GetAllCriteria>,
                                  IQuery<ICollection<Player>, TeamPlayersCriteria>
@@ -89,15 +91,35 @@
                                       .ToList();
         }
 
+        /// <summary>
+        /// Find Team by given criteria
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns>The id of player team</returns>
+        int IQuery<int, FindByPlayerCriteria>.Execute(FindByPlayerCriteria criteria)
+        {
+            return _unitOfWork.Context.Players
+                                      .Where(t => t.Id == criteria.Id)
+                                      .Select(t => t.TeamId.GetValueOrDefault())
+                                      .SingleOrDefault();
+        }
+        
         #endregion
 
         #region Mapping
 
         private static Expression<Func<PlayerEntity, Player>> GetPlayerMapping()
         {
-            return p => new Player(p.Id, p.FirstName, p.LastName, p.BirthYear, p.Height, p.Weight, p.TeamId);
+            return p => new Player {
+                Id = p.Id,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                BirthYear = p.BirthYear,
+                Height = p.Height,
+                Weight = p.Weight
+            };
         }
-
+        
         #endregion
     }
 }

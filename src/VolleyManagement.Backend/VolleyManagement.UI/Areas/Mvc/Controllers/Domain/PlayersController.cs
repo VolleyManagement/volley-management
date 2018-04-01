@@ -29,6 +29,7 @@
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";
+        private const int FREE_PLAYER = 0;
 
         /// <summary>
         /// Holds PlayerService instance
@@ -271,22 +272,22 @@
             {
                 if (string.IsNullOrEmpty(includeList))
                 {
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value);
+                    query = query.Where(p => IsFreePlayer(p, includeTeam));
                 }
                 else
                 {
                     var selectedIds = ParseIntList(includeList);
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
+                    query = query.Where(p => IsFreePlayer(p, includeTeam) || selectedIds.Contains(p.Id));
                 }
             }
             else if (string.IsNullOrEmpty(includeList))
             {
-                query = query.Where(p => p.TeamId == null);
+                query = query.Where(p => IsFreePlayer(p, null));
             }
             else
             {
                 var selectedIds = ParseIntList(includeList);
-                query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
+                query = query.Where(p => IsFreePlayer(p, null) || selectedIds.Contains(p.Id));
             }
 
             if (!string.IsNullOrEmpty(excludeList))
@@ -332,6 +333,13 @@
             }
 
             return result;
+        }
+
+        private bool IsFreePlayer(Player player, int? includeTeam)
+        {
+            var teamId = _playerService.GetPlayerTeam(player).Id;
+
+            return includeTeam.HasValue ? teamId == FREE_PLAYER || teamId == includeTeam.Value : teamId == FREE_PLAYER;
         }
     }
 }

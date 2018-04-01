@@ -31,6 +31,7 @@
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
         private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
+        private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
         private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<ICollection<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
         private readonly IAuthorizationService _authService;
@@ -55,7 +56,8 @@
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
-            IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
+            IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
+        IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<ICollection<Player>, TeamPlayersCriteria> getTeamRosterQuery,
             IAuthorizationService authService)
 #pragma warning restore S107 // Methods should not have too many parameters
@@ -66,6 +68,7 @@
             _getPlayerByIdQuery = getPlayerByIdQuery;
             _getPlayerByNameQuery = getPlayerByNameQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
+            _getPlayerTeamQuery = getPlayerTeamQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getTeamRosterQuery = getTeamRosterQuery;
             _authService = authService;
@@ -95,18 +98,13 @@
             }
 
             // Check if captain in teamToCreate is captain of another team
-            if (captain.TeamId != null)
-            {
-                var existTeam = GetPlayerLedTeam(captain.Id);
-                VerifyExistingTeamOrThrow(existTeam);
-            }
+            var existTeam = GetPlayerLedTeam(captain.Id);
+            VerifyExistingTeamOrThrow(existTeam);
 
             ValidateTeam(teamToCreate);
 
             _teamRepository.Add(teamToCreate);
-
-            captain.TeamId = teamToCreate.Id;
-            _playerRepository.Update(captain);
+            _playerRepository.UpdateTeam(captain, teamToCreate.Id);
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -124,8 +122,9 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
             }
 
+            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = captain.Id });
             // Check if captain in teamToCreate is captain of another team
-            if ((captain.TeamId != null) && (captain.TeamId != teamToEdit.Id))
+            if (teamId != 0 && teamId != teamToEdit.Id)
             {
                 var existTeam = GetPlayerLedTeam(captain.Id);
                 VerifyExistingTeamOrThrow(existTeam);
@@ -134,6 +133,8 @@
             ValidateTeam(teamToEdit);
 
             teamToEdit.CaptainId = captain.Id;
+            _playerRepository.UpdateTeam(captain, teamToEdit.Id);
+            _playerRepository.UnitOfWork.Commit();
 
             try
             {
@@ -143,10 +144,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
-
-            captain.TeamId = teamToEdit.Id;
-            _playerRepository.Update(captain);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -174,13 +171,11 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId, ex);
             }
-
             IEnumerable<Player> roster = GetTeamRoster(teamId);
 
             foreach (var player in roster)
             {
-                player.TeamId = null;
-                _playerRepository.Update(player);
+                _playerRepository.UpdateTeam(player, null);
             }
 
             _teamRepository.UnitOfWork.Commit();
@@ -234,7 +229,7 @@
         {
             var existingTeams = from ex in getExistingTeams
                                 where ex.Id != teamToValidate.Id
-                                where String.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
+                                where string.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
                                 select ex;
             return existingTeams.Count() != 0;
         }
@@ -257,16 +252,16 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
             }
-
+            var playerTeamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = player.Id });
             // Check if player plays in another team
-            if (player.TeamId != null && player.TeamId != teamId)
+            if (playerTeamId != default(int) && playerTeamId != teamId)
             {
                 throw new ArgumentException(
                     TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
             }
 
             // Check if player is captain of another team
-            if (player.TeamId != null)
+            if (playerTeamId != default(int))
             {
                 var existingTeam = GetPlayerLedTeam(player.Id);
 
@@ -285,8 +280,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
             }
 
-            player.TeamId = teamId;
-            _playerRepository.Update(player);
+            _playerRepository.UpdateTeam(player, teamId);
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -299,8 +293,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
             }
 
-            player.TeamId = null;
-            _playerRepository.Update(player);
+            _playerRepository.UpdateTeam(player, null);
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -316,7 +309,10 @@
 
         private Player GetPlayerByFullName(string firstName, string lastName)
         {
-            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
+            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria {
+                FirstName = firstName,
+                LastName = lastName
+            });
         }
 
         private static void ValidateTeamName(string teamName)

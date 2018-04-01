@@ -121,8 +121,7 @@
                 LastName = LastName,
                 BirthYear = BirthYear,
                 Height = Height,
-                Weight = Weight,
-                TeamId = TeamId
+                Weight = Weight
             };
         }
         #endregion

@@ -94,5 +94,25 @@
             _dalPlayers.Attach(dalToRemove);
             _dalPlayers.Remove(dalToRemove);
         }
+
+        public void UpdateTeam(Player updatedEntity, int? teamId)
+        {
+            if (updatedEntity.Id < Constants.START_DATABASE_ID_VALUE)
+            {
+                var exc = new InvalidKeyValueException(Properties.Resources.InvalidEntityId);
+                exc.Data[Constants.ENTITY_ID_KEY] = updatedEntity.Id;
+                throw exc;
+            }
+
+            var playerToUpdate = _dalPlayers.SingleOrDefault(t => t.Id == updatedEntity.Id);
+
+            if (playerToUpdate == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            playerToUpdate.Id = teamId.Value;
+            _unitOfWork.Commit();
+        }
     }
 }

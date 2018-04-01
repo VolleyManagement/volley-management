@@ -96,6 +96,26 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.FactAttribute(DisplayName="Create very long name", Skip="Ignored")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create Player")]
+        [Xunit.TraitAttribute("Description", "Create very long name")]
+        public virtual void CreateVeryLongName()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create very long name", new string[] {
+                        "ignore"});
+#line 18
+this.ScenarioSetup(scenarioInfo);
+#line 19
+    testRunner.Given("last name is Very looooooooooooooooooooooooong name which should be more than 60 " +
+                    "symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 20
+    testRunner.When("I execute CreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
+    testRunner.Then("EntityInvariantViolationException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
         [Xunit.TheoryAttribute(DisplayName="Create player with all attributes")]
         [Xunit.TraitAttribute("FeatureTitle", "Create Player")]
         [Xunit.TraitAttribute("Description", "Create player with all attributes")]
@@ -104,24 +124,75 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatePlayerWithAllAttributes(string firstName, string lastName, string height, string weight, string birthYear, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create player with all attributes", exampleTags);
-#line 17
-this.ScenarioSetup(scenarioInfo);
-#line 18
- testRunner.Given(string.Format("first name is {0}", firstName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
-    testRunner.And(string.Format("last name is {0}", lastName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
-    testRunner.And(string.Format("height is {0}", height), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
-    testRunner.And(string.Format("weight is {0}", weight), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
-    testRunner.And(string.Format("year of birth is {0}", birthYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.When("I execute CreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 24
-    testRunner.Then("new player gets new Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given(string.Format("first name is {0}", firstName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 25
+    testRunner.And(string.Format("last name is {0}", lastName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+    testRunner.And(string.Format("height is {0}", height), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+    testRunner.And(string.Format("weight is {0}", weight), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
+    testRunner.And(string.Format("year of birth is {0}", birthYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+ testRunner.When("I execute CreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 30
+    testRunner.Then("new player gets new Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 31
  testRunner.Then("new player should be succesfully added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.FactAttribute(DisplayName="Quick create players from names", Skip="Ignored")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create Player")]
+        [Xunit.TraitAttribute("Description", "Quick create players from names")]
+        public virtual void QuickCreatePlayersFromNames()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Quick create players from names", new string[] {
+                        "ignore"});
+#line 38
+this.ScenarioSetup(scenarioInfo);
+#line 39
+    testRunner.Given("full name is <FullName>", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 40
+    testRunner.When("I execute QuickCreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FullName",
+                        "FirstName",
+                        "LastName"});
+            table1.AddRow(new string[] {
+                        "John Smith",
+                        "John",
+                        "Smith"});
+            table1.AddRow(new string[] {
+                        "Peter Petrovich Petrov",
+                        "Peter Petrovich",
+                        "Petrov"});
+#line 41
+    testRunner.Then("player is created with <FirstName> and <LastName>", ((string)(null)), table1, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.FactAttribute(DisplayName="Bulk create players", Skip="Ignored")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create Player")]
+        [Xunit.TraitAttribute("Description", "Bulk create players")]
+        public virtual void BulkCreatePlayers()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Bulk create players", new string[] {
+                        "ignore"});
+#line 47
+this.ScenarioSetup(scenarioInfo);
+#line 48
+    testRunner.Given("collection of players to create", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 49
+    testRunner.When("I execute CreatePlayerBulk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 50
+    testRunner.Then("all players are created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -980,7 +980,7 @@
                     var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
                     var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
                     var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
-                    if (nextGame != null && nextGame.AwayTeamId != null && nextGame.HomeTeamId != null)
+                    if (nextGame != null && !nextGame.Result.GameScore.IsEmpty)
                     {
                         return false;
                     }

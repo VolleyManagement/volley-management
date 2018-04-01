@@ -1418,14 +1418,15 @@
             // Arrange
             var testTournament = CreatePlayoffTournament();
             var games = new GameTestFixture()
-                .TestEmptyGamePlayoffSchedule()
+                .TestMinimumOddTeamsPlayOffSchedule()
+                .TestGamesWithResults()
                 .Build();
 
             var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
                 .Build();
             var actual = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
                 .Build();
-
+            
             MockGetById(actual);
             MockAllTournamentQueries(testTournament);
             MockGetTournamentResults(TOURNAMENT_ID, games);

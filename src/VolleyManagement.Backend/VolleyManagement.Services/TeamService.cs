@@ -105,7 +105,6 @@
 
             _teamRepository.Add(teamToCreate);
             _playerRepository.UpdateTeam(captain, teamToCreate.Id);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -132,10 +131,6 @@
 
             ValidateTeam(teamToEdit);
 
-            teamToEdit.CaptainId = captain.Id;
-            _playerRepository.UpdateTeam(captain, teamToEdit.Id);
-            _playerRepository.UnitOfWork.Commit();
-
             try
             {
                 _teamRepository.Update(teamToEdit);
@@ -144,6 +139,9 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
+
+            teamToEdit.CaptainId = captain.Id;
+            _playerRepository.UpdateTeam(captain, teamToEdit.Id);
         }
 
         /// <summary>
@@ -281,7 +279,6 @@
             }
 
             _playerRepository.UpdateTeam(player, teamId);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         private void SetPlayerTeamIdToNull(int playerId)
@@ -294,7 +291,6 @@
             }
 
             _playerRepository.UpdateTeam(player, null);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         private Team GetPlayerLedTeam(int playerId)

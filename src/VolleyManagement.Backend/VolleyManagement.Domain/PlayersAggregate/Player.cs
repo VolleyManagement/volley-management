@@ -3,6 +3,8 @@
     using System;
     using Properties;
 
+    using static PlayerValidation;
+
     /// <summary>
     /// Player domain class.
     /// </summary>
@@ -15,10 +17,46 @@
         private short? _weight;
 
         /// <summary>
+        /// Initializes a new instance of the Player
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="firstName">Fisrt Name</param>
+        /// <param name="lastName">Last Name</param>
+        public Player(int id, string firstName, string lastName) : this(id, firstName, lastName, null, null, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Player
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="firstName">First Name</param>
+        /// <param name="lastName">Last Name</param>
+        /// <param name="birthYear">BirthYear</param>
+        /// <param name="height">Height</param>
+        /// <param name="weight">Weight</param>
+        public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight)
+        {
+            if (ValidateId(id))
+            {
+                throw new ArgumentException(Resources.ValidationPlayerId,
+                    nameof(id));
+            }
+
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            BirthYear = birthYear;
+            Height = height;
+            Weight = weight;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
         /// <value>Id of player.</value>
-        public int Id { get; set; }
+        public int Id { get; }
 
         /// <summary>
         /// Gets or sets a value indicating where FirstName.
@@ -26,19 +64,18 @@
         /// <value>First name.</value>
         public string FirstName
         {
-            get
-            {
-                return _firstName;
-            }
+            get => _firstName;
 
             set
             {
-                if (PlayerValidation.ValidateFirstName(value))
+                if (ValidateFirstName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerFirstName, nameof(value));
+                    throw new ArgumentException(Resources.ValidationPlayerFirstName,
+                        nameof(value));
                 }
 
                 _firstName = value;
+
             }
         }
 
@@ -48,16 +85,14 @@
         /// <value>Last name.</value>
         public string LastName
         {
-            get
-            {
-                return _lastName;
-            }
+            get => _lastName;
 
             set
             {
-                if (PlayerValidation.ValidateLastName(value))
+                if (ValidateLastName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerLastName, nameof(value));
+                    throw new ArgumentException(Resources.ValidationPlayerLastName,
+                        nameof(value));
                 }
 
                 _lastName = value;
@@ -70,14 +105,11 @@
         /// <value>Birth year.</value>
         public short? BirthYear
         {
-            get
-            {
-                return _birthYear;
-            }
+            get => _birthYear;
 
             set
             {
-                if (PlayerValidation.ValidateBirthYear(value))
+                if (ValidateBirthYear(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(value));
                 }
@@ -92,14 +124,11 @@
         /// <value>The height.</value>
         public short? Height
         {
-            get
-            {
-                return _height;
-            }
+            get => _height;
 
             set
             {
-                if (PlayerValidation.ValidateHeight(value))
+                if (ValidateHeight(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(value));
                 }
@@ -114,14 +143,11 @@
         /// <value>The weight.</value>
         public short? Weight
         {
-            get
-            {
-                return _weight;
-            }
+            get => _weight;
 
             set
             {
-                if (PlayerValidation.ValidateWeight(value))
+                if (ValidateWeight(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(value));
                 }
@@ -129,5 +155,6 @@
                 _weight = value;
             }
         }
+
     }
 }

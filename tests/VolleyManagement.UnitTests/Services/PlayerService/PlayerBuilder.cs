@@ -15,52 +15,25 @@
         private Player _player;
 
         /// <summary>
+        /// Initializes a new instance with all required parameters.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        public PlayerBuilder(int id, string firstName, string lastName)
+        {
+            _player = new Player(id, firstName, lastName);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlayerBuilder"/> class
         /// </summary>
-        public PlayerBuilder()
+        public PlayerBuilder() : this(1)
         {
-            _player = new Player
-            {
-                Id = 1,
-                FirstName = "FirstName",
-                LastName = "LastName",
-                BirthYear = 1983,
-                Height = 186,
-                Weight = 95
-            };
         }
 
-        /// <summary>
-        /// Sets player test Id
-        /// </summary>
-        /// <param name="id">Test player Id</param>
-        /// <returns>Player builder object</returns>
-        public PlayerBuilder WithId(int id)
+        public PlayerBuilder(int id) : this(id, "FirstName", "LastName")
         {
-            _player.Id = id;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets player test first name
-        /// </summary>
-        /// <param name="firstName">Test player first name</param>
-        /// <returns>Player builder object</returns>
-        public PlayerBuilder WithFirstName(string firstName)
-        {
-            _player.FirstName = firstName;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets player test last name
-        /// </summary>
-        /// <param name="lastName">Test player last name</param>
-        /// <returns>Player builder object</returns>
-        public PlayerBuilder WithLastName(string lastName)
-        {
-            _player.LastName = lastName;
-            return this;
         }
 
         /// <summary>
@@ -95,7 +68,6 @@
             _player.Weight = weight;
             return this;
         }
-
         /// <summary>
         /// Builds test player
         /// </summary>

@@ -103,8 +103,9 @@
                 return HttpNotFound();
             }
 
-            var model = new PlayerRefererViewModel(player, returnUrl);
-            model.AllowedOperations = _authService.GetAllowedOperations(AuthOperations.Players.Edit);
+            var model = new PlayerRefererViewModel(player, returnUrl) {
+                AllowedOperations = _authService.GetAllowedOperations(AuthOperations.Players.Edit)
+            };
             return View(model);
         }
 
@@ -323,10 +324,9 @@
         {
             var splitted = source.Split(',');
             var result = new List<int>();
-            int parsed;
             foreach (var i in splitted)
             {
-                if (int.TryParse(i, out parsed))
+                if (int.TryParse(i, out int parsed))
                 {
                     result.Add(parsed);
                 }

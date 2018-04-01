@@ -114,6 +114,7 @@
             var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             var testPlayer = new PlayerBuilder().Build();
             MockGetTeamByIdQuery(testTeam);
+            MockGetTeamByPlayerQuery(testTeam.Id);
             var sut = BuildSUT();
             var expected = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
 
@@ -271,6 +272,7 @@
             };
             var existingPlayers = CreateSeveralPlayers().AsQueryable();
             MockGetByIdQuery(newPlayers.First());
+            MockGetTeamByPlayerQuery(SPECIFIC_PLAYER_ID);
             _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
                 .Returns(existingPlayers);
 
@@ -279,6 +281,7 @@
             // Act
             try
             {
+                sut.AssingPlayerToTeam(newPlayers[0], SPECIFIC_PLAYER_ID);
                 sut.Create(newPlayers);
             }
             catch (ArgumentException)
@@ -543,6 +546,12 @@
         private void MockGetTeamByCaptainIdQuery(Team team)
         {
             _getTeamByCaptainQueryMock.Setup(t => t.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(team);
+        }
+
+        private void MockGetTeamByPlayerQuery(int teamId)
+        {
+            _getPlayerTeam.SetupSequence(t => t.Execute(It.IsAny<FindByPlayerCriteria>()))
+                .Returns(teamId);
         }
 
         private bool PlayersAreEqual(Player x, Player y)

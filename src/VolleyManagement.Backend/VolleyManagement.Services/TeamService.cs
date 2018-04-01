@@ -104,6 +104,8 @@
             ValidateTeam(teamToCreate);
 
             _teamRepository.Add(teamToCreate);
+            _playerRepository.UpdateTeam(captain, teamToCreate.Id);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -120,8 +122,9 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
             }
 
+            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = captain.Id });
             // Check if captain in teamToCreate is captain of another team
-            if (teamToEdit.CaptainId != captain.Id)
+            if (teamId != 0 && teamId != teamToEdit.Id)
             {
                 var existTeam = GetPlayerLedTeam(captain.Id);
                 VerifyExistingTeamOrThrow(existTeam);
@@ -130,6 +133,8 @@
             ValidateTeam(teamToEdit);
 
             teamToEdit.CaptainId = captain.Id;
+            _playerRepository.UpdateTeam(captain, teamToEdit.Id);
+            _playerRepository.UnitOfWork.Commit();
 
             try
             {
@@ -165,6 +170,12 @@
             catch (InvalidKeyValueException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId, ex);
+            }
+            IEnumerable<Player> roster = GetTeamRoster(teamId);
+
+            foreach (var player in roster)
+            {
+                _playerRepository.UpdateTeam(player, null);
             }
 
             _teamRepository.UnitOfWork.Commit();

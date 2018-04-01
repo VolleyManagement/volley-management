@@ -484,7 +484,7 @@
             sut.Create(newTeam);
 
             // Assert
-            Assert.AreEqual(newTeam.Id, captain.Id);
+            Assert.AreEqual(newTeam.CaptainId, captain.Id);
             VerifyCreateTeam(newTeam, Times.Once());
         }
 
@@ -640,7 +640,7 @@
 
             // Assert
             _playerRepositoryMock.Verify(
-                                         pr => pr.Update(It.Is<Player>(player => expectedRoster.Contains(player))),
+                                         pr => pr.UpdateTeam(It.Is<Player>(player => expectedRoster.Contains(player)), null),
                                          Times.Exactly(expectedCountOfPlayers));
 
             _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Once());
@@ -704,6 +704,7 @@
                             .Returns(testTeams.Where(tm => tm.CaptainId == captain.Id).FirstOrDefault());
 
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockGetTeamByPlayerQuery(SPECIFIC_PLAYER_ID);
 
             // Act
             var sut = BuildSUT();
@@ -901,6 +902,13 @@
             _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
+        private void MockGetTeamByPlayerQuery(int teamId)
+        {
+            _getTeamByPlayerMock.SetupSequence(t => t.Execute(It.IsAny<FindByPlayerCriteria>()))
+                .Returns(teamId)
+                .Returns(0)
+                .Returns(0);
+        }
         private void MockGetPlayerByIdQuery(Player player)
         {
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);

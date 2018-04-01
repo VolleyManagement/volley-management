@@ -6,15 +6,6 @@ namespace VolleyManagement.Data.Queries.Team
     /// </summary>
     public class FindByPlayerCriteria : IQueryCriteria
     {
-        public FindByPlayerCriteria()
-        {
-
-        }
-
-        public FindByPlayerCriteria(int id)
-        {
-            Id = id;
-        }
         /// <summary>
         /// Gets or sets Player ID to search for
         /// </summary>

@@ -15,7 +15,6 @@
         private short? _birthYear;
         private short? _height;
         private short? _weight;
-        private int? _teamId;
 
         /// <summary>
         /// Initializes a new instance of the Player
@@ -37,7 +36,6 @@
         /// <param name="birthYear">BirthYear</param>
         /// <param name="height">Height</param>
         /// <param name="weight">Weight</param>
-        /// <param name="teamId">Id of the team, which roster this player is member of.</param>
         public Player(int id, string firstName, string lastName, short? birthYear, short? height, short? weight, int? teamId)
         {
             if (ValidateId(id))
@@ -163,6 +161,19 @@
         /// Gets or sets a value indicating where Team.
         /// </summary>
         /// <value>The player team.</value>
-        public int? TeamId { get; set; }
+        public int? TeamId
+        {
+            get => _teamId;
+            set
+            {
+                if (ValidateTeamId(value))
+                {
+                    throw new ArgumentException(Resources.ValidationTeamId,
+                        nameof(value));
+                }
+
+                _teamId = value;
+            }
+        }
     }
 }

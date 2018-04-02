@@ -16,3 +16,10 @@ Examples:
 | TeamName  | Captain    | Coach       | Achievements                  |
 | Team A    | Jane Doe   |             |                               |
 | Full Team | John Smith | Ivan Ivanov | Winner of Galactic tournament |
+
+@ignore
+Scenario: Create team without captain
+    Given team name is Team B
+    And captain is empty
+    When I execute CreateTeam
+    Then EntityInvariantViolationException is thrown

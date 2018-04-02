@@ -96,7 +96,7 @@
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void Create(ICollection<Player> playersToCreate)
+        public void CreateBulk(ICollection<Player> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 

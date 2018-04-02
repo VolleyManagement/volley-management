@@ -200,7 +200,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newPlayers);
+            sut.CreateBulk(newPlayers);
 
             // Assert
             VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
@@ -223,7 +223,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newPlayers);
+            sut.CreateBulk(newPlayers);
 
             // Assert
             Assert.IsFalse(gotException);
@@ -246,7 +246,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newPlayers);
+            sut.CreateBulk(newPlayers);
 
             // Assert
             VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
@@ -277,7 +277,7 @@
             // Act
             try
             {
-                sut.Create(newPlayers);
+                sut.CreateBulk(newPlayers);
             }
             catch (ArgumentException)
             {

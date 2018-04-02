@@ -142,7 +142,13 @@
         /// <returns>Instance of <see cref="GameResultDto"/> or null if nothing is obtained.</returns>
         public GameResultDto Get(int id)
         {
-            return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            var gameResultsDto = _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            if (gameResultsDto != null)
+            {
+                gameResultsDto.AllowEditTotalScore = ValidateEditingSchemePlayoff(gameResultsDto);
+            }
+
+            return gameResultsDto;
         }
 
         /// <summary>
@@ -156,15 +162,7 @@
                 .Where(gr => gr.HasResult)
                 .ToList();
 
-            var tournamentInfo = _tournamentScheduleDtoByIdQuery
-                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
-
-            if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
-            {
-                SetAbilityToEditResults(allGames);
-            }
-
-            return allGames;
+           return allGames;
         }
 
         public ICollection<GameResultDto> GetTournamentGames(int tournamentId)
@@ -288,7 +286,7 @@
             _authService.CheckAccess(AuthOperations.Games.SwapRounds);
 
             var games = _gamesByTournamentIdRoundsNumberQuery.Execute(
-                new TournamentRoundsGameResultsCriteria
+                new TournamentRoundsGameResultsCriteria 
                 {
                     TournamentId = tournamentId,
                     FirstRoundNumber = firstRoundNumber,
@@ -484,13 +482,11 @@
             }
         }
 
-        private void ValidateGameInRound(
-            Game newGame,
-            ICollection<GameResultDto> games,
+        private void ValidateGameInRound(Game newGame, ICollection<GameResultDto> games,
             TournamentScheduleDto tournamentSсheduleInfo)
         {
             var teamsInTournament =
-                _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria
+                _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria 
                 {
                     TournamentId = tournamentSсheduleInfo.Id
                 });
@@ -560,7 +556,7 @@
                     game.HomeTeamId));
             errorMessage = GameValidation.IsFreeDayGame(newGame)
                 ? tmpres
-                : String.Format(
+                : string.Format(
                     Resources.SameGameInRound,
                     game.HomeTeamName,
                     game.AwayTeamName,
@@ -732,7 +728,7 @@
             var gamesToUpdate = new List<Game>();
 
             var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesByRoundCriteria
+                .Execute(new GamesByRoundCriteria 
                 {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
@@ -810,12 +806,9 @@
             var nextGame = games
                 .SingleOrDefault(g => g.GameNumber == nextGameNumber);
 
-            // Check if next game can be scheduled
-            ValidateEditingSchemePlayoff(nextGame);
-
             if (finishedGame.HomeTeamId != null)
             {
-            var winnerTeamId = 0;
+                var winnerTeamId = 0;
 #pragma warning disable S3240 // The simplest possible condition syntax should be used
                 if (finishedGame.AwayTeamId == null)
 #pragma warning restore S3240 // The simplest possible condition syntax should be used
@@ -846,8 +839,6 @@
             // Assume that finished game is a semifinal game
             var nextGameNumber = GetNextGameNumber(finishedGame.GameNumber, numberOfRounds);
             var nextGame = games.SingleOrDefault(g => g.GameNumber == nextGameNumber);
-
-            ValidateEditingSchemePlayoff(nextGame);
 
             var loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
@@ -904,56 +895,7 @@
             var roundNum = games.Max(g => g.Round);
             return roundNum == finishedGame.Round;
         }
-
-        private static void ValidateEditingSchemePlayoff(Game nextGame)
-        {
-            if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
-                && nextGame.Result.GameScore.Away != 0)
-            {
-                throw new ArgumentException(Resources.PlayoffGameEditingError);
-            }
-        }
-
-        private static void SetAbilityToEditResults(List<GameResultDto> allGames)
-        {
-            var gamesToAllowEditingResults = allGames.Where(
-                game => game.HomeTeamId.HasValue
-                && game.GameDate.HasValue
-                && NextGames(allGames, game)
-                .All(next => next.Result.GameScore.Home == 0 && next.Result.GameScore.Away == 0))
-                .ToList();
-
-            foreach (var game in gamesToAllowEditingResults)
-            {
-                game.AllowEditResult = true;
-            }
-        }
-
-        private static List<GameResultDto> NextGames(List<GameResultDto> allGames, GameResultDto currentGame)
-        {
-            if (allGames == null)
-            {
-                throw new ArgumentNullException(nameof(allGames));
-            }
-
-            var numberOfRounds = Convert.ToByte(Math.Sqrt(allGames.Count));
-            if (currentGame.Round == numberOfRounds)
-            {
-                return new List<GameResultDto>();
-            }
-
-            var games = new List<GameResultDto>();
-
-            var nextGameNumber = GetNextGameNumber(currentGame.GameNumber, numberOfRounds);
-            games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber));
-            if (currentGame.Round == numberOfRounds - 1)
-            {
-                games.Add(allGames.SingleOrDefault(g => g.GameNumber == nextGameNumber + 1));
-            }
-
-            return games;
-        }
-
+       
         #endregion
 
         #region private methods
@@ -968,8 +910,7 @@
         private void UpdateTournamentLastTimeUpdated(Game game)
         {
             var tournament = _getTournamentInstanceByIdQuery
-               .Execute(new FindByIdCriteria
-               {
+               .Execute(new FindByIdCriteria {
                    Id = game.TournamentId
                });
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
@@ -1014,6 +955,38 @@
         {
             return game.Round == numberOfRounds
                    && game.GameNumber % 2 != 0;
+        }
+
+        private bool ValidateEditingSchemePlayoff(GameResultDto game)
+        {
+            if (game.TournamentId > 0)
+            {
+                var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                    .Execute(new TournamentScheduleInfoCriteria {TournamentId = game.TournamentId});
+                if (tournamentInfo!=null)
+                {
+                    var gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
+                        .Execute(new GamesByRoundCriteria {
+                            TournamentId = tournamentInfo.Id,
+                            RoundNumbers = new List<byte>
+                            {
+                                game.Round,
+                                Convert.ToByte(game.Round + 1)
+                            }
+                        });
+                    var gameone = new Game {
+                        Round = game.Round
+                    };
+                    var numbersofRounds = GetNumberOfRounds(gameone, gamesInCurrentAndNextRounds);
+                    var nextGameNumber = GetNextGameNumber(game.GameNumber, numbersofRounds);
+                    var nextGame = gamesInCurrentAndNextRounds.SingleOrDefault(g => g.GameNumber == nextGameNumber);
+                    if (nextGame != null && !nextGame.Result.GameScore.IsEmpty)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         // Method is not mine: It has to be refactored 

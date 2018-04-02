@@ -302,6 +302,17 @@
         }
 
         /// <summary>
+        /// Sets is allow edit total score property.
+        /// </summary>
+        /// <param name="isAllowed"></param>
+        /// <returns></returns>
+        public GameResultDtoBuilder WithAllowEditTotalScore(bool isAllowed)
+        {
+            _gameResult.AllowEditTotalScore = isAllowed;
+            return this;
+        }
+
+        /// <summary>
         /// Builds instance of <see cref="GameResultDtoBuilder"/>.
         /// </summary>
         /// <returns>Instance of <see cref="GameResultDto"/>.</returns>

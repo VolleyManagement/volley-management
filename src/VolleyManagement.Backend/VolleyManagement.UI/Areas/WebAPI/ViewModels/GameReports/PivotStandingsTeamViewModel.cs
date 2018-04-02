@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using Domain.GameReportsAggregate;
 
@@ -34,8 +34,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <returns>View model of game result.</returns>
         internal static PivotStandingsTeamViewModel Map(TeamStandingsDto team)
         {
-            return new PivotStandingsTeamViewModel
-            {
+            return new PivotStandingsTeamViewModel {
                 TeamId = team.TeamId,
                 TeamName = team.TeamName,
                 Points = team.Points,

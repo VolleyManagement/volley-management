@@ -5,6 +5,7 @@
     using Contracts;
     using Contracts.Exceptions;
     using Models;
+    using System.Linq;
 
     /// <summary>
     /// Provides User management
@@ -28,7 +29,8 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Index()
         {
-            var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
+            var users = _userService.GetAllUsers().Select(UserViewModel.Initialize).ToList();
+
             return View(users);
         }
 
@@ -38,7 +40,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult ActiveUsers()
         {
-            var activeUsers = _userService.GetAllActiveUsers().ConvertAll(UserViewModel.Initialize);
+            var activeUsers = _userService.GetAllActiveUsers().Select(UserViewModel.Initialize).ToList();
             return View(activeUsers);
         }
 

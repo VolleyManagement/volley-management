@@ -5,7 +5,7 @@
     /// <summary>
     /// Team validation class.
     /// </summary>
-    public class TeamValidation
+    public static class TeamValidation
     {
         /// <summary>
         /// Validates team name.

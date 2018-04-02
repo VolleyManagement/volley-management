@@ -21,7 +21,7 @@ branches:
   only:
     - master
     - Release
-    - /issue_#*/
+    - /^issue_#\d+/
 
 #---------------------------------#
 #    environment configuration    #
@@ -39,6 +39,9 @@ environment:
 cache:
   - packages -> **\packages.config
 
+services:
+  - mssql2017
+
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
@@ -47,7 +50,7 @@ build_script:
 - ps: >-
     cd .\build
 
-    .\build.ps1 -v Verbose
+    .\build.ps1
 
 #---------------------------------#
 #       tests configuration       #
@@ -65,13 +68,5 @@ notifications:
   incoming_webhook: 
     secure: luby6/6oxEkccvelC2OAWgSoJBO+gLqYVKLwylU1KMYz8Plwycoshmlv2pQJkFZCm4EckYt7AAfL8k7vR70BhM9b26TnBqeuNpmMlF3KZAc=
   on_build_success: false
-  on_build_failure: false
-  on_build_status_changed: true
-
-# Detailed Slack notification
-- provider: Slack
-  incoming_webhook:
-    secure: luby6/6oxEkccvelC2OAWgSoJBO+gLqYVKLwylU1KMbzbnbcyNyjBiNIU9bPCQUTWPyH4PVe7Dv1wZsgZfmQ+U1UX8hyjwoNm1MycBoqJ4w=
-  on_build_success: true
   on_build_failure: true
-  on_build_status_changed: false
+  on_build_status_changed: true

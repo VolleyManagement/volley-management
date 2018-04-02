@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
-    using System;
     using System.Data.Entity;
     using System.Linq;
     using Contracts;
@@ -37,7 +36,10 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get
+            {
+                return _unitOfWork;
+            }
         }
 
         /// <summary>

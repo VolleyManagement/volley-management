@@ -27,14 +27,14 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>List of game results of specified tournament.</returns>
-        List<GameResultDto> GetTournamentResults(int tournamentId);
+        ICollection<GameResultDto> GetTournamentResults(int tournamentId);
 
         /// <summary>
         /// Gets all scheduled games of the tournament specified by its identifier.
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>List of games of specified tournament.</returns>
-        List<GameResultDto> GetTournamentGames(int tournamentId);
+        ICollection<GameResultDto> GetTournamentGames(int tournamentId);
 
         /// <summary>
         /// Edits specified instance of game.
@@ -72,6 +72,6 @@
         /// Add collection of games into tournament
         /// </summary>
         /// <param name="games">Collection of games</param>
-        void AddGames(List<Game> games);
+        void AddGames(ICollection<Game> games);
     }
 }

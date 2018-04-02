@@ -1,9 +1,12 @@
-﻿namespace VolleyManagement.Data.MsSql
+﻿using VolleyManagement.Crosscutting.Contracts.Providers;
+
+namespace VolleyManagement.Data.MsSql
 {
     using System.Data.Entity.Infrastructure;
     using System.Threading.Tasks;
     using Context;
     using Contracts;
+    using System;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -11,33 +14,25 @@
     internal class VolleyUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Context of the data source.
-        /// </summary>
-        private readonly VolleyManagementEntities _context;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="VolleyUnitOfWork"/> class.
         /// </summary>
-        public VolleyUnitOfWork()
+        public VolleyUnitOfWork(IConfigurationProvider configurationProvider)
         {
-            _context = new VolleyManagementEntities();
-            ((IObjectContextAdapter)_context).ObjectContext.ContextOptions.LazyLoadingEnabled = true;
+            Context = new VolleyManagementEntities(configurationProvider.GetVolleyManagementEntitiesConnectionString());
+            ((IObjectContextAdapter)Context).ObjectContext.ContextOptions.LazyLoadingEnabled = true;
         }
 
         /// <summary>
         /// Gets context of the data source.
         /// </summary>
-        internal VolleyManagementEntities Context
-        {
-            get { return _context; }
-        }
+        internal VolleyManagementEntities Context { get; }
 
         /// <summary>
         /// Commits all the changes.
         /// </summary>
         public void Commit()
         {
-            _context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -46,7 +41,7 @@
         /// <returns>Task to await</returns>
         public Task CommitAsync()
         {
-            return _context.SaveChangesAsync();
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -54,7 +49,19 @@
         /// </summary>
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// IDisposable.Dispose method implementation.
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Context.Dispose();
+            }
         }
     }
 }

@@ -6,7 +6,6 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
 <table class="table" @ViewBag.TableId>
     <thead>
         <tr>
@@ -30,6 +29,9 @@
                 </td>
                 <td>
                     @Html.ActionLink("Delete", "Delete", new { id = tournament.Id })
+                </td>
+                <td>
+                    @Html.ActionLink("Activate", "Activate", new { id = tournament.Id })
                 </td>
             </tr>
         }

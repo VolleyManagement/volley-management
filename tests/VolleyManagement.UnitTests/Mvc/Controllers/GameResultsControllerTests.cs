@@ -7,15 +7,15 @@
     using System.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.GameService;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.GamesAggregate;
+    using Domain.TeamsAggregate;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.GameResults;
+    using ViewModels;
+    using Services.GameService;
 
     /// <summary>
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.
@@ -81,17 +81,17 @@
                                 .WithTournamentId(TOURNAMENT_ID)
                                 .Build();
 
-            Game expectedGameResult = gameResult.ToDomain();
+            var expectedGameResult = gameResult.ToDomain();
 
             Game actualGameResult = null;
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))
-                .Callback<Game>(r => actualGameResult = r);
+                            .Callback<Game>(r => actualGameResult = r);
 
             var sut = BuildSUT();
 
             // Act
             var result = sut.Create(gameResult) as RedirectToRouteResult;
-          
+
             // Assert
             TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameComparer());
         }
@@ -106,7 +106,7 @@
             var game = new GameResultViewModelBuilder()
                                 .WithTournamentId(TOURNAMENT_ID)
                                 .Build();
-            Game expectedGameResult = game.ToDomain();
+            var expectedGameResult = game.ToDomain();
 
             Game actualGameResult = null;
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))
@@ -177,7 +177,7 @@
             // Arrange
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var testData = new GameServiceTestFixture().TestGameResults().Build();
-            
+
             var expected = new GameResultViewModelBuilder()
                 .WithTournamentId(TOURNAMENT_ID)
                 .WithAwayTeamName("TeamNameB")

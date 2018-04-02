@@ -34,16 +34,16 @@
 
 <div class="editor-label">
     <input class="text-box single-line"
-        id="Captain_FullName"
-        name="Captain.FullName"
-        type="text"
-        value="@captainFullName"
-        data-val="true"
-        data-val-required='@ViewModelResources.TeamCaptainRequired'
-        data-vm-playerid="@captainId" />
+           id="Captain_FullName"
+           name="Captain.FullName"
+           type="text"
+           value="@captainFullName"
+           data-val="true"
+           data-val-required='@ViewModelResources.TeamCaptainRequired'
+           data-vm-playerid="@captainId" />
     <span class="field-validation-valid" data-valmsg-for="Captain.FullName" data-valmsg-replace="true"></span>
 </div>
-<br/>
+<br />
 <div class="editor-label">
     @Html.LabelFor(model => model.Achievements)
 </div>
@@ -61,7 +61,7 @@
     <script type="text/javascript">
         (function(){
             "use strict";
-            
+
             var ns = VM.addNamespace("team.createEdit");
             ns.teamRoster = [];
             @{
@@ -77,9 +77,9 @@
             </text>
                     }
                 }
-            }            
-            
-        })();            
+            }
+
+        })();
     </script>
 
     <button id='addPlayerToTeamButton'>Add player to team</button>

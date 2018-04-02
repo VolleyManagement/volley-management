@@ -17,8 +17,7 @@
         /// <returns>Tournament Domain model</returns>
         public static Tournament Map(TournamentViewModel tournamentViewModel)
         {
-            return new Tournament
-            {
+            return new Tournament {
                 Id = tournamentViewModel.Id,
                 Name = tournamentViewModel.Name,
                 Description = tournamentViewModel.Description,
@@ -37,8 +36,7 @@
         /// <returns>User Domain model</returns>
         public static User Map(UserViewModel userViewModel)
         {
-            return new User
-            {
+            return new User {
                 Id = userViewModel.Id,
                 UserName = userViewModel.UserName,
                 PhoneNumber = userViewModel.CellPhone,

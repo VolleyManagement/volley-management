@@ -7,156 +7,156 @@
 
     @if (!Model.AwayTeamId.HasValue)
     {
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                    <strong>@Model.DisplayGameNumber </strong>
-                </div>
-                <div class="col-md-7">
-                    <div class="row">
-                        <strong>  @Model.HomeTeamName </strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10 text-right">
-                @Resources.UI.TournamentViews.TeamDayOff
+            <div class="col-md-3">
+                <strong>@Model.DisplayGameNumber </strong>
+            </div>
+            <div class="col-md-7">
+                <div class="row">
+                    <strong>  @Model.HomeTeamName </strong>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 text-right">
+            @Resources.UI.TournamentViews.TeamDayOff
+        </div>
+    </div>
     }
     else
     {
         if (Model.IsTechnicalDefeat)
         {
-            <div class="container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 game-number">
+                <strong>@Model.DisplayGameNumber </strong>
+            </div>
+            <div class="col-md-7">
                 <div class="row">
-                    <div class="col-md-3 game-number">
-                        <strong>@Model.DisplayGameNumber </strong>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <strong>  @Model.HomeTeamName </strong>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>   @Model.GameScore.Home </strong>
+                        </div>
                     </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.HomeTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>   @Model.GameScore.Home </strong>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.AwayTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>  @Model.GameScore.Away </strong>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <strong>  @Model.AwayTeamName </strong>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>  @Model.GameScore.Away </strong>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="row">
-                <div class="col-md-10 text-right">
-                    @Resources.UI.GameResultViews.TechnicalDefeat
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-md-10 text-right">
+            @Resources.UI.GameResultViews.TechnicalDefeat
+        </div>
+    </div>
         }
         else if (!Model.GameScore.IsEmpty)
         {
-            <div class="container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 game-number">
+                <strong>@Model.DisplayGameNumber </strong>
+            </div>
+            <div class="col-md-7">
                 <div class="row">
-                    <div class="col-md-3 game-number">
-                        <strong>@Model.DisplayGameNumber </strong>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <strong>  @Model.HomeTeamName </strong>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>   @Model.GameScore.Home </strong>
+                        </div>
                     </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.HomeTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>   @Model.GameScore.Home </strong>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.AwayTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>  @Model.GameScore.Away </strong>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <strong>  @Model.AwayTeamName </strong>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>  @Model.GameScore.Away </strong>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="row">
-                @foreach (var score in Model.SetScores)
+    <div class="row">
+        @foreach (var score in Model.SetScores)
                 {
                     if (!score.IsEmpty)
                     {
-                        <div class="col-md-2">
-                            @score.GetFormattedScore
-                        </div>
+        <div class="col-md-2">
+            @score.GetFormattedScore
+        </div>
                     }
                 }
-            </div>
+    </div>
         }
         else
         {
-            <div class="container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 game-number">
+                <strong>@Model.DisplayGameNumber </strong>
+            </div>
+            <div class="col-md-7">
                 <div class="row">
-                    <div class="col-md-3 game-number">
-                        <strong>@Model.DisplayGameNumber </strong>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <strong>  @Model.HomeTeamName </strong>
-                        </div>
-                        <div class="row">
-                            <strong>  @Model.AwayTeamName </strong>
-                        </div>
-                    </div>
+                    <strong>  @Model.HomeTeamName </strong>
+                </div>
+                <div class="row">
+                    <strong>  @Model.AwayTeamName </strong>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="row">
-                <div class="col-md-10 text-right">
-                    @Model.ShortGameDate
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-md-10 text-right">
+            @Model.ShortGameDate
+        </div>
+    </div>
         }
     }
 
     <div class="row">
         @if (!string.IsNullOrEmpty(Model.UrlToGameVideo))
         {
-            <div class="col-md-2">
-                <a href="@Model.UrlToGameVideo" class="videoLinkIcon">&#x1F4F9;</a>
-            </div>
+        <div class="col-md-2">
+            <a href="@Model.UrlToGameVideo" class="videoLinkIcon">&#x1F4F9;</a>
+        </div>
         }
 
         @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.EditResult) && Model.AwayTeamId.HasValue)
         {
-            <div class="col-md-2">
-                @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
-            </div>
+        <div class="col-md-2">
+            @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+        </div>
         }
         @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit) &&
              Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
         {
-            <div class="col-md-2">
-                @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-            </div>
+        <div class="col-md-2">
+            @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+        </div>
 
-            <div class="col-md-2">
-                @Html.ActionLink(Resources.UI.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
+        <div class="col-md-2">
+            @Html.ActionLink(Resources.UI.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
                                                                            new { @class = "deleteGame", @id = Model.Id })
-            </div>
+        </div>
 
         }
     </div>

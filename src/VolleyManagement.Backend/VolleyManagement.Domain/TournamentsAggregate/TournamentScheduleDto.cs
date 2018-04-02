@@ -31,7 +31,7 @@
         /// <summary>
         /// Gets or sets scheduling information for all tournament divisions
         /// </summary>
-        public List<DivisionScheduleDto> Divisions { get; set; }
+        public ICollection<DivisionScheduleDto> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament scheme

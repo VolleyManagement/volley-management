@@ -12,7 +12,7 @@
         /// Get all registered users.
         /// </summary>
         /// <returns>List of users.</returns>
-        List<User> GetAllUsers();
+        ICollection<User> GetAllUsers();
 
         /// <summary>
         /// Get user instance by Id.
@@ -39,12 +39,12 @@
         /// Get all active users.
         /// </summary>
         /// <returns>List of active users.</returns>
-        List<User> GetAllActiveUsers();
+        ICollection<User> GetAllActiveUsers();
 
         /// <summary>
         /// Gets list of users which role is Admin.
         /// </summary>
         /// <returns>List of User instances.</returns>
-        List<User> GetAdminsList();
+        ICollection<User> GetAdminsList();
     }
 }

@@ -118,8 +118,8 @@
         /// <returns>A signed integer that indicates the relative values of <see cref="StandingsEntry"/> x and y.</returns>
         public int Compare(object x, object y)
         {
-            StandingsEntry firstStandingsEntry = x as StandingsEntry;
-            StandingsEntry secondStandingsEntry = y as StandingsEntry;
+            var firstStandingsEntry = x as StandingsEntry;
+            var secondStandingsEntry = y as StandingsEntry;
 
             if (firstStandingsEntry == null)
             {

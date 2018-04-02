@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "build"
+		},
+		{
+			"path": "src\\VolleyManagement.WebClient"
+		}
+	],
+	"settings": {}
+}

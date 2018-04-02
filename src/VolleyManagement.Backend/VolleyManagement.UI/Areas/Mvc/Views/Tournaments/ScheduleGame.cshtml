@@ -8,36 +8,36 @@
 
 @if (Model == null)
 {
-    @Html.ValidationMessage("LoadError")
+@Html.ValidationMessage("LoadError")
 }
 else
 {
     using (Html.BeginForm())
     {
-        @Html.Partial("_ScheduleOrEditGame", Model);
-        @Html.Hidden("redirectToSchedule");
-    
-        <div class="row">
-            <div class="col-md-1">
-                <input id="create" class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.Create" />
-            </div>
-            <div class="col-md-2">
-                <input id="createOneMore" class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.CreateOneMore" />
-            </div>
-        </div>
+@Html.Partial("_ScheduleOrEditGame", Model);
+@Html.Hidden("redirectToSchedule");
+
+<div class="row">
+    <div class="col-md-1">
+        <input id="create" class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.Create" />
+    </div>
+    <div class="col-md-2">
+        <input id="createOneMore" class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.CreateOneMore" />
+    </div>
+</div>
     }
-    
-    <br/>
-    @Html.ActionLink(Resources.UI.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
+
+<br />
+@Html.ActionLink(Resources.UI.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
 }
 
-<br/>
+<br />
 <script type="text/javascript">
     $(document).ready(function () {
         $('#create').click(OnCreateClick);
         $('#createOneMore').click(OnCreateOneMoreClick);
     });
-    function OnCreateClick() {        
+    function OnCreateClick() {
         $('#redirectToSchedule').val(true);
     }
     function OnCreateOneMoreClick() {

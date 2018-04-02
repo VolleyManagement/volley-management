@@ -33,8 +33,8 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(object x, object y)
         {
-            GameResultViewModel firstGameResult = x as GameResultViewModel;
-            GameResultViewModel secondGameResult = y as GameResultViewModel;
+            var firstGameResult = x as GameResultViewModel;
+            var secondGameResult = y as GameResultViewModel;
 
             if (firstGameResult == null)
             {
@@ -76,11 +76,12 @@
 
             Assert.AreEqual(x.UrlToGameVideo, y.UrlToGameVideo, "UrlToGameVideo should be equal.");
 
-            ScoreViewModelComparer.AssertAreEqual(x.GameScore, y.GameScore);
+            Assert.AreEqual(x.AllowEditTotalScore, y.AllowEditTotalScore, "AllowEditResult should be equal.");
 
+            ScoreViewModelComparer.AssertAreEqual(x.GameScore, y.GameScore);
             for (var i = 0; i < 5; i++)
             {
-                ScoreViewModelComparer.AssertAreEqual(x.SetScores[i], y.SetScores[i], $"[Set:{i+1}]");
+                ScoreViewModelComparer.AssertAreEqual(x.SetScores[i], y.SetScores[i], $"[Set:{i + 1}]");
             }
 
             return true;

@@ -28,10 +28,10 @@
     <div class="display-field">@Html.DisplayFor(model => model.RegulationsLink)</div>
 </fieldset>
 @using (Html.BeginForm()) {
-    <p>
-        <input type="submit" value="@Resources.UI.TournamentViews.Delete" /> |
-        @Html.ActionLink(Resources.UI.TournamentViews.BackToList, "Index")
-    </p>
+<p>
+    <input type="submit" value="@Resources.UI.TournamentViews.Delete" /> |
+    @Html.ActionLink(Resources.UI.TournamentViews.BackToList, "Index")
+</p>
 }
 
 

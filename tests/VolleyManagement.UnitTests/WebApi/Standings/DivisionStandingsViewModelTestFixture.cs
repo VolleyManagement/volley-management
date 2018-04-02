@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using UI.Areas.Mvc.Controllers;
-    using UI.Areas.Mvc.ViewModels.GameReports;
     using DivisionStandingsViewModel = UI.Areas.WebAPI.ViewModels.GameReports.DivisionStandingsViewModel;
     using StandingsEntryViewModel = UI.Areas.WebApi.ViewModels.GameReports.StandingsEntryViewModel;
 

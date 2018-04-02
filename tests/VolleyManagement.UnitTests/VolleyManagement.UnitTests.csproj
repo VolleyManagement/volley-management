@@ -28,7 +28,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\UnitTests\Debug\</OutputPath>
+    <OutputPath>..\bin\UnitTests\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -41,14 +41,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\UnitTests\Release\</OutputPath>
+    <OutputPath>..\bin\UnitTests\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
@@ -72,9 +72,8 @@
       <HintPath>..\..\src\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -117,6 +116,8 @@
     <Compile Include="Admin\ViewModels\TournamentRequestsViewModelsBuilder.cs" />
     <Compile Include="Admin\ViewModels\UserAdminViewModelBuilder.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Mvc\ViewModels\DivisionViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GroupViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\RequestsViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
@@ -137,7 +138,6 @@
     <Compile Include="Mvc\ViewModels\ContributorTeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelToDomain.cs" />
-    <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameMvcEqualityComparer.cs" />
@@ -146,8 +146,8 @@
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
-    <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotGameResultsViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\ShortGameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotTableEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotTeamStandingsViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />

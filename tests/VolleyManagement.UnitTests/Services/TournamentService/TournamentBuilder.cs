@@ -1,9 +1,10 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentService
+﻿using System.Linq;
+
+namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Crosscutting.Contracts.Providers;
     using Domain.TournamentsAggregate;
 
     /// <summary>
@@ -70,9 +71,9 @@
             };
         }
 
-        public TournamentBuilder WithArchiveParameter(bool isArchive)
+        public TournamentBuilder WithArchivedParameter(bool isArchived)
         {
-            _tournament.IsArchived = isArchive;
+            _tournament.IsArchived = isArchived;
             return this;
         }
 
@@ -264,7 +265,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithDivisionGroups(int divisionIdx, List<Group> groups)
         {
-            _tournament.Divisions[divisionIdx].Groups = groups;
+            _tournament.Divisions.ElementAt(divisionIdx).Groups = groups;
             return this;
         }
 
@@ -288,11 +289,11 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithDivisionsNonUniqueNameGroups()
         {
-            int startId = 1;
+            var startId = 1;
 
-            for (int i = 1; i <= _tournament.Divisions.Count; i++)
+            for (var i = 1; i <= _tournament.Divisions.Count; i++)
             {
-                _tournament.Divisions[i - 1].Groups = new List<Group>
+                _tournament.Divisions.ElementAt(i - 1).Groups = new List<Group>
                 {
                     new Group { Id = startId++, Name = "Group 1", DivisionId = i },
                     new Group { Id = startId++, Name = "Group 2", DivisionId = i },

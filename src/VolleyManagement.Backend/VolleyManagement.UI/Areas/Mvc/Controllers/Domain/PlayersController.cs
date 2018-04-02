@@ -14,10 +14,12 @@
     using Domain.RolesAggregate;
     using ViewModels.Players;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
     /// Defines player controller
     /// </summary>
     public class PlayersController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         /// <summary>
         /// User Id for anonym role.
@@ -27,9 +29,6 @@
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";
-
-        private const string HTTP_NOT_FOUND_DESCRIPTION = @"While removing the player unexpected error occurred.
-                                                            Please contact the administrator";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -58,6 +57,7 @@
             _requestService = requestService;
         }
 
+#pragma warning disable S2360 // Optional parameters should not be used
         /// <summary>
         /// Gets players from PlayerService
         /// </summary>
@@ -65,11 +65,12 @@
         /// <param name="textToSearch">Substring to search in full name of a player.</param>
         /// <returns>View with collection of players.</returns>
         public ActionResult Index(int? page, string textToSearch = "")
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             try
             {
-                PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
-                playersOnPage.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
+                var playersOnPage = GetPlayersListViewModel(page, textToSearch);
+                playersOnPage.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>
                 {
                     AuthOperations.Players.Create,
                     AuthOperations.Players.Edit,
@@ -84,6 +85,7 @@
             }
         }
 
+#pragma warning disable S2360 // Optional parameters should not be used
         /// <summary>
         /// Gets details for specific player
         /// </summary>
@@ -91,6 +93,7 @@
         /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific player.</returns>
         public ActionResult Details(int id, string returnUrl = "")
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             var player = _playerService.Get(id);
 
@@ -112,7 +115,7 @@
         /// Player and User. </returns>
         public string LinkWithUser(int playerId)
         {
-            int userId = _currentUserService.GetCurrentUserId();
+            var userId = _currentUserService.GetCurrentUserId();
             string message;
 
             if (userId != ANONYM)
@@ -191,8 +194,7 @@
                 return Json(new PlayerDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
 
-            return Json(new PlayerDeleteResultViewModel
-            {
+            return Json(new PlayerDeleteResultViewModel {
                 Message = Resources.UI.ViewModelResources.PlayerWasDeletedSuccessfully,
                 HasDeleted = true
             });
@@ -257,10 +259,12 @@
         /// <returns>List of free players</returns>
         public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
         {
+#pragma warning disable S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
+#pragma warning restore S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
             var query = _playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(searchString)
-                                   || (p.LastName + p.FirstName).Contains(searchString));
+                .Where(p => (p.FirstName + p.LastName).Contains(searchString)
+                            || (p.LastName + p.FirstName).Contains(searchString));
 
             if (includeTeam.HasValue)
             {
@@ -291,8 +295,10 @@
             }
 
             var result = query.OrderBy(p => p.LastName)
-                              .ToList()
-                              .Select(p => PlayerNameViewModel.Map(p));
+#pragma warning disable S2971 // "IEnumerable" LINQs should be simplified Enity franework error must be ToList()
+                .ToList()
+#pragma warning restore S2971 // "IEnumerable" LINQs should be simplified
+                .Select(p => PlayerNameViewModel.Map(p));
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -300,18 +306,19 @@
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             IQueryable<Player> allPlayers = _playerService.Get().OrderBy(p => p.LastName);
-
+            var trimResult = "";
             if (!string.IsNullOrEmpty(textToSearch))
             {
-                textToSearch = textToSearch.Trim();
-                allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch)
-                    || (p.FirstName + " " + p.LastName).Contains(textToSearch));
+                trimResult = textToSearch.Trim();
+
+                allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(trimResult)
+                    || (p.FirstName + " " + p.LastName).Contains(trimResult));
             }
 
-            return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
+            return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, trimResult);
         }
 
-        private List<int> ParseIntList(string source)
+        private static List<int> ParseIntList(string source)
         {
             var splitted = source.Split(',');
             var result = new List<int>();

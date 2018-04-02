@@ -5,6 +5,7 @@
     using Contracts.Authorization;
     using Domain.RolesAggregate;
     using Models;
+    using System.Linq;
 
     /// <summary>
     /// Provides Roles management
@@ -36,7 +37,7 @@
         {
             _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
-            var roles = _rolesService.GetAllRoles().ConvertAll(r => new RoleViewModel(r));
+            var roles = _rolesService.GetAllRoles().Select(r => new RoleViewModel(r)).ToList();
             return View(roles);
         }
 
@@ -67,19 +68,11 @@
         {
             _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
-            try
-            {
-                _rolesService.ChangeRoleMembership(
-                            modifiedRoles.RoleId,
-                            modifiedRoles.IdsToAdd,
-                            modifiedRoles.IdsToDelete);
-                return RedirectToAction("Index");
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError(string.Empty, e.Message);
-                return View();
-            }
+            _rolesService.ChangeRoleMembership(
+                        modifiedRoles.RoleId,
+                        modifiedRoles.IdsToAdd,
+                        modifiedRoles.IdsToDelete);
+            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -94,7 +87,7 @@
             var role = _rolesService.GetRole(id);
             var result = new RoleDetailsViewModel(role);
 
-            result.Users = _rolesService.GetUsersInRole(id).ConvertAll(u => u.UserName);
+            result.Users = _rolesService.GetUsersInRole(id).Select(u => u.UserName).ToList();
 
             return View(result);
         }

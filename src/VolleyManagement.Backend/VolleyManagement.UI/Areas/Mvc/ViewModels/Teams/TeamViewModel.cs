@@ -68,7 +68,7 @@
         /// Gets or sets the roster of the team
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
-        public List<PlayerNameViewModel> Roster { get; set; }
+        public ICollection<PlayerNameViewModel> Roster { get; set; }
 
         /// <summary>
         /// Gets or sets the photo of the team
@@ -86,8 +86,7 @@
         /// <returns> View model object </returns>
         public static TeamViewModel Map(Team team, Player captain, IEnumerable<Player> roster)
         {
-            var teamViewModel = new TeamViewModel
-            {
+            var teamViewModel = new TeamViewModel {
                 Id = team.Id,
                 Name = team.Name,
                 Coach = team.Coach,
@@ -117,8 +116,7 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            Team domainTeam = new Team
-            {
+            var domainTeam = new Team {
                 Id = Id,
                 Name = Name,
                 CaptainId = Captain.Id,

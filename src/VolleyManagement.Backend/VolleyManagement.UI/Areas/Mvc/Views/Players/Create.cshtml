@@ -8,18 +8,18 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>@Resources.UI.PlayerViews.PlayerLegend</legend>
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>@Resources.UI.PlayerViews.PlayerLegend</legend>
 
-        @Html.Partial("_CreateOrEdit",Model)
+    @Html.Partial("_CreateOrEdit",Model)
 
-        <p>
-            <input type="submit" value="@Resources.UI.PlayerViews.Create"/>
-        </p>
-    </fieldset>
+    <p>
+        <input type="submit" value="@Resources.UI.PlayerViews.Create" />
+    </p>
+</fieldset>
 
-    <div>
-        @Html.ActionLink(Resources.UI.PlayerViews.BackToList, "Index")
-    </div>
+<div>
+    @Html.ActionLink(Resources.UI.PlayerViews.BackToList, "Index")
+</div>
 }

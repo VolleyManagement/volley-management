@@ -66,8 +66,7 @@
         /// <returns>Domain object.</returns>
         public Feedback ToDomain()
         {
-            return new Feedback
-            {
+            return new Feedback {
                 Id = Id,
                 UsersEmail = UsersEmail,
                 Content = Content,

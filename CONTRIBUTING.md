@@ -58,6 +58,7 @@ Minimum sofware requirements:
 
 * .NET 4.7
 * VS 2017 any edition
+* SpecFlow extension for VS 2017
 * SQL Server 2008-2016 (2016 LocalDB is default but you can change connection string)
 
 All dependencies are managed via NuGet so you don't need to take any additional steps to acquire dependencies.
@@ -96,6 +97,10 @@ Check out [Development Environment Setup](../../wiki/Dev-Env-Guide) page for det
 C# code style is controlled by SonarLint Code Analyzer. You will see errors and warnings if you break code style.
 
 If you feel that some particular rule is too strict or too lose. Also if you have ideas how it can be enhanced please log issue or contact Sergii Diachenko(mailto:sdiachenko AT outlook DOT com)
+
+### Angular
+
+This projects follows official [Angular Style Guide](https://angular.io/guide/styleguide)
 
 ### Unit Tests
 

@@ -32,25 +32,20 @@
         /// <summary>
         /// Gets unit of work.
         /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get { return _unitOfWork; }
-        }
+        public IUnitOfWork UnitOfWork => _unitOfWork;
 
         /// <summary>
         /// Gets all teams with contributors inside.
         /// </summary>
         /// <returns>Collection of teams with contributors</returns>
-        public List<ContributorTeam> Find()
+        public ICollection<ContributorTeam> Find()
         {
             var result = _contribsSet.GroupBy(c => c.Team)
-                                     .Select(gr => new ContributorTeam
-                                     {
+                                     .Select(gr => new ContributorTeam {
                                          Id = gr.Key.Id,
                                          Name = gr.Key.Name,
                                          CourseDirection = gr.Key.CourseDirection,
-                                         Contributors = gr.Select(c => new Contributor
-                                         {
+                                         Contributors = gr.Select(c => new Contributor {
                                              Id = c.Id,
                                              Name = c.Name
                                          })
@@ -65,7 +60,7 @@
         /// <param name="id">The id of contributor team to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -73,9 +68,9 @@
         /// </summary>
         /// <param name="predicate">Condition to find contributors.</param>
         /// <returns>Collection of domain contributors.</returns>
-        public IQueryable<ContributorTeam> FindWhere(System.Linq.Expressions.Expression<Func<ContributorTeam, bool>> predicate)
+        public static IQueryable<ContributorTeam> FindWhere(System.Linq.Expressions.Expression<Func<ContributorTeam, bool>> predicate)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -84,7 +79,7 @@
         /// <param name="newEntity">The contributor team for adding.</param>
         public void Add(ContributorTeam newEntity)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -93,7 +88,7 @@
         /// <param name="updatedEntity">Updated contributor team.</param>
         public void Update(ContributorTeam updatedEntity)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

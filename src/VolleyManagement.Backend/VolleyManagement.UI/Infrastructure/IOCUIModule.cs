@@ -1,3 +1,5 @@
+﻿using VolleyManagement.Crosscutting.Contracts.Providers;
+
 namespace VolleyManagement.UI.Infrastructure
 {
     using Contracts;
@@ -18,9 +20,10 @@ namespace VolleyManagement.UI.Infrastructure
                 .Register<ICurrentUserService, CurrentUserService>(IocLifetimeEnum.Scoped)
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
-                .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
-            
-            if (Is<IISDeployment>.Disabled)
+                .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton)
+                .Register<IConfigurationProvider, MvcUiConfigurationProvider>(IocLifetimeEnum.Singleton);
+
+            if (Is<IisDeployment>.Disabled)
             {
                 container.Register<IMailService, SendGridMailService>(IocLifetimeEnum.Scoped);
             }

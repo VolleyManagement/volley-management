@@ -1,15 +1,25 @@
 ﻿page-wrapper {
-    padding: 10px 15px;
+  padding: 10px 15px;
 }
 
-.teamList{
-    width: 100px;
+.teamList {
+  width: 100px;
 }
 
-.field-validation-color{
-    color: #b94a48;
+.field-validation-color {
+  color: #b94a48;
 }
 
-.indented{
-    margin-right: 15px;
+.indented {
+  margin-right: 15px;
+}
+
+.video-input {
+  display: inline-block;
+  width: 84%;
+}
+
+.disable {
+  pointer-events: none;
+  -ms-touch-action: none;
 }

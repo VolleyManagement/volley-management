@@ -31,8 +31,8 @@ namespace VolleyManagement.UnitTests.Services.GameService
         /// <returns>A signed integer that indicates the relative values of <see cref="GameResultDto"/> x and y.</returns>
         public int Compare(object x, object y)
         {
-            GameResultDto firstGameResult = x as GameResultDto;
-            GameResultDto secondGameResult = y as GameResultDto;
+            var firstGameResult = x as GameResultDto;
+            var secondGameResult = y as GameResultDto;
 
             if (firstGameResult == null)
             {
@@ -99,6 +99,7 @@ namespace VolleyManagement.UnitTests.Services.GameService
             Assert.AreEqual(x.GameDate, y.GameDate, $"[Id:{x.Id}] GameDate should be equal.");
             Assert.AreEqual(x.Round, y.Round, $"[Id:{x.Id}] Round number should be equal.");
             Assert.AreEqual(x.GameNumber, y.GameNumber, $"[Id:{x.Id}] GameNumber should be equal.");
+            Assert.AreEqual(x.AllowEditTotalScore, y.AllowEditTotalScore, $"[Id:{x.Id}] AllowEditResult should be equal.");
             return true;
         }
     }

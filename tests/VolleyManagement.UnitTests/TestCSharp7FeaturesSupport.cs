@@ -20,7 +20,7 @@
         {
             // Out variables
             var p = new Point { X = 2, Y = 3 };
-            p.GetCoordinates(out int x, out int y);
+            p.GetCoordinates(out var x, out var y);
             Debug.WriteLine($"({x}, {y})");
 
             // Same with var
@@ -91,14 +91,14 @@
                     return (1, 0);
                 }
 
-                var(p, pp) = Fib(i - 1);
+                var (p, pp) = Fib(i - 1);
                 return (p + pp, p);
             }
         }
 
         public ref int Find(int number, int[] numbers)
         {
-            for (int i = 0; i < numbers.Length; i++)
+            for (var i = 0; i < numbers.Length; i++)
             {
                 if (numbers[i] == number)
                 {
@@ -109,7 +109,7 @@
             throw new IndexOutOfRangeException($"{nameof(number)} not found");
         }
 
-        private(string, string, string) LookupName(long id) // tuple return type
+        private (string, string, string) LookupName(long id) // tuple return type
         {
             var first = "First";
             var middle = "Middle";
@@ -117,7 +117,7 @@
             return (first, middle, last); // tuple literal
         }
 
-        private(string first, string middle, string last) LookupName1(long id) // tuple return type
+        private (string first, string middle, string last) LookupName1(long id) // tuple return type
         {
             var first = "First";
             var middle = "Middle";

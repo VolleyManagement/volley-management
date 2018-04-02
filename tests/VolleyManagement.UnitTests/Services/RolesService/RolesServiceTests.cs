@@ -2,15 +2,14 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.Collections;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
     using VolleyManagement.Services.Authorization;
 
     /// <summary>
@@ -22,7 +21,7 @@
     {
         #region Fields
 
-        private Mock<IQuery<List<Role>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<ICollection<Role>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Role, FindByIdCriteria>> _getByIdQueryMock;
         private Mock<IQuery<List<UserInRoleDto>, FindByRoleCriteria>> _getUsersByRoleQueryMock;
         private Mock<IQuery<List<UserInRoleDto>, GetAllCriteria>> _getUserInRolesQueryMock;
@@ -36,7 +35,7 @@
         [TestInitialize]
         public void TestInit()
         {
-            _getAllQueryMock = new Mock<IQuery<List<Role>, GetAllCriteria>>();
+            _getAllQueryMock = new Mock<IQuery<ICollection<Role>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Role, FindByIdCriteria>>();
             _getUsersByRoleQueryMock = new Mock<IQuery<List<UserInRoleDto>, FindByRoleCriteria>>();
             _getUserInRolesQueryMock = new Mock<IQuery<List<UserInRoleDto>, GetAllCriteria>>();
@@ -62,7 +61,7 @@
             var actualResult = service.GetAllRoles();
 
             // Assert
-            CollectionAssert.AreEqual(expectedResult, actualResult, new RoleComparer());
+            TestHelper.AreEqual(expectedResult, actualResult, new RoleComparer());
         }
 
         [TestMethod]
@@ -95,7 +94,7 @@
             var actualResult = service.GetUsersInRole(ROLE_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
+            TestHelper.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
         }
 
         [TestMethod]
@@ -114,7 +113,7 @@
             var actualResult = service.GetAllUsersWithRoles();
 
             // Assert
-            CollectionAssert.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
+            TestHelper.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
         }
 
         [TestMethod]

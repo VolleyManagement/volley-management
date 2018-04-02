@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
     using System.Collections.Generic;
@@ -15,13 +15,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
     /// </summary>
     public class GameViewModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameViewModel"/> class
-        /// </summary>
-        public GameViewModel()
-        {
-        }
-
         /// <summary>
         /// Gets or sets id of a game
         /// </summary>
@@ -93,12 +86,12 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// List of rounds grouped by division for dropdown
         /// </summary>
-        public List<SelectListItem> RoundList { get; set; }
+        public ICollection<SelectListItem> RoundList { get; set; }
 
         /// <summary>
         /// List of teams grouped by division for dropdown
         /// </summary>
-        public List<SelectListItem> TeamList { get; set; }
+        public ICollection<SelectListItem> TeamList { get; set; }
 
         /// <summary>
         /// Mapper from GameResult to GameViewModel
@@ -107,8 +100,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>Complete GameViewModel</returns>
         public static GameViewModel Map(GameResultDto game)
         {
-            return new GameViewModel
-            {
+            return new GameViewModel {
                 Id = game.Id,
                 TournamentId = game.TournamentId,
                 HomeTeamId = game.HomeTeamId,
@@ -126,8 +118,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>Game domain model</returns>
         public Game ToDomain()
         {
-            return new Game
-            {
+            return new Game {
                 Id = Id,
                 Round = Round,
                 TournamentId = TournamentId,

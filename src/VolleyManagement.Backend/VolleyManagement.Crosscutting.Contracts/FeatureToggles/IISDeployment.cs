@@ -5,7 +5,7 @@
     /// <summary>
     /// Describes whether we are deploying on IIS/Local environment vs Azure
     /// </summary>
-    public class IISDeployment : SimpleFeatureToggle
+    public class IisDeployment : SimpleFeatureToggle
     {
     }
 }

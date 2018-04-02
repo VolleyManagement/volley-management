@@ -1,37 +1,47 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.WebApi.ViewModels.GameReports;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
 
     [ExcludeFromCodeCoverage]
-    internal static class PivotStandingsGameViewModelComparer
+    internal class PivotStandingsGameViewModelComparer : IComparer, IComparer<PivotStandingsGameViewModel>
     {
-        public static void AssertAreEqual(PivotStandingsGameViewModel expected, PivotStandingsGameViewModel actual, string messagePrefix = "")
+        public int Compare(PivotStandingsGameViewModel x, PivotStandingsGameViewModel y)
         {
-            Assert.AreEqual(expected.AwayTeamId, actual.AwayTeamId, $"{messagePrefix} AwayTeamId should match");
-            Assert.AreEqual(expected.HomeTeamId, actual.HomeTeamId, $"{messagePrefix} HomeTeamId should match");
-
-            Assert.AreEqual(expected.Results.Count, actual.Results.Count, $"{messagePrefix} AwayTeamId should match");
-
-            for (var i = 0; i < expected.Results.Count; i++)
+            if (x == null && y == null)
             {
-                var expectedResult = expected.Results[i];
-                var actualResult = actual.Results[i];
-
-                string messagePrefix1 = $"{messagePrefix}[Result#{i}] ";
-                AssertShortGameResultsAreEqual(expectedResult, actualResult, messagePrefix1);
+                return 0;
             }
+            if (x == null)
+            {
+                return -1;
+            }
+
+            if (y == null)
+            {
+                return 1;
+            }
+
+            return CompareInternal(x, y);
         }
 
-        private static void AssertShortGameResultsAreEqual(
-            ShortGameResultViewModel expectedResult,
-            ShortGameResultViewModel actualResult,
-            string messagePrefix = "")
+        public int Compare(object x, object y)
         {
-            Assert.AreEqual(expectedResult.HomeSetsScore, actualResult.HomeSetsScore, $"{messagePrefix} HomeSetsScore should match");
-            Assert.AreEqual(expectedResult.AwaySetsScore, actualResult.AwaySetsScore, $"{messagePrefix} AwaySetsScore should match");
-            Assert.AreEqual(expectedResult.IsTechnicalDefeat, actualResult.IsTechnicalDefeat, $"{messagePrefix} IsTechnicalDefeat should match");
+            return Compare(x as PivotStandingsGameViewModel, y as PivotStandingsGameViewModel);
+        }
+
+        private int CompareInternal(PivotStandingsGameViewModel x, PivotStandingsGameViewModel y)
+        {
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, $" AwayTeamId should match");
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, $" HomeTeamId should match");
+
+            TestHelper.AreEqual(x.Results, y.Results, new ShortGameResultViewModelComparer());
+
+            return 0;
         }
     }
 }

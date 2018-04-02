@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Collections;
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
@@ -65,13 +66,13 @@
         private Mock<ITournamentService> _tournamentServiceMock;
         private Mock<ITournamentRepository> _tournamentRepositoryMock;
         private Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock;
-        private Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
-        private Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>> _gamesByTournamentIdRoundsNumberQueryMock;
+        private Mock<IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
+        private Mock<IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria>> _gamesByTournamentIdRoundsNumberQueryMock;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock;
-        private Mock<IQuery<List<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock;
+        private Mock<IQuery<ICollection<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock;
         private Mock<IQuery<Game, GameByNumberCriteria>> _gameNumberByTournamentIdQueryMock;
-        private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
+        private Mock<IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
@@ -89,13 +90,13 @@
             _tournamentServiceMock = new Mock<ITournamentService>();
             _tournamentRepositoryMock = new Mock<ITournamentRepository>();
             _getByIdQueryMock = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
-            _tournamentGameResultsQueryMock = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
-            _gamesByTournamentIdRoundsNumberQueryMock = new Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>();
+            _tournamentGameResultsQueryMock = new Mock<IQuery<ICollection<GameResultDto>, TournamentGameResultsCriteria>>();
+            _gamesByTournamentIdRoundsNumberQueryMock = new Mock<IQuery<ICollection<Game>, TournamentRoundsGameResultsCriteria>>();
             _tournamentScheduleDtoByIdQueryMock = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _tournamentByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
-            _gamesByTournamentIdInRoundsByNumbersQueryMock = new Mock<IQuery<List<Game>, GamesByRoundCriteria>>();
+            _gamesByTournamentIdInRoundsByNumbersQueryMock = new Mock<IQuery<ICollection<Game>, GamesByRoundCriteria>>();
             _gameNumberByTournamentIdQueryMock = new Mock<IQuery<Game, GameByNumberCriteria>>();
-            _tournamentTeamsQueryMock = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
+            _tournamentTeamsQueryMock = new Mock<IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -633,7 +634,7 @@
             MockDefaultTournament();
             MockTournamentServiceReturnTournament();
 
-            Game game = new GameBuilder()
+            var game = new GameBuilder()
                 .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
                 .Build();
 
@@ -659,12 +660,12 @@
         public void Create_GameSetLateDateTime_ExceptionThrown()
         {
             // Arrange
-            TournamentScheduleDto tournament = new TournamentScheduleDtoBuilder()
+            var tournament = new TournamentScheduleDtoBuilder()
                 .WithStartDate(DateTime.Parse(TOURNAMENT_DATE_START))
                 .WithEndDate(DateTime.Parse(TOURNAMENT_DATE_END))
                 .Build();
 
-            Game game = new GameBuilder()
+            var game = new GameBuilder()
                 .WithTournamentId(tournament.Id)
                 .WithStartDate(DateTime.Parse(LATE_TOURNAMENT_DATE))
                 .Build();
@@ -688,7 +689,7 @@
             // Arrange
             MockDefaultTournament();
 
-            Game game = new GameBuilder()
+            var game = new GameBuilder()
                 .WithNoStartDate()
                 .Build();
 
@@ -712,7 +713,7 @@
         public void Create_SameGameInRound_ExceptionThrown()
         {
             // Arrange
-            bool excaptionWasThrown = false;
+            var excaptionWasThrown = false;
 
             var duplicate = new GameBuilder()
                 .WithId(0)
@@ -721,7 +722,7 @@
                 .WithRound(1)
                 .Build();
 
-            List<GameResultDto> gameResults = new GameServiceTestFixture().TestGameResults().Build();
+            var gameResults = new GameServiceTestFixture().TestGameResults().Build();
             MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.One).Build());
             MockGetTournamentResults(1, gameResults);
 
@@ -844,7 +845,7 @@
         public void Create_SecondFreeDayInSameRoundInSameDivision_ExceptionThrown()
         {
             // Arrange
-            bool exception = false;
+            var exception = false;
 
             const int ANOTHER_TEAM_ID = 5;
 
@@ -887,7 +888,7 @@
         public void Create_SameTeamInTwoGamesInOneRound_ExceptionThrown()
         {
             // Arrange
-            bool exceptionWasThrown = false;
+            var exceptionWasThrown = false;
 
             var gameInOneRound = new GameBuilder()
                 .TestRoundGame()
@@ -923,7 +924,7 @@
         public void Create_SameGameTournamentSchemeOne_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockDefaultTournament();
 
@@ -957,7 +958,7 @@
         public void Create_SameGameSwitchedTeamsTournamentSchemeOne_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockDefaultTournament();
 
@@ -991,7 +992,7 @@
         public void Create_SameGameInOtherRoundTournamentSchemeTwo_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockDefaultTournament();
 
@@ -1050,7 +1051,7 @@
         public void Create_ThirdDuplicateGameInTournamentSchemeTwo_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockTournamentSchemeTwo();
 
@@ -1061,7 +1062,7 @@
                 .WithId(4)
                 .Build();
 
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
+            var gameResults = new GameServiceTestFixture()
                        .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
                        .Build();
             MockGetTournamentResults(
@@ -1088,7 +1089,7 @@
         public void Create_DuplicateFreeDayGameTournamentSchemeTwo_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockTournamentSchemeTwo();
 
@@ -1098,7 +1099,7 @@
                 .WithRound(3)
                 .Build();
 
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
+            var gameResults = new GameServiceTestFixture()
                 .TestGamesWithTwoFreeDays()
                 .Build();
 
@@ -1126,7 +1127,7 @@
         public void Create_DuplicateGamesInSameRound_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockDefaultTournament();
 
@@ -1135,7 +1136,7 @@
                 .WithId(2)
                 .Build();
 
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
+            var gameResults = new GameServiceTestFixture()
              .TestGamesForDuplicateSchemeOne()
              .Build();
 
@@ -1163,7 +1164,7 @@
         public void Create_DuplicateAwayTeamInGameInSameRound_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockDefaultTournament();
 
@@ -1173,7 +1174,7 @@
                 .WithId(2)
                 .Build();
 
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
+            var gameResults = new GameServiceTestFixture()
                 .TestGamesForDuplicateSchemeOne()
                 .Build();
 
@@ -1201,7 +1202,7 @@
         public void Create_DuplicateHomeTeamInGameInSameRound_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false;
+            var exceptionThrown = false;
 
             MockDefaultTournament();
 
@@ -1211,7 +1212,7 @@
                 .WithId(2)
                 .Build();
 
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
+            var gameResults = new GameServiceTestFixture()
                 .TestGamesForDuplicateSchemeOne()
                 .Build();
 
@@ -1345,7 +1346,7 @@
                             .WithId(2)
                             .Build();
 
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
+            var gameResults = new GameServiceTestFixture()
                 .TestGamesForDuplicateSchemeOne()
                 .Build();
 
@@ -1376,20 +1377,64 @@
         #region Get
 
         /// <summary>
-        /// Test for Get method. Existing game is requested. Game is returned.
+        /// Test for Get method. Existing game in PlayOff is requested.
+        /// Game is returned with WithAllowEditTotalScore = true.
         /// </summary>
         [TestMethod]
-        public void Get_ExistingGame_GameReturned()
+        public void Get_ExistingGameWithoutNextGamePlanned_GameReturnedWithAllowEditTotalScore()
         {
             // Arrange
-            var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestGames()
+                .Build();
 
-            MockGetById(expected);
+            var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                                     .WithAllowEditTotalScore(true)
+                                                     .Build();
+            var actual = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                                   .Build();
+
+            MockGetById(actual);
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
 
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.Get(GAME_RESULT_ID);
+            actual = sut.Get(GAME_RESULT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
+        }
+
+        /// <summary>
+        /// Test for Get method. Existing game in PlayOff is requested.
+        /// Game is returned with WithAllowEditTotalScore = false, because next game is planned.
+        /// </summary>
+        [TestMethod]
+        public void Get_ExistingGameWithNextGamePlanned_GameReturnedWithNotAllowEditTotalScore()
+        {
+            // Arrange
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestMinimumOddTeamsPlayOffSchedule()
+                .TestGamesWithResults()
+                .Build();
+
+            var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                .Build();
+            var actual = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                .Build();
+            
+            MockGetById(actual);
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            var sut = BuildSUT();
+
+            // Act
+            actual = sut.Get(GAME_RESULT_ID);
 
             // Assert
             TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
@@ -1417,7 +1462,7 @@
             var actual = sut.GetTournamentResults(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
         }
 
         /// <summary>
@@ -1444,7 +1489,7 @@
             var actual = sut.GetTournamentResults(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
         }
 
         [TestMethod]
@@ -1463,7 +1508,7 @@
             var actual = sut.GetTournamentGames(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
         }
 
         [TestMethod]
@@ -1648,6 +1693,61 @@
         }
 
         /// <summary>
+        /// Test for Edit method. Change time for game in second round with unknown teams. 
+        /// No exceprtion returns and game is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_ChangeTimeForPlayOffGameWithUnknownTeams_GameSaved()
+        {
+            //Arrange
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            var testGameForEdit = GetTestGameForEditFromSecondRoundInPlayOff(games);
+            SetDafaultTimeForGame(testGameForEdit);
+
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            //Act
+            var sut = BuildSUT();
+            sut.Edit(testGameForEdit);
+
+            //Assert
+            VerifyEditGame(testGameForEdit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit method. Change time for planned game in second round with defined teams. 
+        /// No exceprtion returns and game is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_ChangeTimeForPlayOffGameWithDefinedTeams_GameSaved()
+        {
+            //Arrange
+            var testTournament = CreatePlayoffTournament();
+            var games = new GameTestFixture()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            var testGameForEdit = GetTestGameForEditFromSecondRoundInPlayOff(games);
+            SetDafaultTimeForGame(testGameForEdit);
+            SetTeamsInGame(testGameForEdit);
+
+            MockAllTournamentQueries(testTournament);
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+
+            //Act
+            var sut = BuildSUT();
+            sut.Edit(testGameForEdit);
+
+            //Assert                    
+            VerifyEditGame(testGameForEdit, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Edit method. Game object contains valid data. Game is edited successfully.
         /// </summary>
         [TestMethod]
@@ -1711,11 +1811,11 @@
             // Arrange
             MockDefaultTournament();
 
-            List<Game> games = new GameTestFixture()
+            var games = new GameTestFixture()
                 .TestEmptyGamePlayoffSchedule()
                 .Build();
 
-            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+            var gameInfo = new GameServiceTestFixture()
                 .TestPlayoffGamesWithoutResults()
                 .Build();
 
@@ -1723,11 +1823,11 @@
                 gameInfo,
                 games);
 
-            Game finishedGame = BuildTestGameToEditInPlayoff();
+            var finishedGame = BuildTestGameToEditInPlayoff();
 
             var sut = BuildSUT();
 
-            Game newScheduledGame = games
+            var newScheduledGame = games
                     .Where(g => g.GameNumber == 5)
                     .SingleOrDefault();
 
@@ -1758,7 +1858,7 @@
                 gameInfo,
                 games);
 
-            Game dayOffGame = new GameBuilder()
+            var dayOffGame = new GameBuilder()
                 .TestFreeDayGame()
                 .WithId(1)
                 .WithGameNumber(1)
@@ -1836,10 +1936,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SAME_TEAM);
         }
 
-        /// <summary>
-        /// Test method checks that 2 same teams(not null) can't be in one game in PlayOff scheme.
-        /// Argument exception thrown. 
-        /// </summary>
         [TestMethod]
         public void Edit_SeveralDayOffGamesInPlayoff_GameEdited()
         {
@@ -1915,11 +2011,11 @@
             // Arrange
             MockDefaultTournament();
 
-            List<Game> games = new GameTestFixture()
+            var games = new GameTestFixture()
                 .TestMinimumOddTeamsPlayOffSchedule()
                 .Build();
 
-            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+            var gameInfo = new GameServiceTestFixture()
                 .TestMinimumOddTeamsPlayOffSchedule()
                 .Build();
 
@@ -1929,7 +2025,7 @@
 
             MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
 
-            Game finishedGame = new GameBuilder()
+            var finishedGame = new GameBuilder()
                 .WithId(2)
                 .WithGameNumber(2)
                 .WithRound(1)
@@ -1984,11 +2080,11 @@
             // Arrange
             MockDefaultTournament();
 
-            List<Game> games = new GameTestFixture()
+            var games = new GameTestFixture()
                 .TestMinimumEvenTeamsPlayOffSchedule()
                 .Build();
 
-            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+            var gameInfo = new GameServiceTestFixture()
                 .TestMinimumEvenEmptyGamesPlayoff()
                 .Build();
 
@@ -1996,14 +2092,14 @@
                 gameInfo,
                 games);
 
-            Game finishedGame = BuildTestGameToEditInPlayoff();
+            var finishedGame = BuildTestGameToEditInPlayoff();
 
             var sut = BuildSUT();
 
             // Act
             sut.Edit(finishedGame);
 
-            Game newScheduledGame = games
+            var newScheduledGame = games
                 .Where(g => g.GameNumber == 3)
                 .SingleOrDefault();
 
@@ -2114,7 +2210,7 @@
             Exception exception = null;
 
             // Arrange
-            int gameNullId = 0;
+            var gameNullId = 0;
             var sut = BuildSUT();
 
             // Act
@@ -2122,13 +2218,13 @@
             {
                 sut.Delete(gameNullId);
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentException ex)
             {
                 exception = ex;
             }
 
             // Assert
-            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_INVALID_ID);
         }
         #endregion
 
@@ -2249,7 +2345,7 @@
         public void RemoveAllGamesInTournament_GamesExists_GamesRemoved()
         {
             // Arrange
-            var gamesInTournament = new GameServiceTestFixture().TestGameResults().Build();
+            var gamesInTournament = new GameServiceTestFixture().TestGamesWithoutResult().Build();
 
             MockGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
             MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
@@ -2455,13 +2551,30 @@
                 .WithDayOff()
                 .Build();
         }
+        private static Game GetTestGameForEditFromSecondRoundInPlayOff(IEnumerable<Game> games)
+        {
+            var testTeam = games.FirstOrDefault(g => g.Round == 2);
+
+            return testTeam;
+        }
+
+        private static void SetDafaultTimeForGame(Game game)
+        {
+            game.GameDate = DateTime.Parse(TOURNAMENT_DATE_START);
+        }
+
+        private static void SetTeamsInGame(Game game)
+        {
+            game.HomeTeamId = 1;
+            game.AwayTeamId = 3;
+        }
 
         private static TournamentScheduleDto CreatePlayoffTournament()
         {
             var result = new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
 
-            result.Divisions[0].NumberOfRounds = 3;
-            result.Divisions[0].TeamCount = 6;
+            result.Divisions.First().NumberOfRounds = 3;
+            result.Divisions.First().TeamCount = 6;
 
             return result;
         }
@@ -2587,7 +2700,7 @@
             return new GameComparer().Compare(x, y) == 0;
         }
 
-        private static void AssertPlaceholdersAreUsed(List<GameResultDto> actual, int numberOfGamesInFirstRound)
+        private static void AssertPlaceholdersAreUsed(ICollection<GameResultDto> actual, int numberOfGamesInFirstRound)
         {
             var firstRoundGames = actual.Where(g => g.Round == 1).ToList();
             Assert.AreEqual(numberOfGamesInFirstRound, firstRoundGames.Count,

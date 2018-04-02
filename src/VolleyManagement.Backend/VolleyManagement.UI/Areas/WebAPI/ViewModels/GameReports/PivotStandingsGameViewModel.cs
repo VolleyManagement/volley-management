@@ -24,6 +24,6 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// <summary>
         /// Gets or sets collection of results of two teams
         /// </summary>
-        public List<ShortGameResultViewModel> Results { get; set; }
+        public ICollection<ShortGameResultViewModel> Results { get; set; }
     }
 }

@@ -13,47 +13,47 @@
 
 @if (Model.MaxNumberOfRounds == 0)
 {
-    <div class="col-md-6">@Resources.UI.TournamentViews.NoTeamsAvailable</div>
+<div class="col-md-6">@Resources.UI.TournamentViews.NoTeamsAvailable</div>
 }
 else
 {
     if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Create))
     {
-        <div>
-            @Html.ActionLink(@Resources.UI.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
-        </div>
+<div>
+    @Html.ActionLink(@Resources.UI.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
+</div>
     }
 
-    <hr>
-    <div class="col-md-3">
+<hr>
+<div class="col-md-3">
 
-        @for (byte i = 1; i <= Model.MaxNumberOfRounds; i++)
+    @for (byte i = 1; i <= Model.MaxNumberOfRounds; i++)
         {
-            <h4>
-                @Resources.UI.TournamentViews.Round @i
-                @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.SwapRounds))
+    <h4>
+        @Resources.UI.TournamentViews.Round @i
+        @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.SwapRounds))
                 {
-                    <button id="swap_round_@i" type="button" class="btn btn-default btn-sm" onclick="SwapRounds(@i)">Swap</button>
+        <button id="swap_round_@i" type="button" class="btn btn-default btn-sm" onclick="SwapRounds(@i)">Swap</button>
                 }
-            </h4>
+    </h4>
 
-            <div class="table-bordered" id="round_@i">
-                @if (Model.Rounds.ContainsKey(i))
+    <div class="table-bordered" id="round_@i">
+        @if (Model.Rounds.ContainsKey(i))
                 {
                     foreach (var game in Model.Rounds[i])
                     {
-                        @Html.Partial("_ScheduledGameResult", game);
+        @Html.Partial("_ScheduledGameResult", game);
                     }
                 }
                 else
                 {
-                    <div class="row">
-                        <div class="col-md-12">@Resources.UI.TournamentViews.NoGamesScheduled</div>
-                    </div>
+        <div class="row">
+            <div class="col-md-12">@Resources.UI.TournamentViews.NoGamesScheduled</div>
+        </div>
                 }
-            </div>
-        }
     </div>
+        }
+</div>
 }
 
 @Html.Hidden("DeleteConfirmationMessage", Resources.UI.GameResultViews.DeleteConfirmationText)

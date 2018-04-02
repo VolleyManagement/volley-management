@@ -7,7 +7,26 @@ namespace VolleyManagement.Domain.UnitTests
 {
     public class PlayerTests
     {
+        [Fact]
+        public void Player_BirthDateHeightWeightAreNull_ExceptionIsNotThrown()
+        {
+            // Arrange
+            var player = CreatePlayer();
+
+            // Act
+            Action act = () =>
+            {
+                player.BirthYear = null;
+                player.Height = null;
+                player.Weight = null;
+            };
+
+            // Assert
+            act.Should().NotThrow<ArgumentException>("Player's birth date, height and weight can be null.");
+        }
+
         #region FirstName
+
         [Fact]
         public void Player_EmptyFirstName_ExceptionIsThrown()
         {
@@ -50,6 +69,7 @@ namespace VolleyManagement.Domain.UnitTests
         #endregion
 
         #region LastName
+
         [Fact]
         public void Player_EmptyLastName_ExceptionIsThrown()
         {
@@ -94,19 +114,6 @@ namespace VolleyManagement.Domain.UnitTests
         #region BirthYear
 
         [Fact]
-        public void Player_BirthDateIsNull_ExceptionIsThrown()
-        {
-            // Arrange
-            var player = CreatePlayer();
-
-            // Act
-            Action act = () => { player.BirthYear = null; };
-
-            // Assert
-            act.Should().Throw<ArgumentException>("Player's birth year must contain a value.");
-        }
-
-        [Fact]
         public void Player_BirthDateIsLessThanMinimalAllowableValue_ExceptionIsThrown()
         {
             // Arrange
@@ -137,19 +144,6 @@ namespace VolleyManagement.Domain.UnitTests
         #region Height
 
         [Fact]
-        public void Player_HeightIsNull_ExceptionIsThrown()
-        {
-            // Arrange
-            var player = CreatePlayer();
-
-            // Act
-            Action act = () => { player.Height = null; };
-
-            // Assert
-            act.Should().Throw<ArgumentException>("Player's height must contain a value.");
-        }
-
-        [Fact]
         public void Player_HeightIsLessThanMinimalAllowableValue_ExceptionIsThrown()
         {
             // Arrange
@@ -178,19 +172,6 @@ namespace VolleyManagement.Domain.UnitTests
         #endregion
 
         #region Weight
-
-        [Fact]
-        public void Player_WeightIsNull_ExceptionIsThrown()
-        {
-            // Arrange
-            var player = CreatePlayer();
-
-            // Act
-            Action act = () => { player.Weight = null; };
-
-            // Assert
-            act.Should().Throw<ArgumentException>("Player's weight must contain a value.");
-        }
 
         [Fact]
         public void Player_WeightIsLessThanMinimalAllowableValue_ExceptionIsThrown()

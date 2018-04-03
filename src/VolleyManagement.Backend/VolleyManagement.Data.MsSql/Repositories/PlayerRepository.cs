@@ -112,7 +112,7 @@
                 throw new ConcurrencyException();
             }
 
-            playerToUpdate.Id = teamId.Value;
+            playerToUpdate.TeamId = teamId.Value;
             _unitOfWork.Commit();
         }
     }

@@ -1,4 +1,7 @@
-﻿namespace VolleyManagement.Data.MsSql.Repositories
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System.Data.Entity;
     using System.Linq;
@@ -32,24 +35,22 @@
         }
 
         /// <summary>
-        /// Gets unit of work.
-        /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
-
-        /// <summary>
         /// Adds new team.
         /// </summary>
         /// <param name="newEntity">The team for adding.</param>
-        public void Add(Team newEntity)
+        public Team Add(string name, string coach, PlayerId captain, string achievements)
         {
-            var newTeam = new TeamEntity();
-            DomainToDal.Map(newTeam, newEntity);
+            if (roster.Count == 0 || !roster.Contains(captain.Id))
+            {
+                roster.Add(captain.Id);
+            }
+
+            var newTeam = new TeamEntity {
+                Name = name,
+                Coach = coach,
+                CaptainId = captainId.Id
+            };
+
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))
             {
@@ -58,8 +59,8 @@
 
             _dalTeams.Add(newTeam);
             _unitOfWork.Commit();
-
-            newEntity.Id = newTeam.Id;
+            newTeam.Id = newTeam.Id;
+            return null;
         }
 
         /// <summary>
@@ -76,6 +77,7 @@
             }
 
             DomainToDal.Map(teamToUpdate, updatedEntity);
+            _unitOfWork.Commit();
         }
 
         /// <summary>
@@ -87,6 +89,7 @@
             var dalToRemove = new TeamEntity { Id = id };
             _dalTeams.Attach(dalToRemove);
             _dalTeams.Remove(dalToRemove);
+            _unitOfWork.Commit();
         }
     }
 }

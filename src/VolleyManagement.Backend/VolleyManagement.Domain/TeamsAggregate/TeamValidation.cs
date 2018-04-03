@@ -8,6 +8,16 @@
     public static class TeamValidation
     {
         /// <summary>
+        /// Validates team id.
+        /// </summary>
+        /// <param name="id">Team id for validation</param>
+        /// <returns>Validity of team id</returns>
+        public static bool ValidateTeamId(int id)
+        {
+            return id < Constants.Team.MIN_ID;
+        }
+
+        /// <summary>
         /// Validates team name.
         /// </summary>
         /// <param name="teamName">Team name for validation</param>
@@ -36,6 +46,16 @@
         public static bool ValidateAchievements(string achievements)
         {
             return achievements.Length > Constants.Team.MAX_ACHIEVEMENTS_LENGTH;
+        }
+
+        /// <summary>
+        /// Validates captain id.
+        /// </summary>
+        /// <param name="captainId">Captain id for validation</param>
+        /// <returns>Validity of captain id</returns>
+        public static bool ValidateCaptainId(PlayerId captainId)
+        {
+            return captainId == null || captainId.Id < Constants.Team.MIN_ID;
         }
     }
 }

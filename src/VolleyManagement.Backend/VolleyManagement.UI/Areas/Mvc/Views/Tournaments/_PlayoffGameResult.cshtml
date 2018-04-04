@@ -2,8 +2,7 @@
 @using VolleyManagement.Domain.RolesAggregate;
 
 <div class="table-bordered">
-
-    @if (!Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
+    @if (Model.IsTechnicalDefeat)
     {
         <div class="container-fluid">
             <div class="row">
@@ -12,34 +11,43 @@
                 </div>
                 <div class="col-md-7">
                     <div class="row">
-                        <strong> @Model.HomeTeamName </strong>
-                    </div>
-                    <div class="row">
-                        <strong> @Model.AwayTeamName </strong>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <strong>  @Model.HomeTeamName </strong>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>  @Model.GameScore.Home </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <strong>  @Model.AwayTeamName </strong>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>  @Model.GameScore.Away </strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        if (Model.GameDate.HasValue)
-        {
-            <div class="row">
-                <div class="col-md-10 text-right">
-                    @Model.ShortGameDate
-                </div>
+        <div class="row">
+            <div class="col-md-10 text-right">
+                @Resources.UI.GameResultViews.TechnicalDefeat
             </div>
-        }
+        </div>
 
         if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
         {
             <div class="row">
                 <div class="col-md-2">
-                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                    @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
                 </div>
             </div>
         }
     }
-    else if (!Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
+    else if (!Model.GameScore.IsEmpty)
     {
         <div class="container-fluid">
             <div class="row">
@@ -48,7 +56,58 @@
                 </div>
                 <div class="col-md-7">
                     <div class="row">
-                        <strong>   @Resources.UI.TournamentViews.HomeTeamPlaceholder </strong>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <strong>  @Model.HomeTeamName </strong>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>   @Model.GameScore.Home </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <strong>  @Model.AwayTeamName </strong>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>  @Model.GameScore.Away </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var score in Model.SetScores)
+            {
+                if (!score.IsEmpty)
+                {
+                    <div class="col-md-2">
+                        @score.Home:@score.Away
+                    </div>
+                }
+            }
+        </div>
+
+        if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 game-number">
+                    <strong>@Model.DisplayGameNumber </strong>
+                </div>
+                <div class="col-md-7">
+                    <div class="row">
+                        <strong>  @Model.HomeTeamName </strong>
                     </div>
                     <div class="row">
                         <strong>  @Model.AwayTeamName </strong>
@@ -69,209 +128,16 @@
         if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
         {
             <div class="row">
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                </div>
-            </div>
-        }
-    }
-    else if (Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
-    {
-        if (Model.IsFirstRoundGame)
-        {
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-3">
-                        <strong>@Model.DisplayGameNumber </strong>
-                    </div>
-                    <div class="col-md-7">
-                        <strong>   @Model.HomeTeamName </strong>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10 text-right">
-                    @Resources.UI.TournamentViews.TeamDayOff
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-3 game-number">
-                        <strong>@Model.DisplayGameNumber </strong>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <strong>   @Model.HomeTeamName </strong>
-                        </div>
-                        <div class="row">
-                            <strong>  @Resources.UI.TournamentViews.AwayTeamPlaceholder </strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            if (Model.GameDate.HasValue)
-            {
-                <div class="row">
-                    <div class="col-md-10 text-right">
-                        @Model.ShortGameDate
-                    </div>
-                </div>
-            }
-        }
-
-        if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
-        {
-            <div class="row">
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                </div>
-            </div>
-        }
-    }
-    else if (Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
-    {
-        if (Model.IsTechnicalDefeat)
-        {
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-3 game-number">
-                        <strong>@Model.DisplayGameNumber </strong>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.HomeTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>  @Model.GameScore.Home </strong>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.AwayTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>  @Model.GameScore.Away </strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10 text-right">
-                    @Resources.UI.GameResultViews.TechnicalDefeat
-                </div>
-            </div>
-
-            if (Model.AllowEditResult && Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
-            {
-                <div class="row">
-                    <div class="col-md-2">
-                        @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
-                    </div>
-                </div>
-            }
-        }
-        else if (!Model.GameScore.IsEmpty)
-        {
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-3 game-number">
-                        <strong>@Model.DisplayGameNumber </strong>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.HomeTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>   @Model.GameScore.Home </strong>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <strong>  @Model.AwayTeamName </strong>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>  @Model.GameScore.Away </strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                @foreach (var score in Model.SetScores)
+                @if(Model.GameDate.HasValue && Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
                 {
-                    if (!score.IsEmpty)
-                    {
-                        <div class="col-md-2">
-                            @score.Home:@score.Away
-                        </div>
-                    }
-                }
-            </div>
-
-            if (Model.AllowEditResult && Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
-            {
-                <div class="row">
                     <div class="col-md-2">
                         @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
                     </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-3 game-number">
-                        <strong>@Model.DisplayGameNumber </strong>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <strong>  @Model.HomeTeamName </strong>
-                        </div>
-                        <div class="row">
-                            <strong>  @Model.AwayTeamName </strong>
-                        </div>
-                    </div>
+                }
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
                 </div>
             </div>
-
-            if (Model.GameDate.HasValue)
-            {
-                <div class="row">
-                    <div class="col-md-10 text-right">
-                        @Model.ShortGameDate
-                    </div>
-                </div>
-            }
-
-            if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit))
-            {
-                <div class="row">
-                    @if(Model.GameDate.HasValue)
-                    {
-                        <div class="col-md-2">
-                            @Html.ActionLink(Resources.UI.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
-                        </div>
-                    }
-                    <div class="col-md-2">
-                        @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                    </div>
-                </div>
-            }
         }
     }
 </div>

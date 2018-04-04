@@ -101,31 +101,19 @@
 
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether it is allowed to edit game's result (for Playoff scheme)
+        /// Gets or sets allow edit results in PlayOff tournament only.
         /// </summary>
-        public bool AllowEditResult { get; set; }
+        public bool AllowEditTotalScore { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether gets an identifier whether this game is a first round game.
         /// </summary>
-        public bool IsFirstRoundGame
-        {
-            get
-            {
-                return Round == 1;
-            }
-        }
+        public bool IsFirstRoundGame => Round == 1;
 
         /// <summary>
         /// Gets the format of game date
         /// </summary>
-        public string ShortGameDate
-        {
-            get
-            {
-                return GameDate.HasValue ? GameDate.Value.ToString("d MMM dddd H:mm") : string.Empty;
-            }
-        }
+        public string ShortGameDate => GameDate.HasValue ? GameDate.Value.ToString("d MMM dddd H:mm") : string.Empty;
 
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object
@@ -152,7 +140,7 @@
                 UrlToGameVideo = gameResult.UrlToGameVideo,
                 GameScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
                 IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
-                AllowEditResult = gameResult.AllowEditResult,
+                AllowEditTotalScore = gameResult.AllowEditTotalScore,
                 SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel {
                     Home = item.Home,
                     Away = item.Away,

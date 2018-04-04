@@ -11,13 +11,18 @@
   <ItemGroup>
     <PackageReference Include="FeatureToggle" Version="3.3.0" />
     <PackageReference Include="FeatureToggle.Core" Version="3.5.1" />
+    <PackageReference Include="Google.Apis" Version="1.32.2" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.32.2" />
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.4" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
@@ -26,6 +31,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.1" />
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />

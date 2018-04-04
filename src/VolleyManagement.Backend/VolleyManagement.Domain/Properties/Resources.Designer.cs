@@ -619,6 +619,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team&apos;s roster is wrong.
+        /// </summary>
+        public static string ValidationTeamRoster {
+            get {
+                return ResourceManager.GetString("ValidationTeamRoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tournament&apos;s id is wrong.
         /// </summary>
         public static string ValidationTournamentId {

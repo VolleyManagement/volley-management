@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Domain.TeamsAggregate
+﻿using System.Collections.Generic;
+
+namespace VolleyManagement.Domain.TeamsAggregate
 {
     using System.Text.RegularExpressions;
 
@@ -56,6 +58,16 @@
         public static bool ValidateCaptainId(PlayerId captainId)
         {
             return captainId == null || captainId.Id < Constants.Team.MIN_ID;
+        }
+
+        /// <summary>
+        /// Validates team roster;
+        /// </summary>
+        /// <param name="roster"></param>
+        /// <returns>Validity of roster</returns>
+        public static bool ValidateTeamRoster(ICollection<PlayerId> roster)
+        {
+            return roster == null;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using VolleyManagement.Domain.Properties;
 using static VolleyManagement.Domain.TeamsAggregate.TeamValidation;
 using static VolleyManagement.Domain.Properties.Resources;
@@ -16,14 +17,44 @@ namespace VolleyManagement.Domain.TeamsAggregate
         private string _coach;
         private string _achievements;
         private PlayerId _captainId;
-        private ICollection<PlayerId> roster;
+        private ICollection<PlayerId> _roster;
 
+        /// <summary>
+        /// Initializes a new instance of the Team
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="coach"></param>
+        /// <param name="achievements"></param>
+        /// <param name="captainId"></param>
+        /// <param name="roster"></param>
+        public Team(int id, string name, string coach, string achievements, PlayerId captainId, IEnumerable<PlayerId> roster)
+        {
+            if (ValidateTeamId(id))
+            {
+                throw new ArgumentException(ValidationTeamId,
+                nameof(id));
+            }
+
+            Id = id;
+            Name = name;
+            Coach = coach;
+            Achievements = achievements;
+            CaptainId = new PlayerId {
+                Id = captainId.Id
+            };
+            Roster = roster.Select(x => new PlayerId { Id = x.Id }).ToList();
+            if (!Roster.Contains(CaptainId))
+            {
+                Roster.Add(CaptainId);
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
         /// <value>Id of team.</value>
-        public int Id { get; set; }
+        public int Id { get; }
 
         /// <summary>
         /// Gets or sets a value indicating where Name.
@@ -100,7 +131,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
             {
                 if (ValidateCaptainId(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerFirstName,
+                    throw new ArgumentException(ValidationTeamCaptain,
                         nameof(value));
                 }
 
@@ -113,6 +144,21 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// Gets or sets a value indicating where team players.
         /// </summary>
         /// <value>Players of the team</value>
-        public ICollection<PlayerId> Roster { get; set; }
+        public ICollection<PlayerId> Roster
+        {
+            get => _roster;
+
+            set
+            {
+                if (ValidateTeamRoster(value))
+                {
+                    throw new ArgumentException(ValidationTeamRoster,
+                        nameof(value));
+                }
+
+                _roster = value;
+
+            }
+        }
     }
 }

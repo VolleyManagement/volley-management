@@ -35,22 +35,22 @@ namespace VolleyManagement.Data.MsSql.Repositories
         }
 
         /// <summary>
-        /// Adds new team.
+        /// Add new team.
         /// </summary>
-        /// <param name="newEntity">The team for adding.</param>
-        public Team Add(string name, string coach, PlayerId captain, string achievements)
+        /// <param name="name"></param>
+        /// <param name="coach"></param>
+        /// <param name="captain"></param>
+        /// <param name="achievements"></param>
+        /// <param name="roster"></param>
+        /// <returns>The team for adding</returns>
+        public Team Add(string name, string coach, PlayerEntity captain, string achievements, ICollection<PlayerEntity> roster)
         {
-            if (roster.Count == 0 || !roster.Contains(captain.Id))
-            {
-                roster.Add(captain.Id);
-            }
-
             var newTeam = new TeamEntity {
                 Name = name,
                 Coach = coach,
-                CaptainId = captainId.Id
+                CaptainId = captain.Id,
+                Achievements = achievements
             };
-
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))
             {
@@ -59,8 +59,15 @@ namespace VolleyManagement.Data.MsSql.Repositories
 
             _dalTeams.Add(newTeam);
             _unitOfWork.Commit();
-            newTeam.Id = newTeam.Id;
-            return null;
+
+            return new Team(
+                newTeam.Id,
+                newTeam.Name,
+                newTeam.Coach,
+                newTeam.Achievements,
+                new PlayerId { Id = newTeam.CaptainId },
+                newTeam.Players.Select(x => new PlayerId { Id = x.Id })
+            );
         }
 
         /// <summary>

@@ -249,6 +249,9 @@
   <data name="ValidationTeamName" xml:space="preserve">
     <value>Team name can not contain more than  {0} symbols; The field can not be empty</value>
   </data>
+  <data name="ValidationTeamRoster" xml:space="preserve">
+    <value>Team's roster is wrong</value>
+  </data>
   <data name="WrongDeletingGame" xml:space="preserve">
     <value>Game can not be deleted because it has already ended</value>
   </data>

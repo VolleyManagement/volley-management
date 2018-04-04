@@ -20,13 +20,13 @@
         /// Create new player.
         /// </summary>
         /// <param name="playerToCreate">New player.</param>
-        Player Create(Player playerToCreate);
+        Player Create(CreatePlayerDto playerToCreate);
 
         /// <summary>
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        void CreateBulk(ICollection<Player> playersToCreate);
+        ICollection<Player> CreateBulk(ICollection<CreatePlayerDto> playersToCreate);
 
         /// <summary>
         /// Edit player profile.

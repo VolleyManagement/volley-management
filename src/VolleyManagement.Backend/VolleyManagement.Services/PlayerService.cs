@@ -71,7 +71,7 @@
         /// Create a new player.
         /// </summary>
         /// <param name="playerToCreate">A Player to create.</param>
-        public Player Create(Player playerToCreate)
+        public Player Create(CreatePlayerDto playerToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
@@ -96,7 +96,7 @@
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void CreateBulk(ICollection<Player> playersToCreate)
+        public ICollection<Player> CreateBulk(ICollection<CreatePlayerDto> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
@@ -106,16 +106,19 @@
                     PlayerResources.ValidationPlayerOfAnotherTeam);
             }
 
-            var newPlayersToCreate = GetNewPlayers(playersToCreate).ToList();
+            var newPlayersDtoToCreate = GetNewPlayers(playersToCreate).ToList();
 
-            if (newPlayersToCreate.Any())
+            var players = new List<Player>();
+            if (newPlayersDtoToCreate.Any())
             {
-                foreach (var player in newPlayersToCreate)
+                foreach (var player in newPlayersDtoToCreate)
                 {
-                    _playerRepository.Add(player.FirstName, player.LastName,
-                        player.BirthYear, player.Height, player.Weight);
+                    players.Add(_playerRepository.Add(player.FirstName, player.LastName,
+                        player.BirthYear, player.Height, player.Weight));
                 }
             }
+
+            return players;
         }
 
         /// <summary>
@@ -214,9 +217,10 @@
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
-        private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
+        private IEnumerable<CreatePlayerDto> GetNewPlayers(IEnumerable<CreatePlayerDto> playersToCreate)
         {
-            return playersToCreate.Where(p => p.Id == 0);
+            var existingPlayers = Get().Select(p => new CreatePlayerDto { FirstName = p.FirstName, LastName = p.LastName });
+            return playersToCreate.Intersect(existingPlayers);
         }
 
         /// <summary>
@@ -224,14 +228,13 @@
         /// </summary>
         /// <param name="playersToCreate">List of Players</param>
         /// <returns> Return true if Player has TeamId </returns>
-        private bool ValidateExistingPlayers(ICollection<Player> playersToCreate)
+        private bool ValidateExistingPlayers(ICollection<CreatePlayerDto> playersToCreate)
         {
             var existingPlayers = Get().ToList();
 
-            var teamId = playersToCreate.First().Id != 0
-                ? _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = playersToCreate.First().Id })
-                : 0;
-
+            var fisrtExistingPlayer = existingPlayers.First(p => playersToCreate.Where(pl => pl.FirstName == p.FirstName && pl.LastName == p.LastName) != null).Id;
+            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = fisrtExistingPlayer });
+                
             var isExistingPlayers = existingPlayers
                     .Select(allPlayer => playersToCreate
                     .FirstOrDefault(t => string.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)

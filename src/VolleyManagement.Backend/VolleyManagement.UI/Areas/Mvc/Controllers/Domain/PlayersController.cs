@@ -158,9 +158,9 @@
 
             try
             {
-                var domainPlayer = playerViewModel.ToDomain();
-                _playerService.Create(domainPlayer);
-                playerViewModel.Id = domainPlayer.Id;
+                var createPlayerDto = playerViewModel.ToCreatePlayerDto();
+                var player = _playerService.Create(createPlayerDto);
+                playerViewModel.Id = player.Id;
                 return RedirectToAction("Index");
             }
             catch (ArgumentException ex)

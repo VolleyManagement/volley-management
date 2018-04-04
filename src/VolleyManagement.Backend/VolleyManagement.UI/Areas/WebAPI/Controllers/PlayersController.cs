@@ -71,9 +71,9 @@
                 return BadRequest(ModelState);
             }
 
-            var playerToCreate = player.ToDomain();
-            _playerService.Create(playerToCreate);
-            player.Id = playerToCreate.Id;
+            var playerToCreate = player.ToCreatePlayerDto();
+            var createdPlayer = _playerService.Create(playerToCreate);
+            player.Id = createdPlayer.Id;
 
             return Ok(player);
         }

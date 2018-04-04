@@ -99,18 +99,18 @@
             {
                 try
                 {
-                    var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
+                    var roster = teamViewModel.Roster.Select(t => t.ToCreatePlayerDto()).ToList();
 
-                    _playerService.CreateBulk(roster);
+                    var players = _playerService.CreateBulk(roster);
 
                     var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.CaptainId = roster[0].Id;
+                    domainTeam.CaptainId = players.First().Id;
 
                     _teamService.Create(domainTeam);
 
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.UpdateRosterTeamId(roster, domainTeam.Id);
+                        _teamService.UpdateRosterTeamId(players, domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
@@ -171,18 +171,18 @@
             {
                 try
                 {
-                    var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
+                    var roster = teamViewModel.Roster.Select(t => t.ToCreatePlayerDto()).ToList();
 
-                    _playerService.CreateBulk(roster);
+                    var players = _playerService.CreateBulk(roster);
 
                     var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.CaptainId = roster[0].Id;
+                    domainTeam.CaptainId = players.First().Id;
 
                     _teamService.Edit(domainTeam);
 
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.UpdateRosterTeamId(roster, domainTeam.Id);
+                        _teamService.UpdateRosterTeamId(players, domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;

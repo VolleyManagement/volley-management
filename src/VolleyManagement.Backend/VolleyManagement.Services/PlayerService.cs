@@ -209,34 +209,6 @@
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
-        private IEnumerable<CreatePlayerDto> GetNewPlayers(IEnumerable<CreatePlayerDto> playersToCreate)
-        {
-            var existingPlayers = Get().Select(p => new CreatePlayerDto { FirstName = p.FirstName, LastName = p.LastName });
-            return playersToCreate.Intersect(existingPlayers);
-        }
-
-        /// <summary>
-        /// Validate if Player of Another Team
-        /// </summary>
-        /// <param name="playersToCreate">List of Players</param>
-        /// <returns> Return true if Player has TeamId </returns>
-        private bool ValidateExistingPlayers(ICollection<CreatePlayerDto> playersToCreate)
-        {
-            var existingPlayers = Get().ToList();
-
-            var fisrtExistingPlayer = existingPlayers.First(p => playersToCreate.Where(pl => pl.FirstName == p.FirstName && pl.LastName == p.LastName) != null).Id;
-            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = fisrtExistingPlayer });
-                
-            var isExistingPlayers = existingPlayers
-                    .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => string.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
-                                  && string.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
-                                  && _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = allPlayer.Id }) != teamId));
-
-            return isExistingPlayers.Any(t => t != null);
-
-        }
-
         public void AssingPlayerToTeam(Player player, int? teamId)
         {
             _authService.CheckAccess(AuthOperations.Players.Edit);

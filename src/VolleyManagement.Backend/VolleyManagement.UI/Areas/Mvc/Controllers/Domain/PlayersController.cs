@@ -338,9 +338,7 @@
         private bool IsFreePlayer(Player player, int? includeTeam)
         {
             var team = _playerService.GetPlayerTeam(player);
-            var teamId = team == null ? FREE_PLAYER : team.Id;
-
-            return includeTeam.HasValue ? teamId == FREE_PLAYER || teamId == includeTeam.Value : teamId == FREE_PLAYER;
+            return team == null ? true : includeTeam.HasValue ? team.Id == includeTeam.Value : true;
         }
     }
 }

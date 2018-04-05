@@ -60,5 +60,26 @@
         /// <param name="roster">Players to set the team id</param>
         /// <param name="teamId">Id of team which should be set to player</param>
         void UpdateRosterTeamId(ICollection<Player> roster, int teamId);
+
+        /// <summary>
+        /// Changes captain of the team.
+        /// </summary>
+        /// <param name="captainId">Id of captain.</param>
+        /// <param name="team">Team, which captain to change.</param>
+        void ChangeCaptain(PlayerId captainId, Team team);
+
+        /// <summary>
+        /// Addes teams to team.
+        /// </summary>
+        /// <param name="players">List of players.</param>
+        /// <param name="team">Team.</param>
+        void AddPlayers(IEnumerable<PlayerId> players, Team team);
+
+        /// <summary>
+        /// Removes teams to team.
+        /// </summary>
+        /// <param name="players">List of players.</param>
+        /// <param name="team">Team.</param>
+        void RemovePlayers(IEnumerable<PlayerId> players, Team team);
     }
 }

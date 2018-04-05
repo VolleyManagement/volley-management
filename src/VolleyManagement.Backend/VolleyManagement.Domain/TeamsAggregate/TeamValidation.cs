@@ -3,6 +3,7 @@
 namespace VolleyManagement.Domain.TeamsAggregate
 {
     using System.Text.RegularExpressions;
+    using System.Linq;
 
     /// <summary>
     /// Team validation class.
@@ -61,13 +62,17 @@ namespace VolleyManagement.Domain.TeamsAggregate
         }
 
         /// <summary>
-        /// Validates team roster;
+        /// Validates team roster if it null, 
+        /// if elements ids are less, than required,
+        /// if not all values are unique.
         /// </summary>
-        /// <param name="roster"></param>
-        /// <returns>Validity of roster</returns>
+        /// <param name="roster">List of team members ids.</param>
+        /// <returns>true if roster is invalid</returns>
         public static bool ValidateTeamRoster(ICollection<PlayerId> roster)
         {
-            return roster == null;
+            return roster == null ||
+                roster.Any(x => x.Id < Constants.Team.MIN_ID) ||
+                roster.Count != roster.Select(x => x.Id).Distinct().Count();
         }
     }
 }

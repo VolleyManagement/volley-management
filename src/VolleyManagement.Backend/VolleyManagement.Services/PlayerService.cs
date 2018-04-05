@@ -100,21 +100,13 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            if (ValidateExistingPlayers(playersToCreate))
-            {
-                throw new ArgumentException(
-                    PlayerResources.ValidationPlayerOfAnotherTeam);
-            }
-
-            var newPlayersDtoToCreate = GetNewPlayers(playersToCreate).ToList();
-
             var players = new List<Player>();
-            if (newPlayersDtoToCreate.Any())
+            if (playersToCreate.Any())
             {
-                foreach (var player in newPlayersDtoToCreate)
+                foreach (var player in playersToCreate)
                 {
-                    players.Add(_playerRepository.Add(player.FirstName, player.LastName,
-                        player.BirthYear, player.Height, player.Weight));
+                    var currPlayer = Create(player);
+                    players.Add(currPlayer);
                 }
             }
 

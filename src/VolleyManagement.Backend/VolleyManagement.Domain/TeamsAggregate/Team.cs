@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using VolleyManagement.Domain.Properties;
 using static VolleyManagement.Domain.TeamsAggregate.TeamValidation;
 using static VolleyManagement.Domain.Properties.Resources;
 

@@ -43,7 +43,7 @@ namespace VolleyManagement.Data.MsSql.Repositories
         /// <param name="achievements"></param>
         /// <param name="roster"></param>
         /// <returns>The team for adding</returns>
-        public Team Add(string name, string coach, PlayerEntity captain, string achievements, ICollection<PlayerEntity> roster)
+        public Team Add(string name, string coach, PlayerId captain, string achievements, ICollection<PlayerId> roster)
         {
             var newTeam = new TeamEntity {
                 Name = name,

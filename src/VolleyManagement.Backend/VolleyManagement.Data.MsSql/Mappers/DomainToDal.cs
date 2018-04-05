@@ -60,7 +60,6 @@
             to.BirthYear = from.BirthYear;
             to.Height = from.Height;
             to.Weight = from.Weight;
-            to.TeamId = from.TeamId;
         }
 
         /// <summary>

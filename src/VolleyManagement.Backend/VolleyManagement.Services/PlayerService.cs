@@ -25,6 +25,7 @@
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
+        private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<IQueryable<Player>, GetAllCriteria> _getAllPlayersQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
@@ -43,6 +44,7 @@
             IPlayerRepository playerRepository,
             IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
+            IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
             IQuery<IQueryable<Player>, GetAllCriteria> getAllPlayersQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IAuthorizationService authService)
@@ -51,6 +53,7 @@
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
             _getAllPlayersQuery = getAllPlayersQuery;
+            _getPlayerTeamQuery = getPlayerTeamQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
             _authService = authService;
         }
@@ -68,7 +71,7 @@
         /// Create a new player.
         /// </summary>
         /// <param name="playerToCreate">A Player to create.</param>
-        public void Create(Player playerToCreate)
+        public Player Create(Player playerToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
@@ -76,8 +79,17 @@
                 throw new ArgumentNullException("playerToCreate");
             }
 
-            _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
+            var firstName = playerToCreate.FirstName;
+            var lastName = playerToCreate.LastName;
+            var birthYear = playerToCreate.BirthYear;
+            var height = playerToCreate.Height;
+            var weight = playerToCreate.Weight;
+
+            return _playerRepository.Add(firstName, 
+                lastName, 
+                birthYear, 
+                height, 
+                weight);
         }
 
         /// <summary>
@@ -100,10 +112,9 @@
             {
                 foreach (var player in newPlayersToCreate)
                 {
-                    _playerRepository.Add(player);
+                    _playerRepository.Add(player.FirstName, player.LastName,
+                        player.BirthYear, player.Height, player.Weight);
                 }
-
-                _playerRepository.UnitOfWork.Commit();
             }
         }
 
@@ -148,8 +159,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
             }
-
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -171,7 +180,6 @@
             try
             {
                 _playerRepository.Remove(id);
-                _playerRepository.UnitOfWork.Commit();
             }
             catch (InvalidKeyValueException ex)
             {
@@ -186,12 +194,14 @@
         /// <returns>Player's team</returns>
         public Team GetPlayerTeam(Player player)
         {
-            if (player.TeamId == null)
+            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = player.Id });
+
+            if (teamId == default(int))
             {
                 return null;
             }
 
-            return GetTeamById(player.TeamId.GetValueOrDefault());
+            return GetTeamById(teamId);
         }
 
         private Team GetPlayerLedTeam(int playerId)
@@ -219,17 +229,30 @@
             var existingPlayers = Get().ToList();
 
             var teamId = playersToCreate.First().Id != 0
-                ? Get(playersToCreate.First(t => t.Id != 0).Id).TeamId
-                : null;
+                ? _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = playersToCreate.First().Id })
+                : 0;
 
             var isExistingPlayers = existingPlayers
                     .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => String.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
-                                  && String.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
-                                  && allPlayer.TeamId != null
-                                  && allPlayer.TeamId != teamId));
+                    .FirstOrDefault(t => string.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
+                                  && string.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
+                                  && _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = allPlayer.Id }) != teamId));
 
             return isExistingPlayers.Any(t => t != null);
+
+        }
+
+        public void AssingPlayerToTeam(Player player, int? teamId)
+        {
+            _authService.CheckAccess(AuthOperations.Players.Edit);
+            try
+            {
+                _playerRepository.UpdateTeam(player, teamId);
+            }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
+            }
         }
     }
 }

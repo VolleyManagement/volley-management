@@ -32,33 +32,32 @@
         }
 
         /// <summary>
-        /// Gets unit of work.
-        /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
-
-        /// <summary>
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
-        public void Add(Player newEntity)
+        public Player Add(string firstName, string lastName, short? birthYear, short? height, short? weight)
         {
-            var newPlayer = new PlayerEntity();
-            DomainToDal.Map(newPlayer, newEntity);
+            var newEntity = new PlayerEntity {
+                FirstName = firstName,
+                LastName = lastName,
+                BirthYear = birthYear,
+                Height = height,
+                Weight = weight
+            };
 
-            if (!_dbStorageSpecification.IsSatisfiedBy(newPlayer))
+            if (!_dbStorageSpecification.IsSatisfiedBy(newEntity))
             {
                 throw new InvalidEntityException();
             }
 
-            _dalPlayers.Add(newPlayer);
+            _dalPlayers.Add(newEntity);
             _unitOfWork.Commit();
-            newEntity.Id = newPlayer.Id;
+
+            return new Player(newEntity.Id, newEntity.FirstName, newEntity.LastName) {
+                BirthYear = newEntity.BirthYear,
+                Height = newEntity.Height,
+                Weight = newEntity.Weight
+            };
         }
 
         /// <summary>
@@ -82,6 +81,7 @@
             }
 
             DomainToDal.Map(playerToUpdate, updatedEntity);
+            _unitOfWork.Commit();
         }
 
         /// <summary>
@@ -93,6 +93,27 @@
             var dalToRemove = new PlayerEntity { Id = id };
             _dalPlayers.Attach(dalToRemove);
             _dalPlayers.Remove(dalToRemove);
+            _unitOfWork.Commit();
+        }
+
+        public void UpdateTeam(Player updatedEntity, int? teamId)
+        {
+            if (updatedEntity.Id < Constants.START_DATABASE_ID_VALUE)
+            {
+                var exc = new InvalidKeyValueException(Properties.Resources.InvalidEntityId);
+                exc.Data[Constants.ENTITY_ID_KEY] = updatedEntity.Id;
+                throw exc;
+            }
+
+            var playerToUpdate = _dalPlayers.SingleOrDefault(t => t.Id == updatedEntity.Id);
+
+            if (playerToUpdate == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            playerToUpdate.Id = teamId.Value;
+            _unitOfWork.Commit();
         }
     }
 }

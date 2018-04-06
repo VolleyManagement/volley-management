@@ -7,7 +7,7 @@
         public string Name { get; set; }
         public string Achievements { get; set; }
         public string Coach { get; set; }
-        public PlayerId CaptainId { get; set; }
+        public PlayerId Captain { get; set; }
         public ICollection<PlayerId> Roster { get; set; }
     }
 }

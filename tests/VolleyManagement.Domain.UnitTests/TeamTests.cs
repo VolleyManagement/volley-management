@@ -28,7 +28,6 @@ namespace VolleyManagement.Domain.UnitTests
 
             //Assert
             AssertCorrectTeamCreated(team);
-
         }
 
         #region Name

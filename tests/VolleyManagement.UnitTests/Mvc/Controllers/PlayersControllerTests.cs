@@ -545,13 +545,13 @@
 
         private void SetupCreateThrowsArgumentException()
         {
-            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<CreatePlayerDto>()))
                 .Throws(new ArgumentException(string.Empty, string.Empty));
         }
 
         private void SetupCreateThrowsValidationException()
         {
-            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<CreatePlayerDto>()))
                 .Throws(new ValidationException(string.Empty));
         }
 
@@ -592,7 +592,7 @@
 
         private void VerifyCreate(Times times)
         {
-            _playerServiceMock.Verify(ps => ps.Create(It.IsAny<Player>()), times);
+            _playerServiceMock.Verify(ps => ps.Create(It.IsAny<CreatePlayerDto>()), times);
         }
 
         private void VerifyEdit(Times times)

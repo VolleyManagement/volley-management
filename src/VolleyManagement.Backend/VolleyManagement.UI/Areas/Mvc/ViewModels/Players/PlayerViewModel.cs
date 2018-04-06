@@ -117,6 +117,22 @@
         {
             return new Player(Id, FirstName, LastName, BirthYear, Height, Weight);
         }
+
+        /// <summary>
+        /// Maps presentation entity to CreatePlayerDto
+        /// </summary>
+        /// <returns> CreatePlayerDto object </returns>
+        public CreatePlayerDto ToCreatePlayerDto()
+        {
+            return new CreatePlayerDto
+            {
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                BirthYear = this.BirthYear,
+                Height = this.Height,
+                Weight = this.Weight
+            };
+        }
         #endregion
     }
 }

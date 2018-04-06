@@ -11,7 +11,7 @@
         /// Adds the new player to the store.
         /// </summary>
         /// <param name="newEntity">Element to add.</param>
-        Player Add(string firstName, string lastName, short? birthYear, short? height, short? weight);
+        Player Add(CreatePlayerDto playerDto);
 
         /// <summary>
         /// Update the player to the DB.

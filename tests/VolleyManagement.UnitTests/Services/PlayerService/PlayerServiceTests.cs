@@ -391,7 +391,7 @@
             var newPlayers = new List<CreatePlayerDto>();
             newPlayers.AddRange(new List<CreatePlayerDto>
             {
-                new CreatePlayerDtoBuilder().WithFirstName("Fisrt").WithLastName("Last").Build(),
+                new CreatePlayerDtoBuilder().WithFirstName("First").WithLastName("Last").Build(),
                 new CreatePlayerDtoBuilder().WithFirstName("Second").WithLastName("Last").Build(),
                 new CreatePlayerDtoBuilder().WithFirstName("Name").WithLastName("Name").Build()
             });
@@ -463,33 +463,14 @@
         {
             return new PlayerComparer().Compare(x, y) == 0;
         }
-        private void VerifyCreatePlayerByParameters(string firstName, string lastName, short? birthYear, short? height, short? weight, Times times)
+        private void VerifyCreatePlayer(CreatePlayerDto playerDto, Times times)
         {
-            {
-                _playerRepositoryMock.Verify(pr => pr.Add(firstName,
-                    lastName,
-                    birthYear,
-                    height,
-                    weight),
-                    times);
-            }
+            _playerRepositoryMock.Verify(pr => pr.Add(playerDto), times);
         }
-        private void VerifyCreatePlayer(CreatePlayerDto testPlayer, Times times) =>
-            VerifyCreatePlayerByParameters(testPlayer.FirstName,
-                testPlayer.LastName,
-                testPlayer.BirthYear,
-                testPlayer.Height,
-                testPlayer.Weight,
-                times);
-
+       
         private void VerifyCreatePlayers(Times times)
         {
-            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<short?>(),
-                It.IsAny<short?>(),
-                It.IsAny<short?>()),
-                times);
+            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<CreatePlayerDto>()), times);
         }
 
         private void VerifyEditPlayer(Player player, Times times)

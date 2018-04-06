@@ -79,17 +79,24 @@
                 throw new ArgumentNullException("playerToCreate");
             }
 
-            var firstName = playerToCreate.FirstName;
-            var lastName = playerToCreate.LastName;
-            var birthYear = playerToCreate.BirthYear;
-            var height = playerToCreate.Height;
-            var weight = playerToCreate.Weight;
+            return _playerRepository.Add(playerToCreate);
+        }
 
-            return _playerRepository.Add(firstName, 
-                lastName, 
-                birthYear, 
-                height, 
-                weight);
+        /// <summary>
+        /// Create new players.
+        /// </summary>
+        /// <param name="fullNames">FullNmaes of players.</param>
+        public ICollection<Player> CreateBulk(IEnumerable<string> fullNames)
+        {
+            _authService.CheckAccess(AuthOperations.Players.Create);
+
+            var players = fullNames.Select(p => Create(
+                new CreatePlayerDto {
+                    FirstName = p.Substring(0, p.LastIndexOf(' ')),
+                    LastName = p.Substring(p.LastIndexOf(' ') + 1)
+                })).ToList();
+
+            return players;
         }
 
         /// <summary>
@@ -100,15 +107,7 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            var players = new List<Player>();
-            if (playersToCreate.Any())
-            {
-                foreach (var player in playersToCreate)
-                {
-                    var currPlayer = Create(player);
-                    players.Add(currPlayer);
-                }
-            }
+            var players = playersToCreate.Select(p => Create(p)).ToList();
 
             return players;
         }
@@ -129,22 +128,6 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
-            // Check if player is captain of team and teamId is null or changed
-            ////Team ledTeam = GetPlayerLedTeam(playerToEdit.Id);
-            ////if (ledTeam != null &&
-            ////    (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
-            ////{
-            ////    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-            ////    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
-            ////    throw ex;
-            ////}
-
-            ////if (playerToEdit.TeamId != null
-            ////    && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
-            ////{
-            ////    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
-            ////}
-
             _authService.CheckAccess(AuthOperations.Players.Edit);
             try
             {

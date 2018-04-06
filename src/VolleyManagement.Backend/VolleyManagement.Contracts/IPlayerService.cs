@@ -25,6 +25,12 @@
         /// <summary>
         /// Create new players.
         /// </summary>
+        /// <param name="fullNames">FullNames of players.</param>
+        ICollection<Player> CreateBulk(IEnumerable<string> fullNames);
+
+        /// <summary>
+        /// Create new players.
+        /// </summary>
         /// <param name="playersToCreate">New players.</param>
         ICollection<Player> CreateBulk(ICollection<CreatePlayerDto> playersToCreate);
 

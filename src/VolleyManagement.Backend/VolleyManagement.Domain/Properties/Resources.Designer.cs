@@ -601,7 +601,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Captain&apos;s id is wrong.
+        ///   Looks up a localized string similar to Captain&apos;s id is smaller, than required.
         /// </summary>
         public static string ValidationTeamCaptain {
             get {

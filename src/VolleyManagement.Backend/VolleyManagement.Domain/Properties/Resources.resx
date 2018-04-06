@@ -244,7 +244,7 @@
     <value>Team achievements can not contain more than  {0} symbols</value>
   </data>
   <data name="ValidationTeamCaptain" xml:space="preserve">
-    <value>Captain's id is wrong</value>
+    <value>Captain's id is smaller, than required</value>
   </data>
   <data name="ValidationTeamName" xml:space="preserve">
     <value>Team name can not contain more than  {0} symbols; The field can not be empty</value>

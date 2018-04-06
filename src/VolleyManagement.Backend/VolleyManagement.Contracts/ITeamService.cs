@@ -26,7 +26,7 @@
         /// Create new team.
         /// </summary>
         /// <param name="teamToCreate">New team.</param>
-        void Create(Team teamToCreate);
+        Team Create(Team teamToCreate);
 
         /// <summary>
         /// Edit team.

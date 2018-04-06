@@ -31,6 +31,7 @@
             var expected = new TournamentBuilder()
                                         .WithId(2)
                                         .WithDescription("Volley")
+                                        .WithCity("Lviv")
                                         .WithName("test tournament")
                                         .WithScheme(TournamentSchemeEnum.One)
                                         .WithSeason(2016)

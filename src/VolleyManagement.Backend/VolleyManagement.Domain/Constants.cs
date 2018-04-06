@@ -33,6 +33,8 @@
 
             public const int MAX_DESCRIPTION_LENGTH = 300;
 
+            public const int MAX_CITY_LENGTH = 50;
+
             public const int MAX_SEASON_LENGTH = 9;
 
             public const int MAX_REGULATION_LENGTH = 255;

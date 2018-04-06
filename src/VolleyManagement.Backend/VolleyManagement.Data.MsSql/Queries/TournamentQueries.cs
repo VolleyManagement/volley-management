@@ -204,6 +204,7 @@
                     Id = t.Id,
                     Name = t.Name,
                     Description = t.Description,
+                    City=t.City,
                     RegulationsLink = t.RegulationsLink,
                     Scheme = (TournamentSchemeEnum)t.Scheme,
                     Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),

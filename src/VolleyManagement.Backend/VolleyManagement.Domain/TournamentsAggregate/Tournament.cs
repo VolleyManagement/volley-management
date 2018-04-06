@@ -35,6 +35,13 @@
         /// <value>Description of tournament.</value>
         public string Description { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets a value indicating where City.
+        /// </summary>
+        /// <value>City of tournament.</value>
+        public string City { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>

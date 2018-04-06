@@ -30,6 +30,7 @@
             to.Name = from.Name;
             to.Season = (byte)(from.Season - ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET);
             to.Description = from.Description;
+            to.City = from.City;
             to.Scheme = (byte)from.Scheme;
             to.RegulationsLink = from.RegulationsLink;
             to.GamesStart = from.GamesStart;

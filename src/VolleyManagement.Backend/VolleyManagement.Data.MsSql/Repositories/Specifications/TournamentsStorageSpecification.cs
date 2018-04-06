@@ -22,11 +22,15 @@
             var description = new ExpressionSpecification<TournamentEntity>(
                                 t => t.Description == null
                                   || t.Description.Length <= ValidationConstants.Tournament.MAX_DESCRIPTION_LENGTH);
+            var city = new ExpressionSpecification<TournamentEntity>(
+                t => t.City == null
+                     || t.City.Length <= ValidationConstants.Tournament.MAX_CITY_LENGTH);
             var link = new ExpressionSpecification<TournamentEntity>(
                                 t => t.RegulationsLink == null
                                   || t.RegulationsLink.Length <= ValidationConstants.Tournament.MAX_URL_LENGTH);
 
             return name.And(description)
+                       .And(city)
                        .And(link)
                        .IsSatisfiedBy(entity);
         }

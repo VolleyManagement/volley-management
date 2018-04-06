@@ -41,6 +41,15 @@
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating where City.
+        /// </summary>
+        /// <value>City of tournament.</value>
+        [StringLength(50, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(
+            @"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public string City { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
@@ -130,6 +139,7 @@
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
+                City = tournament.City,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
                 Scheme = tournament.Scheme.ToDescription(),
@@ -154,6 +164,7 @@
             tournament.Id = Id;
             tournament.Name = Name;
             tournament.Description = Description;
+            tournament.City = City;
             tournament.Season = Season;
             tournament.RegulationsLink = RegulationsLink;
             tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))

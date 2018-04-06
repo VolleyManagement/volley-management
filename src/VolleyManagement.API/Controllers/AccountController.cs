@@ -57,7 +57,8 @@ namespace VolleyManagement.API.Controllers
 
             if (userInSystem == null)
             {
-                userInSystem = new UserModel {
+                userInSystem = new UserModel 
+                {
                     Email = validatedLoginInfoFromGoogle.Email,
                     UserName = validatedLoginInfoFromGoogle.Email,
                     PersonName = $"{validatedLoginInfoFromGoogle.FamilyName} {validatedLoginInfoFromGoogle.GivenName}"
@@ -69,7 +70,8 @@ namespace VolleyManagement.API.Controllers
                 }
                 else
                 {
-                    result = await _userManager.AddLoginAsync(userInSystem.Id, new UserLoginInfo("Google", userInSystem.Email));
+                    result = await _userManager.AddLoginAsync(userInSystem.Id,
+                        new UserLoginInfo("Google", userInSystem.Email));
                     if (!result.Succeeded)
                     {
                         return Unauthorized();
@@ -98,15 +100,19 @@ namespace VolleyManagement.API.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(ident),
-                new AuthenticationProperties {
-                    IsPersistent = false,
+                new AuthenticationProperties 
+                {
                     ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                    IsPersistent = false,
+                    AllowRefresh = false
                 });
 
             // TODO Commented cause receive errors here. Need to debug.
             //AddToActive(userInSystem.Id);
 
-            return Ok();
+            return Content(
+                "{ \"token\":\"Secret_Token\", \"fullName\": \"" + validatedLoginInfoFromGoogle.GivenName + " " +
+                validatedLoginInfoFromGoogle.FamilyName + "\" }", "application/json");
         }
 
         /// <summary>

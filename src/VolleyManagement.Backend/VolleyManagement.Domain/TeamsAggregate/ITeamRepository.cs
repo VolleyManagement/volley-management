@@ -24,6 +24,6 @@
         /// Removes team by id.
         /// </summary>
         /// <param name="id">The id of team to remove.</param>
-        void Remove(int id);
+        void Remove(TeamId id);
     }
 }

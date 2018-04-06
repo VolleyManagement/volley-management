@@ -176,8 +176,6 @@
             {
                 _playerRepository.UpdateTeam(player, null);
             }
-
-            _teamRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

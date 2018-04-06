@@ -574,15 +574,6 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Player is already a member of the team..
-        /// </summary>
-        public static string ValidationPlayerToAdd {
-            get {
-                return ResourceManager.GetString("ValidationPlayerToAdd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please, enter the valid weight.
         /// </summary>
         public static string ValidationPlayerWeight {

@@ -114,11 +114,12 @@
         public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            var captain = GetPlayerById(teamToEdit.CaptainId);
+            var captainId = teamToEdit.CaptainId.Id;
+            var captain = GetPlayerById(captainId);
 
             if (captain == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, captainId);
             }
 
             var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = captain.Id });
@@ -140,7 +141,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
 
-            teamToEdit.CaptainId = captain.Id;
+            teamToEdit.CaptainId = new PlayerId(captainId);
             _playerRepository.UpdateTeam(captain, teamToEdit.Id);
         }
 
@@ -365,6 +366,26 @@
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);
             ValidateTwoTeamsWithTheSameName(teamToValidate);
+        }
+
+        Team ITeamService.Create(Team teamToCreate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeCaptain(PlayerId captainId, Team team)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddPlayers(IEnumerable<PlayerId> players, Team team)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemovePlayers(IEnumerable<PlayerId> players, Team team)
+        {
+            throw new NotImplementedException();
         }
     }
 }

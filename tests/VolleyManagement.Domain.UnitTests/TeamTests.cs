@@ -150,13 +150,13 @@ namespace VolleyManagement.Domain.UnitTests
         }
 
         [Fact]
-        public void Team_ZeroCaptainId_ExceptionIsThrown()
+        public void Team_MinCaptainId_ExceptionIsThrown()
         {
             //Arrange
             var team = CreateTeam();
 
             //Act
-            Action act = () => { team.CaptainId = new PlayerId() { Id = Constants.Team.MIN_ID - 1 }; };
+            Action act = () => { team.CaptainId = new PlayerId(Constants.Team.MIN_ID - 1); };
 
             //Assert
             act.Should().Throw<ArgumentException>("Create team without Captain not allowed, CaptainId can`t be less then minimum alloved value");
@@ -189,9 +189,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () =>
             {
                 team.Roster = new List<PlayerId>() {
-                new PlayerId() {
-                    Id = Constants.Team.MIN_ID - 1
-                }
+                new PlayerId(Constants.Team.MIN_ID-1)
                 };
             };
 
@@ -209,8 +207,8 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () =>
             {
                 team.Roster = new List<PlayerId>() {
-            new PlayerId() { Id = 2 },
-                   new PlayerId() { Id = 2 }
+            new PlayerId(2),
+            new PlayerId(2)
                     };
             };
 
@@ -231,7 +229,7 @@ namespace VolleyManagement.Domain.UnitTests
 
         private List<PlayerId> GetTeamRoster()
         {
-            return new List<PlayerId>() { new PlayerId() { Id = TEST_TEAM_CAPTAIN_ID } };
+            return new List<PlayerId>() { new PlayerId(TEST_TEAM_CAPTAIN_ID) };
         }
 
         private string GenerateTeamStrings(int length)
@@ -241,9 +239,7 @@ namespace VolleyManagement.Domain.UnitTests
 
         private static Team CreateTeam()
         {
-            var captainId = new PlayerId {
-                Id = 1
-            };
+            var captainId = new PlayerId(1);
             return new Team(1, "Team1", "NameCoach", "", captainId, new List<PlayerId>());
         }
     }

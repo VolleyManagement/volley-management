@@ -38,10 +38,8 @@ namespace VolleyManagement.Domain.TeamsAggregate
             Name = name;
             Coach = coach;
             Achievements = achievements;
-            CaptainId = new PlayerId {
-                Id = captainId.Id
-            };
-            Roster = roster.Select(x => new PlayerId { Id = x.Id }).ToList();
+            CaptainId = new PlayerId(CaptainId.Id);
+            Roster = roster.Select(x => new PlayerId(x.Id)).ToList();
             if (!Roster.Contains(CaptainId))
             {
                 Roster.Add(CaptainId);

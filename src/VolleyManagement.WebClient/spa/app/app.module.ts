@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { VouIntegrationComponent } from './integration/vou-integration.component';
@@ -28,6 +29,10 @@ import { LoginComponent } from './Components/Login/login.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { TournamentsComponent } from './Components/Tournaments/tournaments.component';
 import { MenuComponent } from './Components/Menu/menu.component';
+import { GoogleLoginService } from './Services/googleLogin.service';
+import { TokenInterceptor } from './Services/tokenInterceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 
 @NgModule({
     declarations: [
@@ -49,7 +54,8 @@ import { MenuComponent } from './Components/Menu/menu.component';
     imports: [
         BrowserModule,
         HttpModule,
-        AppRoutingModule
+        AppRoutingModule,
+        HttpClientModule
     ],
     providers: [
         JsonService,
@@ -57,7 +63,13 @@ import { MenuComponent } from './Components/Menu/menu.component';
         TournamentDataService,
         StandingsService,
         ScheduleService,
-        TournamentsService
+        TournamentsService,
+        GoogleLoginService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        }
     ],
     bootstrap: [(environment.vouIntegration ? VouIntegrationComponent : AppComponent)]
 })

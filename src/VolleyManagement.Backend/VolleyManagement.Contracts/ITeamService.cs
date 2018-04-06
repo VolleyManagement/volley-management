@@ -26,7 +26,7 @@
         /// Create new team.
         /// </summary>
         /// <param name="teamToCreate">New team.</param>
-        void Create(Team teamToCreate);
+        Team Create(CreateTeamDto teamToCreate);
 
         /// <summary>
         /// Edit team.
@@ -38,7 +38,7 @@
         /// Delete team by id.
         /// </summary>
         /// <param name="teamId">Team id.</param>
-        void Delete(int teamId);
+        void Delete(TeamId teamId);
 
         /// <summary>
         /// Find captain of specified team
@@ -52,34 +52,27 @@
         /// </summary>
         /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        ICollection<Player> GetTeamRoster(int teamId);
-
-        /// <summary>
-        /// Sets team id to roster
-        /// </summary>
-        /// <param name="roster">Players to set the team id</param>
-        /// <param name="teamId">Id of team which should be set to player</param>
-        void UpdateRosterTeamId(ICollection<Player> roster, int teamId);
+        ICollection<Player> GetTeamRoster(TeamId teamId);
 
         /// <summary>
         /// Changes captain of the team.
         /// </summary>
         /// <param name="captainId">Id of captain.</param>
         /// <param name="team">Team, which captain to change.</param>
-        void ChangeCaptain(PlayerId captainId, Team team);
+        void ChangeCaptain(PlayerId captainId, TeamId team);
 
         /// <summary>
         /// Addes teams to team.
         /// </summary>
         /// <param name="players">List of players.</param>
         /// <param name="team">Team.</param>
-        void AddPlayers(IEnumerable<PlayerId> players, Team team);
+        void AddPlayers(IEnumerable<PlayerId> players, TeamId team);
 
         /// <summary>
         /// Removes teams to team.
         /// </summary>
         /// <param name="players">List of players.</param>
         /// <param name="team">Team.</param>
-        void RemovePlayers(IEnumerable<PlayerId> players, Team team);
+        void RemovePlayers(IEnumerable<PlayerId> players, TeamId team);
     }
 }

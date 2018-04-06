@@ -113,12 +113,27 @@
         }
 
         /// <summary>
-        /// Maps presentation entity to domain
+        /// Maps entity to domain
         /// </summary>
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
             return new Player(Id, FirstName, LastName, BirthYear, Height, Weight);
+        }
+
+        /// <summary>
+        /// Map entity to createPlayerDto
+        /// </summary>
+        /// <returns> CreatePlayerDto object </returns>
+        public CreatePlayerDto ToCreatePlayerDto()
+        {
+            return new CreatePlayerDto {
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                BirthYear = this.BirthYear,
+                Height = this.Height,
+                Weight = this.Weight
+            };
         }
         #endregion
     }

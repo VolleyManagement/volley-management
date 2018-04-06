@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Domain.TeamsAggregate
 {
-    public class PlayerId
+    public class TeamId
     {
         public int Id { get; }
-        public PlayerId(int id) { Id = id; }
+        public TeamId(int id) { Id = id; }
     }
 }

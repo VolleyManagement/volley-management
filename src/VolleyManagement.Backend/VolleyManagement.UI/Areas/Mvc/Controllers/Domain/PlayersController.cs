@@ -29,7 +29,6 @@
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";
-        private const int FREE_PLAYER = 0;
 
         /// <summary>
         /// Holds PlayerService instance
@@ -158,9 +157,9 @@
 
             try
             {
-                var domainPlayer = playerViewModel.ToDomain();
-                _playerService.Create(domainPlayer);
-                playerViewModel.Id = domainPlayer.Id;
+                var createPlayerDto = playerViewModel.ToCreatePlayerDto();
+                var player = _playerService.Create(createPlayerDto);
+                playerViewModel.Id = player.Id;
                 return RedirectToAction("Index");
             }
             catch (ArgumentException ex)
@@ -326,7 +325,7 @@
             var result = new List<int>();
             foreach (var i in splitted)
             {
-                if (int.TryParse(i, out int parsed))
+                if (int.TryParse(i, out var parsed))
                 {
                     result.Add(parsed);
                 }
@@ -337,9 +336,8 @@
 
         private bool IsFreePlayer(Player player, int? includeTeam)
         {
-            var teamId = _playerService.GetPlayerTeam(player).Id;
-
-            return includeTeam.HasValue ? teamId == FREE_PLAYER || teamId == includeTeam.Value : teamId == FREE_PLAYER;
+            var team = _playerService.GetPlayerTeam(player);
+            return team == null || (includeTeam.HasValue && team.Id == includeTeam.Value);
         }
     }
 }

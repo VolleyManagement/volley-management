@@ -35,14 +35,14 @@
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
-        public Player Add(string firstName, string lastName, short? birthYear, short? height, short? weight)
+        public Player Add(CreatePlayerDto playerDto)
         {
             var newEntity = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName,
-                BirthYear = birthYear,
-                Height = height,
-                Weight = weight
+                FirstName = playerDto.FirstName,
+                LastName = playerDto.LastName,
+                BirthYear = playerDto.BirthYear,
+                Height = playerDto.Height,
+                Weight = playerDto.Weight
             };
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newEntity))
@@ -112,7 +112,7 @@
                 throw new ConcurrencyException();
             }
 
-            playerToUpdate.Id = teamId.Value;
+            playerToUpdate.TeamId = teamId.Value;
             _unitOfWork.Commit();
         }
     }

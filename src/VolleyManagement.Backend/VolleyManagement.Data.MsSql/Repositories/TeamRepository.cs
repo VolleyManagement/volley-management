@@ -57,7 +57,7 @@ namespace VolleyManagement.Data.MsSql.Repositories
                 newTeam.Coach,
                 newTeam.Achievements,
                 new PlayerId(newTeam.CaptainId),
-                new List<PlayerId>()
+                teamToCreate.Roster.ToList()
             );
         }
 

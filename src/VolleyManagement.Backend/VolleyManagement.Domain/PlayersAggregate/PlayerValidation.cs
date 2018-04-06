@@ -56,7 +56,7 @@
         /// <param name="birthYear">Player birth year for validation</param>
         /// <returns>Validity of Player birth year.</returns>
         internal static bool ValidateBirthYear(short? birthYear) =>
-            NullableIsInvalid(birthYear, birthYear <= MIN_BIRTH_YEAR && birthYear >= MAX_BIRTH_YEAR);
+            NullableIsInvalid(birthYear, birthYear <= MIN_BIRTH_YEAR || birthYear >= MAX_BIRTH_YEAR);
 
         /// <summary>
         /// Validates player height.
@@ -64,7 +64,7 @@
         /// <param name="height">Player height for validation</param>
         /// <returns>Validity of Player height.</returns>
         internal static bool ValidateHeight(short? height) =>
-            NullableIsInvalid(height, height <= MIN_HEIGHT && height >= MAX_HEIGHT);
+            NullableIsInvalid(height, height <= MIN_HEIGHT || height >= MAX_HEIGHT);
 
         /// <summary>
         /// Validates player weight.
@@ -72,7 +72,7 @@
         /// <param name="weight">Player weight for validation</param>
         /// <returns>Validity of Player weight.</returns>
         internal static bool ValidateWeight(short? weight) =>
-            NullableIsInvalid(weight, weight <= MIN_WEIGHT && weight >= MAX_WEIGHT);
+            NullableIsInvalid(weight, weight <= MIN_WEIGHT || weight >= MAX_WEIGHT);
 
         /// <summary>
         /// Validates player team id.

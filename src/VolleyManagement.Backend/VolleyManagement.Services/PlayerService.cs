@@ -71,7 +71,7 @@
         /// Create a new player.
         /// </summary>
         /// <param name="playerToCreate">A Player to create.</param>
-        public Player Create(Player playerToCreate)
+        public Player Create(CreatePlayerDto playerToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
@@ -79,43 +79,37 @@
                 throw new ArgumentNullException("playerToCreate");
             }
 
-            var firstName = playerToCreate.FirstName;
-            var lastName = playerToCreate.LastName;
-            var birthYear = playerToCreate.BirthYear;
-            var height = playerToCreate.Height;
-            var weight = playerToCreate.Weight;
+            return _playerRepository.Add(playerToCreate);
+        }
 
-            return _playerRepository.Add(firstName, 
-                lastName, 
-                birthYear, 
-                height, 
-                weight);
+        /// <summary>
+        /// Create new players.
+        /// </summary>
+        /// <param name="fullNames">FullNmaes of players.</param>
+        public ICollection<Player> CreateBulk(IEnumerable<string> fullNames)
+        {
+            _authService.CheckAccess(AuthOperations.Players.Create);
+
+            var players = fullNames.Select(p => Create(
+                new CreatePlayerDto {
+                    FirstName = p.Substring(0, p.LastIndexOf(' ')),
+                    LastName = p.Substring(p.LastIndexOf(' ') + 1)
+                })).ToList();
+
+            return players;
         }
 
         /// <summary>
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void Create(ICollection<Player> playersToCreate)
+        public ICollection<Player> CreateBulk(ICollection<CreatePlayerDto> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            if (ValidateExistingPlayers(playersToCreate))
-            {
-                throw new ArgumentException(
-                    PlayerResources.ValidationPlayerOfAnotherTeam);
-            }
+            var players = playersToCreate.Select(p => Create(p)).ToList();
 
-            var newPlayersToCreate = GetNewPlayers(playersToCreate).ToList();
-
-            if (newPlayersToCreate.Any())
-            {
-                foreach (var player in newPlayersToCreate)
-                {
-                    _playerRepository.Add(player.FirstName, player.LastName,
-                        player.BirthYear, player.Height, player.Weight);
-                }
-            }
+            return players;
         }
 
         /// <summary>
@@ -134,22 +128,6 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
-            // Check if player is captain of team and teamId is null or changed
-            ////Team ledTeam = GetPlayerLedTeam(playerToEdit.Id);
-            ////if (ledTeam != null &&
-            ////    (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
-            ////{
-            ////    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-            ////    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
-            ////    throw ex;
-            ////}
-
-            ////if (playerToEdit.TeamId != null
-            ////    && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
-            ////{
-            ////    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
-            ////}
-
             _authService.CheckAccess(AuthOperations.Players.Edit);
             try
             {
@@ -212,34 +190,6 @@
         private Team GetTeamById(int id)
         {
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
-
-        private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
-        {
-            return playersToCreate.Where(p => p.Id == 0);
-        }
-
-        /// <summary>
-        /// Validate if Player of Another Team
-        /// </summary>
-        /// <param name="playersToCreate">List of Players</param>
-        /// <returns> Return true if Player has TeamId </returns>
-        private bool ValidateExistingPlayers(ICollection<Player> playersToCreate)
-        {
-            var existingPlayers = Get().ToList();
-
-            var teamId = playersToCreate.First().Id != 0
-                ? _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = playersToCreate.First().Id })
-                : 0;
-
-            var isExistingPlayers = existingPlayers
-                    .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => string.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
-                                  && string.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
-                                  && _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = allPlayer.Id }) != teamId));
-
-            return isExistingPlayers.Any(t => t != null);
-
         }
 
         public void AssingPlayerToTeam(Player player, int? teamId)

@@ -48,10 +48,11 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public Player Execute(FindByIdCriteria criteria)
         {
-            return _unitOfWork.Context.Players
-                                      .Where(t => t.Id == criteria.Id)
-                                      .Select(GetPlayerMapping())
-                                      .SingleOrDefault();
+            var players = _unitOfWork.Context.Players
+                .Where(t => t.Id == criteria.Id)
+                .ToList();
+            return players.Select(p => GetPlayerMapping(p))
+                .SingleOrDefault();
         }
 
         /// <summary>
@@ -61,10 +62,11 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public Player Execute(FindByFullNameCriteria criteria)
         {
-            return _unitOfWork.Context.Players
+            var players = _unitOfWork.Context.Players
                 .Where(t => t.FirstName == criteria.FirstName)
                 .Where(t => t.LastName == criteria.LastName)
-                .Select(GetPlayerMapping())
+                .ToList();
+            return players.Select(p => GetPlayerMapping(p))
                 .SingleOrDefault();
         }
 
@@ -75,7 +77,8 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public IQueryable<Player> Execute(GetAllCriteria criteria)
         {
-            return _unitOfWork.Context.Players.Select(GetPlayerMapping());
+            var players = _unitOfWork.Context.Players.ToList();
+            return players.Select(p => GetPlayerMapping(p)).AsQueryable();
         }
 
         /// <summary>
@@ -85,10 +88,10 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public ICollection<Player> Execute(TeamPlayersCriteria criteria)
         {
-            return _unitOfWork.Context.Players
-                                      .Where(p => p.TeamId == criteria.TeamId)
-                                      .Select(GetPlayerMapping())
-                                      .ToList();
+            var players = _unitOfWork.Context.Players
+                .Where(p => p.TeamId == criteria.TeamId)
+                .ToList();
+            return players.Select(p => GetPlayerMapping(p)).ToList();
         }
 
         /// <summary>
@@ -98,21 +101,22 @@
         /// <returns>The id of player team</returns>
         int IQuery<int, FindByPlayerCriteria>.Execute(FindByPlayerCriteria criteria)
         {
-            return _unitOfWork.Context.Players
-                                      .Where(t => t.Id == criteria.Id)
-                                      .Select(t => t.TeamId.GetValueOrDefault())
-                                      .SingleOrDefault();
+            var players = _unitOfWork.Context.Players
+                .Where(t => t.Id == criteria.Id)
+                .ToList();
+            return players.Select(t => t.TeamId.GetValueOrDefault())
+                .SingleOrDefault();
         }
-        
+
         #endregion
 
         #region Mapping
 
-        private static Expression<Func<PlayerEntity, Player>> GetPlayerMapping()
+        private static Player GetPlayerMapping(PlayerEntity p)
         {
-            return p => new Player(p.Id, p.FirstName, p.LastName, p.BirthYear, p.Height, p.Weight);
+            return new Player(p.Id, p.FirstName, p.LastName, p.BirthYear, p.Height, p.Weight);
         }
-        
+
         #endregion
     }
 }

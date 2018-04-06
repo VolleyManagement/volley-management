@@ -63,7 +63,22 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player (Id, FirstName, LastName);
+            return new Player(Id, FirstName, LastName);
+        }
+
+        /// <summary>
+        /// Maps presentation entity to createPlayerDto
+        /// </summary>
+        /// <returns> CreatePlayerDto object </returns>
+        public CreatePlayerDto ToCreatePlayerDto()
+        {
+            return new CreatePlayerDto {
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                BirthYear = null,
+                Height = null,
+                Weight = null
+            };
         }
 
         #endregion

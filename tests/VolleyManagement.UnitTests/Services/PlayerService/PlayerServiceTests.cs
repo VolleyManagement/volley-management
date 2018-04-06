@@ -148,7 +148,7 @@
         public void Create_PlayerPassed_PlayerCreated()
         {
             // Arrange
-            var newPlayer = new PlayerBuilder().Build();
+            var newPlayer = new CreatePlayerDtoBuilder().Build();
 
             // Act
             var sut = BuildSUT();
@@ -168,7 +168,7 @@
             var gotException = false;
 
             // Arrange
-            Player newPlayer = null;
+            CreatePlayerDto newPlayer = null;
             var sut = BuildSUT();
 
             // Act
@@ -193,100 +193,13 @@
         {
             // Arrange
             var newPlayers = CreateSeveralPlayers();
-            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
-            MockGetByIdQuery(newPlayers.First());
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
-
+           
             // Act
             var sut = BuildSUT();
-            sut.Create(newPlayers);
+            sut.CreateBulk(newPlayers);
 
             // Assert
             VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
-        }
-
-        /// <summary>
-        /// Test for Create() method with List. The method should throw ArgumentNullException.
-        /// Players must not be created
-        /// </summary>
-        [TestMethod]
-        public void Create_NoNewPlayers_PlayersNotCreated()
-        {
-            // Arrange
-            var gotException = false;
-            var newPlayers = CreateListOfExistingPlayers();
-            MockGetByIdQuery(newPlayers.First());
-            var existingPlayers = CreateListOfExistingPlayersWithoutTeam().AsQueryable();
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
-
-            // Act
-            var sut = BuildSUT();
-            sut.Create(newPlayers);
-
-            // Assert
-            Assert.IsFalse(gotException);
-            VerifyCreatePlayers(Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Create() method. The method should create new players
-        /// Players must be created
-        /// </summary>
-        [TestMethod]
-        public void Create_TwoOfThreePlayersAreNew_PlayersCreated()
-        {
-            // Arrange
-            var newPlayers = CreateTwoOfThreeNewPlayers();
-            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
-            MockGetByIdQuery(newPlayers.First());
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
-
-            // Act
-            var sut = BuildSUT();
-            sut.Create(newPlayers);
-
-            // Assert
-            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
-        }
-
-        /// <summary>
-        /// Test for Create() method. The method should throw Argument Exception
-        /// </summary>
-        [TestMethod]
-        public void Create_OneOfThePlayersPlaysInAnotherTeam_ArgumentExceptionThown()
-        {
-            var gotException = false;
-
-            // Arrange
-            var newPlayers = new List<Player>()
-            {
-                new PlayerBuilder(1, "First", "Last").Build()
-            };
-            var existingPlayers = CreateSeveralPlayers().AsQueryable();
-            MockGetByIdQuery(newPlayers.First());
-            MockGetTeamByPlayerQuery(SPECIFIC_TEAM_ID);
-            
-            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
-                .Returns(existingPlayers);
-
-            var sut = BuildSUT();
-
-            // Act
-            try
-            {
-                sut.Create(newPlayers);
-            }
-            catch (ArgumentException)
-            {
-                gotException = true;
-            }
-
-            // Assert
-            Assert.IsTrue(gotException);
-            VerifyCreatePlayers(Times.Never());
         }
 
         /// <summary>
@@ -298,7 +211,7 @@
         public void Create_NoCreateRights_ExceptionThrown()
         {
             // Arrange
-            var testPlayer = new PlayerBuilder().Build();
+            var testPlayer = new CreatePlayerDtoBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Players.Create);
             var sut = BuildSUT();
 
@@ -473,14 +386,14 @@
                 _authServiceMock.Object);
         }
 
-        private List<Player> CreateSeveralPlayers()
+        private List<CreatePlayerDto> CreateSeveralPlayers()
         {
-            var newPlayers = new List<Player>();
-            newPlayers.AddRange(new List<Player>
+            var newPlayers = new List<CreatePlayerDto>();
+            newPlayers.AddRange(new List<CreatePlayerDto>
             {
-                new PlayerBuilder(0, "First", "Last").Build(),
-                new PlayerBuilder(0, "Second", "Last").Build(),
-                new PlayerBuilder(0, "Name", "Name").Build()
+                new CreatePlayerDtoBuilder().WithFirstName("First").WithLastName("Last").Build(),
+                new CreatePlayerDtoBuilder().WithFirstName("Second").WithLastName("Last").Build(),
+                new CreatePlayerDtoBuilder().WithFirstName("Name").WithLastName("Name").Build()
             });
             return newPlayers;
         }
@@ -540,7 +453,7 @@
         {
             _getTeamByCaptainQueryMock.Setup(t => t.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(team);
         }
-       
+
         private void MockGetTeamByPlayerQuery(int teamId)
         {
             _getTeamByPlayerQueryMock.SetupSequence(t => t.Execute(It.IsAny<FindByPlayerCriteria>()))
@@ -550,33 +463,14 @@
         {
             return new PlayerComparer().Compare(x, y) == 0;
         }
-        private void VerifyCreatePlayerByParameters(string firstName, string lastName, short? birthYear, short? height, short? weight, Times times)
+        private void VerifyCreatePlayer(CreatePlayerDto playerDto, Times times)
         {
-            {
-                _playerRepositoryMock.Verify(pr => pr.Add(firstName,
-                    lastName,
-                    birthYear,
-                    height,
-                    weight),
-                    times);
-            }
+            _playerRepositoryMock.Verify(pr => pr.Add(playerDto), times);
         }
-        private void VerifyCreatePlayer(Player testPlayer, Times times) =>
-            VerifyCreatePlayerByParameters(testPlayer.FirstName,
-                testPlayer.LastName,
-                testPlayer.BirthYear,
-                testPlayer.Height,
-                testPlayer.Weight,
-                times);
-
+       
         private void VerifyCreatePlayers(Times times)
         {
-            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<short?>(),
-                It.IsAny<short?>(),
-                It.IsAny<short?>()),
-                times);
+            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<CreatePlayerDto>()), times);
         }
 
         private void VerifyEditPlayer(Player player, Times times)

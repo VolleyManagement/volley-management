@@ -4,6 +4,7 @@ using System.Linq;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
 using VolleyManagement.Data.MsSql.Entities;
+using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 using Xunit;
@@ -65,7 +66,7 @@ namespace VolleyManagement.Specs.PlayersContext
         [When(@"I execute CreatePlayer")]
         public void WhenIExecuteCreatePlayer()
         {
-            var playerToAdd = Mapper.Map<Player>(_player);
+            var playerToAdd = Mapper.Map<CreatePlayerDto>(_player);
 
             _player = _playerService.Create(playerToAdd);
 

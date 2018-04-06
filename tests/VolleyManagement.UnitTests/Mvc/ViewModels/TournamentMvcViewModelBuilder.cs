@@ -102,6 +102,17 @@
         }
 
         /// <summary>
+        /// Sets description of test tournament view model
+        /// </summary>
+        /// <param name="city">City for test tournament view model</param>
+        /// <returns>Tournament view model builder object</returns>
+        public TournamentMvcViewModelBuilder WithCity(string city)
+        {
+            _tournamentViewModel.City = city;
+            return this;
+        }
+
+        /// <summary>
         /// Sets scheme of test tournament view model
         /// </summary>
         /// <param name="scheme">Scheme for test tournament view model</param>

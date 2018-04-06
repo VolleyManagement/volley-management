@@ -21,6 +21,8 @@
             public const int MAX_DESCRIPTION_LENGTH = 300;
 
             public const int MAX_URL_LENGTH = 255;
+
+            public const int MAX_CITY_LENGTH = 50;
         }
 
         /// <summary>

@@ -21,6 +21,7 @@
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
+                City = tournament.City,
                 Season = tournament.Season,
                 Scheme = tournament.Scheme,
                 RegulationsLink = tournament.RegulationsLink,

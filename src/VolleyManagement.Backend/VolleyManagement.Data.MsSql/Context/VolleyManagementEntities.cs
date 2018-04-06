@@ -173,6 +173,13 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsVariableLength()
                 .HasMaxLength(ValidationConstants.Tournament.MAX_DESCRIPTION_LENGTH);
 
+            // Description
+            modelBuilder.Entity<TournamentEntity>()
+                .Property(t => t.City)
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.Tournament.MAX_CITY_LENGTH);
+
             // Regulations link
             modelBuilder.Entity<TournamentEntity>()
                 .Property(t => t.RegulationsLink)

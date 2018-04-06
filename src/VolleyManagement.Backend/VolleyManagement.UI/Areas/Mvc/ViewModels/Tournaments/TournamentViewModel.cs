@@ -77,6 +77,22 @@
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Description { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets a value indicating where City.
+        /// </summary>
+        /// <value>City of tournament.</value>
+        [Display(Name = "TournamentCity", ResourceType = typeof(ViewModelResources))]
+        [StringLength(
+            Constants.Tournament.MAX_CITY_LENGTH,
+            ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(
+            @"^[\S\x20]+$",
+            ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        public string City { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
@@ -224,6 +240,7 @@
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
+                City = tournament.City,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
                 Scheme = tournament.Scheme,
@@ -251,6 +268,7 @@
                 Id = Id,
                 Name = Name,
                 Description = Description,
+                City = City,
                 Season = Season,
                 Scheme = Scheme,
                 RegulationsLink = RegulationsLink,

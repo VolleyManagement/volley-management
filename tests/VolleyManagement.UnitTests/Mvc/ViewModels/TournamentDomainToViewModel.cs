@@ -25,6 +25,7 @@
                                         .WithId(1)
                                         .WithName("test")
                                         .WithDescription("Volley")
+                                        .WithCity("Lviv")
                                         .WithScheme(TournamentSchemeEnum.Two)
                                         .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")

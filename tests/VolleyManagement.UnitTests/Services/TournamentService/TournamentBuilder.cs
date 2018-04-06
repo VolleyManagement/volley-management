@@ -111,6 +111,17 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
         }
 
         /// <summary>
+        /// Sets description of test tournament
+        /// </summary>
+        /// <param name="city">City for test tournament</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithCity(string city)
+        {
+            _tournament.City = city;
+            return this;
+        }
+
+        /// <summary>
         /// Sets scheme of test tournament
         /// </summary>
         /// <param name="scheme">Scheme for test tournament</param>

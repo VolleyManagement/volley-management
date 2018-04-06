@@ -185,7 +185,7 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return GetPlayerById(team.CaptainId);
+            return GetPlayerById(team.CaptainId.Id);
         }
 
         /// <summary>

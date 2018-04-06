@@ -39,7 +39,7 @@ namespace VolleyManagement.Data.MsSql.Repositories
             var newTeam = new TeamEntity {
                 Name = teamToCreate.Name,
                 Coach = teamToCreate.Coach,
-                CaptainId = teamToCreate.CaptainId,
+                CaptainId = teamToCreate.CaptainId.Id,
                 Achievements = teamToCreate.Achievements
             };
 

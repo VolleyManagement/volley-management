@@ -366,24 +366,6 @@
             ValidateTwoTeamsWithTheSameName(teamToValidate);
         }
 
-        Team ITeamService.Create(Team teamToCreate)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void ChangeCaptain(PlayerId captainId, Team team)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddPlayers(IEnumerable<PlayerId> players, Team team)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemovePlayers(IEnumerable<PlayerId> players, Team team)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -68,11 +68,11 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// </summary>
         /// <param name="roster">List of team members ids.</param>
         /// <returns>true if roster is invalid</returns>
-        public static bool ValidateTeamRoster(ICollection<PlayerId> roster)
+        public static bool ValidateTeamRoster(IEnumerable<PlayerId> roster)
         {
             return roster == null ||
                 roster.Any(x => x.Id < Constants.Team.MIN_ID) ||
-                roster.Count != roster.Select(x => x.Id).Distinct().Count();
+                roster.Count() != roster.Select(x => x.Id).Distinct().Count();
         }
     }
 }

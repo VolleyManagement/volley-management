@@ -252,6 +252,9 @@
   <data name="ValidationTeamRoster" xml:space="preserve">
     <value>Team's roster is wrong</value>
   </data>
+  <data name="ValidationPlayerToAdd" xml:space="preserve">
+    <value>Player is already a member of the team.</value>
+  </data>
   <data name="WrongDeletingGame" xml:space="preserve">
     <value>Game can not be deleted because it has already ended</value>
   </data>

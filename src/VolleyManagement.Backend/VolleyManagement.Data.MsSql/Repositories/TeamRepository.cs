@@ -56,7 +56,7 @@ namespace VolleyManagement.Data.MsSql.Repositories
                 newTeam.Name,
                 newTeam.Coach,
                 newTeam.Achievements,
-                new PlayerId { Id = newTeam.CaptainId },
+                new PlayerId(newTeam.CaptainId),
                 new List<PlayerId>()
             );
         }

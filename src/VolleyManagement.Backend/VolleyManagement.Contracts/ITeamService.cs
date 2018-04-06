@@ -59,20 +59,20 @@
         /// </summary>
         /// <param name="captainId">Id of captain.</param>
         /// <param name="team">Team, which captain to change.</param>
-        void ChangeCaptain(PlayerId captainId, TeamId team);
+        void ChangeCaptain(TeamId team, PlayerId captainId);
 
         /// <summary>
         /// Addes teams to team.
         /// </summary>
         /// <param name="players">List of players.</param>
         /// <param name="team">Team.</param>
-        void AddPlayers(IEnumerable<PlayerId> players, TeamId team);
+        void AddPlayers(TeamId team, IEnumerable<PlayerId> players);
 
         /// <summary>
         /// Removes teams to team.
         /// </summary>
         /// <param name="players">List of players.</param>
         /// <param name="team">Team.</param>
-        void RemovePlayers(IEnumerable<PlayerId> players, TeamId team);
+        void RemovePlayers(TeamId team, IEnumerable<PlayerId> players);
     }
 }

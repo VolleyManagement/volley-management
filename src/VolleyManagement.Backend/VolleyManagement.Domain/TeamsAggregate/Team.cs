@@ -38,11 +38,16 @@ namespace VolleyManagement.Domain.TeamsAggregate
             Name = name;
             Coach = coach;
             Achievements = achievements;
-            CaptainId = new PlayerId(captainId.Id);
-            Roster = roster.Select(x => new PlayerId(x.Id)).ToList();
+            CaptainId = captainId;
+            if (ValidateTeamRoster(roster))
+            {
+                throw new ArgumentException(ValidationTeamRoster,
+                    nameof(roster));
+            }
+            _roster = roster.ToList();
             if (!Roster.Contains(CaptainId))
             {
-                Roster.Add(CaptainId);
+                _roster.Add(CaptainId);
             }
         }
 
@@ -140,21 +145,25 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// Gets or sets a value indicating where team players.
         /// </summary>
         /// <value>Players of the team</value>
-        public ICollection<PlayerId> Roster
+        public IEnumerable<PlayerId> Roster
         {
             get => _roster;
+        }
 
-            set
+        public void AddPlayerToRoster(PlayerId player)
+        {
+            if (_roster.Select(x => x.Id).Contains(player.Id))
             {
-                if (ValidateTeamRoster(value))
-                {
-                    throw new ArgumentException(ValidationTeamRoster,
-                        nameof(value));
-                }
-
-                _roster = value;
-
+                throw new ArgumentException(ValidationPlayerToAdd, 
+                    nameof(player));
             }
+
+            _roster.Add(player);
+        }
+
+        public void RemovePlayerFromRoster(PlayerId player)
+        {
+            _roster.Remove(_roster.FirstOrDefault(x => x.Id == player.Id));
         }
     }
 }

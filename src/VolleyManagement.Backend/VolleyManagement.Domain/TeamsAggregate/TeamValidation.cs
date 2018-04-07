@@ -71,6 +71,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         public static bool ValidateTeamRoster(IEnumerable<PlayerId> roster)
         {
             return roster == null ||
+                roster.Any(x => x == null) ||
                 roster.Any(x => x.Id < Constants.Team.MIN_ID) ||
                 roster.Count() != roster.Select(x => x.Id).Distinct().Count();
         }

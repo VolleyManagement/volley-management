@@ -23,7 +23,7 @@
             {
                 Id = 1,
                 Name = "TeamNameA",
-                CaptainId = 1,
+                Captain = 1,
                 Coach = "TeamCoachA",
                 Achievements = "TeamAchievementsA"
             };
@@ -80,7 +80,7 @@
         /// <returns>Team builder object</returns>
         public TeamBuilder WithCaptain(int captainId)
         {
-            _team.CaptainId = captainId;
+            _team.Captain = captainId;
             return this;
         }
 

@@ -71,7 +71,7 @@
         {
             to.Id = from.Id;
             to.Name = from.Name;
-            to.CaptainId = from.CaptainId.Id;
+            to.CaptainId = from.Captain.Id;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
         }

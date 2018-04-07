@@ -104,7 +104,7 @@
                     var players = _playerService.CreateBulk(roster);
 
                     var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.CaptainId = players.First().Id;
+                    domainTeam.Captain = players.First().Id;
 
                     _teamService.Create(domainTeam);
 
@@ -176,7 +176,7 @@
                     var players = _playerService.CreateBulk(roster);
 
                     var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.CaptainId = players.First().Id;
+                    domainTeam.Captain = players.First().Id;
 
                     _teamService.Edit(domainTeam);
 

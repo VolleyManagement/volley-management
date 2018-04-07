@@ -91,10 +91,10 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
-            var captain = GetPlayerById(teamToCreate.CaptainId);
+            var captain = GetPlayerById(teamToCreate.Captain);
             if (captain == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.Captain);
             }
 
             // Check if captain in teamToCreate is captain of another team
@@ -114,7 +114,7 @@
         public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            var captainId = teamToEdit.CaptainId.Id;
+            var captainId = teamToEdit.Captain.Id;
             var captain = GetPlayerById(captainId);
 
             if (captain == null)
@@ -141,7 +141,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
 
-            teamToEdit.CaptainId = new PlayerId(captainId);
+            teamToEdit.Captain = new PlayerId(captainId);
             _playerRepository.UpdateTeam(captain, teamToEdit.Id);
         }
 
@@ -185,7 +185,7 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return GetPlayerById(team.CaptainId.Id);
+            return GetPlayerById(team.Captain.Id);
         }
 
         /// <summary>

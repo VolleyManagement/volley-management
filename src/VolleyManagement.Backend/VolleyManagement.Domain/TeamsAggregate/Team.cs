@@ -14,7 +14,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         private string _name;
         private string _coach;
         private string _achievements;
-        private PlayerId _captainId;
+        private PlayerId _captain;
         private ICollection<PlayerId> _roster;
 
         /// <summary>
@@ -24,9 +24,9 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// <param name="name"></param>
         /// <param name="coach"></param>
         /// <param name="achievements"></param>
-        /// <param name="captainId"></param>
+        /// <param name="captain"></param>
         /// <param name="roster"></param>
-        public Team(int id, string name, string coach, string achievements, PlayerId captainId, IEnumerable<PlayerId> roster)
+        public Team(int id, string name, string coach, string achievements, PlayerId captain, IEnumerable<PlayerId> roster)
         {
             if (ValidateTeamId(id))
             {
@@ -38,11 +38,11 @@ namespace VolleyManagement.Domain.TeamsAggregate
             Name = name;
             Coach = coach;
             Achievements = achievements;
-            CaptainId = captainId;
+            Captain = captain;
             AddPlayers(roster);
-            if (!Roster.Contains(CaptainId))
+            if (!Roster.Contains(Captain))
             {
-                _roster.Add(CaptainId);
+                _roster.Add(Captain);
             }
         }
 
@@ -119,9 +119,9 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// Gets or sets a value indicating where Captain.
         /// </summary>
         /// <value>Captain of the team</value>
-        public PlayerId CaptainId
+        public PlayerId Captain
         {
-            get => _captainId;
+            get => _captain;
 
             set
             {
@@ -131,7 +131,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
                         nameof(value));
                 }
 
-                _captainId = value;
+                _captain = value;
 
             }
         }
@@ -163,7 +163,15 @@ namespace VolleyManagement.Domain.TeamsAggregate
         {
             foreach(var player in players)
             {
-                _roster.Remove(_roster.FirstOrDefault(x => x.Id == player.Id));
+                var toRemove = _roster.FirstOrDefault(x => x.Id == player.Id);
+
+                if (toRemove != null &&
+                    toRemove.Id == Captain.Id)
+                {
+                    throw new ArgumentException(RemovingCaptain);
+                }
+
+                _roster.Remove(toRemove);
             }
         }
     }

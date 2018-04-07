@@ -304,6 +304,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot remove current captain of the team.
+        /// </summary>
+        public static string RemovingCaptain {
+            get {
+                return ResourceManager.GetString("RemovingCaptain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game date not set..
         /// </summary>
         public static string RoundDateNotSet {

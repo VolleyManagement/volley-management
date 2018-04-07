@@ -142,7 +142,7 @@ namespace VolleyManagement.Domain.UnitTests
             var team = CreateTeam();
 
             //Act
-            Action act = () => { team.CaptainId = null; };
+            Action act = () => { team.Captain = null; };
 
             //Assert
             act.Should().Throw<ArgumentException>("Create team without Captain not allowed");
@@ -155,7 +155,7 @@ namespace VolleyManagement.Domain.UnitTests
             var team = CreateTeam();
 
             //Act
-            Action act = () => { team.CaptainId = new PlayerId(Constants.Team.MIN_ID - 1); };
+            Action act = () => { team.Captain = new PlayerId(Constants.Team.MIN_ID - 1); };
 
             //Assert
             act.Should().Throw<ArgumentException>("Create team without Captain not allowed, CaptainId can`t be less then minimum alloved value");
@@ -222,7 +222,7 @@ namespace VolleyManagement.Domain.UnitTests
             actual.Name.Should().Be(TEST_TEAM_NAME, "Team's name wasn't set properly.");
             actual.Coach.Should().Be(TEST_COACH_NAME, "Team's coach name wasn't set properly.");
             actual.Achievements.Should().Be(TEST_TEAM_ACHIEVEMENTS, "Team's achievements weren't set properly.");
-            actual.CaptainId.Id.Should().Be(TEST_TEAM_CAPTAIN_ID, "Team's captain id wasn't set properly.");
+            actual.Captain.Id.Should().Be(TEST_TEAM_CAPTAIN_ID, "Team's captain id wasn't set properly.");
             actual.Roster.Should().BeEquivalentTo(GetTeamRoster(), "Team's roster wasn't set properly");
         }
 

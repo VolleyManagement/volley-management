@@ -336,4 +336,7 @@
   <data name="ValidationPlayerOfAnotherTeam" xml:space="preserve">
     <value>Player already plays in another team</value>
   </data>
+  <data name="RemovingCaptain" xml:space="preserve">
+    <value>Cannot remove current captain of the team</value>
+  </data>
 </root>

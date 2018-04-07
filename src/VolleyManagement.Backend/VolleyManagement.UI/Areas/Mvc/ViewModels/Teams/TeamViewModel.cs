@@ -119,7 +119,7 @@
             var domainTeam = new Team {
                 Id = Id,
                 Name = Name,
-                CaptainId = Captain.Id,
+                Captain = Captain.Id,
                 Coach = Coach,
                 Achievements = Achievements
             };

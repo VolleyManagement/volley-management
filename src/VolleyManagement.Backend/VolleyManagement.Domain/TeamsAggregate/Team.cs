@@ -124,7 +124,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
 
         public void SetCaptain(PlayerId captain)
         {
-            if (ValidateCaptainId(captain))
+            if (ValidateCaptain(captain))
             {
                 throw new ArgumentException(ValidationTeamCaptain,
                     nameof(captain));

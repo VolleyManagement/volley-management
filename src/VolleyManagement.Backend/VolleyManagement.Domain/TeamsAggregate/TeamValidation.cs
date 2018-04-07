@@ -56,7 +56,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// </summary>
         /// <param name="captainId">Captain id for validation</param>
         /// <returns>Validity of captain id</returns>
-        public static bool ValidateCaptainId(PlayerId captainId)
+        public static bool ValidateCaptain(PlayerId captainId)
         {
             return captainId == null || captainId.Id < Constants.Team.MIN_ID;
         }

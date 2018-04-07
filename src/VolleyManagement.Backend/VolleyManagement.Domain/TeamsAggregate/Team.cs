@@ -38,12 +38,8 @@ namespace VolleyManagement.Domain.TeamsAggregate
             Name = name;
             Coach = coach;
             Achievements = achievements;
-            Captain = captain;
             AddPlayers(roster);
-            if (!Roster.Contains(Captain))
-            {
-                _roster.Add(Captain);
-            }
+            SetCaptain(captain);
         }
 
         /// <summary>
@@ -122,18 +118,6 @@ namespace VolleyManagement.Domain.TeamsAggregate
         public PlayerId Captain
         {
             get => _captain;
-
-            set
-            {
-                if (ValidateCaptainId(value))
-                {
-                    throw new ArgumentException(ValidationTeamCaptain,
-                        nameof(value));
-                }
-
-                _captain = value;
-
-            }
         }
 
         /// <summary>
@@ -143,6 +127,22 @@ namespace VolleyManagement.Domain.TeamsAggregate
         public IEnumerable<PlayerId> Roster
         {
             get => _roster;
+        }
+
+        public void SetCaptain(PlayerId captain)
+        {
+            if (ValidateCaptainId(captain))
+            {
+                throw new ArgumentException(ValidationTeamCaptain,
+                    nameof(captain));
+            }
+
+            _captain = captain;
+
+            if (!_roster.Select(x => x.Id).Contains(captain.Id))
+            {
+                _roster.Add(Captain);
+            }
         }
 
         public void AddPlayers(IEnumerable<PlayerId> players)

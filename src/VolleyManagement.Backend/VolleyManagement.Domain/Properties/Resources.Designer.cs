@@ -61,6 +61,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player is already a member of the team.
+        /// </summary>
+        public static string AddingExistingPlayerToTeam {
+            get {
+                return ResourceManager.GetString("AddingExistingPlayerToTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teams and groups are empty.
         /// </summary>
         public static string CollectionIsEmpty {

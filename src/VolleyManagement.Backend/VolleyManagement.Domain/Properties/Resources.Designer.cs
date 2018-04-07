@@ -637,7 +637,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team&apos;s roster is wrong.
+        ///   Looks up a localized string similar to Passed roster is inappropriate.
         /// </summary>
         public static string ValidationTeamRoster {
             get {

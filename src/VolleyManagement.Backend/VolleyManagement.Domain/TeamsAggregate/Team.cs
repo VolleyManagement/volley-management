@@ -64,7 +64,6 @@ namespace VolleyManagement.Domain.TeamsAggregate
                 }
 
                 _name = value;
-
             }
         }
 
@@ -85,7 +84,6 @@ namespace VolleyManagement.Domain.TeamsAggregate
                 }
 
                 _coach = value;
-
             }
         }
 
@@ -106,7 +104,6 @@ namespace VolleyManagement.Domain.TeamsAggregate
                 }
 
                 _achievements = value;
-
             }
         }
 

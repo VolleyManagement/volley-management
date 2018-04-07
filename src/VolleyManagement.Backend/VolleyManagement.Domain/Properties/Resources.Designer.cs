@@ -322,6 +322,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot unmember the player, which is not a part of the team.
+        /// </summary>
+        public static string RemovingUnexistingPlayerFromTeam {
+            get {
+                return ResourceManager.GetString("RemovingUnexistingPlayerFromTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game date not set..
         /// </summary>
         public static string RoundDateNotSet {

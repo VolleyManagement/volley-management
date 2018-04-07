@@ -342,4 +342,7 @@
   <data name="AddingExistingPlayerToTeam" xml:space="preserve">
     <value>Player is already a member of the team</value>
   </data>
+  <data name="RemovingUnexistingPlayerFromTeam" xml:space="preserve">
+    <value>Cannot unmember the player, which is not a part of the team</value>
+  </data>
 </root>

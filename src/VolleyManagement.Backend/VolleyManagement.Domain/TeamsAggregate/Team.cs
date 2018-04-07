@@ -146,33 +146,52 @@ namespace VolleyManagement.Domain.TeamsAggregate
                     nameof(players));
             }
 
-            var rosterIds = _roster.Select(x => x.Id);
+            if (RosterConstainsAny(players))
+            {
+                throw new ArgumentException(AddingExistingPlayerToTeam);
+            }
 
             foreach (var player in players)
             {
-                if (rosterIds.Contains(player.Id))
-                {
-                    throw new ArgumentException(AddingExistingPlayerToTeam);
-                }
-
                 _roster.Add(player);
             }
         }
 
         public void RemovePlayers(IEnumerable<PlayerId> players)
         {
-            foreach (var player in players)
+            if (ValidateTeamRoster(players))
             {
-                var toRemove = _roster.FirstOrDefault(x => x.Id == player.Id);
+                throw new ArgumentException(ValidationTeamRoster,
+                    nameof(players));
+            }
 
-                if (toRemove != null &&
-                    toRemove.Id == Captain.Id)
-                {
-                    throw new ArgumentException(RemovingCaptain);
-                }
+            if (!RosterContainsAll(players))
+            {
+                throw new ArgumentException(RemovingUnexistingPlayerFromTeam,
+                    nameof(players));
+            }
 
-                _roster.Remove(toRemove);
+            var playersIds = players.Select(x => x.Id);
+
+            if (playersIds.Contains(Captain.Id))
+            {
+                throw new ArgumentException(RemovingCaptain);
+            }
+
+            foreach (var playerId in playersIds)
+            {
+                _roster.Remove(_roster.First(x => x.Id == playerId));
             }
         }
+
+        private bool RosterConstainsAny(IEnumerable<PlayerId> players) =>
+            _roster.Select(x => x.Id)
+                .Intersect(players.Select(y => y.Id))
+                .Any();
+
+        private bool RosterContainsAll(IEnumerable<PlayerId> players) =>
+            players.Count() == _roster.Select(x => x.Id)
+                .Intersect(players.Select(y => y.Id))
+                .Count();
     }
 }

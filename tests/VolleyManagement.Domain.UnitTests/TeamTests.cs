@@ -216,6 +216,8 @@ namespace VolleyManagement.Domain.UnitTests
         }
         #endregion
 
+        #region Private methods
+
         private void AssertCorrectTeamCreated(Team actual)
         {
             actual.Id.Should().Be(TEST_TEAM_ID, "Team's id wasn't set properly.");
@@ -241,5 +243,7 @@ namespace VolleyManagement.Domain.UnitTests
             var captainId = new PlayerId(1);
             return new Team(1, "Team1", "NameCoach", "", captainId, new List<PlayerId>());
         }
+
+        #endregion
     }
 }

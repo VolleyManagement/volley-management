@@ -63,9 +63,9 @@ namespace VolleyManagement.Domain.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Player is already a member of the team.
         /// </summary>
-        public static string AddingExistingPlayerToTeam {
+        public static string AddingMemberedPlayerToTeam {
             get {
-                return ResourceManager.GetString("AddingExistingPlayerToTeam", resourceCulture);
+                return ResourceManager.GetString("AddingMemberedPlayerToTeam", resourceCulture);
             }
         }
         
@@ -324,9 +324,9 @@ namespace VolleyManagement.Domain.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cannot unmember the player, which is not a part of the team.
         /// </summary>
-        public static string RemovingUnexistingPlayerFromTeam {
+        public static string RemovingUnmemberedPlayerFromTeam {
             get {
-                return ResourceManager.GetString("RemovingUnexistingPlayerFromTeam", resourceCulture);
+                return ResourceManager.GetString("RemovingUnmemberedPlayerFromTeam", resourceCulture);
             }
         }
         

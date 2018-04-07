@@ -148,7 +148,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
 
             if (RosterConstainsAny(players))
             {
-                throw new ArgumentException(AddingExistingPlayerToTeam);
+                throw new ArgumentException(AddingMemberedPlayerToTeam);
             }
 
             foreach (var player in players)
@@ -167,7 +167,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
 
             if (!RosterContainsAll(players))
             {
-                throw new ArgumentException(RemovingUnexistingPlayerFromTeam,
+                throw new ArgumentException(RemovingUnmemberedPlayerFromTeam,
                     nameof(players));
             }
 

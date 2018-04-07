@@ -153,8 +153,15 @@ namespace VolleyManagement.Domain.TeamsAggregate
                     nameof(players));
             }
 
+            var rosterIds = _roster.Select(x => x.Id);
+
             foreach(var player in players)
             {
+                if (rosterIds.Contains(player.Id))
+                {
+                    throw new ArgumentException(AddingExistingPlayerToTeam);
+                }
+
                 _roster.Add(player);
             }
         }

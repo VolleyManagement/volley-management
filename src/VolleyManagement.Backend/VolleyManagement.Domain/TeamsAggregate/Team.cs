@@ -14,7 +14,6 @@ namespace VolleyManagement.Domain.TeamsAggregate
         private string _name;
         private string _coach;
         private string _achievements;
-        private PlayerId _captain;
         private ICollection<PlayerId> _roster;
 
         /// <summary>
@@ -115,10 +114,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// Gets or sets a value indicating where Captain.
         /// </summary>
         /// <value>Captain of the team</value>
-        public PlayerId Captain
-        {
-            get => _captain;
-        }
+        public PlayerId Captain { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating where team players.
@@ -137,11 +133,11 @@ namespace VolleyManagement.Domain.TeamsAggregate
                     nameof(captain));
             }
 
-            _captain = captain;
+            Captain = captain;
 
             if (!_roster.Select(x => x.Id).Contains(captain.Id))
             {
-                _roster.Add(Captain);
+                _roster.Add(captain);
             }
         }
 
@@ -149,13 +145,13 @@ namespace VolleyManagement.Domain.TeamsAggregate
         {
             if (ValidateTeamRoster(players))
             {
-                throw new ArgumentException(ValidationTeamRoster, 
+                throw new ArgumentException(ValidationTeamRoster,
                     nameof(players));
             }
 
             var rosterIds = _roster.Select(x => x.Id);
 
-            foreach(var player in players)
+            foreach (var player in players)
             {
                 if (rosterIds.Contains(player.Id))
                 {
@@ -168,7 +164,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
 
         public void RemovePlayers(IEnumerable<PlayerId> players)
         {
-            foreach(var player in players)
+            foreach (var player in players)
             {
                 var toRemove = _roster.FirstOrDefault(x => x.Id == player.Id);
 

@@ -163,7 +163,7 @@ namespace VolleyManagement.Domain.UnitTests
 
         #endregion
 
-        #region List<PlayerId>
+        #region Roster
 
         [Fact]
         public void Team_RosterIsNull_ExceptionIsThrown()

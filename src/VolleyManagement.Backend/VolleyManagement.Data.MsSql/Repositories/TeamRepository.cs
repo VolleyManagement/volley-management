@@ -1,4 +1,7 @@
-﻿namespace VolleyManagement.Data.MsSql.Repositories
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System.Data.Entity;
     using System.Linq;
@@ -31,25 +34,14 @@
             _dalTeams = _unitOfWork.Context.Teams;
         }
 
-        /// <summary>
-        /// Gets unit of work.
-        /// </summary>
-        public IUnitOfWork UnitOfWork
+        public Team Add(CreateTeamDto teamToCreate)
         {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
-
-        /// <summary>
-        /// Adds new team.
-        /// </summary>
-        /// <param name="newEntity">The team for adding.</param>
-        public void Add(Team newEntity)
-        {
-            var newTeam = new TeamEntity();
-            DomainToDal.Map(newTeam, newEntity);
+            var newTeam = new TeamEntity {
+                Name = teamToCreate.Name,
+                Coach = teamToCreate.Coach,
+                CaptainId = teamToCreate.Captain.Id,
+                Achievements = teamToCreate.Achievements
+            };
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))
             {
@@ -59,7 +51,14 @@
             _dalTeams.Add(newTeam);
             _unitOfWork.Commit();
 
-            newEntity.Id = newTeam.Id;
+            return new Team(
+                newTeam.Id,
+                newTeam.Name,
+                newTeam.Coach,
+                newTeam.Achievements,
+                new PlayerId(newTeam.CaptainId),
+                teamToCreate.Roster.ToList()
+            );
         }
 
         /// <summary>
@@ -76,6 +75,7 @@
             }
 
             DomainToDal.Map(teamToUpdate, updatedEntity);
+            _unitOfWork.Commit();
         }
 
         /// <summary>
@@ -87,6 +87,7 @@
             var dalToRemove = new TeamEntity { Id = id };
             _dalTeams.Attach(dalToRemove);
             _dalTeams.Remove(dalToRemove);
+            _unitOfWork.Commit();
         }
     }
 }

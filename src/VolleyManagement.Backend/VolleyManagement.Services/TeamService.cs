@@ -91,10 +91,10 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
-            var captain = GetPlayerById(teamToCreate.CaptainId);
+            var captain = GetPlayerById(teamToCreate.Captain);
             if (captain == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.Captain);
             }
 
             // Check if captain in teamToCreate is captain of another team
@@ -114,11 +114,12 @@
         public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            var captain = GetPlayerById(teamToEdit.CaptainId);
+            var captainId = teamToEdit.Captain.Id;
+            var captain = GetPlayerById(captainId);
 
             if (captain == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, captainId);
             }
 
             var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = captain.Id });
@@ -140,7 +141,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
 
-            teamToEdit.CaptainId = captain.Id;
+            teamToEdit.Captain = new PlayerId(captainId);
             _playerRepository.UpdateTeam(captain, teamToEdit.Id);
         }
 
@@ -175,8 +176,6 @@
             {
                 _playerRepository.UpdateTeam(player, null);
             }
-
-            _teamRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -186,7 +185,7 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return GetPlayerById(team.CaptainId);
+            return GetPlayerById(team.Captain.Id);
         }
 
         /// <summary>
@@ -197,30 +196,6 @@
         public ICollection<Player> GetTeamRoster(int teamId)
         {
             return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId });
-        }
-
-        /// <summary>
-        /// Sets team id to roster
-        /// </summary>
-        /// <param name="roster">Players to set the team</param>
-        /// <param name="teamId">Id of team which should be set to player</param>
-        public void UpdateRosterTeamId(ICollection<Player> roster, int teamId)
-        {
-            if (GetTeamRoster(teamId).Count > 1)
-            {
-                foreach (var player in GetTeamRoster(teamId))
-                {
-                    if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
-                    {
-                        SetPlayerTeamIdToNull(player.Id);
-                    }
-                }
-            }
-
-            foreach (var player in roster)
-            {
-                UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
-            }
         }
 
         private static bool ValidateTwoTeamsName(Team teamToValidate, ICollection<Team> getExistingTeams)
@@ -242,57 +217,6 @@
             }
         }
 
-        private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
-        {
-            var player = GetPlayerByFullName(firstName, lastName);
-
-            if (player == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
-            }
-            var playerTeamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = player.Id });
-            // Check if player plays in another team
-            if (playerTeamId != default(int) && playerTeamId != teamId)
-            {
-                throw new ArgumentException(
-                    TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
-            }
-
-            // Check if player is captain of another team
-            if (playerTeamId != default(int))
-            {
-                var existingTeam = GetPlayerLedTeam(player.Id);
-
-                if (existingTeam != null && teamId != existingTeam.Id)
-                {
-                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
-                    throw ex;
-                }
-            }
-
-            var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
-
-            if (team == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
-            }
-
-            _playerRepository.UpdateTeam(player, teamId);
-        }
-
-        private void SetPlayerTeamIdToNull(int playerId)
-        {
-            var player = GetPlayerById(playerId);
-
-            if (player == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
-            }
-
-            _playerRepository.UpdateTeam(player, null);
-        }
-
         private Team GetPlayerLedTeam(int playerId)
         {
             return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
@@ -301,14 +225,6 @@
         private Player GetPlayerById(int id)
         {
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
-
-        private Player GetPlayerByFullName(string firstName, string lastName)
-        {
-            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria {
-                FirstName = firstName,
-                LastName = lastName
-            });
         }
 
         private static void ValidateTeamName(string teamName)

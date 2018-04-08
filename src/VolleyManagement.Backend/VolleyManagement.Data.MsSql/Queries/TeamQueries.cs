@@ -128,7 +128,7 @@
                 Id = t.Id,
                 Name = t.Name,
                 Coach = t.Coach,
-                CaptainId = t.CaptainId,
+                Captain = t.CaptainId,
                 Achievements = t.Achievements
             };
         }

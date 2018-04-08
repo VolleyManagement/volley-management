@@ -243,8 +243,14 @@
   <data name="ValidationTeamAchievements" xml:space="preserve">
     <value>Team achievements can not contain more than  {0} symbols</value>
   </data>
+  <data name="ValidationTeamCaptain" xml:space="preserve">
+    <value>Captain's id is smaller, than required</value>
+  </data>
   <data name="ValidationTeamName" xml:space="preserve">
     <value>Team name can not contain more than  {0} symbols; The field can not be empty</value>
+  </data>
+  <data name="ValidationTeamRoster" xml:space="preserve">
+    <value>Passed roster is inappropriate</value>
   </data>
   <data name="WrongDeletingGame" xml:space="preserve">
     <value>Game can not be deleted because it has already ended</value>
@@ -329,5 +335,14 @@
   </data>
   <data name="ValidationPlayerOfAnotherTeam" xml:space="preserve">
     <value>Player already plays in another team</value>
+  </data>
+  <data name="RemovingCaptain" xml:space="preserve">
+    <value>Cannot remove current captain of the team</value>
+  </data>
+  <data name="AddingMemberedPlayerToTeam" xml:space="preserve">
+    <value>Player is already a member of the team</value>
+  </data>
+  <data name="RemovingUnmemberedPlayerFromTeam" xml:space="preserve">
+    <value>Cannot unmember the player, which is not a part of the team</value>
   </data>
 </root>

@@ -99,7 +99,10 @@
     <Compile Include="RolesAggregate\AuthOperations.cs" />
     <Compile Include="RolesAggregate\IRoleRepository.cs" />
     <Compile Include="RolesAggregate\Role.cs" />
+    <Compile Include="TeamsAggregate\CreateTeamDto.cs" />
     <Compile Include="TeamsAggregate\ITeamRepository.cs" />
+    <Compile Include="TeamsAggregate\PlayerId.cs" />
+    <Compile Include="TeamsAggregate\TeamId.cs" />
     <Compile Include="TeamsAggregate\TeamTournamentDto.cs" />
     <Compile Include="TeamsAggregate\TeamValidation.cs" />
     <Compile Include="TournamentRequestAggregate\ITournamentRequestRepository.cs" />

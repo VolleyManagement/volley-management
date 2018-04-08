@@ -30,7 +30,7 @@
             {
                 Id = 1,
                 Name = "TeamNameA",
-                CaptainId = 1,
+                Captain = 1,
                 Coach = "TeamCoachA",
                 Achievements = "TeamAchievementsA"
             });
@@ -38,7 +38,7 @@
             {
                 Id = 2,
                 Name = "TeamNameB",
-                CaptainId = 2,
+                Captain = 2,
                 Coach = "TeamCoachB",
                 Achievements = "TeamAchievementsB"
             });
@@ -47,7 +47,7 @@
             {
                 Id = 3,
                 Name = "TeamNameC",
-                CaptainId = 3,
+                Captain = 3,
                 Coach = "TeamCoachC",
                 Achievements = "TeamAchievementsC"
             });

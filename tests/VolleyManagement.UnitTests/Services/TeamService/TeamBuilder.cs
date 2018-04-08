@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.TeamsAggregate;
 
@@ -19,14 +20,12 @@
         /// </summary>
         public TeamBuilder()
         {
-            _team = new Team
-            {
-                Id = 1,
-                Name = "TeamNameA",
-                Captain = 1,
-                Coach = "TeamCoachA",
-                Achievements = "TeamAchievementsA"
-            };
+            _team = new Team(1, 
+                "TeamNameA",
+                "TeamCoachA",
+                "TeamAchievementsA",
+                new PlayerId(1),
+                new List<PlayerId>());
         }
 
         /// <summary>
@@ -36,7 +35,12 @@
         /// <returns>Team builder object</returns>
         public TeamBuilder WithId(int id)
         {
-            _team.Id = id;
+            _team = new Team(id, 
+                _team.Name,
+                _team.Coach,
+                _team.Achievements,
+                _team.Captain,
+                _team.Roster);
             return this;
         }
 
@@ -78,9 +82,25 @@
         /// </summary>
         /// <param name="captainId">Test team captain</param>
         /// <returns>Team builder object</returns>
-        public TeamBuilder WithCaptain(int captainId)
+        public TeamBuilder WithCaptain(PlayerId captainId)
         {
-            _team.Captain = captainId;
+            _team.SetCaptain(captainId);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets test team roster
+        /// </summary>
+        /// <param name="roster">Test team roster</param>
+        /// <returns>Team builder object</returns>
+        public TeamBuilder WithRoster(IEnumerable<PlayerId> roster)
+        {
+            _team = new Team(_team.Id,
+                _team.Name,
+                _team.Coach,
+                _team.Achievements,
+                _team.Captain,
+                roster);
             return this;
         }
 

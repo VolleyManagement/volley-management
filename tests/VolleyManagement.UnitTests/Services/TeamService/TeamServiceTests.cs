@@ -133,7 +133,7 @@
         {
             // Arrange
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            var team = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            var team = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             _getPlayerByIdQueryMock.Setup(pr =>
                                           pr.Execute(It.Is<FindByIdCriteria>(cr =>
                                                                              cr.Id == SPECIFIC_PLAYER_ID)))
@@ -155,7 +155,7 @@
         public void Create_TeamPassed_TeamCreated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
@@ -472,7 +472,7 @@
         public void Create_PlayerIsNotCaptainOfExistingTeam_TeamCreated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.IsAny<FindByIdCriteria>())).Returns(captain);
             _getTeamByCaptainQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
@@ -495,7 +495,7 @@
         public void Create_TeamPassed_CaptainUpdated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
@@ -653,7 +653,7 @@
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
-            var teamWithWrongId = new TeamBuilder().WithId(UNASSIGNED_ID).WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            var teamWithWrongId = new TeamBuilder().WithId(UNASSIGNED_ID).WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             _teamRepositoryMock.Setup(pr => pr.Update(It.IsAny<Team>())).Throws(new ConcurrencyException());
             MockGetAllTeamsQuery(CreateSeveralTeams());
 

@@ -117,14 +117,12 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            var roster = Roster.Select(x => new PlayerId(x.Id));
-
             return new Team(Id, 
                 Name,
                 Coach,
                 Achievements,
                 new PlayerId(Captain.Id),
-                roster);
+                Roster.Select(x => new PlayerId(x.Id)));
         }
 
         #endregion

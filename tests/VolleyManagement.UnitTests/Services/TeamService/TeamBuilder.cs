@@ -88,6 +88,17 @@
             return this;
         }
 
+        public TeamBuilder WithRoster(IEnumerable<PlayerId> roster)
+        {
+            _team = new Team(_team.Id,
+                _team.Name,
+                _team.Coach,
+                _team.Achievements,
+                _team.Captain,
+                roster);
+            return this;
+        }
+
         /// <summary>
         /// Builds test team
         /// </summary>

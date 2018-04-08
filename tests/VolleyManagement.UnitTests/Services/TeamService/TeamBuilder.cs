@@ -88,6 +88,11 @@
             return this;
         }
 
+        /// <summary>
+        /// Sets test team roster
+        /// </summary>
+        /// <param name="roster">Test team roster</param>
+        /// <returns>Team builder object</returns>
         public TeamBuilder WithRoster(IEnumerable<PlayerId> roster)
         {
             _team = new Team(_team.Id,

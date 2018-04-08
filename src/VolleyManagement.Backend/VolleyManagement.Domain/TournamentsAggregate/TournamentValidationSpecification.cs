@@ -25,6 +25,12 @@
             {
                 return false;
             }
+            //// Location
+            if (!string.IsNullOrEmpty(entity.Location)
+                && entity.Location.Length >= Constants.Tournament.MAX_LOCATION_LENGTH)
+            {
+                return false;
+            }
             //// Season
             if (entity.Season <= Constants.Tournament.MINIMAL_SEASON_YEAR
                 && entity.Season >= Constants.Tournament.MAXIMAL_SEASON_YEAR)

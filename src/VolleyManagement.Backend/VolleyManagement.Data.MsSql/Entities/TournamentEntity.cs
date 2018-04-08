@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql.Entities
+﻿namespace VolleyManagement.Data.MsSql.Entities
 {
     using System;
     using System.Collections.Generic;
@@ -42,6 +42,11 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets the tournament description
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tournament location
+        /// </summary>
+        public string Location { get; set; }
 
         /// <summary>
         /// Gets or sets regulations of the tournament

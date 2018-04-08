@@ -13,7 +13,7 @@
         /// Tournament entity validation constants
         /// </summary>
         public static class Tournament
-        {
+        {       
             public const short SCHEMA_STORAGE_OFFSET = 1900;
 
             public const int MAX_NAME_LENGTH = 60;
@@ -21,6 +21,8 @@
             public const int MAX_DESCRIPTION_LENGTH = 300;
 
             public const int MAX_URL_LENGTH = 255;
+
+            public static int MAX_LOCATION_LENGTH = 50;
         }
 
         /// <summary>

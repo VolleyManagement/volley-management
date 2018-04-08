@@ -22,7 +22,7 @@
 
             public const int MAX_URL_LENGTH = 255;
 
-            public static int MAX_LOCATION_LENGTH = 50;
+            public const int MAX_LOCATION_LENGTH = 50;
         }
 
         /// <summary>

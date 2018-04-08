@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using Domain;
     using Domain.PlayersAggregate;
     using Domain.TeamsAggregate;
@@ -116,12 +117,7 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            var roster = new List<PlayerId>();
-
-            foreach(var player in Roster)
-            {
-                roster.Add(new PlayerId(player.Id));
-            }
+            var roster = Roster.Select(x => new PlayerId(x.Id));
 
             return new Team(Id, 
                 Name,

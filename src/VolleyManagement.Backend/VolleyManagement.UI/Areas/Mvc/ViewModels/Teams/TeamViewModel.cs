@@ -116,20 +116,34 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            var roster = new List<PlayerId>();
-
-            foreach(var player in Roster)
-            {
-                roster.Add(new PlayerId(player.Id));
-            }
+            var teamDto = ToCreateTeamDto();
 
             return new Team(Id, 
                 Name,
                 Coach,
                 Achievements,
-                new PlayerId(Captain.Id),
-                roster);
+                teamDto.Captain,
+                teamDto.Roster);
         }
+
+        public CreateTeamDto ToCreateTeamDto()
+        {
+            var roster = new List<PlayerId>();
+
+            foreach (var player in Roster)
+            {
+                roster.Add(new PlayerId(player.Id));
+            }
+
+            return new CreateTeamDto {
+                Name = Name,
+                Coach = Coach,
+                Achievements = Achievements,
+                Captain = new PlayerId(Captain.Id),
+                Roster = roster
+            };
+        }
+
         #endregion
     }
 }

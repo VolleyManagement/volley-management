@@ -82,7 +82,7 @@
         /// </summary>
         /// <param name="captainId">Test team captain</param>
         /// <returns>Team builder object</returns>
-        public TeamBuilder WithCaptainId(int captainId)
+        public TeamBuilder WithCaptain(int captainId)
         {
             _team.SetCaptain(new PlayerId(captainId));
             return this;

@@ -320,7 +320,7 @@
             var gotException = false;
 
             // Arrange
-            var existTeam = new TeamBuilder().WithCaptainId(PLAYER_ID).Build();
+            var existTeam = new TeamBuilder().WithCaptain(PLAYER_ID).Build();
             MockGetTeamByCaptainIdQuery(existTeam);
             var sut = BuildSUT();
 

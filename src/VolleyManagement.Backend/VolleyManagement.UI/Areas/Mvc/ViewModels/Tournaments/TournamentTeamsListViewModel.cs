@@ -1,4 +1,4 @@
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
     using System;
     using System.Collections.Generic;
@@ -51,15 +51,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
         /// Gets or sets list of GroupTeam
         /// </summary>
         public ICollection<GroupTeamViewModel> GroupTeamList { get; set; }
-
-        /// <summary>
-        /// Maps presentation list to domain list
-        /// </summary>
-        /// <returns>Domain list of teams</returns>
-        public ICollection<Team> ToDomain()
-        {
-            return TeamsList.Select(t => t.ToDomain()).ToList();
-        }
 
         /// <summary>
         /// Maps presentation list to domain list

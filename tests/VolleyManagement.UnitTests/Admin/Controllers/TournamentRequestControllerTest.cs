@@ -365,7 +365,7 @@
         {
             return new TeamBuilder()
                          .WithId(SPECIFIED_TEAM_ID)
-                         .WithCaptain(SPECIFIED_PLAYER_ID)
+                         .WithCaptainId(SPECIFIED_PLAYER_ID)
                          .WithCoach(COACH)
                          .WithAchievements(ACHIEVEMENTS)
                          .WithName(TEAM_NAME)

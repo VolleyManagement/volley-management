@@ -19,6 +19,7 @@
             Assert.AreEqual(expected.Id, actual.Id, "Ids should be equal.");
             Assert.AreEqual(expected.Name, actual.Name, $"[Id:{expected.Id}]Name should be equal.");
             Assert.AreEqual(expected.Description, actual.Description, $"[Id:{expected.Id}]Description should be equal.");
+            Assert.AreEqual(expected.Location, actual.Location, $"[Id:{expected.Id}]Location should be equal.");
             Assert.AreEqual(expected.Season, actual.Season, $"[Id:{expected.Id}]Season should be equal.");
             Assert.AreEqual(expected.Scheme, actual.Scheme, $"[Id:{expected.Id}]Scheme should be equal.");
             Assert.AreEqual(expected.RegulationsLink, actual.RegulationsLink, $"[Id:{expected.Id}]RegulationsLink should be equal.");

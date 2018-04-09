@@ -78,6 +78,21 @@
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating where Location.
+        /// </summary>
+        /// <value>Location of tournament.</value>
+        [Display(Name = "TournamentLocation", ResourceType = typeof(ViewModelResources))]
+        [StringLength(
+            Constants.Tournament.MAX_LOCATION_LENGTH,
+            ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(
+            @"^[\S\x20]+$",
+            ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        public string Location { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
@@ -224,6 +239,7 @@
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
+                Location = tournament.Location,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
                 Scheme = tournament.Scheme,
@@ -251,6 +267,7 @@
                 Id = Id,
                 Name = Name,
                 Description = Description,
+                Location = Location,
                 Season = Season,
                 Scheme = Scheme,
                 RegulationsLink = RegulationsLink,

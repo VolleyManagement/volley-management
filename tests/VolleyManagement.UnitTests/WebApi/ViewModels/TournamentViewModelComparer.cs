@@ -55,6 +55,7 @@
         {
             return x.Description == y.Description &&
                 x.Name == y.Name &&
+                x.Location == y.Location &&
                 x.Id == y.Id &&
                 x.RegulationsLink == y.RegulationsLink &&
                 x.Season == y.Season &&

@@ -194,6 +194,10 @@
     <Compile Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.Designer.cs">
       <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.cs" />
+    <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.Designer.cs">
+      <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -371,6 +375,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.resx">
       <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201804080807417_AddTournamentLocation.resx">
+      <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -108,6 +108,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
                                .WithId(1)
                                .WithName("test")
                                .WithDescription("Volley")
+                               .WithLocation("Lviv")
                                .WithScheme(TournamentSchemeEnum.Two)
                                .WithSeason(2016)
                                .WithRegulationsLink("volley.dp.ua")
@@ -118,6 +119,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
                 Id = testData.Id,
                 Name = testData.Name,
                 Description = testData.Description,
+                Location = testData.Location,
                 Scheme = testData.Scheme.ToDescription(),
                 Season = testData.Season,
                 RegulationsLink = testData.RegulationsLink

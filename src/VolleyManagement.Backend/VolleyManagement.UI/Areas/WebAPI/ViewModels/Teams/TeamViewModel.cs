@@ -57,7 +57,7 @@
         /// <summary>
         /// Gets or sets the team roster.
         /// </summary>
-        public IEnumerable<PlayerViewModel> Roster { get; set; }
+        public IEnumerable<PlayerViewModel> Roster { get; set; } = new List<PlayerViewModel>();
 
         #region Factory Methods
 
@@ -95,8 +95,7 @@
                 Coach,
                 Achievements,
                 new PlayerId(CaptainId),
-                Roster == null ? new List<PlayerId>() :
-                    Roster.Select(x => new PlayerId(x.Id)));
+                Roster.Select(x => new PlayerId(x.Id)));
         }
 
         /// <summary>

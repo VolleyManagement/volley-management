@@ -171,7 +171,6 @@
                         .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
                         .Select(x => new PlayerId(x.Id));
 
-
                     var oldRoster = team.Roster.Select(x => x.Id);
 
                     var newRoster = teamViewModel.Roster
@@ -185,27 +184,22 @@
 
                     _teamService.AddPlayers(new TeamId(domainTeam.Id), playersToAddToTeam.Concat(newRosterIdToAdd));
 
+                    var captainId = domainTeam.Roster.First().Id;
+
                     if (team.Captain.Id != teamViewModel.Captain.Id)
                     {
-                        _teamService.ChangeCaptain(new TeamId(team.Id),new PlayerId());
+                        if (teamViewModel.Roster.FirstOrDefault() != null)
+                        {
+                            captainId = teamViewModel.Roster.First().Id;
+                        }
                     }
 
+                    _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
 
-
-                    //_teamService.AddPlayers(new TeamId(domainTeam.Id), playersToAddToTeam);
-                    //var roster = teamViewModel.Roster.Select(t => t.ToCreatePlayerDto()).ToList();
-                    //;
-
-                    //var players = _playerService.CreateBulk(newRosterIdToAdd.Select(x => x.Ma//new PlayerId(x)));
-
-                    //var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.SetCaptain(new PlayerId(players.First().Id));
+                    _teamService.RemovePlayers(new TeamId(team.Id), newRosterIdToRemove);
 
                     _teamService.Edit(domainTeam);
 
-                    //_teamService.AddPlayers(new TeamId(domainTeam.Id), players.Select(x => new PlayerId(x.Id)));
-
-                    //teamViewModel.Id = domainTeam.Id;
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)

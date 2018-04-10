@@ -3,15 +3,19 @@ import { Observable } from 'rxjs/Observable';
 import { JsonService } from './json.service';
 import { GoogleUserInfo } from '../Models/User/GoogleUserInfo';
 
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 @Injectable()
 export class GoogleLoginService {
     private token: string;
+    private userFullName: string;
 
-    constructor(private _jsonService: JsonService) { }
+    constructor(private _jsonService: JsonService, private http: HttpClient) { }
 
     getToken(): string {
-        return this.token ? this.token : 'EMPTY';
+        return this.token ? this.token : '';
     }
+
     getGoogleUserInfo(googleUser: any): GoogleUserInfo {
         const token = googleUser.getAuthResponse().id_token;
         const profile = googleUser.getBasicProfile();
@@ -32,36 +36,24 @@ export class GoogleLoginService {
     }
 
     validateGoogleToken(user: GoogleUserInfo): Promise<Response> {
-        return new Promise(function (resolve, reject) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:49940/api/Account/TokenSignin', true);
-            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function (e) {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        resolve(xhr.response);
-                    } else {
-                        reject(xhr.status);
-                    }
-                }
-            };
-            xhr.ontimeout = function () {
-                reject('timeout');
-            };
-            xhr.send('user=' + JSON.stringify(user));
+        const url = 'https://localhost:44370/api/Account/TokenSignin';
+        return new Promise((resolve, reject) => {
+            const enco: any = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+            const body: any = new HttpParams().set('user', JSON.stringify(user));
+            this.http.post(url, body.toString(), { headers: enco, withCredentials: true })
+                .subscribe(data => {
+                    resolve(data as Response);
+                }, error => {
+                    reject({ error: error });
+                });
         });
     }
 
 
     handleUserInfo(response): boolean {
-        const data = JSON.parse(response);
-        if (data) {
-            this.token = data.token;
-
-            // store username and jwt token in local storage to keep user logged in between page refreshes
-            // localStorage.setItem('currentUser', JSON.stringify({ username: isInfoReturned, token: isInfoReturned }));
-
+        if (response) {
+            this.token = response.token;
+            this.userFullName = response.fullName;
             return true;
         }
         return false;
@@ -84,6 +76,7 @@ export class GoogleLoginService {
 
     logout(): void {
         this.token = null;
-        localStorage.removeItem('currentUser');
+        this.userFullName = '';
+        // TODO add call to backend for logout
     }
 }

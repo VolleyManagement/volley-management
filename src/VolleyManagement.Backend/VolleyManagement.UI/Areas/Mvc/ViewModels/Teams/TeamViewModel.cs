@@ -122,7 +122,8 @@
                 Coach,
                 Achievements,
                 new PlayerId(Captain.Id),
-                Roster.Select(x => new PlayerId(x.Id)));
+                Roster == null ? new List<PlayerId>() :
+                    Roster.Select(x => new PlayerId(x.Id)));
         }
 
         /// <summary>
@@ -131,12 +132,13 @@
         /// <returns> Domain object </returns>
         public CreateTeamDto ToCreateTeamDto()
         {
+            var team = ToDomain();
             return new CreateTeamDto {
-                Name = Name,
-                Achievements = Achievements = Achievements,
-                Captain = new PlayerId(Captain.Id),
-                Coach = Coach,
-                Roster = Roster.Select(x => new PlayerId(x.Id))
+                Name = team.Name,
+                Achievements = team.Achievements,
+                Captain = team.Captain,
+                Coach = team.Coach,
+                Roster = team.Roster
             };
         }
 

@@ -117,12 +117,27 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            return new Team(Id, 
+            return new Team(Id,
                 Name,
                 Coach,
                 Achievements,
                 new PlayerId(Captain.Id),
                 Roster.Select(x => new PlayerId(x.Id)));
+        }
+
+        /// <summary>
+        /// Maps presentation entity to CreateTeamDto
+        /// </summary>
+        /// <returns> Domain object </returns>
+        public CreateTeamDto ToCreateTeamDto()
+        {
+            return new CreateTeamDto {
+                Name = Name,
+                Achievements = Achievements = Achievements,
+                Captain = new PlayerId(Captain.Id),
+                Coach = Coach,
+                Roster = Roster.Select(x => new PlayerId(x.Id))
+            };
         }
 
         #endregion

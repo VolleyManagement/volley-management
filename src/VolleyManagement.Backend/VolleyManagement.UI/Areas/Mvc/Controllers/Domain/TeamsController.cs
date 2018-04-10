@@ -12,6 +12,7 @@
     using Contracts.Exceptions;
     using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using ViewModels.Teams;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
@@ -103,17 +104,16 @@
 
                     var players = _playerService.CreateBulk(roster);
 
-                    var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.Captain = players.First().Id;
+                    var team = teamViewModel.ToCreateTeamDto();
 
-                    _teamService.Create(domainTeam);
+                    var createdTeam= _teamService.Create(team);
 
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.UpdateRosterTeamId(players, domainTeam.Id);
+                        _teamService.AddPlayers(players, domainTeam.Id);
                     }
 
-                    teamViewModel.Id = domainTeam.Id;
+                    teamViewModel.Id = team.Id;
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)

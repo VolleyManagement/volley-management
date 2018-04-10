@@ -308,6 +308,28 @@
         }
 
         /// <summary>
+        /// Activate tournament by id.
+        /// </summary>
+        /// <param name="id">The id of tournament to archive.</param>
+        public void Activate(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Tournaments.Activate);
+
+            var tournamentToActivate = Get(id);
+
+            if (tournamentToActivate == null)
+            {
+                throw new ArgumentException(
+                    TournamentResources.TournamentWasNotFound);
+            }
+
+            tournamentToActivate.IsArchived = false;
+
+            _tournamentRepository.Update(tournamentToActivate);
+            _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
         /// Method for autho-archiving old tournaments.
         /// Finds old tournaments to be archived.
         /// As we don't have reliable task scheduling at the moment of writing,
@@ -315,8 +337,9 @@
         /// </summary>
         public void ArchiveOld()
         {
-            var criteria = new OldTournamentsCriteria();
-            criteria.CheckDate = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD);
+            var criteria = new OldTournamentsCriteria {
+                CheckDate = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD)
+            };
 
             // Gets old tournaments that need to be archived
             var old = _getOldTournamentsQuery.Execute(criteria);

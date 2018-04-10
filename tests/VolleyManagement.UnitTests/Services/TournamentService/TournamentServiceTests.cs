@@ -1318,34 +1318,52 @@
         #endregion
 
         #region Archive
-
-        /// <summary>
-        /// Test for Archive(int id) tournament method.
-        /// </summary>
+        
         [TestMethod]
-        public void Archive_NotArchivedTournament_CommitInvoked()
+        public void Archive_TournamentExists_IsArchivedEqualsTrueAndChangesSaved()
         {
             // Arrange
             var expectedTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
+                                    .WithArchivedParameter(true)
                                     .Build();
             var actualTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
+                                    .WithArchivedParameter(false)
                                     .Build();
             MockGetByIdQuery(actualTournament);
-            MockGetUniqueTournamentQuery(expectedTournament);
             var sut = BuildSUT();
 
             // Act
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCommit(Times.Once(), "The tournament was not archived.");
+            VerifyEditTournament(expectedTournament, Times.Once());
+        }
+        
+        [TestMethod]
+        public void Archive_TournamentDoesNotExist_ExceptionThrown()
+        {
+            // Arrange
+            MockGetByIdQuery(null as Tournament);
+            var sut = BuildSUT();
+            var expectedException =
+                new ArgumentException(TournamentResources.TournamentWasNotFound);
+            Exception actualException = null;
+
+            // Act
+            try
+            {
+                sut.Archive(FIRST_TOURNAMENT_ID);
+            }
+            catch (Exception ex)
+            {
+                actualException = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(actualException,
+                expectedException);
         }
 
-        /// <summary>
-        /// Test for Archive() method with any state. Whetever 'CheckAccess' method invokes
-        /// </summary>
         [TestMethod]
         public void Archive_AnyState_AuthorizationCheckInvoked()
         {
@@ -1359,6 +1377,70 @@
 
             // Assert
             VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
+        }
+
+        #endregion
+
+        #region Activate
+
+        [TestMethod]
+        public void Activate_AnyState_CheckAccessInvoked()
+        {
+            // Arrange
+            MockGetByIdQuery(new TournamentBuilder().Build());
+            var sut = BuildSUT();
+
+            // Act
+            sut.Activate(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.Activate,
+                Times.Once());
+        }
+
+        [TestMethod]
+        public void Activate_TournamentExists_IsArchivedEqualsFalseAndChangesSaved()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder()
+                .WithArchivedParameter(true)
+                .Build();
+            var savedTournament = new TournamentBuilder()
+                 .WithArchivedParameter(false)
+                 .Build();
+            MockGetByIdQuery(testTournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Activate(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyEditTournament(savedTournament, Times.Once());
+        }
+
+        [TestMethod]
+        public void Activate_TournamentDoesNotExist_ExceptionThrown()
+        {
+            // Arrange
+            MockGetByIdQuery(null as Tournament);
+            var sut = BuildSUT();
+            var expectedException =
+                new ArgumentException(TournamentResources.TournamentWasNotFound);
+            Exception actualException = null;
+
+            // Act
+            try
+            {
+                sut.Activate(FIRST_TOURNAMENT_ID);
+            }
+            catch (Exception ex)
+            {
+                actualException = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(actualException,
+                expectedException);
         }
 
         #endregion
@@ -1727,6 +1809,7 @@
                 .WithId(id)
                 .WithName("Name")
                 .WithDescription("Description")
+                .WithLocation("Location")
                 .WithScheme(TournamentSchemeEnum.One)
                 .WithSeason(2014)
                 .WithRegulationsLink("link")
@@ -1740,6 +1823,7 @@
                                             .WithId(1)
                                             .WithName("Tournament 1")
                                             .WithDescription("Tournament 1 description")
+                                            .WithLocation("Location 1")
                                             .WithSeason(2014)
                                             .WithScheme(TournamentSchemeEnum.One)
                                             .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('1')")
@@ -1754,6 +1838,7 @@
                                             .WithId(2)
                                             .WithName("Tournament 2")
                                             .WithDescription("Tournament 2 description")
+                                            .WithLocation("Location 2")
                                             .WithSeason(2014)
                                             .WithScheme(TournamentSchemeEnum.Two)
                                             .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('2')")
@@ -1768,6 +1853,7 @@
                                             .WithId(3)
                                             .WithName("Tournament 3")
                                             .WithDescription("Tournament 3 description")
+                                            .WithLocation("Location 3")
                                             .WithSeason(2014)
                                             .WithScheme(TournamentSchemeEnum.TwoAndHalf)
                                             .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('3')")
@@ -1782,6 +1868,7 @@
                                             .WithId(4)
                                             .WithName("Tournament 4")
                                             .WithDescription("Tournament 4 description")
+                                            .WithLocation("Location 4")
                                             .WithSeason(2014)
                                             .WithScheme(TournamentSchemeEnum.PlayOff)
                                             .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('4')")
@@ -1802,6 +1889,7 @@
                                             .WithId(5)
                                             .WithName("Tournament 5")
                                             .WithDescription("Tournament 5 description")
+                                            .WithLocation("Location 5")
                                             .WithSeason(2014)
                                             .WithScheme(TournamentSchemeEnum.TwoAndHalf)
                                             .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('5')")
@@ -1816,6 +1904,7 @@
                                             .WithId(6)
                                             .WithName("Tournament 6")
                                             .WithDescription("Tournament 6 description")
+                                            .WithLocation("Location 6")
                                             .WithSeason(2014)
                                             .WithScheme(TournamentSchemeEnum.PlayOff)
                                             .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('6')")
@@ -1884,7 +1973,8 @@
 
         private void VerifyEditTournament(Tournament tournament, Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => 
+                TournamentsAreEqual(t, tournament))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

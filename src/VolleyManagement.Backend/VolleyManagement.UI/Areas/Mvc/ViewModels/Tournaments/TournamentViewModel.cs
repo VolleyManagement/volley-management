@@ -78,6 +78,21 @@
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating where Location.
+        /// </summary>
+        /// <value>Location of tournament.</value>
+        [Display(Name = "TournamentLocation", ResourceType = typeof(ViewModelResources))]
+        [StringLength(
+            Constants.Tournament.MAX_LOCATION_LENGTH,
+            ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(
+            @"^[\S\x20]+$",
+            ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        public string Location { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
@@ -173,6 +188,17 @@
         public bool IsTransferEnabled { get; set; }
 
         /// <summary>
+        /// Gets or sets the a value which indicates if tournament is archived
+        /// </summary>
+        public bool IsArchived { get; set; }
+
+        /// <summary>
+        /// Returns a message about state of tournament
+        /// </summary>
+        public string ChangingStateMessage =>
+           $"Tournament {Name} is {(!IsArchived ? "archived" : "active")} now.";
+
+        /// <summary>
         /// Gets or sets start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
@@ -207,10 +233,13 @@
         /// <returns> View model object </returns>
         public static TournamentViewModel Map(Tournament tournament)
         {
-            var tournamentViewModel = new TournamentViewModel {
+            var tournamentViewModel = new TournamentViewModel
+            {
+                IsArchived = tournament.IsArchived,
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
+                Location = tournament.Location,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
                 Scheme = tournament.Scheme,
@@ -238,6 +267,7 @@
                 Id = Id,
                 Name = Name,
                 Description = Description,
+                Location = Location,
                 Season = Season,
                 Scheme = Scheme,
                 RegulationsLink = RegulationsLink,

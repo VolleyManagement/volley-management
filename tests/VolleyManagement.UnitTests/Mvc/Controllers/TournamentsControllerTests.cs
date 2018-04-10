@@ -754,6 +754,10 @@
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
+        #endregion
+
+        #region Archive
+
         /// <summary>
         /// Test for Archive method. Service get Id of Tournament to archive
         /// </summary>
@@ -771,7 +775,7 @@
             // Assert
             VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
         }
-
+        
         #endregion
 
         #region Details
@@ -1279,7 +1283,7 @@
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
             var sut = BuildSUT();
-
+     
             // Act
             var result = sut.Delete(TEST_TOURNAMENT_ID);
 
@@ -1347,6 +1351,49 @@
             // Assert
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Once());
             VerifyRedirect(ARCHIVED_ACTION_NAME, result);
+        }
+
+        #endregion
+
+        #region Activate
+
+        /// <summary>
+        /// Test for Activate method. Tournament with specified identifier exists.
+        /// Tournament is activated successfully and user is redirected to the Archived page.
+        /// </summary>
+        [TestMethod]
+        public void Activate_ExistingTournament_TournamentIsActivatedAndUserIsRedirected()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.Activate(TEST_TOURNAMENT_ID) as RedirectToRouteResult;
+
+            // Assert
+            VerifyActivateTournament(TEST_TOURNAMENT_ID, Times.Once());
+            VerifyRedirect(ARCHIVED_ACTION_NAME, result);
+        }
+
+        /// <summary>
+        /// Test for Activate method. Tournament with specified identifier does not exist.
+        /// Tournament is not activated successfully and HttpNotFound is returned.
+        /// </summary>
+        [TestMethod]
+        public void Activate_UnExistingTournament_HttpNotFoundResultIsReturned()
+        {
+            // Arrange
+            SetupActivateTournamentToThrowException(TEST_TOURNAMENT_ID, new ArgumentException());
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.Activate(TEST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyActivateTournament(TEST_TOURNAMENT_ID, Times.Once());
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         #endregion
@@ -1766,6 +1813,14 @@
             _tournamentServiceMock.Setup(tr => tr.Archive(tournamentId));
         }
 
+        private void SetupActivateTournament(int tournamentId)
+        {
+            _tournamentServiceMock.Setup(tr => tr.Activate(tournamentId));
+        }
+
+        private void SetupActivateTournamentToThrowException(int tournamentId, Exception ex) =>
+            _tournamentServiceMock.Setup(tr => tr.Activate(tournamentId)).Throws(ex);
+
         private void SetupGetActual(List<Tournament> tournaments)
         {
             _tournamentServiceMock.Setup(tr => tr.GetActual()).Returns(tournaments);
@@ -1885,6 +1940,11 @@
         private void VerifyDelete(int tournamentId, Times times)
         {
             _tournamentServiceMock.Verify(ts => ts.Delete(tournamentId), times);
+        }
+
+        private void VerifyActivateTournament(int tournamentId, Times times)
+        {
+            _tournamentServiceMock.Verify(ts => ts.Activate(tournamentId), times);
         }
 
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)

@@ -1,9 +1,9 @@
-﻿namespace VolleyManagement.UI.Infrastructure.IOC
-{
-    using System;
-    using SimpleInjector;
-    using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
+﻿using System;
+using SimpleInjector;
+using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
 
+namespace VolleyManagement.Crosscutting.IOC
+{
     /// <summary>
     /// Warapper over application IOC container
     /// </summary>
@@ -65,6 +65,11 @@
             InternalContainer.Register(contract, implementation, lifestyle);
 
             return this;
+        }
+
+        public T Get<T>() where T : class
+        {
+            return InternalContainer.GetInstance<T>();
         }
 
         private static Lifestyle MapLifetime(IocLifetimeEnum lifetime)

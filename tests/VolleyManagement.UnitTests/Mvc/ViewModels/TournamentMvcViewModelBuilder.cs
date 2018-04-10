@@ -30,6 +30,7 @@
                 Id = TOURNAMENT_DEFAULT_ID,
                 Name = "Name",
                 Description = "Description 1",
+                Location = "Location 1",
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
                 RegulationsLink = "http://default.com",
@@ -87,6 +88,17 @@
         public TournamentMvcViewModelBuilder WithName(string name)
         {
             _tournamentViewModel.Name = name;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets location of test tournament view model
+        /// </summary>
+        /// <param name="location">Location for test tournament view model</param>
+        /// <returns>Tournament view model builder object</returns>
+        public TournamentMvcViewModelBuilder WithLocation(string location)
+        {
+            _tournamentViewModel.Location = location;
             return this;
         }
 

@@ -26,11 +26,6 @@ namespace VolleyManagement.Data.MsSql.Context
             Database.SetInitializer(new VolleyManagementDatabaseInitializer());
         }
 
-        [Obsolete("Needed for EF to properly instantiate DB context. Not intented to be called directly")]
-        public VolleyManagementEntities()
-        {
-        }
-
         public VolleyManagementEntities(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
@@ -180,6 +175,13 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsUnicode()
                 .IsVariableLength()
                 .HasMaxLength(ValidationConstants.Tournament.MAX_DESCRIPTION_LENGTH);
+
+            // Location
+            modelBuilder.Entity<TournamentEntity>()
+                .Property(t => t.Location)
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.Tournament.MAX_LOCATION_LENGTH);
 
             // Regulations link
             modelBuilder.Entity<TournamentEntity>()

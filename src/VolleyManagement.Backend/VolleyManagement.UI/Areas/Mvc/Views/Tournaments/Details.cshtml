@@ -11,8 +11,8 @@
 
 <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
 <script>
-    var onArchiveSuccess = function() {
-        alert('Tournament was successfully archived');
+    var onSuccess = function() {
+        alert('@Model.ChangingStateMessage');
     };
 </script>
 
@@ -21,6 +21,9 @@
 
     <div class="display-label">@Html.LabelFor(model => model.Name)</div>
     <div class="display-field">@Model.Name</div>
+    
+    <div class="display-label">@Html.LabelFor(model => model.Location)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Location)</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Description)</div>
     <div class="display-field">@Html.DisplayFor(model => model.Description)</div>
@@ -75,65 +78,78 @@
 
     <div>
         @Html.ActionLink(
-            Resources.UI.TournamentViews.ShowGameResults,
-            "TournamentResults",
-            "GameResults",
-            new { tournamentId = Model.Id, tournamentName = Model.Name },
-            null)
+                 Resources.UI.TournamentViews.ShowGameResults,
+                 "TournamentResults",
+                 "GameResults",
+                 new { tournamentId = Model.Id, tournamentName = Model.Name },
+                 null)
     </div>
     <div>
         @Html.ActionLink(
-            Resources.UI.TournamentViews.ShowTournamentStandings,
-            "Standings",
-            "GameReports",
-            new { tournamentId = Model.Id, tournamentName = Model.Name },
-            null)
+                 Resources.UI.TournamentViews.ShowTournamentStandings,
+                 "Standings",
+                 "GameReports",
+                 new { tournamentId = Model.Id, tournamentName = Model.Name },
+                 null)
     </div>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ManageTeams))
     {
-    <div>
-        @Html.ActionLink(
-            Resources.UI.TournamentViews.ManageTeams,
-            "ManageTournamentTeams",
-            "Tournaments",
-            new { tournamentId = Model.Id },
-            null)
-    </div>
+        <div>
+            @Html.ActionLink(
+                 Resources.UI.TournamentViews.ManageTeams,
+                 "ManageTournamentTeams",
+                 "Tournaments",
+                 new { tournamentId = Model.Id },
+                 null)
+        </div>
     }
     <div>
         @Html.ActionLink(
-            Resources.UI.TournamentViews.Schedule,
-            "ShowSchedule",
-            new {tournamentId = Model.Id})
+                 Resources.UI.TournamentViews.Schedule,
+                 "ShowSchedule",
+                 new { tournamentId = Model.Id })
     </div>
     <div>
         @Html.ActionLink(
-           Resources.UI.TournamentViews.ApplyForTournament,
-           "ApplyForTournament",
-           new { tournamentId = Model.Id })
+                Resources.UI.TournamentViews.ApplyForTournament,
+                "ApplyForTournament",
+                new { tournamentId = Model.Id })
     </div>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Archive))
     {
-    <div>
-        @Ajax.ActionLink(
-                "Archive Tournament",
-                "Archive",
-                "Tournaments",
-                new {
-                    tournamentId = Model.Id
-                },
-                new AjaxOptions {
-                    HttpMethod = "POST",
-                    OnSuccess = "onArchiveSuccess"
-                }
-                )
-    </div>
+        <div>
+            @if (!Model.IsArchived)
+            {
+                @Ajax.ActionLink(
+                    "Archive Tournament",
+                    "Archive",
+                    "Tournaments",
+                    new
+                    {
+                        tournamentId = Model.Id
+                    },
+                    new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        OnSuccess = "onSuccess",
+                    }
+                    )
+            }
+            else
+            {
+                @Html.ActionLink(
+                    "Activate",
+                    "Activate",
+                    new { id = Model.Id }
+                    )
+            }
+        </div>
     }
 </fieldset>
 <p>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Edit))
     {
-    @Html.ActionLink(Resources.UI.TournamentViews.Edit, "Edit", new { id = Model.Id })  @:|
+        @Html.ActionLink(Resources.UI.TournamentViews.Edit, "Edit", new { id = Model.Id })  @:|
     }
     @Html.ActionLink(Resources.UI.TournamentViews.BackToList, "Index")
 </p>

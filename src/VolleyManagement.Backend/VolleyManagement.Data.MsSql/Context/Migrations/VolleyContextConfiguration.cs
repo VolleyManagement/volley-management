@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql.Context.Migrations
+﻿namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System.Data.Entity.Migrations;
 

@@ -24,6 +24,7 @@
                 Id = 1,
                 Name = "Name",
                 Description = "Description 1",
+                Location = "Location 1",
                 Season = 2014,
                 Scheme = "2",
                 RegulationsLink = "http://default.com"
@@ -60,6 +61,17 @@
         public TournamentViewModelBuilder WithDescription(string description)
         {
             _tournamentViewModel.Description = description;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets location of test tournament view model
+        /// </summary>
+        /// <param name="location">Location for test tournament view model</param>
+        /// <returns>Tournament view model builder object</returns>
+        public TournamentViewModelBuilder WithLocation(string location)
+        {
+            _tournamentViewModel.Location = location;
             return this;
         }
 

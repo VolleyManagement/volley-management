@@ -34,6 +34,7 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
                 Id = TOURNAMENT_DEFAULT_ID,
                 Name = "Name",
                 Description = "Description 1",
+                Location = "Location 1",
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
                 RegulationsLink = "http://default.com",
@@ -71,9 +72,9 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
             };
         }
 
-        public TournamentBuilder WithArchiveParameter(bool isArchive)
+        public TournamentBuilder WithArchivedParameter(bool isArchived)
         {
-            _tournament.IsArchived = isArchive;
+            _tournament.IsArchived = isArchived;
             return this;
         }
 
@@ -107,6 +108,17 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
         public TournamentBuilder WithDescription(string description)
         {
             _tournament.Description = description;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets location of test tournament
+        /// </summary>
+        /// <param name="location">Location for test tournament</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithLocation(string location)
+        {
+            _tournament.Location = location;
             return this;
         }
 

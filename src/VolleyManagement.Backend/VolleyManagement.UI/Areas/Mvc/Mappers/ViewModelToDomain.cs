@@ -21,6 +21,7 @@
                 Id = tournamentViewModel.Id,
                 Name = tournamentViewModel.Name,
                 Description = tournamentViewModel.Description,
+                Location = tournamentViewModel.Location,
                 Season = tournamentViewModel.Season,
                 Scheme = tournamentViewModel.Scheme,
                 RegulationsLink = tournamentViewModel.RegulationsLink,

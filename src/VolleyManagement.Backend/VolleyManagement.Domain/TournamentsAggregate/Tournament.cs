@@ -36,6 +36,12 @@
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating where Location.
+        /// </summary>
+        /// <value>Location of tournament.</value>
+        public string Location { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>

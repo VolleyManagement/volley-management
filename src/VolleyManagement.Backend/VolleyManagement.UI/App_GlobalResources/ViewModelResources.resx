@@ -255,6 +255,9 @@
   <data name="TournamentDescription" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="TournamentLocation" xml:space="preserve">
+    <value>Location</value>
+  </data>
   <data name="TournamentName" xml:space="preserve">
     <value>Tournament name</value>
   </data>

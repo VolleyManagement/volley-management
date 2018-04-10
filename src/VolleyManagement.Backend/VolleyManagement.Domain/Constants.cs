@@ -41,6 +41,8 @@
 
             public const short MAXIMAL_SEASON_YEAR = 2155;
 
+            public const int MAX_LOCATION_LENGTH = 50;
+
             /// <summary>
             /// Constant defines an amount of years after tournament's end so it becomes old
             /// </summary>

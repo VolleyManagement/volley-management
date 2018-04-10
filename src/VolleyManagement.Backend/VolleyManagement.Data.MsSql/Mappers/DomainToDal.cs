@@ -70,9 +70,7 @@
         /// <param name="from">Team Domain model</param>
         public static void Map(TeamEntity to, Team from)
         {
-            to.Id = from.Id;
             to.Name = from.Name;
-            to.CaptainId = from.Captain.Id;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
         }

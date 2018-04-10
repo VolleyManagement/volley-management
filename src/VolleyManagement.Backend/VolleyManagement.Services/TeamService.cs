@@ -127,11 +127,15 @@
                 VerifyExistingTeamOrThrow(existTeam);
             }
 
-            ValidateTeam(teamToEdit);
+            var newTeam = Get(teamId);
+            newTeam.Name = teamToEdit.Name;
+            newTeam.Achievements = teamToEdit.Achievements;
+            newTeam.Coach = teamToEdit.Coach;
+            ValidateTeam(newTeam);
 
             try
             {
-                _teamRepository.Update(teamToEdit);
+                _teamRepository.Update(newTeam);
             }
             catch (ConcurrencyException ex)
             {
@@ -182,6 +186,21 @@
         public Player GetTeamCaptain(Team team)
         {
             return GetPlayerById(team.Captain.Id);
+        }
+
+        /// <summary>
+        /// Change captain for existing team.
+        /// </summary>
+        /// <param name="team">team for editing.</param>
+        /// <param name="captainId">Player who should become captain.</param>
+        public void ChangeCaptain(TeamId team, PlayerId captainId)
+        {
+            var teamToEdit = Get(team.Id);
+            VerifyExistingTeamOrThrow(teamToEdit);
+
+            teamToEdit.SetCaptain(captainId);
+            Edit(teamToEdit);
+
         }
 
         /// <summary>
@@ -280,3 +299,6 @@
         }
     }
 }
+
+
+

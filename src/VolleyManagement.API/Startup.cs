@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Integration.WebApi;
 using SimpleInjector.Lifestyles;
 using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using VolleyManagement.API.Infrastructure;
 using VolleyManagement.Data.MsSql.Infrastructure;
@@ -37,19 +39,31 @@ namespace VolleyManagement.API
             IntegrateSimpleInjector(services);
 
             services.AddIdentity<IdentityUser, IdentityRole>();
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options =>
-            {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.SlidingExpiration = true;
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+                AddCookie("VMCookie",
+                options =>
+                {
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                    options.Cookie.Name = "VMCookie";
+                    options.Cookie.HttpOnly = false;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.Cookie.Path = "/";
+                    options.Events.OnRedirectToLogin = (context) =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+                }
+            );
+
+            services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+
             app.UseAuthentication();
 
             if (env.IsDevelopment())
@@ -57,7 +71,6 @@ namespace VolleyManagement.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             app.UseMvcWithDefaultRoute();
         }
 

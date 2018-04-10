@@ -1,6 +1,4 @@
-﻿using WebGrease.Css.Extensions;
-
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +10,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
-    using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
     using ViewModels.Teams;

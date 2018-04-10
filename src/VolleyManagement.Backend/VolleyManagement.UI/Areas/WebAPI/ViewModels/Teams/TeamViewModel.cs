@@ -1,9 +1,11 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Teams
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Domain;
     using Domain.TeamsAggregate;
+    using Domain.PlayersAggregate;
     using Players;
     using Resources.UI;
 
@@ -55,7 +57,7 @@
         /// <summary>
         /// Gets or sets the team roster.
         /// </summary>
-        public IQueryable<PlayerViewModel> Roster { get; set; }
+        public IEnumerable<PlayerViewModel> Roster { get; set; }
 
         #region Factory Methods
 
@@ -76,7 +78,7 @@
                 Name = team.Name,
                 Coach = team.Coach,
                 Achievements = team.Achievements,
-                CaptainId = team.Captain
+                CaptainId = team.Captain.Id
             };
 
             return teamViewModel;
@@ -88,12 +90,28 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            return new Team {
-                Id = Id,
-                Name = Name,
-                Coach = Coach,
-                Achievements = Achievements,
-                Captain = CaptainId
+            return new Team(Id,
+                Name,
+                Coach,
+                Achievements,
+                new PlayerId(CaptainId),
+                Roster == null ? new List<PlayerId>() :
+                    Roster.Select(x => new PlayerId(x.Id)));
+        }
+
+        /// <summary>
+        /// Maps presentation entity to CreateTeamDto
+        /// </summary>
+        /// <returns> Domain object </returns>
+        public CreateTeamDto ToCreateTeamDto()
+        {
+            var team = ToDomain();
+            return new CreateTeamDto {
+                Name = team.Name,
+                Achievements = team.Achievements,
+                Captain = team.Captain,
+                Coach = team.Coach,
+                Roster = team.Roster
             };
         }
         #endregion

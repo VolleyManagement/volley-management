@@ -9,7 +9,6 @@ namespace VolleyManagement.API.Controllers
 {
     [Produces("application/json")]
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
-    [AllowAnonymous]
     public class TournamentsController : Controller
     {
         private readonly ITournamentService _tournamentService;
@@ -21,7 +20,6 @@ namespace VolleyManagement.API.Controllers
 
         // GET: api/Tournaments
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        [AllowAnonymous]
         public IEnumerable<TournamentViewModel> Get()
         {
             return _tournamentService.Get().Select(TournamentViewModel.Map);

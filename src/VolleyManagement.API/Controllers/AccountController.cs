@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using VolleyManagement.API.Model;
 using VolleyManagement.Contracts;
 using VolleyManagement.Contracts.Authentication;
@@ -89,7 +90,7 @@ namespace VolleyManagement.API.Controllers
             }
 
             ident.AddClaims(
-                new List<Claim>()
+                new List<Claim>() 
                 {
                     new Claim(nameof(validatedLoginInfoFromGoogle.Name), validatedLoginInfoFromGoogle.Email),
                     new Claim(nameof(validatedLoginInfoFromGoogle.FamilyName), validatedLoginInfoFromGoogle.FamilyName),
@@ -97,15 +98,11 @@ namespace VolleyManagement.API.Controllers
                 });
 
 
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            await HttpContext.SignOutAsync("VMCookie");
+            await HttpContext.SignInAsync("VMCookie",
                 new ClaimsPrincipal(ident),
-                new AuthenticationProperties 
-                {
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
-                    IsPersistent = false,
-                    AllowRefresh = false
-                });
+                new AuthenticationProperties { IsPersistent = false }
+            );
 
             // TODO Commented cause receive errors here. Need to debug.
             //AddToActive(userInSystem.Id);
@@ -120,7 +117,6 @@ namespace VolleyManagement.API.Controllers
         /// </summary>
         /// <param name="returnUrl">URL to return</param>
         /// <returns>Action result</returns>
-        [AllowAnonymous]
         public async Task<IActionResult> Logout(string returnUrl)
         {
             // TODO Commented cause receive errors here. Need to debug.

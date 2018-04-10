@@ -195,11 +195,11 @@
         /// <param name="captainId">Player who should become captain.</param>
         public void ChangeCaptain(TeamId team, PlayerId captainId)
         {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
             var teamToEdit = Get(team.Id);
-            VerifyExistingTeamOrThrow(teamToEdit);
 
             teamToEdit.SetCaptain(captainId);
-            Edit(teamToEdit);
+            _teamRepository.Update(teamToEdit);
 
         }
 

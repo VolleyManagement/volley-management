@@ -14,7 +14,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         private string _name;
         private string _coach;
         private string _achievements;
-        private ICollection<PlayerId> _roster;
+        private ICollection<PlayerId> _roster = new List<PlayerId>();
 
         /// <summary>
         /// Initializes a new instance of the Team

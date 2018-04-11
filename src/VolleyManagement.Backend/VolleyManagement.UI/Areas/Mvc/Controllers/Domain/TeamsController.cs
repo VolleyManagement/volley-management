@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -104,9 +106,16 @@
                     var players = _playerService.CreateBulk(roster);
 
                     var team = teamViewModel.ToCreateTeamDto();
-                    team.Roster = players.Select(x => new PlayerId(x.Id));
-
+                    teamViewModel.Roster = players.Select(x =>
+                        new PlayerNameViewModel {
+                            Id = x.Id,
+                            FirstName = x.FirstName,
+                            LastName = x.LastName })
+                            .ToList();
+                     
                     var createdTeam = _teamService.Create(team);
+
+                    _teamService.AddPlayers(new TeamId(createdTeam.Id), players.Select(x => new PlayerId(x.Id)));
 
                     teamViewModel.Id = createdTeam.Id;
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);

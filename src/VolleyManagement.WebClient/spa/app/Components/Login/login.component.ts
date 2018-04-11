@@ -1,6 +1,7 @@
 import { Component, ElementRef, AfterViewInit, Output, NgZone } from '@angular/core';
 import { GoogleUserInfo } from '../../Models/User/GoogleUserInfo';
 import { GoogleLoginService } from '../../Services/googleLogin.service';
+import { environment } from '../../../environments/environment';
 
 declare const gapi: any;
 
@@ -11,8 +12,10 @@ declare const gapi: any;
 })
 export class LoginComponent implements AfterViewInit {
 
-  private clientId = '390650442273-o866vham0ds02m9pb84tvpfkfo69g4bd.apps.googleusercontent.com';
+  private clientId = environment.googleClientId;
   public token: string;
+  public userName: string;
+
   private scope = [
     'profile',
     'email'
@@ -26,8 +29,7 @@ export class LoginComponent implements AfterViewInit {
       this.auth2 = gapi.auth2.init({
         client_id: this.clientId,
         cookiepolicy: 'single_host_origin',
-        scope: this.scope,
-        redirect_uri: 'http://localhost:49940/api/Account/TokenSignin'
+        scope: this.scope
       });
       this.attachSignin(this.element.nativeElement.firstChild);
     });
@@ -43,6 +45,7 @@ export class LoginComponent implements AfterViewInit {
           if (isLogined) {
             this.zone.run(() => {
               this.token = this.googleLoginService.getToken();
+              this.userName = this.googleLoginService.getUserName();
             });
           }
         });

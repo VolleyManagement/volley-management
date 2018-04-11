@@ -16,31 +16,30 @@ export class GoogleLoginService {
         return this.token ? this.token : '';
     }
 
-    getGoogleUserInfo(googleUser: any): GoogleUserInfo {
-        const token = googleUser.getAuthResponse().id_token;
-        const profile = googleUser.getBasicProfile();
+    getUserName(): string {
+        return this.userFullName ? this.userFullName : '';
+    }
 
-        const user = {
+    getGoogleUserInfo(googleUser: any): GoogleUserInfo {
+        return {
             AccessToken: googleUser.getAuthResponse().access_token,
             ExpiresAt: googleUser.getAuthResponse().expires_at,
             ExpiresIn: googleUser.getAuthResponse().expires_in,
-            IdToken: token,
+            IdToken: googleUser.getAuthResponse().id_token,
             Code: googleUser.getAuthResponse().code,
-            ID: profile.getId(),
-            Name: profile.getName(),
-            ImageURL: profile.getImageUrl(),
-            Email: profile.getEmail()
+            ID: googleUser.getBasicProfile().getId(),
+            Name: googleUser.getBasicProfile().getName(),
+            ImageURL: googleUser.getBasicProfile().getImageUrl(),
+            Email: googleUser.getBasicProfile().getEmail()
         };
-
-        return user;
     }
 
     validateGoogleToken(user: GoogleUserInfo): Promise<Response> {
         const url = 'https://localhost:44370/api/Account/TokenSignin';
         return new Promise((resolve, reject) => {
-            const enco: any = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+            const encoding: any = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
             const body: any = new HttpParams().set('user', JSON.stringify(user));
-            this.http.post(url, body.toString(), { headers: enco, withCredentials: true })
+            this.http.post(url, body.toString(), { headers: encoding, withCredentials: true })
                 .subscribe(data => {
                     resolve(data as Response);
                 }, error => {
@@ -48,7 +47,6 @@ export class GoogleLoginService {
                 });
         });
     }
-
 
     handleUserInfo(response): boolean {
         if (response) {
@@ -63,7 +61,6 @@ export class GoogleLoginService {
         return new Promise((resolve, reject) => {
             const user = this.getGoogleUserInfo(googleUser);
             const validationResult = this.validateGoogleToken(user);
-            const self = this;
             validationResult
                 .then((r) => {
                     resolve(this.handleUserInfo(r));

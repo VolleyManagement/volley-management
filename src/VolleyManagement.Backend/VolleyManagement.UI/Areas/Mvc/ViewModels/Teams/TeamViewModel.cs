@@ -69,7 +69,7 @@
         /// Gets or sets the roster of the team
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
-        public ICollection<PlayerNameViewModel> Roster { get; set; }
+        public ICollection<PlayerNameViewModel> Roster { get; set; } = new List<PlayerNameViewModel>();
 
         /// <summary>
         /// Gets or sets the photo of the team
@@ -122,8 +122,7 @@
                 Coach,
                 Achievements,
                 new PlayerId(Captain.Id),
-                Roster == null ? new List<PlayerId>() :
-                    Roster.Select(x => new PlayerId(x.Id)));
+                Roster.Select(x => new PlayerId(x.Id)));
         }
 
         /// <summary>

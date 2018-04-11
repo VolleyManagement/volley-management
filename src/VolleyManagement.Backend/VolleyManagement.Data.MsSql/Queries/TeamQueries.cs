@@ -53,8 +53,8 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public Team Execute(FindByIdCriteria criteria)
         {
-            return _unitOfWork.Context.Teams
-                .Where(t => t.Id == criteria.Id)
+            var teams = _unitOfWork.Context.Teams.Where(t => t.Id == criteria.Id).ToList();
+            return teams
                 .Select(t => GetTeamMapping(t))
                 .SingleOrDefault();
         }

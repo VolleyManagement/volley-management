@@ -198,10 +198,13 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
             var teamToEdit = Get(team.Id);
+            if (teamToEdit == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
 
             teamToEdit.SetCaptain(captainId);
             _teamRepository.Update(teamToEdit);
-
         }
 
         /// <summary>

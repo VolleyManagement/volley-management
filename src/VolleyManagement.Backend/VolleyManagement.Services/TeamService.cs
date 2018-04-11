@@ -100,6 +100,7 @@
             // Check if captain in teamToCreate is captain of another team
             var existTeam = GetPlayerLedTeam(captain.Id);
             VerifyExistingTeamOrThrow(existTeam);
+            ValidateTeam(existTeam);
 
             return _teamRepository.Add(teamToCreate);
         }

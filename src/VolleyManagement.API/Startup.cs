@@ -11,13 +11,11 @@ using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Integration.WebApi;
 using SimpleInjector.Lifestyles;
-using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using VolleyManagement.API.Infrastructure;
 using VolleyManagement.Data.MsSql.Infrastructure;
 using VolleyManagement.Services.Infrastructure;
-using VolleyManagement.UI.Infrastructure.IOC;
 
 namespace VolleyManagement.API
 {

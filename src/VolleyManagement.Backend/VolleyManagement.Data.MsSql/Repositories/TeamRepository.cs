@@ -111,10 +111,8 @@ namespace VolleyManagement.Data.MsSql.Repositories
 
         private void AddPlayers(TeamEntity team, IEnumerable<int> playersToAdd)
         {
-            foreach (var playerId in playersToAdd)
-            {
-                team.Players.Add(_unitOfWork.Context.Players.First(p => p.Id == playerId));
-            }
+            var entitiesToAdd = _unitOfWork.Context.Players.Where(p => playersToAdd.Contains(p.Id));
+            team.Players.ToList().AddRange(entitiesToAdd);
         }
     }
 }

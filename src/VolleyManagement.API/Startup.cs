@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,7 @@ using SimpleInjector.Lifestyles;
 using System.Threading.Tasks;
 using System.Web.Http;
 using VolleyManagement.API.Infrastructure;
+using VolleyManagement.Crosscutting.IOC;
 using VolleyManagement.Data.MsSql.Infrastructure;
 using VolleyManagement.Services.Infrastructure;
 
@@ -21,6 +23,8 @@ namespace VolleyManagement.API
 {
     public class Startup
     {
+        private const string COOKIE_NAME = "VMCookie";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,21 +42,7 @@ namespace VolleyManagement.API
 
             services.AddIdentity<IdentityUser, IdentityRole>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
-                AddCookie("VMCookie",
-                options =>
-                {
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                    options.Cookie.Name = "VMCookie";
-                    options.Cookie.HttpOnly = false;
-                    options.Cookie.SameSite = SameSiteMode.Lax;
-                    options.Cookie.Path = "/";
-                    options.Events.OnRedirectToLogin = (context) =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    };
-                }
-            );
+                AddCookie(COOKIE_NAME, ConfigureCookies());
 
             services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
         }
@@ -72,7 +62,10 @@ namespace VolleyManagement.API
             app.UseMvcWithDefaultRoute();
         }
 
-
+        /// <summary>
+        /// Integrates SimpleInjector
+        /// </summary>
+        /// <param name="services">Interface <see cref="IServiceCollection"/></param>
         private void IntegrateSimpleInjector(IServiceCollection services)
         {
             var ioc = new SimpleInjectorContainer();
@@ -96,6 +89,27 @@ namespace VolleyManagement.API
 
             services.EnableSimpleInjectorCrossWiring(ioc.InternalContainer);
             services.UseSimpleInjectorAspNetRequestScoping(ioc.InternalContainer);
+        }
+
+        /// <summary>
+        /// Configure cookies
+        /// </summary>
+        /// <returns>Instance of <see cref="CookieAuthenticationOptions"/></returns>
+        private static Action<CookieAuthenticationOptions> ConfigureCookies()
+        {
+            return options =>
+            {
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                options.Cookie.Name = COOKIE_NAME;
+                options.Cookie.HttpOnly = false;
+                options.Cookie.SameSite = SameSiteMode.Lax;
+                options.Cookie.Path = "/";
+                options.Events.OnRedirectToLogin = (context) =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            };
         }
     }
 }

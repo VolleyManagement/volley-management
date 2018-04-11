@@ -100,6 +100,7 @@
             // Check if captain in teamToCreate is captain of another team
             var existTeam = GetPlayerLedTeam(captain.Id);
             VerifyExistingTeamOrThrow(existTeam);
+            ValidateTeam(existTeam);
 
             return _teamRepository.Add(teamToCreate);
         }
@@ -153,11 +154,15 @@
                 VerifyExistingTeamOrThrow(existTeam);
             }
 
-            ValidateTeam(teamToEdit);
+            var newTeam = Get(teamId);
+            newTeam.Name = teamToEdit.Name;
+            newTeam.Achievements = teamToEdit.Achievements;
+            newTeam.Coach = teamToEdit.Coach;
+            ValidateTeam(newTeam);
 
             try
             {
-                _teamRepository.Update(teamToEdit);
+                _teamRepository.Update(newTeam);
             }
             catch (ConcurrencyException ex)
             {
@@ -208,6 +213,24 @@
         public Player GetTeamCaptain(Team team)
         {
             return GetPlayerById(team.Captain.Id);
+        }
+
+        /// <summary>
+        /// Change captain for existing team.
+        /// </summary>
+        /// <param name="team">team for editing.</param>
+        /// <param name="captainId">Player who should become captain.</param>
+        public void ChangeCaptain(TeamId team, PlayerId captainId)
+        {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
+            var teamToEdit = Get(team.Id);
+            if (teamToEdit == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+
+            teamToEdit.SetCaptain(captainId);
+            _teamRepository.Update(teamToEdit);
         }
 
         /// <summary>

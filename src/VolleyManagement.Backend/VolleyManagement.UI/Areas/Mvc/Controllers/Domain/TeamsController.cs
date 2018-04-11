@@ -110,9 +110,10 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                         new PlayerNameViewModel {
                             Id = x.Id,
                             FirstName = x.FirstName,
-                            LastName = x.LastName })
+                            LastName = x.LastName
+                        })
                             .ToList();
-                     
+
                     var createdTeam = _teamService.Create(team);
 
                     _teamService.AddPlayers(new TeamId(createdTeam.Id), players.Select(x => new PlayerId(x.Id)));
@@ -176,36 +177,72 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 try
                 {
                     var team = _teamService.Get(teamViewModel.Id);
-                    var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.Roster
-                        .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
-                        .Select(x => new PlayerId(x.Id));
 
-                    var oldRoster = team.Roster.Select(x => x.Id);
+                    var playersInTeamDb = team.Roster.Select(x => x.Id);
 
-                    var newRoster = teamViewModel.Roster
-                        .Where(x => x.Id != 0 && _playerService.GetPlayerTeam(_playerService.Get(x.Id)) == null)
-                        .Select(x => x.Id);
+                    var playersInTeamViewModel = teamViewModel.Roster.Select(x => x.Id);
 
-                    var newRosterIdToRemove = oldRoster.Except(newRoster).Select(x => new PlayerId(x));
-                    var newRosterIdToAdd = newRoster.Except(oldRoster).Select(x => new PlayerId(x));
+                    var commonPlayers = playersInTeamDb.Intersect(playersInTeamViewModel).Count();
+
+                    var playersStillSame = commonPlayers == teamViewModel.Roster.Count()&& commonPlayers== playersInTeamDb.Count();
 
                     var domainTeam = teamViewModel.ToDomain();
 
-                    _teamService.AddPlayers(new TeamId(domainTeam.Id), playersToAddToTeam.Concat(newRosterIdToAdd));
-
-                    var captainId = domainTeam.Roster.First().Id;
-
-                    if (team.Captain.Id != teamViewModel.Captain.Id)
+                    if (!playersStillSame)
                     {
-                        if (teamViewModel.Roster.FirstOrDefault() != null)
+                        var registeredPlayers = teamViewModel.Roster
+                            .Where(x => x.Id != 0)
+                            .ToList();
+
+                        var playersTeams = registeredPlayers
+                            .Select(x => _playerService.GetPlayerTeam(_playerService.Get(x.Id)))
+                            .ToList();
+
+                        if (playersTeams.Any(x => x != null && x.Id != team.Id))
                         {
-                            captainId = teamViewModel.Roster.First().Id;
+                            throw new ArgumentException("Player can not play in two teams");
+                        }
+
+                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.Roster
+                            .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
+                            .Select(x => new PlayerId(x.Id))
+                            .ToList();
+
+                        var currentRoster = new List<PlayerId>();
+
+                        var limit = registeredPlayers.Count;
+                        for (var i = 0; i < limit; i++)
+                        {
+                            var player = new PlayerId(registeredPlayers[i].Id);
+                            if (playersTeams[i] == null)
+                            {
+                                playersToAddToTeam.Add(player);
+                            }
+                            else
+                            {
+                                currentRoster.Add(player);
+                            }
+                        }
+
+                        var playersToRemove = playersInTeamDb
+                            .Except(currentRoster.Select(x => x.Id))
+                            .Select(x => new PlayerId(x));
+
+                        _teamService.RemovePlayers(new TeamId(domainTeam.Id), playersToRemove);
+
+                        _teamService.AddPlayers(new TeamId(domainTeam.Id), playersToAddToTeam);
+
+                        var captainId = domainTeam.Roster.First().Id;
+
+                        if (team.Captain.Id != teamViewModel.Captain.Id)
+                        {
+                            if (teamViewModel.Roster.FirstOrDefault() != null)
+                            {
+                                captainId = teamViewModel.Roster.First().Id;
+                            }
+                            _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
                         }
                     }
-
-                    _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
-
-                    _teamService.RemovePlayers(new TeamId(team.Id), newRosterIdToRemove);
 
                     _teamService.Edit(domainTeam);
 

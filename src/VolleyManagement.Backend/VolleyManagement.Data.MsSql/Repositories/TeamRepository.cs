@@ -103,7 +103,7 @@ namespace VolleyManagement.Data.MsSql.Repositories
 
         private static void RemovePlayers(TeamEntity team, IEnumerable<int> playersToRemove)
         {
-            foreach (var playerId in playersToRemove)
+            foreach (var playerId in playersToRemove.ToList())
             {
                 team.Players.Remove(team.Players.First(p => p.Id == playerId));
             }

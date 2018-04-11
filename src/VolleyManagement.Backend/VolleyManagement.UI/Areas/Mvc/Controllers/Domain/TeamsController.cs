@@ -182,9 +182,11 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
                     var playersInTeamViewModel = teamViewModel.Roster.Select(x => x.Id);
 
-                    var commonPlayers = playersInTeamDb.Intersect(playersInTeamViewModel).Count();
+                    //var commonPlayers = playersInTeamDb.Intersect(playersInTeamViewModel).Count();
 
-                    var playersStillSame = commonPlayers == teamViewModel.Roster.Count()&& commonPlayers== playersInTeamDb.Count();
+                    //var playersStillSame = commonPlayers == teamViewModel.Roster.Count()&& commonPlayers== playersInTeamDb.Count();
+
+                    var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModel);
 
                     var domainTeam = teamViewModel.ToDomain();
 

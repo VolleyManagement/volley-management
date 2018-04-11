@@ -114,6 +114,12 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
             var changedTeam = Get(team.Id);
+
+            if (changedTeam == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+
             changedTeam.AddPlayers(players);
             _teamRepository.Update(changedTeam);
         }
@@ -127,6 +133,12 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
             var changedTeam = Get(team.Id);
+
+            if (changedTeam == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+
             changedTeam.RemovePlayers(players);
             _teamRepository.Update(changedTeam);
         }

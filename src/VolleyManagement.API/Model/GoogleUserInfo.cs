@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.API.Model
 {
     /// <summary>
-    /// Contains user info provided by google auth
+    /// Contains user info provided by google auth to UI
     /// </summary>
     public class GoogleUserInfo
     {

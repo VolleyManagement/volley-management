@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace VolleyManagement.Crosscutting.Contracts.Providers
+﻿namespace VolleyManagement.Crosscutting.Contracts.Providers
 {
+    using Microsoft.Extensions.Configuration;
+
     /// <summary>
     /// Provides configurations for external auth secrets
     /// </summary>

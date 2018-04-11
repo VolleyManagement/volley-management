@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using VolleyManagement.API.Infrastructure;
 using VolleyManagement.Crosscutting.IOC;
+using VolleyManagement.Data.MsSql.Context;
 using VolleyManagement.Data.MsSql.Infrastructure;
 using VolleyManagement.Services.Infrastructure;
 
@@ -28,6 +29,7 @@ namespace VolleyManagement.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            InitializeConnectionString();
         }
 
         public IConfiguration Configuration { get; }
@@ -110,6 +112,17 @@ namespace VolleyManagement.API
                     return Task.CompletedTask;
                 };
             };
+        }
+
+        private void InitializeConnectionString()
+        {
+            VolleyManagementDbContextFactory.ConnectionNameOrString = GetVolleyManagementEntitiesConnectionString();
+        }
+
+        private string GetVolleyManagementEntitiesConnectionString()
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json", true).Build();
+            return builder.GetConnectionString("VolleyManagementEntities");
         }
     }
 }

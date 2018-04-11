@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -10,8 +12,8 @@
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
-    using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using ViewModels.Teams;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
@@ -103,17 +105,19 @@
 
                     var players = _playerService.CreateBulk(roster);
 
-                    var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.Captain = players.First().Id;
+                    var team = teamViewModel.ToCreateTeamDto();
+                    teamViewModel.Roster = players.Select(x =>
+                        new PlayerNameViewModel {
+                            Id = x.Id,
+                            FirstName = x.FirstName,
+                            LastName = x.LastName })
+                            .ToList();
+                     
+                    var createdTeam = _teamService.Create(team);
 
-                    _teamService.Create(domainTeam);
+                    _teamService.AddPlayers(new TeamId(createdTeam.Id), players.Select(x => new PlayerId(x.Id)));
 
-                    if (teamViewModel.Roster != null)
-                    {
-                        _teamService.UpdateRosterTeamId(players, domainTeam.Id);
-                    }
-
-                    teamViewModel.Id = domainTeam.Id;
+                    teamViewModel.Id = createdTeam.Id;
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
@@ -146,7 +150,7 @@
                 return HttpNotFound();
             }
 
-            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(new TeamId(id)));
 
             viewModel.PhotoPath = PhotoPath(id);
 
@@ -171,21 +175,40 @@
             {
                 try
                 {
-                    var roster = teamViewModel.Roster.Select(t => t.ToCreatePlayerDto()).ToList();
+                    var team = _teamService.Get(teamViewModel.Id);
+                    var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.Roster
+                        .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
+                        .Select(x => new PlayerId(x.Id));
 
-                    var players = _playerService.CreateBulk(roster);
+                    var oldRoster = team.Roster.Select(x => x.Id);
+
+                    var newRoster = teamViewModel.Roster
+                        .Where(x => x.Id != 0 && _playerService.GetPlayerTeam(_playerService.Get(x.Id)) == null)
+                        .Select(x => x.Id);
+
+                    var newRosterIdToRemove = oldRoster.Except(newRoster).Select(x => new PlayerId(x));
+                    var newRosterIdToAdd = newRoster.Except(oldRoster).Select(x => new PlayerId(x));
 
                     var domainTeam = teamViewModel.ToDomain();
-                    domainTeam.Captain = players.First().Id;
+
+                    _teamService.AddPlayers(new TeamId(domainTeam.Id), playersToAddToTeam.Concat(newRosterIdToAdd));
+
+                    var captainId = domainTeam.Roster.First().Id;
+
+                    if (team.Captain.Id != teamViewModel.Captain.Id)
+                    {
+                        if (teamViewModel.Roster.FirstOrDefault() != null)
+                        {
+                            captainId = teamViewModel.Roster.First().Id;
+                        }
+                    }
+
+                    _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
+
+                    _teamService.RemovePlayers(new TeamId(team.Id), newRosterIdToRemove);
 
                     _teamService.Edit(domainTeam);
 
-                    if (teamViewModel.Roster != null)
-                    {
-                        _teamService.UpdateRosterTeamId(players, domainTeam.Id);
-                    }
-
-                    teamViewModel.Id = domainTeam.Id;
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
@@ -217,7 +240,7 @@
 
             try
             {
-                _teamService.Delete(id);
+                _teamService.Delete(new TeamId(id));
                 result = new TeamOperationResultViewModel {
                     Message = TEAM_DELETED_SUCCESSFULLY_DESCRIPTION,
                     OperationSuccessful = true
@@ -258,7 +281,7 @@
                 return HttpNotFound();
             }
 
-            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(new TeamId(id)));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, HttpContext.Request.RawUrl);
             refererViewModel.Model.PhotoPath = PhotoPath(id);
             return View(refererViewModel);

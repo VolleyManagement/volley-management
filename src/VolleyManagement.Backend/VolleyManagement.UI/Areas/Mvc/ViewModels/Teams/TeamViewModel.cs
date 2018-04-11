@@ -69,7 +69,7 @@
         /// Gets or sets the roster of the team
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
-        public ICollection<PlayerNameViewModel> Roster { get; set; }
+        public ICollection<PlayerNameViewModel> Roster { get; set; } = new List<PlayerNameViewModel>();
 
         /// <summary>
         /// Gets or sets the photo of the team
@@ -117,12 +117,28 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            return new Team(Id, 
+            return new Team(Id,
                 Name,
                 Coach,
                 Achievements,
                 new PlayerId(Captain.Id),
                 Roster.Select(x => new PlayerId(x.Id)));
+        }
+
+        /// <summary>
+        /// Maps presentation entity to CreateTeamDto
+        /// </summary>
+        /// <returns> Domain object </returns>
+        public CreateTeamDto ToCreateTeamDto()
+        {
+            var team = ToDomain();
+            return new CreateTeamDto {
+                Name = team.Name,
+                Achievements = team.Achievements,
+                Captain = team.Captain,
+                Coach = team.Coach,
+                Roster = team.Roster
+            };
         }
 
         #endregion

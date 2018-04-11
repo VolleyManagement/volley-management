@@ -1,48 +1,46 @@
-﻿using Google.Apis.Auth;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
-using VolleyManagement.API.Model;
-using VolleyManagement.Contracts;
-using VolleyManagement.Contracts.Authentication;
-using VolleyManagement.Contracts.Authentication.Models;
-using VolleyManagement.Contracts.Authorization;
-using VolleyManagement.Crosscutting.Contracts.Providers;
-
-namespace VolleyManagement.API.Controllers
+﻿namespace VolleyManagement.API.Controllers
 {
+    using Google.Apis.Auth;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Model;
+    using Contracts;
+    using Contracts.Authentication;
+    using Contracts.Authentication.Models;
+    using Crosscutting.Contracts.Providers;
+
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
+        private const string GOOGLE = "Google";
+
         private readonly IVolleyUserManager<UserModel> _userManager;
         private readonly IUserService _userService;
-        private readonly ICacheProvider _cacheProvider;
-        private readonly ICurrentUserService _currentUserService;
         private readonly ISecretsProvider _configuration;
 
         public AccountController(
             IVolleyUserManager<UserModel> userManager,
             IUserService userService,
-            ICacheProvider cacheProvider,
-            ICurrentUserService currentUserService,
             ISecretsProvider configuration)
         {
             _userManager = userManager;
             _userService = userService;
-            _cacheProvider = cacheProvider;
-            _currentUserService = currentUserService;
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Login user
+        /// </summary>
+        /// <param name="user">json with user info provided by UI</param>
+        /// <returns>Action result</returns>
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> TokenSignin(string user)
@@ -58,8 +56,7 @@ namespace VolleyManagement.API.Controllers
 
             if (userInSystem == null)
             {
-                userInSystem = new UserModel 
-                {
+                userInSystem = new UserModel {
                     Email = validatedLoginInfoFromGoogle.Email,
                     UserName = validatedLoginInfoFromGoogle.Email,
                     PersonName = $"{validatedLoginInfoFromGoogle.FamilyName} {validatedLoginInfoFromGoogle.GivenName}"
@@ -72,7 +69,7 @@ namespace VolleyManagement.API.Controllers
                 else
                 {
                     result = await _userManager.AddLoginAsync(userInSystem.Id,
-                        new UserLoginInfo("Google", userInSystem.Email));
+                        new UserLoginInfo(GOOGLE, userInSystem.Email));
                     if (!result.Succeeded)
                     {
                         return Unauthorized();
@@ -90,7 +87,7 @@ namespace VolleyManagement.API.Controllers
             }
 
             ident.AddClaims(
-                new List<Claim>() 
+                new List<Claim>()
                 {
                     new Claim(nameof(validatedLoginInfoFromGoogle.Name), validatedLoginInfoFromGoogle.Email),
                     new Claim(nameof(validatedLoginInfoFromGoogle.FamilyName), validatedLoginInfoFromGoogle.FamilyName),
@@ -104,49 +101,17 @@ namespace VolleyManagement.API.Controllers
                 new AuthenticationProperties { IsPersistent = false }
             );
 
-            // TODO Commented cause receive errors here. Need to debug.
-            //AddToActive(userInSystem.Id);
-
-            return Content(
-                "{ \"token\":\"Secret_Token\", \"fullName\": \"" + validatedLoginInfoFromGoogle.GivenName + " " +
-                validatedLoginInfoFromGoogle.FamilyName + "\" }", "application/json");
-        }
-
-        /// <summary>
-        /// Logs current user
-        /// </summary>
-        /// <param name="returnUrl">URL to return</param>
-        /// <returns>Action result</returns>
-        public async Task<IActionResult> Logout(string returnUrl)
-        {
-            // TODO Commented cause receive errors here. Need to debug.
-            //DeleteFromActive(_currentUserService.GetCurrentUserId());
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
         }
 
-        private void AddToActive(int id)
+        /// <summary>
+        /// Logout current user
+        /// </summary>
+        /// <returns>Action result</returns>
+        public async Task<IActionResult> Logout()
         {
-            var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
-
-            if (!activeUsersList.Contains(id))
-            {
-                activeUsersList.Add(id);
-            }
-
-            _cacheProvider["ActiveUsers"] = activeUsersList;
-        }
-
-        private void DeleteFromActive(int id)
-        {
-            var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
-
-            if (activeUsersList.Contains(id))
-            {
-                activeUsersList.Remove(activeUsersList.Find(x => x == id));
-            }
-
-            _cacheProvider["ActiveUsers"] = activeUsersList;
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Ok();
         }
 
         private bool IsBlocked(int userId)

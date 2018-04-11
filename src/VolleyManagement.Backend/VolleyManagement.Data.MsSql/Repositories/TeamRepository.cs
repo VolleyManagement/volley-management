@@ -81,10 +81,10 @@ namespace VolleyManagement.Data.MsSql.Repositories
         /// <summary>
         /// Removes team by id.
         /// </summary>
-        /// <param name="id">The id of team to remove.</param>
-        public void Remove(int id)
+        /// <param name="teamId">The id of team to remove.</param>
+        public void Remove(TeamId teamId)
         {
-            var dalToRemove = new TeamEntity { Id = id };
+            var dalToRemove = new TeamEntity { Id = teamId.Id };
             _dalTeams.Attach(dalToRemove);
             _dalTeams.Remove(dalToRemove);
             _unitOfWork.Commit();

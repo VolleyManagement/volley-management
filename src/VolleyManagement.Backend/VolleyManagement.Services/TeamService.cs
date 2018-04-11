@@ -87,24 +87,22 @@
         /// Create a new team.
         /// </summary>
         /// <param name="teamToCreate">A Team to create.</param>
-        public void Create(Team teamToCreate)
+        public Team Create(CreateTeamDto teamToCreate)
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
-            var captain = GetPlayerById(teamToCreate.Captain);
+            var captain = GetPlayerById(teamToCreate.Captain.Id);
             if (captain == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.Captain);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.Captain.Id);
             }
 
             // Check if captain in teamToCreate is captain of another team
             var existTeam = GetPlayerLedTeam(captain.Id);
             VerifyExistingTeamOrThrow(existTeam);
+            ValidateTeam(existTeam);
 
-            ValidateTeam(teamToCreate);
-
-            _teamRepository.Add(teamToCreate);
-            _playerRepository.UpdateTeam(captain, teamToCreate.Id);
+            return _teamRepository.Add(teamToCreate);
         }
 
         /// <summary>
@@ -130,18 +128,21 @@
                 VerifyExistingTeamOrThrow(existTeam);
             }
 
-            ValidateTeam(teamToEdit);
+            var newTeam = Get(teamId);
+            newTeam.Name = teamToEdit.Name;
+            newTeam.Achievements = teamToEdit.Achievements;
+            newTeam.Coach = teamToEdit.Coach;
+            ValidateTeam(newTeam);
 
             try
             {
-                _teamRepository.Update(teamToEdit);
+                _teamRepository.Update(newTeam);
             }
             catch (ConcurrencyException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
 
-            teamToEdit.Captain = new PlayerId(captainId);
             _playerRepository.UpdateTeam(captain, teamToEdit.Id);
         }
 
@@ -159,7 +160,7 @@
         /// Delete team by id.
         /// </summary>
         /// <param name="teamId">The id of team to delete.</param>
-        public void Delete(int teamId)
+        public void Delete(TeamId teamId)
         {
             _authService.CheckAccess(AuthOperations.Teams.Delete);
             try
@@ -168,7 +169,7 @@
             }
             catch (InvalidKeyValueException ex)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId, ex);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId.Id, ex);
             }
             IEnumerable<Player> roster = GetTeamRoster(teamId);
 
@@ -189,13 +190,31 @@
         }
 
         /// <summary>
+        /// Change captain for existing team.
+        /// </summary>
+        /// <param name="team">team for editing.</param>
+        /// <param name="captainId">Player who should become captain.</param>
+        public void ChangeCaptain(TeamId team, PlayerId captainId)
+        {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
+            var teamToEdit = Get(team.Id);
+            if (teamToEdit == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+
+            teamToEdit.SetCaptain(captainId);
+            _teamRepository.Update(teamToEdit);
+        }
+
+        /// <summary>
         /// Find players of specified team
         /// </summary>
         /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        public ICollection<Player> GetTeamRoster(int teamId)
+        public ICollection<Player> GetTeamRoster(TeamId teamId)
         {
-            return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId });
+            return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId.Id });
         }
 
         private static bool ValidateTwoTeamsName(Team teamToValidate, ICollection<Team> getExistingTeams)

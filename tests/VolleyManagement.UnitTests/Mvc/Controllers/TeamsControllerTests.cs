@@ -295,22 +295,23 @@
             MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<TeamId> ())).Returns(rosterDomain.ToList());
+            
 
             var rosterPlayer = new PlayerNameViewModel() { Id = SPECIFIED_PLAYER_ID, FirstName = SPECIFIED_FIRST_PLAYER_NAME, LastName = SPECIFIED_LAST_PLAYER_NAME };
             var roster = new List<PlayerNameViewModel>() { rosterPlayer };
             var viewModel = new TeamMvcViewModelBuilder().WithRoster(roster).Build();
 
             _teamServiceMock.Setup(ts => ts.Create(It.IsAny<CreateTeamDto>()));
-                                          // .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
+                                           //.Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act
             var sut = BuildSUT();
             sut.Create(viewModel);
 
             // Assert
-           // _teamServiceMock.Verify(
-                             //ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()),
-                             //Times.Once());
+            _teamServiceMock.Verify(
+                             ts => ts.AddPlayers(It.IsAny<TeamId>(), It.IsAny<List<PlayerId>>()),
+                             Times.Once());
         }
 
         /// <summary>

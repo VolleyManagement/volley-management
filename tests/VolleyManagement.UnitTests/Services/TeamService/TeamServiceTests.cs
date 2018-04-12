@@ -164,7 +164,7 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
+            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();

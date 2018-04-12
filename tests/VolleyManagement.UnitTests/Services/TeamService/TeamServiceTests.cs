@@ -81,6 +81,8 @@
 
         #region Team tests
 
+        #region Get
+
         /// <summary>
         /// Test for Get() method. The method should return existing teams
         /// </summary>
@@ -122,6 +124,10 @@
             TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());
         }
 
+        #endregion
+
+        #region GetTeamCaptain
+
         /// <summary>
         /// Test for GetTeamCaptain() method.
         /// The method should return existing captain
@@ -145,6 +151,10 @@
             // Assert
             TestHelper.AreEqual(expected, actual, new PlayerComparer());
         }
+
+        #endregion
+
+        #region Create
 
         /// <summary>
         /// Test for Create() method. The method should create a new team.
@@ -551,6 +561,10 @@
                 new ArgumentException(argExMessage));
         }
 
+        #endregion
+
+        #region Delete
+
         /// <summary>
         /// Test for Delete() method. The method should delete specified team.
         /// </summary>
@@ -869,6 +883,8 @@
 
         #endregion
 
+        #endregion
+
         #region Private
 
         private TeamService BuildSUT()
@@ -893,7 +909,7 @@
 
         private bool CreateTeamDtosAreEqual(CreateTeamDto x, CreateTeamDto y)
         {
-            throw new NotImplementedException();
+            return new CreateTeamDtoComparer().Compare(x, y) == 0;
         }
 
         private void MockGetAllTeamsQuery(IEnumerable<Team> testData)
@@ -941,19 +957,16 @@
         private void VerifyEditPlayer(int playerId, int teamId, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => p.Id == playerId)), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyDeleteTeam(int teamId, Times times)
         {
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<TeamId>(id => id.Id == teamId)), times);
         }
 
         private void VerifyDeleteTeam(int teamId, Times repositoryTimes, Times unitOfWorkTimes)
         {
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), repositoryTimes);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
+            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<TeamId>(id => id.Id == teamId)), repositoryTimes);
         }
 
         private List<Team> CreateSeveralTeams()

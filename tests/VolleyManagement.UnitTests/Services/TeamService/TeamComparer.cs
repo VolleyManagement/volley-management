@@ -58,7 +58,7 @@
                    x.Name == y.Name &&
                    x.Coach == y.Coach &&
                    x.Achievements == y.Achievements &&
-                   x.Captain == y.Captain;
+                   x.Captain.Id == y.Captain.Id;
         }
     }
 }

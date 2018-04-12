@@ -16,11 +16,14 @@
     using Contracts.Authentication.Models;
     using Crosscutting.Contracts.Providers;
 
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     public class AccountController : Controller
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private const string GOOGLE = "Google";
+        private const string COOKIE_NAME = "VMCookie";
 
         private readonly IVolleyUserManager<UserModel> _userManager;
         private readonly IUserService _userService;
@@ -43,12 +46,12 @@
         /// <returns>Action result</returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> TokenSignin(string user)
+        public async Task<IActionResult> TokenSigninGoogle(string user)
         {
             var userInfoFromWebApp = JsonConvert.DeserializeObject<GoogleUserInfo>(user);
 
             var validatedLoginInfoFromGoogle = await GoogleJsonWebSignature.ValidateAsync(userInfoFromWebApp.IdToken,
-                new GoogleJsonWebSignature.ValidationSettings() {
+                new GoogleJsonWebSignature.ValidationSettings {
                     Audience = new List<string> { _configuration.GetGoogleClientId().Value }
                 });
 
@@ -87,7 +90,7 @@
             }
 
             ident.AddClaims(
-                new List<Claim>()
+                new List<Claim>
                 {
                     new Claim(nameof(validatedLoginInfoFromGoogle.Name), validatedLoginInfoFromGoogle.Email),
                     new Claim(nameof(validatedLoginInfoFromGoogle.FamilyName), validatedLoginInfoFromGoogle.FamilyName),
@@ -95,8 +98,8 @@
                 });
 
 
-            await HttpContext.SignOutAsync("VMCookie");
-            await HttpContext.SignInAsync("VMCookie",
+            await HttpContext.SignOutAsync(COOKIE_NAME);
+            await HttpContext.SignInAsync(COOKIE_NAME,
                 new ClaimsPrincipal(ident),
                 new AuthenticationProperties { IsPersistent = false }
             );

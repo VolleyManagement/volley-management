@@ -98,7 +98,7 @@
             }
 
             // Check if captain in teamToCreate is captain of another team
-            var existTeam = GetPlayerLedTeam(captain.Id);
+            var existTeam = GetTeamLedByCaptain(captain.Id);
             VerifyExistingTeamOrThrow(existTeam);
             ValidateTeam(existTeam);
 
@@ -162,7 +162,7 @@
             // Check if captain in teamToCreate is captain of another team
             if (teamId != 0 && teamId != teamToEdit.Id)
             {
-                var existTeam = GetPlayerLedTeam(captain.Id);
+                var existTeam = GetTeamLedByCaptain(captain.Id);
                 VerifyExistingTeamOrThrow(existTeam);
             }
 
@@ -274,7 +274,7 @@
             }
         }
 
-        private Team GetPlayerLedTeam(int playerId)
+        private Team GetTeamLedByCaptain(int playerId)
         {
             return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
         }

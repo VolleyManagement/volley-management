@@ -145,7 +145,7 @@
             var actual = sut.GetTeamCaptain(team);
 
             // Assert
-            TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerComparer());
         }
 
         /// <summary>

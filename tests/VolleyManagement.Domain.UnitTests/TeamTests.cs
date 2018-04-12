@@ -234,7 +234,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team Roster can`t be null.");
+            act.Should().Throw<ArgumentException>("It`s impossible add player that already plays in team.");
         }
 
         [Fact]
@@ -242,14 +242,14 @@ namespace VolleyManagement.Domain.UnitTests
         {
             //Arrange
             var team = CreateTeam();
-            var listRemovePlayers = new List<PlayerId>() {
+            var listAddPlayers = new List<PlayerId>() {
                 null
             };
 
             //Act
             Action act = () =>
             {
-                team.AddPlayers(listRemovePlayers);
+                team.AddPlayers(listAddPlayers);
             };
 
             //Assert

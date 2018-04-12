@@ -22,7 +22,9 @@ using VolleyManagement.Services.Infrastructure;
 
 namespace VolleyManagement.API
 {
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     public class Startup
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private const string COOKIE_NAME = "VMCookie";
 
@@ -68,7 +70,7 @@ namespace VolleyManagement.API
         /// Integrates SimpleInjector
         /// </summary>
         /// <param name="services">Interface <see cref="IServiceCollection"/></param>
-        private void IntegrateSimpleInjector(IServiceCollection services)
+        private static void IntegrateSimpleInjector(IServiceCollection services)
         {
             var ioc = new SimpleInjectorContainer();
 
@@ -101,11 +103,19 @@ namespace VolleyManagement.API
         {
             return options =>
             {
+                // A flag indicating if the cookie created should be the same protocol as the request
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                // Sets the name of the cookie.
                 options.Cookie.Name = COOKIE_NAME;
+                // A flag indicating if the cookie should be accessible only to servers.
                 options.Cookie.HttpOnly = false;
+                // Indicates whether the browser should allow the cookie to be attached to
+                // cross -site requests using safe HTTP methods and same-site requests (SameSiteMode.Lax)
                 options.Cookie.SameSite = SameSiteMode.Lax;
+                // Used to isolate apps running on the same host name.
                 options.Cookie.Path = "/";
+                // A delegate assigned to this property will be invoked when the related method
+                // is called.
                 options.Events.OnRedirectToLogin = (context) =>
                 {
                     context.Response.StatusCode = 401;
@@ -119,7 +129,7 @@ namespace VolleyManagement.API
             VolleyManagementDbContextFactory.ConnectionNameOrString = GetVolleyManagementEntitiesConnectionString();
         }
 
-        private string GetVolleyManagementEntitiesConnectionString()
+        private static string GetVolleyManagementEntitiesConnectionString()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json", true).Build();
             return builder.GetConnectionString("VolleyManagementEntities");

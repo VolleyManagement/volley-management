@@ -852,7 +852,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Delete(testData.Id);
+            sut.Delete(new TeamId(testData.Id));
 
             // Assert
             VerifyDeleteTeam(testData.Id, Times.Never());

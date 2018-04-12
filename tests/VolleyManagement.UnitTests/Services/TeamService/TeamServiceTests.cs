@@ -163,9 +163,8 @@
         public void Create_TeamPassed_TeamCreated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()))
-                .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
+            var newTeamDto = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()));
 
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr =>
@@ -176,11 +175,11 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            var newTeam = sut.Create(newTeamDto);
 
             // Assert
             Assert.AreNotEqual(newTeam.Id, UNASSIGNED_ID);
-            VerifyCreateTeam(newTeam, Times.Once());
+            VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
         /// <summary>
@@ -194,7 +193,7 @@
             var argExMessage = string.Format(
                     Resources.ValidationTeamAchievements,
                         VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH);
-            var testTeam = new TeamBuilder()
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithAchievements(invalidAchievements)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
@@ -227,7 +226,7 @@
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
-            var newTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithAchievements(string.Empty).Build();
+            var newTeam = new CreateTeamDtoBuilder().WithAchievements(string.Empty).Build();
             MockGetAllTeamsQuery(CreateSeveralTeams());
 
             // Act
@@ -249,7 +248,7 @@
             var argExMessage = string.Format(
                     Resources.ValidationTeamName,
                         VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithName(invalidName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
@@ -285,7 +284,7 @@
             var argExMessage = string.Format(
                     Resources.ValidationTeamName,
                     Domain.Constants.Team.MAX_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithName(invalidName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
@@ -321,7 +320,7 @@
             var argExMessage = string.Format(
                     Resources.ValidationCoachName,
                         VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
@@ -357,7 +356,7 @@
             var argExMessage = string.Format(
                     Resources.ValidationCoachName,
                         VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
@@ -390,7 +389,7 @@
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
-            var newTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCoach(string.Empty).Build();
+            var newTeam = new CreateTeamDtoBuilder().WithCoach(string.Empty).Build();
             MockGetAllTeamsQuery(CreateSeveralTeams());
 
             // Act
@@ -409,7 +408,7 @@
         public void Create_InvalidCaptainId_MissingEntityExceptionThrown()
         {
             // Arrange
-            var newTeam = new TeamBuilder().Build();
+            var newTeam = new CreateTeamDtoBuilder().Build();
             var testPlayer = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
 
@@ -439,7 +438,7 @@
         public void Create_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
         {
             // Arrange
-            var newTeam = new TeamBuilder().Build();
+            var newTeam = new CreateTeamDtoBuilder().Build();
             var captain = new PlayerBuilder().Build();
 
             var captainLeadTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
@@ -480,7 +479,7 @@
         public void Create_PlayerIsNotCaptainOfExistingTeam_TeamCreated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            var newTeam = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.IsAny<FindByIdCriteria>())).Returns(captain);
             _getTeamByCaptainQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
@@ -503,9 +502,8 @@
         public void Create_TeamPassed_CaptainUpdated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
-                .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
+            var newTeam = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()));
 
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
 
@@ -534,10 +532,11 @@
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
-            var newTeam = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
-            var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
+            var newTeam = new CreateTeamDtoBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
+            var teamWithSameName = new CreateTeamDtoBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
             var existingTeams = CreateSeveralTeams();
-            existingTeams.Add(teamWithSameName);
+            throw new NotImplementedException();
+            existingTeams.Add(null);// teamWithSameName);
             MockGetAllTeamsQuery(existingTeams);
 
             var sut = BuildSUT();
@@ -669,7 +668,7 @@
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
-            var teamWithWrongId = new TeamBuilder().WithId(UNASSIGNED_ID).WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            var teamWithWrongId = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             _teamRepositoryMock.Setup(pr => pr.Update(It.IsAny<Team>())).Throws(new ConcurrencyException());
             MockGetAllTeamsQuery(CreateSeveralTeams());
 

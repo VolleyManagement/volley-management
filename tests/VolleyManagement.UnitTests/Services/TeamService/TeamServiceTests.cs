@@ -228,9 +228,9 @@
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
             var newTeam = new CreateTeamDtoBuilder().WithAchievements(string.Empty).Build();
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
             sut.Create(newTeam);
 
             // Assert

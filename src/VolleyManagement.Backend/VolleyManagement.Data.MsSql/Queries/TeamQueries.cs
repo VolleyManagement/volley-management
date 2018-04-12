@@ -53,7 +53,10 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public Team Execute(FindByIdCriteria criteria)
         {
-            return _unitOfWork.Context.Teams.Where(t => t.Id == criteria.Id).Select(GetTeamMapping()).SingleOrDefault();
+            var teams = _unitOfWork.Context.Teams.Where(t => t.Id == criteria.Id).ToList();
+            return teams
+                .Select(t => GetTeamMapping(t))
+                .SingleOrDefault();
         }
 
         /// <summary>
@@ -63,7 +66,8 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public ICollection<Team> Execute(GetAllCriteria criteria)
         {
-            return _unitOfWork.Context.Teams.Select(GetTeamMapping()).ToList();
+            var teams = _unitOfWork.Context.Teams.ToList();
+            return teams.Select(t => GetTeamMapping(t)).ToList();
         }
 
         /// <summary>
@@ -73,7 +77,10 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
-            return _unitOfWork.Context.Teams.Where(t => t.CaptainId == criteria.CaptainId).Select(GetTeamMapping()).SingleOrDefault();
+            return _unitOfWork.Context.Teams
+                .Where(t => t.CaptainId == criteria.CaptainId)
+                .Select(t => GetTeamMapping(t))
+                .SingleOrDefault();
         }
 
 
@@ -103,7 +110,7 @@
             return _unitOfWork.Context.Groups
                                       .Where(g => g.Id == criteria.GroupId)
                                       .SelectMany(g => g.Teams)
-                                      .Select(GetTeamMapping())
+                                      .Select(t => GetTeamMapping(t))
                                       .ToList();
         }
 
@@ -114,7 +121,7 @@
                                       .Select(t => t.Divisions)
                                       .SelectMany(d => d.Select(g => g.Groups))
                                       .Select(g => g.SelectMany(t => t.Teams))
-                                      .Select(c => c.AsQueryable().Select(GetTeamMapping()).ToList())
+                                      .Select(c => c.Select(t => GetTeamMapping(t)).ToList())
                                       .ToList();
         }
 
@@ -122,15 +129,14 @@
 
         #region Mapping
 
-        private static Expression<Func<TeamEntity, Team>> GetTeamMapping()
+        private static Team GetTeamMapping(TeamEntity t)
         {
-            return t => new Team {
-                Id = t.Id,
-                Name = t.Name,
-                Coach = t.Coach,
-                Captain = t.CaptainId,
-                Achievements = t.Achievements
-            };
+            return new Team(t.Id,
+                                  t.Name,
+                                  t.Coach,
+                                  t.Achievements,
+                                  new PlayerId(t.CaptainId),
+                                  t.Players.Select(p => new PlayerId(p.Id)));
         }
 
         #endregion

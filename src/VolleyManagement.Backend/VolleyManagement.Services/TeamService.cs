@@ -106,6 +106,44 @@
         }
 
         /// <summary>
+        /// Add players to the team.
+        /// </summary>
+        /// <param name="team">Team id to which players must be added.</param>
+        /// <param name="players">Player's ids that must be added.</param>
+        public void AddPlayers(TeamId team, IEnumerable<PlayerId> players)
+        {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
+            var changedTeam = Get(team.Id);
+
+            if (changedTeam == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+
+            changedTeam.AddPlayers(players);
+            _teamRepository.Update(changedTeam);
+        }
+
+        /// <summary>
+        /// Remove players from the team.
+        /// </summary>
+        /// <param name="team">Team id from which players must be removed.</param>
+        /// <param name="players">Player's ids that must be removed.</param>
+        public void RemovePlayers(TeamId team, IEnumerable<PlayerId> players)
+        {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
+            var changedTeam = Get(team.Id);
+
+            if (changedTeam == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+
+            changedTeam.RemovePlayers(players);
+            _teamRepository.Update(changedTeam);
+        }
+
+        /// <summary>
         /// Edit team.
         /// </summary>
         /// <param name="teamToEdit">Team to edit.</param>

@@ -184,69 +184,11 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                     var playersInTeamViewModel = teamViewModel.Roster.Select(x => x.Id);
                     //check if players in Db and from view are equal
                     var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModel);
-                    
-                    var domainTeam = teamViewModel.ToDomain();
-                    //if players in view are different than in Db
                     if (!playersStillSame)
                     {
-                        //select players which are in Db
-                        var registeredPlayers = teamViewModel.Roster
-                            .Where(x => x.Id != 0)
-                            .ToList();
-                        //select teams which players returned from view
-                        var playersTeams = registeredPlayers
-                            .Select(x => _playerService.GetPlayerTeam(_playerService.Get(x.Id)))
-                            .ToList();
-                        //check if players play in another team
-                        if (playersTeams.Any(x => x != null && x.Id != team.Id))
-                        {
-                            throw new ArgumentException("Player can not play in two teams");
-                        }
-                        //select new players which are not id Db and add them to Db
-                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.Roster
-                            .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
-                            .Select(x => new PlayerId(x.Id))
-                            .ToList();
-                        //players which were not removed from the team
-                        var currentRoster = new List<PlayerId>();
-
-                        var limit = registeredPlayers.Count;
-                        for (var i = 0; i < limit; i++)
-                        {
-                            var player = new PlayerId(registeredPlayers[i].Id);
-                            
-                            if (playersTeams[i] == null)
-                            {
-                                //add new players which are in Db and have no team
-                                playersToAddToTeam.Add(player);
-                            }
-                            else
-                            {
-                                //add players which were in the team previusly
-                                currentRoster.Add(player);
-                            }
-                        }
-
-                        var playersToRemove = playersInTeamDb
-                            .Except(currentRoster.Select(x => x.Id))
-                            .Select(x => new PlayerId(x));
-
-                        _teamService.RemovePlayers(new TeamId(domainTeam.Id), playersToRemove);
-
-                        _teamService.AddPlayers(new TeamId(domainTeam.Id), playersToAddToTeam);
-
-                        var captainId = domainTeam.Roster.First().Id;
-
-                        //check if captain was changed
-                        if (team.Captain.Id != teamViewModel.Captain.Id)
-                        {
-                            if (teamViewModel.Roster.FirstOrDefault() != null)
-                            {
-                                captainId = teamViewModel.Roster.First().Id;
-                            }
-                            _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
-                        }
+                        UpdateRoaster(teamViewModel, team, playersInTeamDb);
                     }
+                    var domainTeam = teamViewModel.ToDomain();
 
                     _teamService.Edit(domainTeam);
 
@@ -391,6 +333,68 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         {
             var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
+        }
+
+
+        private void UpdateRoaster(TeamViewModel teamViewModel, Team team, IEnumerable<int> playersInTeamDb)
+        {
+            //select players which are in Db
+            var registeredPlayers = teamViewModel.Roster
+                .Where(x => x.Id != 0)
+                .ToList();
+            //select teams which players returned from view
+            var playersTeams = registeredPlayers
+                .Select(x => _playerService.GetPlayerTeam(_playerService.Get(x.Id)))
+                .ToList();
+            //check if players play in another team
+            if (playersTeams.Any(x => x != null && x.Id != team.Id))
+            {
+                throw new ArgumentException("Player can not play in two teams");
+            }
+            //select new players which are not id Db and add them to Db
+            var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.Roster
+                .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
+                .Select(x => new PlayerId(x.Id))
+                .ToList();
+            //players which were not removed from the team
+            var currentRoster = new List<PlayerId>();
+
+            var limit = registeredPlayers.Count;
+            for (var i = 0; i < limit; i++)
+            {
+                var player = new PlayerId(registeredPlayers[i].Id);
+
+                if (playersTeams[i] == null)
+                {
+                    //add new players which are in Db and have no team
+                    playersToAddToTeam.Add(player);
+                }
+                else
+                {
+                    //add players which were in the team previusly
+                    currentRoster.Add(player);
+                }
+            }
+
+            var playersToRemove = playersInTeamDb
+                .Except(currentRoster.Select(x => x.Id))
+                .Select(x => new PlayerId(x));
+
+            _teamService.RemovePlayers(new TeamId(teamViewModel.Id), playersToRemove);
+
+            _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersToAddToTeam);
+
+            var captainId = teamViewModel.Roster.First().Id;
+
+            //check if captain was changed
+            if (team.Captain.Id != teamViewModel.Captain.Id)
+            {
+                if (teamViewModel.Roster.FirstOrDefault() != null)
+                {
+                    captainId = teamViewModel.Roster.First().Id;
+                }
+                _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
+            }
         }
     }
 }

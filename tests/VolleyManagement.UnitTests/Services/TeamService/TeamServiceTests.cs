@@ -810,7 +810,7 @@
         public void Create_CreateNotPermitted_ExceptionThrown()
         {
             // Arrange
-            var testData = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var testData = new CreateTeamDtoBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Teams.Create);
 
             var sut = BuildSUT();
@@ -891,6 +891,11 @@
             return new TeamComparer().Compare(x, y) == 0;
         }
 
+        private bool CreateTeamDtosAreEqual(CreateTeamDto x, CreateTeamDto y)
+        {
+            throw new NotImplementedException();
+        }
+
         private void MockGetAllTeamsQuery(IEnumerable<Team> testData)
         {
             _getAllTeamsQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
@@ -923,9 +928,9 @@
             _getTeamRosterQueryMock.Setup(tr => tr.Execute(It.IsAny<TeamPlayersCriteria>())).Returns(players);
         }
 
-        private void VerifyCreateTeam(Team team, Times times)
+        private void VerifyCreateTeam(CreateTeamDto team, Times times)
         {
-            _teamRepositoryMock.Verify(tr => tr.Add(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
+            _teamRepositoryMock.Verify(tr => tr.Add(It.Is<CreateTeamDto>(t => CreateTeamDtosAreEqual(t, team))), times);
         }
 
         private void VerifyEditTeam(Team team, Times times)

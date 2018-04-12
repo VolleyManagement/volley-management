@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using Domain.TeamsAggregate;
 
     /// <summary>
@@ -53,12 +54,23 @@
         /// <returns>True if given team have the same properties.</returns>
         public bool AreEqual(Team x, Team y)
         {
-            // Check primitive fields
-            return x.Id == y.Id &&
-                   x.Name == y.Name &&
-                   x.Coach == y.Coach &&
-                   x.Achievements == y.Achievements &&
-                   x.Captain.Id == y.Captain.Id;
+            var simpleDataIsEquialent = x.Id == y.Id &&
+                x.Name.Equals(y.Name) &&
+                x.Coach.Equals(y.Coach) &&
+                x.Achievements.Equals(y.Achievements) &&
+                x.Captain.Id == y.Captain.Id;
+
+            if (simpleDataIsEquialent)
+            {
+                var xRosterIds = x.Roster.Select(p => p.Id);
+                var yRosterIds = y.Roster.Select(p => p.Id);
+
+                return xRosterIds.SequenceEqual(yRosterIds);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

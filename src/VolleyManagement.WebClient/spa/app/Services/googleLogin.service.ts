@@ -4,6 +4,7 @@ import { JsonService } from './json.service';
 import { GoogleUserInfo } from '../Models/User/GoogleUserInfo';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class GoogleLoginService {
@@ -35,11 +36,11 @@ export class GoogleLoginService {
     }
 
     validateGoogleToken(user: GoogleUserInfo): Promise<Response> {
-        const url = 'https://localhost:44370/api/Account/TokenSignin';
+        const url = 'api/Account/TokenSigninGoogle';
         return new Promise((resolve, reject) => {
             const encoding: any = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
             const body: any = new HttpParams().set('user', JSON.stringify(user));
-            this.http.post(url, body.toString(), { headers: encoding, withCredentials: true })
+            this.http.post(environment.apiUrl.concat(url), body.toString(), { headers: encoding, withCredentials: true })
                 .subscribe(data => {
                     resolve(data as Response);
                 }, error => {

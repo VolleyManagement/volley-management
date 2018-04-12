@@ -15,11 +15,11 @@
 
         public string Code { get; set; }
 
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public string ImageURL { get; set; }
+        public string ImageUrl { get; set; }
 
         public string Email { get; set; }
     }

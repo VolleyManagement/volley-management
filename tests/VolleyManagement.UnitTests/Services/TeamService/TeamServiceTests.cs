@@ -164,7 +164,7 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
+            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
@@ -578,7 +578,7 @@
 
             // Act
             var ts = BuildSUT();
-            ts.Delete(SPECIFIC_TEAM_ID);
+            ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
 
             // Assert
             VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
@@ -592,7 +592,7 @@
         public void Delete_InvalidTeamId_MissingEntityExceptionThrown()
         {
             // Arrange
-            _teamRepositoryMock.Setup(tr => tr.Remove(It.IsAny<int>()))
+            _teamRepositoryMock.Setup(tr => tr.Remove(It.IsAny<TeamId>()))
                 .Throws(new InvalidKeyValueException());
 
             // Act
@@ -601,7 +601,7 @@
 
             try
             {
-                ts.Delete(SPECIFIC_TEAM_ID);
+                ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
             }
             catch (MissingEntityException)
             {
@@ -626,7 +626,7 @@
 
             // Act
             var ts = BuildSUT();
-            ts.Delete(SPECIFIC_TEAM_ID);
+            ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
 
             // Assert
             VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
@@ -645,7 +645,7 @@
 
             // Act
             var ts = BuildSUT();
-            ts.Delete(SPECIFIC_TEAM_ID);
+            ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
 
             // Assert
             _playerRepositoryMock.Verify(
@@ -852,7 +852,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Delete(testData.Id);
+            sut.Delete(new TeamId(testData.Id));
 
             // Assert
             VerifyDeleteTeam(testData.Id, Times.Never());

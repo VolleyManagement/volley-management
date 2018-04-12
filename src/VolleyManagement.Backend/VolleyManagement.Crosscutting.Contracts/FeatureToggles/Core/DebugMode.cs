@@ -13,7 +13,11 @@ namespace VolleyManagement.Crosscutting.Contracts.FeatureToggles.Core
         {
             get
             {
-                var builder = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json", true).Build();
+                var builder = new ConfigurationBuilder().
+                    SetBasePath(Environment.CurrentDirectory).
+                    AddJsonFile("appsettings.json", optional: true).
+                    AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true).
+                    Build();
                 var featureValue = builder[$"AppSettings:{FEATURE}"];
                 return !string.IsNullOrWhiteSpace(featureValue) && bool.Parse(featureValue);
             }

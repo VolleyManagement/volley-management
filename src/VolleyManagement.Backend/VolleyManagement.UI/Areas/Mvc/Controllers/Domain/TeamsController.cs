@@ -176,52 +176,53 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 try
                 {
+                    //get team from Db by id
                     var team = _teamService.Get(teamViewModel.Id);
-
+                    //select players in team in Db
                     var playersInTeamDb = team.Roster.Select(x => x.Id);
-
+                    //select players from view
                     var playersInTeamViewModel = teamViewModel.Roster.Select(x => x.Id);
-
-                    //var commonPlayers = playersInTeamDb.Intersect(playersInTeamViewModel).Count();
-
-                    //var playersStillSame = commonPlayers == teamViewModel.Roster.Count()&& commonPlayers== playersInTeamDb.Count();
-
+                    //check if players in Db and from view are equal
                     var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModel);
-
+                    
                     var domainTeam = teamViewModel.ToDomain();
-
+                    //if players in view are different than in Db
                     if (!playersStillSame)
                     {
+                        //select players which are in Db
                         var registeredPlayers = teamViewModel.Roster
                             .Where(x => x.Id != 0)
                             .ToList();
-
+                        //select teams which players returned from view
                         var playersTeams = registeredPlayers
                             .Select(x => _playerService.GetPlayerTeam(_playerService.Get(x.Id)))
                             .ToList();
-
+                        //check if players play in another team
                         if (playersTeams.Any(x => x != null && x.Id != team.Id))
                         {
                             throw new ArgumentException("Player can not play in two teams");
                         }
-
+                        //select new players which are not id Db and add them to Db
                         var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.Roster
                             .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
                             .Select(x => new PlayerId(x.Id))
                             .ToList();
-
+                        //players which were not removed from the team
                         var currentRoster = new List<PlayerId>();
 
                         var limit = registeredPlayers.Count;
                         for (var i = 0; i < limit; i++)
                         {
                             var player = new PlayerId(registeredPlayers[i].Id);
+                            
                             if (playersTeams[i] == null)
                             {
+                                //add new players which are in Db and have no team
                                 playersToAddToTeam.Add(player);
                             }
                             else
                             {
+                                //add players which were in the team previusly
                                 currentRoster.Add(player);
                             }
                         }
@@ -236,6 +237,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
                         var captainId = domainTeam.Roster.First().Id;
 
+                        //check if captain was changed
                         if (team.Captain.Id != teamViewModel.Captain.Id)
                         {
                             if (teamViewModel.Roster.FirstOrDefault() != null)

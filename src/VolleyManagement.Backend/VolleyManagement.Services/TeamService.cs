@@ -270,9 +270,8 @@
         }
 
         private bool TeamWithNameExists(string name) =>
-            _getAllTeamsQuery.Execute(new GetAllCriteria())
-                .Select(t => t.Name)
-                .Contains(name);
+            _getTeamByNameQuery
+                .Execute(new FindByNameCriteria { Name = name }) != null;
 
         private static void VerifyExistingTeamOrThrow(Team existTeam)
         {

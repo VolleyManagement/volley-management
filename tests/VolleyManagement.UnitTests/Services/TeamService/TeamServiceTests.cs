@@ -244,15 +244,17 @@
         public void Create_InvalidTeamName_ArgumentExceptionThrown()
         {
             var invalidName = CreateInvalidTeamName();
-            var argExMessage = string.Format(
-                    Resources.ValidationTeamName,
-                        VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
+            var argExMessage = Resources.ValidationTeamName;
             var testTeam = new CreateTeamDtoBuilder()
                                         .WithName(invalidName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam,
+                new ArgumentException(argExMessage));
+
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -269,7 +271,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>

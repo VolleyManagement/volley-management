@@ -160,17 +160,15 @@
         /// Test for Create() method. The method should create a new team.
         /// </summary>
         [TestMethod]
-        public void Create_TeamPassed_TeamCreated()
+        public void Create_CreateTeamDtoPassed_TeamCreated()
         {
             // Arrange
             var newTeamDto = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()));
 
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr =>
-                                          pr.Execute(It.Is<FindByIdCriteria>(cr =>
-                                                                             cr.Id == SPECIFIC_PLAYER_ID)))
-                                    .Returns(captain);
+
+            MockGetPlayerBySpecificIdQuery(SPECIFIC_PLAYER_ID, captain);
             MockGetAllTeamsQuery(CreateSeveralTeams());
 
             // Act
@@ -190,15 +188,18 @@
         public void Create_InvalidAchievements_ArgumentExceptionThrown()
         {
             var invalidAchievements = CreateInvalidTeamAchievements();
-            var argExMessage = string.Format(
-                    Resources.ValidationTeamAchievements,
-                        VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH);
+            var argExMessage = Resources.ValidationTeamAchievements;
             var testTeam = new CreateTeamDtoBuilder()
                                         .WithAchievements(invalidAchievements)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            _getPlayerByIdQueryMock
+                .Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id)))
+                .Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam, new ArgumentException(argExMessage));
+
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -215,7 +216,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamAchievements"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>
@@ -289,8 +290,7 @@
             _getPlayerByIdQueryMock.Setup(pr => 
                                 pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
-            _teamRepositoryMock.Setup(pr => pr.Add(It.Is<CreateTeamDto>(dto => CreateTeamDtosAreEqual(dto, testTeam))))
-                .Throws(new ArgumentException(argExMessage));
+            MockTeamRepositoryAddToThrow(testTeam, new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -318,9 +318,7 @@
         public void Create_InvalidTeamCoachNameNotAllowedLength_ArgumentExceptionThrown()
         {
             var invalidCoachName = CreateInvalidTeamCoachName();
-            var argExMessage = string.Format(
-                    Resources.ValidationCoachName,
-                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
+            var argExMessage = Resources.ValidationCoachName;
             var testTeam = new CreateTeamDtoBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
@@ -917,6 +915,11 @@
             _getAllTeamsQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
         }
 
+        private void MockGetTeamByCaptainId(int captainId, Team result) =>
+            _getTeamByCaptainQueryMock
+                .Setup(tr => tr.Execute(It.Is<FindByCaptainIdCriteria>(c => c.CaptainId == captainId)))
+                .Returns(result);
+
         private void MockGetTeamByIdQuery(Team testData)
         {
             _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
@@ -929,6 +932,12 @@
                 .Returns(0)
                 .Returns(0);
         }
+
+        private void MockGetPlayerBySpecificIdQuery(int id, Player player) =>
+            _getPlayerByIdQueryMock
+                .Setup(pq => pq.Execute(It.Is<FindByIdCriteria>(c => c.Id == id)))
+                .Returns(player);
+
         private void MockGetPlayerByIdQuery(Player player)
         {
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);
@@ -943,6 +952,10 @@
         {
             _getTeamRosterQueryMock.Setup(tr => tr.Execute(It.IsAny<TeamPlayersCriteria>())).Returns(players);
         }
+
+        private void MockTeamRepositoryAddToThrow(CreateTeamDto testTeam, Exception exception) =>
+            _teamRepositoryMock.Setup(tr => tr.Add(It.Is<CreateTeamDto>(dto => CreateTeamDtosAreEqual(dto, testTeam))))
+                .Throws(exception);
 
         private void VerifyCreateTeam(CreateTeamDto team, Times times)
         {

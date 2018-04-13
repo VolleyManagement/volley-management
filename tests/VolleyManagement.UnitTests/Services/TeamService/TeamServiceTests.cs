@@ -810,6 +810,538 @@
             VerifyEditTeam(teamToEdit, Times.Once());
         }
 
+        /// <summary>
+        /// Test for AddPlayers() method. 
+        /// </summary>
+        [TestMethod]
+        public void AddPalyers_ToTeam_AllPlayerNew_TeamUpdated()
+        {
+            // Arrange
+            var testPlayersIdToAdd = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var exeptedTeam = new TeamBuilder().WithRoster(testPlayersIdToAdd).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            // Act
+            var sut = BuildSUT();
+            sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+
+            // Assert
+            VerifyEditTeam(teamToEdit, Times.Once());
+            TestHelper.Equals(exeptedTeam, teamToEdit);
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method.
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void AddPalyers_ToTeam_NotAllPlayerNew_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToAdd = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var existingPlayersId = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(2),
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+
+            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithRoster(existingPlayersId).Build();
+            var exeptedTeam = new TeamBuilder().WithRoster(testPlayersIdToAdd).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            Exception expectedExc = new ArgumentException(Resources.AddingMemberedPlayerToTeam);
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(gotException, expectedExc);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method. Try to add players with the same Id
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void AddPalyers_ToTeam_AddDublicatePlayer_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToAdd = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(1),
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);          
+            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(gotException, expectedExc);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method. Try to add players with invalid Id
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void AddPalyers_ToTeam_AddPlayerWithInvalidId_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToAdd = new List<PlayerId> {
+                new PlayerId(0),
+                new PlayerId(-7),
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(gotException, expectedExc);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method. Try to add players with invalid Id
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void AddPalyers_ToTeam_AddPlayerWithNullId_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToAdd = new List<PlayerId> {
+                new PlayerId(3),
+                new PlayerId(4),
+                null
+            };
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(gotException, expectedExc);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method. Try to add null roster
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void AddPalyers_ToTeam_NullRoster_ArgumentExceptionThrown()
+        {
+            // Arrange
+            IEnumerable<PlayerId> testPlayersIdToAdd = null;
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(gotException, expectedExc);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method. 
+        /// Should throw MissingEntityException
+        /// </summary>
+        [TestMethod]
+        public void AddPalyers_ToTeam_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToAdd = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testTeam.Id))).Returns(testTeam);
+
+            // Act
+            var sut = BuildSUT();
+            var gotException = false;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+            }
+            catch (MissingEntityException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyEditTeam(testTeam, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. Try to remove players that no member of team
+        /// Should throw ArgumentExceptionThrown
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_PlayersNotMemberOfTeam_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var playersIdToRemove = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            var existingPlayersId = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(2),
+                new PlayerId(3)
+            };
+            
+            var teamToEdit = new TeamBuilder().WithRoster(existingPlayersId).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            var exeptedExc = new ArgumentException(Resources.RemovingUnmemberedPlayerFromTeam, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, playersIdToRemove);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exeptedExc, gotException);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. Remove player with invalid id
+        /// Should throw ArgumentExceptionThrown
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_InvalidPlayerId_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            var playersIdToRemove = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(-7),
+                new PlayerId(3)
+            };
+
+            var teamToEdit = new TeamBuilder().Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, playersIdToRemove);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exeptedExc, gotException);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. Remove dublicate player
+        /// Should throw ArgumentExceptionThrown
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_DublicatePlayerId_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            var playersIdToRemove = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(1),
+                new PlayerId(3)
+            };
+
+            var teamToEdit = new TeamBuilder().Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, playersIdToRemove);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exeptedExc, gotException);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. Remove null playerId
+        /// Should throw ArgumentExceptionThrown
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_PlayersWithNullId_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            var playersIdToRemove = new List<PlayerId> {
+                new PlayerId(1),
+                null
+            };
+
+            var teamToEdit = new TeamBuilder().Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, playersIdToRemove);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exeptedExc, gotException);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. Null players
+        /// Should throw ArgumentExceptionThrown
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_NullPlayers_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            IEnumerable<PlayerId> playersIdToRemove = null;
+
+            var teamToEdit = new TeamBuilder().Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, playersIdToRemove);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exeptedExc, gotException);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. Remove captain
+        /// Should throw ArgumentExceptionThrown
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_RemoveCaptain_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            var playersIdToRemove = new List<PlayerId> {
+                new PlayerId(SPECIFIC_PLAYER_ID)
+            };
+
+            var teamToEdit = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            var exeptedExc = new ArgumentException(Resources.RemovingCaptain);
+
+            // Act
+            var sut = BuildSUT();
+            Exception gotException = null;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, playersIdToRemove);
+            }
+            catch (ArgumentException exc)
+            {
+                gotException = exc;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exeptedExc, gotException);
+            VerifyEditTeam(teamToEdit, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. 
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_AllPlayersRemove_TeamUpdated()
+        {
+            // Arrange
+            var playersIdToRemove = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            var existingPlayersId = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(2),
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+
+            var exeptedPlayerId = new List<PlayerId> {
+                new PlayerId(1)
+            };
+
+            var teamToEdit = new TeamBuilder().WithRoster(existingPlayersId).Build();
+            var exeptedTeam = new TeamBuilder().WithRoster(exeptedPlayerId).Build();
+            MockGetTeamByIdQuery(teamToEdit);
+
+            // Act
+            var sut = BuildSUT();
+            sut.RemovePlayers(testTeamId, playersIdToRemove);
+
+            // Assert
+            VerifyEditTeam(teamToEdit, Times.Once());
+            TestHelper.Equals(exeptedTeam, teamToEdit);
+        }
+
+        /// <summary>
+        /// Test for FromPlayers() method. 
+        /// Should throw MissingEntityException
+        /// </summary>
+        [TestMethod]
+        public void RemovePalyers_FromTeam_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToRemove = new List<PlayerId>();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testTeam.Id))).Returns(testTeam);
+
+            // Act
+            var sut = BuildSUT();
+            var gotException = false;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, testPlayersIdToRemove);
+            }
+            catch (MissingEntityException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyEditTeam(testTeam, Times.Never());
+        }
         #endregion
 
         #region Authorization team tests
@@ -1023,6 +1555,19 @@
             }
 
             return invalidTeamCoachName.ToString();
+        }
+
+        /// <summary>
+        /// Creates Team coach name with more number of symbols than it is allowed
+        /// </summary>
+        /// <returns>Invalid team coach name</returns>
+        private IEnumerable<PlayerId> CreateSeveralPlayersId()
+        {
+            var players = new List<PlayerId> {
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+            return players;
         }
 
         /// <summary>

@@ -483,19 +483,22 @@
         public void Create_PlayerIsNotCaptainOfExistingTeam_TeamCreated()
         {
             // Arrange
-            var newTeam = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            var newTeamDto = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.IsAny<FindByIdCriteria>())).Returns(captain);
-            _getTeamByCaptainQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
+
+            MockGetPlayerByIdQuery(captain);
+            MockGetTeamByCaptainId(captain.Id, null);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToReturn(newTeam);
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            var createdTeam = sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreEqual(newTeam.Captain, captain.Id);
-            VerifyCreateTeam(newTeam, Times.Once());
+            Assert.AreEqual(createdTeam.Captain.Id, captain.Id);
+            VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
         /// <summary>
@@ -961,6 +964,10 @@
         private void MockTeamRepositoryAddToThrow(CreateTeamDto testTeam, Exception exception) =>
             _teamRepositoryMock.Setup(tr => tr.Add(It.Is<CreateTeamDto>(dto => CreateTeamDtosAreEqual(dto, testTeam))))
                 .Throws(exception);
+
+        private void MockTeamRepositoryAddToReturn(Team team) =>
+            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()))
+                .Returns(team);
 
         private void VerifyCreateTeam(CreateTeamDto team, Times times)
         {

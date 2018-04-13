@@ -55,7 +55,7 @@
         {
             var teams = _unitOfWork.Context.Teams.Where(t => t.Id == criteria.Id).ToList();
             return teams
-                .Select(t => GetTeamMapping(t))
+                .Select(MapTeam)
                 .SingleOrDefault();
         }
 
@@ -67,7 +67,7 @@
         public ICollection<Team> Execute(GetAllCriteria criteria)
         {
             var teams = _unitOfWork.Context.Teams.ToList();
-            return teams.Select(t => GetTeamMapping(t)).ToList();
+            return teams.Select(MapTeam).ToList();
         }
 
         /// <summary>
@@ -79,7 +79,7 @@
         {
             return _unitOfWork.Context.Teams
                 .Where(t => t.CaptainId == criteria.CaptainId)
-                .Select(t => GetTeamMapping(t))
+                .Select(MapTeam)
                 .SingleOrDefault();
         }
 
@@ -110,7 +110,7 @@
             return _unitOfWork.Context.Groups
                                       .Where(g => g.Id == criteria.GroupId)
                                       .SelectMany(g => g.Teams)
-                                      .Select(t => GetTeamMapping(t))
+                                      .Select(MapTeam)
                                       .ToList();
         }
 
@@ -121,7 +121,7 @@
                                       .Select(t => t.Divisions)
                                       .SelectMany(d => d.Select(g => g.Groups))
                                       .Select(g => g.SelectMany(t => t.Teams))
-                                      .Select(c => c.Select(t => GetTeamMapping(t)).ToList())
+                                      .Select(c => c.Select(MapTeam).ToList())
                                       .ToList();
         }
 
@@ -129,14 +129,14 @@
 
         #region Mapping
 
-        private static Team GetTeamMapping(TeamEntity t)
+        private static Team MapTeam(TeamEntity t)
         {
             return new Team(t.Id,
-                                  t.Name,
-                                  t.Coach,
-                                  t.Achievements,
-                                  new PlayerId(t.CaptainId),
-                                  t.Players.Select(p => new PlayerId(p.Id)));
+                            t.Name,
+                            t.Coach,
+                            t.Achievements,
+                            new PlayerId(t.CaptainId),
+                            t.Players.Select(p => new PlayerId(p.Id)));
         }
 
         #endregion

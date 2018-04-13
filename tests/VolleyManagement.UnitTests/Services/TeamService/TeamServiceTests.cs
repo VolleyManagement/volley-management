@@ -160,23 +160,22 @@
         /// Test for Create() method. The method should create a new team.
         /// </summary>
         [TestMethod]
-        public void Create_CreateTeamDtoPassed_TeamCreated()
+        public void Create_CreateTeamDtoPassed_DtoAddedByRepository()
         {
             // Arrange
             var newTeamDto = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()));
 
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-
             MockGetPlayerBySpecificIdQuery(SPECIFIC_PLAYER_ID, captain);
             MockGetAllTeamsQuery(CreateSeveralTeams());
 
-            // Act
             var sut = BuildSUT();
-            var newTeam = sut.Create(newTeamDto);
+
+            // Act
+            sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreNotEqual(newTeam.Id, UNASSIGNED_ID);
             VerifyCreateTeam(newTeamDto, Times.Once());
         }
 

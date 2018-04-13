@@ -354,15 +354,16 @@
         public void Create_InvalidTeamCoachNameNotAllowedSymbols_ArgumentExceptionThrown()
         {
             var invalidCoachName = "name%-)";
-            var argExMessage = string.Format(
-                    Resources.ValidationCoachName,
-                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
+            var argExMessage = Resources.ValidationCoachName;
             var testTeam = new CreateTeamDtoBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam, 
+                new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -379,7 +380,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamCoachName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>

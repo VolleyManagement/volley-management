@@ -57,7 +57,7 @@
             IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
-        IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
+            IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<ICollection<Player>, TeamPlayersCriteria> getTeamRosterQuery,
             IAuthorizationService authService)
 #pragma warning restore S107 // Methods should not have too many parameters
@@ -90,6 +90,8 @@
         public Team Create(CreateTeamDto teamToCreate)
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
+
+            ThrowExceptionIfTeamWithSuchNameExists(teamToCreate.Name);
 
             var captain = GetPlayerById(teamToCreate.Captain.Id);
             if (captain == null)
@@ -149,6 +151,9 @@
         public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
+
+            ThrowExceptionIfTeamWithSuchNameExists(teamToEdit.Name);
+
             var captainId = teamToEdit.Captain.Id;
             var captain = GetPlayerById(captainId);
 
@@ -169,7 +174,6 @@
             newTeam.Name = teamToEdit.Name;
             newTeam.Achievements = teamToEdit.Achievements;
             newTeam.Coach = teamToEdit.Coach;
-            ValidateTeam(newTeam);
 
             try
             {
@@ -254,14 +258,18 @@
             return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId.Id });
         }
 
-        private static bool ValidateTwoTeamsName(Team teamToValidate, ICollection<Team> getExistingTeams)
+        private void ThrowExceptionIfTeamWithSuchNameExists(string name)
         {
-            var existingTeams = from ex in getExistingTeams
-                                where ex.Id != teamToValidate.Id
-                                where string.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
-                                select ex;
-            return existingTeams.Count() != 0;
+            if (TeamWithNameExists(name))
+            {
+                throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
+            }
         }
+
+        private bool TeamWithNameExists(string name) =>
+            _getAllTeamsQuery.Execute(new GetAllCriteria())
+                .Select(t => t.Name)
+                .Contains(name);
 
         private static void VerifyExistingTeamOrThrow(Team existTeam)
         {
@@ -281,62 +289,6 @@
         private Player GetPlayerById(int id)
         {
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
-
-        private static void ValidateTeamName(string teamName)
-        {
-            if (TeamValidation.ValidateTeamName(teamName))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationTeamName,
-                    Domain.Constants.Team.MAX_NAME_LENGTH),
-                    nameof(teamName));
-            }
-        }
-
-        private static void ValidateCoachName(string teamCoachName)
-        {
-            if (!string.IsNullOrEmpty(teamCoachName)
-                && TeamValidation.ValidateCoachName(teamCoachName))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationCoachName,
-                    Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                    nameof(teamCoachName));
-            }
-        }
-
-        private static void ValidateAchievements(string teamAchievements)
-        {
-            if (!string.IsNullOrEmpty(teamAchievements)
-                && TeamValidation.ValidateAchievements(teamAchievements))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    TournamentResources.ValidationTeamAchievements,
-                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                    nameof(teamAchievements));
-            }
-        }
-
-        private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
-        {
-            var existingTeams = Get();
-            if (ValidateTwoTeamsName(teamToValidate, existingTeams))
-            {
-                throw new ArgumentException(
-                    TournamentResources.TeamNameInTournamentNotUnique);
-            }
-        }
-
-        private void ValidateTeam(Team teamToValidate)
-        {
-            ValidateTeamName(teamToValidate.Name);
-            ValidateCoachName(teamToValidate.Coach);
-            ValidateAchievements(teamToValidate.Achievements);
-            ValidateTwoTeamsWithTheSameName(teamToValidate);
         }
     }
 }

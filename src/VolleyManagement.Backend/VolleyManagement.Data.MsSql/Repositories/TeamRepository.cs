@@ -67,26 +67,35 @@ namespace VolleyManagement.Data.MsSql.Repositories
         /// <param name="updatedEntity">Updated team.</param>
         public void Update(Team updatedEntity)
         {
-            var teamToUpdate = _dalTeams.SingleOrDefault(t => t.Id == updatedEntity.Id);
-
-            if (teamToUpdate == null)
-            {
-                throw new ConcurrencyException();
-            }
+            var teamToUpdate = _dalTeams.Find(updatedEntity.Id);
 
             DomainToDal.Map(teamToUpdate, updatedEntity);
 
-            var playersToAdd = updatedEntity.Roster.Select(p => p.Id)
-                .Except(teamToUpdate.Players.Select(p => p.Id));
-
-            var playersToRemove = teamToUpdate.Players.Select(p => p.Id)
-                .Except(updatedEntity.Roster.Select(p => p.Id));
-
-            AddPlayers(teamToUpdate, playersToAdd);
-            RemovePlayers(teamToUpdate, playersToRemove);
-
+            AddAndRemovePlayersFromTeam(updatedEntity, teamToUpdate);
 
             _unitOfWork.Commit();
+        }
+
+        private void AddAndRemovePlayersFromTeam(Team updatedEntity, TeamEntity teamToUpdate)
+        {
+            var playersToAdd = updatedEntity.Roster.Select(p => p.Id)
+                .Except(teamToUpdate.Players.Select(p => p.Id));
+            var playersToRemove = teamToUpdate.Players.Select(p => p.Id)
+                .Except(updatedEntity.Roster.Select(p => p.Id));
+            var playersIds = playersToAdd.Union(playersToRemove).ToList();
+
+            var playerEntities = _unitOfWork.Context.Players
+                .Where(p => playersIds.Contains(p.Id));
+
+            foreach (var playerId in playersToAdd)
+            {
+                playerEntities.Single(p => p.Id == playerId).TeamId = teamToUpdate.Id;
+            }
+
+            foreach (var playerId in playersToRemove)
+            {
+                playerEntities.Single(p => p.Id == playerId).TeamId = null;
+            }
         }
 
         /// <summary>
@@ -99,23 +108,6 @@ namespace VolleyManagement.Data.MsSql.Repositories
             _dalTeams.Attach(dalToRemove);
             _dalTeams.Remove(dalToRemove);
             _unitOfWork.Commit();
-        }
-
-        private static void RemovePlayers(TeamEntity team, IEnumerable<int> playersToRemove)
-        {
-            foreach (var playerId in playersToRemove.ToList())
-            {
-                team.Players.Remove(team.Players.First(p => p.Id == playerId));
-            }
-        }
-
-        private void AddPlayers(TeamEntity team, IEnumerable<int> playersToAdd)
-        {
-            var entitiesToAdd = _unitOfWork.Context.Players.Where(p => playersToAdd.Contains(p.Id));
-            foreach (var player in entitiesToAdd)
-            {
-                team.Players.Add(player);
-            }
         }
     }
 }

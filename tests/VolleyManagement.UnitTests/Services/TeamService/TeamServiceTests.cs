@@ -281,15 +281,16 @@
         public void Create_EmptyTeamName_ArgumentExceptionThrown()
         {
             var invalidName = string.Empty;
-            var argExMessage = string.Format(
-                    Resources.ValidationTeamName,
-                    Domain.Constants.Team.MAX_NAME_LENGTH);
+            var argExMessage = TournamentResources.ValidationTeamName;
             var testTeam = new CreateTeamDtoBuilder()
                                         .WithName(invalidName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+            _getPlayerByIdQueryMock.Setup(pr => 
+                                pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            _teamRepositoryMock.Setup(pr => pr.Add(It.Is<CreateTeamDto>(dto => CreateTeamDtosAreEqual(dto, testTeam))))
+                .Throws(new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -306,7 +307,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>

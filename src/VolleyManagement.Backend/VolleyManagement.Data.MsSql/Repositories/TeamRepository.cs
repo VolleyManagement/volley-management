@@ -71,12 +71,26 @@ namespace VolleyManagement.Data.MsSql.Repositories
 
             DomainToDal.Map(teamToUpdate, updatedEntity);
 
-            AddAndRemovePlayersFromTeam(updatedEntity, teamToUpdate);
+            AddAndRemovePlayersInTeam(updatedEntity, teamToUpdate);
 
             _unitOfWork.Commit();
         }
 
-        private void AddAndRemovePlayersFromTeam(Team updatedEntity, TeamEntity teamToUpdate)
+        /// <summary>
+        /// Removes team by id.
+        /// </summary>
+        /// <param name="teamId">The id of team to remove.</param>
+        public void Remove(TeamId teamId)
+        {
+            var dalToRemove = new TeamEntity { Id = teamId.Id };
+            _dalTeams.Attach(dalToRemove);
+            _dalTeams.Remove(dalToRemove);
+            _unitOfWork.Commit();
+        }
+
+        #region private
+
+        private void AddAndRemovePlayersInTeam(Team updatedEntity, TeamEntity teamToUpdate)
         {
             var playersToAdd = updatedEntity.Roster.Select(p => p.Id)
                 .Except(teamToUpdate.Players.Select(p => p.Id));
@@ -98,16 +112,6 @@ namespace VolleyManagement.Data.MsSql.Repositories
             }
         }
 
-        /// <summary>
-        /// Removes team by id.
-        /// </summary>
-        /// <param name="teamId">The id of team to remove.</param>
-        public void Remove(TeamId teamId)
-        {
-            var dalToRemove = new TeamEntity { Id = teamId.Id };
-            _dalTeams.Attach(dalToRemove);
-            _dalTeams.Remove(dalToRemove);
-            _unitOfWork.Commit();
-        }
+        #endregion
     }
 }

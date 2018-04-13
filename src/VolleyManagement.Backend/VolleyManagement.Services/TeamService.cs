@@ -34,6 +34,7 @@
         private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
         private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<ICollection<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
+        private readonly IQuery<Team, FindByNameCriteria> _getTeamByNameQuery;
         private readonly IAuthorizationService _authService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
@@ -59,6 +60,7 @@
             IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
             IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<ICollection<Player>, TeamPlayersCriteria> getTeamRosterQuery,
+            IQuery<Team, FindByNameCriteria> getTeamByNameQuery,
             IAuthorizationService authService)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -71,6 +73,7 @@
             _getPlayerTeamQuery = getPlayerTeamQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getTeamRosterQuery = getTeamRosterQuery;
+            _getTeamByNameQuery = getTeamByNameQuery;
             _authService = authService;
         }
 

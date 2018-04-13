@@ -52,6 +52,7 @@
         private Mock<IQuery<int, FindByPlayerCriteria>> _getTeamByPlayerMock;
         private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
         private Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock;
+        private Mock<IQuery<Team, FindByNameCriteria>> _getTeamByNameQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
@@ -74,6 +75,7 @@
             _getTeamByPlayerMock = new Mock<IQuery<int, FindByPlayerCriteria>>();
             _getAllTeamsQueryMock = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTeamRosterQueryMock = new Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>>();
+            _getTeamByNameQueryMock = new Mock<IQuery<Team, FindByNameCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
         }
 
@@ -535,15 +537,14 @@
         /// Throw exeption
         /// </summary>
         [TestMethod]
-        public void Create_TeamNameIsAlreadyExist_ValidationExceptionThrown()
+        public void Create_TeamNameAlreadyExists_ValidationExceptionThrown()
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
             var newTeam = new CreateTeamDtoBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
-            var teamWithSameName = new CreateTeamDtoBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
+            var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
             var existingTeams = CreateSeveralTeams();
-            throw new NotImplementedException();
-            existingTeams.Add(null);// teamWithSameName);
+            existingTeams.Add(teamWithSameName);
             MockGetAllTeamsQuery(existingTeams);
 
             var sut = BuildSUT();
@@ -905,6 +906,7 @@
                 _getTeamByPlayerMock.Object,
                 _getAllTeamsQueryMock.Object,
                 _getTeamRosterQueryMock.Object,
+                _getTeamByNameQueryMock.Object,
                 _authServiceMock.Object);
         }
 

@@ -193,11 +193,10 @@
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
 
-            _getPlayerByIdQueryMock
-                .Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id)))
-                .Returns(testPlayer);
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
-            MockTeamRepositoryAddToThrow(testTeam, new ArgumentException(argExMessage));
+            MockTeamRepositoryAddToThrow(testTeam, 
+                new ArgumentException(argExMessage));
 
             Exception exception = null;
             var sut = BuildSUT();
@@ -289,7 +288,8 @@
             _getPlayerByIdQueryMock.Setup(pr => 
                                 pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
-            MockTeamRepositoryAddToThrow(testTeam, new ArgumentException(argExMessage));
+            MockTeamRepositoryAddToThrow(testTeam, 
+                new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -322,8 +322,11 @@
                                         .WithCoach(invalidCoachName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam, 
+                new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -340,7 +343,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamCoachName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>

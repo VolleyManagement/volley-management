@@ -145,7 +145,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.SetCaptain(null); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Set null  Captain not allowed");
+            act.Should().Throw<ArgumentException>("Team should always have captain");
         }
 
         [Fact]
@@ -155,10 +155,10 @@ namespace VolleyManagement.Domain.UnitTests
             var team = CreateTeam();
 
             //Act
-            Action act = () => { team.SetCaptain(GetPlayerIdLessThanMin()); };
+            Action act = () => { team.SetCaptain(GetInvalidPlayerId()); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("CaptainId can`t be less then minimum alloved value");
+            act.Should().Throw<ArgumentException>("CaptainId can`t be less then minimum allowed value. Should be valid ID.");
         }
 
         #endregion
@@ -188,7 +188,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () =>
             {
                 team.AddPlayers(new List<PlayerId>() {
-                    GetPlayerIdLessThanMin()
+                    GetInvalidPlayerId()
                 });
             };
 
@@ -358,7 +358,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () =>
             {
                 team.RemovePlayers(new List<PlayerId>() {
-                    GetPlayerIdLessThanMin()
+                    GetInvalidPlayerId()
                 });
             };
 
@@ -396,7 +396,7 @@ namespace VolleyManagement.Domain.UnitTests
         }
 
 
-        private PlayerId GetPlayerIdLessThanMin()
+        private PlayerId GetInvalidPlayerId()
         {
              return new PlayerId(Constants.Team.MIN_ID-1);
         }

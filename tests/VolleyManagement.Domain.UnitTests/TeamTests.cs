@@ -142,10 +142,10 @@ namespace VolleyManagement.Domain.UnitTests
             var team = CreateTeam();
 
             //Act
-            Action act = () => { team.Captain = null; };
+            Action act = () => { team.SetCaptain(null); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Create team without Captain not allowed");
+            act.Should().Throw<ArgumentException>("Team should always have captain");
         }
 
         [Fact]
@@ -155,10 +155,10 @@ namespace VolleyManagement.Domain.UnitTests
             var team = CreateTeam();
 
             //Act
-            Action act = () => { team.Captain = new PlayerId(Constants.Team.MIN_ID - 1); };
+            Action act = () => { team.SetCaptain(GetInvalidPlayerId()); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Create team without Captain not allowed, CaptainId can`t be less then minimum alloved value");
+            act.Should().Throw<ArgumentException>("CaptainId can`t be less then minimum allowed value. Should be valid ID.");
         }
 
         #endregion
@@ -166,20 +166,20 @@ namespace VolleyManagement.Domain.UnitTests
         #region Roster
 
         [Fact]
-        public void Team_RosterIsNull_ExceptionIsThrown()
+        public void Team_ListOfPlayersToAddIsNull_ExceptionIsThrown()
         {
             //Arrange
             var team = CreateTeam();
 
             //Act
-            Action act = () => { team.Roster = null; };
+            Action act = () => { team.AddPlayers(null); };
 
             //Assert
             act.Should().Throw<ArgumentException>("Team Roster can`t be null.");
         }
 
         [Fact]
-        public void Team_MinPlayerID_ExceptionIsThrown()
+        public void Team_PlayerIDLessThanMin_ExceptionIsThrown()
         {
             //Arrange
             var team = CreateTeam();
@@ -187,13 +187,13 @@ namespace VolleyManagement.Domain.UnitTests
             //Act
             Action act = () =>
             {
-                team.Roster = new List<PlayerId>() {
-                new PlayerId(Constants.Team.MIN_ID-1)
-                };
+                team.AddPlayers(new List<PlayerId>() {
+                    GetInvalidPlayerId()
+                });
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team's roster is wrong");
+            act.Should().Throw<ArgumentException>("It`s impossible add to team players that has id less than allowed");
 
         }
 
@@ -205,15 +205,167 @@ namespace VolleyManagement.Domain.UnitTests
             //Act
             Action act = () =>
             {
-                team.Roster = new List<PlayerId>() {
-            new PlayerId(2),
-            new PlayerId(2)
-                    };
+                team.AddPlayers(new List<PlayerId>() {
+                    GetPlayerIdTwo(),
+                    GetPlayerIdTwo()
+                });
             };
 
             //Assert
             act.Should().Throw<ArgumentException>("Team Roster can`t has players with the same Id.");
         }
+
+        [Fact]
+        public void Team_PlayerIsAlreadyPlaysInTeam_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+            team.AddPlayers(new List<PlayerId>() {
+                GetPlayerIdThree(),
+                GetPlayerIdFour()
+            });
+
+            //Act
+            Action act = () =>
+            {
+                team.AddPlayers(new List<PlayerId>() {
+                    GetPlayerIdFour()
+                });
+            };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("It`s impossible add player that already plays in team.");
+        }
+
+        [Fact]
+        public void Team_PlayerToAddIsNull_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+            var listAddPlayers = new List<PlayerId>() {
+                null
+            };
+
+            //Act
+            Action act = () =>
+            {
+                team.AddPlayers(listAddPlayers);
+            };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("It's impossible add rosters players that is null.");
+        }
+
+        [Fact]
+        public void Team_RemoveListPlayersIsNull_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+
+            //Act
+            Action act = () => { team.RemovePlayers(null); };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("It's impossible remove rosters players that is null.");
+        }
+
+        [Fact]
+        public void Team_RemoveCaptain_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+
+            //Act
+            Action act = () =>
+            {
+                team.RemovePlayers(new List<PlayerId>() {
+                    new PlayerId(team.Captain.Id)
+                });
+            };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("Team can`t be without captain, it`s impossible remove captain from team.");
+
+        }
+
+        [Fact]
+        public void Team_RemoveDuplicatePlayers_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+            //Act
+            Action act = () =>
+            {
+                team.RemovePlayers(new List<PlayerId>() {
+                    GetPlayerIdTwo(),
+                    GetPlayerIdTwo()
+                });
+            };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("Team Roster can`t delete duplicate players.");
+        }
+
+        [Fact]
+        public void Team_RemovePlayerWhichIsNotPartOfTheTeam_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+            team.AddPlayers(new List<PlayerId>() {
+                GetPlayerIdFour(),
+                GetPlayerIdTwo()
+                
+            });
+            //Act
+            Action act = () =>
+            {
+                team.RemovePlayers(new List<PlayerId>() {
+                    GetPlayerIdFour(),
+                    GetPlayerIdThree()
+                });
+            };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("Team Roster can`t delete players that doesn`t have.");
+        }
+
+        [Fact]
+        public void Team_PlayerToRemoveIsNull_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+            var listRemovePlayers = new List<PlayerId>() {
+                null
+            };
+
+            //Act
+            Action act = () =>
+            {
+                team.RemovePlayers(listRemovePlayers);
+            };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("Team Roster can`t delete list that contains null.");
+        }
+
+        [Fact]
+        public void Team_PlayerIdToRemoveIsNotValid_ExceptionIsThrown()
+        {
+            //Arrange
+            var team = CreateTeam();
+
+            //Act
+            Action act = () =>
+            {
+                team.RemovePlayers(new List<PlayerId>() {
+                    GetInvalidPlayerId()
+                });
+            };
+
+            //Assert
+            act.Should().Throw<ArgumentException>("Team Roster can`t delete player with not valid Id.");
+        }
+
         #endregion
 
         #region Private methods
@@ -227,6 +379,28 @@ namespace VolleyManagement.Domain.UnitTests
             actual.Captain.Id.Should().Be(TEST_TEAM_CAPTAIN_ID, "Team's captain id wasn't set properly.");
             actual.Roster.Should().BeEquivalentTo(GetTeamRoster(), "Team's roster wasn't set properly");
         }
+
+        private PlayerId GetPlayerIdFour()
+        {
+            return new PlayerId(4);
+        }
+
+        private PlayerId GetPlayerIdThree()
+        {
+            return new PlayerId(3);
+        }
+
+        private PlayerId GetPlayerIdTwo()
+        {
+            return new PlayerId(2);
+        }
+
+
+        private PlayerId GetInvalidPlayerId()
+        {
+             return new PlayerId(Constants.Team.MIN_ID-1);
+        }
+
 
         private List<PlayerId> GetTeamRoster()
         {

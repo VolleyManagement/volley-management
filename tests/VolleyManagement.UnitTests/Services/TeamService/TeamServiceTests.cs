@@ -34,6 +34,7 @@
 
         private const int SPECIFIC_PLAYER_ID = 2;
         private const int PLAYER_ID = 1;
+        private const int TEAM_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int UNASSIGNED_ID = 0;
         private const string TEAM_NAME_TO_VALIDATE = "empire";
@@ -808,6 +809,88 @@
 
             // Assert
             VerifyEditTeam(teamToEdit, Times.Once());
+        }
+
+
+        [TestMethod]
+        public void ChangeCaptain_PlayerIsAlreadyPlayInTeam_CaptainUpdated()
+        {
+            // Arrange
+            var newCaptain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
+            var newCaptainId = new PlayerId(newCaptain.Id);
+            var teamRoster = new List<PlayerId> {
+                newCaptainId
+            };
+
+            var teamForEdit = new TeamBuilder().WithCaptain(new PlayerId(PLAYER_ID)).WithRoster(teamRoster).Build();
+            var teamForEditId = new TeamId(teamForEdit.Id);
+
+            MockGetTeamByPlayerQuery(TEAM_ID);
+            MockGetTeamByIdQuery(teamForEdit);
+
+            // Act
+            var sut = BuildSUT();
+            sut.ChangeCaptain(teamForEditId, newCaptainId);
+
+            // Assert
+            Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
+        }
+
+
+        [TestMethod]
+        public void ChangeCaptain_PlayerHasNoTeam_CaptainUpdated()
+        {
+            // Arrange
+            var newCaptainId = new PlayerId(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build().Id);
+            var teamForEdit = new TeamBuilder().WithCaptain(new PlayerId(PLAYER_ID)).Build();
+            var teamForEditId = new TeamId(teamForEdit.Id);
+
+            MockGetTeamByPlayerQuery(TEAM_ID);
+            MockGetTeamByIdQuery(teamForEdit);
+
+            // Act
+            var sut = BuildSUT();
+            sut.ChangeCaptain(teamForEditId, newCaptainId);
+
+            // Assert
+            Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
+        }
+
+        [TestMethod]
+        public void ChangeCaptain_PlayerIsPlayerOfAnotherTeam_Exception()
+        {
+            // Arrange
+            var newCaptain = new PlayerBuilder(PLAYER_ID).Build();
+            var newCaptainId = new PlayerId(newCaptain.Id);
+            var teamRoster = new List<PlayerId> {
+                newCaptainId
+            };
+            var newCaptainTeam = new TeamBuilder().WithId(TEAM_ID).WithRoster(teamRoster).Build();
+
+            var lastCaptain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
+            var lastCaptainId = new PlayerId(lastCaptain.Id);
+            var teamForEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCaptain(lastCaptainId).Build();
+            var teamForEditId = new TeamId(teamForEdit.Id);
+
+            MockGetTeamByPlayerQuery(newCaptainTeam.Id);
+            MockGetTeamByIdQuery(teamForEdit);
+
+            // Act
+            var sut = BuildSUT();
+            var gotException = false;
+
+            try
+            {
+                sut.ChangeCaptain(teamForEditId, newCaptainId);
+            }
+            catch (ValidationException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyEditTeam(teamForEdit, Times.Never());
         }
 
         #endregion

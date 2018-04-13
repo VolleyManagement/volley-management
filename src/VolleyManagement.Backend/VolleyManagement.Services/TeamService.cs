@@ -240,9 +240,17 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
             }
+            var captainTeamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = captainId.Id });
 
-            teamToEdit.SetCaptain(captainId);
-            _teamRepository.Update(teamToEdit);
+            if (captainTeamId == teamToEdit.Id || captainTeamId == 0)
+            {
+                teamToEdit.SetCaptain(captainId);
+                _teamRepository.Update(teamToEdit);
+            }
+            else
+            {
+                throw new ValidationException(ServiceResources.ExceptionMessages.PlayerIsPlayerOfAnotherTeam);
+            }
         }
 
         /// <summary>

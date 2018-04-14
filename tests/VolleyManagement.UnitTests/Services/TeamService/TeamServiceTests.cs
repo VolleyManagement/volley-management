@@ -537,15 +537,14 @@
         /// Throw exeption
         /// </summary>
         [TestMethod]
-        public void Create_TeamNameAlreadyExists_ValidationExceptionThrown()
+        public void Create_TeamWithGivenNameAlreadyExists_ValidationExceptionThrown()
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
             var newTeam = new CreateTeamDtoBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
             var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
-            var existingTeams = CreateSeveralTeams();
-            existingTeams.Add(teamWithSameName);
-            MockGetAllTeamsQuery(existingTeams);
+
+            MockGetByNameTeamQuery(teamWithSameName);
 
             var sut = BuildSUT();
             Exception exception = null;
@@ -969,6 +968,10 @@
 
         private void MockTeamRepositoryAddToReturn(Team team) =>
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()))
+                .Returns(team);
+
+        private void MockGetByNameTeamQuery(Team team) =>
+            _getTeamByNameQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByNameCriteria>()))
                 .Returns(team);
 
         private void VerifyCreateTeam(CreateTeamDto team, Times times)

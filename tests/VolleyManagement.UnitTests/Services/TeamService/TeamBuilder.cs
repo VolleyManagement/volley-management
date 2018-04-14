@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.TeamService
+﻿using System.Linq;
+
+namespace VolleyManagement.UnitTests.Services.TeamService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -20,7 +22,7 @@
         /// </summary>
         public TeamBuilder()
         {
-            _team = new Team(1, 
+            _team = new Team(1,
                 "TeamNameA",
                 "TeamCoachA",
                 "TeamAchievementsA",
@@ -35,7 +37,7 @@
         /// <returns>Team builder object</returns>
         public TeamBuilder WithId(int id)
         {
-            _team = new Team(id, 
+            _team = new Team(id,
                 _team.Name,
                 _team.Coach,
                 _team.Achievements,
@@ -101,6 +103,17 @@
                 _team.Achievements,
                 _team.Captain,
                 roster);
+            return this;
+        }
+
+        /// <summary>
+        /// Add player in the team
+        /// </summary>
+        /// <param name="playerId">Test team player</param>
+        /// <returns>Team builder object</returns>
+        public TeamBuilder WithPlayer(PlayerId playerId)
+        {
+            _team.Roster.ToList().Add(playerId);
             return this;
         }
 

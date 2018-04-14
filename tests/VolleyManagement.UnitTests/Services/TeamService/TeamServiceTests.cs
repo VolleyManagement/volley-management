@@ -808,26 +808,6 @@
                 new ArgumentException(argExMessage));
         }
 
-        /// <summary>
-        /// Test for Edit() method. Any property except name
-        /// </summary>
-        [TestMethod]
-        public void Edit_TeamNameAlreadyExist_TeamUpdated()
-        {
-            // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
-            var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetAllTeamsQuery(CreateSeveralTeams());
-            MockGetTeamByIdQuery(teamToEdit);
-
-            // Act
-            var sut = BuildSUT();
-            sut.Edit(teamToEdit);
-
-            // Assert
-            VerifyEditTeam(teamToEdit, Times.Once());
-        }
-
         #endregion
 
         #region Authorization team tests

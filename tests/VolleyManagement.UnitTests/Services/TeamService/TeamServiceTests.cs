@@ -758,16 +758,18 @@
         public void Edit_TeamPassed_TeamUpdated()
         {
             // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
             var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetAllTeamsQuery(CreateSeveralTeams());
+            
+            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
+            MockGetTeamByIdQuery(new TeamBuilder().Build());
+
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
             sut.Edit(teamToEdit);
 
             // Assert
-            VerifyEditTeam(teamToEdit, Times.Once());
+            VerifyEditSimpleDataInTeam(teamToEdit, Times.Once());
         }
 
         /// <summary>
@@ -993,6 +995,14 @@
         {
             _teamRepositoryMock.Verify(tr => tr.Update(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
         }
+
+        private void VerifyEditSimpleDataInTeam(Team team, Times times) =>
+            _teamRepositoryMock.Verify(tr => tr.Update(
+                It.Is<Team>(t => 
+                            t.Name.Equals(team.Name) &&
+                            t.Coach.Equals(team.Coach) &&
+                            t.Achievements.Equals(team.Achievements))),
+                 times);
 
         private void VerifyEditPlayer(int playerId, int teamId, Times times)
         {

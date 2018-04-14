@@ -19,13 +19,15 @@
                                IQuery<Team, FindByCaptainIdCriteria>,
                                IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>,
                                IQuery<ICollection<Team>, FindTeamsByGroupIdCriteria>,
-                               IQuery<ICollection<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
+                               IQuery<ICollection<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>,
+                               IQuery<Team, FindByNameCriteria>
     {
         #region Fields
 
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<DivisionEntity> _dalDivisions;
         private readonly DbSet<GroupEntity> _dalGroups;
+        private readonly DbSet<TeamEntity> _dalTeams;
 
         #endregion
 
@@ -40,6 +42,7 @@
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalDivisions = _unitOfWork.Context.Divisions;
             _dalGroups = _unitOfWork.Context.Groups;
+            _dalTeams = _unitOfWork.Context.Teams;
         }
 
         #endregion
@@ -53,7 +56,7 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public Team Execute(FindByIdCriteria criteria)
         {
-            var teams = _unitOfWork.Context.Teams.Where(t => t.Id == criteria.Id).ToList();
+            var teams = _dalTeams.Where(t => t.Id == criteria.Id).ToList();
             return teams
                 .Select(t => GetTeamMapping(t))
                 .SingleOrDefault();
@@ -66,7 +69,7 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public ICollection<Team> Execute(GetAllCriteria criteria)
         {
-            var teams = _unitOfWork.Context.Teams.ToList();
+            var teams = _dalTeams.ToList();
             return teams.Select(t => GetTeamMapping(t)).ToList();
         }
 
@@ -77,7 +80,7 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
-            return _unitOfWork.Context.Teams
+            return _dalTeams
                 .Where(t => t.CaptainId == criteria.CaptainId)
                 .Select(t => GetTeamMapping(t))
                 .SingleOrDefault();
@@ -123,6 +126,13 @@
                                       .Select(g => g.SelectMany(t => t.Teams))
                                       .Select(c => c.Select(t => GetTeamMapping(t)).ToList())
                                       .ToList();
+        }
+
+        public Team Execute(FindByNameCriteria criteria)
+        {
+            var teamEntity = _dalTeams.FirstOrDefault(t => t.Name == criteria.Name);
+
+            return teamEntity == null ? null : GetTeamMapping(teamEntity);
         }
 
         #endregion

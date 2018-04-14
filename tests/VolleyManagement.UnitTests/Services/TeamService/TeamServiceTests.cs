@@ -816,13 +816,9 @@
         public void ChangeCaptain_PlayerIsAlreadyPlayInTeam_CaptainUpdated()
         {
             // Arrange
-            var newCaptain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            var newCaptainId = new PlayerId(newCaptain.Id);
-            var teamRoster = new List<PlayerId> {
-                newCaptainId
-            };
+            var newCaptainId = new PlayerId(SPECIFIC_PLAYER_ID);
 
-            var teamForEdit = new TeamBuilder().WithCaptain(new PlayerId(PLAYER_ID)).WithRoster(teamRoster).Build();
+            var teamForEdit = new TeamBuilder().WithPlayer(newCaptainId).Build();
             var teamForEditId = new TeamId(teamForEdit.Id);
 
             MockGetTeamByPlayerQuery(TEAM_ID);
@@ -841,8 +837,8 @@
         public void ChangeCaptain_PlayerHasNoTeam_CaptainUpdated()
         {
             // Arrange
-            var newCaptainId = new PlayerId(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build().Id);
-            var teamForEdit = new TeamBuilder().WithCaptain(new PlayerId(PLAYER_ID)).Build();
+            var newCaptainId = new PlayerId(SPECIFIC_PLAYER_ID);
+            var teamForEdit = new TeamBuilder().Build();
             var teamForEditId = new TeamId(teamForEdit.Id);
 
             MockGetTeamByPlayerQuery(TEAM_ID);
@@ -857,19 +853,13 @@
         }
 
         [TestMethod]
-        public void ChangeCaptain_PlayerIsPlayerOfAnotherTeam_Exception()
+        public void ChangeCaptain_PlayerIsPlayerOfAnotherTeam_ValidateExceptionThrown()
         {
             // Arrange
-            var newCaptain = new PlayerBuilder(PLAYER_ID).Build();
-            var newCaptainId = new PlayerId(newCaptain.Id);
-            var teamRoster = new List<PlayerId> {
-                newCaptainId
-            };
-            var newCaptainTeam = new TeamBuilder().WithId(TEAM_ID).WithRoster(teamRoster).Build();
+            var newCaptainId = new PlayerId(PLAYER_ID);
+            var newCaptainTeam = new TeamBuilder().WithId(TEAM_ID).WithPlayer(newCaptainId).Build();
 
-            var lastCaptain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            var lastCaptainId = new PlayerId(lastCaptain.Id);
-            var teamForEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCaptain(lastCaptainId).Build();
+            var teamForEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             var teamForEditId = new TeamId(teamForEdit.Id);
 
             MockGetTeamByPlayerQuery(newCaptainTeam.Id);

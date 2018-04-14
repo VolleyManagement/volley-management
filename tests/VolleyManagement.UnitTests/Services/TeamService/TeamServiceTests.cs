@@ -541,7 +541,7 @@
             var newTeam = new CreateTeamDtoBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
             var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
 
-            MockGetByNameTeamQuery(teamWithSameName);
+            MockGetTeamByNameQuery(teamWithSameName);
 
             var sut = BuildSUT();
             Exception exception = null;
@@ -774,20 +774,18 @@
         /// Test for Edit() method. Existing team should be updated
         /// </summary>
         [TestMethod]
-        public void Edit_TeamNameIsAlreadyExist_ValidationExceptionThrown()
+        public void Edit_TeamNameAlreadyExists_ValidationExceptionThrown()
         {
             // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
             var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
-            var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
-            var existingTeams = CreateSeveralTeams();
-            existingTeams.Add(teamWithSameName);
-            MockGetAllTeamsQuery(existingTeams);
+            var teamWithTheSameName = new TeamBuilder().Build();
+            var argExMessage =
+                   TournamentResources.TeamNameInTournamentNotUnique;
+
+            MockGetTeamByNameQuery(teamWithTheSameName);
 
             var sut = BuildSUT();
             Exception exception = null;
-            var argExMessage =
-                   TournamentResources.TeamNameInTournamentNotUnique;
 
             // Act
             try
@@ -982,7 +980,7 @@
             _teamRepositoryMock.Setup(tr => tr.Update(It.IsAny<Team>()))
                 .Throws(exception);
 
-        private void MockGetByNameTeamQuery(Team team) =>
+        private void MockGetTeamByNameQuery(Team team) =>
             _getTeamByNameQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByNameCriteria>()))
                 .Returns(team);
 

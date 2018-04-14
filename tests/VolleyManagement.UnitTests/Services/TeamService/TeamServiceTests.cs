@@ -37,6 +37,7 @@
         private const int SPECIFIC_TEAM_ID = 2;
         private const int UNASSIGNED_ID = 0;
         private const string TEAM_NAME_TO_VALIDATE = "empire";
+        private const string TEAM_NOT_FOUND = "A team with specified identifier was not found";
 
         private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
 
@@ -663,19 +664,32 @@
         /// Edit() method test. catch ConcurrencyException from DAL
         /// Throws MissingEntityException
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(MissingEntityException))]
         public void Edit_CatchDalConcurrencyException_ThrowMissingEntityException()
         {
             // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
+            var exceptionMessage = TEAM_NOT_FOUND;
             var teamWithWrongId = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(pr => pr.Update(It.IsAny<Team>())).Throws(new ConcurrencyException());
-            MockGetAllTeamsQuery(CreateSeveralTeams());
+
+            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
+            MockGetTeamByIdQuery(new TeamBuilder().Build());
+            MockTeamRepositoryEditToThrow(new ConcurrencyException());
+
+            var exception = null as Exception;
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
-            sut.Edit(teamWithWrongId);
+            try
+            {
+                sut.Edit(teamWithWrongId);
+            }
+            catch(Exception ex)
+            {
+                exception = ex;
+            }
+
+            // Arrange
+            VerifyExceptionThrown(exception,
+                new MissingEntityException(exceptionMessage));
         }
 
         /// <summary>
@@ -963,6 +977,10 @@
         private void MockTeamRepositoryAddToReturn(Team team) =>
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()))
                 .Returns(team);
+
+        private void MockTeamRepositoryEditToThrow(Exception exception) =>
+            _teamRepositoryMock.Setup(tr => tr.Update(It.IsAny<Team>()))
+                .Throws(exception);
 
         private void MockGetByNameTeamQuery(Team team) =>
             _getTeamByNameQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByNameCriteria>()))

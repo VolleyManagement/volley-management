@@ -653,8 +653,6 @@
             _playerRepositoryMock.Verify(
                                          pr => pr.UpdateTeam(It.Is<Player>(player => expectedRoster.Contains(player)), null),
                                          Times.Exactly(expectedCountOfPlayers));
-
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Once());
         }
 
         #endregion

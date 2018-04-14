@@ -508,28 +508,24 @@
         /// was updated after creating team in DB
         /// </summary>
         [TestMethod]
-        public void Create_TeamPassed_CaptainUpdated()
+        public void Create_CreateDtoTeamPassed_CaptainUpdated()
         {
             // Arrange
-            var newTeam = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()));
-
+            var newTeamDto = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            var team = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
 
-            _getPlayerByIdQueryMock.Setup(pr =>
-                                          pr.Execute(It.Is<FindByIdCriteria>(
-                                              cr =>
-                                              cr.Id == captain.Id)))
-                                    .Returns(captain);
-            MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockGetPlayerBySpecificIdQuery(SPECIFIC_PLAYER_ID, captain);
+            MockTeamRepositoryAddToReturn(team);
+
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
-            sut.Create(newTeam);
+            var newTeam = sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreEqual(newTeam.Captain, captain.Id);
-            VerifyCreateTeam(newTeam, Times.Once());
+            Assert.AreEqual(newTeam.Captain.Id, captain.Id);
+            VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
         /// <summary>

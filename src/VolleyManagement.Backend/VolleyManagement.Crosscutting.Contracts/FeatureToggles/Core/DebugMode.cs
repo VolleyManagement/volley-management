@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace VolleyManagement.Crosscutting.Contracts.FeatureToggles.Core
+﻿namespace VolleyManagement.Crosscutting.Contracts.FeatureToggles.Core
 {
+    using System;
     using FeatureToggle.Core;
     using Microsoft.Extensions.Configuration;
 

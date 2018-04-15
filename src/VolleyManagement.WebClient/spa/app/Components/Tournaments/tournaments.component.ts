@@ -17,9 +17,7 @@ export class TournamentsComponent implements OnInit {
     this.tournamentsService
       .getTournaments()
       .toPromise()
-      .then(data => {
-        this.data = data;
-      });
+      .then(data => this.data = data);
   }
 
 }

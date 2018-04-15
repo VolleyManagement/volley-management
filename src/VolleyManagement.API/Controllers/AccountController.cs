@@ -75,6 +75,7 @@
                         new UserLoginInfo(GOOGLE, userInSystem.Email));
                     if (!result.Succeeded)
                     {
+                        result = await _userManager.DeleteAsync(userInSystem);
                         return Unauthorized();
                     }
                 }

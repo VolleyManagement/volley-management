@@ -26,7 +26,7 @@ import { GameReportsBoardComponent } from './Components/GameReportsBoard/game-re
 import { TournamentDataService } from './Services/tournament-data.service';
 import { GameResultCellDirective } from './Components/PivotStanding/game-result-cell.directive';
 import { LoginComponent } from './Components/Login/login.component';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { TournamentsComponent } from './Components/Tournaments/tournaments.component';
 import { MenuComponent } from './Components/Menu/menu.component';
 import { GoogleLoginService } from './Services/googleLogin.service';

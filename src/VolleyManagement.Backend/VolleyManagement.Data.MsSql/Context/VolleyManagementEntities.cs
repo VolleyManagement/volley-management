@@ -1,13 +1,8 @@
-﻿using System;
-
-namespace VolleyManagement.Data.MsSql.Context
+﻿namespace VolleyManagement.Data.MsSql.Context
 {
-    using System;
-    using System.Configuration;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Entities;
-    using Microsoft.Extensions.Configuration;
 
 #pragma warning disable S1200 // This class is a DB context - there could not be other way 
     /// <summary>

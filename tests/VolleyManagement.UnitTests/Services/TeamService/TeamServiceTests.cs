@@ -834,7 +834,8 @@
             Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
         }
 
-         /// Set captain of team player who does not have a team.
+        ///<summary>
+        /// Set captain of team player who does not have a team.
         /// Captain updated.
         /// </summary>
         [TestMethod]
@@ -879,7 +880,7 @@
 
             try
             {
-                 sut.ChangeCaptain(teamForEditId, newCaptainId);
+                sut.ChangeCaptain(teamForEditId, newCaptainId);
             }
             catch (ValidationException)
             {
@@ -891,7 +892,8 @@
             VerifyEditTeam(teamForEdit, Times.Never());
         }
         #endregion
-          
+
+        #region Add and remove players
         /// <summary>
         /// Test for AddPlayers() method. 
         /// </summary>
@@ -1008,8 +1010,7 @@
             Assert.IsTrue(gotException);
             VerifyEditTeam(testTeam, Times.Never());
         }
-  
-       
+        #endregion
 
         #region Authorization team tests
 

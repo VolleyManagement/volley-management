@@ -167,7 +167,18 @@ namespace VolleyManagement.Services.ServiceResources {
                 return ResourceManager.GetString("PlayerIsCaptainOfAnotherTeam", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Игрок является игроком другой команды.
+        /// </summary>
+        internal static string PlayerIsPlayerOfAnotherTeam
+        {
+            get
+            {
+                return ResourceManager.GetString("PlayerIsPlayerOfAnotherTeam", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Игрок с указанным идентификатором не был найден.
         /// </summary>

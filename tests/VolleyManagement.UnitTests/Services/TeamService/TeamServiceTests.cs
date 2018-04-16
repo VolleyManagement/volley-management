@@ -819,204 +819,17 @@
             // Arrange
             var testPlayersIdToAdd = CreateSeveralPlayersId();
             var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             var exeptedTeam = new TeamBuilder().WithRoster(testPlayersIdToAdd).Build();
-            MockGetTeamByIdQuery(teamToEdit);
+            MockGetTeamByIdQuery(testTeam);
 
             // Act
             var sut = BuildSUT();
             sut.AddPlayers(testTeamId, testPlayersIdToAdd);
 
             // Assert
-            VerifyEditTeam(teamToEdit, Times.Once());
-            TestHelper.Equals(exeptedTeam, teamToEdit);
-        }
-
-        /// <summary>
-        /// Test for AddPlayers() method.
-        /// Should throw ArgumentException
-        /// </summary>
-        [TestMethod]
-        public void AddPalyers_ToTeam_NotAllPlayerNew_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testPlayersIdToAdd = CreateSeveralPlayersId();
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-            var existingPlayersId = new List<PlayerId> {
-                new PlayerId(1),
-                new PlayerId(2),
-                new PlayerId(3),
-                new PlayerId(4)
-            };
-
-            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithRoster(existingPlayersId).Build();
-            var exeptedTeam = new TeamBuilder().WithRoster(testPlayersIdToAdd).Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            Exception expectedExc = new ArgumentException(Resources.AddingMemberedPlayerToTeam);
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(gotException, expectedExc);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for AddPlayers() method. Try to add players with the same Id
-        /// Should throw ArgumentException
-        /// </summary>
-        [TestMethod]
-        public void AddPalyers_ToTeam_AddDublicatePlayer_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testPlayersIdToAdd = new List<PlayerId> {
-                new PlayerId(1),
-                new PlayerId(1),
-                new PlayerId(3),
-                new PlayerId(4)
-            };
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);          
-            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(gotException, expectedExc);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for AddPlayers() method. Try to add players with invalid Id
-        /// Should throw ArgumentException
-        /// </summary>
-        [TestMethod]
-        public void AddPalyers_ToTeam_AddPlayerWithInvalidId_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testPlayersIdToAdd = new List<PlayerId> {
-                new PlayerId(0),
-                new PlayerId(-7),
-                new PlayerId(3),
-                new PlayerId(4)
-            };
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(gotException, expectedExc);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for AddPlayers() method. Try to add players with invalid Id
-        /// Should throw ArgumentException
-        /// </summary>
-        [TestMethod]
-        public void AddPalyers_ToTeam_AddPlayerWithNullId_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testPlayersIdToAdd = new List<PlayerId> {
-                new PlayerId(3),
-                new PlayerId(4),
-                null
-            };
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(gotException, expectedExc);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for AddPlayers() method. Try to add null roster
-        /// Should throw ArgumentException
-        /// </summary>
-        [TestMethod]
-        public void AddPalyers_ToTeam_NullRoster_ArgumentExceptionThrown()
-        {
-            // Arrange
-            IEnumerable<PlayerId> testPlayersIdToAdd = null;
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            Exception expectedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(gotException, expectedExc);
-            VerifyEditTeam(teamToEdit, Times.Never());
+            VerifyEditTeam(testTeam, Times.Once());
+            TestHelper.Equals(exeptedTeam, testTeam);
         }
 
         /// <summary>
@@ -1051,234 +864,6 @@
         }
 
         /// <summary>
-        /// Test for RemovePlayers() method. Try to remove players that no member of team
-        /// Should throw ArgumentExceptionThrown
-        /// </summary>
-        [TestMethod]
-        public void RemovePalyers_FromTeam_PlayersNotMemberOfTeam_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var playersIdToRemove = CreateSeveralPlayersId();
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-
-            var existingPlayersId = new List<PlayerId> {
-                new PlayerId(1),
-                new PlayerId(2),
-                new PlayerId(3)
-            };
-            
-            var teamToEdit = new TeamBuilder().WithRoster(existingPlayersId).Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            var exeptedExc = new ArgumentException(Resources.RemovingUnmemberedPlayerFromTeam, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.RemovePlayers(testTeamId, playersIdToRemove);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exeptedExc, gotException);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for RemovePlayers() method. Remove player with invalid id
-        /// Should throw ArgumentExceptionThrown
-        /// </summary>
-        [TestMethod]
-        public void RemovePalyers_FromTeam_InvalidPlayerId_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-
-            var playersIdToRemove = new List<PlayerId> {
-                new PlayerId(1),
-                new PlayerId(-7),
-                new PlayerId(3)
-            };
-
-            var teamToEdit = new TeamBuilder().Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.RemovePlayers(testTeamId, playersIdToRemove);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exeptedExc, gotException);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for RemovePlayers() method. Remove dublicate player
-        /// Should throw ArgumentExceptionThrown
-        /// </summary>
-        [TestMethod]
-        public void RemovePalyers_FromTeam_DublicatePlayerId_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-
-            var playersIdToRemove = new List<PlayerId> {
-                new PlayerId(1),
-                new PlayerId(1),
-                new PlayerId(3)
-            };
-
-            var teamToEdit = new TeamBuilder().Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.RemovePlayers(testTeamId, playersIdToRemove);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exeptedExc, gotException);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for RemovePlayers() method. Remove null playerId
-        /// Should throw ArgumentExceptionThrown
-        /// </summary>
-        [TestMethod]
-        public void RemovePalyers_FromTeam_PlayersWithNullId_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-
-            var playersIdToRemove = new List<PlayerId> {
-                new PlayerId(1),
-                null
-            };
-
-            var teamToEdit = new TeamBuilder().Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.RemovePlayers(testTeamId, playersIdToRemove);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exeptedExc, gotException);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for RemovePlayers() method. Null players
-        /// Should throw ArgumentExceptionThrown
-        /// </summary>
-        [TestMethod]
-        public void RemovePalyers_FromTeam_NullPlayers_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-
-            IEnumerable<PlayerId> playersIdToRemove = null;
-
-            var teamToEdit = new TeamBuilder().Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            var exeptedExc = new ArgumentException(Resources.ValidationTeamRoster, "players");
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.RemovePlayers(testTeamId, playersIdToRemove);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exeptedExc, gotException);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for RemovePlayers() method. Remove captain
-        /// Should throw ArgumentExceptionThrown
-        /// </summary>
-        [TestMethod]
-        public void RemovePalyers_FromTeam_RemoveCaptain_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
-
-            var playersIdToRemove = new List<PlayerId> {
-                new PlayerId(SPECIFIC_PLAYER_ID)
-            };
-
-            var teamToEdit = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            MockGetTeamByIdQuery(teamToEdit);
-
-            var exeptedExc = new ArgumentException(Resources.RemovingCaptain);
-
-            // Act
-            var sut = BuildSUT();
-            Exception gotException = null;
-
-            try
-            {
-                sut.RemovePlayers(testTeamId, playersIdToRemove);
-            }
-            catch (ArgumentException exc)
-            {
-                gotException = exc;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exeptedExc, gotException);
-            VerifyEditTeam(teamToEdit, Times.Never());
-        }
-
-        /// <summary>
         /// Test for RemovePlayers() method. 
         /// </summary>
         [TestMethod]
@@ -1299,17 +884,17 @@
                 new PlayerId(1)
             };
 
-            var teamToEdit = new TeamBuilder().WithRoster(existingPlayersId).Build();
+            var testTeam = new TeamBuilder().WithRoster(existingPlayersId).Build();
             var exeptedTeam = new TeamBuilder().WithRoster(exeptedPlayerId).Build();
-            MockGetTeamByIdQuery(teamToEdit);
+            MockGetTeamByIdQuery(testTeam);
 
             // Act
             var sut = BuildSUT();
             sut.RemovePlayers(testTeamId, playersIdToRemove);
 
             // Assert
-            VerifyEditTeam(teamToEdit, Times.Once());
-            TestHelper.Equals(exeptedTeam, teamToEdit);
+            VerifyEditTeam(testTeam, Times.Once());
+            TestHelper.Equals(exeptedTeam, testTeam);
         }
 
         /// <summary>
@@ -1412,6 +997,53 @@
             VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
         }
 
+        /// <summary>
+        /// Test for AddPlayers() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void AddPlayers_AddPlayersNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testPlayersId = CreateSeveralPlayersId();
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Edit);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.AddPlayers(testTeamId, testPlayersId);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void RemovePlayers_RemovePlayersNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testPlayersId = CreateSeveralPlayersId();
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Edit);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.RemovePlayers(testTeamId, testPlayersId);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
+        }
         #endregion
 
         #endregion

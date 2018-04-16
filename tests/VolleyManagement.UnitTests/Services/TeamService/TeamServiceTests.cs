@@ -834,7 +834,7 @@
             Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
         }
 
-        ///<summary>
+        /// <summary>
         /// Set captain of team player who does not have a team.
         /// Captain updated.
         /// </summary>

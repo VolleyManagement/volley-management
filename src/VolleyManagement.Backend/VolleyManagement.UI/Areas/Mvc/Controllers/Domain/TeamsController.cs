@@ -188,18 +188,22 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                         var createdCaptain = _playerService.Create(captain.ToCreatePlayerDto());
                         _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(createdCaptain.Id));
                     }
-                    //check if captain was changed
-                    if (team.Captain.Id != captain.Id)
+                    else if(team.Captain.Id != captain.Id)
                     {
+                        //check if captain was changed
                         if (teamViewModel.Roster.FirstOrDefault() != null)
                         {
                             var captainId = teamViewModel.Roster.First().Id;
                             _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
                         }
-
                     }
                     //check if players in Db and from view are equal
-                    var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModelWhichHaveId);
+                    //var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModelWhichHaveId);
+                    bool playersStillSame = !playersInTeamDb.Except(playersInTeamViewModelWhichHaveId).Any()
+                                            && !playersInTeamViewModelWhichHaveId.Except(playersInTeamDb).Any()
+                                            && playersInTeamDb.Count() == playersInTeamViewModelWhichHaveId.Count() 
+                                            && playersInTeamDb.Intersect(playersInTeamViewModelWhichHaveId).Count() 
+                                            == playersInTeamViewModelWhichHaveId.Count();
 
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {

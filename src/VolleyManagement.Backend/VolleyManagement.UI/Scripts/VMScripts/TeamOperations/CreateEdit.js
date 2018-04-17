@@ -203,15 +203,14 @@
 
   // Grabs all actual data before 'Create'/'Edit' operation
   privates.getJsonForTeamSave = function () {
-    var captainFullname = $("#Captain_FullName").val().trim().split(firstNameLastNameSplitter, 2);
-    var captainId = privates.getPlayerId($("#Captain_FullName"));
+    var captainFullname = $("#Captain_FullName").val().trim().split(firstNameLastNameSplitter, 2);    
     var defaultPlayerId = 0;
     var result = {
       Name: $("#Name").val(),
       Coach: $("#Coach").val(),
       Achievements: $("#Achievements").val(),
       Captain: {
-        Id: captainId,
+        Id: privates.getPlayerId($("#Captain_FullName")),
         FirstName: captainFullname[0],
         LastName: captainFullname[1]
       },
@@ -234,7 +233,6 @@
 
     for (var j = 1; j <= teamPlayerCounter; j++) {
       var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
-
       if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
         var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
         if (privates.getPlayerId(inputTeamPlayer) === defaultPlayerId) {

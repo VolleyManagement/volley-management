@@ -65,8 +65,14 @@
             if (result)
             {
                 if ((x.Roster != null && y.Roster == null)
+                    && (x.AddedPlayers != null && y.AddedPlayers == null)
+                    && (x.DeletedPlayers != null && y.DeletedPlayers == null)
                     || (x.Roster == null && y.Roster != null)
-                    || x.Roster.Count != y.Roster.Count)
+                    || (x.Roster.Count != y.Roster.Count)
+                    || (x.AddedPlayers == null && y.AddedPlayers != null)
+                    || (x.AddedPlayers.Count != y.AddedPlayers.Count)
+                    || (x.AddedPlayers == null && y.AddedPlayers != null)
+                    || (x.DeletedPlayers.Count != y.DeletedPlayers.Count))
                 {
                     result = false;
                 }
@@ -92,7 +98,47 @@
                     }
                 }
             }
+            if (result && x.AddedPlayers != null)
+            {
+                foreach (var xPlayer in x.AddedPlayers)
+                {
+                    var playerFound = false;
+                    foreach (var yPlayer in y.AddedPlayers)
+                    {
+                        if (playerComparer.AreEqual(xPlayer, yPlayer))
+                        {
+                            playerFound = true;
+                        }
+                    }
 
+                    if (!playerFound)
+                    {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+
+            if (result && x.DeletedPlayers != null)
+            {
+                foreach (var xPlayer in x.DeletedPlayers)
+                {
+                    var playerFound = false;
+                    foreach (var yPlayer in y.DeletedPlayers)
+                    {
+                        if (playerComparer.AreEqual(xPlayer, yPlayer))
+                        {
+                            playerFound = true;
+                        }
+                    }
+
+                    if (!playerFound)
+                    {
+                        result = false;
+                        break;
+                    }
+                }
+            }
             return result;
         }
     }

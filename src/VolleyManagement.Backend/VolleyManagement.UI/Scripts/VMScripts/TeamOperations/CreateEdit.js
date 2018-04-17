@@ -12,6 +12,7 @@
   privates.playerIdAttributeName = "data-vm-playerid";
   privates.selectedPlayers = [];
   privates.teamPlayersTable = $("#teamRoster");
+  privates.DeletedPlayers=[];
   var teamPlayerCounter = 0;
   var fullnameRegExp = /[a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}[\s][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}/g;
   var fullNameCorrectValueCheck = /[\d`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]+/gi;
@@ -203,17 +204,23 @@
   // Grabs all actual data before 'Create'/'Edit' operation
   privates.getJsonForTeamSave = function () {
     var captainFullname = $("#Captain_FullName").val().trim().split(firstNameLastNameSplitter, 2);
+    var captainId = privates.getPlayerId($("#Captain_FullName"));
+    var defaultPlayerId = 0;
     var result = {
       Name: $("#Name").val(),
       Coach: $("#Coach").val(),
       Achievements: $("#Achievements").val(),
       Captain: {
-        Id: privates.getPlayerId($("#Captain_FullName")),
+        Id: captainId,
         FirstName: captainFullname[0],
         LastName: captainFullname[1]
       },
-      Roster: []
+      Roster: [],
+      AddedPlayers: [],
+      DeletedPlayers: []
     };
+
+    result.DeletedPlayers = privates.DeletedPlayers;
 
     result.Roster.push({
       FirstName: captainFullname[0],
@@ -230,11 +237,19 @@
 
       if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
         var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
-        result.Roster.push({
-          FirstName: fullName[0],
-          LastName: fullName[1],
-          Id: privates.getPlayerId(inputTeamPlayer)
-        });
+        if (privates.getPlayerId(inputTeamPlayer) === defaultPlayerId) {
+          result.AddedPlayers.push({
+            FirstName: fullName[0],
+            LastName: fullName[1],
+            Id: privates.getPlayerId(inputTeamPlayer)
+          });
+        } else {
+          result.Roster.push({
+            FirstName: fullName[0],
+            LastName: fullName[1],
+            Id: privates.getPlayerId(inputTeamPlayer)
+          });
+        }
       }
     }
 
@@ -369,6 +384,12 @@
   // Deletes player`s row
   currNs.deleteTeamPlayersRow = function (eventData) {
     var currentRow = eventData.target.parentElement.parentElement;
+    var fullName = currentRow.children[0].children[0].children[0].defaultValue.trim().split(firstNameLastNameSplitter, 2);
+    var playerId = parseInt(currentRow.children[0].children[0].children[0].name);
+    privates.DeletedPlayers.push({
+      FirstName: fullName[0],
+      LastName: fullName[1],
+      Id: playerId });
     currentRow.remove();
     return false;
   };

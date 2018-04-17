@@ -72,6 +72,16 @@
         public ICollection<PlayerNameViewModel> Roster { get; set; } = new List<PlayerNameViewModel>();
 
         /// <summary>
+        /// Gets or sets added players to the team
+        /// </summary>
+        public ICollection<PlayerNameViewModel> AddedPlayers { get; set; } = new List<PlayerNameViewModel>();
+
+        /// <summary>
+        /// Gets or sets deleted players from team
+        /// </summary>
+        public ICollection<PlayerNameViewModel> DeletedPlayers { get; set; } = new List<PlayerNameViewModel>();
+
+        /// <summary>
         /// Gets or sets the photo of the team
         /// </summary>
         public string PhotoPath { get; set; }

@@ -46,6 +46,7 @@
         /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
         /// <param name="getPlayerByNameQuery"> Get By Name query for Players</param>
         /// <param name="getTeamByCaptainQuery"> Get By Captain ID query for Teams</param>
+        /// <param name="getPlayerTeamQuery"></param>
         /// <param name="getAllTeamsQuery"> Get All teams query</param>
         /// <param name="getTeamRosterQuery"> Get players for team query</param>
         /// <param name="authService">Authorization service</param>

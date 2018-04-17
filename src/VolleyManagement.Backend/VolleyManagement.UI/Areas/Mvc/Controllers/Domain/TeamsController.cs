@@ -1,4 +1,5 @@
-﻿using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+﻿using VolleyManagement.Domain.PlayersAggregate;
+using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
 namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
@@ -176,20 +177,49 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 try
                 {
-                    //get team from Db by id
                     var team = _teamService.Get(teamViewModel.Id);
-                    //select players in team in Db
                     var playersInTeamDb = team.Roster.Select(x => x.Id);
-                    //select players from view
-                    var playersInTeamViewModel = teamViewModel.Roster.Select(x => x.Id);
+                    var playersInTeamViewModelWhichHaveId = teamViewModel.Roster.Select(x => x.Id);
+                    var playersIdToAddToTeam = new List<PlayerId>();
+                    var captain = teamViewModel.Roster.First();
+                    //check if captain is not existing player
+                    if (teamViewModel.Captain.Id == 0)
+                    {
+                        var createdCaptain = _playerService.Create(captain.ToCreatePlayerDto());
+                        _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(createdCaptain.Id));
+                    }
+                    //check if captain was changed
+                    if (team.Captain.Id != captain.Id)
+                    {
+                        if (teamViewModel.Roster.FirstOrDefault() != null)
+                        {
+                            var captainId = teamViewModel.Roster.First().Id;
+                            _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
+                        }
+
+                    }
                     //check if players in Db and from view are equal
-                    var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModel);
+                    var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModelWhichHaveId);
+
+                    if (teamViewModel.AddedPlayers.Count > 0)
+                    {
+                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                            .Select(x => new CreatePlayerDto { FirstName = x.FirstName, LastName = x.LastName })
+                            .ToList())
+                            .Select(x => new PlayerId(x.Id))
+                            .ToList();
+                    }
                     if (!playersStillSame)
                     {
-                        UpdateRoaster(teamViewModel, team, playersInTeamDb);
+                        playersIdToAddToTeam.AddRange(UpdateRoaster(teamViewModel.Roster, team, playersInTeamDb));
                     }
-                    var domainTeam = teamViewModel.ToDomain();
+                    _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
+                    if (teamViewModel.DeletedPlayers.Count > 0)
+                    {
+                        _teamService.RemovePlayers(new TeamId(teamViewModel.Id), teamViewModel.DeletedPlayers.Select(x => new PlayerId(x.Id)));
+                    }
 
+                    var domainTeam = teamViewModel.ToDomain();
                     _teamService.Edit(domainTeam);
 
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
@@ -336,10 +366,10 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         }
 
 
-        private void UpdateRoaster(TeamViewModel teamViewModel, Team team, IEnumerable<int> playersInTeamDb)
+        private List<PlayerId> UpdateRoaster(ICollection<PlayerNameViewModel> teamViewModelRoster, Team team, IEnumerable<int> playersInTeamDb)
         {
             //select players which are in Db
-            var registeredPlayers = teamViewModel.Roster
+            var registeredPlayers = teamViewModelRoster
                 .Where(x => x.Id != 0)
                 .ToList();
             //select teams which players returned from view
@@ -352,12 +382,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 throw new ArgumentException("Player can not play in two teams");
             }
             //select new players which are not id Db and add them to Db
-            var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.Roster
-                .Where(x => x.Id == 0).Select(t => t.ToCreatePlayerDto()).ToList())
-                .Select(x => new PlayerId(x.Id))
-                .ToList();
-            //players which were not removed from the team
-            var currentRoster = new List<PlayerId>();
+            var playersToAddToTeam = new List<PlayerId>();
 
             var limit = registeredPlayers.Count;
             for (var i = 0; i < limit; i++)
@@ -369,32 +394,9 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                     //add new players which are in Db and have no team
                     playersToAddToTeam.Add(player);
                 }
-                else
-                {
-                    //add players which were in the team previusly
-                    currentRoster.Add(player);
-                }
             }
 
-            var playersToRemove = playersInTeamDb
-                .Except(currentRoster.Select(x => x.Id))
-                .Select(x => new PlayerId(x));
-
-            _teamService.RemovePlayers(new TeamId(teamViewModel.Id), playersToRemove);
-
-            _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersToAddToTeam);
-
-            var captainId = teamViewModel.Roster.First().Id;
-
-            //check if captain was changed
-            if (team.Captain.Id != teamViewModel.Captain.Id)
-            {
-                if (teamViewModel.Roster.FirstOrDefault() != null)
-                {
-                    captainId = teamViewModel.Roster.First().Id;
-                }
-                _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(captainId));
-            }
+            return playersToAddToTeam;
         }
     }
 }

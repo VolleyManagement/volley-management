@@ -27,12 +27,12 @@
 
         private readonly IVolleyUserManager<UserModel> _userManager;
         private readonly IUserService _userService;
-        private readonly ISecretsProvider _configuration;
+        private readonly IConfigurationProvider _configuration;
 
         public AccountController(
             IVolleyUserManager<UserModel> userManager,
             IUserService userService,
-            ISecretsProvider configuration)
+            IConfigurationProvider configuration)
         {
             _userManager = userManager;
             _userService = userService;
@@ -52,7 +52,7 @@
 
             var validatedLoginInfoFromGoogle = await GoogleJsonWebSignature.ValidateAsync(userInfoFromWebApp.IdToken,
                 new GoogleJsonWebSignature.ValidationSettings {
-                    Audience = new List<string> { _configuration.GetGoogleClientId().Value }
+                    Audience = new List<string> { _configuration.GetGoogleClientId() }
                 });
 
             var userInSystem = await _userManager.FindByEmailAsync(validatedLoginInfoFromGoogle.Email);

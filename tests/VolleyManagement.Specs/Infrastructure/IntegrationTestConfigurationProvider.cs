@@ -25,5 +25,10 @@ namespace VolleyManagement.Specs.Infrastructure
         {
             return Environment.GetEnvironmentVariable("APPVEYOR") != null;
         }
+
+        string IConfigurationProvider.GetGoogleClientId()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

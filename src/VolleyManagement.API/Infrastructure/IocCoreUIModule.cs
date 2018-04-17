@@ -21,8 +21,7 @@ namespace VolleyManagement.API.Infrastructure
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton)
-                .Register<IConfigurationProvider, ApiUiConfigurationProvider>(IocLifetimeEnum.Singleton)
-                .Register<ISecretsProvider, ApiUiConfigurationProvider>(IocLifetimeEnum.Singleton);
+                .Register<IConfigurationProvider, ApiUiConfigurationProvider>(IocLifetimeEnum.Singleton);
 
             if (Is<Crosscutting.Contracts.FeatureToggles.Core.IisDeployment>.Disabled)
             {

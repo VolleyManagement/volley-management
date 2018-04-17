@@ -3,10 +3,8 @@
     using Microsoft.Extensions.Configuration;
     using System;
     using System.IO;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using IConfigurationProvider = VolleyManagement.Crosscutting.Contracts.Providers.IConfigurationProvider;
 
-    public class ApiUiConfigurationProvider : IConfigurationProvider, ISecretsProvider
+    public class ApiUiConfigurationProvider : Crosscutting.Contracts.Providers.IConfigurationProvider
     {
         /// <summary>
         /// Gets connection string from appsettings file
@@ -22,10 +20,10 @@
         /// Gets google client id from secrets file
         /// </summary>
         /// <returns>IConfigurationSection</returns>
-        public IConfigurationSection GetGoogleClientId()
+        public string GetGoogleClientId()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Path.Combine(Environment.CurrentDirectory,"../../..")).AddJsonFile("secrets.json", true).Build();
-            return builder.GetSection("Authentication:GoogleClientId");
+            return builder.GetSection("Authentication:GoogleClientId").Value;
         }
     }
 }

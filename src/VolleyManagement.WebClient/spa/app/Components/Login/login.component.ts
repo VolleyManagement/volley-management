@@ -49,8 +49,6 @@ export class LoginComponent implements AfterViewInit {
             });
           }
         });
-      }, function (error) {
-        console.log(JSON.stringify(error, undefined, 2));
       });
   }
 

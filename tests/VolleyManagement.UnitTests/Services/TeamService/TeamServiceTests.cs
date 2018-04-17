@@ -899,7 +899,7 @@
         /// Test for AddPlayers() method. 
         /// </summary>
         [TestMethod]
-        public void AddPalyers_AllPlayersAddedToTeam_TeamUpdated()
+        public void AddPlayers_AllPlayersAddedToTeam_TeamUpdated()
         {
             // Arrange
             var testPlayersIdToAdd = CreateSeveralPlayersId();
@@ -922,7 +922,7 @@
         /// Should throw MissingEntityException
         /// </summary>
         [TestMethod]
-        public void AddPalyers_AddPlayersToNotExistTeam_MissingEntityExceptionThrown()
+        public void AddPlayers_AddPlayersToNotExistTeam_MissingEntityExceptionThrown()
         {
             // Arrange
             var testPlayersIdToAdd = CreateSeveralPlayersId();
@@ -952,7 +952,7 @@
         /// Test for RemovePlayers() method. 
         /// </summary>
         [TestMethod]
-        public void RemovePalyers_AllPlayersRemoveFromTeam_TeamUpdated()
+        public void RemovePlayers_AllPlayersRemoveFromTeam_TeamUpdated()
         {
             // Arrange
             var playersIdToRemove = CreateSeveralPlayersId();
@@ -987,7 +987,7 @@
         /// Should throw MissingEntityException
         /// </summary>
         [TestMethod]
-        public void RemovePalyers_RemovePlayersFromNotExistTeam_MissingEntityExceptionThrown()
+        public void RemovePlayers_RemovePlayersFromNotExistTeam_MissingEntityExceptionThrown()
         {
             // Arrange
             var testPlayersIdToRemove = new List<PlayerId>();

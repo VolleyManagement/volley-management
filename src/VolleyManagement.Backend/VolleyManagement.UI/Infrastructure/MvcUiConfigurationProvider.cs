@@ -7,7 +7,7 @@ namespace VolleyManagement.UI.Infrastructure
     {
         public string GetGoogleClientId()
         {
-            throw new System.NotImplementedException();
+            throw new System.NotSupportedException();
         }
 
         public string GetVolleyManagementEntitiesConnectionString()

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 
 @Injectable()
+// Intercepts an outgoing HttpRequest and optionally transform it or the response.
+// Used to add 'withCredentials: true' to every request
 export class TokenInterceptor implements HttpInterceptor {
 
     constructor() { }

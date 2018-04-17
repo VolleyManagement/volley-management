@@ -894,11 +894,12 @@
         #endregion
 
         #region Add and remove players
+
         /// <summary>
         /// Test for AddPlayers() method. 
         /// </summary>
         [TestMethod]
-        public void AddPalyers_ToTeam_AllPlayerNew_TeamUpdated()
+        public void AddPalyers_AllPlayersAddedToTeam_TeamUpdated()
         {
             // Arrange
             var testPlayersIdToAdd = CreateSeveralPlayersId();
@@ -917,11 +918,11 @@
         }
 
         /// <summary>
-        /// Test for AddPlayers() method. 
+        /// Test for AddPlayers() method. The method check if team with such id exist
         /// Should throw MissingEntityException
         /// </summary>
         [TestMethod]
-        public void AddPalyers_ToTeam_MissingEntityExceptionThrown()
+        public void AddPalyers_AddPlayersToNotExistTeam_MissingEntityExceptionThrown()
         {
             // Arrange
             var testPlayersIdToAdd = CreateSeveralPlayersId();
@@ -951,7 +952,7 @@
         /// Test for RemovePlayers() method. 
         /// </summary>
         [TestMethod]
-        public void RemovePalyers_FromTeam_AllPlayersRemove_TeamUpdated()
+        public void RemovePalyers_AllPlayersRemoveFromTeam_TeamUpdated()
         {
             // Arrange
             var playersIdToRemove = CreateSeveralPlayersId();
@@ -982,11 +983,11 @@
         }
 
         /// <summary>
-        /// Test for FromPlayers() method. 
+        /// Test for FromPlayers() method. The method check if team with such id exist
         /// Should throw MissingEntityException
         /// </summary>
         [TestMethod]
-        public void RemovePalyers_FromTeam_MissingEntityExceptionThrown()
+        public void RemovePalyers_RemovePlayersFromNotExistTeam_MissingEntityExceptionThrown()
         {
             // Arrange
             var testPlayersIdToRemove = new List<PlayerId>();

@@ -182,7 +182,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                     var playersInTeamViewModelWhichHaveId = teamViewModel.Roster.Select(x => x.Id);
                     var playersIdToAddToTeam = new List<PlayerId>();
 
-                    CheckChangeCaptain(teamViewModel);
+                    CheckChangeCaptain(teamViewModel,team);
 
                     var playersStillSame = !playersInTeamDb.Except(playersInTeamViewModelWhichHaveId).Any()
                                           && !playersInTeamViewModelWhichHaveId.Except(playersInTeamDb).Any()
@@ -352,7 +352,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
-        private void CheckChangeCaptain(TeamViewModel teamViewModel)
+        private void CheckChangeCaptain(TeamViewModel teamViewModel,Team team)
         {
             if (teamViewModel.Captain.Id == 0)
             {
@@ -360,7 +360,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 teamViewModel.Captain.Id = createdCaptain.Id;
                 _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(createdCaptain.Id));
             }
-            else if (teamViewModel.Roster.FirstOrDefault() != null)
+            else if (teamViewModel.Roster.First().Id!=team.Roster.First().Id)
             {
                 var captainId = teamViewModel.Roster.First().Id;
                 teamViewModel.Captain.Id = captainId;

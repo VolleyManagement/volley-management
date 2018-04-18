@@ -181,32 +181,14 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                     var playersInTeamDb = team.Roster.Select(x => x.Id);
                     var playersInTeamViewModelWhichHaveId = teamViewModel.Roster.Select(x => x.Id);
                     var playersIdToAddToTeam = new List<PlayerId>();
-                    var captain = teamViewModel.Roster.First();
-                    //check if captain is not existing player
-                    if (teamViewModel.Captain.Id == 0)
-                    {
-                        var createdCaptain = _playerService.Create(captain.ToCreatePlayerDto());
-                        teamViewModel.Captain.Id = createdCaptain.Id;
-                        _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(createdCaptain.Id));
-                    }
-                    else
-                    {
-                        //check if captain was changed
-                        if (teamViewModel.Roster.FirstOrDefault() != null)
-                        {
-                            var captainId = teamViewModel.Roster.First().Id;
-                            teamViewModel.Captain.Id = captainId;
-                            _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(captainId));
-                        }
-                    }
 
-                    //check if players in Db and from view are equal
-                    //var playersStillSame = playersInTeamDb.SequenceEqual(playersInTeamViewModelWhichHaveId);
-                    bool playersStillSame = !playersInTeamDb.Except(playersInTeamViewModelWhichHaveId).Any()
-                                            && !playersInTeamViewModelWhichHaveId.Except(playersInTeamDb).Any()
-                                            && playersInTeamDb.Count() == playersInTeamViewModelWhichHaveId.Count()
-                                            && playersInTeamDb.Intersect(playersInTeamViewModelWhichHaveId).Count()
-                                            == playersInTeamViewModelWhichHaveId.Count();
+                    CheckChangeCaptain(teamViewModel);
+
+                    var playersStillSame = !playersInTeamDb.Except(playersInTeamViewModelWhichHaveId).Any()
+                                          && !playersInTeamViewModelWhichHaveId.Except(playersInTeamDb).Any()
+                                          && playersInTeamDb.Count() == playersInTeamViewModelWhichHaveId.Count()
+                                          && playersInTeamDb.Intersect(playersInTeamViewModelWhichHaveId).Count()
+                                          == playersInTeamViewModelWhichHaveId.Count();
 
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
@@ -370,6 +352,21 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
+        private void CheckChangeCaptain(TeamViewModel teamViewModel)
+        {
+            if (teamViewModel.Captain.Id == 0)
+            {
+                var createdCaptain = _playerService.Create(teamViewModel.Roster.First().ToCreatePlayerDto());
+                teamViewModel.Captain.Id = createdCaptain.Id;
+                _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(createdCaptain.Id));
+            }
+            else if (teamViewModel.Roster.FirstOrDefault() != null)
+            {
+                var captainId = teamViewModel.Roster.First().Id;
+                teamViewModel.Captain.Id = captainId;
+                _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(captainId));
+            }
+        }
 
         private List<PlayerId> UpdateRoaster(TeamViewModel teamViewModel)
         {

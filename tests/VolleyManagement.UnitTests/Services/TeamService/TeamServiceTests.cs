@@ -899,7 +899,7 @@
         /// Test for AddPlayers() method. 
         /// </summary>
         [TestMethod]
-        public void AddPlayers_AllPlayersAddedToTeam_TeamUpdated()
+        public void AddPlayers_PlayersAddedToTeam_TeamUpdated()
         {
             // Arrange
             var testPlayersIdToAdd = CreateSeveralPlayersId();

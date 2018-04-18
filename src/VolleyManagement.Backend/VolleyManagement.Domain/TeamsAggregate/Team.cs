@@ -117,10 +117,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// Gets or sets a value indicating where team players.
         /// </summary>
         /// <value>Players of the team</value>
-        public IEnumerable<PlayerId> Roster
-        {
-            get => _roster;
-        }
+        public IEnumerable<PlayerId> Roster => _roster;
 
         public void SetCaptain(PlayerId captain)
         {

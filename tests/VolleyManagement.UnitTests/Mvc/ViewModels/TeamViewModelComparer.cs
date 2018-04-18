@@ -105,7 +105,7 @@
                     var playerFound = false;
                     foreach (var yPlayer in y.AddedPlayers)
                     {
-                        if (playerComparer.AreEqual(xPlayer, yPlayer))
+                        if (xPlayer.Equals(yPlayer))
                         {
                             playerFound = true;
                         }
@@ -126,7 +126,7 @@
                     var playerFound = false;
                     foreach (var yPlayer in y.DeletedPlayers)
                     {
-                        if (playerComparer.AreEqual(xPlayer, yPlayer))
+                        if (xPlayer.Equals(yPlayer))
                         {
                             playerFound = true;
                         }

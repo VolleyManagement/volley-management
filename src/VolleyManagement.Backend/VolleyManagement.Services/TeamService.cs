@@ -29,7 +29,6 @@
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
-        private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
         private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
         private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
@@ -68,7 +67,6 @@
             _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
-            _getPlayerByNameQuery = getPlayerByNameQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
             _getPlayerTeamQuery = getPlayerTeamQuery;
             _getAllTeamsQuery = getAllTeamsQuery;

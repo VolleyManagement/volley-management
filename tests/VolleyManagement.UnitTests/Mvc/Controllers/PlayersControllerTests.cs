@@ -319,7 +319,9 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
+            var player = MakeTestPlayer(1);
             var sut = BuildSUT();
+            SetupCreate(player);
 
             // Act
             var result = sut.Create(testData) as RedirectToRouteResult;
@@ -541,6 +543,11 @@
         private void SetupGet(int playerId, Player player)
         {
             _playerServiceMock.Setup(tr => tr.Get(playerId)).Returns(player);
+        }
+
+        private void SetupCreate(Player player)
+        {
+            _playerServiceMock.Setup(tr => tr.Create(It.IsAny<CreatePlayerDto>())).Returns(player);
         }
 
         private void SetupCreateThrowsArgumentException()

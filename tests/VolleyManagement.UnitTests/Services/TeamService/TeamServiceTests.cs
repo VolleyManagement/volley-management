@@ -893,6 +893,126 @@
         }
         #endregion
 
+        #region Add and remove players
+
+        /// <summary>
+        /// Test for AddPlayers() method. 
+        /// </summary>
+        [TestMethod]
+        public void AddPlayers_PlayersAddedToTeam_TeamUpdated()
+        {
+            // Arrange
+            var testPlayersIdToAdd = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var exeptedTeam = new TeamBuilder().WithRoster(testPlayersIdToAdd).Build();
+            MockGetTeamByIdQuery(testTeam);
+
+            // Act
+            var sut = BuildSUT();
+            sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Once());
+            TestHelper.Equals(exeptedTeam, testTeam);
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method. The method check if team with such id exist
+        /// Should throw MissingEntityException
+        /// </summary>
+        [TestMethod]
+        public void AddPlayers_AddPlayersToNotExistTeam_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToAdd = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testTeam.Id))).Returns(testTeam);
+
+            // Act
+            var sut = BuildSUT();
+            var gotException = false;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+            }
+            catch (MissingEntityException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyEditTeam(testTeam, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method. 
+        /// </summary>
+        [TestMethod]
+        public void RemovePlayers_AllPlayersRemoveFromTeam_TeamUpdated()
+        {
+            // Arrange
+            var playersIdToRemove = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+
+            var existingPlayersId = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(2),
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+
+            var exeptedPlayerId = new List<PlayerId> {
+                new PlayerId(1)
+            };
+
+            var testTeam = new TeamBuilder().WithRoster(existingPlayersId).Build();
+            var exeptedTeam = new TeamBuilder().WithRoster(exeptedPlayerId).Build();
+            MockGetTeamByIdQuery(testTeam);
+
+            // Act
+            var sut = BuildSUT();
+            sut.RemovePlayers(testTeamId, playersIdToRemove);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Once());
+            TestHelper.Equals(exeptedTeam, testTeam);
+        }
+
+        /// <summary>
+        /// Test for FromPlayers() method. The method check if team with such id exist
+        /// Should throw MissingEntityException
+        /// </summary>
+        [TestMethod]
+        public void RemovePlayers_RemovePlayersFromNotExistTeam_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToRemove = new List<PlayerId>();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testTeam.Id))).Returns(testTeam);
+            // Act
+            var sut = BuildSUT();
+            var gotException = false;
+
+            try
+            {
+                sut.RemovePlayers(testTeamId, testPlayersIdToRemove);
+            }
+            catch (MissingEntityException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyEditTeam(testTeam, Times.Never());
+        }
+        #endregion
+
         #region Authorization team tests
 
         /// <summary>
@@ -961,6 +1081,53 @@
             VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
         }
 
+        /// <summary>
+        /// Test for AddPlayers() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void AddPlayers_AddPlayersNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testPlayersId = CreateSeveralPlayersId();
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Edit);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.AddPlayers(testTeamId, testPlayersId);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void RemovePlayers_RemovePlayersNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testPlayersId = CreateSeveralPlayersId();
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Edit);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.RemovePlayers(testTeamId, testPlayersId);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
+        }
         #endregion
 
         #endregion
@@ -1140,6 +1307,19 @@
             }
 
             return invalidTeamCoachName.ToString();
+        }
+
+        /// <summary>
+        /// Creates Team coach name with more number of symbols than it is allowed
+        /// </summary>
+        /// <returns>Invalid team coach name</returns>
+        private IEnumerable<PlayerId> CreateSeveralPlayersId()
+        {
+            var players = new List<PlayerId> {
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+            return players;
         }
 
         /// <summary>

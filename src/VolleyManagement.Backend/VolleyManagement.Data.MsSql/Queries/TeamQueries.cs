@@ -19,13 +19,15 @@
                                IQuery<Team, FindByCaptainIdCriteria>,
                                IQuery<ICollection<TeamTournamentDto>, FindByTournamentIdCriteria>,
                                IQuery<ICollection<Team>, FindTeamsByGroupIdCriteria>,
-                               IQuery<ICollection<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
+                               IQuery<ICollection<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>,
+                               IQuery<Team, FindByNameCriteria>
     {
         #region Fields
 
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<DivisionEntity> _dalDivisions;
         private readonly DbSet<GroupEntity> _dalGroups;
+        private readonly DbSet<TeamEntity> _dalTeams;
 
         #endregion
 
@@ -40,6 +42,7 @@
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalDivisions = _unitOfWork.Context.Divisions;
             _dalGroups = _unitOfWork.Context.Groups;
+            _dalTeams = _unitOfWork.Context.Teams;
         }
 
         #endregion
@@ -53,9 +56,9 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public Team Execute(FindByIdCriteria criteria)
         {
-            var teams = _unitOfWork.Context.Teams.Where(t => t.Id == criteria.Id).ToList();
+            var teams = _dalTeams.Where(t => t.Id == criteria.Id).ToList();
             return teams
-                .Select(MapTeam)
+                .Select(t => GetTeamMapping(t))
                 .SingleOrDefault();
         }
 
@@ -66,8 +69,8 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public ICollection<Team> Execute(GetAllCriteria criteria)
         {
-            var teams = _unitOfWork.Context.Teams.ToList();
-            return teams.Select(MapTeam).ToList();
+            var teams = _dalTeams.ToList();
+            return teams.Select(t => GetTeamMapping(t)).ToList();
         }
 
         /// <summary>
@@ -77,9 +80,9 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
-            return _unitOfWork.Context.Teams
+            return _dalTeams
                 .Where(t => t.CaptainId == criteria.CaptainId)
-                .Select(MapTeam)
+                .Select(t => GetTeamMapping(t))
                 .SingleOrDefault();
         }
 
@@ -110,7 +113,7 @@
             return _unitOfWork.Context.Groups
                                       .Where(g => g.Id == criteria.GroupId)
                                       .SelectMany(g => g.Teams)
-                                      .Select(MapTeam)
+                                      .Select(t => GetTeamMapping(t))
                                       .ToList();
         }
 
@@ -121,22 +124,29 @@
                                       .Select(t => t.Divisions)
                                       .SelectMany(d => d.Select(g => g.Groups))
                                       .Select(g => g.SelectMany(t => t.Teams))
-                                      .Select(c => c.Select(MapTeam).ToList())
+                                      .Select(c => c.Select(t => GetTeamMapping(t)).ToList())
                                       .ToList();
+        }
+
+        public Team Execute(FindByNameCriteria criteria)
+        {
+            var teamEntity = _dalTeams.FirstOrDefault(t => t.Name == criteria.Name);
+
+            return teamEntity == null ? null : GetTeamMapping(teamEntity);
         }
 
         #endregion
 
         #region Mapping
 
-        private static Team MapTeam(TeamEntity t)
+        private static Team GetTeamMapping(TeamEntity t)
         {
             return new Team(t.Id,
-                            t.Name,
-                            t.Coach,
-                            t.Achievements,
-                            new PlayerId(t.CaptainId),
-                            t.Players.Select(p => new PlayerId(p.Id)));
+                                  t.Name,
+                                  t.Coach,
+                                  t.Achievements,
+                                  new PlayerId(t.CaptainId),
+                                  t.Players.Select(p => new PlayerId(p.Id)));
         }
 
         #endregion

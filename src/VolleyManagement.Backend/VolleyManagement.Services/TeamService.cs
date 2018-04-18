@@ -154,7 +154,12 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
 
-            ThrowExceptionIfTeamWithSuchNameExists(teamToEdit.Name);
+            var teamInDb = _getTeamByNameQuery.Execute(new FindByNameCriteria { Name = teamToEdit.Name });
+            if (teamInDb != null &&
+                teamInDb.Id != teamToEdit.Id)
+            {
+                throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
+            }
 
             var captainId = teamToEdit.Captain.Id;
             var captain = GetPlayerById(captainId);

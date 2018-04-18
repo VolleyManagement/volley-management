@@ -74,7 +74,7 @@
         /// <summary>
         /// Gets or sets added players to the team
         /// </summary>
-        public ICollection<string> AddedPlayers { get; set; } = new List<string>();
+        public ICollection<PlayerNameViewModel> AddedPlayers { get; set; } = new List<PlayerNameViewModel>();
 
         /// <summary>
         /// Gets or sets deleted players from team

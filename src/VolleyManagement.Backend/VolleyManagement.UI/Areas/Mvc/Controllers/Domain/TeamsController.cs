@@ -192,7 +192,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
-                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers)
+                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers.Select(x=>x.ToCreatePlayerDto()).ToList())
                             .Select(x => new PlayerId(x.Id))
                             .ToList();
                     }

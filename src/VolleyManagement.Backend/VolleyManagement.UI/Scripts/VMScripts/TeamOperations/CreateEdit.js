@@ -232,19 +232,29 @@
       result.Id = privates.teamId;
     }
 
+    var playersWhichWasInTeam = currNs.teamRoster || [];
     for (var j = 1; j <= teamPlayerCounter; j++) {
       var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
       if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
         var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
-        if (privates.getPlayerId(inputTeamPlayer) === defaultPlayerId) {
-          result.AddedPlayers.push(
-            inputTeamPlayer.val()
-          );
+        var playerId = privates.getPlayerId(inputTeamPlayer);
+       
+        var isThisPlayerIsNewForThisTeam =
+          playersWhichWasInTeam.find(function (playerInRoster) {
+            return playerInRoster.Id === playerId;
+          });
+        //privates.getPlayerId(inputTeamPlayer) === defaultPlayerId || 
+        if (isThisPlayerIsNewForThisTeam === undefined) {
+          result.AddedPlayers.push({
+            FirstName: fullName[0],
+            LastName: fullName[1],
+            Id: playerId
+          });
         } else {
           result.Roster.push({
             FirstName: fullName[0],
             LastName: fullName[1],
-            Id: privates.getPlayerId(inputTeamPlayer)
+            Id: playerId
           });
         }
       }

@@ -74,12 +74,12 @@
         /// <summary>
         /// Gets or sets added players to the team
         /// </summary>
-        public ICollection<PlayerNameViewModel> AddedPlayers { get; set; } = new List<PlayerNameViewModel>();
+        public ICollection<string> AddedPlayers { get; set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets deleted players from team
         /// </summary>
-        public ICollection<PlayerNameViewModel> DeletedPlayers { get; set; } = new List<PlayerNameViewModel>();
+        public ICollection<int> DeletedPlayers { get; set; } = new List<int>();
 
         /// <summary>
         /// Gets or sets the photo of the team

@@ -12,7 +12,8 @@
   privates.playerIdAttributeName = "data-vm-playerid";
   privates.selectedPlayers = [];
   privates.teamPlayersTable = $("#teamRoster");
-  privates.DeletedPlayers=[];
+  privates.DeletedPlayers = [];
+  privates.AddedPlayers = [];
   var teamPlayerCounter = 0;
   var fullnameRegExp = /[a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}[\s][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}/g;
   var fullNameCorrectValueCheck = /[\d`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]+/gi;
@@ -203,7 +204,7 @@
 
   // Grabs all actual data before 'Create'/'Edit' operation
   privates.getJsonForTeamSave = function () {
-    var captainFullname = $("#Captain_FullName").val().trim().split(firstNameLastNameSplitter, 2);    
+    var captainFullname = $("#Captain_FullName").val().trim().split(firstNameLastNameSplitter, 2);
     var defaultPlayerId = 0;
     var result = {
       Name: $("#Name").val(),
@@ -218,7 +219,7 @@
       AddedPlayers: [],
       DeletedPlayers: []
     };
-
+    result.AddedPlayers = privates.AddedPlayers;
     result.DeletedPlayers = privates.DeletedPlayers;
 
     result.Roster.push({
@@ -236,11 +237,9 @@
       if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
         var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
         if (privates.getPlayerId(inputTeamPlayer) === defaultPlayerId) {
-          result.AddedPlayers.push({
-            FirstName: fullName[0],
-            LastName: fullName[1],
-            Id: privates.getPlayerId(inputTeamPlayer)
-          });
+          result.AddedPlayers.push(
+            inputTeamPlayer.val()
+          );
         } else {
           result.Roster.push({
             FirstName: fullName[0],
@@ -382,12 +381,11 @@
   // Deletes player`s row
   currNs.deleteTeamPlayersRow = function (eventData) {
     var currentRow = eventData.target.parentElement.parentElement;
-    var fullName = currentRow.children[0].children[0].children[0].defaultValue.trim().split(firstNameLastNameSplitter, 2);
-    var playerId = parseInt(currentRow.children[0].children[0].children[0].name);
-    privates.DeletedPlayers.push({
-      FirstName: fullName[0],
-      LastName: fullName[1],
-      Id: playerId });
+    var currentInput = currentRow.children[0].children[0].children[0];
+    var playerId = parseInt(currentInput.name);
+    if (playerId > 0) {
+      privates.DeletedPlayers.push(playerId);
+    }
     currentRow.remove();
     return false;
   };

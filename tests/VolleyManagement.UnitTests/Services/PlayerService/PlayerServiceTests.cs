@@ -57,8 +57,6 @@
             _getTeamByPlayerQueryMock = new Mock<IQuery<int, FindByPlayerCriteria>>();
             _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-            _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         /// <summary>

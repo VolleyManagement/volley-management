@@ -88,6 +88,7 @@
     <Compile Include="Queries\Player\UserToPlayerCriteria.cs" />
     <Compile Include="Queries\Team\FindByCaptainIdCriteria.cs" />
     <Compile Include="Queries\Common\GetAllCriteria.cs" />
+    <Compile Include="Queries\Team\FindByNameCriteria.cs" />
     <Compile Include="Queries\Team\FindByPlayerCriteria.cs" />
     <Compile Include="Queries\Team\FindByTournamentIdCriteria.cs" />
     <Compile Include="Queries\Team\FindByTournamentIdCriteriaOld.cs" />

@@ -26,31 +26,23 @@
         /// <returns>Builder object with collection of teams</returns>
         public TeamServiceTestFixture TestTeams()
         {
-            _teams.Add(new Team()
+            var capitalLetters = new string[] {
+                "A", "B", "C"
+            };
+            var letter = string.Empty;
+
+            for (var i = 0; i < capitalLetters.Length; i++)
             {
-                Id = 1,
-                Name = "TeamNameA",
-                Captain = 1,
-                Coach = "TeamCoachA",
-                Achievements = "TeamAchievementsA"
-            });
-            _teams.Add(new Team()
-            {
-                Id = 2,
-                Name = "TeamNameB",
-                Captain = 2,
-                Coach = "TeamCoachB",
-                Achievements = "TeamAchievementsB"
-            });
-            _teams.Add(
-            new Team()
-            {
-                Id = 3,
-                Name = "TeamNameC",
-                Captain = 3,
-                Coach = "TeamCoachC",
-                Achievements = "TeamAchievementsC"
-            });
+                letter = capitalLetters[i];
+                _teams.Add(new TeamBuilder()
+                    .WithId(i + 1)
+                    .WithName($"TeamName{letter}")
+                    .WithCaptain(new PlayerId(i + 1))
+                    .WithCoach($"TeamCoach{letter}")
+                    .WithAchievements($"TeamAchievements{letter}")
+                    .Build());
+            }
+
             return this;
         }
 

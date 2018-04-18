@@ -34,9 +34,11 @@
 
         private const int SPECIFIC_PLAYER_ID = 2;
         private const int PLAYER_ID = 1;
+        private const int TEAM_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int UNASSIGNED_ID = 0;
         private const string TEAM_NAME_TO_VALIDATE = "empire";
+        private const string TEAM_NOT_FOUND = "A team with specified identifier was not found";
 
         private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
 
@@ -52,6 +54,7 @@
         private Mock<IQuery<int, FindByPlayerCriteria>> _getTeamByPlayerMock;
         private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
         private Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock;
+        private Mock<IQuery<Team, FindByNameCriteria>> _getTeamByNameQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
@@ -74,14 +77,15 @@
             _getTeamByPlayerMock = new Mock<IQuery<int, FindByPlayerCriteria>>();
             _getAllTeamsQueryMock = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTeamRosterQueryMock = new Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>>();
+            _getTeamByNameQueryMock = new Mock<IQuery<Team, FindByNameCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-            _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         #endregion
 
         #region Team tests
+
+        #region Get
 
         /// <summary>
         /// Test for Get() method. The method should return existing teams
@@ -124,6 +128,10 @@
             TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());
         }
 
+        #endregion
+
+        #region GetTeamCaptain
+
         /// <summary>
         /// Test for GetTeamCaptain() method.
         /// The method should return existing captain
@@ -145,34 +153,37 @@
             var actual = sut.GetTeamCaptain(team);
 
             // Assert
-            TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerComparer());
         }
+
+        #endregion
+
+        #region Create
 
         /// <summary>
         /// Test for Create() method. The method should create a new team.
         /// </summary>
         [TestMethod]
-        public void Create_TeamPassed_TeamCreated()
+        public void Create_CreateTeamDtoPassed_TeamCreated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
-                .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
-
+            var newTeamDto = new CreateTeamDtoBuilder()
+                .WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID))
+                .Build();
+            var newTeam = new TeamBuilder().Build();
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr =>
-                                          pr.Execute(It.Is<FindByIdCriteria>(cr =>
-                                                                             cr.Id == SPECIFIC_PLAYER_ID)))
-                                    .Returns(captain);
-            MockGetAllTeamsQuery(CreateSeveralTeams());
+
+            MockGetPlayerBySpecificIdQuery(SPECIFIC_PLAYER_ID, captain);
+            MockTeamRepositoryAddToReturn(newTeam);
+
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
-            sut.Create(newTeam);
+            var team = sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreNotEqual(newTeam.Id, UNASSIGNED_ID);
-            VerifyCreateTeam(newTeam, Times.Once());
+            Assert.IsNotNull(team);
+            VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
         /// <summary>
@@ -183,15 +194,17 @@
         public void Create_InvalidAchievements_ArgumentExceptionThrown()
         {
             var invalidAchievements = CreateInvalidTeamAchievements();
-            var argExMessage = string.Format(
-                    Resources.ValidationTeamAchievements,
-                        VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH);
-            var testTeam = new TeamBuilder()
+            var argExMessage = Resources.ValidationTeamAchievements;
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithAchievements(invalidAchievements)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam,
+                new ArgumentException(argExMessage));
+
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -208,7 +221,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamAchievements"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>
@@ -219,11 +232,11 @@
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
-            var newTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithAchievements(string.Empty).Build();
+            var newTeam = new CreateTeamDtoBuilder().WithAchievements(string.Empty).Build();
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
             sut.Create(newTeam);
 
             // Assert
@@ -238,15 +251,17 @@
         public void Create_InvalidTeamName_ArgumentExceptionThrown()
         {
             var invalidName = CreateInvalidTeamName();
-            var argExMessage = string.Format(
-                    Resources.ValidationTeamName,
-                        VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var argExMessage = Resources.ValidationTeamName;
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithName(invalidName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam,
+                new ArgumentException(argExMessage));
+
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -263,7 +278,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>
@@ -274,15 +289,16 @@
         public void Create_EmptyTeamName_ArgumentExceptionThrown()
         {
             var invalidName = string.Empty;
-            var argExMessage = string.Format(
-                    Resources.ValidationTeamName,
-                    Domain.Constants.Team.MAX_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var argExMessage = TournamentResources.ValidationTeamName;
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithName(invalidName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+            _getPlayerByIdQueryMock.Setup(pr =>
+                                pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam,
+                new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -299,7 +315,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>
@@ -310,15 +326,16 @@
         public void Create_InvalidTeamCoachNameNotAllowedLength_ArgumentExceptionThrown()
         {
             var invalidCoachName = CreateInvalidTeamCoachName();
-            var argExMessage = string.Format(
-                    Resources.ValidationCoachName,
-                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var argExMessage = Resources.ValidationCoachName;
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam,
+                new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -335,7 +352,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamCoachName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>
@@ -346,15 +363,16 @@
         public void Create_InvalidTeamCoachNameNotAllowedSymbols_ArgumentExceptionThrown()
         {
             var invalidCoachName = "name%-)";
-            var argExMessage = string.Format(
-                    Resources.ValidationCoachName,
-                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
-            var testTeam = new TeamBuilder()
+            var argExMessage = Resources.ValidationCoachName;
+            var testTeam = new CreateTeamDtoBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
             var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+
+            MockGetPlayerBySpecificIdQuery(PLAYER_ID, testPlayer);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToThrow(testTeam,
+                new ArgumentException(argExMessage));
             Exception exception = null;
             var sut = BuildSUT();
 
@@ -371,7 +389,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                new ArgumentException(argExMessage, "teamCoachName"));
+                new ArgumentException(argExMessage));
         }
 
         /// <summary>
@@ -382,7 +400,7 @@
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
-            var newTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCoach(string.Empty).Build();
+            var newTeam = new CreateTeamDtoBuilder().WithCoach(string.Empty).Build();
             MockGetAllTeamsQuery(CreateSeveralTeams());
 
             // Act
@@ -401,7 +419,7 @@
         public void Create_InvalidCaptainId_MissingEntityExceptionThrown()
         {
             // Arrange
-            var newTeam = new TeamBuilder().Build();
+            var newTeam = new CreateTeamDtoBuilder().Build();
             var testPlayer = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
 
@@ -431,7 +449,7 @@
         public void Create_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
         {
             // Arrange
-            var newTeam = new TeamBuilder().Build();
+            var newTeam = new CreateTeamDtoBuilder().Build();
             var captain = new PlayerBuilder().Build();
 
             var captainLeadTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
@@ -443,7 +461,7 @@
             _getTeamByCaptainQueryMock.Setup(tm =>
                             tm.Execute(It.Is<FindByCaptainIdCriteria>(cr =>
                                                                     cr.CaptainId == captain.Id)))
-                            .Returns(testTeams.Where(tm => tm.Captain == captain.Id).FirstOrDefault());
+                            .Returns(testTeams.Where(tm => tm.Captain.Id == captain.Id).FirstOrDefault());
 
             // Act
             var sut = BuildSUT();
@@ -472,19 +490,22 @@
         public void Create_PlayerIsNotCaptainOfExistingTeam_TeamCreated()
         {
             // Arrange
+            var newTeamDto = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.IsAny<FindByIdCriteria>())).Returns(captain);
-            _getTeamByCaptainQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
+
+            MockGetPlayerByIdQuery(captain);
+            MockGetTeamByCaptainId(captain.Id, null);
             MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockTeamRepositoryAddToReturn(newTeam);
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            var createdTeam = sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreEqual(newTeam.Captain, captain.Id);
-            VerifyCreateTeam(newTeam, Times.Once());
+            Assert.AreEqual(createdTeam.Captain.Id, captain.Id);
+            VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
         /// <summary>
@@ -492,29 +513,24 @@
         /// was updated after creating team in DB
         /// </summary>
         [TestMethod]
-        public void Create_TeamPassed_CaptainUpdated()
+        public void Create_CreateDtoTeamPassed_CaptainUpdated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
-                .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
-
+            var newTeamDto = new CreateTeamDtoBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+            var team = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
             var captain = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
 
-            _getPlayerByIdQueryMock.Setup(pr =>
-                                          pr.Execute(It.Is<FindByIdCriteria>(
-                                              cr =>
-                                              cr.Id == captain.Id)))
-                                    .Returns(captain);
-            MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockGetPlayerBySpecificIdQuery(SPECIFIC_PLAYER_ID, captain);
+            MockTeamRepositoryAddToReturn(team);
+
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
-            sut.Create(newTeam);
+            var newTeam = sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreEqual(newTeam.Captain, captain.Id);
-            VerifyCreateTeam(newTeam, Times.Once());
+            Assert.AreEqual(newTeam.Captain.Id, captain.Id);
+            VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
         /// <summary>
@@ -522,15 +538,14 @@
         /// Throw exeption
         /// </summary>
         [TestMethod]
-        public void Create_TeamNameIsAlreadyExist_ValidationExceptionThrown()
+        public void Create_TeamWithGivenNameAlreadyExists_ValidationExceptionThrown()
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
-            var newTeam = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
+            var newTeam = new CreateTeamDtoBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
             var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
-            var existingTeams = CreateSeveralTeams();
-            existingTeams.Add(teamWithSameName);
-            MockGetAllTeamsQuery(existingTeams);
+
+            MockGetTeamByNameQuery(teamWithSameName);
 
             var sut = BuildSUT();
             Exception exception = null;
@@ -553,6 +568,10 @@
                 new ArgumentException(argExMessage));
         }
 
+        #endregion
+
+        #region Delete
+
         /// <summary>
         /// Test for Delete() method. The method should delete specified team.
         /// </summary>
@@ -566,7 +585,7 @@
 
             // Act
             var ts = BuildSUT();
-            ts.Delete(SPECIFIC_TEAM_ID);
+            ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
 
             // Assert
             VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
@@ -580,7 +599,7 @@
         public void Delete_InvalidTeamId_MissingEntityExceptionThrown()
         {
             // Arrange
-            _teamRepositoryMock.Setup(tr => tr.Remove(It.IsAny<int>()))
+            _teamRepositoryMock.Setup(tr => tr.Remove(It.IsAny<TeamId>()))
                 .Throws(new InvalidKeyValueException());
 
             // Act
@@ -589,7 +608,7 @@
 
             try
             {
-                ts.Delete(SPECIFIC_TEAM_ID);
+                ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
             }
             catch (MissingEntityException)
             {
@@ -614,7 +633,7 @@
 
             // Act
             var ts = BuildSUT();
-            ts.Delete(SPECIFIC_TEAM_ID);
+            ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
 
             // Assert
             VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
@@ -633,33 +652,48 @@
 
             // Act
             var ts = BuildSUT();
-            ts.Delete(SPECIFIC_TEAM_ID);
+            ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
 
             // Assert
             _playerRepositoryMock.Verify(
                                          pr => pr.UpdateTeam(It.Is<Player>(player => expectedRoster.Contains(player)), null),
                                          Times.Exactly(expectedCountOfPlayers));
-
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Once());
         }
+
+        #endregion
+
+        #region Edit
 
         /// <summary>
         /// Edit() method test. catch ConcurrencyException from DAL
         /// Throws MissingEntityException
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(MissingEntityException))]
         public void Edit_CatchDalConcurrencyException_ThrowMissingEntityException()
         {
             // Arrange
+            var exceptionMessage = TEAM_NOT_FOUND;
+            var teamWithWrongId = new TeamBuilder().WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
+
             MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
-            var teamWithWrongId = new TeamBuilder().WithId(UNASSIGNED_ID).WithCaptain(new PlayerId(SPECIFIC_PLAYER_ID)).Build();
-            _teamRepositoryMock.Setup(pr => pr.Update(It.IsAny<Team>())).Throws(new ConcurrencyException());
-            MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockGetTeamByIdQuery(new TeamBuilder().Build());
+            MockTeamRepositoryEditToThrow(new ConcurrencyException());
+
+            var exception = null as Exception;
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
-            sut.Edit(teamWithWrongId);
+            try
+            {
+                sut.Edit(teamWithWrongId);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            // Arrange
+            VerifyExceptionThrown(exception,
+                new MissingEntityException(exceptionMessage));
         }
 
         /// <summary>
@@ -698,7 +732,7 @@
             _getTeamByCaptainQueryMock.Setup(tm =>
                             tm.Execute(It.Is<FindByCaptainIdCriteria>(cr =>
                                                                     cr.CaptainId == captain.Id)))
-                            .Returns(testTeams.Where(tm => tm.Captain == captain.Id).FirstOrDefault());
+                            .Returns(testTeams.Where(tm => tm.Captain.Id == captain.Id).FirstOrDefault());
 
             MockGetAllTeamsQuery(CreateSeveralTeams());
             MockGetTeamByPlayerQuery(SPECIFIC_PLAYER_ID);
@@ -728,36 +762,36 @@
         public void Edit_TeamPassed_TeamUpdated()
         {
             // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
             var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetAllTeamsQuery(CreateSeveralTeams());
+
+            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
+            MockGetTeamByIdQuery(new TeamBuilder().Build());
+
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
             sut.Edit(teamToEdit);
 
             // Assert
-            VerifyEditTeam(teamToEdit, Times.Once());
+            VerifyEditSimpleDataInTeam(teamToEdit, Times.Once());
         }
 
         /// <summary>
         /// Test for Edit() method. Existing team should be updated
         /// </summary>
         [TestMethod]
-        public void Edit_TeamNameIsAlreadyExist_ValidationExceptionThrown()
+        public void Edit_TeamNameAlreadyExists_ValidationExceptionThrown()
         {
             // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
             var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
-            var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
-            var existingTeams = CreateSeveralTeams();
-            existingTeams.Add(teamWithSameName);
-            MockGetAllTeamsQuery(existingTeams);
+            var teamWithTheSameName = new TeamBuilder().Build();
+            var argExMessage =
+                   TournamentResources.TeamNameInTournamentNotUnique;
+
+            MockGetTeamByNameQuery(teamWithTheSameName);
 
             var sut = BuildSUT();
             Exception exception = null;
-            var argExMessage =
-                   TournamentResources.TeamNameInTournamentNotUnique;
 
             // Act
             try
@@ -774,50 +808,135 @@
                 exception,
                 new ArgumentException(argExMessage));
         }
+        #endregion
 
+        #region Change Captain
         /// <summary>
-        /// Test for Edit() method. Any property except name
+        /// Set captain one of team players. Captain updated.
         /// </summary>
         [TestMethod]
-        public void Edit_TeamNameAlreadyExist_TeamUpdated()
+        public void ChangeCaptain_PlayerIsAlreadyPlayInTeam_CaptainUpdated()
         {
             // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder(SPECIFIC_PLAYER_ID).Build());
-            var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
-            MockGetAllTeamsQuery(CreateSeveralTeams());
-            MockGetTeamByIdQuery(teamToEdit);
+            var newCaptainId = new PlayerId(SPECIFIC_PLAYER_ID);
+
+            var teamForEdit = new TeamBuilder().WithPlayer(newCaptainId).Build();
+            var teamForEditId = new TeamId(teamForEdit.Id);
+
+            MockGetTeamByPlayerQuery(TEAM_ID);
+            MockGetTeamByIdQuery(teamForEdit);
 
             // Act
             var sut = BuildSUT();
-            sut.Edit(teamToEdit);
+            sut.ChangeCaptain(teamForEditId, newCaptainId);
 
             // Assert
-            VerifyEditTeam(teamToEdit, Times.Once());
+            Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
         }
 
         /// <summary>
-        /// Test for UpdateRosterTeamId() method.
-        /// Case when specified player isn't exist. Throw MissingEntityException
+        /// Set captain of team player who does not have a team.
+        /// Captain updated.
         /// </summary>
         [TestMethod]
-        public void UpdateRosterTeamId_InvalidPlayerId_MissingEntityExceptionThrown()
+        public void ChangeCaptain_PlayerHasNoTeam_CaptainUpdated()
         {
             // Arrange
-            var invalidPlayer = new PlayerBuilder(UNASSIGNED_ID).Build();
-            var roster = new List<Player> { invalidPlayer };
+            var newCaptainId = new PlayerId(SPECIFIC_PLAYER_ID);
+            var teamForEdit = new TeamBuilder().Build();
+            var teamForEditId = new TeamId(teamForEdit.Id);
 
-            MockGetTeamByIdQuery(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
-
-            var testPlayer = new PlayerBuilder().Build();
-            MockGetTeamRosterQuery(new List<Player> { testPlayer });
+            MockGetTeamByPlayerQuery(TEAM_ID);
+            MockGetTeamByIdQuery(teamForEdit);
 
             // Act
-            var ts = BuildSUT();
+            var sut = BuildSUT();
+            sut.ChangeCaptain(teamForEditId, newCaptainId);
+
+            // Assert
+            Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
+        }
+
+        /// <summary>
+        /// Set captain of team player that plays in anothe team.
+        /// Validate exception thrown.
+        /// </summary>
+        [TestMethod]
+        public void ChangeCaptain_PlayerIsPlayerOfAnotherTeam_ValidateExceptionThrown()
+        {
+            // Arrange
+            var newCaptainId = new PlayerId(PLAYER_ID);
+            var newCaptainTeam = new TeamBuilder().WithId(TEAM_ID).WithPlayer(newCaptainId).Build();
+
+            var teamForEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var teamForEditId = new TeamId(teamForEdit.Id);
+
+            MockGetTeamByPlayerQuery(newCaptainTeam.Id);
+            MockGetTeamByIdQuery(teamForEdit);
+
+            // Act
+            var sut = BuildSUT();
             var gotException = false;
 
             try
             {
-                ts.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
+                sut.ChangeCaptain(teamForEditId, newCaptainId);
+            }
+            catch (ValidationException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyEditTeam(teamForEdit, Times.Never());
+        }
+        #endregion
+
+        #region Add and remove players
+
+        /// <summary>
+        /// Test for AddPlayers() method. 
+        /// </summary>
+        [TestMethod]
+        public void AddPlayers_PlayersAddedToTeam_TeamUpdated()
+        {
+            // Arrange
+            var testPlayersIdToAdd = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var exeptedTeam = new TeamBuilder().WithRoster(testPlayersIdToAdd).Build();
+            MockGetTeamByIdQuery(testTeam);
+
+            // Act
+            var sut = BuildSUT();
+            sut.AddPlayers(testTeamId, testPlayersIdToAdd);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Once());
+            TestHelper.Equals(exeptedTeam, testTeam);
+        }
+
+        /// <summary>
+        /// Test for AddPlayers() method. The method check if team with such id exist
+        /// Should throw MissingEntityException
+        /// </summary>
+        [TestMethod]
+        public void AddPlayers_AddPlayersToNotExistTeam_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToAdd = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testTeam.Id))).Returns(testTeam);
+
+            // Act
+            var sut = BuildSUT();
+            var gotException = false;
+
+            try
+            {
+                sut.AddPlayers(testTeamId, testPlayersIdToAdd);
             }
             catch (MissingEntityException)
             {
@@ -826,35 +945,62 @@
 
             // Assert
             Assert.IsTrue(gotException);
-            VerifyEditPlayer(UNASSIGNED_ID, SPECIFIC_TEAM_ID, Times.Never());
+            VerifyEditTeam(testTeam, Times.Never());
         }
 
         /// <summary>
-        /// Test for UpdateRosterTeamId() method.
-        /// Case when specified team isn't exist. Throw MissingEntityException
+        /// Test for RemovePlayers() method. 
         /// </summary>
         [TestMethod]
-        public void UpdateRosterTeamId_InvalidTeamId_MissingEntityExceptionThrown()
+        public void RemovePlayers_AllPlayersRemoveFromTeam_TeamUpdated()
         {
             // Arrange
-            var testPlayer = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            var roster = new List<Player> { testPlayer };
+            var playersIdToRemove = CreateSeveralPlayersId();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
 
-            MockGetAllTeamsQuery(new TeamServiceTestFixture().TestTeams().Build());
+            var existingPlayersId = new List<PlayerId> {
+                new PlayerId(1),
+                new PlayerId(2),
+                new PlayerId(3),
+                new PlayerId(4)
+            };
 
-            var testData = new PlayerBuilder(SPECIFIC_PLAYER_ID).Build();
-            MockGetPlayerByIdQuery(testData);
+            var exeptedPlayerId = new List<PlayerId> {
+                new PlayerId(1)
+            };
 
-            var rosterOfInvalidTeam = new List<Player> { testData };
-            MockGetTeamRosterQuery(rosterOfInvalidTeam);
+            var testTeam = new TeamBuilder().WithRoster(existingPlayersId).Build();
+            var exeptedTeam = new TeamBuilder().WithRoster(exeptedPlayerId).Build();
+            MockGetTeamByIdQuery(testTeam);
 
             // Act
-            var ts = BuildSUT();
+            var sut = BuildSUT();
+            sut.RemovePlayers(testTeamId, playersIdToRemove);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Once());
+            TestHelper.Equals(exeptedTeam, testTeam);
+        }
+
+        /// <summary>
+        /// Test for FromPlayers() method. The method check if team with such id exist
+        /// Should throw MissingEntityException
+        /// </summary>
+        [TestMethod]
+        public void RemovePlayers_RemovePlayersFromNotExistTeam_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var testPlayersIdToRemove = new List<PlayerId>();
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testTeam.Id))).Returns(testTeam);
+            // Act
+            var sut = BuildSUT();
             var gotException = false;
 
             try
             {
-                ts.UpdateRosterTeamId(roster, UNASSIGNED_ID);
+                sut.RemovePlayers(testTeamId, testPlayersIdToRemove);
             }
             catch (MissingEntityException)
             {
@@ -863,80 +1009,8 @@
 
             // Assert
             Assert.IsTrue(gotException);
-            VerifyEditPlayer(SPECIFIC_PLAYER_ID, UNASSIGNED_ID, Times.Never());
+            VerifyEditTeam(testTeam, Times.Never());
         }
-
-        /// <summary>
-        /// Test for SetPlayerTeamIdToNull() method.
-        /// Player Not Exist. Throw exception
-        /// </summary>
-        [TestMethod]
-        public void UpdateRosterTeamId_PlayerIsNotExist_MissingEntityExceptionThrown()
-        {
-            // Arrange
-            var exception = false;
-
-            var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            var testSecondPlayer = new PlayerBuilder(PLAYER_ID + 1).Build();
-            var testRoster = new List<Player> { testPlayer, testSecondPlayer };
-            MockGetTeamRosterQuery(testRoster);
-
-            var player = new PlayerBuilder(SPECIFIC_PLAYER_ID + 1).Build();
-            var roster = new List<Player> { player };
-
-            var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
-
-            var sut = BuildSUT();
-
-            // Act
-            try
-            {
-                sut.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
-            }
-            catch (MissingEntityException)
-            {
-                exception = true;
-            }
-
-            // Assert
-            Assert.IsTrue(exception);
-        }
-
-        /// <summary>
-        /// Test for SetPlayerTeamIdToNull() method.
-        /// Player Not Exist. Player never get Edit
-        /// </summary>
-        [TestMethod]
-        public void UpdateRosterTeamId_PlayerIsNotExist_PlayerNeverGetEdit()
-        {
-            // Arrange
-            var testPlayer = new PlayerBuilder(PLAYER_ID).Build();
-            var testSecondPlayer = new PlayerBuilder(PLAYER_ID + 1).Build();
-            var testRoster = new List<Player> { testPlayer, testSecondPlayer };
-            MockGetTeamRosterQuery(testRoster);
-
-            var player = new PlayerBuilder(SPECIFIC_PLAYER_ID + 1).Build();
-            var roster = new List<Player> { player };
-
-            var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
-
-            var sut = BuildSUT();
-
-            // Act
-            try
-            {
-                sut.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
-            }
-            catch (MissingEntityException)
-            {
-            }
-
-            // Assert
-            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
-        }
-
         #endregion
 
         #region Authorization team tests
@@ -950,7 +1024,7 @@
         public void Create_CreateNotPermitted_ExceptionThrown()
         {
             // Arrange
-            var testData = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var testData = new CreateTeamDtoBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Teams.Create);
 
             var sut = BuildSUT();
@@ -978,7 +1052,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Delete(testData.Id);
+            sut.Delete(new TeamId(testData.Id));
 
             // Assert
             VerifyDeleteTeam(testData.Id, Times.Never());
@@ -1007,6 +1081,55 @@
             VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
         }
 
+        /// <summary>
+        /// Test for AddPlayers() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void AddPlayers_AddPlayersNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testPlayersId = CreateSeveralPlayersId();
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Edit);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.AddPlayers(testTeamId, testPlayersId);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for RemovePlayers() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void RemovePlayers_RemovePlayersNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testTeamId = new TeamId(SPECIFIC_TEAM_ID);
+            var testPlayersId = CreateSeveralPlayersId();
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Edit);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.RemovePlayers(testTeamId, testPlayersId);
+
+            // Assert
+            VerifyEditTeam(testTeam, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
+        }
+        #endregion
+
         #endregion
 
         #region Private
@@ -1023,6 +1146,7 @@
                 _getTeamByPlayerMock.Object,
                 _getAllTeamsQueryMock.Object,
                 _getTeamRosterQueryMock.Object,
+                _getTeamByNameQueryMock.Object,
                 _authServiceMock.Object);
         }
 
@@ -1031,10 +1155,20 @@
             return new TeamComparer().Compare(x, y) == 0;
         }
 
+        private bool CreateTeamDtosAreEqual(CreateTeamDto x, CreateTeamDto y)
+        {
+            return new CreateTeamDtoComparer().Compare(x, y) == 0;
+        }
+
         private void MockGetAllTeamsQuery(IEnumerable<Team> testData)
         {
             _getAllTeamsQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
         }
+
+        private void MockGetTeamByCaptainId(int captainId, Team result) =>
+            _getTeamByCaptainQueryMock
+                .Setup(tr => tr.Execute(It.Is<FindByCaptainIdCriteria>(c => c.CaptainId == captainId)))
+                .Returns(result);
 
         private void MockGetTeamByIdQuery(Team testData)
         {
@@ -1048,6 +1182,12 @@
                 .Returns(0)
                 .Returns(0);
         }
+
+        private void MockGetPlayerBySpecificIdQuery(int id, Player player) =>
+            _getPlayerByIdQueryMock
+                .Setup(pq => pq.Execute(It.Is<FindByIdCriteria>(c => c.Id == id)))
+                .Returns(player);
+
         private void MockGetPlayerByIdQuery(Player player)
         {
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);
@@ -1063,9 +1203,25 @@
             _getTeamRosterQueryMock.Setup(tr => tr.Execute(It.IsAny<TeamPlayersCriteria>())).Returns(players);
         }
 
-        private void VerifyCreateTeam(Team team, Times times)
+        private void MockTeamRepositoryAddToThrow(CreateTeamDto testTeam, Exception exception) =>
+            _teamRepositoryMock.Setup(tr => tr.Add(It.Is<CreateTeamDto>(dto => CreateTeamDtosAreEqual(dto, testTeam))))
+                .Throws(exception);
+
+        private void MockTeamRepositoryAddToReturn(Team team) =>
+            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<CreateTeamDto>()))
+                .Returns(team);
+
+        private void MockTeamRepositoryEditToThrow(Exception exception) =>
+            _teamRepositoryMock.Setup(tr => tr.Update(It.IsAny<Team>()))
+                .Throws(exception);
+
+        private void MockGetTeamByNameQuery(Team team) =>
+            _getTeamByNameQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByNameCriteria>()))
+                .Returns(team);
+
+        private void VerifyCreateTeam(CreateTeamDto team, Times times)
         {
-            _teamRepositoryMock.Verify(tr => tr.Add(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
+            _teamRepositoryMock.Verify(tr => tr.Add(It.Is<CreateTeamDto>(t => CreateTeamDtosAreEqual(t, team))), times);
         }
 
         private void VerifyEditTeam(Team team, Times times)
@@ -1073,22 +1229,27 @@
             _teamRepositoryMock.Verify(tr => tr.Update(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
         }
 
+        private void VerifyEditSimpleDataInTeam(Team team, Times times) =>
+            _teamRepositoryMock.Verify(tr => tr.Update(
+                It.Is<Team>(t =>
+                            t.Name.Equals(team.Name) &&
+                            t.Coach.Equals(team.Coach) &&
+                            t.Achievements.Equals(team.Achievements))),
+                 times);
+
         private void VerifyEditPlayer(int playerId, int teamId, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => p.Id == playerId)), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyDeleteTeam(int teamId, Times times)
         {
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<TeamId>(id => id.Id == teamId)), times);
         }
 
         private void VerifyDeleteTeam(int teamId, Times repositoryTimes, Times unitOfWorkTimes)
         {
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), repositoryTimes);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
+            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<TeamId>(id => id.Id == teamId)), repositoryTimes);
         }
 
         private List<Team> CreateSeveralTeams()
@@ -1146,6 +1307,19 @@
             }
 
             return invalidTeamCoachName.ToString();
+        }
+
+        /// <summary>
+        /// Creates Team coach name with more number of symbols than it is allowed
+        /// </summary>
+        /// <returns>Invalid team coach name</returns>
+        private IEnumerable<PlayerId> CreateSeveralPlayersId()
+        {
+            var players = new List<PlayerId> {
+                new PlayerId(3),
+                new PlayerId(4)
+            };
+            return players;
         }
 
         /// <summary>

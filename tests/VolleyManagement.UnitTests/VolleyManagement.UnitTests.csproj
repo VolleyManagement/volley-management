@@ -161,6 +161,7 @@
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
     <Compile Include="Services\PlayerService\CreatePlayerDtoBuilder.cs" />
     <Compile Include="Services\TeamService\CreateTeamDtoBuilder.cs" />
+    <Compile Include="Services\TeamService\CreateTeamDtoComparer.cs" />
     <Compile Include="Services\TeamService\TeamInTournamentComparer.cs" />
     <Compile Include="WebApi\Standings\PivotStandingsViewModelTestFixture.cs" />
     <Compile Include="WebApi\Standings\DivisionStandingsViewModelTestFixture.cs" />

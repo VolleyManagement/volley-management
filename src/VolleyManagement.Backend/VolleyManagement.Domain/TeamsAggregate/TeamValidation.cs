@@ -73,7 +73,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
             return roster == null ||
                 roster.Any(x => x == null) ||
                 roster.Any(x => x.Id < Constants.Team.MIN_ID) ||
-                roster.Count() != roster.Select(x => x.Id).Distinct().Count();
+                roster.Count(x => x.Id != 0) != roster.Select(x => x.Id).Distinct().Count(x => x != 0);
         }
     }
 }

@@ -48,7 +48,8 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// <returns>Validity of achievements</returns>
         public static bool ValidateAchievements(string achievements)
         {
-            return achievements.Length > Constants.Team.MAX_ACHIEVEMENTS_LENGTH;
+            return achievements != null &&
+                achievements.Length > Constants.Team.MAX_ACHIEVEMENTS_LENGTH;
         }
 
         /// <summary>

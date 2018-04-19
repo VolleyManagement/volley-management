@@ -187,7 +187,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                                 .Select(x => new PlayerId(x.Id))
                                 .ToList();
 
-                        playersIdToAddToTeam.AddRange(CheckIfPlayersAreNotInAnoutherTeam(teamViewModel));
+                        playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
                         _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
                     }
 
@@ -359,41 +359,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
                 _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(captainId));
             }
-        }
-
-        private List<PlayerId> CheckIfPlayersAreNotInAnoutherTeam(TeamViewModel teamViewModel)
-        {
-            //select players which are new for this team but in DB
-            var registeredPlayers = teamViewModel.AddedPlayers
-                .Where(x => x.Id != 0)
-                .ToList();
-            //select teams which players returned from view
-            var playersTeams = registeredPlayers
-                .Select(x => _playerService.GetPlayerTeam(_playerService.Get(x.Id)))
-                .ToList();
-            //check if players play in another team
-            if (playersTeams.Any(x => x != null && x.Id != teamViewModel.Id))
-            {
-                throw new ArgumentException("Player can not play in two teams");
-            }
-            //select new players which are not id Db and add them to Db
-            var playersToAddToTeam = new List<PlayerId>();
-
-            var limit = registeredPlayers.Count;
-            for (var i = 0; i < limit; i++)
-            {
-                var player = new PlayerId(registeredPlayers[i].Id);
-
-                if (playersTeams[i] == null)
-                {
-                    //add new players which are in Db and have no team
-                    playersToAddToTeam.Add(player);
-                }
-            }
-
-            return playersToAddToTeam;
-
-
         }
     }
 }

@@ -123,9 +123,23 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
             }
 
+            CheckIfPlayersAreNotInAnoutherTeam(players);
+
             changedTeam.AddPlayers(players);
             _teamRepository.Update(changedTeam);
         }
+
+        private void CheckIfPlayersAreNotInAnoutherTeam(IEnumerable<PlayerId> addedPlayers)
+        {
+            var playersTeams = addedPlayers
+                .Select(x => _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = x.Id }));
+            //check if players play in another team
+            if (playersTeams.Any(x => x > 0))
+            {
+                throw new ArgumentException("Player can not play in two teams");
+            }
+        }
+
 
         /// <summary>
         /// Remove players from the team.

@@ -177,53 +177,24 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 try
                 {
-                    //var team = _teamService.Get(teamViewModel.Id);
-                    //var playersInTeamDb = team.Roster.Select(x => x.Id);
-                    //var playersInTeamViewModelWhichHaveId = teamViewModel.Roster.Select(x => x.Id);
-                    //var playersIdToAddToTeam = new List<PlayerId>();
-
-                    //CheckChangeCaptain(teamViewModel,team);
-
-                    //var playersStillSame = !playersInTeamDb.Except(playersInTeamViewModelWhichHaveId).Any()
-                    //                      && !playersInTeamViewModelWhichHaveId.Except(playersInTeamDb).Any()
-                    //                      && playersInTeamDb.Count() == playersInTeamViewModelWhichHaveId.Count()
-                    //                      && playersInTeamDb.Intersect(playersInTeamViewModelWhichHaveId).Count()
-                    //                      == playersInTeamViewModelWhichHaveId.Count();
-
-                    //if (teamViewModel.AddedPlayers.Count > 0)
-                    //{
-                    //    playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers.Select(x=>x.ToCreatePlayerDto()).ToList())
-                    //        .Select(x => new PlayerId(x.Id))
-                    //        .ToList();
-                    //}
-                    //if (!playersStillSame)
-                    //{
-                    //    playersIdToAddToTeam.AddRange(UpdateRoaster(teamViewModel));
-                    //}
-                    //_teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
-                    //if (teamViewModel.DeletedPlayers.Count > 0)
-                    //{
-                    //    _teamService.RemovePlayers(new TeamId(teamViewModel.Id), teamViewModel.DeletedPlayers.Select(x => new PlayerId(x)));
-                    //}
-                    //if (teamViewModel.Captain!=teamViewModel.Roster.First())
-                    //{
-                    //    if (teamViewModel.Captain.Id==0)
-                    //    {
-
-                    //    }
-                    //}
-
-                    CheckChangeCaptain(teamViewModel);
+                    var playersIdToAddToTeam = new List<PlayerId>();
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
-                        var playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                                .Where(x=>x.Id==0)
+                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                                .Where(x => x.Id == 0)
                                 .Select(x => x.ToCreatePlayerDto())
                                 .ToList())
                                 .Select(x => new PlayerId(x.Id))
                                 .ToList();
+
                         playersIdToAddToTeam.AddRange(CheckIfPlayersAreNotInAnoutherTeam(teamViewModel));
+                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
                     }
+
+                    ChangeCapitain(teamViewModel, playersIdToAddToTeam);
+
+
+
                     if (teamViewModel.DeletedPlayers.Count > 0)
                     {
                         _teamService.RemovePlayers(new TeamId(teamViewModel.Id), teamViewModel.DeletedPlayers.Select(x => new PlayerId(x)));
@@ -376,18 +347,16 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
-        private void CheckChangeCaptain(TeamViewModel teamViewModel)
+        private void ChangeCapitain(TeamViewModel teamViewModel, IEnumerable<PlayerId> playersIdToAddToTeam)
         {
-            if (teamViewModel.Captain.Id == 0)
+            if (teamViewModel.IsCaptainChanged)
             {
-                var createdCaptain = _playerService.Create(teamViewModel.Roster.First().ToCreatePlayerDto());
-                teamViewModel.Captain.Id = createdCaptain.Id;
-                _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(createdCaptain.Id));
-            }
-            else if (teamViewModel.Captain.Id != teamViewModel.Roster.First().Id)
-            {
-                var captainId = teamViewModel.Roster.First().Id;
-                teamViewModel.Captain.Id = captainId;
+                var captainId = teamViewModel.Captain.Id;
+                if (teamViewModel.Captain.Id == 0)
+                {
+                    captainId = playersIdToAddToTeam.Select(x => x.Id).First();
+                }
+
                 _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(captainId));
             }
         }

@@ -8,6 +8,7 @@
   privates.teamUnderEdit = document.location.pathname.search("Edit") > 0 || document.location.pathname.search("edit") > 0;
   privates.teamId = privates.teamUnderEdit ? $("[name='Id']").val() : 0;
   privates.playersData = [];
+  privates.isCaptainChanged = false;
 
   privates.playerIdAttributeName = "data-vm-playerid";
   privates.selectedPlayers = [];
@@ -205,7 +206,6 @@
   // Grabs all actual data before 'Create'/'Edit' operation
   privates.getJsonForTeamSave = function () {
     var captainFullname = $("#Captain_FullName").val().trim().split(firstNameLastNameSplitter, 2);
-    var defaultPlayerId = 0;
     var result = {
       Name: $("#Name").val(),
       Coach: $("#Coach").val(),
@@ -217,11 +217,12 @@
       },
       Roster: [],
       AddedPlayers: [],
-      DeletedPlayers: []
+      DeletedPlayers: [],
+      IsCaptainChanged: Boolean()
     };
     result.AddedPlayers = privates.AddedPlayers;
     result.DeletedPlayers = privates.DeletedPlayers;
-
+    result.IsCaptainChanged = privates.isCaptainChanged;
     result.Roster.push({
       FirstName: captainFullname[0],
       LastName: captainFullname[1],
@@ -346,6 +347,7 @@
 
   // Replaces old captain id with founded new after founded captain was selected
   privates.onCaptainSelect = function (eventObj, selectedItem) {
+    privates.isCaptainChanged = true;
     var selectedId = selectedItem.item.id;
     privates.setPlayerId(eventObj.target, selectedId);
   };
@@ -469,6 +471,7 @@
         privates.checkIfFullNameCorrect(captainNameInput);
         privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
         privates.setsPlayerIdWithFoundedPlayerId(temporaryPlayerName, temporaryPlayerId, captainNameInput);
+        privates.isCaptainChanged = true;
       }, delay));
     });
 
@@ -480,6 +483,7 @@
         captainNameInput.val(ui.item.value);
         privates.checkIfFullNameCorrect(captainNameInput);
         privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
+        privates.isCaptainChanged = true;
       },
       delay: 500
     });

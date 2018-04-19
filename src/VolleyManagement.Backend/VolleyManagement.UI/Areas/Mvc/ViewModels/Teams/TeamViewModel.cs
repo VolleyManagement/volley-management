@@ -82,6 +82,11 @@
         public ICollection<int> DeletedPlayers { get; set; } = new List<int>();
 
         /// <summary>
+        /// Gets or sets is captain has changed 
+        /// </summary>
+        public bool IsCaptainChanged{ get; set; }
+
+        /// <summary>
         /// Gets or sets the photo of the team
         /// </summary>
         public string PhotoPath { get; set; }

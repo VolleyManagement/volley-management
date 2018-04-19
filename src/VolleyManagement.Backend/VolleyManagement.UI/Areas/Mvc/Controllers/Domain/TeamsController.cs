@@ -177,34 +177,58 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 try
                 {
-                    var team = _teamService.Get(teamViewModel.Id);
-                    var playersInTeamDb = team.Roster.Select(x => x.Id);
-                    var playersInTeamViewModelWhichHaveId = teamViewModel.Roster.Select(x => x.Id);
-                    var playersIdToAddToTeam = new List<PlayerId>();
+                    //var team = _teamService.Get(teamViewModel.Id);
+                    //var playersInTeamDb = team.Roster.Select(x => x.Id);
+                    //var playersInTeamViewModelWhichHaveId = teamViewModel.Roster.Select(x => x.Id);
+                    //var playersIdToAddToTeam = new List<PlayerId>();
 
-                    CheckChangeCaptain(teamViewModel,team);
+                    //CheckChangeCaptain(teamViewModel,team);
 
-                    var playersStillSame = !playersInTeamDb.Except(playersInTeamViewModelWhichHaveId).Any()
-                                          && !playersInTeamViewModelWhichHaveId.Except(playersInTeamDb).Any()
-                                          && playersInTeamDb.Count() == playersInTeamViewModelWhichHaveId.Count()
-                                          && playersInTeamDb.Intersect(playersInTeamViewModelWhichHaveId).Count()
-                                          == playersInTeamViewModelWhichHaveId.Count();
+                    //var playersStillSame = !playersInTeamDb.Except(playersInTeamViewModelWhichHaveId).Any()
+                    //                      && !playersInTeamViewModelWhichHaveId.Except(playersInTeamDb).Any()
+                    //                      && playersInTeamDb.Count() == playersInTeamViewModelWhichHaveId.Count()
+                    //                      && playersInTeamDb.Intersect(playersInTeamViewModelWhichHaveId).Count()
+                    //                      == playersInTeamViewModelWhichHaveId.Count();
 
+                    //if (teamViewModel.AddedPlayers.Count > 0)
+                    //{
+                    //    playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers.Select(x=>x.ToCreatePlayerDto()).ToList())
+                    //        .Select(x => new PlayerId(x.Id))
+                    //        .ToList();
+                    //}
+                    //if (!playersStillSame)
+                    //{
+                    //    playersIdToAddToTeam.AddRange(UpdateRoaster(teamViewModel));
+                    //}
+                    //_teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
+                    //if (teamViewModel.DeletedPlayers.Count > 0)
+                    //{
+                    //    _teamService.RemovePlayers(new TeamId(teamViewModel.Id), teamViewModel.DeletedPlayers.Select(x => new PlayerId(x)));
+                    //}
+                    //if (teamViewModel.Captain!=teamViewModel.Roster.First())
+                    //{
+                    //    if (teamViewModel.Captain.Id==0)
+                    //    {
+
+                    //    }
+                    //}
+
+                    CheckChangeCaptain(teamViewModel);
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
-                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers.Select(x=>x.ToCreatePlayerDto()).ToList())
-                            .Select(x => new PlayerId(x.Id))
-                            .ToList();
+                        var playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                                .Where(x=>x.Id==0)
+                                .Select(x => x.ToCreatePlayerDto())
+                                .ToList())
+                                .Select(x => new PlayerId(x.Id))
+                                .ToList();
+                        playersIdToAddToTeam.AddRange(CheckIfPlayersAreNotInAnoutherTeam(teamViewModel));
                     }
-                    if (!playersStillSame)
-                    {
-                        playersIdToAddToTeam.AddRange(UpdateRoaster(teamViewModel));
-                    }
-                    _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
                     if (teamViewModel.DeletedPlayers.Count > 0)
                     {
                         _teamService.RemovePlayers(new TeamId(teamViewModel.Id), teamViewModel.DeletedPlayers.Select(x => new PlayerId(x)));
                     }
+
                     var domainTeam = teamViewModel.ToDomain();
 
                     _teamService.Edit(domainTeam);
@@ -352,7 +376,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
-        private void CheckChangeCaptain(TeamViewModel teamViewModel,Team team)
+        private void CheckChangeCaptain(TeamViewModel teamViewModel)
         {
             if (teamViewModel.Captain.Id == 0)
             {
@@ -360,7 +384,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 teamViewModel.Captain.Id = createdCaptain.Id;
                 _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(createdCaptain.Id));
             }
-            else if (teamViewModel.Roster.First().Id!=team.Roster.First().Id)
+            else if (teamViewModel.Captain.Id != teamViewModel.Roster.First().Id)
             {
                 var captainId = teamViewModel.Roster.First().Id;
                 teamViewModel.Captain.Id = captainId;
@@ -368,10 +392,10 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             }
         }
 
-        private List<PlayerId> UpdateRoaster(TeamViewModel teamViewModel)
+        private List<PlayerId> CheckIfPlayersAreNotInAnoutherTeam(TeamViewModel teamViewModel)
         {
-            //select players which are in Db
-            var registeredPlayers = teamViewModel.Roster
+            //select players which are new for this team but in DB
+            var registeredPlayers = teamViewModel.AddedPlayers
                 .Where(x => x.Id != 0)
                 .ToList();
             //select teams which players returned from view
@@ -399,6 +423,8 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             }
 
             return playersToAddToTeam;
+
+
         }
     }
 }

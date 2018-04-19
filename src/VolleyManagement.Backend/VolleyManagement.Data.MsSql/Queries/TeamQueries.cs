@@ -80,10 +80,11 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
-            return _dalTeams
-                .Where(t => t.CaptainId == criteria.CaptainId)
-                .Select(t => GetTeamMapping(t))
-                .SingleOrDefault();
+            var teamTeamLedByCaptain = _dalTeams
+                .SingleOrDefault(t => t.CaptainId == criteria.CaptainId);
+            
+            return teamTeamLedByCaptain == null ? null :
+                GetTeamMapping(teamTeamLedByCaptain);
         }
 
 

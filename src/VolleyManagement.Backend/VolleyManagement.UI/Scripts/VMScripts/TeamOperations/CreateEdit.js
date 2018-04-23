@@ -239,13 +239,10 @@
       if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
         var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
         var playerId = privates.getPlayerId(inputTeamPlayer);
-       
+
         var isThisPlayerIsNewForThisTeam =
-          playersWhichWasInTeam.find(function (playerInRoster) {
-            return playerInRoster.Id === playerId;
-          });
-        //privates.getPlayerId(inputTeamPlayer) === defaultPlayerId || 
-        if (isThisPlayerIsNewForThisTeam === undefined) {
+          checkIfPlayerExists(playersWhichWasInTeam, playerId);
+        if (isThisPlayerIsNewForThisTeam === false) {
           result.AddedPlayers.push({
             FirstName: fullName[0],
             LastName: fullName[1],
@@ -263,6 +260,17 @@
 
     return result;
   };
+
+  function checkIfPlayerExists(playersWhichWasInTeam, playerId) {
+    var ifexist = false;
+    for (var i = 0; i < playersWhichWasInTeam.length; i++) {
+      if (+playersWhichWasInTeam[i].id === playerId) {
+        ifexist = true;
+      }
+    }
+    return ifexist;
+  }
+
 
   // Check if form valid
   privates.teamIsValid = function () {

@@ -777,7 +777,7 @@
         }
 
         /// <summary>
-        /// Test for Edit() method. Existing team should be updated
+        /// Test for Edit() method.
         /// </summary>
         [TestMethod]
         public void Edit_TeamNameAlreadyExists_ArgumentExceptionThrown()

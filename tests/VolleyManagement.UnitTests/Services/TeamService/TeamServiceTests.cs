@@ -538,7 +538,7 @@
         /// Throw exeption
         /// </summary>
         [TestMethod]
-        public void Create_TeamWithGivenNameAlreadyExists_ValidationExceptionThrown()
+        public void Create_TeamWithGivenNameAlreadyExists_ArgumentExceptionThrown()
         {
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().Build());
@@ -780,7 +780,7 @@
         /// Test for Edit() method. Existing team should be updated
         /// </summary>
         [TestMethod]
-        public void Edit_TeamNameAlreadyExists_ValidationExceptionThrown()
+        public void Edit_TeamNameAlreadyExists_ArgumentExceptionThrown()
         {
             // Arrange
             var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();

@@ -19,5 +19,4 @@ Examples:
 Scenario: Create team without captain
     Given team name is Team B
     And captain empty
-    When I execute CreateTeam
     Then Validation fails

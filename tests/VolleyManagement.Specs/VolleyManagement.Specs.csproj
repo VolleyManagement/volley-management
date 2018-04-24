@@ -102,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionAssertion.cs" />
     <Compile Include="TeamsContext\EditTeamSteps.cs" />
     <Compile Include="Infrastructure\TestDbAdapter.cs" />
     <Compile Include="Infrastructure\MockCurrentUserService.cs" />

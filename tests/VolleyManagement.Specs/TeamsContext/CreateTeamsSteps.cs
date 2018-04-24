@@ -9,10 +9,13 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.Properties;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Specs.Infrastructure;
     using VolleyManagement.Specs.Infrastructure.IOC;
     using Xunit;
+
+    using static VolleyManagement.Specs.ExceptionAssertion;
 
     [Binding]
     public class CreateTeamsSteps
@@ -24,6 +27,8 @@
 
         private readonly string teamSouldBeSavedToDb =
             "Team should've been saved into the database";
+        private readonly string exceptionKey = 
+            "ExceptionKey";
 
         public CreateTeamsSteps()
         {
@@ -71,11 +76,18 @@
         [When(@"I execute CreateTeam")]
         public void WhenIExecuteCreateTeam()
         {
-            var teamDto = Mapper.Map<CreateTeamDto>(_team);
+            try
+            {
+                var teamDto = Mapper.Map<CreateTeamDto>(_team);
 
-            _team = _teamService.Create(teamDto);
+                _team = _teamService.Create(teamDto);
 
-            _newTeamId = _team.Id;
+                _newTeamId = _team.Id;
+            }
+            catch(Exception ex)
+            {
+                ScenarioContext.Current.Add(exceptionKey, ex);
+            }
         }
 
         [Then(@"new team gets new Id")]
@@ -96,6 +108,14 @@
 
             teamEntity.Should().NotBe(null, teamSouldBeSavedToDb);
             teamEntity.Should().BeEquivalentTo(_team);
+        }
+
+        [Then(@"EntityInvariantViolationException is thrown")]
+        public void ThenEntityInvariantViolationExceptionIsThrown()
+        {
+            var exception = ScenarioContext.Current[exceptionKey] as Exception;
+            AssertExceptionsAreEqual(exception,
+                new ArgumentException(Resources.ValidationTeamCaptain));
         }
 
         private void RegisterNewPlayerAndSetCaptainId(string fullName)

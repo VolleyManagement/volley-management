@@ -55,7 +55,7 @@ namespace VolleyManagement.Specs.TeamsContext
         }
         
         [Given(@"name changed to Very looooooooooooooooooooooooong team name which should be more than (.*) symbols")]
-        public void GivenNameChangedToVeryLooooooooooooooooooooooooongTeamNameWhichShouldBeMoreThanSymbols(int lenght)
+        public void GivenNameChangedToNameWhichShouldBeMoreThan(int lenght)
         {
             longLongName = new string('a', lenght + 1);
             _team.Name = longLongName;

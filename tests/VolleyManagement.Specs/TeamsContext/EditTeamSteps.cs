@@ -1,7 +1,7 @@
 ﻿using System;
 using TechTalk.SpecFlow;
 
-namespace VolleyManagement.Specs
+namespace VolleyManagement.Specs.TeamsContext
 {
     [Binding]
     public class EditTeamSteps

@@ -31,7 +31,7 @@ namespace VolleyManagement.Specs.TeamsContext
 
             _captain = new Player(_captainId, "CaptainFirst", "CaptainLast", null, null, null);
 
-            int capId = _playerService.Create(Mapper.Map<CreatePlayerDto>(_captain)).Id;
+            var capId = _playerService.Create(Mapper.Map<CreatePlayerDto>(_captain)).Id;
             _team = new Team(int.MaxValue,
                 "Team",
                 "Coach",

@@ -1,27 +1,64 @@
-﻿using System;
+﻿using AutoMapper;
+using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
+using VolleyManagement.Contracts;
+using VolleyManagement.Data.MsSql.Entities;
+using VolleyManagement.Domain.PlayersAggregate;
+using VolleyManagement.Domain.TeamsAggregate;
+using VolleyManagement.Specs.Infrastructure;
+using VolleyManagement.Specs.Infrastructure.IOC;
+using Xunit;
 
 namespace VolleyManagement.Specs.TeamsContext
 {
     [Binding]
     public class EditTeamSteps
     {
-        [Given(@"Team A team exists")]
-        public void GivenTeamATeamExists()
+        private readonly ITeamService _teamService;
+        private Team _team;
+        private string NewName;
+        private string longLongName;
+        private int _captainId = 100;
+        private int _newTeamId;
+
+   
+        public EditTeamSteps()
         {
-            ScenarioContext.Current.Pending();
+            _teamService = IocProvider.Get<ITeamService>();
+            _team = new Team(int.MaxValue,
+                "Team",
+                "Coach",
+                "Achievements",
+                new PlayerId(_captainId),
+                new List<PlayerId>());
+
+        }
+
+
+        [Given(@"(.*) team exists")]
+        public void GivenTeamExists(string testName)
+        {
+            
+            _team.Name = testName;
+            var teamDto = Mapper.Map<CreateTeamDto>(_team);
+            _team = _teamService.Create(teamDto);
         }
         
-        [Given(@"name changed to A-Team")]
-        public void GivenNameChangedToA_Team()
+        [Given(@"name changed to (.*)")]
+        public void GivenNameChangedTo(string newName)
         {
-            ScenarioContext.Current.Pending();
+            NewName = newName;
+            _team.Name = newName;
         }
         
         [Given(@"name changed to Very looooooooooooooooooooooooong team name which should be more than (.*) symbols")]
-        public void GivenNameChangedToVeryLooooooooooooooooooooooooongTeamNameWhichShouldBeMoreThanSymbols(int p0)
+        public void GivenNameChangedToVeryLooooooooooooooooooooooooongTeamNameWhichShouldBeMoreThanSymbols(int lenght)
         {
-            ScenarioContext.Current.Pending();
+            longLongName = new string('a', lenght + 1);
+            _team.Name = longLongName;
         }
         
         [Given(@"Team B team does not exist")]
@@ -45,7 +82,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [When(@"I execute EditTeam")]
         public void WhenIExecuteEditTeam()
         {
-            ScenarioContext.Current.Pending();
+            _teamService.Edit(_team);
         }
         
         [When(@"I execute ChangeTeamCaptain")]
@@ -57,7 +94,15 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"team is updated succesfully")]
         public void ThenTeamIsUpdatedSuccesfully()
         {
-            ScenarioContext.Current.Pending();
+            _team.Name.Should().BeEquivalentTo(NewName);
         }
+
+        
+        [Then(@"EntityInvariantViolationException is thrown")]
+        public void ThenEntityInvariantViolationExceptionisthrown()
+        {
+            _team.Name.Should().BeEquivalentTo(NewName);
+        }
+
     }
 }

@@ -1,45 +1,61 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using FluentAssertions;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
+using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
+using VolleyManagement.Specs.Infrastructure.IOC;
 
 namespace VolleyManagement.Specs.TeamsContext
 {
     [Binding]
     public class ManageTeamPlayersSteps
     {
-        private Player _player;
+        private ITeamService _teamService;
+        private IPlayerService _playerService;
         private Team _team;
-        private readonly ITeamService _teamService;
+        private Player _player;
+        private int _captainId = 100;
+
+        public ManageTeamPlayersSteps()
+        {
+            _teamService = IocProvider.Get<ITeamService>();
+            _team = new Team(int.MaxValue,
+                "Team",
+                "Coach",
+                "Achievements",
+                new PlayerId(_captainId),
+                new List<PlayerId>());
+
+            _playerService = IocProvider.Get<IPlayerService>();
+            _player = new Player(int.MaxValue, "First", "Last", null, null, null);
+        }
 
         [Given(@"Team (.*) exists")]
-        public void GivenTeamAExists(string teamName)
+        public void GivenTeamExists(string teamName)
         {
-            //_teamService.Get();
-            _team = new Team(int.MaxValue, teamName, null, string.Empty, null, null);
-            _teamService.Create(new CreateTeamDto {
-                Name = _team.Name,
-                Achievements = _team.Achievements,
-                Roster = _team.Roster,
-                Captain = _team.Captain,
-                Coach = _team.Coach
-            });
+            _team.Name = teamName;
+            var teamDto = Mapper.Map<CreateTeamDto>(_team);
+            _team = _teamService.Create(teamDto);
         }
 
         [Given(@"I have added (.*) as a team player")]
         public void GivenIHaveAddedJaneDoeAsATeamPlayer(string playerName)
         {
-            
-            using (var ctx = TestDbAdapter.Context)
-            {
-              var res=  ctx.Players.First(x =>
-                    x.FirstName == playerName.Split(' ')[0] && 
-                    x.LastName == playerName.Split(' ')[1]);
-            }
-            ScenarioContext.Current.Pending();
+            var whitespaceCharIndex = playerName.IndexOf(' ');
+            var firstName = playerName.Substring(0, whitespaceCharIndex);
+            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+
+            _player = _playerService.Create(
+                new CreatePlayerDto {
+                    FirstName = firstName,
+                    LastName = lastName
+                });
         }
 
         [Given(@"Ivan Ivanov is a team player")]
@@ -81,7 +97,11 @@ namespace VolleyManagement.Specs.TeamsContext
         [When(@"I execute AddPlayersToTeam")]
         public void WhenIExecuteAddPlayersToTeam()
         {
-            ScenarioContext.Current.Pending();
+            _teamService.AddPlayers(new TeamId(_team.Id),
+                                    new List<PlayerId> {
+                                         new PlayerId(_player.Id)
+                                    });
+
         }
 
         [When(@"I execute RemovePlayersFromTeam")]
@@ -93,7 +113,12 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"players are added")]
         public void ThenPlayersAreAdded()
         {
-            ScenarioContext.Current.Pending();
+            IEnumerable<PlayerEntity> playerEntities;
+            using (var ctx = TestDbAdapter.Context)
+            {
+                playerEntities = ctx.Teams.First(team => team.Id == _team.Id).Players;
+            }
+            playerEntities.Should().AllBeEquivalentTo(_team.Roster);
         }
 
         [Then(@"players are removed")]

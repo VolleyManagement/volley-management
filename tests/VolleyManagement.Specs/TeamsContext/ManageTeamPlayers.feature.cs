@@ -72,122 +72,117 @@ namespace VolleyManagement.Specs.TeamsContext
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Add player to team", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Add player to team")]
         [Xunit.TraitAttribute("FeatureTitle", "Manage Team Players")]
         [Xunit.TraitAttribute("Description", "Add player to team")]
         public virtual void AddPlayerToTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add player to team", new string[] {
-                        "ignore"});
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add player to team", ((string[])(null)));
+#line 6
 this.ScenarioSetup(scenarioInfo);
-#line 8
+#line 7
  testRunner.Given("Team A exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
+#line 8
  testRunner.And("I have added Jane Doe as a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
+#line 9
  testRunner.When("I execute AddPlayersToTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 11
+#line 10
  testRunner.Then("players are added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Add several players to team", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Add several players to team")]
         [Xunit.TraitAttribute("FeatureTitle", "Manage Team Players")]
         [Xunit.TraitAttribute("Description", "Add several players to team")]
         public virtual void AddSeveralPlayersToTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add several players to team", new string[] {
-                        "ignore"});
-#line 14
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add several players to team", ((string[])(null)));
+#line 12
 this.ScenarioSetup(scenarioInfo);
-#line 15
+#line 13
  testRunner.Given("Team A exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
+#line 14
     testRunner.And("Ivan Ivanov is a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 15
  testRunner.And("I have added Jane Doe as a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 16
  testRunner.And("I have added John Smith as a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
+#line 17
  testRunner.When("I execute AddPlayersToTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
+#line 18
  testRunner.Then("players are added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Remove player from team", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Remove player from team")]
         [Xunit.TraitAttribute("FeatureTitle", "Manage Team Players")]
         [Xunit.TraitAttribute("Description", "Remove player from team")]
         public virtual void RemovePlayerFromTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove player from team", new string[] {
-                        "ignore"});
-#line 23
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove player from team", ((string[])(null)));
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 24
+#line 21
  testRunner.Given("Team A exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 25
+#line 22
     testRunner.And("Jane Doe is a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 23
  testRunner.And("I have removed Jane Doe", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
+#line 24
  testRunner.When("I execute RemovePlayersFromTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 28
+#line 25
  testRunner.Then("players are removed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Remove several player from team", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Remove several player from team")]
         [Xunit.TraitAttribute("FeatureTitle", "Manage Team Players")]
         [Xunit.TraitAttribute("Description", "Remove several player from team")]
         public virtual void RemoveSeveralPlayerFromTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove several player from team", new string[] {
-                        "ignore"});
-#line 31
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove several player from team", ((string[])(null)));
+#line 27
 this.ScenarioSetup(scenarioInfo);
-#line 32
+#line 28
  testRunner.Given("Team A exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 33
+#line 29
     testRunner.And("Jane Doe is a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 30
     testRunner.And("John Smith is a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
+#line 31
     testRunner.And("Ivan Ivanov is a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 32
  testRunner.And("I have added Jane Doe as a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 33
  testRunner.And("I have added John Smith as a team player", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 34
  testRunner.When("I execute RemovePlayersFromTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
+#line 35
  testRunner.Then("players are removed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Remove captain from team", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Remove captain from team")]
         [Xunit.TraitAttribute("FeatureTitle", "Manage Team Players")]
         [Xunit.TraitAttribute("Description", "Remove captain from team")]
         public virtual void RemoveCaptainFromTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove captain from team", new string[] {
-                        "ignore"});
-#line 42
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove captain from team", ((string[])(null)));
+#line 37
 this.ScenarioSetup(scenarioInfo);
-#line 43
+#line 38
  testRunner.Given("Team A exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 44
+#line 39
     testRunner.And("Jane Doe is a team captain", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 40
  testRunner.And("I have removed Jane Doe", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 41
  testRunner.When("I execute RemovePlayersFromTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 47
+#line 42
  testRunner.Then("InvalidOperationException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -117,7 +117,7 @@
             }
 
             teamEntity.Should().NotBe(null, teamShouldBeSavedToDb);
-            teamEntity.Should().BeEquivalentTo(_team);
+            AssertTeamEntityEqualsDomainTeam(teamEntity, _team);
         }
 
         [Then(@"Validation fails")]
@@ -142,6 +142,14 @@
                     LastName = lastName
                 });
             _captainId = newPlayer.Id;
+        }
+
+        private static void AssertTeamEntityEqualsDomainTeam(TeamEntity entity, Team domain)
+        {
+            entity.Id.Should().Be(domain.Id);
+            entity.Name.Should().Be(domain.Name);
+            entity.Achievements.Should().Be(domain.Achievements);
+            entity.CaptainId.Should().Be(domain.Captain.Id);
         }
     }
 }

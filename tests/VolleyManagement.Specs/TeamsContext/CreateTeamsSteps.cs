@@ -16,7 +16,7 @@
     using Xunit;
 
     using static VolleyManagement.Specs.ExceptionAssertion;
-
+    
     [Binding]
     public class CreateTeamsSteps
     {
@@ -27,8 +27,10 @@
 
         private readonly string teamSouldBeSavedToDb =
             "Team should've been saved into the database";
-        private readonly string exceptionKey = 
-            "ExceptionKey";
+        private readonly string actExceptionKey = 
+            "ActExceptionKey";
+        private readonly string setCaptainToNullException =
+            "SetCaptainToNullException";
 
         public CreateTeamsSteps()
         {
@@ -58,7 +60,15 @@
         [Given(@"captain empty")]
         public void GivenCaptainIsEmpty()
         {
-            _team.SetCaptain(null);
+            try
+            {
+                _team.SetCaptain(null);
+            }
+            catch(Exception ex)
+            {
+                ScenarioContext.Current.Add(setCaptainToNullException,
+                    ex);
+            }
         }
 
         [Given(@"coach is (.*)")]
@@ -86,7 +96,7 @@
             }
             catch(Exception ex)
             {
-                ScenarioContext.Current.Add(exceptionKey, ex);
+                ScenarioContext.Current.Add(actExceptionKey, ex);
             }
         }
 
@@ -110,10 +120,10 @@
             teamEntity.Should().BeEquivalentTo(_team);
         }
 
-        [Then(@"EntityInvariantViolationException is thrown")]
+        [Then(@"Validation fails")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
-            var exception = ScenarioContext.Current[exceptionKey] as Exception;
+            var exception = ScenarioContext.Current[setCaptainToNullException] as Exception;
             AssertExceptionsAreEqual(exception,
                 new ArgumentException(Resources.ValidationTeamCaptain));
         }

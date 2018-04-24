@@ -115,7 +115,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
     testRunner.When("I execute CreateTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 23
-    testRunner.Then("EntityInvariantViolationException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("Validation fails", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

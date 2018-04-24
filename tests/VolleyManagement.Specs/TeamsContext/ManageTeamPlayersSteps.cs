@@ -20,19 +20,35 @@ namespace VolleyManagement.Specs.TeamsContext
         private IPlayerService _playerService;
         private Team _team;
         private Player _player;
+        private Player _captain;
+
         private int _captainId = 100;
 
         public ManageTeamPlayersSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
+            _playerService = IocProvider.Get<IPlayerService>();
+
+            _captain = new Player(_captainId, "CaptainFirst", "CaptainLast", null, null, null);
+
+            int capId = _playerService.Create(Mapper.Map<CreatePlayerDto>(_captain)).Id;
             _team = new Team(int.MaxValue,
                 "Team",
                 "Coach",
                 "Achievements",
-                new PlayerId(_captainId),
+                new PlayerId(capId),
                 new List<PlayerId>());
 
-            _playerService = IocProvider.Get<IPlayerService>();
+
+            var team = _teamService.Create(new CreateTeamDto {
+                Name = _team.Name,
+                Coach = _team.Coach,
+                Achievements = _team.Achievements,
+                Captain = _team.Captain,
+                Roster = _team.Roster
+            });
+
+         //   _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(capId));
             _player = new Player(int.MaxValue, "First", "Last", null, null, null);
         }
 

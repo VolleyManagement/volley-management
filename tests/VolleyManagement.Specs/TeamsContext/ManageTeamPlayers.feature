@@ -9,6 +9,7 @@ Scenario: Add player to team
 	When I execute AddPlayersToTeam
 	Then players are added
 
+    @ignore
 Scenario: Add several players to team
 	Given Team A exists
     And Ivan Ivanov is a team player
@@ -17,13 +18,15 @@ Scenario: Add several players to team
 	When I execute AddPlayersToTeam
 	Then players are added
 
+    @ignore
 Scenario: Remove player from team
 	Given Team A exists
     And Jane Doe is a team player
 	And I have removed Jane Doe
 	When I execute RemovePlayersFromTeam
 	Then players are removed
-
+    
+    @ignore
 Scenario: Remove several player from team
 	Given Team A exists
     And Jane Doe is a team player
@@ -34,6 +37,7 @@ Scenario: Remove several player from team
 	When I execute RemovePlayersFromTeam
 	Then players are removed
     
+    @ignore
 Scenario: Remove captain from team
 	Given Team A exists
     And Jane Doe is a team captain

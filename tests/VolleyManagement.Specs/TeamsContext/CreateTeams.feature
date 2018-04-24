@@ -18,6 +18,6 @@ Examples:
 
 Scenario: Create team without captain
     Given team name is Team B
-    And captain is empty
+    And captain empty
     When I execute CreateTeam
     Then EntityInvariantViolationException is thrown

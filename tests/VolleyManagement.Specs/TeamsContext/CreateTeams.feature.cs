@@ -111,7 +111,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
     testRunner.Given("team name is Team B", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
-    testRunner.And("captain is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("captain empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
     testRunner.When("I execute CreateTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 23

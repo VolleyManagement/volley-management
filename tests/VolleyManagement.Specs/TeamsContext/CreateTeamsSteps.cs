@@ -55,7 +55,7 @@
             _team.SetCaptain(new PlayerId(_captainId));
         }
 
-        [Given(@"captain is empty")]
+        [Given(@"captain empty")]
         public void GivenCaptainIsEmpty()
         {
             _team.SetCaptain(null);

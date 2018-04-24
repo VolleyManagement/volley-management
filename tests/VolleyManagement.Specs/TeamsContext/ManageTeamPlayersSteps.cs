@@ -38,8 +38,7 @@ namespace VolleyManagement.Specs.TeamsContext
                 "Achievements",
                 new PlayerId(capId),
                 new List<PlayerId>());
-
-
+            
             var team = _teamService.Create(new CreateTeamDto {
                 Name = _team.Name,
                 Coach = _team.Coach,

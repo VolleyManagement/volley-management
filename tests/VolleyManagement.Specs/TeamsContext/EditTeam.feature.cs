@@ -72,21 +72,22 @@ namespace VolleyManagement.Specs.TeamsContext
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Edit existing team")]
+        [Xunit.FactAttribute(DisplayName="Edit existing team", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Team")]
         [Xunit.TraitAttribute("Description", "Edit existing team")]
         public virtual void EditExistingTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit existing team", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit existing team", new string[] {
+                        "ignore"});
 #line 7
-    testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
-    testRunner.And("name changed to A-Team", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-    testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("name changed to A-Team", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
+    testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 11
     testRunner.Then("team is updated succesfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -99,16 +100,16 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change name to very long name", new string[] {
                         "ignore"});
-#line 13
-this.ScenarioSetup(scenarioInfo);
 #line 14
-    testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 15
+    testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 16
     testRunner.And("name changed to Very looooooooooooooooooooooooong team name which should be more " +
                     "than 30 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
-    testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17
+    testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 18
     testRunner.Then("EntityInvariantViolationException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -121,15 +122,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit missing team", new string[] {
                         "ignore"});
-#line 20
-this.ScenarioSetup(scenarioInfo);
 #line 21
-    testRunner.Given("Team B team does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 22
-    testRunner.And("name changed to B-Team", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Given("Team B team does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 23
-    testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("name changed to B-Team", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
+    testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
     testRunner.Then("ConcurrencyException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -142,15 +143,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change captain", new string[] {
                         "ignore"});
-#line 27
-this.ScenarioSetup(scenarioInfo);
 #line 28
-    testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 29
-    testRunner.And("captain is changed to Captain B", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
-    testRunner.When("I execute ChangeTeamCaptain", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("captain is changed to Captain B", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
+    testRunner.When("I execute ChangeTeamCaptain", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 32
     testRunner.Then("team is updated succesfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -23,8 +23,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private string longLongName;
         private int _captainId = 100;
         private int _newTeamId;
-
-   
+        
         public EditTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
@@ -34,14 +33,11 @@ namespace VolleyManagement.Specs.TeamsContext
                 "Achievements",
                 new PlayerId(_captainId),
                 new List<PlayerId>());
-
         }
-
-
+        
         [Given(@"(.*) team exists")]
         public void GivenTeamExists(string testName)
         {
-            
             _team.Name = testName;
             var teamDto = Mapper.Map<CreateTeamDto>(_team);
             _team = _teamService.Create(teamDto);
@@ -97,12 +93,10 @@ namespace VolleyManagement.Specs.TeamsContext
             _team.Name.Should().BeEquivalentTo(NewName);
         }
 
-        
         [Then(@"EntityInvariantViolationException is thrown")]
         public void ThenEntityInvariantViolationExceptionisthrown()
         {
             _team.Name.Should().BeEquivalentTo(NewName);
         }
-
     }
 }

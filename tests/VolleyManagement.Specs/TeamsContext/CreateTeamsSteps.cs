@@ -25,7 +25,7 @@
         private int _captainId = 100;
         private int _newTeamId;
 
-        private readonly string teamSouldBeSavedToDb =
+        private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
         private readonly string actExceptionKey = 
             "ActExceptionKey";
@@ -116,7 +116,7 @@
                 teamEntity = context.Teams.Find(_team.Id);
             }
 
-            teamEntity.Should().NotBe(null, teamSouldBeSavedToDb);
+            teamEntity.Should().NotBe(null, teamShouldBeSavedToDb);
             teamEntity.Should().BeEquivalentTo(_team);
         }
 

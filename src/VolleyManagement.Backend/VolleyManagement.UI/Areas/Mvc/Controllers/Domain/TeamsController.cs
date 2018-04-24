@@ -1,7 +1,4 @@
-﻿using VolleyManagement.Domain.PlayersAggregate;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -16,6 +13,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
     using ViewModels.Teams;
+    using ViewModels.Players;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
@@ -102,24 +100,25 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 try
                 {
-                    var roster = teamViewModel.Roster.Select(t => t.ToCreatePlayerDto()).ToList();
-
-                    var players = _playerService.CreateBulk(roster);
-
+                    var playersIdToAddToTeam = new List<PlayerId>();
                     var team = teamViewModel.ToCreateTeamDto();
-                    teamViewModel.Roster = players.Select(x =>
-                        new PlayerNameViewModel {
-                            Id = x.Id,
-                            FirstName = x.FirstName,
-                            LastName = x.LastName
-                        })
+                    var createdTeam = _teamService.Create(team);
+                    teamViewModel.Id = createdTeam.Id;
+
+                    if (teamViewModel.AddedPlayers.Count > 0)
+                    {
+                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                                .Where(x => x.Id == 0)
+                                .Select(x => x.ToCreatePlayerDto())
+                                .ToList())
+                            .Select(x => new PlayerId(x.Id))
                             .ToList();
 
-                    var createdTeam = _teamService.Create(team);
+                        playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
+                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
+                    }
 
-                    _teamService.AddPlayers(new TeamId(createdTeam.Id), players.Select(x => new PlayerId(x.Id)));
-
-                    teamViewModel.Id = createdTeam.Id;
+                    ChangeCapitain(teamViewModel, playersIdToAddToTeam);
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)

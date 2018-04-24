@@ -1,51 +1,117 @@
-﻿using System;
-using TechTalk.SpecFlow;
-
-namespace VolleyManagement.Specs.TeamsContext
+﻿namespace VolleyManagement.Specs.TeamsContext
 {
+    using AutoMapper;
+    using FluentAssertions;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using TechTalk.SpecFlow;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.Specs.Infrastructure;
+    using VolleyManagement.Specs.Infrastructure.IOC;
+    using Xunit;
+
     [Binding]
     public class CreateTeamsSteps
     {
-        [Given(@"team name is Team A")]
-        public void GivenTeamNameIsTeamA()
+        private readonly ITeamService _teamService;
+        private Team _team;
+        private int _captainId = 100;
+        private int _newTeamId;
+
+        private readonly string teamSouldBeSavedToDb =
+            "Team should've been saved into the database";
+
+        public CreateTeamsSteps()
         {
-            ScenarioContext.Current.Pending();
+            _teamService = IocProvider.Get<ITeamService>();
+            _team = new Team(int.MaxValue,
+                "Team",
+                "Coach",
+                "Achievements",
+                new PlayerId(_captainId),
+                new List<PlayerId>());
         }
-        
-        [Given(@"captain is Jane Doe")]
-        public void GivenCaptainIsJaneDoe()
+
+        [Given(@"team name is (.*)")]
+        public void GivenTeamNameIs(string teamName)
         {
-            ScenarioContext.Current.Pending();
+            _team.Name = teamName;
         }
-        
-        [Given(@"coach is ")]
-        public void GivenCoachIs()
+
+        [Given(@"captain is (.*)")]
+        public void GivenCaptainIs(string fullName)
         {
-            ScenarioContext.Current.Pending();
+            RegisterNewPlayerAndSetCaptainId(fullName);
+
+            _team.SetCaptain(new PlayerId(_captainId));
         }
-        
-        [Given(@"achievements are ")]
-        public void GivenAchievementsAre()
+
+        [Given(@"captain is empty")]
+        public void GivenCaptainIsEmpty()
         {
-            ScenarioContext.Current.Pending();
+            _team.SetCaptain(null);
         }
-        
+
+        [Given(@"coach is (.*)")]
+        public void GivenCoachIs(string coach)
+        {
+            _team.Coach = coach;
+        }
+
+        [Given(@"achievements are (.*)")]
+        public void GivenAchievementsAre(string achievements)
+        {
+            _team.Achievements = achievements;
+        }
+
         [When(@"I execute CreateTeam")]
         public void WhenIExecuteCreateTeam()
         {
-            ScenarioContext.Current.Pending();
+            var teamDto = Mapper.Map<CreateTeamDto>(_team);
+
+            _team = _teamService.Create(teamDto);
+
+            _newTeamId = _team.Id;
         }
-        
+
         [Then(@"new team gets new Id")]
         public void ThenNewTeamGetsNewId()
         {
-            ScenarioContext.Current.Pending();
+            Assert.NotEqual(default(int), _newTeamId);
+            Assert.NotEqual(int.MaxValue, _newTeamId);
         }
-        
+
         [Then(@"new team should be succesfully added")]
         public void ThenNewTeamShouldBeSuccesfullyAdded()
         {
-            ScenarioContext.Current.Pending();
+            TeamEntity teamEntity;
+            using (var context = TestDbAdapter.Context)
+            {
+                teamEntity = context.Teams.Find(_team.Id);
+            }
+
+            teamEntity.Should().NotBe(null, teamSouldBeSavedToDb);
+            teamEntity.Should().BeEquivalentTo(_team);
+        }
+
+        private void RegisterNewPlayerAndSetCaptainId(string fullName)
+        {
+            var whitespaceCharIndex = fullName.IndexOf(' ');
+            var firstName = fullName.Substring(0, whitespaceCharIndex);
+            var lastName = fullName.Substring(whitespaceCharIndex + 1);
+
+            var playerService = IocProvider.Get<IPlayerService>();
+
+            var newPlayer = playerService.Create(
+                new CreatePlayerDto {
+                    FirstName = firstName,
+                    LastName = lastName
+                });
+            _captainId = newPlayer.Id;
         }
     }
 }

@@ -3,7 +3,6 @@
 	I want to be able to create players
     So they can be assigned to teams
 
-@ignore
 Scenario Outline: Create simple player
 	Given first name is <FirstName>
     And last name is <LastName>

@@ -10,7 +10,7 @@
     /// <summary>
     /// Checks if domain team equals team entity.
     /// </summary>
-    static class DomainEntityTeamEqualityAsserter
+    static class EntityDomainTeamEqualityAsserter
     {
         public static void AssertSimpleDataIsEqual(TeamEntity entity, Team domain)
         {
@@ -21,9 +21,9 @@
             entity.CaptainId.Should().Be(domain.Captain.Id);
         }
 
-        public static void AssertRosterIsEqual(ICollection<PlayerEntity> entity, ICollection<PlayerId> domain)
+        public static void AssertRosterIsEqual(IEnumerable<PlayerEntity> entity, IEnumerable<PlayerId> domain)
         {
-            entity.Count.Should().Be(domain.Count, "Roster's count must be equal.");
+            entity.Count().Should().Be(domain.Count(), "Roster's count must be equal.");
 
             var entityRosterIds = entity.Select(e => e.Id);
             var domainRosterIds = domain.Select(d => d.Id);

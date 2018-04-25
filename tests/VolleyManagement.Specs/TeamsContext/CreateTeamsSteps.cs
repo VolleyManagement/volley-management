@@ -16,7 +16,7 @@
     using Xunit;
 
     using static VolleyManagement.Specs.ExceptionAssertion;
-    using static VolleyManagement.Specs.TeamsContext.DomainEntityTeamEqualityAsserter;
+    using static VolleyManagement.Specs.TeamsContext.EntityDomainTeamEqualityAsserter;
     
     [Binding]
     public class CreateTeamsSteps

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VolleyManagement.Data.MsSql.Context
+﻿namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;

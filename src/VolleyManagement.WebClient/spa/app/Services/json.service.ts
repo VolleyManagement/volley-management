@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Response } from '@angular/http';
 import { environment } from '../../environments/environment';
 
 import 'rxjs/add/operator/map';
@@ -9,11 +10,11 @@ import { TournamentMetadataJson } from '../Models/TournamentMetadataJson/Tournam
 
 @Injectable()
 export class JsonService {
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) { }
 
     getJson<T>(url: string): Observable<T> {
         return this.http
             .get(url)
-            .map(response => response.json() as T);
+            .map(response => response as T);
     }
 }

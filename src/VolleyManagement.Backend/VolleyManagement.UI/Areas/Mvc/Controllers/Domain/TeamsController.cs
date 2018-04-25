@@ -105,6 +105,21 @@
                     var createdTeam = _teamService.Create(team);
                     teamViewModel.Id = createdTeam.Id;
 
+                    if (teamViewModel.Captain.Id == 0)
+                    {
+                        var newAddedCaptain = _playerService.Create(teamViewModel.Captain.ToCreatePlayerDto());
+                        teamViewModel.Captain = new PlayerNameViewModel {
+                            Id = newAddedCaptain.Id,
+                            FirstName = newAddedCaptain.FirstName,
+                            LastName = newAddedCaptain.LastName
+                        };
+                    }
+                    else
+                    {
+                        createdTeam.SetCaptain(new PlayerId(teamViewModel.Captain.Id));
+                    }
+
+                    
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
                         playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
@@ -117,8 +132,8 @@
                         playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
                         _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
                     }
-
-                    ChangeCapitain(teamViewModel, playersIdToAddToTeam);
+                    
+                    //ChangeCapitain(teamViewModel, playersIdToAddToTeam);
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)

@@ -3,6 +3,7 @@
 	I want to be able to create players
     So they can be assigned to teams
 
+@ignore
 Scenario Outline: Create simple player
 	Given first name is <FirstName>
     And last name is <LastName>
@@ -20,6 +21,7 @@ Scenario: Create very long name
     When I execute CreatePlayer
     Then EntityInvariantViolationException is thrown
 
+@ignore
 Scenario Outline: Create player with all attributes
 	Given first name is <FirstName>
     And last name is <LastName>

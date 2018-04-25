@@ -24,6 +24,7 @@
         private Team _team;
         private int _captainId = 100;
         private int _newTeamId;
+        private Exception exception;
 
         private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
@@ -66,8 +67,7 @@
             }
             catch(Exception ex)
             {
-                ScenarioContext.Current.Add(setCaptainToNullException,
-                    ex);
+                exception = ex;
             }
         }
 
@@ -96,7 +96,7 @@
             }
             catch(Exception ex)
             {
-                ScenarioContext.Current.Add(actExceptionKey, ex);
+                exception = ex;
             }
         }
 
@@ -123,7 +123,6 @@
         [Then(@"Validation fails")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
-            var exception = ScenarioContext.Current[setCaptainToNullException] as Exception;
             AssertExceptionsAreEqual(exception,
                 new ArgumentException(Resources.ValidationTeamCaptain));
         }

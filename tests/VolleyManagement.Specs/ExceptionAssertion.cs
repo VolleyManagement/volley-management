@@ -9,7 +9,7 @@
         {
             actual.Should().NotBeNull("Exception should not be null");
             actual.Should().BeOfType(expected.GetType(), $"Exception should be of {expected.GetType()}");
-            actual.Message.Should().BeEquivalentTo(expected.Message);
+            actual.Message.Should().Be(expected.Message);
         }
     }
 }

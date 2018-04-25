@@ -142,14 +142,12 @@
 
         private static Team GetTeamMapping(TeamEntity t)
         {
-            var roster = t.Players?.Select(p => new PlayerId(p.Id)) ?? new List<PlayerId> { new PlayerId(t.CaptainId) };
             return new Team(t.Id,
                             t.Name,
                             t.Coach,
                             t.Achievements,
                             new PlayerId(t.CaptainId),
-                            roster
-                        );
+                            t.Players.Select(p => new PlayerId(p.Id)));
         }
 
         #endregion

@@ -108,18 +108,12 @@
                             FirstName = newAddedCaptain.FirstName,
                             LastName = newAddedCaptain.LastName
                         };
-                        var team = teamViewModel.ToCreateTeamDto();
-                        var createdTeam = _teamService.Create(team);
-                        teamViewModel.Id = createdTeam.Id;
                     }
-                    else
-                    {
-                        var team = teamViewModel.ToCreateTeamDto();
-                        var createdTeam = _teamService.Create(team);
-                        teamViewModel.Id = createdTeam.Id;
-                        createdTeam.SetCaptain(new PlayerId(teamViewModel.Captain.Id));
-                    }
-                    
+
+                    var team = teamViewModel.ToCreateTeamDto();
+                    var createdTeam = _teamService.Create(team);
+                    teamViewModel.Id = createdTeam.Id;
+
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
                         var playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
@@ -190,21 +184,20 @@
             {
                 try
                 {
-                    var playersIdToAddToTeam = new List<PlayerId>();
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
-                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                                .Where(x => x.Id == 0)
-                                .Select(x => x.ToCreatePlayerDto())
-                                .ToList())
-                                .Select(x => new PlayerId(x.Id))
-                                .ToList();
+                        var playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                                  .Where(x => x.Id == 0)
+                                  .Select(x => x.ToCreatePlayerDto())
+                                  .ToList())
+                                  .Select(x => new PlayerId(x.Id))
+                                  .ToList();
 
                         playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
                         _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
                     }
 
-                    ChangeCapitain(teamViewModel, playersIdToAddToTeam);
+                    ChangeCapitain(teamViewModel);
 
 
 
@@ -360,7 +353,7 @@
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
-        private void ChangeCapitain(TeamViewModel teamViewModel, IEnumerable<PlayerId> playersIdToAddToTeam)
+        private void ChangeCapitain(TeamViewModel teamViewModel)
         {
             if (teamViewModel.IsCaptainChanged)
             {

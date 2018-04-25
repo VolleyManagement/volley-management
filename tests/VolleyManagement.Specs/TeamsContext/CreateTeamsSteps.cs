@@ -28,10 +28,6 @@
 
         private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
-        private readonly string actExceptionKey = 
-            "ActExceptionKey";
-        private readonly string setCaptainToNullException =
-            "SetCaptainToNullException";
 
         public CreateTeamsSteps()
         {

@@ -365,12 +365,17 @@
             if (teamViewModel.IsCaptainChanged)
             {
                 var captainId = teamViewModel.Captain.Id;
-                if (teamViewModel.Captain.Id == 0)
+                if (captainId == 0)
                 {
-                    captainId = playersIdToAddToTeam.Select(x => x.Id).First();
+                    var newAddedCaptain = _playerService.Create(teamViewModel.Captain.ToCreatePlayerDto());
+                    teamViewModel.Captain = new PlayerNameViewModel {
+                        Id = newAddedCaptain.Id,
+                        FirstName = newAddedCaptain.FirstName,
+                        LastName = newAddedCaptain.LastName
+                    };
                 }
 
-                _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(captainId));
+                _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(teamViewModel.Captain.Id));
             }
         }
     }

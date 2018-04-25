@@ -230,8 +230,12 @@
     if (privates.teamUnderEdit) {
       result.Id = privates.teamId;
     }
-    if (currNs.teamRoster[0].name !== captainFullname) {
-      result.IsCaptainChanged = true;
+    for (var i = 0; i < currNs.teamRoster.length; i++) {
+      if (currNs.teamRoster[i].isCaptain === true) {
+        if (currNs.teamRoster[i].name !== $("#Captain_FullName").val().trim()) {
+          result.IsCaptainChanged = true;
+        }
+      }
     }
     var playersWhichWasInTeam = currNs.teamRoster || [];
     for (var j = 1; j <= teamPlayerCounter; j++) {

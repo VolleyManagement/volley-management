@@ -29,14 +29,12 @@
                 Captain = new PlayerNameViewModel() { Id = 1, FirstName = "First", LastName = "Player" },
                 Roster = new List<PlayerNameViewModel>()
                 {
+                    new PlayerNameViewModel() { Id = 1, FirstName = "First", LastName = "Player" },
+                    new PlayerNameViewModel() { Id = 2, FirstName = "Second", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 3, FirstName = "Third", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 4, FirstName = "Fourth", LastName = "Player" }
                 },
-                AddedPlayers = new List<PlayerNameViewModel>
-                {
-                    new PlayerNameViewModel() { Id = 1, FirstName = "First", LastName = "Player" },
-                    new PlayerNameViewModel() { Id = 2, FirstName = "Second", LastName = "Player" }
-                }
+                
             };
         }
 
@@ -103,6 +101,27 @@
         public TeamMvcViewModelBuilder WithRoster(List<PlayerNameViewModel> roster)
         {
             _teamViewModel.Roster = roster;
+            return this;
+        }
+
+        /// <summary>
+        /// model with added players
+        /// </summary>
+        /// <returns>test team view model</returns>
+        public TeamMvcViewModelBuilder WithAddedPlayers()
+        {
+            _teamViewModel.AddedPlayers = new List<PlayerNameViewModel> {
+                new PlayerNameViewModel() {
+                    Id = 5,
+                    FirstName = "Fifth",
+                    LastName = "Player"
+                },
+                new PlayerNameViewModel() {
+                    Id = 6,
+                    FirstName = "Sixth",
+                    LastName = "Player"
+                }
+            };
             return this;
         }
 

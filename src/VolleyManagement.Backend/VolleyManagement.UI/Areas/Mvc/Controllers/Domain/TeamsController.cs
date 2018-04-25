@@ -100,10 +100,6 @@
             {
                 try
                 {
-                    var team = teamViewModel.ToCreateTeamDto();
-                    var createdTeam = _teamService.Create(team);
-                    teamViewModel.Id = createdTeam.Id;
-
                     if (teamViewModel.Captain.Id == 0)
                     {
                         var newAddedCaptain = _playerService.Create(teamViewModel.Captain.ToCreatePlayerDto());
@@ -112,13 +108,18 @@
                             FirstName = newAddedCaptain.FirstName,
                             LastName = newAddedCaptain.LastName
                         };
+                        var team = teamViewModel.ToCreateTeamDto();
+                        var createdTeam = _teamService.Create(team);
+                        teamViewModel.Id = createdTeam.Id;
                     }
                     else
                     {
+                        var team = teamViewModel.ToCreateTeamDto();
+                        var createdTeam = _teamService.Create(team);
+                        teamViewModel.Id = createdTeam.Id;
                         createdTeam.SetCaptain(new PlayerId(teamViewModel.Captain.Id));
                     }
-
-
+                    
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
                         var playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers

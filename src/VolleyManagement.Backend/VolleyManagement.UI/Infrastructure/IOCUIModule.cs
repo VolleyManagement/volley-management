@@ -1,6 +1,4 @@
-﻿using VolleyManagement.Crosscutting.Contracts.Providers;
-
-namespace VolleyManagement.UI.Infrastructure
+﻿namespace VolleyManagement.UI.Infrastructure
 {
     using Contracts;
     using Contracts.Authorization;
@@ -8,6 +6,8 @@ namespace VolleyManagement.UI.Infrastructure
     using Crosscutting.Contracts.FeatureToggles;
     using Crosscutting.Contracts.Infrastructure;
     using Crosscutting.Contracts.Infrastructure.IOC;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.UI.Infrastructure;
     using FeatureToggle.Core.Fluent;
     using Services;
     using Services.Mail;

@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Specs", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Domain.UnitTests", "..\tests\VolleyManagement.Domain.UnitTests\VolleyManagement.Domain.UnitTests.csproj", "{D13FB5D4-9AD8-41BC-8913-1655EB7BF9A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.API", "VolleyManagement.API\VolleyManagement.API.csproj", "{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,10 @@ Global
 		{D13FB5D4-9AD8-41BC-8913-1655EB7BF9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D13FB5D4-9AD8-41BC-8913-1655EB7BF9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D13FB5D4-9AD8-41BC-8913-1655EB7BF9A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

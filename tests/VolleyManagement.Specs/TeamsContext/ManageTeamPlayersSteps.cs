@@ -47,11 +47,11 @@ namespace VolleyManagement.Specs.TeamsContext
                 Roster = _team.Roster
             });
 
-         //   _teamService.ChangeCaptain(new TeamId(team.Id), new PlayerId(capId));
             _player = new Player(int.MaxValue, "First", "Last", null, null, null);
         }
 
         [Given(@"Team (.*) exists")]
+        [Scope(Feature = "Manage Team Players")]
         public void GivenTeamExists(string teamName)
         {
             _team.Name = teamName;
@@ -60,7 +60,8 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"I have added (.*) as a team player")]
-        public void GivenIHaveAddedJaneDoeAsATeamPlayer(string playerName)
+        [Scope(Feature = "Manage Team Players")]
+        public void GivenIHavePlayerAsATeamPlayer(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');
             var firstName = playerName.Substring(0, whitespaceCharIndex);
@@ -73,37 +74,22 @@ namespace VolleyManagement.Specs.TeamsContext
                 });
         }
 
-        [Given(@"Ivan Ivanov is a team player")]
-        public void GivenIvanIvanovIsATeamPlayer()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I have added John Smith as a team player")]
-        public void GivenIHaveAddedJohnSmithAsATeamPlayer()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"Jane Doe is a team player")]
-        public void GivenJaneDoeIsATeamPlayer()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I have removed Jane Doe")]
-        public void GivenIHaveRemovedJaneDoe()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         [Given(@"(.*) is a team player")]
-        public void GivenJohnSmithIsATeamPlayer()
+        [Scope(Feature = "Manage Team Players")]
+        public void GivenPlayerIsATeamPlayer()
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"Jane Doe is a team captain")]
+        [Given(@"I have removed (.*)")]
+        [Scope(Feature = "Manage Team Players")]
+        public void GivenIHaveRemovedPlayer()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"(.*) is a team captain")]
+        [Scope(Feature = "Manage Team Players")]
         public void GivenJaneDoeIsATeamCaptain()
         {
             ScenarioContext.Current.Pending();

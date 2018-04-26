@@ -36,6 +36,7 @@ namespace VolleyManagement.Specs.TeamsContext
         }
         
         [Given(@"(.*) team exists")]
+        [Scope(Feature = "Edit Team")]
         public void GivenTeamExists(string testName)
         {
             _team.Name = testName;
@@ -57,20 +58,21 @@ namespace VolleyManagement.Specs.TeamsContext
             _team.Name = longLongName;
         }
         
-        [Given(@"Team B team does not exist")]
-        public void GivenTeamBTeamDoesNotExist()
+        [Given(@"Team (.*) team does not exist")]
+        [Scope(Feature = "Edit Team")]
+        public void GivenTeamDoesNotExist()
         {
             ScenarioContext.Current.Pending();
         }
         
-        [Given(@"name changed to B-Team")]
-        public void GivenNameChangedToB_Team()
+        [Given(@"name changed to (.*)")]
+        public void GivenNameChangedToAnother()
         {
             ScenarioContext.Current.Pending();
         }
         
-        [Given(@"captain is changed to Captain B")]
-        public void GivenCaptainIsChangedToCaptainB()
+        [Given(@"captain is changed to (.*)")]
+        public void GivenCaptainIsChangedToAnother()
         {
             ScenarioContext.Current.Pending();
         }

@@ -48,6 +48,7 @@
         }
 
         [Given(@"captain is (.*)")]
+        [Scope(Feature = "CreateTeams")]
         public void GivenCaptainIs(string fullName)
         {
             RegisterNewPlayerAndSetCaptainId(fullName);

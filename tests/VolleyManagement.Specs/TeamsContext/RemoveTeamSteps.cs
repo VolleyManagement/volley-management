@@ -5,14 +5,16 @@ namespace VolleyManagement.Specs.TeamsContext
     [Binding]
     public class RemoveTeamSteps
     {
-        [Given(@"Volley\.org\.ua team exists")]
-        public void GivenVolley_Org_UaTeamExists()
+        [Given(@"(.*) team exists")]
+        [Scope(Feature = "Remove Team")]
+        public void GivenTeamExists()
         {
             ScenarioContext.Current.Pending();
         }
         
-        [Given(@"football\.org\.ua team does not exist")]
-        public void GivenFootball_Org_UaTeamDoesNotExist()
+        [Given(@"(.*) team does not exist")]
+        [Scope(Feature = "Remove Team")]
+        public void GivenTeamDoesNotExist()
         {
             ScenarioContext.Current.Pending();
         }
@@ -24,6 +26,7 @@ namespace VolleyManagement.Specs.TeamsContext
         }
         
         [Then(@"team is removed")]
+        [Scope(Feature = "Remove Team")]
         public void ThenTeamIsRemoved()
         {
             ScenarioContext.Current.Pending();

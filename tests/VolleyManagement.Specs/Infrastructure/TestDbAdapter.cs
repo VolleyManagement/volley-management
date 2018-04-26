@@ -39,10 +39,10 @@ namespace VolleyManagement.Specs.Infrastructure
         /// <param name="playerEntity">A player to create. Instance of <see cref="PlayerEntity"/></param>
         public static void CreatePlayer(PlayerEntity playerEntity)
         {
-            using (Context)
+            using (var ctx = Context)
             {
-                Context.Players.Add(playerEntity);
-                Context.SaveChanges();
+                ctx.Players.Add(playerEntity);
+                ctx.SaveChanges();
             }
         }
 
@@ -52,10 +52,10 @@ namespace VolleyManagement.Specs.Infrastructure
         /// <param name="teamEntity">A team to create. Instance of <see cref="TeamEntity"/></param>
         public static void CreateTeam(TeamEntity teamEntity)
         {
-            using (Context)
+            using (var ctx = Context)
             {
-                Context.Teams.Add(teamEntity);
-                Context.SaveChanges();
+                ctx.Teams.Add(teamEntity);
+                ctx.SaveChanges();
             }
         }
 
@@ -66,16 +66,16 @@ namespace VolleyManagement.Specs.Infrastructure
         /// <param name="teamId">A team id.</param>
         public static void AssignPlayerToTeam(int playerId, int teamId)
         {
-            using (Context)
+            using (var ctx = Context)
             {
-                var playerEntity = Context.Players.Find(playerId);
+                var playerEntity = ctx.Players.Find(playerId);
                 if (playerEntity == null)
                 {
                     return;
                 }
 
                 playerEntity.TeamId = teamId;
-                Context.SaveChanges();
+                ctx.SaveChanges();
             }
         }
     }

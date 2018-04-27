@@ -92,65 +92,62 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Change name to very long name", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Change name to very long name")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Team")]
         [Xunit.TraitAttribute("Description", "Change name to very long name")]
         public virtual void ChangeNameToVeryLongName()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change name to very long name", new string[] {
-                        "ignore"});
-#line 13
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change name to very long name", ((string[])(null)));
+#line 12
 this.ScenarioSetup(scenarioInfo);
-#line 14
+#line 13
     testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 15
+#line 14
     testRunner.And("name changed to Very looooooooooooooooooooooooong team name which should be more " +
                     "than 30 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
+#line 15
     testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 17
+#line 16
     testRunner.Then("EntityInvariantViolationException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Edit missing team", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Edit missing team")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Team")]
         [Xunit.TraitAttribute("Description", "Edit missing team")]
         public virtual void EditMissingTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit missing team", new string[] {
-                        "ignore"});
-#line 20
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit missing team", ((string[])(null)));
+#line 18
 this.ScenarioSetup(scenarioInfo);
-#line 21
+#line 19
     testRunner.Given("Team B team does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
+#line 20
     testRunner.And("name changed to B-Team", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 21
     testRunner.When("I execute EditTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
+#line 22
     testRunner.Then("ConcurrencyException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Change captain", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Change captain")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Team")]
         [Xunit.TraitAttribute("Description", "Change captain")]
         public virtual void ChangeCaptain()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change captain", new string[] {
-                        "ignore"});
-#line 27
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change captain", ((string[])(null)));
+#line 24
 this.ScenarioSetup(scenarioInfo);
-#line 28
+#line 25
     testRunner.Given("Team A team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 29
+#line 26
     testRunner.And("captain is changed to Captain B", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 27
     testRunner.When("I execute ChangeTeamCaptain", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 31
+#line 28
     testRunner.Then("team is updated succesfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

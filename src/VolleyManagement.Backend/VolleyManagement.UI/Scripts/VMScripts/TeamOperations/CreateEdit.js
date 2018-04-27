@@ -334,7 +334,6 @@
   privates.teamPlayerCompleter = function (requestObj, responseHandler) {
     var url = privates.getAutocompleteUrl({
       searchString: requestObj.term,
-      isCaptain: false
     });
 
     privates.executeCompleter(url, responseHandler);
@@ -345,7 +344,6 @@
 
     var url = privates.getAutocompleteUrl({
       searchString: requestObj.term,
-      isCaptain: true
     });
 
     privates.executeCompleter(url, responseHandler);

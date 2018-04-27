@@ -103,25 +103,24 @@
                     if (teamViewModel.Captain.Id == 0)
                     {
                         var newAddedCaptain = _playerService.Create(teamViewModel.Captain.ToCreatePlayerDto());
-                        teamViewModel.Captain = new PlayerNameViewModel {
-                            Id = newAddedCaptain.Id,
-                            FirstName = newAddedCaptain.FirstName,
-                            LastName = newAddedCaptain.LastName
-                        };
+                        teamViewModel.Captain.Id = newAddedCaptain.Id;
                     }
 
                     var team = teamViewModel.ToCreateTeamDto();
                     var createdTeam = _teamService.Create(team);
                     teamViewModel.Id = createdTeam.Id;
 
+                    createdTeam.SetCaptain(new PlayerId(createdTeam.Captain.Id));
+                    _playerService.AssingPlayerToTeam(teamViewModel.Captain.ToDomain(), createdTeam.Id);
+
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
                         var playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                                 .Where(x => x.Id == 0)
-                                 .Select(x => x.ToCreatePlayerDto())
-                                 .ToList())
-                             .Select(x => new PlayerId(x.Id))
-                             .ToList();
+                                .Where(x => x.Id == 0)
+                                .Select(x => x.ToCreatePlayerDto())
+                                .ToList())
+                                .Select(x => new PlayerId(x.Id))
+                                .ToList();
 
                         playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
                         _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
@@ -198,9 +197,7 @@
                     }
 
                     ChangeCapitain(teamViewModel);
-
-
-
+                    
                     if (teamViewModel.DeletedPlayers.Count > 0)
                     {
                         _teamService.RemovePlayers(new TeamId(teamViewModel.Id), teamViewModel.DeletedPlayers.Select(x => new PlayerId(x)));

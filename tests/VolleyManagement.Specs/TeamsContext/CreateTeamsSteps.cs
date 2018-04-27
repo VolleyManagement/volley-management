@@ -90,7 +90,7 @@
 
                 _team = _teamService.Create(teamDto);
 
-                _newTeamId = _team.Id;
+                _newTeamId = _team.Id;  
             }
             catch(Exception ex)
             {

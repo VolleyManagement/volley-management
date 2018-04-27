@@ -18,7 +18,11 @@ namespace VolleyManagement.Specs.TeamsContext
     public class EditTeamSteps
     {
         private readonly ITeamService _teamService;
-        private Team _team;
+        private readonly IPlayerService _playerService;
+
+        private TeamEntity _team;
+        private PlayerEntity _player;
+
         private string NewName;
         private string longLongName;
         private int _captainId = 100;
@@ -27,27 +31,33 @@ namespace VolleyManagement.Specs.TeamsContext
         public EditTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
-            _team = new Team(int.MaxValue,
-                "Team",
-                "Coach",
-                "Achievements",
-                new PlayerId(_captainId),
-                new List<PlayerId>());
+            _playerService = IocProvider.Get<IPlayerService>();
+
+            _player = new PlayerEntity {
+                FirstName = "Oleh",
+                LastName = "Gerus",
+            };
+
+            _team = new TeamEntity {
+                Name = "TestName",
+                Coach = "New coach",
+                Captain = _player
+            };
         }
         
         [Given(@"(.*) team exists")]
         [Scope(Feature = "Edit Team")]
-        public void GivenTeamExists(string testName)
+        public void GivenTeamExists(string name)
         {
-            _team.Name = testName;
-            var teamDto = Mapper.Map<CreateTeamDto>(_team);
-            _team = _teamService.Create(teamDto);
+            _team.Name = name;
+            TestDbAdapter.CreateTeam(_team);
+            
+            TestDbAdapter.AssignPlayerToTeam(_player.Id,_team.Id);
         }
         
         [Given(@"name changed to (.*)")]
         public void GivenNameChangedTo(string newName)
         {
-            NewName = newName;
             _team.Name = newName;
         }
         
@@ -80,7 +90,15 @@ namespace VolleyManagement.Specs.TeamsContext
         [When(@"I execute EditTeam")]
         public void WhenIExecuteEditTeam()
         {
-            _teamService.Edit(_team);
+            var team = new Team(_team.Id,
+                _team.Name,
+                _team.Coach,
+                _team.Achievements,
+                new PlayerId(_team.Captain.Id),
+                new List<PlayerId>()
+            );
+            
+            _teamService.Edit(team);
         }
         
         [When(@"I execute ChangeTeamCaptain")]
@@ -92,7 +110,12 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"team is updated succesfully")]
         public void ThenTeamIsUpdatedSuccesfully()
         {
-            _team.Name.Should().BeEquivalentTo(NewName);
+            TeamEntity teamFromDb;
+            using (var context = TestDbAdapter.Context)
+            {
+                teamFromDb = context.Teams.Find(_team.Id);
+            }
+            Assert.Equal(teamFromDb.Name, _team.Name);
         }
 
         [Then(@"EntityInvariantViolationException is thrown")]

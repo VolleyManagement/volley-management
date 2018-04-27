@@ -3,7 +3,6 @@
 	As a tournament administrator
 	I want to be able to change team properties
 
-@ignore
 Scenario: Edit existing team
     Given Team A team exists
     And name changed to A-Team

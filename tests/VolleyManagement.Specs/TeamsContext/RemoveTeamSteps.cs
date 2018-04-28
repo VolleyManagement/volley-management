@@ -44,7 +44,7 @@
             };
 
             var _team = new TeamEntity {
-                Name = "team",
+                Name = name,
                 Coach = "coach name",
                 Achievements = null,
                 Captain = _player

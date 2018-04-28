@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
+using VolleyManagement.Data.Exceptions;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.TeamsAggregate;
@@ -18,87 +19,130 @@ namespace VolleyManagement.Specs.TeamsContext
     public class EditTeamSteps
     {
         private readonly ITeamService _teamService;
-        private Team _team;
-        private string NewName;
-        private string longLongName;
-        private int _captainId = 100;
-        private int _newTeamId;
-        
+        private readonly IPlayerService _playerService;
+
+        private readonly TeamEntity _team;
+        private readonly PlayerEntity _player;
+        private ConcurrencyException _concurrencyException;
+        private bool isExceptionThrown = false;
+
+
         public EditTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
-            _team = new Team(int.MaxValue,
-                "Team",
-                "Coach",
-                "Achievements",
-                new PlayerId(_captainId),
-                new List<PlayerId>());
+            _playerService = IocProvider.Get<IPlayerService>();
+
+            _player = new PlayerEntity {
+                FirstName = "FirstName",
+                LastName = "LastName",
+            };
+
+            _team = new TeamEntity {
+                Name = "TestName",
+                Coach = "New coach",
+                Captain = _player
+            };
         }
-        
+
         [Given(@"(.*) team exists")]
         [Scope(Feature = "Edit Team")]
-        public void GivenTeamExists(string testName)
+        public void GivenTeamExists(string name)
         {
-            _team.Name = testName;
-            var teamDto = Mapper.Map<CreateTeamDto>(_team);
-            _team = _teamService.Create(teamDto);
+            _team.Name = name;
+            TestDbAdapter.CreateTeam(_team);
+            TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
         }
-        
-        [Given(@"name changed to (.*)")]
-        public void GivenNameChangedTo(string newName)
+
+        [Given(@"name changed to (.*) team name which should be more than 30 symbols")]
+        [Scope(Feature = "Edit Team")]
+        public void GivenNameChangedToNameWhichShouldBeMoreThan(string newName)
         {
-            NewName = newName;
             _team.Name = newName;
         }
-        
-        [Given(@"name changed to Very looooooooooooooooooooooooong team name which should be more than (.*) symbols")]
-        public void GivenNameChangedToNameWhichShouldBeMoreThan(int lenght)
-        {
-            longLongName = new string('a', lenght + 1);
-            _team.Name = longLongName;
-        }
-        
+
         [Given(@"Team (.*) team does not exist")]
         [Scope(Feature = "Edit Team")]
-        public void GivenTeamDoesNotExist()
+        public void GivenTeamDoesNotExist(string name)
         {
-            ScenarioContext.Current.Pending();
+            _team.Name = name;
         }
-        
+
         [Given(@"name changed to (.*)")]
-        public void GivenNameChangedToAnother()
+        public void GivenNameChangedToAnother(string newName)
         {
-            ScenarioContext.Current.Pending();
+            _team.Name = newName;
         }
-        
+
         [Given(@"captain is changed to (.*)")]
         public void GivenCaptainIsChangedToAnother()
         {
             ScenarioContext.Current.Pending();
         }
-        
+
         [When(@"I execute EditTeam")]
         public void WhenIExecuteEditTeam()
         {
-            _teamService.Edit(_team);
+            try
+            {
+                var team = new Team(_team.Id,
+                    _team.Name,
+                    _team.Coach,
+                    _team.Achievements,
+                    new PlayerId(_team.Captain.Id),
+                    new List<PlayerId>()
+                );
+
+                _teamService.Edit(team);
+            }
+            catch (ArgumentException e)
+            {
+                isExceptionThrown = true;
+            }
+            catch (ConcurrencyException e)
+            {
+                _concurrencyException = e;
+                isExceptionThrown = true;
+            }
+            catch (Exception)
+            {
+                isExceptionThrown = true;
+            }
         }
-        
+
         [When(@"I execute ChangeTeamCaptain")]
         public void WhenIExecuteChangeTeamCaptain()
         {
-            ScenarioContext.Current.Pending();
+            _teamService.ChangeCaptain(new TeamId(_team.Id), new PlayerId(_player.Id));
         }
-        
+
         [Then(@"team is updated succesfully")]
         public void ThenTeamIsUpdatedSuccesfully()
         {
-            _team.Name.Should().BeEquivalentTo(NewName);
+            TeamEntity teamFromDb;
+            using (var context = TestDbAdapter.Context)
+            {
+                teamFromDb = context.Teams.Find(_team.Id);
+            }
+            teamFromDb.Name.Should().BeEquivalentTo(_team.Name);
+            teamFromDb.Captain.Should().BeEquivalentTo(_team.Captain);
+            teamFromDb.Players.Should().BeEquivalentTo(_team.Players);
         }
 
-        [Then(@"EntityInvariantViolationException is thrown")]
-        public void ThenEntityInvariantViolationExceptionisthrown()
+        [Then(@"(.*) is thrown")]
+        [Scope(Feature = "Edit Team")]
+        public void ThenExceptionisthrown(string exceptionType)
         {
-            _team.Name.Should().BeEquivalentTo(NewName);
+            isExceptionThrown.Should().BeTrue();
+            if (exceptionType == "ConcurrencyException")
+            {
+                _concurrencyException.Should().BeOfType(typeof(ConcurrencyException));
+            }
+
+            if (exceptionType == "ArgumentException")
+            {
+                _concurrencyException.Should().BeOfType(typeof(ArgumentException));
+            }
         }
     }
+
 }

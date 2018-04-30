@@ -14,7 +14,7 @@ var configuration = Argument("configuration", "Release");
 var sonarToken = HasArgument("sonar-token") ?
     Argument<string>("sonar-token") :
     EnvironmentVariable("SONAR_TOKEN");
-var localDev = Argument<bool>("local-dev", false);
+var localDev = Argument<bool>("local-dev", true);
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION

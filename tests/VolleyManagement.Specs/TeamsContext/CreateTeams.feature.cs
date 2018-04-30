@@ -113,6 +113,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
     testRunner.And("captain empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
+    testRunner.When("I execute CreateTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 23
     testRunner.Then("Validation fails", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

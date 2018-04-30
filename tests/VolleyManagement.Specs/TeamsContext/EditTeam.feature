@@ -11,7 +11,7 @@ Scenario: Edit existing team
 
 Scenario: Change name to very long name
     Given Team A team exists
-    And name changed to Very looooooooooooooooooooooooong team name which should be more than 30 symbols
+    And name changed to Very Looong team name which should be more than 30 symbols
     When I execute EditTeam
     Then EntityInvariantViolationException is thrown
     
@@ -19,7 +19,7 @@ Scenario: Edit missing team
     Given Team B team does not exist
     And name changed to B-Team
     When I execute EditTeam
-    Then ConcurrencyException is thrown
+    Then MissingEntityException is thrown
 
 Scenario: Change captain
     Given Team A team exists

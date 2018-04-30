@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Specs.TeamsContext
+﻿using VolleyManagement.Contracts.Exceptions;
+
+namespace VolleyManagement.Specs.TeamsContext
 {
     using AutoMapper;
     using FluentAssertions;
@@ -17,7 +19,7 @@
 
     using static VolleyManagement.Specs.ExceptionAssertion;
     using static VolleyManagement.Specs.TeamsContext.EntityDomainTeamEqualityAsserter;
-    
+
     [Binding]
     public class CreateTeamsSteps
     {
@@ -25,7 +27,7 @@
         private Team _team;
         private int _captainId = 100;
         private int _newTeamId;
-        private Exception exception;
+        private Exception _exception;
 
         private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
@@ -59,14 +61,15 @@
         [Given(@"captain empty")]
         public void GivenCaptainIsEmpty()
         {
-            try
-            {
-                _team.SetCaptain(null);
-            }
-            catch(Exception ex)
-            {
-                exception = ex;
-            }
+            _team.SetCaptain(null);
+            //try
+            //{
+            //    _team.SetCaptain(null);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _exception = ex;
+            //}
         }
 
         [Given(@"coach is (.*)")]
@@ -90,11 +93,11 @@
 
                 _team = _teamService.Create(teamDto);
 
-                _newTeamId = _team.Id;  
+                _newTeamId = _team.Id;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                exception = ex;
+                _exception = ex;
             }
         }
 
@@ -121,8 +124,7 @@
         [Then(@"Validation fails")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
-            AssertExceptionsAreEqual(exception,
-                new ArgumentException(Resources.ValidationTeamCaptain));
+            _exception.Should().BeOfType(typeof(MissingEntityException), "Should thrown MissingEntityException");
         }
 
         private void RegisterNewPlayerAndSetCaptainId(string fullName)

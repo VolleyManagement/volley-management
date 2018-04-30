@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
+using VolleyManagement.Contracts.Exceptions;
 using VolleyManagement.Data.Exceptions;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
@@ -22,8 +23,9 @@ namespace VolleyManagement.Specs.TeamsContext
         private readonly IPlayerService _playerService;
 
         private readonly TeamEntity _team;
-        private readonly PlayerEntity _player;
-        private ConcurrencyException _concurrencyException;
+        private PlayerEntity _player;
+        private PlayerEntity _captain;
+        private Exception _exception;
         private bool isExceptionThrown = false;
 
 
@@ -53,10 +55,11 @@ namespace VolleyManagement.Specs.TeamsContext
             TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
         }
 
-        [Given(@"name changed to (.*) team name which should be more than 30 symbols")]
+        [Given(@"name changed to Very Looong team name which should be more than (.*) symbols")]
         [Scope(Feature = "Edit Team")]
-        public void GivenNameChangedToNameWhichShouldBeMoreThan(string newName)
+        public void GivenNameChangedToNameWhichShouldBeMoreThan(int newNameLength)
         {
+            var newName = new string('n', newNameLength);
             _team.Name = newName;
         }
 
@@ -65,6 +68,7 @@ namespace VolleyManagement.Specs.TeamsContext
         public void GivenTeamDoesNotExist(string name)
         {
             _team.Name = name;
+            _team.Captain = _player;
         }
 
         [Given(@"name changed to (.*)")]
@@ -74,9 +78,23 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"captain is changed to (.*)")]
-        public void GivenCaptainIsChangedToAnother()
+        public void GivenCaptainIsChangedToAnother(string captainName)
         {
-            ScenarioContext.Current.Pending();
+            var whitespaceCharIndex = captainName.IndexOf(' ');
+            var firstName = captainName.Substring(0, whitespaceCharIndex);
+            var lastName = captainName.Substring(whitespaceCharIndex + 1);
+            var player = _playerService.Create(new CreatePlayerDto {
+                FirstName = firstName,
+                LastName = lastName
+            });
+
+            _captain = new PlayerEntity {
+                Id = player.Id,
+                FirstName = player.FirstName,
+                LastName = player.LastName
+            };
+
+            _team.Captain = _captain;
         }
 
         [When(@"I execute EditTeam")]
@@ -100,11 +118,12 @@ namespace VolleyManagement.Specs.TeamsContext
             }
             catch (ConcurrencyException e)
             {
-                _concurrencyException = e;
+                _exception = e;
                 isExceptionThrown = true;
             }
-            catch (Exception)
+            catch (MissingEntityException exception)
             {
+                _exception = exception;
                 isExceptionThrown = true;
             }
         }
@@ -112,7 +131,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [When(@"I execute ChangeTeamCaptain")]
         public void WhenIExecuteChangeTeamCaptain()
         {
-            _teamService.ChangeCaptain(new TeamId(_team.Id), new PlayerId(_player.Id));
+            _teamService.ChangeCaptain(new TeamId(_team.Id), new PlayerId(_captain.Id));
         }
 
         [Then(@"team is updated succesfully")]
@@ -123,9 +142,9 @@ namespace VolleyManagement.Specs.TeamsContext
             {
                 teamFromDb = context.Teams.Find(_team.Id);
             }
+
             teamFromDb.Name.Should().BeEquivalentTo(_team.Name);
-            teamFromDb.Captain.Should().BeEquivalentTo(_team.Captain);
-            teamFromDb.Players.Should().BeEquivalentTo(_team.Players);
+            teamFromDb.CaptainId.Should().Be(_team.Captain.Id);
         }
 
         [Then(@"(.*) is thrown")]
@@ -133,14 +152,14 @@ namespace VolleyManagement.Specs.TeamsContext
         public void ThenExceptionisthrown(string exceptionType)
         {
             isExceptionThrown.Should().BeTrue();
-            if (exceptionType == "ConcurrencyException")
+            if (exceptionType == "MissingEntityException")
             {
-                _concurrencyException.Should().BeOfType(typeof(ConcurrencyException));
+                _exception.Should().BeOfType(typeof(MissingEntityException));
             }
 
             if (exceptionType == "ArgumentException")
             {
-                _concurrencyException.Should().BeOfType(typeof(ArgumentException));
+                _exception.Should().BeOfType(typeof(ArgumentException));
             }
         }
     }

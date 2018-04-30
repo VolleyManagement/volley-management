@@ -30,6 +30,7 @@
 
         public RemoveTeamSteps()
         {
+            TestDbAdapter.Respawn();
             _teamService = IocProvider.Get<ITeamService>();
             
         }

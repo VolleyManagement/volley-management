@@ -20,6 +20,7 @@ namespace VolleyManagement.Specs.PlayersContext
 
         public EditPlayerSteps()
         {
+            TestDbAdapter.Respawn();
             _player = new PlayerEntity();
             _playerService = IocProvider.Get<IPlayerService>();
         }
@@ -78,7 +79,7 @@ namespace VolleyManagement.Specs.PlayersContext
         public void ThenPlayerIsSavedWithNewName()
         {
             var createdPlayer = _playerService.Get(_player.Id);
-            _player.Should().NotBeSameAs(createdPlayer);
+            _player.Should().BeSameAs(createdPlayer);
         }
 
         [Then(@"EntityInvariantViolationException is thrown")]

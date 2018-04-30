@@ -34,6 +34,7 @@ namespace VolleyManagement.Specs.TeamsContext
 
         public CreateTeamsSteps()
         {
+            TestDbAdapter.Respawn();
             _teamService = IocProvider.Get<ITeamService>();
             _team = new Team(int.MaxValue,
                 "Team",
@@ -61,15 +62,14 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"captain empty")]
         public void GivenCaptainIsEmpty()
         {
-            _team.SetCaptain(null);
-            //try
-            //{
-            //    _team.SetCaptain(null);
-            //}
-            //catch (Exception ex)
-            //{
-            //    _exception = ex;
-            //}
+            try
+            {
+                _team.SetCaptain(null);
+            }
+            catch (Exception ex)
+            {
+                _exception = ex;
+            }
         }
 
         [Given(@"coach is (.*)")]

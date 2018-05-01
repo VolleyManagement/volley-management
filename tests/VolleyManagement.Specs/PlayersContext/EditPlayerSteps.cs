@@ -81,7 +81,8 @@ namespace VolleyManagement.Specs.PlayersContext
             _player.Should().NotBeSameAs(createdPlayer);
         }
 
-        [Then(@"EntityInvariantViolationException is thrown")]
+        [Then(@"ArgumentException is thrown")]
+        [Scope(Feature = "Edit Player")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
             _exception.Should().BeOfType(typeof(ArgumentException), "Should thrown ArgumentException");

@@ -1,16 +1,16 @@
-﻿namespace VolleyManagement.Specs.TeamsContext
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using FluentAssertions;
-    using TechTalk.SpecFlow;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Specs.Infrastructure;
-    using VolleyManagement.Specs.Infrastructure.IOC;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using TechTalk.SpecFlow;
+using VolleyManagement.Contracts;
+using VolleyManagement.Data.MsSql.Entities;
+using VolleyManagement.Domain.TeamsAggregate;
+using VolleyManagement.Specs.Infrastructure;
+using VolleyManagement.Specs.Infrastructure.IOC;
 
+namespace VolleyManagement.Specs.TeamsContext
+{
     [Binding]
     public class ManageTeamPlayersSteps
     {

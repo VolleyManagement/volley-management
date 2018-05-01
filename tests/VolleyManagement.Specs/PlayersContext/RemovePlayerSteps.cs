@@ -16,5 +16,12 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             ScenarioContext.Current.Pending();
         }
+
+        [Then(@"ConcurrencyException is thrown")]
+        public void ThenConcurrencyExceptionIsThrown()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }

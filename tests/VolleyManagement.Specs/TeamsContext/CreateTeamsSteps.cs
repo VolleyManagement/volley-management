@@ -1,22 +1,20 @@
-﻿using VolleyManagement.Contracts.Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using VolleyManagement.Contracts.Exceptions;
+using AutoMapper;
+using FluentAssertions;
+using TechTalk.SpecFlow;
+using VolleyManagement.Contracts;
+using VolleyManagement.Data.MsSql.Entities;
+using VolleyManagement.Domain.PlayersAggregate;
+using VolleyManagement.Domain.Properties;
+using VolleyManagement.Domain.TeamsAggregate;
+using VolleyManagement.Specs.Infrastructure;
+using VolleyManagement.Specs.Infrastructure.IOC;
+using Xunit;
 
 namespace VolleyManagement.Specs.TeamsContext
 {
-    using AutoMapper;
-    using FluentAssertions;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using TechTalk.SpecFlow;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Specs.Infrastructure;
-    using VolleyManagement.Specs.Infrastructure.IOC;
-    using Xunit;
-
     using static VolleyManagement.Specs.ExceptionAssertion;
     using static VolleyManagement.Specs.TeamsContext.EntityDomainTeamEqualityAsserter;
 

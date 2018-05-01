@@ -107,7 +107,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
     testRunner.When("I execute EditPlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
-    testRunner.Then("EntityInvariantViolationException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("ArgumentException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

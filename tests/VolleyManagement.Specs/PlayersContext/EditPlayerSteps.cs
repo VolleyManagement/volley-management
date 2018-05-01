@@ -25,7 +25,8 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"(.*) player exists")]
-        public void GivenJohnSmithPlayerExists(string fullPlayerName)
+        [Scope(Feature = "Edit Player")]
+        public void GivenPlayerExists(string fullPlayerName)
         {
             var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
             var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);
@@ -52,6 +53,7 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"(.*) player does not exist")]
+        [Scope(Feature = "Edit Player")]
         public void GivenIvanIvanovPlayerDoesNotExist(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');

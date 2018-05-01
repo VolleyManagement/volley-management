@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 
 namespace VolleyManagement.Data.MsSql.Repositories
 {
@@ -83,10 +84,16 @@ namespace VolleyManagement.Data.MsSql.Repositories
         /// <param name="teamId">The id of team to remove.</param>
         public void Remove(TeamId teamId)
         {
-            var dalToRemove = new TeamEntity { Id = teamId.Id };
-            _dalTeams.Attach(dalToRemove);
-            _dalTeams.Remove(dalToRemove);
-            _unitOfWork.Commit();
+            var teamtodelete = _dalTeams.Find(teamId.Id);
+            if (teamtodelete != null)
+            {
+                _dalTeams.Remove(teamtodelete);
+                _unitOfWork.Commit();
+            }
+            else
+            {
+                throw new DBConcurrencyException();
+            }
         }
 
         #region private

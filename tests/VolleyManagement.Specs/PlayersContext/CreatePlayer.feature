@@ -3,7 +3,11 @@
 	I want to be able to create players
     So they can be assigned to teams
 
-@ignore
+Scenario: Create very long name
+Given first name is Very looong name which should be more than 61 symbols
+When I execute CreatePlayer
+Then ArgumentException is thrown
+
 Scenario Outline: Create simple player
 	Given first name is <FirstName>
     And last name is <LastName>
@@ -15,13 +19,7 @@ Examples:
 | Marcuss   | Nilsson   |
 | Ivan      | Ivanov    |
 
-@ignore
-Scenario: Create very long name
-    Given last name is Very looooooooooooooooooooooooong name which should be more than 60 symbols
-    When I execute CreatePlayer
-    Then EntityInvariantViolationException is thrown
 
-@ignore
 Scenario Outline: Create player with all attributes
 	Given first name is <FirstName>
     And last name is <LastName>
@@ -36,16 +34,15 @@ Examples:
 | John      | Smith    | 190    | 85     | 1985      |
 | Jane      | Doe      | 180    | 55     | 1995      |
 
-@ignore
-Scenario: Quick create players from names
+Scenario Outline: Quick create players from names
     Given full name is <FullName>
     When I execute QuickCreatePlayer
     Then player is created with <FirstName> and <LastName>
-| FullName                  | FirstName             | LastName  |
-| John Smith                | John                  | Smith     |
-| Peter Petrovich Petrov    | Peter Petrovich       | Petrov    |
+Examples: 
+| FullName                  | FirstName             | LastName          |
+| John Smith                | John                  | Smith             |
+| Peter Petrovich Petrov    | Peter                 | Petrovich Petrov  |
 
-@ignore
 Scenario: Bulk create players
     Given collection of players to create
     When I execute CreatePlayerBulk

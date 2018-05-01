@@ -8,7 +8,7 @@ Scenario: Edit existing team
     And name changed to A-Team
     When I execute EditTeam
     Then team is updated succesfully
-@ignore
+
 Scenario: Change name to very long name
     Given Team A team exists
     And name changed to Very Looong team name which should be more than 31 symbols

@@ -112,13 +112,14 @@ namespace VolleyManagement.Specs.TeamsContext
 
                 _teamService.Edit(team);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException exception)
             {
+                _exception = exception;
                 isExceptionThrown = true;
             }
-            catch (ConcurrencyException e)
+            catch (ConcurrencyException exception)
             {
-                _exception = e;
+                _exception = exception;
                 isExceptionThrown = true;
             }
             catch (MissingEntityException exception)

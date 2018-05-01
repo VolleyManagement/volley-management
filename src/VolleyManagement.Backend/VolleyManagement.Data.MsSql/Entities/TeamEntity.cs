@@ -40,7 +40,7 @@
         /// <summary>
         /// Gets or sets players of the team
         /// </summary>
-        public virtual ICollection<PlayerEntity> Players { get; set; }
+        public virtual ICollection<PlayerEntity> Players { get; set; } = new List<PlayerEntity>();
 
         /// <summary>
         /// Gets or sets home game results of the team.

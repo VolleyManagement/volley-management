@@ -82,7 +82,7 @@
         {
             var teamTeamLedByCaptain = _dalTeams
                 .SingleOrDefault(t => t.CaptainId == criteria.CaptainId);
-            
+
             return teamTeamLedByCaptain == null ? null :
                 GetTeamMapping(teamTeamLedByCaptain);
         }
@@ -143,11 +143,11 @@
         private static Team GetTeamMapping(TeamEntity t)
         {
             return new Team(t.Id,
-                                  t.Name,
-                                  t.Coach,
-                                  t.Achievements,
-                                  new PlayerId(t.CaptainId),
-                                  t.Players.Select(p => new PlayerId(p.Id)));
+                            t.Name,
+                            t.Coach,
+                            t.Achievements,
+                            new PlayerId(t.CaptainId),
+                            t.Players.Select(p => new PlayerId(p.Id)));
         }
 
         #endregion

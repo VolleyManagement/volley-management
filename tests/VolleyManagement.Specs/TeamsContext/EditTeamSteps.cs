@@ -31,7 +31,6 @@ namespace VolleyManagement.Specs.TeamsContext
 
         public EditTeamSteps()
         {
-            TestDbAdapter.Respawn();
             _teamService = IocProvider.Get<ITeamService>();
             _playerService = IocProvider.Get<IPlayerService>();
 

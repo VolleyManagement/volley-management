@@ -16,7 +16,7 @@
         private TeamId _teamId;
         private Exception _exception;
         private readonly ITeamService _teamService;
-        
+
         private const int ID_TEAM_DOES_NOT_EXIST = 1;
 
         private readonly string teamShouldBeDeletedFromDB =
@@ -30,9 +30,7 @@
 
         public RemoveTeamSteps()
         {
-            TestDbAdapter.Respawn();
             _teamService = IocProvider.Get<ITeamService>();
-            
         }
 
         [Given(@"(.*) team exists")]
@@ -54,14 +52,14 @@
             TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
             _teamId = new TeamId(_team.Id);
         }
-        
+
         [Given(@"(.*) team does not exist")]
         [Scope(Feature = "Remove Team")]
         public void GivenTeamDoesNotExist(string name)
         {
             _teamId = new TeamId(ID_TEAM_DOES_NOT_EXIST);
         }
-        
+
         [When(@"I execute DeleteTeam")]
         public void WhenIExecuteDeleteTeam()
         {
@@ -69,13 +67,13 @@
             {
                 _teamService.Delete(_teamId);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 _exception = exc;
             }
-            
+
         }
-        
+
         [Then(@"team is removed")]
         [Scope(Feature = "Remove Team")]
         public void ThenTeamIsRemoved()
@@ -96,6 +94,6 @@
         {
             _exception.Should().NotBe(null, exeptionShouldBeThrown);
             _exception.Should().BeOfType(typeof(DbUpdateConcurrencyException), exeptionShouldBeThrown);
-       }
+        }
     }
 }

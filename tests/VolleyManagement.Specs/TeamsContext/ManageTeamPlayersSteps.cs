@@ -24,7 +24,6 @@
 
         public ManageTeamPlayersSteps()
         {
-            TestDbAdapter.Respawn();
             _teamService = IocProvider.Get<ITeamService>();
             _playerToAdd = new List<PlayerId>();
             _roster = new List<PlayerId>();

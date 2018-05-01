@@ -92,12 +92,13 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Change name to very long name")]
+        [Xunit.FactAttribute(DisplayName="Change name to very long name", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Team")]
         [Xunit.TraitAttribute("Description", "Change name to very long name")]
         public virtual void ChangeNameToVeryLongName()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change name to very long name", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change name to very long name", new string[] {
+                        "ignore"});
 #line 12
 this.ScenarioSetup(scenarioInfo);
 #line 13

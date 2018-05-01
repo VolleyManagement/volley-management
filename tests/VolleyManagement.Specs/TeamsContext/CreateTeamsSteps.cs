@@ -34,7 +34,6 @@ namespace VolleyManagement.Specs.TeamsContext
 
         public CreateTeamsSteps()
         {
-            TestDbAdapter.Respawn();
             _teamService = IocProvider.Get<ITeamService>();
             _team = new Team(int.MaxValue,
                 "Team",

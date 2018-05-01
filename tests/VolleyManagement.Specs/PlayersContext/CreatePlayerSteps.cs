@@ -21,7 +21,6 @@ namespace VolleyManagement.Specs.PlayersContext
 
         public CreatePlayerSteps()
         {
-            TestDbAdapter.Respawn();
             _player = new Player(int.MaxValue, "First", "Last", null, null, null);
             _playerService = IocProvider.Get<IPlayerService>();
         }

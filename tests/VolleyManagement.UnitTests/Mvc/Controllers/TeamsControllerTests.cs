@@ -284,7 +284,7 @@
         {
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();
-
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<CreateTeamDto>())).Returns(MakeTestTeams().First());
             // Act
             var sut = BuildSUT();
             var jsonResult = sut.Create(viewModel);
@@ -323,7 +323,7 @@
             };
 
             var roster = new List<PlayerNameViewModel>() { rosterPlayer };
-            var viewModel = new TeamMvcViewModelBuilder().WithRoster(roster).Build();
+            var viewModel = new TeamMvcViewModelBuilder().WithRoster(roster).WithAddedPlayers().Build();
 
             _teamServiceMock.Setup(ts => ts.Create(It.IsAny<CreateTeamDto>())).Returns(MakeTestTeams().First);
 

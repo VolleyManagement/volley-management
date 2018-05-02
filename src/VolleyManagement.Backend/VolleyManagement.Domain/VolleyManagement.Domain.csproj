@@ -63,6 +63,7 @@
     <Compile Include="ContributorsAggregate\ContributorTeam.cs" />
     <Compile Include="ContributorsAggregate\IContributorTeamRepository.cs" />
     <Compile Include="Dto\UserInRoleDto.cs" />
+    <Compile Include="EntityInvariantViolationException.cs" />
     <Compile Include="FeedbackAggregate\Feedback.cs" />
     <Compile Include="FeedbackAggregate\FeedbackStatusEnum.cs" />
     <Compile Include="FeedbackAggregate\FeedbackValidation.cs" />

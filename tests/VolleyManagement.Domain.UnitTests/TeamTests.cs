@@ -39,7 +39,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.Name = string.Empty; };
 
             // Assert
-            act.Should().Throw<ArgumentException>("Empty Name is not allowed.");
+            act.Should().Throw<EntityInvariantViolationException>("Empty Name is not allowed.");
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.Name = GenerateTeamStrings(Constants.Team.MAX_NAME_LENGTH + 1); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Name length should not be longer than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Name length should not be longer than maximum allowed value.");
         }
 
         #endregion
@@ -69,7 +69,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.Coach = GenerateTeamStrings(Constants.Team.MAX_COACH_NAME_LENGTH + 1); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Coach Name length should not be longer than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Coach Name length should not be longer than maximum allowed value.");
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.Coach = "Coah1"; };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Coach Name can`t contain numbers.");
+            act.Should().Throw<EntityInvariantViolationException>("Coach Name can`t contain numbers.");
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.Coach = "Coah#"; };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Coach Name can`t contain symbols.");
+            act.Should().Throw<EntityInvariantViolationException>("Coach Name can`t contain symbols.");
         }
 
         #endregion
@@ -112,7 +112,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.Achievements = GenerateTeamStrings(Constants.Team.MAX_ACHIEVEMENTS_LENGTH + 1); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Achievements length should not be longer than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Achievements length should not be longer than maximum allowed value.");
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.SetCaptain(null); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team should always have captain");
+            act.Should().Throw<EntityInvariantViolationException>("Team should always have captain");
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.SetCaptain(GetInvalidPlayerId()); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("CaptainId can`t be less then minimum allowed value. Should be valid ID.");
+            act.Should().Throw<EntityInvariantViolationException>("CaptainId can`t be less then minimum allowed value. Should be valid ID.");
         }
 
         #endregion
@@ -172,7 +172,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.AddPlayers(null); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team Roster can`t be null.");
+            act.Should().Throw<EntityInvariantViolationException>("Team Roster can`t be null.");
         }
 
         [Fact]
@@ -190,7 +190,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("It`s impossible add to team players that has id less than allowed");
+            act.Should().Throw<EntityInvariantViolationException>("It`s impossible add to team players that has id less than allowed");
 
         }
 
@@ -209,7 +209,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team Roster can`t has players with the same Id.");
+            act.Should().Throw<EntityInvariantViolationException>("Team Roster can`t has players with the same Id.");
         }
 
         [Fact]
@@ -250,7 +250,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("It's impossible add rosters players that is null.");
+            act.Should().Throw<EntityInvariantViolationException>("It's impossible add rosters players that is null.");
         }
 
         [Fact]
@@ -263,7 +263,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.RemovePlayers(null); };
 
             //Assert
-            act.Should().Throw<ArgumentException>("It's impossible remove rosters players that is null.");
+            act.Should().Throw<EntityInvariantViolationException>("It's impossible remove rosters players that is null.");
         }
 
         [Fact]
@@ -300,7 +300,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team Roster can`t delete duplicate players.");
+            act.Should().Throw<EntityInvariantViolationException>("Team Roster can`t delete duplicate players.");
         }
 
         [Fact]
@@ -342,7 +342,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team Roster can`t delete list that contains null.");
+            act.Should().Throw<EntityInvariantViolationException>("Team Roster can`t delete list that contains null.");
         }
 
         [Fact]
@@ -360,7 +360,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team Roster can`t delete player with not valid Id.");
+            act.Should().Throw<EntityInvariantViolationException>("Team Roster can`t delete player with not valid Id.");
         }
 
         #endregion

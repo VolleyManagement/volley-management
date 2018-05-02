@@ -29,8 +29,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         {
             if (ValidateTeamId(id))
             {
-                throw new ArgumentException(ValidationTeamId,
-                nameof(id));
+                throw new EntityInvariantViolationException();
             }
 
             Id = id;
@@ -59,8 +58,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
             {
                 if (ValidateTeamName(value))
                 {
-                    throw new ArgumentException(ValidationTeamName,
-                        nameof(value));
+                    throw new EntityInvariantViolationException();
                 }
 
                 _name = value;
@@ -79,8 +77,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
             {
                 if (ValidateCoachName(value))
                 {
-                    throw new ArgumentException(ValidationCoachName,
-                        nameof(value));
+                    throw new EntityInvariantViolationException();
                 }
 
                 _coach = value;
@@ -99,8 +96,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
             {
                 if (ValidateAchievements(value))
                 {
-                    throw new ArgumentException(ValidationTeamAchievements,
-                        nameof(value));
+                    throw new EntityInvariantViolationException();
                 }
 
                 _achievements = value;
@@ -123,7 +119,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         {
             if (ValidateCaptain(captain))
             {
-                throw new ArgumentException(ValidationTeamCaptain);
+                throw new EntityInvariantViolationException();
             }
 
             Captain = captain;
@@ -138,8 +134,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         {
             if (ValidateTeamRoster(players))
             {
-                throw new ArgumentException(ValidationTeamRoster,
-                    nameof(players));
+                throw new EntityInvariantViolationException();
             }
 
             if (RosterConstainsAny(players))
@@ -157,8 +152,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
         {
             if (ValidateTeamRoster(players))
             {
-                throw new ArgumentException(ValidationTeamRoster,
-                    nameof(players));
+                throw new EntityInvariantViolationException();
             }
 
             if (!RosterContainsAll(players))

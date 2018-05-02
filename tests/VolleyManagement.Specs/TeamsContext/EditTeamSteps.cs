@@ -45,6 +45,7 @@ namespace VolleyManagement.Specs.TeamsContext
                 Captain = _player
             };
         }
+        #region Given
 
         [Given(@"(.*) team exists")]
         [Scope(Feature = "Edit Team")]
@@ -59,7 +60,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Scope(Feature = "Edit Team")]
         public void GivenNameChangedToNameWhichShouldBeMoreThan(int newNameLength)
         {
-            var newName = new string('n', newNameLength);
+            var newName = new string('n', newNameLength + 1);
             _team.Name = newName;
         }
 
@@ -97,6 +98,9 @@ namespace VolleyManagement.Specs.TeamsContext
             _team.Captain = _captain;
         }
 
+        #endregion
+
+        #region When
         [When(@"I execute EditTeam")]
         public void WhenIExecuteEditTeam()
         {
@@ -112,17 +116,7 @@ namespace VolleyManagement.Specs.TeamsContext
 
                 _teamService.Edit(team);
             }
-            catch (ArgumentException exception)
-            {
-                _exception = exception;
-                isExceptionThrown = true;
-            }
-            catch (ConcurrencyException exception)
-            {
-                _exception = exception;
-                isExceptionThrown = true;
-            }
-            catch (MissingEntityException exception)
+            catch (Exception exception)
             {
                 _exception = exception;
                 isExceptionThrown = true;
@@ -135,6 +129,7 @@ namespace VolleyManagement.Specs.TeamsContext
             _teamService.ChangeCaptain(new TeamId(_team.Id), new PlayerId(_captain.Id));
         }
 
+        #endregion
         [Then(@"team is updated succesfully")]
         public void ThenTeamIsUpdatedSuccesfully()
         {
@@ -150,7 +145,7 @@ namespace VolleyManagement.Specs.TeamsContext
 
         [Then(@"(.*) is thrown")]
         [Scope(Feature = "Edit Team")]
-        public void ThenExceptionisthrown(string exceptionType)
+        public void ThenExceptionIsThrown(string exceptionType)
         {
             isExceptionThrown.Should().BeTrue();
             if (exceptionType == "MissingEntityException")
@@ -158,9 +153,9 @@ namespace VolleyManagement.Specs.TeamsContext
                 _exception.Should().BeOfType(typeof(MissingEntityException));
             }
 
-            if (exceptionType == "ArgumentException")
+            if (exceptionType == "EntityInvariantViolationException")
             {
-                _exception.Should().BeOfType(typeof(ArgumentException));
+                _exception.Should().BeOfType(typeof(EntityInvariantViolationException));
             }
         }
     }

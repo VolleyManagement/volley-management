@@ -24,7 +24,7 @@ namespace VolleyManagement.Specs.PlayersContext
             _playerService = IocProvider.Get<IPlayerService>();
         }
         [Given(@"(.*) player exists")]
-        public void GivenJohnSmithPlayerExists(string fullPlayerName)
+        public void GivenPlayerExists(string fullPlayerName)
         {
             var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
             var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);
@@ -61,7 +61,7 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"(.*) player does not exist")]
-        public void GivenIvanIvanovPlayerDoesNotExist(string fullPlayerName)
+        public void GivenPlayerDoesNotExist(string fullPlayerName)
         {
             var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
             var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);

@@ -103,7 +103,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
     testRunner.Given("John Smith player exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
-    testRunner.And("first name changed to Looong name which should be more than 61 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("first name changed to Looong name which should be more than 60 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
     testRunner.When("I execute EditPlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16

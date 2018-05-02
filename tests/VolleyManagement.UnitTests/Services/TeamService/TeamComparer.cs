@@ -10,7 +10,7 @@
     /// Comparer for team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TeamComparer : IComparer<Team>, IComparer
+    public class TeamComparer : IComparer<Team>, IComparer
     {
         /// <summary>
         /// Compares two player objects.

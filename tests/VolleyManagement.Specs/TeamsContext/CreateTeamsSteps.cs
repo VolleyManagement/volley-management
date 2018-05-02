@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using VolleyManagement.Contracts.Exceptions;
 using AutoMapper;
 using FluentAssertions;
@@ -12,12 +13,10 @@ using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 using Xunit;
+using VolleyManagement.UnitTests.Services.TeamService;
 
 namespace VolleyManagement.Specs.TeamsContext
 {
-    using static VolleyManagement.Specs.ExceptionAssertion;
-    using static VolleyManagement.Specs.TeamsContext.EntityDomainTeamEqualityAsserter;
-
     [Binding]
     public class CreateTeamsSteps
     {
@@ -26,6 +25,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private int _captainId = 100;
         private int _newTeamId;
         private Exception _exception;
+        private bool _isSetCaprainException;
 
         private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
@@ -51,9 +51,11 @@ namespace VolleyManagement.Specs.TeamsContext
         [Scope(Feature = "CreateTeams")]
         public void GivenCaptainIs(string fullName)
         {
+            var removeNotExistingPlayerFromRosterWhoWasCaptainInTeamCreation =
+                new List<PlayerId> { new PlayerId(100) };
             RegisterNewPlayerAndSetCaptainId(fullName);
-
             _team.SetCaptain(new PlayerId(_captainId));
+            _team.RemovePlayers(removeNotExistingPlayerFromRosterWhoWasCaptainInTeamCreation);
         }
 
         [Given(@"captain empty")]
@@ -65,6 +67,7 @@ namespace VolleyManagement.Specs.TeamsContext
             }
             catch (Exception ex)
             {
+                _isSetCaprainException = true;
                 _exception = ex;
             }
         }
@@ -108,20 +111,36 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"new team should be succesfully added")]
         public void ThenNewTeamShouldBeSuccesfullyAdded()
         {
+            var teamComparer = new TeamComparer();
             TeamEntity teamEntity;
+            IEnumerable<PlayerId> roster = new List<PlayerId>();
             using (var context = TestDbAdapter.Context)
             {
                 teamEntity = context.Teams.Find(_team.Id);
+                if (teamEntity != null)
+                {
+                    roster = teamEntity.Players.Select(x => new PlayerId(x.Id));
+                }
             }
 
             teamEntity.Should().NotBe(null, teamShouldBeSavedToDb);
-            AssertSimpleDataIsEqual(teamEntity, _team);
+
+            var teamFromDb = new Team(teamEntity.Id, teamEntity.Name, teamEntity.Coach, teamEntity.Achievements, new PlayerId(teamEntity.CaptainId), roster);
+
+            teamComparer.AreEqual(teamFromDb, _team).Should().BeTrue();
         }
 
         [Then(@"Validation fails")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
-            _exception.Should().BeOfType(typeof(MissingEntityException), "Should thrown MissingEntityException");
+            if (_isSetCaprainException)
+            {
+                _exception.Should().BeOfType(typeof(MissingEntityException), "Should thrown MissingEntityException");
+            }
+            else
+            {
+                _exception.Should().BeOfType(typeof(ArgumentException), "Should thrown ArgumentException");
+            }
         }
 
         private void RegisterNewPlayerAndSetCaptainId(string fullName)
@@ -137,6 +156,7 @@ namespace VolleyManagement.Specs.TeamsContext
                     FirstName = firstName,
                     LastName = lastName
                 });
+
             _captainId = newPlayer.Id;
         }
     }

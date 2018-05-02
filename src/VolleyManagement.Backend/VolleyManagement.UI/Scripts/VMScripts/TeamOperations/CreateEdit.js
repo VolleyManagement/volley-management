@@ -217,7 +217,7 @@
       Roster: [],
       AddedPlayers: [],
       DeletedPlayers: [],
-      IsCaptainChanged: Boolean(0)
+      IsCaptainChanged: false
     };
     result.AddedPlayers = privates.AddedPlayers;
     result.DeletedPlayers = privates.DeletedPlayers;

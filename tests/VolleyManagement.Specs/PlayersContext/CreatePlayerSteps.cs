@@ -10,6 +10,7 @@ using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 using Xunit;
+using VolleyManagement.UnitTests.Services.PlayerService;
 using Player = VolleyManagement.Domain.PlayersAggregate.Player;
 
 namespace VolleyManagement.Specs.PlayersContext
@@ -22,6 +23,8 @@ namespace VolleyManagement.Specs.PlayersContext
         private List<Player> _createdPlayersBulk;
         private readonly IPlayerService _playerService;
         private Exception _exception;
+        private Exception _playerValidationException;
+        private bool _playerValidationThrowException;
 
         public CreatePlayerSteps()
         {
@@ -39,14 +42,15 @@ namespace VolleyManagement.Specs.PlayersContext
         [Scope(Feature = "Create Player")]
         public void GivenFirstNameChangedToNameWhichShouldBeMoreThan(int firstNameLength)
         {
-            var newFirstName = new string('n', firstNameLength);
+            var newFirstName = new string('n', firstNameLength + 1);
             try
             {
                 _player.LastName = newFirstName;
             }
             catch (Exception exception)
             {
-                _exception = exception;
+                _playerValidationThrowException = true;
+                _playerValidationException = exception;
             }
         }
 
@@ -128,7 +132,14 @@ namespace VolleyManagement.Specs.PlayersContext
         [Scope(Feature = "Create Player")]
         public void ThenArgumentExceptionIsThrown()
         {
-            _exception.Should().BeOfType(typeof(ArgumentException));
+            if (_playerValidationThrowException)
+            {
+                _playerValidationException.Should().BeOfType(typeof(ArgumentException));
+            }
+            else
+            {
+                _exception.Should().BeOfType(typeof(ArgumentException));
+            }
         }
 
         [Given(@"full name is (.*)")]
@@ -157,7 +168,7 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Then(@"player is created with (.*) and (.*)")]
-        public void ThenPlayerIsCreatedWithAnd(string p0, string p1)
+        public void ThenPlayerIsCreatedWithAnd(string firstName, string lastName)
         {
             PlayerEntity playerFromDb;
             using (var context = TestDbAdapter.Context)
@@ -165,8 +176,8 @@ namespace VolleyManagement.Specs.PlayersContext
                 playerFromDb = context.Players.Find(_player.Id);
             }
 
-            playerFromDb.FirstName.Should().BeEquivalentTo(p0);
-            playerFromDb.LastName.Should().BeEquivalentTo(p1);
+            playerFromDb.FirstName.Should().BeEquivalentTo(firstName);
+            playerFromDb.LastName.Should().BeEquivalentTo(lastName);
         }
 
         [Given(@"collection of players to create")]
@@ -193,7 +204,23 @@ namespace VolleyManagement.Specs.PlayersContext
         [Then(@"all players are created")]
         public void ThenAllPlayersAreCreated()
         {
-            _playersForBulk.Count.Should().Be(_createdPlayersBulk.Count);
+            var playerComparer = new PlayerComparer();
+            var playersInDb = new List<Player>();
+            using (var context = TestDbAdapter.Context)
+            {
+                var length = _createdPlayersBulk.Count;
+                for (var i = 0; i < length; i++)
+                {
+                    playersInDb.Add(Mapper.Map<Player>(context.Players.Find(_createdPlayersBulk[i].Id)));
+                }
+            }
+
+            playersInDb.Count.Should().Be(_createdPlayersBulk.Count);
+            var unitedCollection = playersInDb.Zip(_createdPlayersBulk, (e, a) => new { Actual = e, Expected = a });
+            foreach (var playerPair in unitedCollection)
+            {
+                playerComparer.AreEqual(playerPair.Actual, playerPair.Expected).Should().BeTrue();
+            }
         }
 
         private static List<Player> CreateListPlayers()

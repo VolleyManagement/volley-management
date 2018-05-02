@@ -49,6 +49,7 @@
         /// <param name="getPlayerTeamQuery"></param>
         /// <param name="getAllTeamsQuery"> Get All teams query</param>
         /// <param name="getTeamRosterQuery"> Get players for team query</param>
+        /// <param name="getTeamByNameQuery"></param>
         /// <param name="authService">Authorization service</param>
         public TeamService(
             ITeamRepository teamRepository,

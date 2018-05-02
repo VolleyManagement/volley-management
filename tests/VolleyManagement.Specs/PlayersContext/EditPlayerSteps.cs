@@ -39,7 +39,7 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"first name changed to (.*)")]
-        public void GivenFirstNameChangedToJack(string firstName)
+        public void GivenFirstNameChangedTo(string firstName)
         {
             _player.FirstName = firstName;
         }
@@ -48,13 +48,13 @@ namespace VolleyManagement.Specs.PlayersContext
         [Scope(Feature = "Edit Player")]
         public void GivenFirstNameChangedToNameWhichShouldBeMoreThan(int nameLength)
         {
-            var name = new string('n', nameLength);
+            var name = new string('n', nameLength + 1);
             _player.FirstName = name;
         }
 
         [Given(@"(.*) player does not exist")]
         [Scope(Feature = "Edit Player")]
-        public void GivenIvanIvanovPlayerDoesNotExist(string playerName)
+        public void GivenPlayerDoesNotExist(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');
             var firstName = playerName.Substring(0, whitespaceCharIndex);

@@ -102,8 +102,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExceptionAssertion.cs" />
-    <Compile Include="TeamsContext\DomainEntityTeamEqualityAsserter.cs" />
     <Compile Include="TeamsContext\EditTeamSteps.cs" />
     <Compile Include="Infrastructure\TestDbAdapter.cs" />
     <Compile Include="Infrastructure\MockCurrentUserService.cs" />
@@ -228,6 +226,14 @@
     <ProjectReference Include="..\..\src\VolleyManagement.Backend\VolleyManagement.Services\VolleyManagement.Services.csproj">
       <Project>{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F}</Project>
       <Name>VolleyManagement.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Domain.UnitTests\VolleyManagement.Domain.UnitTests.csproj">
+      <Project>{d13fb5d4-9ad8-41bc-8913-1655eb7bf9a6}</Project>
+      <Name>VolleyManagement.Domain.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.UnitTests\VolleyManagement.UnitTests.csproj">
+      <Project>{96908ed1-5e16-4771-ad88-5c9820823f28}</Project>
+      <Name>VolleyManagement.UnitTests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

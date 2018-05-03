@@ -4,9 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
-using VolleyManagement.Data.Exceptions;
 using VolleyManagement.Data.MsSql.Entities;
-using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 
@@ -15,12 +13,13 @@ namespace VolleyManagement.Specs.PlayersContext
     [Binding]
     public class RemovePlayerSteps
     {
-        private readonly Player _player;
+        int _playerId;
         private readonly IPlayerService _playerService;
         private Exception _exception;
+
+        private const int ID_PLAYER_DOES_NOT_EXIST = 1;
         public RemovePlayerSteps()
         {
-            _player = new Player(int.MaxValue, "CTOR", "CTOR");
             _playerService = IocProvider.Get<IPlayerService>();
         }
         [Given(@"(.*) player exists")]
@@ -29,10 +28,14 @@ namespace VolleyManagement.Specs.PlayersContext
             var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
             var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);
             var lastName = fullPlayerName.Substring(whitespaceCharIndex + 1);
-            _player.FirstName = firstName;
-            _player.LastName = lastName;
 
-            _playerService.Create(AutoMapper.Mapper.Map<CreatePlayerDto>(_player));
+            var _player = new PlayerEntity {
+                FirstName = firstName,
+                LastName = lastName
+            };
+
+            TestDbAdapter.CreatePlayer(_player);
+            _playerId = _player.Id;
         }
 
         [When(@"I execute DeletePlayer")]
@@ -40,7 +43,7 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             try
             {
-                _playerService.Delete(_player.Id);
+                _playerService.Delete(_playerId);
             }
             catch (Exception exception)
             {
@@ -57,17 +60,13 @@ namespace VolleyManagement.Specs.PlayersContext
                 deletedPlayer = ctx.Players.SingleOrDefault(p => p.Id == _player.Id);
             }
 
-            deletedPlayer.Should().Be(null, "Player was deleted");
+            deletedPlayer.Should().Be(null, "Player should be deleted");
         }
 
         [Given(@"(.*) player does not exist")]
         public void GivenPlayerDoesNotExist(string fullPlayerName)
         {
-            var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
-            var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);
-            var lastName = fullPlayerName.Substring(whitespaceCharIndex + 1);
-            _player.FirstName = firstName;
-            _player.LastName = lastName;
+            _playerId = ID_PLAYER_DOES_NOT_EXIST;
         }
 
         [Then(@"ConcurrencyException is thrown")]

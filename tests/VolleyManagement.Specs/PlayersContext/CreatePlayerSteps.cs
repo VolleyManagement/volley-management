@@ -197,15 +197,19 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             var playerComparer = new PlayerComparer();
             var playersInDb = new List<Player>();
+            List<PlayerEntity> playersEntities;
             using (var context = TestDbAdapter.Context)
             {
-                var length = _createdPlayersBulk.Count;
-                for (var i = 0; i < length; i++)
-                {
-                    playersInDb.Add(Mapper.Map<Player>(context.Players.Find(_createdPlayersBulk[i].Id)));
-                }
+                playersEntities = context.Players.Select(p => p)
+                                                 .AsEnumerable()
+                                                 .Where(x => _createdPlayersBulk
+                                                 .Any(c => c.Id == x.Id))
+                                                 .ToList();
             }
-
+            foreach (var playerEntity in playersEntities)
+            {
+                playersInDb.Add(Mapper.Map<Player>(playerEntity));
+            }
             playersInDb.Count.Should().Be(_createdPlayersBulk.Count);
             var unitedCollection = playersInDb.Zip(_createdPlayersBulk, (e, a) => new { Actual = e, Expected = a });
             foreach (var playerPair in unitedCollection)

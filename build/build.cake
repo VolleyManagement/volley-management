@@ -230,7 +230,6 @@ Task("Sonar")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
     .IsDependentOn("IntegrationTests")
-    .IsDependentOn("DomainTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 
@@ -252,5 +251,4 @@ public static void SetCoverageFilter(DotCoverCoverSettings settings)
     settings.WithFilter("+:VolleyManagement*");
     settings.WithFilter("-:*.UnitTests");
     settings.WithFilter("-:*.Specs");
-    settings.WithFilter("-:*.DomainTests");
 }

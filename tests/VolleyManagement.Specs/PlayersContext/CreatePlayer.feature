@@ -4,7 +4,7 @@
     So they can be assigned to teams
 
 Scenario: Create very long name
-Given first name is Very looong name which should be more than 60 symbols
+Given first name set to Very looong name which should be more than 60 symbols
 When I execute CreatePlayer
 Then ArgumentException is thrown
 

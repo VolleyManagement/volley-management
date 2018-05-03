@@ -1,18 +1,14 @@
-﻿using AutoMapper;
-using FluentAssertions;
+﻿using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
 using VolleyManagement.Contracts.Exceptions;
-using VolleyManagement.Data.Exceptions;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
-using Xunit;
 
 namespace VolleyManagement.Specs.TeamsContext
 {

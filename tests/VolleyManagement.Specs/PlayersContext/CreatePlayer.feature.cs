@@ -81,7 +81,7 @@ namespace VolleyManagement.Specs.PlayersContext
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
-testRunner.Given("first name is Very looong name which should be more than 60 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("first name set to Very looong name which should be more than 60 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
 testRunner.When("I execute CreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9

@@ -16,6 +16,7 @@ using Player = VolleyManagement.Domain.PlayersAggregate.Player;
 namespace VolleyManagement.Specs.PlayersContext
 {
     [Binding]
+    [Scope(Feature = "Create Player")]
     public class CreatePlayerSteps
     {
         private Player _player;
@@ -38,8 +39,7 @@ namespace VolleyManagement.Specs.PlayersContext
             _player.FirstName = firstName;
         }
 
-        [Given(@"first name is Very looong name which should be more than (.*) symbols")]
-        [Scope(Feature = "Create Player")]
+        [Given(@"first name set to Very looong name which should be more than (.*) symbols")]
         public void GivenFirstNameChangedToNameWhichShouldBeMoreThan(int firstNameLength)
         {
             var newFirstName = new string('n', firstNameLength + 1);
@@ -55,35 +55,30 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"last name is (.*)")]
-        [Scope(Feature = "Create Player")]
         public void GivenLastNameIs(string lastName)
         {
             _player.LastName = lastName;
         }
 
         [Given(@"height is (.*)")]
-        [Scope(Feature = "Create Player")]
         public void GivenHeightIs(short height)
         {
             _player.Height = height;
         }
 
         [Given(@"weight is (.*)")]
-        [Scope(Feature = "Create Player")]
         public void GivenWeightIs(short weight)
         {
             _player.Weight = weight;
         }
 
         [Given(@"year of birth is (.*)")]
-        [Scope(Feature = "Create Player")]
         public void GivenYearOfBirthIs(short birthYear)
         {
             _player.BirthYear = birthYear;
         }
 
         [Given(@"player without name")]
-        [Scope(Feature = "Create Player")]
         public void GivenPlayerWithoutName()
         {
             _player.FirstName = null;
@@ -91,7 +86,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [When(@"I execute CreatePlayer")]
-        [Scope(Feature = "Create Player")]
         public void WhenIExecuteCreatePlayer()
         {
             try
@@ -107,7 +101,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Then(@"new player gets new Id")]
-        [Scope(Feature = "Create Player")]
         public void ThenNewPlayerGetsNewId()
         {
             Assert.NotEqual(default(int), _player.Id);
@@ -115,7 +108,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Then(@"new player should be succesfully added")]
-        [Scope(Feature = "Create Player")]
         public void ThenNewPlayerShouldBeSuccesfullyAdded()
         {
             PlayerEntity actualPlayer;
@@ -129,7 +121,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Then(@"ArgumentException is thrown")]
-        [Scope(Feature = "Create Player")]
         public void ThenArgumentExceptionIsThrown()
         {
             if (_playerValidationThrowException)

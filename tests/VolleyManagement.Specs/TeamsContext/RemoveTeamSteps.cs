@@ -18,7 +18,6 @@ namespace VolleyManagement.Specs.TeamsContext
         private TeamId _teamId;
         private Exception _exception;
         private readonly ITeamService _teamService;
-        private readonly IPlayerService _playerService;
 
         private const int ID_TEAM_DOES_NOT_EXIST = 1;
 
@@ -34,7 +33,6 @@ namespace VolleyManagement.Specs.TeamsContext
         public RemoveTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
-            _playerService = IocProvider.Get<IPlayerService>();
         }
 
         [Given(@"(.*) team exists")]
@@ -46,25 +44,16 @@ namespace VolleyManagement.Specs.TeamsContext
                 LastName = "Last"
             };
 
-            int playerId = _playerService.Create(AutoMapper.Mapper.Map<CreatePlayerDto>(_player)).Id;
-
             var _team = new TeamEntity {
                 Name = name,
                 Coach = "coach name",
                 Achievements = "Achivements",
                 Captain = _player
             };
-            var roster = new List<PlayerId> { new PlayerId(playerId) };
 
-            var createTeamDto = new CreateTeamDto {
-                Name = _team.Name,
-                Achievements = _team.Achievements,
-                Captain = new PlayerId(playerId),
-                Coach = _team.Coach,
-                Roster = roster
-            };
-
-            _teamId = new TeamId(_teamService.Create(createTeamDto).Id);
+            TestDbAdapter.CreateTeam(_team);
+            TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
+            _teamId = new TeamId(_team.Id);
         }
 
         [Given(@"(.*) team does not exist")]

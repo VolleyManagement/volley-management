@@ -115,10 +115,12 @@
 
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
-                        var playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
                                 .Where(x => x.Id == 0)
                                 .Select(x => x.ToCreatePlayerDto())
-                                .ToList())
+                                .ToList());
+
+                        var playersIdToAddToTeam = playersToAddToTeam
                                 .Select(x => new PlayerId(x.Id))
                                 .ToList();
 

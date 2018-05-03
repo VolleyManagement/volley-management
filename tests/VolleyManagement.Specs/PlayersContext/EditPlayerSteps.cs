@@ -12,6 +12,7 @@ using VolleyManagement.Specs.Infrastructure.IOC;
 namespace VolleyManagement.Specs.PlayersContext
 {
     [Binding]
+    [Scope(Feature = "Edit Player")]
     public class EditPlayerSteps
     {
         private readonly PlayerEntity _player;
@@ -25,7 +26,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"(.*) player exists")]
-        [Scope(Feature = "Edit Player")]
         public void GivenPlayerExists(string fullPlayerName)
         {
             var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
@@ -45,7 +45,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"first name changed to Looong name which should be more than (.*) symbols")]
-        [Scope(Feature = "Edit Player")]
         public void GivenFirstNameChangedToNameWhichShouldBeMoreThan(int nameLength)
         {
             var name = new string('n', nameLength + 1);
@@ -53,7 +52,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"(.*) player does not exist")]
-        [Scope(Feature = "Edit Player")]
         public void GivenPlayerDoesNotExist(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');
@@ -84,7 +82,6 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Then(@"ArgumentException is thrown")]
-        [Scope(Feature = "Edit Player")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
             _exception.Should().BeOfType(typeof(ArgumentException), "Should thrown ArgumentException");

@@ -12,13 +12,14 @@ using VolleyManagement.Specs.Infrastructure.IOC;
 namespace VolleyManagement.Specs.TeamsContext
 {
     [Binding]
+    [Scope(Feature = "Manage Team Players")]
     public class ManageTeamPlayersSteps
     {
         private readonly ITeamService _teamService;
         private TeamId _teamId;
         private PlayerId _captainId;
         private readonly List<PlayerId> _playerToAdd;
-        private PlayerId _playerToRemove;
+        private ICollection<PlayerId> _playersToRemove;
         private readonly List<PlayerId> _roster;
         private Exception _exception;
 
@@ -27,66 +28,63 @@ namespace VolleyManagement.Specs.TeamsContext
             _teamService = IocProvider.Get<ITeamService>();
             _playerToAdd = new List<PlayerId>();
             _roster = new List<PlayerId>();
+            _playersToRemove = new List<PlayerId>();
         }
 
         [Given(@"Team (.*) exists")]
-        [Scope(Feature = "Manage Team Players")]
         public void GivenTeamExists(string name)
         {
-            var _player = new PlayerEntity {
+            var player = new PlayerEntity {
                 FirstName = "CapitanFirst",
                 LastName = "CapitanLast"
             };
 
-            var _team = new TeamEntity {
+            var team = new TeamEntity {
                 Name = name,
                 Coach = "coach name",
                 Achievements = null,
-                Captain = _player
+                Captain = player
             };
-            TestDbAdapter.CreateTeam(_team);
-            TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
-            _teamId = new TeamId(_team.Id);
-            _captainId = new PlayerId(_player.Id);
+            TestDbAdapter.CreateTeam(team);
+            TestDbAdapter.AssignPlayerToTeam(player.Id, team.Id);
+            _teamId = new TeamId(team.Id);
+            _captainId = new PlayerId(player.Id);
         }
 
         [Given(@"I have added (.*) as a team player")]
-        [Scope(Feature = "Manage Team Players")]
         public void GivenIHavePlayerAsATeamPlayer(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');
             var firstName = playerName.Substring(0, whitespaceCharIndex);
             var lastName = playerName.Substring(whitespaceCharIndex + 1);
 
-            var _newPlayer = new PlayerEntity {
+            var newPlayer = new PlayerEntity {
                 FirstName = firstName,
                 LastName = lastName
             };
 
-            TestDbAdapter.CreatePlayer(_newPlayer);
-            _playerToAdd.Add(new PlayerId(_newPlayer.Id));
+            TestDbAdapter.CreatePlayer(newPlayer);
+            _playerToAdd.Add(new PlayerId(newPlayer.Id));
         }
 
         [Given(@"(.*) is a team player")]
-        [Scope(Feature = "Manage Team Players")]
         public void GivenPlayerIsATeamPlayer(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');
             var firstName = playerName.Substring(0, whitespaceCharIndex);
             var lastName = playerName.Substring(whitespaceCharIndex + 1);
 
-            var _newPlayer = new PlayerEntity {
+            var newPlayer = new PlayerEntity {
                 FirstName = firstName,
                 LastName = lastName
             };
 
-            TestDbAdapter.CreatePlayer(_newPlayer);
-            TestDbAdapter.AssignPlayerToTeam(_newPlayer.Id, _teamId.Id);
-            _roster.Add(new PlayerId(_newPlayer.Id));
+            TestDbAdapter.CreatePlayer(newPlayer);
+            TestDbAdapter.AssignPlayerToTeam(newPlayer.Id, _teamId.Id);
+            _roster.Add(new PlayerId(newPlayer.Id));
         }
 
         [Given(@"I have removed (.*)")]
-        [Scope(Feature = "Manage Team Players")]
         public void GivenIHaveRemovedPlayer(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');
@@ -97,12 +95,11 @@ namespace VolleyManagement.Specs.TeamsContext
             {
                 var playerEntities = ctx.Players
                     .SingleOrDefault(p => p.FirstName == firstName && p.LastName == lastName);
-                _playerToRemove = new PlayerId(playerEntities.Id);
+                _playersToRemove.Add(new PlayerId(playerEntities.Id));
             }
         }
 
         [Given(@"(.*) is a team captain")]
-        [Scope(Feature = "Manage Team Players")]
         public void GivenJaneDoeIsATeamCaptain(string playerName)
         {
             var whitespaceCharIndex = playerName.IndexOf(' ');
@@ -136,10 +133,9 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             try
             {
-                _teamService.RemovePlayers(_teamId,
-                    _playerToRemove != null ? new List<PlayerId> { _playerToRemove } : _roster);
+                _teamService.RemovePlayers(_teamId, _playersToRemove);
             }
-            catch(ArgumentException exc)
+            catch (ArgumentException exc)
             {
                 _exception = exc;
             }
@@ -148,10 +144,9 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"players are added")]
         public void ThenPlayersAreAdded()
         {
-            IEnumerable<PlayerEntity> playerEntities;
             using (var ctx = TestDbAdapter.Context)
             {
-                playerEntities = ctx.Teams.First(team => team.Id == _teamId.Id).Players;
+                IEnumerable<PlayerEntity> playerEntities = ctx.Teams.First(team => team.Id == _teamId.Id).Players;
                 var entityRosterIds = playerEntities.Select(e => e.Id);
                 var playersId = _playerToAdd.Select(e => e.Id);
                 entityRosterIds.Should().Contain(playersId, "Players should be added");
@@ -161,13 +156,14 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"players are removed")]
         public void ThenPlayersAreRemoved()
         {
-            IEnumerable<PlayerEntity> playerEntities;
             using (var ctx = TestDbAdapter.Context)
             {
-                playerEntities = ctx.Teams.First(team => team.Id == _teamId.Id).Players;
+                IEnumerable<PlayerEntity> playerEntities = ctx.Teams.First(team => team.Id == _teamId.Id).Players;
                 var entityRosterIds = playerEntities.Select(e => e.Id);
-                var removedPlayers = _roster.Select(p => p.Id);
-                entityRosterIds.Should().NotContain(removedPlayers, "Players should be removed");
+                if (_playersToRemove != null)
+                {
+                    entityRosterIds.Should().NotContain(_playersToRemove, "Players should be removed");
+                }
                 _exception.Should().BeNull("Should not thrown exception");
             }
         }

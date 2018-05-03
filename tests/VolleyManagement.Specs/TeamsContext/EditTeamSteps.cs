@@ -21,7 +21,6 @@ namespace VolleyManagement.Specs.TeamsContext
     public class EditTeamSteps
     {
         private readonly ITeamService _teamService;
-        private readonly IPlayerService _playerService;
 
         private readonly TeamEntity _team;
         private readonly PlayerEntity _player;
@@ -33,7 +32,6 @@ namespace VolleyManagement.Specs.TeamsContext
         public EditTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
-            _playerService = IocProvider.Get<IPlayerService>();
 
             _player = new PlayerEntity {
                 FirstName = "FirstName",
@@ -59,7 +57,7 @@ namespace VolleyManagement.Specs.TeamsContext
             _team.Players.Add(_player);
         }
 
-        [Given(@"name changed to Very Looong team name which should be more than (.*) symbols")]
+        [Given(@"name set to Very Looong team name which should be more than (.*) symbols")]
         [Scope(Feature = "Edit Team")]
         public void GivenNameChangedToNameWhichShouldBeMoreThan(int newNameLength)
         {
@@ -87,18 +85,13 @@ namespace VolleyManagement.Specs.TeamsContext
             var whitespaceCharIndex = captainName.IndexOf(' ');
             var firstName = captainName.Substring(0, whitespaceCharIndex);
             var lastName = captainName.Substring(whitespaceCharIndex + 1);
-            var player = _playerService.Create(new CreatePlayerDto {
-                FirstName = firstName,
-                LastName = lastName
-            });
 
             _captain = new PlayerEntity {
-                Id = player.Id,
-                FirstName = player.FirstName,
-                LastName = player.LastName
+                FirstName = firstName,
+                LastName = lastName,
             };
 
-            _team.Captain = _captain;
+            TestDbAdapter.CreatePlayer(_captain);
         }
 
         #endregion
@@ -130,9 +123,8 @@ namespace VolleyManagement.Specs.TeamsContext
         public void WhenIExecuteChangeTeamCaptain()
         {
             _teamService.ChangeCaptain(new TeamId(_team.Id), new PlayerId(_captain.Id));
-            _team.CaptainId = _captain.Id;
             _team.Captain = _captain;
-            _team.Players.Add(_captain);
+            _team.CaptainId = _captain.Id;
         }
 
         #endregion
@@ -141,24 +133,29 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             var teamComparer = new TeamComparer();
             TeamEntity teamEntity;
-            IEnumerable<PlayerId> roster = new List<PlayerId>();
             using (var context = TestDbAdapter.Context)
             {
                 teamEntity = context.Teams.Find(_team.Id);
-                if (teamEntity != null)
+
+                teamEntity.Should().NotBe(null);
+
+                var isEqual = true;
+                isEqual = teamEntity.Id == _team.Id &&
+                    teamEntity.Name.Equals(_team.Name) &&
+                    teamEntity.Coach.Equals(_team.Coach) &&
+                    teamEntity.Achievements.Equals(_team.Achievements) &&
+                    teamEntity.Captain.Id == _team.Captain.Id;
+
+                if (isEqual)
                 {
-                    roster = teamEntity.Players.Select(x => new PlayerId(x.Id));
+                    var xRosterIds = teamEntity.Players.Select(p => p.Id);
+                    var yRosterIds = _team.Players.Select(p => p.Id);
+
+                    isEqual = xRosterIds.SequenceEqual(yRosterIds);
                 }
+
+                isEqual.Should().BeTrue("Expected and actual should be equal");
             }
-            teamEntity.Should().NotBe(null);
-
-            var teamFromDb = new Team(teamEntity.Id, teamEntity.Name, teamEntity.Coach, teamEntity.Achievements, new PlayerId(teamEntity.CaptainId), roster);
-
-            var expectedRoster = _team.Players.Select(x => new PlayerId(x.Id));
-
-            var teamExpected = new Team(_team.Id, _team.Name, _team.Coach, _team.Achievements, new PlayerId(_team.CaptainId), expectedRoster);
-
-            teamComparer.AreEqual(teamFromDb, teamExpected).Should().BeTrue();
         }
 
         [Then(@"(.*) is thrown")]

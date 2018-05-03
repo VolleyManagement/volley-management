@@ -11,7 +11,7 @@ Scenario: Edit existing player
 
 Scenario: Change to very long name
     Given John Smith player exists
-    And first name changed to Looong name which should be more than 60 symbols
+    And first name set to Looong name which should be more than 60 symbols
     When I execute EditPlayer
     Then ArgumentException is thrown
 

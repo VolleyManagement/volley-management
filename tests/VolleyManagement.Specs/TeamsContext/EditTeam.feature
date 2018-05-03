@@ -11,7 +11,7 @@ Scenario: Edit existing team
 
 Scenario: Change name to very long name
     Given Team A team exists
-    And name changed to Very Looong team name which should be more than 30 symbols
+    And name set to Very Looong team name which should be more than 30 symbols
     When I execute EditTeam
     Then EntityInvariantViolationException is thrown
     

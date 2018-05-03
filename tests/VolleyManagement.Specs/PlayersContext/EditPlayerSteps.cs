@@ -45,7 +45,7 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Given(@"first name set to Looong name which should be more than (.*) symbols")]
-        public void GivenFirstNameChangedToNameWhichShouldBeMoreThan(int nameLength)
+        public void GivenFirstNameSetToNameWhichShouldBeMoreThan(int nameLength)
         {
             var name = new string('n', nameLength + 1);
             _player.FirstName = name;

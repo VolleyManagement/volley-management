@@ -72,19 +72,20 @@ namespace VolleyManagement.Specs.TeamsContext
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Remove existing team")]
+        [Xunit.FactAttribute(DisplayName="Remove existing team", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Remove Team")]
         [Xunit.TraitAttribute("Description", "Remove existing team")]
         public virtual void RemoveExistingTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove existing team", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove existing team", new string[] {
+                        "ignore"});
 #line 7
-    testRunner.Given("Volley.org.ua team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
-    testRunner.When("I execute DeleteTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.Given("Volley.org.ua team exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
+    testRunner.When("I execute DeleteTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
     testRunner.Then("team is removed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -96,13 +97,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RemoveMissingTeam()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove missing team", ((string[])(null)));
-#line 11
-this.ScenarioSetup(scenarioInfo);
 #line 12
-    testRunner.Given("football.org.ua team does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 13
-    testRunner.When("I execute DeleteTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.Given("football.org.ua team does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
+    testRunner.When("I execute DeleteTeam", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
     testRunner.Then("ConcurrencyException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

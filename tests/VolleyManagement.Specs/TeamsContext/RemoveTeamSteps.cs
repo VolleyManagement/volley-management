@@ -46,7 +46,7 @@ namespace VolleyManagement.Specs.TeamsContext
                 LastName = "Last"
             };
 
-            int playerId = _playerService.Create(AutoMapper.Mapper.Map<CreatePlayerDto>(_player)).Id;
+            var playerId = _playerService.Create(AutoMapper.Mapper.Map<CreatePlayerDto>(_player)).Id;
 
             var _team = new TeamEntity {
                 Name = name,

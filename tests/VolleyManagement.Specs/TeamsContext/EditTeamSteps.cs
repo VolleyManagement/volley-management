@@ -12,6 +12,7 @@ using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
+using VolleyManagement.UnitTests.Services.TeamService;
 using Xunit;
 
 namespace VolleyManagement.Specs.TeamsContext
@@ -23,10 +24,10 @@ namespace VolleyManagement.Specs.TeamsContext
         private readonly IPlayerService _playerService;
 
         private readonly TeamEntity _team;
-        private PlayerEntity _player;
+        private readonly PlayerEntity _player;
         private PlayerEntity _captain;
         private Exception _exception;
-        private bool isExceptionThrown = false;
+        private bool isExceptionThrown;
 
 
         public EditTeamSteps()
@@ -42,6 +43,7 @@ namespace VolleyManagement.Specs.TeamsContext
             _team = new TeamEntity {
                 Name = "TestName",
                 Coach = "New coach",
+                Achievements = "Achive",
                 Captain = _player
             };
         }
@@ -54,6 +56,7 @@ namespace VolleyManagement.Specs.TeamsContext
             _team.Name = name;
             TestDbAdapter.CreateTeam(_team);
             TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
+            _team.Players.Add(_player);
         }
 
         [Given(@"name changed to Very Looong team name which should be more than (.*) symbols")]
@@ -127,20 +130,35 @@ namespace VolleyManagement.Specs.TeamsContext
         public void WhenIExecuteChangeTeamCaptain()
         {
             _teamService.ChangeCaptain(new TeamId(_team.Id), new PlayerId(_captain.Id));
+            _team.CaptainId = _captain.Id;
+            _team.Captain = _captain;
+            _team.Players.Add(_captain);
         }
 
         #endregion
         [Then(@"team is updated succesfully")]
         public void ThenTeamIsUpdatedSuccesfully()
         {
-            TeamEntity teamFromDb;
+            var teamComparer = new TeamComparer();
+            TeamEntity teamEntity;
+            IEnumerable<PlayerId> roster = new List<PlayerId>();
             using (var context = TestDbAdapter.Context)
             {
-                teamFromDb = context.Teams.Find(_team.Id);
+                teamEntity = context.Teams.Find(_team.Id);
+                if (teamEntity != null)
+                {
+                    roster = teamEntity.Players.Select(x => new PlayerId(x.Id));
+                }
             }
+            teamEntity.Should().NotBe(null);
 
-            teamFromDb.Name.Should().BeEquivalentTo(_team.Name);
-            teamFromDb.CaptainId.Should().Be(_team.Captain.Id);
+            var teamFromDb = new Team(teamEntity.Id, teamEntity.Name, teamEntity.Coach, teamEntity.Achievements, new PlayerId(teamEntity.CaptainId), roster);
+
+            var expectedRoster = _team.Players.Select(x => new PlayerId(x.Id));
+
+            var teamExpected = new Team(_team.Id, _team.Name, _team.Coach, _team.Achievements, new PlayerId(_team.CaptainId), expectedRoster);
+
+            teamComparer.AreEqual(teamFromDb, teamExpected).Should().BeTrue();
         }
 
         [Then(@"(.*) is thrown")]

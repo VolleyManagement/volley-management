@@ -15,7 +15,7 @@ namespace VolleyManagement.Specs.PlayersContext
     [Binding]
     public class RemovePlayerSteps
     {
-        private Player _player;
+        private readonly Player _player;
         private readonly IPlayerService _playerService;
         private Exception _exception;
         public RemovePlayerSteps()

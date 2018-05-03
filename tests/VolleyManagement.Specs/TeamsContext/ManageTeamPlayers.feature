@@ -29,8 +29,8 @@ Scenario: Remove several player from team
     And Jane Doe is a team player
     And John Smith is a team player
     And Ivan Ivanov is a team player
-	And I have added Jane Doe as a team player
-	And I have added John Smith as a team player
+    And I have removed Jane Doe
+	And I have removed John Smith
 	When I execute RemovePlayersFromTeam
 	Then players are removed
     

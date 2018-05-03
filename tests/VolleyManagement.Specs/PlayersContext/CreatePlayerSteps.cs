@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using AutoMapper;
 using FluentAssertions;
 using System.Linq;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using VolleyManagement.Contracts;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
@@ -22,8 +20,8 @@ namespace VolleyManagement.Specs.PlayersContext
     public class CreatePlayerSteps
     {
         private Player _player;
-        private List<Player> _playersForQuickCreate;
-        private List<Player> _playersAddedQuickCreateActual;
+        private readonly List<Player> _playersForQuickCreate;
+        private readonly List<Player> _playersAddedQuickCreateActual;
         private List<Player> _playersForBulk;
         private List<Player> _createdPlayersBulk;
         private readonly IPlayerService _playerService;
@@ -209,6 +207,7 @@ namespace VolleyManagement.Specs.PlayersContext
             using (var context = TestDbAdapter.Context)
             {
                 var length = _createdPlayersBulk.Count;
+                playersInDb.AddRange(_createdPlayersBulk);
                 for (var i = 0; i < length; i++)
                 {
                     playersInDb.Add(Mapper.Map<Player>(context.Players.Find(_createdPlayersBulk[i].Id)));

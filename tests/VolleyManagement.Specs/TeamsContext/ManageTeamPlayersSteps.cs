@@ -19,15 +19,13 @@ namespace VolleyManagement.Specs.TeamsContext
         private TeamId _teamId;
         private PlayerId _captainId;
         private readonly List<PlayerId> _playerToAdd;
-        private ICollection<PlayerId> _playersToRemove;
-        private readonly List<PlayerId> _roster;
+        private readonly ICollection<PlayerId> _playersToRemove;
         private Exception _exception;
 
         public ManageTeamPlayersSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
             _playerToAdd = new List<PlayerId>();
-            _roster = new List<PlayerId>();
             _playersToRemove = new List<PlayerId>();
         }
 
@@ -81,7 +79,6 @@ namespace VolleyManagement.Specs.TeamsContext
 
             TestDbAdapter.CreatePlayer(newPlayer);
             TestDbAdapter.AssignPlayerToTeam(newPlayer.Id, _teamId.Id);
-            _roster.Add(new PlayerId(newPlayer.Id));
         }
 
         [Given(@"I have removed (.*)")]

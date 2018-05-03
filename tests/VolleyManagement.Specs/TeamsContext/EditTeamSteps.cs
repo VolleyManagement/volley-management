@@ -92,6 +92,7 @@ namespace VolleyManagement.Specs.TeamsContext
             };
 
             TestDbAdapter.CreatePlayer(_captain);
+            _team.Players.Add(_captain);
         }
 
         #endregion
@@ -131,30 +132,27 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"team is updated succesfully")]
         public void ThenTeamIsUpdatedSuccesfully()
         {
-            var teamComparer = new TeamComparer();
-            TeamEntity teamEntity;
             using (var context = TestDbAdapter.Context)
             {
-                teamEntity = context.Teams.Find(_team.Id);
+                var teamEntity = context.Teams.Find(_team.Id);
 
-                teamEntity.Should().NotBe(null);
-
-                var isEqual = true;
-                isEqual = teamEntity.Id == _team.Id &&
+                var isUpdatedSuccesfully = true;
+                isUpdatedSuccesfully = teamEntity.Id == _team.Id &&
                     teamEntity.Name.Equals(_team.Name) &&
                     teamEntity.Coach.Equals(_team.Coach) &&
                     teamEntity.Achievements.Equals(_team.Achievements) &&
                     teamEntity.Captain.Id == _team.Captain.Id;
 
-                if (isEqual)
+                if (isUpdatedSuccesfully)
                 {
-                    var xRosterIds = teamEntity.Players.Select(p => p.Id);
-                    var yRosterIds = _team.Players.Select(p => p.Id);
+                    var xRosterIds = teamEntity.Players.OrderByDescending(p => p.Id).Select(p => p.Id);
+                    var yRosterIds = _team.Players.OrderByDescending(p => p.Id).Select(p => p.Id);
 
-                    isEqual = xRosterIds.SequenceEqual(yRosterIds);
+                    isUpdatedSuccesfully = xRosterIds.SequenceEqual(yRosterIds);
                 }
 
-                isEqual.Should().BeTrue("Expected and actual should be equal");
+                teamEntity.Should().NotBe(null);
+                isUpdatedSuccesfully.Should().BeTrue("Expected and actual should be equal");
             }
         }
 

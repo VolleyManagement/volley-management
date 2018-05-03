@@ -57,7 +57,7 @@ namespace VolleyManagement.Specs.PlayersContext
             PlayerEntity deletedPlayer;
             using (var ctx = TestDbAdapter.Context)
             {
-                deletedPlayer = ctx.Players.SingleOrDefault(p => p.Id == _player.Id);
+                deletedPlayer = ctx.Players.SingleOrDefault(p => p.Id == _playerId);
             }
 
             deletedPlayer.Should().Be(null, "Player should be deleted");

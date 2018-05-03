@@ -29,13 +29,13 @@ namespace VolleyManagement.Specs.PlayersContext
             var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);
             var lastName = fullPlayerName.Substring(whitespaceCharIndex + 1);
 
-            var _player = new PlayerEntity {
+            var player = new PlayerEntity {
                 FirstName = firstName,
                 LastName = lastName
             };
 
-            TestDbAdapter.CreatePlayer(_player);
-            _playerId = _player.Id;
+            TestDbAdapter.CreatePlayer(player);
+            _playerId = player.Id;
         }
 
         [When(@"I execute DeletePlayer")]

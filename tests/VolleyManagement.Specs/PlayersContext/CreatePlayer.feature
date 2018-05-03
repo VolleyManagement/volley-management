@@ -34,14 +34,16 @@ Examples:
 | John      | Smith    | 190    | 85     | 1985      |
 | Jane      | Doe      | 180    | 55     | 1995      |
 
-Scenario Outline: Quick create players from names
-    Given full name is <FullName>
+Scenario: Quick create players from names
+    Given full name from Table
+    | FullName                  |
+    | John Smith                |
+    | Peter Petrovich Petrov    |
     When I execute QuickCreatePlayer
-    Then player is created with <FirstName> and <LastName>
-Examples: 
-| FullName                  | FirstName             | LastName          |
-| John Smith                | John                  | Smith             |
-| Peter Petrovich Petrov    | Peter                 | Petrovich Petrov  |
+    Then players is created from Table with FirstName and LastName
+    | FirstName             | LastName          |
+    | John                  | Smith             |
+    | Peter                 | Petrovich Petrov  |
 
 Scenario: Bulk create players
     Given collection of players to create

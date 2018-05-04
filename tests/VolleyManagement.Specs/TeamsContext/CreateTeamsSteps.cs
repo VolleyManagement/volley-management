@@ -18,6 +18,7 @@ using VolleyManagement.UnitTests.Services.TeamService;
 namespace VolleyManagement.Specs.TeamsContext
 {
     [Binding]
+    [Scope(Feature = "CreateTeams")]
     public class CreateTeamsSteps
     {
         private readonly ITeamService _teamService;
@@ -48,7 +49,6 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"captain is (.*)")]
-        [Scope(Feature = "CreateTeams")]
         public void GivenCaptainIs(string fullName)
         {
             var removeNotExistingPlayerFromRosterWhoWasCaptainInTeamCreation =

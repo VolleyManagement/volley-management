@@ -13,6 +13,7 @@ using VolleyManagement.Specs.Infrastructure.IOC;
 namespace VolleyManagement.Specs.TeamsContext
 {
     [Binding]
+    [Scope(Feature = "Remove Team")]
     public class RemoveTeamSteps
     {
         private TeamId _teamId;
@@ -36,28 +37,26 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"(.*) team exists")]
-        [Scope(Feature = "Remove Team")]
         public void GivenTeamExists(string name)
         {
-            var _player = new PlayerEntity {
+            var player = new PlayerEntity {
                 FirstName = "First",
                 LastName = "Last"
             };
 
-            var _team = new TeamEntity {
+            var team = new TeamEntity {
                 Name = name,
                 Coach = "coach name",
                 Achievements = "Achivements",
-                Captain = _player
+                Captain = player
             };
 
-            TestDbAdapter.CreateTeam(_team);
-            TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
-            _teamId = new TeamId(_team.Id);
+            TestDbAdapter.CreateTeam(team);
+            TestDbAdapter.AssignPlayerToTeam(player.Id, team.Id);
+            _teamId = new TeamId(team.Id);
         }
 
         [Given(@"(.*) team does not exist")]
-        [Scope(Feature = "Remove Team")]
         public void GivenTeamDoesNotExist(string name)
         {
             _teamId = new TeamId(ID_TEAM_DOES_NOT_EXIST);
@@ -68,7 +67,7 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             try
             {
-                using(var context = TestDbAdapter.Context)
+                using (var context = TestDbAdapter.Context)
                 {
                     _teamService.Delete(_teamId);
                 }
@@ -81,7 +80,6 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Then(@"team is removed")]
-        [Scope(Feature = "Remove Team")]
         public void ThenTeamIsRemoved()
         {
             TeamEntity teamEntity;
@@ -95,7 +93,6 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Then(@"ConcurrencyException is thrown")]
-        [Scope(Feature = "Remove Team")]
         public void ThenConcurrencyExceptionIsThrown()
         {
             _exception.Should().NotBe(null, exeptionShouldBeThrown);

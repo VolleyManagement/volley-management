@@ -22,6 +22,8 @@ namespace VolleyManagement.Specs.PlayersContext
         private Player _player;
         private List<Player> _playersForBulk;
         private List<Player> _createdPlayersBulk;
+        private string playerFirstName = "FirstName";
+        private string playerLastName = "LastName";
         private readonly IPlayerService _playerService;
         private Exception _exception;
         private Exception _playerValidationException;
@@ -29,35 +31,26 @@ namespace VolleyManagement.Specs.PlayersContext
 
         public CreatePlayerSteps()
         {
-            _player = new Player(int.MaxValue, "First", "Last", null, null, null);
+            _player = new Player(int.MaxValue, playerFirstName, playerLastName, null, null, null);
             _playerService = IocProvider.Get<IPlayerService>();
         }
 
         [Given(@"first name is (.*)")]
         public void GivenFirstNameIs(string firstName)
         {
-            _player.FirstName = firstName;
+            playerFirstName = firstName;
         }
 
         [Given(@"first name set to Very looong name which should be more than (.*) symbols")]
         public void GivenFirstNameChangedToNameWhichShouldBeMoreThan(int firstNameLength)
         {
-            var newFirstName = new string('n', firstNameLength + 1);
-            try
-            {
-                _player.LastName = newFirstName;
-            }
-            catch (Exception exception)
-            {
-                _playerValidationThrowException = true;
-                _playerValidationException = exception;
-            }
+            playerFirstName = new string('n', firstNameLength + 1);
         }
 
         [Given(@"last name is (.*)")]
         public void GivenLastNameIs(string lastName)
         {
-            _player.LastName = lastName;
+           playerLastName = lastName;
         }
 
         [Given(@"height is (.*)")]
@@ -81,8 +74,8 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"player without name")]
         public void GivenPlayerWithoutName()
         {
-            _player.FirstName = null;
-            _player.LastName = null;
+           playerFirstName = null;
+           playerLastName = null;
         }
 
         [When(@"I execute CreatePlayer")]
@@ -90,6 +83,8 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             try
             {
+                _player.FirstName = playerFirstName;
+                _player.LastName = playerLastName;
                 var playerToAdd = Mapper.Map<CreatePlayerDto>(_player);
 
                 _player = _playerService.Create(playerToAdd);
@@ -97,6 +92,9 @@ namespace VolleyManagement.Specs.PlayersContext
             catch (Exception exception)
             {
                 _exception = exception;
+
+               /* _playerValidationThrowException = true;
+                _playerValidationException = exception;*/
             }
         }
 

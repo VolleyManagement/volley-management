@@ -24,6 +24,8 @@ namespace VolleyManagement.Specs.PlayersContext
         private List<Player> _createdPlayersBulk;
         private string playerFirstName = "FirstName";
         private string playerLastName = "LastName";
+        private List<Player> _playersForQuickCreate;
+        private List<Player> _playersAddedQuickCreateActual;
         private readonly IPlayerService _playerService;
         private Exception _exception;
         private Exception _playerValidationException;
@@ -31,7 +33,10 @@ namespace VolleyManagement.Specs.PlayersContext
 
         public CreatePlayerSteps()
         {
-            _player = new Player(int.MaxValue, playerFirstName, playerLastName, null, null, null);
+
+            _player = new Player(int.MaxValue, "First", "Last");
+            _playersForQuickCreate = new List<Player>();
+            _playersAddedQuickCreateActual = new List<Player>();
             _playerService = IocProvider.Get<IPlayerService>();
         }
 
@@ -216,6 +221,34 @@ namespace VolleyManagement.Specs.PlayersContext
             }
         }
 
+        [Given(@"full name from Table")]
+        public void GivenFullNameFromTableIs(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var fullName = row.Values.First();
+                var whitespaceCharIndex = fullName.IndexOf(' ');
+                var firstName = fullName.Substring(0, whitespaceCharIndex);
+                var lastName = fullName.Substring(whitespaceCharIndex + 1);
+                _playersForQuickCreate.Add(new Player(int.MaxValue, firstName, lastName));
+            }
+        }
+
+        [Then(@"players is created from Table with FirstName and LastName")]
+        public void ThenPlayerIsCreatedFromTableWithAnd(Table table)
+        {
+            if (_playersAddedQuickCreateActual.Count == table.RowCount)
+            {
+                for (var i = 0; i < table.RowCount; i++)
+                {
+                    var rowValue = table.Rows[i].Values.ToList();
+                    _playersAddedQuickCreateActual[i].FirstName.Should()
+                        .BeEquivalentTo(rowValue[0]);
+                    _playersAddedQuickCreateActual[i].LastName.Should()
+                        .BeEquivalentTo(rowValue[1]);
+                }
+            }
+        }
         private static List<Player> CreateListPlayers()
         {
             return new List<Player>{

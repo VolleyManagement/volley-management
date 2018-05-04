@@ -1,6 +1,4 @@
-﻿using VolleyManagement.Domain.TeamsAggregate;
-
-namespace VolleyManagement.Domain.PlayersAggregate
+﻿namespace VolleyManagement.Domain.PlayersAggregate
 {
     using System;
     using Properties;
@@ -42,7 +40,8 @@ namespace VolleyManagement.Domain.PlayersAggregate
         {
             if (ValidateId(id))
             {
-                throw new EntityInvariantViolationException(Resources.ValidationPlayerId);
+                throw new ArgumentException(Resources.ValidationPlayerId,
+                    nameof(id));
             }
 
             Id = id;
@@ -71,7 +70,8 @@ namespace VolleyManagement.Domain.PlayersAggregate
             {
                 if (ValidateFirstName(value))
                 {
-                    throw new EntityInvariantViolationException(Resources.ValidationPlayerFirstName);
+                    throw new ArgumentException(Resources.ValidationPlayerFirstName,
+                        nameof(value));
                 }
 
                 _firstName = value;
@@ -91,7 +91,8 @@ namespace VolleyManagement.Domain.PlayersAggregate
             {
                 if (ValidateLastName(value))
                 {
-                    throw new EntityInvariantViolationException(Resources.ValidationPlayerLastName);
+                    throw new ArgumentException(Resources.ValidationPlayerLastName,
+                        nameof(value));
                 }
 
                 _lastName = value;
@@ -110,7 +111,7 @@ namespace VolleyManagement.Domain.PlayersAggregate
             {
                 if (ValidateBirthYear(value))
                 {
-                    throw new EntityInvariantViolationException(Resources.ValidationPlayerBirthYear);
+                    throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(value));
                 }
 
                 _birthYear = value;
@@ -129,7 +130,7 @@ namespace VolleyManagement.Domain.PlayersAggregate
             {
                 if (ValidateHeight(value))
                 {
-                    throw new EntityInvariantViolationException(Resources.ValidationPlayerHeight);
+                    throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(value));
                 }
 
                 _height = value;
@@ -148,7 +149,7 @@ namespace VolleyManagement.Domain.PlayersAggregate
             {
                 if (ValidateWeight(value))
                 {
-                    throw new EntityInvariantViolationException(Resources.ValidationPlayerWeight);
+                    throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(value));
                 }
 
                 _weight = value;

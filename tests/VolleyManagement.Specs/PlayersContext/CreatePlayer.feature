@@ -6,7 +6,7 @@
 Scenario: Create very long name
 Given first name set to Very looong name which should be more than 60 symbols
 When I execute CreatePlayer
-Then EntityInvariantViolationException is thrown
+Then ArgumentException is thrown
 
 Scenario Outline: Create simple player
 	Given first name is <FirstName>

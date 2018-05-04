@@ -7,7 +7,6 @@ using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
-using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 using Xunit;
@@ -23,8 +22,8 @@ namespace VolleyManagement.Specs.PlayersContext
         private Player _player;
         private List<Player> _playersForBulk;
         private List<Player> _createdPlayersBulk;
-        private string _playerFirstName = "FirstName";
-        private string _playerLastName = "LastName";
+        private string playerFirstName = "FirstName";
+        private string playerLastName = "LastName";
         private List<Player> _playersForQuickCreate;
         private List<Player> _playersAddedQuickCreateActual;
         private readonly IPlayerService _playerService;
@@ -44,19 +43,19 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"first name is (.*)")]
         public void GivenFirstNameIs(string firstName)
         {
-            _playerFirstName = firstName;
+            playerFirstName = firstName;
         }
 
         [Given(@"first name set to Very looong name which should be more than (.*) symbols")]
         public void GivenFirstNameChangedToNameWhichShouldBeMoreThan(int firstNameLength)
         {
-            _playerFirstName = new string('n', firstNameLength + 1);
+            playerFirstName = new string('n', firstNameLength + 1);
         }
 
         [Given(@"last name is (.*)")]
         public void GivenLastNameIs(string lastName)
         {
-            _playerLastName = lastName;
+           playerLastName = lastName;
         }
 
         [Given(@"height is (.*)")]
@@ -80,8 +79,8 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"player without name")]
         public void GivenPlayerWithoutName()
         {
-            _playerFirstName = null;
-            _playerLastName = null;
+           playerFirstName = null;
+           playerLastName = null;
         }
 
         [When(@"I execute CreatePlayer")]
@@ -89,20 +88,18 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             try
             {
-                _player.FirstName = _playerFirstName;
-                _player.LastName = _playerLastName;
+                _player.FirstName = playerFirstName;
+                _player.LastName = playerLastName;
                 var playerToAdd = Mapper.Map<CreatePlayerDto>(_player);
 
                 _player = _playerService.Create(playerToAdd);
             }
-            catch (EntityInvariantViolationException exception)
-            {
-                _playerValidationThrowException = true;
-                _playerValidationException = exception;
-            }
             catch (Exception exception)
             {
                 _exception = exception;
+
+               /* _playerValidationThrowException = true;
+                _playerValidationException = exception;*/
             }
         }
 
@@ -126,16 +123,16 @@ namespace VolleyManagement.Specs.PlayersContext
             actualPlayer.Should().BeEquivalentTo(_player);
         }
 
-        [Then(@"EntityInvariantViolationException is thrown")]
-        public void ThenEntityInvariantViolationExceptionIsThrown()
+        [Then(@"ArgumentException is thrown")]
+        public void ThenArgumentExceptionIsThrown()
         {
             if (_playerValidationThrowException)
             {
-                _playerValidationException.Should().BeOfType(typeof(EntityInvariantViolationException));
+                _playerValidationException.Should().BeOfType(typeof(ArgumentException));
             }
             else
             {
-                _exception.Should().BeOfType(typeof(EntityInvariantViolationException));
+                _exception.Should().BeOfType(typeof(ArgumentException));
             }
         }
 

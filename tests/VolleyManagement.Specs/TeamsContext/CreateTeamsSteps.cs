@@ -149,15 +149,13 @@ namespace VolleyManagement.Specs.TeamsContext
             var firstName = fullName.Substring(0, whitespaceCharIndex);
             var lastName = fullName.Substring(whitespaceCharIndex + 1);
 
-            var playerService = IocProvider.Get<IPlayerService>();
+            var player = new PlayerEntity {
+                FirstName = firstName,
+                LastName = lastName
+            };
 
-            var newPlayer = playerService.Create(
-                new CreatePlayerDto {
-                    FirstName = firstName,
-                    LastName = lastName
-                });
-
-            _captainId = newPlayer.Id;
+            TestDbAdapter.CreatePlayer(player);
+            _captainId = player.Id;
         }
     }
 }

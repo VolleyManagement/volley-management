@@ -160,7 +160,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "Peter Petrovich Petrov"});
 #line 38
-    testRunner.Given("full name from Table", ((string)(null)), table1, "Given ");
+    testRunner.Given("set full names from Table", ((string)(null)), table1, "Given ");
 #line 42
     testRunner.When("I execute QuickCreatePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden

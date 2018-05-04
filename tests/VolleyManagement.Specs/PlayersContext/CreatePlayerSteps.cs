@@ -218,7 +218,7 @@ namespace VolleyManagement.Specs.PlayersContext
             }
         }
 
-        [Given(@"full name from Table")]
+        [Given(@"set full names from Table")]
         public void GivenFullNameFromTableIs(Table table)
         {
             foreach (var row in table.Rows)

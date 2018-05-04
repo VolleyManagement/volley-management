@@ -35,7 +35,7 @@ Examples:
 | Jane      | Doe      | 180    | 55     | 1995      |
 
 Scenario: Quick create players from names
-    Given full name from Table
+    Given set full names from Table
     | FullName                  |
     | John Smith                |
     | Peter Petrovich Petrov    |

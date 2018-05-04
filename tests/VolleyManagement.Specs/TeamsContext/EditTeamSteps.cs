@@ -18,7 +18,6 @@ using Xunit;
 namespace VolleyManagement.Specs.TeamsContext
 {
     [Binding]
-    [Scope(Feature = "Edit Team")]
     public class EditTeamSteps
     {
         private readonly ITeamService _teamService;
@@ -49,6 +48,7 @@ namespace VolleyManagement.Specs.TeamsContext
         #region Given
 
         [Given(@"(.*) team exists")]
+        [Scope(Feature = "Edit Team")]
         public void GivenTeamExists(string name)
         {
             _team.Name = name;
@@ -58,6 +58,7 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"name set to Very Looong team name which should be more than (.*) symbols")]
+        [Scope(Feature = "Edit Team")]
         public void GivenNameChangedToNameWhichShouldBeMoreThan(int newNameLength)
         {
             var newName = new string('n', newNameLength + 1);
@@ -65,6 +66,7 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"Team (.*) team does not exist")]
+        [Scope(Feature = "Edit Team")]
         public void GivenTeamDoesNotExist(string name)
         {
             _team.Name = name;
@@ -155,6 +157,7 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Then(@"(.*) is thrown")]
+        [Scope(Feature = "Edit Team")]
         public void ThenExceptionIsThrown(string exceptionType)
         {
             isExceptionThrown.Should().BeTrue();

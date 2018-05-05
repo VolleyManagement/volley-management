@@ -2,7 +2,6 @@
 	In order to keep data storage
 	As a tournament administrator
 	I want to be able to delete teams
-
 @ignore
 Scenario: Remove existing team
     Given Volley.org.ua team exists

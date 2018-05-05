@@ -136,11 +136,9 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"full name is (.*)")]
         public void GivenFullNameIs(string playerToCreate)
         {
-            var whitespaceCharIndex = playerToCreate.IndexOf(' ');
-            var firstName = playerToCreate.Substring(0, whitespaceCharIndex);
-            var lastName = playerToCreate.Substring(whitespaceCharIndex + 1);
-            _player.FirstName = firstName;
-            _player.LastName = lastName;
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerToCreate);
+            _player.FirstName = names.FirstName;
+            _player.LastName = names.LastName;
         }
 
         [When(@"I execute QuickCreatePlayer")]
@@ -224,10 +222,8 @@ namespace VolleyManagement.Specs.PlayersContext
             foreach (var row in table.Rows)
             {
                 var fullName = row.Values.First();
-                var whitespaceCharIndex = fullName.IndexOf(' ');
-                var firstName = fullName.Substring(0, whitespaceCharIndex);
-                var lastName = fullName.Substring(whitespaceCharIndex + 1);
-                _playersForQuickCreate.Add(new Player(int.MaxValue, firstName, lastName));
+                var names = SpecsHelper.SplitFullNameToFirstLastNames(fullName);
+                _playersForQuickCreate.Add(new Player(int.MaxValue, names.FirstName, names.LastName));
             }
         }
 

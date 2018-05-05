@@ -25,13 +25,11 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"(.*) player exists")]
         public void GivenPlayerExists(string fullPlayerName)
         {
-            var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
-            var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);
-            var lastName = fullPlayerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(fullPlayerName);
 
             var player = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName
+                FirstName = names.FirstName,
+                LastName = names.LastName
             };
 
             TestDbAdapter.CreatePlayer(player);
@@ -74,6 +72,5 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             _exception.Should().BeOfType(typeof(DbUpdateConcurrencyException));
         }
-
     }
 }

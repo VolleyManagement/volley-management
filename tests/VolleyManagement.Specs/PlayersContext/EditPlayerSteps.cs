@@ -28,12 +28,10 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"(.*) player exists")]
         public void GivenPlayerExists(string fullPlayerName)
         {
-            var whitespaceCharIndex = fullPlayerName.IndexOf(' ');
-            var firstName = fullPlayerName.Substring(0, whitespaceCharIndex);
-            var lastName = fullPlayerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(fullPlayerName);
 
-            _player.FirstName = firstName;
-            _player.LastName = lastName;
+            _player.FirstName = names.FirstName;
+            _player.LastName = names.LastName;
 
             TestDbAdapter.CreatePlayer(_player);
         }
@@ -54,11 +52,9 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"(.*) player does not exist")]
         public void GivenPlayerDoesNotExist(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
-            _player.FirstName = firstName;
-            _player.LastName = lastName;
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
+            _player.FirstName = names.FirstName;
+            _player.LastName = names.LastName;
         }
 
         [When(@"I execute EditPlayer")]

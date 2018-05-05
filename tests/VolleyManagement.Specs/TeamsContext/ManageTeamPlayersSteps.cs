@@ -32,33 +32,26 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"Team (.*) exists")]
         public void GivenTeamExists(string name)
         {
-            var player = new PlayerEntity {
-                FirstName = "CapitanFirst",
-                LastName = "CapitanLast"
-            };
-
             var team = new TeamEntity {
                 Name = name,
                 Coach = "coach name",
-                Achievements = null,
-                Captain = player
+                Achievements = "Achivements",
+                Players = new List<PlayerEntity>()
             };
-            TestDbAdapter.CreateTeam(team);
-            TestDbAdapter.AssignPlayerToTeam(player.Id, team.Id);
+
+            TestDbAdapter.CreateTeamWithCaptain(team, "First", "Last");
             _teamId = new TeamId(team.Id);
-            _captainId = new PlayerId(player.Id);
+            _captainId = new PlayerId(team.CaptainId);
         }
 
         [Given(@"I have added (.*) as a team player")]
         public void GivenIHavePlayerAsATeamPlayer(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             var newPlayer = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName
+                FirstName = names.FirstName,
+                LastName = names.LastName
             };
 
             TestDbAdapter.CreatePlayer(newPlayer);
@@ -68,13 +61,11 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"(.*) is a team player")]
         public void GivenPlayerIsATeamPlayer(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             var newPlayer = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName
+                FirstName = names.FirstName,
+                LastName = names.LastName
             };
 
             TestDbAdapter.CreatePlayer(newPlayer);
@@ -84,14 +75,12 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"I have removed (.*)")]
         public void GivenIHaveRemovedPlayer(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             using (var ctx = TestDbAdapter.Context)
             {
                 var playerEntities = ctx.Players
-                    .SingleOrDefault(p => p.FirstName == firstName && p.LastName == lastName);
+                    .SingleOrDefault(p => p.FirstName == names.FirstName && p.LastName == names.LastName);
                 _playersToRemove.Add(new PlayerId(playerEntities.Id));
             }
         }
@@ -99,9 +88,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"(.*) is a team captain")]
         public void GivenJaneDoeIsATeamCaptain(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             using (var ctx = TestDbAdapter.Context)
             {
@@ -113,8 +100,8 @@ namespace VolleyManagement.Specs.TeamsContext
                     return;
                 }
 
-                playerEntity.FirstName = firstName;
-                playerEntity.LastName = lastName;
+                playerEntity.FirstName = names.FirstName;
+                playerEntity.LastName = names.LastName;
                 ctx.SaveChanges();
             }
         }

@@ -9,6 +9,7 @@ using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
+using System.Data.Entity.Infrastructure;
 
 namespace VolleyManagement.Specs.TeamsContext
 {
@@ -39,20 +40,14 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"(.*) team exists")]
         public void GivenTeamExists(string name)
         {
-            var player = new PlayerEntity {
-                FirstName = "First",
-                LastName = "Last"
-            };
-
             var team = new TeamEntity {
                 Name = name,
                 Coach = "coach name",
                 Achievements = "Achivements",
-                Captain = player
+                Players = new List<PlayerEntity>()
             };
 
-            TestDbAdapter.CreateTeam(team);
-            TestDbAdapter.AssignPlayerToTeam(player.Id, team.Id);
+            TestDbAdapter.CreateTeamWithCaptain(team, "First", "Last");
             _teamId = new TeamId(team.Id);
         }
 
@@ -96,7 +91,7 @@ namespace VolleyManagement.Specs.TeamsContext
         public void ThenConcurrencyExceptionIsThrown()
         {
             _exception.Should().NotBe(null, exeptionShouldBeThrown);
-            _exception.Should().BeOfType(typeof(DBConcurrencyException), exeptionShouldBeThrown);
+            _exception.Should().BeOfType(typeof(DbUpdateConcurrencyException), exeptionShouldBeThrown);
         }
     }
 }

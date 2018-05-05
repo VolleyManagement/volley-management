@@ -14,7 +14,7 @@ var configuration = Argument("configuration", "Release");
 var sonarToken = HasArgument("sonar-token") ?
     Argument<string>("sonar-token") :
     EnvironmentVariable("SONAR_TOKEN");
-var localDev = Argument<bool>("local-dev", true);
+var localDev = Argument<bool>("local-dev", false);
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -101,7 +101,7 @@ Task("Build")
 
 Task("UnitTests")
     .Does(() => {
-        var testsPath = "E:/Volley/volley-management/tests/bin/UnitTests/Release/VolleyManagement.UnitTests.dll";
+        var testsPath = utsDir.Path.FullPath + "/*.UnitTests.dll";
         var msTestSettings = new MSTestSettings {
             ResultsFile = utResults.Path.GetFilename().FullPath,
             WorkingDirectory = testsDir
@@ -235,6 +235,7 @@ Task("Sonar")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
     .IsDependentOn("IntegrationTests")
+    .IsDependentOn("DomainTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 
@@ -256,4 +257,5 @@ public static void SetCoverageFilter(DotCoverCoverSettings settings)
     settings.WithFilter("+:VolleyManagement*");
     settings.WithFilter("-:*.UnitTests");
     settings.WithFilter("-:*.Specs");
+    settings.WithFilter("-:*.Domain.UnitTests");
 }

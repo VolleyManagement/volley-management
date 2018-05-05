@@ -25,7 +25,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private readonly ITeamService _teamService;
 
         private readonly TeamEntity _team;
-        private readonly PlayerEntity _player;
+        private PlayerEntity _player;
         private PlayerEntity _captain;
         private Exception _exception;
         private bool _isExceptionThrown;
@@ -34,17 +34,13 @@ namespace VolleyManagement.Specs.TeamsContext
         public EditTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
-
-            _player = new PlayerEntity {
-                FirstName = "FirstName",
-                LastName = "LastName",
-            };
-
+            _player = new PlayerEntity();
             _team = new TeamEntity {
                 Name = "TestName",
                 Coach = "New coach",
                 Achievements = "Achive",
-                Captain = _player
+                Captain = _player,
+                Players = new List<PlayerEntity>()
             };
         }
 
@@ -52,8 +48,8 @@ namespace VolleyManagement.Specs.TeamsContext
         public void GivenTeamExists(string name)
         {
             _team.Name = name;
-            TestDbAdapter.CreateTeam(_team);
-            TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
+            TestDbAdapter.CreateTeamWithCaptain(_team, "First", "Last");
+            _player = _team.Captain;
             _team.Players.Add(_player);
         }
 
@@ -80,13 +76,11 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"captain is changed to (.*)")]
         public void GivenCaptainIsChangedToAnother(string captainName)
         {
-            var whitespaceCharIndex = captainName.IndexOf(' ');
-            var firstName = captainName.Substring(0, whitespaceCharIndex);
-            var lastName = captainName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(captainName);
 
             _captain = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName,
+                FirstName = names.FirstName,
+                LastName = names.LastName,
             };
 
             TestDbAdapter.CreatePlayer(_captain);

@@ -43,7 +43,8 @@ namespace VolleyManagement.Specs.TeamsContext
                 Name = "TestName",
                 Coach = "New coach",
                 Achievements = "Achive",
-                Captain = _player
+                Captain = _player,
+                Players = new List<PlayerEntity>()
             };
         }
 
@@ -79,13 +80,11 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"captain is changed to (.*)")]
         public void GivenCaptainIsChangedToAnother(string captainName)
         {
-            var whitespaceCharIndex = captainName.IndexOf(' ');
-            var firstName = captainName.Substring(0, whitespaceCharIndex);
-            var lastName = captainName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(captainName);
 
             _captain = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName,
+                FirstName = names.FirstName,
+                LastName = names.LastName,
             };
 
             TestDbAdapter.CreatePlayer(_captain);

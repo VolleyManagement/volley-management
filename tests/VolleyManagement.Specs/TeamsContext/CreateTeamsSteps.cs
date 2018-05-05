@@ -26,7 +26,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private int _captainId = 100;
         private int _newTeamId;
         private Exception _exception;
-        private bool _isSetCaprainException;
+        private bool _captainExceptionSetted;
 
         private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
@@ -67,7 +67,7 @@ namespace VolleyManagement.Specs.TeamsContext
             }
             catch (Exception ex)
             {
-                _isSetCaprainException = true;
+                _captainExceptionSetted = true;
                 _exception = ex;
             }
         }
@@ -133,7 +133,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"Validation fails")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
-            if (_isSetCaprainException)
+            if (_captainExceptionSetted)
             {
                 _exception.Should().BeOfType(typeof(MissingEntityException), "Should thrown MissingEntityException");
             }
@@ -145,16 +145,14 @@ namespace VolleyManagement.Specs.TeamsContext
 
         private void RegisterNewPlayerAndSetCaptainId(string fullName)
         {
-            var whitespaceCharIndex = fullName.IndexOf(' ');
-            var firstName = fullName.Substring(0, whitespaceCharIndex);
-            var lastName = fullName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(fullName);
 
             var playerService = IocProvider.Get<IPlayerService>();
 
             var newPlayer = playerService.Create(
                 new CreatePlayerDto {
-                    FirstName = firstName,
-                    LastName = lastName
+                    FirstName = names.FirstName,
+                    LastName = names.LastName
                 });
 
             _captainId = newPlayer.Id;

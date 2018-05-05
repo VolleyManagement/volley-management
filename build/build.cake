@@ -107,35 +107,13 @@ Task("UnitTests")
             WorkingDirectory = testsDir
         };
 
-        var testsPathDomain = domainDir.Path.FullPath + "/*.Domain.UnitTests.dll";
-        var xUnitSettings = new XUnit2Settings {
-            WorkingDirectory = testsDir,
-            ReportName = domainUTResults.Path.GetFilenameWithoutExtension().FullPath,
-            XmlReport = true,
-            OutputDirectory = domainUTResults.Path.GetDirectory().FullPath
-        };
-
         var dotCoverSettings = new DotCoverCoverSettings{
                 WorkingDirectory = utsDir,
                 TargetWorkingDir = utsDir
             };
 
-        var dotCoverSettingsDomain = new DotCoverCoverSettings{
-                WorkingDirectory = domainDir,
-                TargetWorkingDir = domainDir
-            };
         SetCoverageFilter(dotCoverSettings);        
 
-        SetCoverageFilter(dotCoverSettingsDomain);        
-
-        DotCoverCover (
-            (ICakeContext c) => { c.XUnit2(testsPathDomain, xUnitSettings); },
-            domainUTCoverageResults,
-            dotCoverSettingsDomain);
-
-        if (BuildSystem.IsRunningOnAppVeyor) {
-            AppVeyor.UploadTestResults(domainUTResults, AppVeyorTestResultsType.XUnit);
-        }
         DotCoverCover(
             (ICakeContext c) => { c.MSTest (testsPath, msTestSettings); },
             utCoverageResults,
@@ -173,6 +151,33 @@ Task("IntegrationTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(specResults, AppVeyorTestResultsType.XUnit);
+        }
+    });
+
+Task("DomainTests")
+    .Does(() => {        
+        var testsPathDomain = domainDir.Path.FullPath + "/*.Domain.UnitTests.dll";
+        var xUnitSettings = new XUnit2Settings {
+            WorkingDirectory = testsDir,
+            ReportName = domainUTResults.Path.GetFilenameWithoutExtension().FullPath,
+            XmlReport = true,
+            OutputDirectory = domainUTResults.Path.GetDirectory().FullPath
+        };
+
+        var dotCoverSettingsDomain = new DotCoverCoverSettings {
+            WorkingDirectory = domainDir,
+            TargetWorkingDir = domainDir
+        };
+
+        SetCoverageFilter(dotCoverSettingsDomain);        
+
+        DotCoverCover (
+            (ICakeContext c) => { c.XUnit2(testsPathDomain, xUnitSettings); },
+            domainUTCoverageResults,
+            dotCoverSettingsDomain);
+
+        if (BuildSystem.IsRunningOnAppVeyor) {
+            AppVeyor.UploadTestResults(domainUTResults, AppVeyorTestResultsType.XUnit);
         }
     });
 
@@ -230,6 +235,7 @@ Task("Sonar")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
     .IsDependentOn("IntegrationTests")
+    .IsDependentOn("DomainTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 
@@ -251,4 +257,5 @@ public static void SetCoverageFilter(DotCoverCoverSettings settings)
     settings.WithFilter("+:VolleyManagement*");
     settings.WithFilter("-:*.UnitTests");
     settings.WithFilter("-:*.Specs");
+    settings.WithFilter("-:*.Domain.UnitTests");
 }

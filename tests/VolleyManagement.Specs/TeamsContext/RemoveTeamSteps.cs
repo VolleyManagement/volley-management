@@ -43,12 +43,14 @@ namespace VolleyManagement.Specs.TeamsContext
                 FirstName = "First",
                 LastName = "Last"
             };
+            TestDbAdapter.CreatePlayer(player);
 
             var team = new TeamEntity {
                 Name = name,
                 Coach = "coach name",
                 Achievements = "Achivements",
-                Captain = player
+                Captain = player,
+                Players = new List<PlayerEntity>()
             };
 
             TestDbAdapter.CreateTeam(team);

@@ -52,13 +52,11 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"I have added (.*) as a team player")]
         public void GivenIHavePlayerAsATeamPlayer(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             var newPlayer = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName
+                FirstName = names.FirstName,
+                LastName = names.LastName
             };
 
             TestDbAdapter.CreatePlayer(newPlayer);
@@ -68,13 +66,11 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"(.*) is a team player")]
         public void GivenPlayerIsATeamPlayer(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             var newPlayer = new PlayerEntity {
-                FirstName = firstName,
-                LastName = lastName
+                FirstName = names.FirstName,
+                LastName = names.LastName
             };
 
             TestDbAdapter.CreatePlayer(newPlayer);
@@ -84,14 +80,12 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"I have removed (.*)")]
         public void GivenIHaveRemovedPlayer(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             using (var ctx = TestDbAdapter.Context)
             {
                 var playerEntities = ctx.Players
-                    .SingleOrDefault(p => p.FirstName == firstName && p.LastName == lastName);
+                    .SingleOrDefault(p => p.FirstName == names.FirstName && p.LastName == names.LastName);
                 _playersToRemove.Add(new PlayerId(playerEntities.Id));
             }
         }
@@ -99,9 +93,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"(.*) is a team captain")]
         public void GivenJaneDoeIsATeamCaptain(string playerName)
         {
-            var whitespaceCharIndex = playerName.IndexOf(' ');
-            var firstName = playerName.Substring(0, whitespaceCharIndex);
-            var lastName = playerName.Substring(whitespaceCharIndex + 1);
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
             using (var ctx = TestDbAdapter.Context)
             {
@@ -113,8 +105,8 @@ namespace VolleyManagement.Specs.TeamsContext
                     return;
                 }
 
-                playerEntity.FirstName = firstName;
-                playerEntity.LastName = lastName;
+                playerEntity.FirstName = names.FirstName;
+                playerEntity.LastName = names.LastName;
                 ctx.SaveChanges();
             }
         }

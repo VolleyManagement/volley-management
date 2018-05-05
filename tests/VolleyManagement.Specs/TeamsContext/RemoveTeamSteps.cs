@@ -9,6 +9,7 @@ using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
+using System.Data.Entity.Infrastructure;
 
 namespace VolleyManagement.Specs.TeamsContext
 {
@@ -98,7 +99,7 @@ namespace VolleyManagement.Specs.TeamsContext
         public void ThenConcurrencyExceptionIsThrown()
         {
             _exception.Should().NotBe(null, exeptionShouldBeThrown);
-            _exception.Should().BeOfType(typeof(DBConcurrencyException), exeptionShouldBeThrown);
+            _exception.Should().BeOfType(typeof(DbUpdateConcurrencyException), exeptionShouldBeThrown);
         }
     }
 }

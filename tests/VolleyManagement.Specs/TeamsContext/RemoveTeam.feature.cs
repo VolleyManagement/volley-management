@@ -91,13 +91,12 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Remove missing team", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Remove missing team")]
         [Xunit.TraitAttribute("FeatureTitle", "Remove Team")]
         [Xunit.TraitAttribute("Description", "Remove missing team")]
         public virtual void RemoveMissingTeam()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove missing team", new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove missing team", ((string[])(null)));
 #line 11
 this.ScenarioSetup(scenarioInfo);
 #line 12

@@ -3,6 +3,7 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions.Common;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
 using VolleyManagement.Contracts.Exceptions;
@@ -127,25 +128,11 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             using (var context = TestDbAdapter.Context)
             {
-                var teamEntity = context.Teams.Find(_team.Id);
 
-                var isUpdatedSuccesfully = true;
-                isUpdatedSuccesfully = teamEntity.Id == _team.Id &&
-                    teamEntity.Name.Equals(_team.Name) &&
-                    teamEntity.Coach.Equals(_team.Coach) &&
-                    teamEntity.Achievements.Equals(_team.Achievements) &&
-                    teamEntity.Captain.Id == _team.Captain.Id;
-
-                if (isUpdatedSuccesfully)
-                {
-                    var xRosterIds = teamEntity.Players.OrderByDescending(p => p.Id).Select(p => p.Id);
-                    var yRosterIds = _team.Players.OrderByDescending(p => p.Id).Select(p => p.Id);
-
-                    isUpdatedSuccesfully = xRosterIds.SequenceEqual(yRosterIds);
-                }
-
+                var teamEntity = context.Teams.Find(_team.Id);      
+                teamEntity.Should().BeEquivalentTo(_team,options=>options.Including(x=>x.CaptainId).Including(x=>x.Name));
+                teamEntity.Players.Should().BeEquivalentTo(_team.Players, options => options.Including(x => x.Id));                
                 teamEntity.Should().NotBe(null);
-                isUpdatedSuccesfully.Should().BeTrue("Expected and actual should be equal");
             }
         }
 

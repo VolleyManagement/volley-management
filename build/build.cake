@@ -14,7 +14,7 @@ var configuration = Argument("configuration", "Release");
 var sonarToken = HasArgument("sonar-token") ?
     Argument<string>("sonar-token") :
     EnvironmentVariable("SONAR_TOKEN");
-var localDev = Argument<bool>("local-dev", false);
+var localDev = Argument<bool>("local-dev", true);
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -101,7 +101,7 @@ Task("Build")
 
 Task("UnitTests")
     .Does(() => {
-        var testsPath = utsDir.Path.FullPath + "/*.UnitTests.dll";
+        var testsPath = "E:/Volley/volley-management/tests/bin/UnitTests/Release/VolleyManagement.UnitTests.dll";
         var msTestSettings = new MSTestSettings {
             ResultsFile = utResults.Path.GetFilename().FullPath,
             WorkingDirectory = testsDir

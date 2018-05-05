@@ -78,5 +78,27 @@ namespace VolleyManagement.Specs.Infrastructure
                 ctx.SaveChanges();
             }
         }
+
+        /// <summary>
+        /// Create Team with captain
+        /// </summary>
+        /// <param name="_team"></param>
+        /// <param name="captainFirstame"></param>
+        /// <param name="captainLastName"></param>
+        public static void CreateTeamWithCaptain(TeamEntity _team, string captainFirstame, string captainLastName)
+        {
+            var player = new PlayerEntity {
+                FirstName = captainFirstame,
+                LastName = captainLastName
+            };
+            using (var ctx = Context)
+            {
+                ctx.Players.Add(player);
+                _team.Captain = player;
+                ctx.Teams.Add(_team);
+                ctx.SaveChanges();
+            }
+            AssignPlayerToTeam(player.Id, _team.Id);
+        }
     }
 }

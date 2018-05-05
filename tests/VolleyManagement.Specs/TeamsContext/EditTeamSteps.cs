@@ -24,7 +24,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private readonly ITeamService _teamService;
 
         private readonly TeamEntity _team;
-        private readonly PlayerEntity _player;
+        private PlayerEntity _player;
         private PlayerEntity _captain;
         private Exception _exception;
         private bool _isExceptionThrown;
@@ -33,12 +33,7 @@ namespace VolleyManagement.Specs.TeamsContext
         public EditTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
-
-            _player = new PlayerEntity {
-                FirstName = "FirstName",
-                LastName = "LastName",
-            };
-
+            _player = new PlayerEntity();
             _team = new TeamEntity {
                 Name = "TestName",
                 Coach = "New coach",
@@ -52,8 +47,8 @@ namespace VolleyManagement.Specs.TeamsContext
         public void GivenTeamExists(string name)
         {
             _team.Name = name;
-            TestDbAdapter.CreateTeam(_team);
-            TestDbAdapter.AssignPlayerToTeam(_player.Id, _team.Id);
+            TestDbAdapter.CreateTeamWithCaptain(_team, "First", "Last");
+            _player = _team.Captain;
             _team.Players.Add(_player);
         }
 

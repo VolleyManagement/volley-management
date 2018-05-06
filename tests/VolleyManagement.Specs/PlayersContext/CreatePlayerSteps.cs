@@ -32,8 +32,6 @@ namespace VolleyManagement.Specs.PlayersContext
         private List<Player> _playersAddedQuickCreateActual;
         private readonly IPlayerService _playerService;
         private Exception _exception;
-        private Exception _playerValidationException;
-        private bool _playerValidationThrowException;
 
         public CreatePlayerSteps()
         {
@@ -163,8 +161,8 @@ namespace VolleyManagement.Specs.PlayersContext
                 playerFromDb = context.Players.Find(_player.Id);
             }
 
-            playerFromDb.FirstName.Should().BeEquivalentTo(firstName);
-            playerFromDb.LastName.Should().BeEquivalentTo(lastName);
+            playerFromDb.FirstName.Should().BeEquivalentTo(firstName, $"Firstname should be eqivalent to {firstName}!");
+            playerFromDb.LastName.Should().BeEquivalentTo(lastName, $"Lastname should be eqivalent to {lastName}!");
         }
 
         [Given(@"collection of players to create")]
@@ -234,9 +232,9 @@ namespace VolleyManagement.Specs.PlayersContext
                 {
                     var rowValue = table.Rows[i].Values.ToList();
                     _playersAddedQuickCreateActual[i].FirstName.Should()
-                        .BeEquivalentTo(rowValue[0]);
+                        .BeEquivalentTo(rowValue[0], $"Firstname should be eqivalent to {rowValue[0]}!");
                     _playersAddedQuickCreateActual[i].LastName.Should()
-                        .BeEquivalentTo(rowValue[1]);
+                        .BeEquivalentTo(rowValue[1], $"Lastname should be eqivalent to {rowValue[1]}!");
                 }
             }
         }

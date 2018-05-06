@@ -6,6 +6,7 @@ using AutoMapper;
 using FluentAssertions;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
+using VolleyManagement.Data.Contracts;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.Properties;
@@ -14,6 +15,7 @@ using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 using Xunit;
 using VolleyManagement.UnitTests.Services.TeamService;
+using Constants = VolleyManagement.Domain.Constants;
 
 namespace VolleyManagement.Specs.TeamsContext
 {
@@ -26,7 +28,13 @@ namespace VolleyManagement.Specs.TeamsContext
         private int _captainId = 100;
         private int _newTeamId;
         private Exception _exception;
-        private bool _captainExceptionSetted;
+        private bool _captainExceptionShouldBeSetted;
+        private string _teamName = "TeamName";
+        private string _coach = "Coach";
+        private string _achievements = "_Achievements";
+        private PlayerId _captain = new PlayerId(Constants.Player.MIN_ID);
+        private IEnumerable<PlayerId> _playerList = new List<PlayerId>();
+
 
         private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
@@ -34,54 +42,37 @@ namespace VolleyManagement.Specs.TeamsContext
         public CreateTeamsSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
-            _team = new Team(int.MaxValue,
-                "Team",
-                "Coach",
-                "Achievements",
-                new PlayerId(_captainId),
-                new List<PlayerId>());
         }
 
         [Given(@"team name is (.*)")]
         public void GivenTeamNameIs(string teamName)
         {
-            _team.Name = teamName;
+            _teamName = teamName;
         }
 
         [Given(@"captain is (.*)")]
         public void GivenCaptainIs(string fullName)
         {
-            var removeNotExistingPlayerFromRosterWhoWasCaptainInTeamCreation =
-                new List<PlayerId> { new PlayerId(100) };
             RegisterNewPlayerAndSetCaptainId(fullName);
-            _team.SetCaptain(new PlayerId(_captainId));
-            _team.RemovePlayers(removeNotExistingPlayerFromRosterWhoWasCaptainInTeamCreation);
+            _captain = new PlayerId(_captainId);
         }
 
         [Given(@"captain empty")]
         public void GivenCaptainIsEmpty()
         {
-            try
-            {
-                _team.SetCaptain(null);
-            }
-            catch (Exception ex)
-            {
-                _captainExceptionSetted = true;
-                _exception = ex;
-            }
+            _captain = null;
         }
 
         [Given(@"coach is (.*)")]
         public void GivenCoachIs(string coach)
         {
-            _team.Coach = coach;
+            _coach = coach;
         }
 
         [Given(@"achievements are (.*)")]
         public void GivenAchievementsAre(string achievements)
         {
-            _team.Achievements = achievements;
+            _achievements = achievements;
         }
 
         [When(@"I execute CreateTeam")]
@@ -89,15 +80,25 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             try
             {
-                var teamDto = Mapper.Map<CreateTeamDto>(_team);
+
+                var teamDto = new CreateTeamDto {
+                    Name = _teamName,
+                    Coach = _coach,
+                    Achievements = _achievements,
+                    Captain = _captain,
+                    Roster = _playerList
+                };
 
                 _team = _teamService.Create(teamDto);
-
                 _newTeamId = _team.Id;
             }
             catch (Exception ex)
             {
                 _exception = ex;
+                if (_captain == null)
+                {
+                    _captainExceptionShouldBeSetted = true;
+                }
             }
         }
 
@@ -131,11 +132,11 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Then(@"Validation fails")]
-        public void ThenEntityInvariantViolationExceptionIsThrown()
+        public void ThenValidationFails()
         {
-            if (_captainExceptionSetted)
+            if (_captainExceptionShouldBeSetted)
             {
-                _exception.Should().BeOfType(typeof(MissingEntityException), "Should thrown MissingEntityException");
+                _team.Should().Be(null);
             }
             else
             {

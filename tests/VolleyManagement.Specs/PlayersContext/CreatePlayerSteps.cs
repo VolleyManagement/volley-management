@@ -5,6 +5,7 @@ using FluentAssertions;
 using System.Linq;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
+using VolleyManagement.Data.Exceptions;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Specs.Infrastructure;
@@ -24,6 +25,9 @@ namespace VolleyManagement.Specs.PlayersContext
         private List<Player> _createdPlayersBulk;
         private string _playerFirstName = "FirstName";
         private string _playerLastName = "LastName";
+        private short? _birthYear;
+        private short? _height;
+        private short? _weight;
         private List<Player> _playersForQuickCreate;
         private List<Player> _playersAddedQuickCreateActual;
         private readonly IPlayerService _playerService;
@@ -33,8 +37,6 @@ namespace VolleyManagement.Specs.PlayersContext
 
         public CreatePlayerSteps()
         {
-
-            _player = new Player(int.MaxValue, "First", "Last");
             _playersForQuickCreate = new List<Player>();
             _playersAddedQuickCreateActual = new List<Player>();
             _playerService = IocProvider.Get<IPlayerService>();
@@ -61,19 +63,19 @@ namespace VolleyManagement.Specs.PlayersContext
         [Given(@"height is (.*)")]
         public void GivenHeightIs(short height)
         {
-            _player.Height = height;
+            _height = height;
         }
 
         [Given(@"weight is (.*)")]
         public void GivenWeightIs(short weight)
         {
-            _player.Weight = weight;
+            _weight = weight;
         }
 
         [Given(@"year of birth is (.*)")]
         public void GivenYearOfBirthIs(short birthYear)
         {
-            _player.BirthYear = birthYear;
+            _birthYear = birthYear;
         }
 
         [Given(@"player without name")]
@@ -86,12 +88,15 @@ namespace VolleyManagement.Specs.PlayersContext
         [When(@"I execute CreatePlayer")]
         public void WhenIExecuteCreatePlayer()
         {
+            var playerToAdd = new CreatePlayerDto {
+                FirstName = _playerFirstName,
+                LastName = _playerLastName,
+                BirthYear = _birthYear,
+                Height = _height,
+                Weight = _weight
+            };
             try
             {
-                _player.FirstName = _playerFirstName;
-                _player.LastName = _playerLastName;
-                var playerToAdd = Mapper.Map<CreatePlayerDto>(_player);
-
                 _player = _playerService.Create(playerToAdd);
             }
             catch (Exception exception)
@@ -120,17 +125,10 @@ namespace VolleyManagement.Specs.PlayersContext
             actualPlayer.Should().BeEquivalentTo(_player);
         }
 
-        [Then(@"ArgumentException is thrown")]
+        [Then(@"InvalidEntityException is thrown")]
         public void ThenArgumentExceptionIsThrown()
         {
-            if (_playerValidationThrowException)
-            {
-                _playerValidationException.Should().BeOfType(typeof(ArgumentException));
-            }
-            else
-            {
-                _exception.Should().BeOfType(typeof(ArgumentException));
-            }
+            _exception.Should().BeOfType(typeof(InvalidEntityException));
         }
 
         [Given(@"full name is (.*)")]

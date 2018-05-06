@@ -6,7 +6,7 @@
 Scenario: Create very long name
 Given first name set to Very looong name which should be more than 60 symbols
 When I execute CreatePlayer
-Then ArgumentException is thrown
+Then InvalidEntityException is thrown
 
 Scenario Outline: Create simple player
 	Given first name is <FirstName>

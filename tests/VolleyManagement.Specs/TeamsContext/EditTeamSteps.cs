@@ -24,7 +24,7 @@ namespace VolleyManagement.Specs.TeamsContext
     {
         private readonly ITeamService _teamService;
 
-        private readonly TeamEntity _team;
+        private TeamEntity _team;
         private PlayerEntity _player;
         private PlayerEntity _captain;
         private Exception _exception;
@@ -47,8 +47,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"(.*) team exists")]
         public void GivenTeamExists(string name)
         {
-            _team.Name = name;
-            TestDbAdapter.CreateTeamWithCaptain(_team, "First", "Last");
+            _team = TestDbAdapter.CreateTeamWithCaptain(name, "First", "Last");
             _player = _team.Captain;
             _team.Players.Add(_player);
         }
@@ -123,9 +122,9 @@ namespace VolleyManagement.Specs.TeamsContext
             using (var context = TestDbAdapter.Context)
             {
 
-                var teamEntity = context.Teams.Find(_team.Id);      
-                teamEntity.Should().BeEquivalentTo(_team,options=>options.Including(x=>x.CaptainId).Including(x=>x.Name));
-                teamEntity.Players.Should().BeEquivalentTo(_team.Players, options => options.Including(x => x.Id));                
+                var teamEntity = context.Teams.Find(_team.Id);
+                teamEntity.Should().BeEquivalentTo(_team, options => options.Including(x => x.CaptainId).Including(x => x.Name));
+                teamEntity.Players.Should().BeEquivalentTo(_team.Players, options => options.Including(x => x.Id));
                 teamEntity.Should().NotBe(null);
             }
         }

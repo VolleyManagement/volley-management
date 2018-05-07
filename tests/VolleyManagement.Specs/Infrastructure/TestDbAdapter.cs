@@ -1,4 +1,5 @@
-﻿using Respawn;
+﻿using System.Collections.Generic;
+using Respawn;
 using VolleyManagement.Data.MsSql.Context;
 using VolleyManagement.Data.MsSql.Entities;
 
@@ -82,23 +83,32 @@ namespace VolleyManagement.Specs.Infrastructure
         /// <summary>
         /// Create Team with captain
         /// </summary>
-        /// <param name="_team"></param>
-        /// <param name="captainFirstame"></param>
-        /// <param name="captainLastName"></param>
-        public static void CreateTeamWithCaptain(TeamEntity _team, string captainFirstame, string captainLastName)
+        /// <param name="teamName">TeamName to create</param>
+        /// <param name="captainFirstame">Captain FirstName</param>
+        /// <param name="captainLastName">Captain LastName</param>
+        /// <returns name="team">Returns created team</returns>
+        public static TeamEntity CreateTeamWithCaptain(string teamName, string captainFirstame, string captainLastName)
         {
             var player = new PlayerEntity {
                 FirstName = captainFirstame,
                 LastName = captainLastName
             };
+            var team = new TeamEntity {
+                Name = teamName,
+                Achievements = "",
+                Coach = "",
+                Players = new List<PlayerEntity>()
+            };
             using (var ctx = Context)
             {
+                ctx.Teams.Add(team);
                 ctx.Players.Add(player);
-                _team.Captain = player;
-                ctx.Teams.Add(_team);
+                team.Captain = player;
+                ctx.Teams.Add(team);
                 ctx.SaveChanges();
             }
-            AssignPlayerToTeam(player.Id, _team.Id);
+            AssignPlayerToTeam(player.Id, team.Id);
+            return team;
         }
     }
 }

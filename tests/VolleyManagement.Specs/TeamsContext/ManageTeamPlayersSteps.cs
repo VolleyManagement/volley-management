@@ -32,14 +32,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"Team (.*) exists")]
         public void GivenTeamExists(string name)
         {
-            var team = new TeamEntity {
-                Name = name,
-                Coach = "coach name",
-                Achievements = "Achivements",
-                Players = new List<PlayerEntity>()
-            };
-
-            TestDbAdapter.CreateTeamWithCaptain(team, "First", "Last");
+            var team = TestDbAdapter.CreateTeamWithCaptain(name, "First", "Last");
             _teamId = new TeamId(team.Id);
             _captainId = new PlayerId(team.CaptainId);
         }

@@ -129,14 +129,6 @@ namespace VolleyManagement.Specs.PlayersContext
             _exception.Should().BeOfType(typeof(InvalidEntityException));
         }
 
-        [Given(@"full name is (.*)")]
-        public void GivenFullNameIs(string playerToCreate)
-        {
-            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerToCreate);
-            _player.FirstName = names.FirstName;
-            _player.LastName = names.LastName;
-        }
-
         [When(@"I execute QuickCreatePlayer")]
         public void WhenIExecuteQuickCreatePlayer()
         {

@@ -33,8 +33,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private string _coach = "Coach";
         private string _achievements = "_Achievements";
         private PlayerId _captain = new PlayerId(Constants.Player.MIN_ID);
-        private IEnumerable<PlayerId> _playerList = new List<PlayerId>();
-
+        private readonly IEnumerable<PlayerId> _playerList = new List<PlayerId>();
 
         private readonly string teamShouldBeSavedToDb =
             "Team should've been saved into the database";
@@ -80,7 +79,6 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             try
             {
-
                 var teamDto = new CreateTeamDto {
                     Name = _teamName,
                     Coach = _coach,
@@ -105,8 +103,8 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"new team gets new Id")]
         public void ThenNewTeamGetsNewId()
         {
-            Assert.NotEqual(default(int), _newTeamId);
-            Assert.NotEqual(int.MaxValue, _newTeamId);
+            _newTeamId.Should().NotBe(default(int));
+            _newTeamId.Should().NotBe(int.MaxValue);
         }
 
         [Then(@"new team should be succesfully added")]

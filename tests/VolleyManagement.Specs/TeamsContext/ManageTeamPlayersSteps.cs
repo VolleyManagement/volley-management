@@ -141,7 +141,6 @@ namespace VolleyManagement.Specs.TeamsContext
                 {
                     entityRosterIds.Should().NotContain(_playersToRemove, "Players should be removed");
                 }
-                _exception.Should().BeNull("Should not thrown exception");
             }
         }
 

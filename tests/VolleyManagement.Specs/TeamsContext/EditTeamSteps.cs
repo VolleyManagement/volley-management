@@ -28,8 +28,6 @@ namespace VolleyManagement.Specs.TeamsContext
         private PlayerEntity _player;
         private PlayerEntity _captain;
         private Exception _exception;
-        private bool _isExceptionThrown;
-
 
         public EditTeamSteps()
         {
@@ -104,7 +102,6 @@ namespace VolleyManagement.Specs.TeamsContext
             catch (Exception exception)
             {
                 _exception = exception;
-                _isExceptionThrown = true;
             }
         }
 
@@ -132,7 +129,6 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"(.*) is thrown")]
         public void ThenExceptionIsThrown(string exceptionType)
         {
-            _isExceptionThrown.Should().BeTrue();
             if (exceptionType == "MissingEntityException")
             {
                 _exception.Should().BeOfType(typeof(MissingEntityException));

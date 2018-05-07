@@ -189,27 +189,15 @@ namespace VolleyManagement.Specs.PlayersContext
         [Then(@"all players are created")]
         public void ThenAllPlayersAreCreated()
         {
-            var playerComparer = new PlayerComparer();
-            var playersInDb = new List<Player>();
-            List<PlayerEntity> playersEntities;
+            List<Player> playersInDb;
             using (var context = TestDbAdapter.Context)
             {
-                playersEntities = context.Players.Select(p => p)
-                                                 .AsEnumerable()
-                                                 .Where(x => _createdPlayersBulk
-                                                 .Any(c => c.Id == x.Id))
-                                                 .ToList();
+                var playerEntity = context.Players.ToList();
+                playersInDb = playerEntity.Select(p => new Player(p.Id, p.FirstName, p.LastName)).ToList();
             }
-            foreach (var playerEntity in playersEntities)
-            {
-                playersInDb.Add(Mapper.Map<Player>(playerEntity));
-            }
-            playersInDb.Count.Should().Be(_createdPlayersBulk.Count);
-            var unitedCollection = playersInDb.Zip(_createdPlayersBulk, (e, a) => new { Actual = e, Expected = a });
-            foreach (var playerPair in unitedCollection)
-            {
-                playerComparer.AreEqual(playerPair.Actual, playerPair.Expected).Should().BeTrue();
-            }
+
+            playersInDb.Should().BeEquivalentTo( _createdPlayersBulk,
+                options => options.Including(x => x.FirstName).Including(x => x.LastName));
         }
 
         [Given(@"set full names from Table")]

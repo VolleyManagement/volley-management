@@ -18,6 +18,7 @@ namespace VolleyManagement.Specs.PlayersContext
         private readonly PlayerEntity _player;
         private readonly IPlayerService _playerService;
         private Exception _exception;
+        private string _newName;
 
         public EditPlayerSteps()
         {
@@ -40,6 +41,7 @@ namespace VolleyManagement.Specs.PlayersContext
         public void GivenFirstNameChangedTo(string firstName)
         {
             _player.FirstName = firstName;
+            _newName = firstName;
         }
 
         [Given(@"first name set to Looong name which should be more than (.*) symbols")]
@@ -47,6 +49,7 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             var name = new string('n', nameLength + 1);
             _player.FirstName = name;
+            _newName = name;
         }
 
         [Given(@"(.*) player does not exist")]
@@ -73,8 +76,7 @@ namespace VolleyManagement.Specs.PlayersContext
         [Then(@"player is saved with new name")]
         public void ThenPlayerIsSavedWithNewName()
         {
-            var createdPlayer = _playerService.Get(_player.Id);
-            _player.Should().NotBeSameAs(createdPlayer);
+            _player.FirstName.Should().Be(_newName, "New name should be set up");
         }
 
         [Then(@"ArgumentException is thrown")]

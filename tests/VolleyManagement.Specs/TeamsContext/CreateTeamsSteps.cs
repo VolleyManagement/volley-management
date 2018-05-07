@@ -28,7 +28,6 @@ namespace VolleyManagement.Specs.TeamsContext
         private int _captainId = 100;
         private int _newTeamId;
         private Exception _exception;
-        private bool _captainExceptionShouldBeSetted;
         private string _teamName = "TeamName";
         private string _coach = "Coach";
         private string _achievements = "_Achievements";
@@ -93,10 +92,6 @@ namespace VolleyManagement.Specs.TeamsContext
             catch (Exception ex)
             {
                 _exception = ex;
-                if (_captain == null)
-                {
-                    _captainExceptionShouldBeSetted = true;
-                }
             }
         }
 
@@ -132,7 +127,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"Validation fails")]
         public void ThenValidationFails()
         {
-            if (_captainExceptionShouldBeSetted)
+            if (_captain==null)
             {
                 _team.Should().Be(null);
             }
@@ -146,13 +141,11 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             var names = SpecsHelper.SplitFullNameToFirstLastNames(fullName);
 
-            var playerService = IocProvider.Get<IPlayerService>();
-
-            var newPlayer = playerService.Create(
-                new CreatePlayerDto {
-                    FirstName = names.FirstName,
-                    LastName = names.LastName
-                });
+            var newPlayer= new PlayerEntity {
+                FirstName = names.FirstName,
+                LastName = names.LastName
+            };
+            TestDbAdapter.CreatePlayer(newPlayer);
 
             _captainId = newPlayer.Id;
         }

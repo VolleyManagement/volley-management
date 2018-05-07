@@ -109,7 +109,6 @@ namespace VolleyManagement.Specs.TeamsContext
         public void WhenIExecuteChangeTeamCaptain()
         {
             _teamService.ChangeCaptain(new TeamId(_team.Id), new PlayerId(_captain.Id));
-            _team.Captain = _captain;
             _team.CaptainId = _captain.Id;
         }
 

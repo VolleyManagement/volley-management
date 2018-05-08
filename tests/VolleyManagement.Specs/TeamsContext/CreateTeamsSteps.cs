@@ -14,7 +14,6 @@ using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 using Xunit;
-using VolleyManagement.UnitTests.Services.TeamService;
 using Constants = VolleyManagement.Domain.Constants;
 
 namespace VolleyManagement.Specs.TeamsContext
@@ -105,7 +104,6 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"new team should be succesfully added")]
         public void ThenNewTeamShouldBeSuccesfullyAdded()
         {
-            var teamComparer = new TeamComparer();
             TeamEntity teamEntity;
             IEnumerable<PlayerId> roster = new List<PlayerId>();
             using (var context = TestDbAdapter.Context)
@@ -120,22 +118,13 @@ namespace VolleyManagement.Specs.TeamsContext
             teamEntity.Should().NotBe(null, teamShouldBeSavedToDb);
 
             var teamFromDb = new Team(teamEntity.Id, teamEntity.Name, teamEntity.Coach, teamEntity.Achievements, new PlayerId(teamEntity.CaptainId), roster);
-
-            teamComparer.AreEqual(teamFromDb, _team).Should().BeTrue();
+            teamFromDb.Should().BeEquivalentTo(_team);
         }
 
         [Then(@"Validation fails")]
         public void ThenValidationFails()
         {
-            if (_captain == null)
-            {
-                _team.Should().Be(null);
-            }
-            else
-            {
-                _exception.Should().BeOfType(typeof(EntityInvariantViolationException),
-                                            "Should thrown EntityInvariantViolationException");
-            }
+            _exception.Should().NotBeNull("Validation should be failed");
         }
 
         private void RegisterNewPlayerAndSetCaptainId(string fullName)

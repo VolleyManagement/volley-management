@@ -30,9 +30,9 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"Team (.*) exists")]
-        public void GivenTeamExists(string name)
+        public void GivenTeamExists(string teamName)
         {
-            var team = TestDbAdapter.CreateTeamWithCaptain(name, "First", "Last");
+            var team = TestDbAdapter.CreateTeamWithCaptain(teamName, teamName, "Captain");
             _teamId = new TeamId(team.Id);
             _captainId = new PlayerId(team.CaptainId);
         }

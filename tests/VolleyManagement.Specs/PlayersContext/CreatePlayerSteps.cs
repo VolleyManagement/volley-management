@@ -11,7 +11,6 @@ using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 using Xunit;
-using VolleyManagement.UnitTests.Services.PlayerService;
 using Player = VolleyManagement.Domain.PlayersAggregate.Player;
 
 namespace VolleyManagement.Specs.PlayersContext
@@ -28,8 +27,8 @@ namespace VolleyManagement.Specs.PlayersContext
         private short? _birthYear;
         private short? _height;
         private short? _weight;
-        private List<CreatePlayerDto> _playersForQuickCreate;
-        private List<Player> _playersAddedQuickCreateActual;
+        private readonly List<CreatePlayerDto> _playersForQuickCreate;
+        private readonly List<Player> _playersAddedQuickCreateActual;
         private readonly IPlayerService _playerService;
         private Exception _exception;
 

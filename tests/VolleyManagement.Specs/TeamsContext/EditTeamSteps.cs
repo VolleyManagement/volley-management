@@ -13,7 +13,6 @@ using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
-using VolleyManagement.UnitTests.Services.TeamService;
 using Xunit;
 
 namespace VolleyManagement.Specs.TeamsContext

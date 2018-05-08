@@ -23,15 +23,6 @@ namespace VolleyManagement.Specs.TeamsContext
 
         private const int ID_TEAM_DOES_NOT_EXIST = 1;
 
-        private readonly string teamShouldBeDeletedFromDB =
-           "Team should been deleted from the database";
-
-        private readonly string exeptionShouldBeThrown =
-           "ConcurrencyException should been thown";
-
-        private readonly string exeptionShouldNotBeThrown =
-           "Exception should not been thown";
-
         public RemoveTeamSteps()
         {
             _teamService = IocProvider.Get<ITeamService>();
@@ -76,15 +67,14 @@ namespace VolleyManagement.Specs.TeamsContext
                 teamEntity = context.Teams.Find(_teamId.Id);
             }
 
-            teamEntity.Should().Be(null, teamShouldBeDeletedFromDB);
-            _exception.Should().Be(null, exeptionShouldNotBeThrown);
+            teamEntity.Should().Be(null, "Team should been deleted from the database");
+            _exception.Should().Be(null, "Exception should not been thown");
         }
 
         [Then(@"ConcurrencyException is thrown")]
         public void ThenConcurrencyExceptionIsThrown()
         {
-            _exception.Should().NotBe(null, exeptionShouldBeThrown);
-            _exception.Should().BeOfType(typeof(DbUpdateConcurrencyException), exeptionShouldBeThrown);
+            _exception.Should().BeOfType(typeof(DbUpdateConcurrencyException), "ConcurrencyException should been thown");
         }
     }
 }

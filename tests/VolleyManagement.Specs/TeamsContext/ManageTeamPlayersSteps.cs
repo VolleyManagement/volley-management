@@ -79,7 +79,7 @@ namespace VolleyManagement.Specs.TeamsContext
         }
 
         [Given(@"(.*) is a team captain")]
-        public void GivenJaneDoeIsATeamCaptain(string playerName)
+        public void GivenIsATeamCaptain(string playerName)
         {
             var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 

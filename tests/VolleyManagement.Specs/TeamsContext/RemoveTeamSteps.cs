@@ -46,10 +46,8 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             try
             {
-                using (var context = TestDbAdapter.Context)
-                {
-                    _teamService.Delete(_teamId);
-                }
+                _teamService.Delete(_teamId);
+
             }
             catch (Exception exc)
             {

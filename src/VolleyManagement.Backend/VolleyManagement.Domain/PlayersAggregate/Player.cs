@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Domain.PlayersAggregate
+﻿using VolleyManagement.Domain.TeamsAggregate;
+
+namespace VolleyManagement.Domain.PlayersAggregate
 {
     using System;
     using Properties;
@@ -40,8 +42,7 @@
         {
             if (ValidateId(id))
             {
-                throw new ArgumentException(Resources.ValidationPlayerId,
-                    nameof(id));
+                throw new EntityInvariantViolationException(Resources.ValidationPlayerId);
             }
 
             Id = id;
@@ -70,8 +71,7 @@
             {
                 if (ValidateFirstName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerFirstName,
-                        nameof(value));
+                    throw new EntityInvariantViolationException(Resources.ValidationPlayerFirstName);
                 }
 
                 _firstName = value;
@@ -91,8 +91,7 @@
             {
                 if (ValidateLastName(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerLastName,
-                        nameof(value));
+                    throw new EntityInvariantViolationException(Resources.ValidationPlayerLastName);
                 }
 
                 _lastName = value;
@@ -111,7 +110,7 @@
             {
                 if (ValidateBirthYear(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerBirthYear, nameof(value));
+                    throw new EntityInvariantViolationException(Resources.ValidationPlayerBirthYear);
                 }
 
                 _birthYear = value;
@@ -130,7 +129,7 @@
             {
                 if (ValidateHeight(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerHeight, nameof(value));
+                    throw new EntityInvariantViolationException(Resources.ValidationPlayerHeight);
                 }
 
                 _height = value;
@@ -149,7 +148,7 @@
             {
                 if (ValidateWeight(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerWeight, nameof(value));
+                    throw new EntityInvariantViolationException(Resources.ValidationPlayerWeight);
                 }
 
                 _weight = value;

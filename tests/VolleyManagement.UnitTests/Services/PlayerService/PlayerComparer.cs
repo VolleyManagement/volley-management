@@ -9,7 +9,7 @@
     /// Comparer for player objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PlayerComparer : IComparer<Player>, IComparer
+    public class PlayerComparer : IComparer<Player>, IComparer
     {
         /// <summary>
         /// Compares two player objects.

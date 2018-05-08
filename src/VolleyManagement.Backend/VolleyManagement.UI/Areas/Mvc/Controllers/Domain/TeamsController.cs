@@ -1,7 +1,4 @@
-﻿using VolleyManagement.Domain.PlayersAggregate;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -16,6 +13,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
     using ViewModels.Teams;
+    using ViewModels.Players;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
@@ -102,24 +100,34 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 try
                 {
-                    var roster = teamViewModel.Roster.Select(t => t.ToCreatePlayerDto()).ToList();
-
-                    var players = _playerService.CreateBulk(roster);
+                    if (teamViewModel.Captain.Id == 0)
+                    {
+                        var newAddedCaptain = _playerService.Create(teamViewModel.Captain.ToCreatePlayerDto());
+                        teamViewModel.Captain.Id = newAddedCaptain.Id;
+                    }
 
                     var team = teamViewModel.ToCreateTeamDto();
-                    teamViewModel.Roster = players.Select(x =>
-                        new PlayerNameViewModel {
-                            Id = x.Id,
-                            FirstName = x.FirstName,
-                            LastName = x.LastName
-                        })
-                            .ToList();
-
                     var createdTeam = _teamService.Create(team);
-
-                    _teamService.AddPlayers(new TeamId(createdTeam.Id), players.Select(x => new PlayerId(x.Id)));
-
                     teamViewModel.Id = createdTeam.Id;
+
+                    createdTeam.SetCaptain(new PlayerId(createdTeam.Captain.Id));
+                    _playerService.AssingPlayerToTeam(teamViewModel.Captain.ToDomain(), createdTeam.Id);
+
+                    if (teamViewModel.AddedPlayers.Count > 0)
+                    {
+                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                                .Where(x => x.Id == 0)
+                                .Select(x => x.ToCreatePlayerDto())
+                                .ToList());
+
+                        var playersIdToAddToTeam = playersToAddToTeam
+                                .Select(x => new PlayerId(x.Id))
+                                .ToList();
+
+                        playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
+                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
+                    }
+
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
@@ -177,23 +185,21 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 try
                 {
-                    var playersIdToAddToTeam = new List<PlayerId>();
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
-                        playersIdToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                                .Where(x => x.Id == 0)
-                                .Select(x => x.ToCreatePlayerDto())
-                                .ToList())
-                                .Select(x => new PlayerId(x.Id))
-                                .ToList();
+                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                            .Where(x => x.Id == 0)
+                            .Select(x => x.ToCreatePlayerDto())
+                            .ToList());
 
-                        playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
-                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
+                        var playersIdsToAddToTeam = playersToAddToTeam.Select(x => new PlayerId(x.Id)).ToList();
+
+
+                        playersIdsToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
+                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
                     }
 
-                    ChangeCapitain(teamViewModel, playersIdToAddToTeam);
-
-
+                    ChangeCapitain(teamViewModel);
 
                     if (teamViewModel.DeletedPlayers.Count > 0)
                     {
@@ -347,17 +353,22 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
-        private void ChangeCapitain(TeamViewModel teamViewModel, IEnumerable<PlayerId> playersIdToAddToTeam)
+        private void ChangeCapitain(TeamViewModel teamViewModel)
         {
             if (teamViewModel.IsCaptainChanged)
             {
                 var captainId = teamViewModel.Captain.Id;
-                if (teamViewModel.Captain.Id == 0)
+                if (captainId == 0)
                 {
-                    captainId = playersIdToAddToTeam.Select(x => x.Id).First();
+                    var newAddedCaptain = _playerService.Create(teamViewModel.Captain.ToCreatePlayerDto());
+                    teamViewModel.Captain = new PlayerNameViewModel {
+                        Id = newAddedCaptain.Id,
+                        FirstName = newAddedCaptain.FirstName,
+                        LastName = newAddedCaptain.LastName
+                    };
                 }
 
-                _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(captainId));
+                _teamService.ChangeCaptain(new TeamId(teamViewModel.Id), new PlayerId(teamViewModel.Captain.Id));
             }
         }
     }

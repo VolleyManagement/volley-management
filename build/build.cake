@@ -28,15 +28,18 @@ var testsDir    = rootDir + Directory("tests/bin/");
 var webBuildDir = rootDir + Directory("src/VolleyManagement.Backend/VolleyManagement.UI/bin");
 var utsDir      = testsDir + Directory("UnitTests/") + Directory(configuration);
 var specsDir    = testsDir + Directory("Specs/") + Directory(configuration);
+var domainDir   = testsDir + Directory("DomainTests/") + Directory(configuration);
 
 // Define files
 var slnPath = rootPath + "src/VolleyManagement.sln";
 
 ConvertableFilePath utResults;
 ConvertableFilePath specResults;
+ConvertableFilePath domainUTResults;
 
 ConvertableFilePath utCoverageResults;
 ConvertableFilePath specCoverageResults;
+ConvertableFilePath domainUTCoverageResults;
 
 ConvertableFilePath combinedCoverageResults;
 
@@ -58,10 +61,14 @@ utCoverageResults = utsDir + File($"UT_Coverage{suffix}.dcvr");
 specResults = specsDir + File($"IT_Results{suffix}.xml");
 specCoverageResults = specsDir + File($"IT_Coverage{suffix}.dcvr");
 
+domainUTResults = domainDir + File($"DomainUT_Results{suffix}.xml");
+domainUTCoverageResults = domainDir + File($"DomainUT_Coverage{suffix}.dcvr");
+
 combinedCoverageResults = testsDir + File($"CoverageResults{suffix}.html");
 
 var coverageResultsToMerge = new List<FilePath>();
 coverageResultsToMerge.Add(utCoverageResults);
+coverageResultsToMerge.Add(domainUTCoverageResults);
 
 if(canRunIntegrationTests)
 {
@@ -104,6 +111,7 @@ Task("UnitTests")
                 WorkingDirectory = utsDir,
                 TargetWorkingDir = utsDir
             };
+
         SetCoverageFilter(dotCoverSettings);        
 
         DotCoverCover(
@@ -143,6 +151,33 @@ Task("IntegrationTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(specResults, AppVeyorTestResultsType.XUnit);
+        }
+    });
+
+Task("DomainTests")
+    .Does(() => {        
+        var testsPathDomain = domainDir.Path.FullPath + "/*.Domain.UnitTests.dll";
+        var xUnitSettings = new XUnit2Settings {
+            WorkingDirectory = testsDir,
+            ReportName = domainUTResults.Path.GetFilenameWithoutExtension().FullPath,
+            XmlReport = true,
+            OutputDirectory = domainUTResults.Path.GetDirectory().FullPath
+        };
+
+        var dotCoverSettingsDomain = new DotCoverCoverSettings {
+            WorkingDirectory = domainDir,
+            TargetWorkingDir = domainDir
+        };
+
+        SetCoverageFilter(dotCoverSettingsDomain);        
+
+        DotCoverCover (
+            (ICakeContext c) => { c.XUnit2(testsPathDomain, xUnitSettings); },
+            domainUTCoverageResults,
+            dotCoverSettingsDomain);
+
+        if (BuildSystem.IsRunningOnAppVeyor) {
+            AppVeyor.UploadTestResults(domainUTResults, AppVeyorTestResultsType.XUnit);
         }
     });
 
@@ -200,6 +235,7 @@ Task("Sonar")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
     .IsDependentOn("IntegrationTests")
+    .IsDependentOn("DomainTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 
@@ -221,4 +257,5 @@ public static void SetCoverageFilter(DotCoverCoverSettings settings)
     settings.WithFilter("+:VolleyManagement*");
     settings.WithFilter("-:*.UnitTests");
     settings.WithFilter("-:*.Specs");
+    settings.WithFilter("-:*.Domain.UnitTests");
 }

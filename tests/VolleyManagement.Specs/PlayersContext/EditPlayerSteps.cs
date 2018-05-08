@@ -1,57 +1,95 @@
 ﻿using System;
+using AutoMapper;
+using FluentAssertions;
 using TechTalk.SpecFlow;
+using VolleyManagement.Contracts;
+using VolleyManagement.Contracts.Exceptions;
+using VolleyManagement.Data.MsSql.Entities;
+using VolleyManagement.Domain.PlayersAggregate;
+using VolleyManagement.Domain.TeamsAggregate;
+using VolleyManagement.Specs.Infrastructure;
+using VolleyManagement.Specs.Infrastructure.IOC;
 
 namespace VolleyManagement.Specs.PlayersContext
 {
     [Binding]
+    [Scope(Feature = "Edit Player")]
     public class EditPlayerSteps
     {
-        [Given(@"John Smith player exists")]
-        public void GivenJohnSmithPlayerExists()
+        private readonly PlayerEntity _player;
+        private readonly IPlayerService _playerService;
+        private Exception _exception;
+        private string _newName;
+
+        public EditPlayerSteps()
         {
-            ScenarioContext.Current.Pending();
+            _player = new PlayerEntity();
+            _playerService = IocProvider.Get<IPlayerService>();
         }
-        
-        [Given(@"first name changed to Jack")]
-        public void GivenFirstNameChangedToJack()
+
+        [Given(@"(.*) player exists")]
+        public void GivenPlayerExists(string fullPlayerName)
         {
-            ScenarioContext.Current.Pending();
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(fullPlayerName);
+
+            _player.FirstName = names.FirstName;
+            _player.LastName = names.LastName;
+
+            TestDbAdapter.CreatePlayer(_player);
         }
-        
-        [Given(@"first name changed to Very looooooooooooooooooooooooong name which should be more than (.*) symbols")]
-        public void GivenFirstNameChangedToVeryLooooooooooooooooooooooooongNameWhichShouldBeMoreThanSymbols(int p0)
+
+        [Given(@"first name changed to (.*)")]
+        public void GivenFirstNameChangedTo(string firstName)
         {
-            ScenarioContext.Current.Pending();
+            _player.FirstName = firstName;
+            _newName = firstName;
         }
-        
-        [Given(@"Ivan Ivanov player does not exist")]
-        public void GivenIvanIvanovPlayerDoesNotExist()
+
+        [Given(@"first name set to Looong name which should be more than (.*) symbols")]
+        public void GivenFirstNameSetToNameWhichShouldBeMoreThan(int nameLength)
         {
-            ScenarioContext.Current.Pending();
+            var name = new string('n', nameLength + 1);
+            _player.FirstName = name;
+            _newName = name;
         }
-        
+
+        [Given(@"(.*) player does not exist")]
+        public void GivenPlayerDoesNotExist(string playerName)
+        {
+            var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
+            _player.FirstName = names.FirstName;
+            _player.LastName = names.LastName;
+        }
+
         [When(@"I execute EditPlayer")]
         public void WhenIExecuteEditPlayer()
         {
-            ScenarioContext.Current.Pending();
+            try
+            {
+                _playerService.Edit(Mapper.Map<Player>(_player));
+            }
+            catch (Exception exception)
+            {
+                _exception = exception;
+            }
         }
-        
+
         [Then(@"player is saved with new name")]
         public void ThenPlayerIsSavedWithNewName()
         {
-            ScenarioContext.Current.Pending();
+            _player.FirstName.Should().Be(_newName, "New name should be set up");
         }
-        
+
         [Then(@"EntityInvariantViolationException is thrown")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
-            ScenarioContext.Current.Pending();
+            _exception.Should().BeOfType(typeof(EntityInvariantViolationException), "Should thrown EntityInvariantViolationException");
         }
-        
-        [Then(@"ConcurrencyException is thrown")]
-        public void ThenConcurrencyExceptionIsThrown()
+
+        [Then(@"MissingEntityException is thrown")]
+        public void ThenMissingEntityExceptionIsThrown()
         {
-            ScenarioContext.Current.Pending();
+            _exception.Should().BeOfType(typeof(MissingEntityException), "Should thrown MissingEntityException");
         }
     }
 }

@@ -3,7 +3,6 @@
 	As a tournament administrator
 	I want to be able to create teams
 
-@ignore
 Scenario Outline: Create team
 	Given team name is <TeamName>
     And captain is <Captain>
@@ -17,9 +16,8 @@ Examples:
 | Team A    | Jane Doe   |             |                               |
 | Full Team | John Smith | Ivan Ivanov | Winner of Galactic tournament |
 
-@ignore
 Scenario: Create team without captain
     Given team name is Team B
-    And captain is empty
+    And captain empty
     When I execute CreateTeam
-    Then EntityInvariantViolationException is thrown
+    Then Validation fails

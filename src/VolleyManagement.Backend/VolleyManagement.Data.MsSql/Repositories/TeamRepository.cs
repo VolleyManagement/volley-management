@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 
 namespace VolleyManagement.Data.MsSql.Repositories
 {
@@ -40,7 +41,8 @@ namespace VolleyManagement.Data.MsSql.Repositories
                 Name = teamToCreate.Name,
                 Coach = teamToCreate.Coach,
                 CaptainId = teamToCreate.Captain.Id,
-                Achievements = teamToCreate.Achievements
+                Achievements = teamToCreate.Achievements,
+                Players = new List<PlayerEntity>()
             };
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))

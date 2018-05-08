@@ -49,6 +49,7 @@
         /// <param name="getPlayerTeamQuery"></param>
         /// <param name="getAllTeamsQuery"> Get All teams query</param>
         /// <param name="getTeamRosterQuery"> Get players for team query</param>
+        /// <param name="getTeamByNameQuery"></param>
         /// <param name="authService">Authorization service</param>
         public TeamService(
             ITeamRepository teamRepository,
@@ -92,6 +93,11 @@
         public Team Create(CreateTeamDto teamToCreate)
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
+
+            if (teamToCreate.Captain == null)
+            {
+                throw new EntityInvariantViolationException("Captain can not be null");
+            }
 
             ThrowExceptionIfTeamWithSuchNameExists(teamToCreate.Name);
 

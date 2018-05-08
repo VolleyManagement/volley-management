@@ -37,8 +37,9 @@ namespace VolleyManagement.Domain.TeamsAggregate
         /// <returns>Validity of coach name</returns>
         public static bool ValidateCoachName(string coachName)
         {
-            return !Regex.IsMatch(coachName, Constants.Team.COACH_NAME_VALIDATION_REGEX)
-                || coachName.Length > Constants.Team.MAX_COACH_NAME_LENGTH;
+            return !string.IsNullOrEmpty(coachName) &&
+                (!Regex.IsMatch(coachName, Constants.Team.COACH_NAME_VALIDATION_REGEX)
+                || coachName.Length > Constants.Team.MAX_COACH_NAME_LENGTH);
         }
 
         /// <summary>

@@ -209,17 +209,18 @@ namespace VolleyManagement.Specs.PlayersContext
         [Then(@"players is created from Table with FirstName and LastName")]
         public void ThenPlayerIsCreatedFromTableWithAnd(Table table)
         {
-            if (_playersAddedQuickCreateActual.Count == table.RowCount)
+            _playersAddedQuickCreateActual.Count.Should()
+                .Be(table.RowCount, "Created players count must be equal to table count");
+
+            for (var i = 0; i < table.RowCount; i++)
             {
-                for (var i = 0; i < table.RowCount; i++)
-                {
-                    var rowValue = table.Rows[i].Values.ToList();
-                    _playersAddedQuickCreateActual[i].FirstName.Should()
-                        .BeEquivalentTo(rowValue[0], $"Firstname should be eqivalent to {rowValue[0]}!");
-                    _playersAddedQuickCreateActual[i].LastName.Should()
-                        .BeEquivalentTo(rowValue[1], $"Lastname should be eqivalent to {rowValue[1]}!");
-                }
+                var rowValue = table.Rows[i].Values.ToList();
+                _playersAddedQuickCreateActual[i].FirstName.Should()
+                    .BeEquivalentTo(rowValue[0], $"Firstname should be eqivalent to {rowValue[0]}!");
+                _playersAddedQuickCreateActual[i].LastName.Should()
+                    .BeEquivalentTo(rowValue[1], $"Lastname should be eqivalent to {rowValue[1]}!");
             }
+
         }
         private static List<Player> CreateListPlayers()
         {

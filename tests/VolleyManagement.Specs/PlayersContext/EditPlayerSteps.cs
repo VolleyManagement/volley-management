@@ -6,6 +6,7 @@ using VolleyManagement.Contracts;
 using VolleyManagement.Contracts.Exceptions;
 using VolleyManagement.Data.MsSql.Entities;
 using VolleyManagement.Domain.PlayersAggregate;
+using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
 
@@ -79,10 +80,10 @@ namespace VolleyManagement.Specs.PlayersContext
             _player.FirstName.Should().Be(_newName, "New name should be set up");
         }
 
-        [Then(@"ArgumentException is thrown")]
+        [Then(@"EntityInvariantViolationException is thrown")]
         public void ThenEntityInvariantViolationExceptionIsThrown()
         {
-            _exception.Should().BeOfType(typeof(ArgumentException), "Should thrown ArgumentException");
+            _exception.Should().BeOfType(typeof(EntityInvariantViolationException), "Should thrown EntityInvariantViolationException");
         }
 
         [Then(@"MissingEntityException is thrown")]

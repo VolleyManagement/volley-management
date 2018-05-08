@@ -125,7 +125,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { team.Achievements = string.Empty; };
 
             //Assert
-            act.Should().NotThrow<ArgumentException>("Achievements length can be empty");
+            act.Should().NotThrow<EntityInvariantViolationException>("Achievements length can be empty");
         }
 
         #endregion
@@ -231,7 +231,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("It`s impossible add player that already plays in team.");
+            act.Should().Throw<EntityInvariantViolationException>("It`s impossible add player that already plays in team.");
         }
 
         [Fact]
@@ -281,7 +281,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team can`t be without captain, it`s impossible remove captain from team.");
+            act.Should().Throw<EntityInvariantViolationException>("Team can`t be without captain, it`s impossible remove captain from team.");
 
         }
 
@@ -323,7 +323,7 @@ namespace VolleyManagement.Domain.UnitTests
             };
 
             //Assert
-            act.Should().Throw<ArgumentException>("Team Roster can`t delete players that doesn`t have.");
+            act.Should().Throw<EntityInvariantViolationException>("Team Roster can`t delete players that doesn`t have.");
         }
 
         [Fact]

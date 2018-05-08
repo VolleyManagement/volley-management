@@ -139,7 +139,7 @@ namespace VolleyManagement.Domain.TeamsAggregate
 
             if (RosterConstainsAny(players))
             {
-                throw new ArgumentException(AddingMemberedPlayerToTeam);
+                throw new EntityInvariantViolationException(AddingMemberedPlayerToTeam);
             }
 
             foreach (var player in players)
@@ -157,15 +157,14 @@ namespace VolleyManagement.Domain.TeamsAggregate
 
             if (!RosterContainsAll(players))
             {
-                throw new ArgumentException(RemovingUnmemberedPlayerFromTeam,
-                    nameof(players));
+                throw new EntityInvariantViolationException(RemovingUnmemberedPlayerFromTeam);
             }
 
             var playersIds = players.Select(x => x.Id);
 
             if (playersIds.Contains(Captain.Id))
             {
-                throw new ArgumentException(RemovingCaptain);
+                throw new EntityInvariantViolationException(RemovingCaptain);
             }
 
             foreach (var playerId in playersIds)

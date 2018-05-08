@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using VolleyManagement.Domain.PlayersAggregate;
+using VolleyManagement.Domain.TeamsAggregate;
 using Xunit;
 
 namespace VolleyManagement.Domain.UnitTests
@@ -37,7 +38,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.BirthYear = null; };
 
             // Assert
-            act.Should().NotThrow<ArgumentException>("Player's birth date can be null.");
+            act.Should().NotThrow<EntityInvariantViolationException>("Player's birth date can be null.");
         }
 
         [Fact]
@@ -50,7 +51,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.Height = null; };
 
             // Assert
-            act.Should().NotThrow<ArgumentException>("Player's height can be null.");
+            act.Should().NotThrow<EntityInvariantViolationException>("Player's height can be null.");
         }
 
         [Fact]
@@ -63,7 +64,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.Weight = null; };
 
             // Assert
-            act.Should().NotThrow<ArgumentException>("Player's weight can be null.");
+            act.Should().NotThrow<EntityInvariantViolationException>("Player's weight can be null.");
         }
 
         #region FirstName
@@ -78,7 +79,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.FirstName = string.Empty; };
 
             // Assert
-            act.Should().Throw<ArgumentException>("Empty first name is not allowed.");
+            act.Should().Throw<EntityInvariantViolationException>("Empty first name is not allowed.");
         }
 
         [Fact]
@@ -91,7 +92,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.FirstName = "Player1"; };
 
             // Assert
-            act.Should().Throw<ArgumentException>("First name cannot contain number.");
+            act.Should().Throw<EntityInvariantViolationException>("First name cannot contain number.");
         }
 
         [Fact]
@@ -104,7 +105,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.FirstName = GeneratePlayerName(Constants.Player.MAX_FIRST_NAME_LENGTH + 1); };
 
             // Assert
-            act.Should().Throw<ArgumentException>("First name length should not be longer than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("First name length should not be longer than maximum allowed value.");
         }
 
         #endregion
@@ -121,7 +122,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.LastName = string.Empty; };
 
             // Assert
-            act.Should().Throw<ArgumentException>("Empty last name is not allowed.");
+            act.Should().Throw<EntityInvariantViolationException>("Empty last name is not allowed.");
         }
 
         [Fact]
@@ -134,7 +135,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.LastName = "Player1"; };
 
             // Assert
-            act.Should().Throw<ArgumentException>("Last name cannot contain number.");
+            act.Should().Throw<EntityInvariantViolationException>("Last name cannot contain number.");
         }
 
         [Fact]
@@ -147,7 +148,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.FirstName = GeneratePlayerName(Constants.Player.MAX_LAST_NAME_LENGTH + 1); };
 
             // Assert
-            act.Should().Throw<ArgumentException>("Last name length should not be longer than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Last name length should not be longer than maximum allowed value.");
         }
 
         #endregion
@@ -164,7 +165,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.BirthYear = (Constants.Player.MIN_BIRTH_YEAR - 1); };
 
             // Arrange
-            act.Should().Throw<ArgumentException>("Player's birth year should not be less than minimum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Player's birth year should not be less than minimum allowed value.");
         }
 
         [Fact]
@@ -177,7 +178,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.BirthYear = Constants.Player.MAX_BIRTH_YEAR + 1; };
 
             // Arrange
-            act.Should().Throw<ArgumentException>("Player's birth year should not be greater than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Player's birth year should not be greater than maximum allowed value.");
         }
 
         #endregion
@@ -194,7 +195,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.Height = (Constants.Player.MIN_HEIGHT - 1); };
 
             // Arrange
-            act.Should().Throw<ArgumentException>("Player's height should not be less than minimum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Player's height should not be less than minimum allowed value.");
         }
 
         [Fact]
@@ -207,7 +208,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.Height = Constants.Player.MAX_HEIGHT + 1; };
 
             // Arrange
-            act.Should().Throw<ArgumentException>("Player's height should not be greater than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Player's height should not be greater than maximum allowed value.");
         }
 
         #endregion
@@ -224,7 +225,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.Weight = (Constants.Player.MIN_WEIGHT - 1); };
 
             // Arrange
-            act.Should().Throw<ArgumentException>("Player's weight should not be less than minimum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Player's weight should not be less than minimum allowed value.");
         }
 
         [Fact]
@@ -237,7 +238,7 @@ namespace VolleyManagement.Domain.UnitTests
             Action act = () => { player.Height = Constants.Player.MAX_WEIGHT + 1; };
 
             // Arrange
-            act.Should().Throw<ArgumentException>("Player's weight should not be greater than maximum allowed value.");
+            act.Should().Throw<EntityInvariantViolationException>("Player's weight should not be greater than maximum allowed value.");
         }
 
         #endregion

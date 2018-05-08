@@ -112,7 +112,7 @@ namespace VolleyManagement.Specs.TeamsContext
             {
                 _teamService.RemovePlayers(_teamId, _playersToRemove);
             }
-            catch (ArgumentException exc)
+            catch (EntityInvariantViolationException exc)
             {
                 _exception = exc;
             }
@@ -144,10 +144,10 @@ namespace VolleyManagement.Specs.TeamsContext
             }
         }
 
-        [Then(@"ArgumentException is thrown")]
+        [Then(@"EntityInvariantViolationException is thrown")]
         public void ThenInvalidOperationExceptionIsThrown()
         {
-            _exception.Should().BeOfType(typeof(ArgumentException), "Should thrown ArgumentException");
+            _exception.Should().BeOfType(typeof(EntityInvariantViolationException), "Should thrown EntityInvariantViolationException");
         }
     }
 }

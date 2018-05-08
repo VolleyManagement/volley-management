@@ -124,7 +124,7 @@ namespace VolleyManagement.Specs.PlayersContext
         }
 
         [Then(@"InvalidEntityException is thrown")]
-        public void ThenArgumentExceptionIsThrown()
+        public void ThenInvalidEntityExceptionIsThrown()
         {
             _exception.Should().BeOfType(typeof(InvalidEntityException));
         }

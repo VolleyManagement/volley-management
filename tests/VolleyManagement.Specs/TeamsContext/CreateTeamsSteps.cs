@@ -127,13 +127,14 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"Validation fails")]
         public void ThenValidationFails()
         {
-            if (_captain==null)
+            if (_captain == null)
             {
                 _team.Should().Be(null);
             }
             else
             {
-                _exception.Should().BeOfType(typeof(ArgumentException), "Should thrown ArgumentException");
+                _exception.Should().BeOfType(typeof(EntityInvariantViolationException),
+                                            "Should thrown EntityInvariantViolationException");
             }
         }
 
@@ -141,7 +142,7 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             var names = SpecsHelper.SplitFullNameToFirstLastNames(fullName);
 
-            var newPlayer= new PlayerEntity {
+            var newPlayer = new PlayerEntity {
                 FirstName = names.FirstName,
                 LastName = names.LastName
             };

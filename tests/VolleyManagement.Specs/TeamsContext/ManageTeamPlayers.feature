@@ -39,4 +39,4 @@ Scenario: Remove captain from team
     And Jane Doe is a team captain
 	And I have removed Jane Doe
 	When I execute RemovePlayersFromTeam
-	Then ArgumentException is thrown
+	Then EntityInvariantViolationException is thrown

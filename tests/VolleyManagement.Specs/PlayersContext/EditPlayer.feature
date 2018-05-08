@@ -13,7 +13,7 @@ Scenario: Change to very long name
     Given John Smith player exists
     And first name set to Looong name which should be more than 60 symbols
     When I execute EditPlayer
-    Then ArgumentException is thrown
+    Then EntityInvariantViolationException is thrown
 
 Scenario: Edit missing player
     Given Ivan Ivanov player does not exist

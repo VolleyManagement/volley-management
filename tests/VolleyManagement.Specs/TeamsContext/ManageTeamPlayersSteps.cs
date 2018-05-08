@@ -5,6 +5,7 @@ using FluentAssertions;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
 using VolleyManagement.Data.MsSql.Entities;
+using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
@@ -19,6 +20,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private TeamId _teamId;
         private PlayerId _captainId;
         private readonly List<PlayerId> _playerToAdd;
+        private List<PlayerEntity> _createdPlayers;
         private readonly ICollection<PlayerId> _playersToRemove;
         private Exception _exception;
 
@@ -27,6 +29,7 @@ namespace VolleyManagement.Specs.TeamsContext
             _teamService = IocProvider.Get<ITeamService>();
             _playerToAdd = new List<PlayerId>();
             _playersToRemove = new List<PlayerId>();
+            _createdPlayers = new List<PlayerEntity>();
         }
 
         [Given(@"Team (.*) exists")]
@@ -63,6 +66,7 @@ namespace VolleyManagement.Specs.TeamsContext
 
             TestDbAdapter.CreatePlayer(newPlayer);
             TestDbAdapter.AssignPlayerToTeam(newPlayer.Id, _teamId.Id);
+            _createdPlayers.Add(newPlayer);
         }
 
         [Given(@"I have removed (.*)")]
@@ -70,12 +74,11 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             var names = SpecsHelper.SplitFullNameToFirstLastNames(playerName);
 
-            using (var ctx = TestDbAdapter.Context)
-            {
-                var playerEntities = ctx.Players
-                    .SingleOrDefault(p => p.FirstName == names.FirstName && p.LastName == names.LastName);
-                _playersToRemove.Add(new PlayerId(playerEntities.Id));
-            }
+            _playersToRemove.Add(new PlayerId(_createdPlayers
+                .FirstOrDefault(x =>
+                {
+                    return x.LastName != null && (x.FirstName == names.FirstName && x.LastName == names.LastName);
+                }).Id));
         }
 
         [Given(@"(.*) is a team captain")]
@@ -96,6 +99,7 @@ namespace VolleyManagement.Specs.TeamsContext
                 playerEntity.FirstName = names.FirstName;
                 playerEntity.LastName = names.LastName;
                 ctx.SaveChanges();
+                _createdPlayers.Add(playerEntity);
             }
         }
 

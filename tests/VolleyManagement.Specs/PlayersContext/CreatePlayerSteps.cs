@@ -28,14 +28,14 @@ namespace VolleyManagement.Specs.PlayersContext
         private short? _birthYear;
         private short? _height;
         private short? _weight;
-        private List<Player> _playersForQuickCreate;
+        private List<CreatePlayerDto> _playersForQuickCreate;
         private List<Player> _playersAddedQuickCreateActual;
         private readonly IPlayerService _playerService;
         private Exception _exception;
 
         public CreatePlayerSteps()
         {
-            _playersForQuickCreate = new List<Player>();
+            _playersForQuickCreate = new List<CreatePlayerDto>();
             _playersAddedQuickCreateActual = new List<Player>();
             _playerService = IocProvider.Get<IPlayerService>();
         }
@@ -134,9 +134,10 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             try
             {
-                var playerToAdd = Mapper.Map<CreatePlayerDto>(_player);
-
-                _player = _playerService.Create(playerToAdd);
+                foreach (var player in _playersForQuickCreate)
+                {
+                    _playersAddedQuickCreateActual.Add(_playerService.Create(player));
+                }
             }
             catch (Exception exception)
             {
@@ -188,7 +189,7 @@ namespace VolleyManagement.Specs.PlayersContext
                 playersInDb = playerEntity.Select(p => new Player(p.Id, p.FirstName, p.LastName)).ToList();
             }
 
-            playersInDb.Should().BeEquivalentTo( _createdPlayersBulk,
+            playersInDb.Should().BeEquivalentTo(_createdPlayersBulk,
                 options => options.Including(x => x.FirstName).Including(x => x.LastName));
         }
 
@@ -199,7 +200,10 @@ namespace VolleyManagement.Specs.PlayersContext
             {
                 var fullName = row.Values.First();
                 var names = SpecsHelper.SplitFullNameToFirstLastNames(fullName);
-                _playersForQuickCreate.Add(new Player(int.MaxValue, names.FirstName, names.LastName));
+                _playersForQuickCreate.Add(new CreatePlayerDto {
+                    FirstName = names.FirstName,
+                    LastName = names.LastName
+                });
             }
         }
 

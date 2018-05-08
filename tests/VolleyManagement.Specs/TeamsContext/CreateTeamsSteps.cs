@@ -124,7 +124,8 @@ namespace VolleyManagement.Specs.TeamsContext
         [Then(@"Validation fails")]
         public void ThenValidationFails()
         {
-            _exception.Should().NotBeNull("Validation should be failed");
+            _exception.Should().BeOfType(typeof(EntityInvariantViolationException),
+                "EntityInvariantViolationException should be thrown");
         }
 
         private void RegisterNewPlayerAndSetCaptainId(string fullName)

@@ -94,6 +94,11 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
+            if (teamToCreate.Captain == null)
+            {
+                throw new EntityInvariantViolationException("Captain can not be null");
+            }
+
             ThrowExceptionIfTeamWithSuchNameExists(teamToCreate.Name);
 
             var captain = GetPlayerById(teamToCreate.Captain.Id);

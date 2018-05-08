@@ -44,7 +44,7 @@ namespace VolleyManagement.Specs.TeamsContext
         [Given(@"(.*) team exists")]
         public void GivenTeamExists(string name)
         {
-            _team = TestDbAdapter.CreateTeamWithCaptain(name, "First", "Last");
+            _team = TestDbAdapter.CreateTeamWithCaptain(name, name, "Captain");
             _player = _team.Captain;
             _team.Players.Add(_player);
         }

@@ -99,7 +99,7 @@
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns>The id of player team</returns>
-        int IQuery<int, FindByPlayerCriteria>.Execute(FindByPlayerCriteria criteria)
+        public int Execute(FindByPlayerCriteria criteria)
         {
             var players = _unitOfWork.Context.Players
                 .Where(t => t.Id == criteria.Id)

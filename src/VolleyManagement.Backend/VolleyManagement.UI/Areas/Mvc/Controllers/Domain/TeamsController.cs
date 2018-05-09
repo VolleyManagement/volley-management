@@ -104,29 +104,26 @@
                     {
                         var newAddedCaptain = _playerService.Create(teamViewModel.Captain.ToCreatePlayerDto());
                         teamViewModel.Captain.Id = newAddedCaptain.Id;
+
                     }
+
+                    teamViewModel.Roster = new List<PlayerNameViewModel> {
+                        new PlayerNameViewModel {
+                            Id = teamViewModel.Captain.Id,
+                            FirstName = teamViewModel.Captain.FirstName,
+                            LastName = teamViewModel.Captain.LastName
+                        }
+                    };
+
+                    var playersIdToAddToTeam = SeparatePlayers(teamViewModel);
 
                     var team = teamViewModel.ToCreateTeamDto();
                     var createdTeam = _teamService.Create(team);
                     teamViewModel.Id = createdTeam.Id;
 
-                    createdTeam.SetCaptain(new PlayerId(createdTeam.Captain.Id));
                     _playerService.AssingPlayerToTeam(teamViewModel.Captain.ToDomain(), createdTeam.Id);
 
-                    if (teamViewModel.AddedPlayers.Count > 0)
-                    {
-                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                                .Where(x => x.Id == 0)
-                                .Select(x => x.ToCreatePlayerDto())
-                                .ToList());
-
-                        var playersIdToAddToTeam = playersToAddToTeam
-                                .Select(x => new PlayerId(x.Id))
-                                .ToList();
-
-                        playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
-                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
-                    }
+                    _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
 
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -351,6 +348,23 @@
         {
             var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
+        }
+
+        private List<PlayerId> SeparatePlayers(TeamViewModel teamViewModel)
+        {
+            var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                .Where(x => x.Id == 0)
+                .Select(x => x.ToCreatePlayerDto())
+                .ToList());
+
+            var playersIdToAddToTeam = playersToAddToTeam
+                .Select(x => new PlayerId(x.Id))
+                .ToList();
+
+            playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0)
+                .Select(x => new PlayerId(x.Id)));
+
+            return playersIdToAddToTeam;
         }
 
         private void ChangeCapitain(TeamViewModel teamViewModel)

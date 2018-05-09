@@ -28,7 +28,7 @@ namespace VolleyManagement.Specs.Infrastructure
 
         string IConfigurationProvider.GetGoogleClientId()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

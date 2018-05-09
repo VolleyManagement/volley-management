@@ -193,10 +193,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\src\packages\SonarAnalyzer.CSharp.7.0.0.4787\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\..\src\packages\SonarAnalyzer.CSharp.7.0.0.4787\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\..\src\packages\SonarAnalyzer.CSharp.7.0.0.4787\analyzers\SonarAnalyzer.dll" />
-    <Analyzer Include="..\..\src\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+    <Analyzer Include="..\..\src\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\..\src\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\..\src\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.dll" />
+    <Analyzer Include="..\..\src\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\VolleyManagement.Backend\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

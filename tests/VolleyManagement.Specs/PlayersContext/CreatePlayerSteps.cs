@@ -20,21 +20,21 @@ namespace VolleyManagement.Specs.PlayersContext
     public class CreatePlayerSteps
     {
         private Player _player;
-        private List<Player> _playersForBulk;
+        private List<CreatePlayerDto> _playersForBulk;
         private List<Player> _createdPlayersBulk;
         private string _playerFirstName = "FirstName";
         private string _playerLastName = "LastName";
         private short? _birthYear;
         private short? _height;
         private short? _weight;
-        private readonly List<CreatePlayerDto> _playersForQuickCreate;
+        private readonly List<string> _playersForQuickCreate;
         private readonly List<Player> _playersAddedQuickCreateActual;
         private readonly IPlayerService _playerService;
         private Exception _exception;
 
         public CreatePlayerSteps()
         {
-            _playersForQuickCreate = new List<CreatePlayerDto>();
+            _playersForQuickCreate = new List<string>();
             _playersAddedQuickCreateActual = new List<Player>();
             _playerService = IocProvider.Get<IPlayerService>();
         }
@@ -133,10 +133,7 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             try
             {
-                foreach (var player in _playersForQuickCreate)
-                {
-                    _playersAddedQuickCreateActual.Add(_playerService.Create(player));
-                }
+                _playersAddedQuickCreateActual.AddRange(_playerService.CreateBulk(_playersForQuickCreate));
             }
             catch (Exception exception)
             {
@@ -168,9 +165,7 @@ namespace VolleyManagement.Specs.PlayersContext
         {
             try
             {
-                var playersToAdd = Mapper.Map<List<CreatePlayerDto>>(_playersForBulk);
-
-                _createdPlayersBulk = _playerService.CreateBulk(playersToAdd).ToList();
+                _createdPlayersBulk = _playerService.CreateBulk(_playersForBulk).ToList();
             }
             catch (Exception exception)
             {
@@ -198,11 +193,7 @@ namespace VolleyManagement.Specs.PlayersContext
             foreach (var row in table.Rows)
             {
                 var fullName = row.Values.First();
-                var names = SpecsHelper.SplitFullNameToFirstLastNames(fullName);
-                _playersForQuickCreate.Add(new CreatePlayerDto {
-                    FirstName = names.FirstName,
-                    LastName = names.LastName
-                });
+                _playersForQuickCreate.Add(fullName);
             }
         }
 
@@ -222,14 +213,22 @@ namespace VolleyManagement.Specs.PlayersContext
             }
 
         }
-        private static List<Player> CreateListPlayers()
+        private static List<CreatePlayerDto> CreateListPlayers()
         {
-            return new List<Player>{
-                new Player(0,"FirstPlayer","LastName"),
-                new Player(0,"SecondPlayer","LastName"),
-                new Player(0,"ThirdPlayer","LastName")
+            return new List<CreatePlayerDto> {
+                new CreatePlayerDto {
+                    FirstName = "FirstPlayer",
+                    LastName = "LastName"
+                },
+                new CreatePlayerDto {
+                    FirstName = "SecondPlayer",
+                    LastName = "LastName"
+                },
+                new CreatePlayerDto {
+                    FirstName = "ThirdPlayer",
+                    LastName = "LastName"
+                }
             };
         }
-
     }
 }

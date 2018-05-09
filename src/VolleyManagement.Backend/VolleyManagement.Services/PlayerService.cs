@@ -90,7 +90,7 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            var players = fullNames.Select(p => Create(
+            var players = fullNames.Select(p => _playerRepository.Add(
                 new CreatePlayerDto {
                     FirstName = p.Substring(0, p.LastIndexOf(' ')),
                     LastName = p.Substring(p.LastIndexOf(' ') + 1)
@@ -107,7 +107,7 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            var players = playersToCreate.Select(p => Create(p)).ToList();
+            var players = playersToCreate.Select(p => _playerRepository.Add(p)).ToList();
 
             return players;
         }

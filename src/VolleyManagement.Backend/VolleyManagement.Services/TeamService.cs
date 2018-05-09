@@ -13,7 +13,6 @@
     using Data.Queries.Player;
     using Data.Queries.Team;
     using Domain.PlayersAggregate;
-    using Domain.Properties;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
     using TournamentResources = Domain.Properties.Resources;
@@ -129,13 +128,13 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
             }
 
-            CheckIfPlayersAreNotInAnoutherTeam(players);
+            CheckIfPlayersAreNotInAnotherTeam(players);
 
             changedTeam.AddPlayers(players);
             _teamRepository.Update(changedTeam);
         }
 
-        private void CheckIfPlayersAreNotInAnoutherTeam(IEnumerable<PlayerId> addedPlayers)
+        private void CheckIfPlayersAreNotInAnotherTeam(IEnumerable<PlayerId> addedPlayers)
         {
             var playersTeams = addedPlayers
                 .Select(x => _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = x.Id }));

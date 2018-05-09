@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 
 namespace VolleyManagement.Data.MsSql.Repositories
 {
@@ -92,25 +90,30 @@ namespace VolleyManagement.Data.MsSql.Repositories
 
         #region private
 
-        private void AddAndRemovePlayersInTeam(Team updatedEntity, TeamEntity teamToUpdate)
+        private void AddAndRemovePlayersInTeam(Team teamToUpdated, TeamEntity entityToUpdate)
         {
-            var playersToAdd = updatedEntity.Roster.Select(p => p.Id)
-                .Except(teamToUpdate.Players.Select(p => p.Id));
-            var playersToRemove = teamToUpdate.Players.Select(p => p.Id)
-                .Except(updatedEntity.Roster.Select(p => p.Id));
+            var playersInTeamToUpdate = teamToUpdated.Roster.Select(p => p.Id);
+            var playersInEntityToUpdate = entityToUpdate.Players.Select(p => p.Id);
+
+            var playersToAdd = playersInTeamToUpdate.Except(playersInEntityToUpdate);
+            var playersToRemove = playersInEntityToUpdate.Except(playersInTeamToUpdate);
+
             var playersIds = playersToAdd.Union(playersToRemove).ToList();
 
             var playerEntities = _unitOfWork.Context.Players
                 .Where(p => playersIds.Contains(p.Id));
 
-            foreach (var playerId in playersToAdd)
+            foreach (var player in playerEntities)    
             {
-                playerEntities.Single(p => p.Id == playerId).TeamId = teamToUpdate.Id;
-            }
+                if (playersToAdd.Contains(player.Id))
+                {
+                    player.TeamId = entityToUpdate.Id;
+                }
 
-            foreach (var playerId in playersToRemove)
-            {
-                playerEntities.Single(p => p.Id == playerId).TeamId = null;
+                if (playersToRemove.Contains(player.Id))
+                {
+                    player.TeamId = null;
+                }
             }
         }
 

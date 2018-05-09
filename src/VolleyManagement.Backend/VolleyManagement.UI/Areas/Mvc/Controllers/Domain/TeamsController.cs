@@ -199,7 +199,7 @@
                         _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
                     }
 
-                    ChangeCapitain(teamViewModel);
+                    ChangeCaptain(teamViewModel);
 
                     if (teamViewModel.DeletedPlayers.Count > 0)
                     {
@@ -353,7 +353,7 @@
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
-        private void ChangeCapitain(TeamViewModel teamViewModel)
+        private void ChangeCaptain(TeamViewModel teamViewModel)
         {
             if (teamViewModel.IsCaptainChanged)
             {

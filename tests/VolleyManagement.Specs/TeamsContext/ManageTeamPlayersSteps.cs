@@ -5,7 +5,6 @@ using FluentAssertions;
 using TechTalk.SpecFlow;
 using VolleyManagement.Contracts;
 using VolleyManagement.Data.MsSql.Entities;
-using VolleyManagement.Domain.PlayersAggregate;
 using VolleyManagement.Domain.TeamsAggregate;
 using VolleyManagement.Specs.Infrastructure;
 using VolleyManagement.Specs.Infrastructure.IOC;
@@ -20,7 +19,7 @@ namespace VolleyManagement.Specs.TeamsContext
         private TeamId _teamId;
         private PlayerId _captainId;
         private readonly List<PlayerId> _playerToAdd;
-        private List<PlayerEntity> _createdPlayers;
+        private readonly List<PlayerEntity> _createdPlayers;
         private readonly ICollection<PlayerId> _playersToRemove;
         private Exception _exception;
 

@@ -80,13 +80,11 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
-            var teamTeamLedByCaptain = _dalTeams
+            var teamLedByCaptain = _dalTeams
                 .SingleOrDefault(t => t.CaptainId == criteria.CaptainId);
 
-            return teamTeamLedByCaptain == null ? null :
-                GetTeamMapping(teamTeamLedByCaptain);
+            return teamLedByCaptain != null ? GetTeamMapping(teamLedByCaptain) : null;
         }
-
 
         public ICollection<TeamTournamentDto> Execute(FindByTournamentIdCriteria criteria)
         {
@@ -133,7 +131,7 @@
         {
             var teamEntity = _dalTeams.FirstOrDefault(t => t.Name == criteria.Name);
 
-            return teamEntity == null ? null : GetTeamMapping(teamEntity);
+            return teamEntity != null ? GetTeamMapping(teamEntity) : null;
         }
 
         #endregion

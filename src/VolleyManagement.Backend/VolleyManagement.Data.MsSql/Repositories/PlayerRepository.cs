@@ -34,7 +34,7 @@
         /// <summary>
         /// Adds new player.
         /// </summary>
-        /// <param name="newEntity">The player for adding.</param>
+        /// <param name="playerDto">The player for adding.</param>
         public Player Add(CreatePlayerDto playerDto)
         {
             var newEntity = new PlayerEntity {

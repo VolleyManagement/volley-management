@@ -103,14 +103,17 @@ namespace VolleyManagement.Data.MsSql.Repositories
             var playerEntities = _unitOfWork.Context.Players
                 .Where(p => playersIds.Contains(p.Id));
 
-            foreach (var playerId in playersToAdd)
+            foreach (var playerId in playersIds)
             {
-                playerEntities.Single(p => p.Id == playerId).TeamId = teamToUpdate.Id;
-            }
-
-            foreach (var playerId in playersToRemove)
-            {
-                playerEntities.Single(p => p.Id == playerId).TeamId = null;
+                var entity = playerEntities.Single(p => p.Id == playerId);
+                if (playersToAdd.Contains(playerId))
+                {
+                    entity.TeamId = teamToUpdate.Id;
+                }
+                if (playersToRemove.Contains(playerId))
+                {
+                    entity.TeamId = null;
+                }
             }
         }
 

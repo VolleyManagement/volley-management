@@ -43,7 +43,7 @@ Scenario: Quick create players from names
     Then players is created from Table with FirstName and LastName
     | FirstName             | LastName          |
     | John                  | Smith             |
-    | Peter                 | Petrovich Petrov  |
+    | Peter Petrovich       | Petrov            |
 
 Scenario: Bulk create players
     Given collection of players to create

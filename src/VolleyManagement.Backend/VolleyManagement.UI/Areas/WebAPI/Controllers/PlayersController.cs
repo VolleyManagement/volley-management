@@ -17,17 +17,14 @@
     {
         private const string CONTROLLER_NAME = "players";
         private readonly IPlayerService _playerService;
-        private readonly ITeamService _teamService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class.
         /// </summary>
         /// <param name="playerService"> The player service. </param>
-        /// <param name="teamService"> The team service. </param>
-        public PlayersController(IPlayerService playerService, ITeamService teamService)
+        public PlayersController(IPlayerService playerService)
         {
             _playerService = playerService;
-            _teamService = teamService;
         }
 
         /// <summary>
@@ -117,37 +114,6 @@
         }
 
         /// <summary>
-        /// Creates reference between Player and connected entity.
-        /// </summary>
-        /// <param name="key">ID of the Player.</param>
-        /// <param name="navigationProperty">Name of the property.</param>
-        /// <param name="link">Link to the entity.</param>
-        /// <returns><see cref="IHttpActionResult"/></returns>
-        [AcceptVerbs("POST", "PUT")]
-        public IHttpActionResult CreateRef(int key, string navigationProperty, [FromBody] Uri link)
-        {
-            Player playerToUpdate;
-            try
-            {
-                playerToUpdate = _playerService.Get(key);
-            }
-            catch (MissingEntityException ex)
-            {
-                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return BadRequest(ModelState);
-            }
-
-            if (navigationProperty == "Teams")
-            {
-                return AssignTeamToPlayer(playerToUpdate, link);
-            }
-            else
-            {
-                return StatusCode(HttpStatusCode.NotImplemented);
-            }
-        }
-
-        /// <summary>
         /// Gets player Team.
         /// </summary>
         /// <param name="key">ID of the player.</param>
@@ -183,31 +149,6 @@
             }
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        private IHttpActionResult AssignTeamToPlayer(Player playerToUpdate, Uri link)
-        {
-            int teamId;
-            try
-            {
-                teamId = WebApiHelpers.GetKeyFromUri<int>(Request, link);
-                _teamService.Get(teamId);
-                _playerService.AssingPlayerToTeam(playerToUpdate, teamId);
-            }
-            catch (MissingEntityException ex)
-            {
-                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return BadRequest(ModelState);
-            }
-            catch (InvalidOperationException ex)
-            {
-                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return BadRequest(ModelState);
-            }
-
-            var player = PlayerViewModel.Map(playerToUpdate);
-
-            return Ok(player);
         }
     }
 }

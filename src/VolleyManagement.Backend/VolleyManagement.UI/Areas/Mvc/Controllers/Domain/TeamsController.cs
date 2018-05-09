@@ -196,7 +196,7 @@
                         _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
                     }
 
-                    ChangeCapitain(teamViewModel);
+                    ChangeCaptain(teamViewModel);
 
                     if (teamViewModel.DeletedPlayers.Count > 0)
                     {
@@ -367,7 +367,7 @@
             return playersIdToAddToTeam;
         }
 
-        private void ChangeCapitain(TeamViewModel teamViewModel)
+        private void ChangeCaptain(TeamViewModel teamViewModel)
         {
             if (teamViewModel.IsCaptainChanged)
             {

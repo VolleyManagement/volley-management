@@ -24,11 +24,5 @@
         /// </summary>
         /// <param name="id">The id of element to remove.</param>
         void Remove(int id);
-
-        /// <summary>
-        /// Update the player teamId to the DB.
-        /// </summary>
-        /// <param name="updatedEntity">Updated element.</param>
-        void UpdateTeam(Player updatedEntity, int? teamId);
     }
 }

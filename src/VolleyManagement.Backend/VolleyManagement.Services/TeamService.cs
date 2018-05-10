@@ -25,7 +25,6 @@
 #pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITeamRepository _teamRepository;
-        private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
@@ -65,7 +64,6 @@
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             _teamRepository = teamRepository;
-            _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
@@ -209,8 +207,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
-
-            _playerRepository.UpdateTeam(captain, teamToEdit.Id);
         }
 
         /// <summary>
@@ -237,12 +233,6 @@
             catch (InvalidKeyValueException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId.Id, ex);
-            }
-            IEnumerable<Player> roster = GetTeamRoster(teamId);
-
-            foreach (var player in roster)
-            {
-                _playerRepository.UpdateTeam(player, null);
             }
         }
 

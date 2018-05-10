@@ -121,8 +121,6 @@
                     var createdTeam = _teamService.Create(team);
                     teamViewModel.Id = createdTeam.Id;
 
-                    _playerService.AssingPlayerToTeam(teamViewModel.Captain.ToDomain(), createdTeam.Id);
-
                     _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
 
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);

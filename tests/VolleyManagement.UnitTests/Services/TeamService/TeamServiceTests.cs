@@ -36,13 +36,10 @@
         private const int PLAYER_ID = 1;
         private const int TEAM_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
-        private const int UNASSIGNED_ID = 0;
         private const string TEAM_NAME_TO_VALIDATE = "empire";
         private const string TEAM_NOT_FOUND = "A team with specified identifier was not found";
 
-        private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
-
-        private TeamServiceTestFixture _testFixture = new TeamServiceTestFixture();
+        private readonly TeamServiceTestFixture _testFixture = new TeamServiceTestFixture();
 
         private Mock<ITeamRepository> _teamRepositoryMock;
         private Mock<IPlayerRepository> _playerRepositoryMock;
@@ -461,7 +458,7 @@
             _getTeamByCaptainQueryMock.Setup(tm =>
                             tm.Execute(It.Is<FindByCaptainIdCriteria>(cr =>
                                                                     cr.CaptainId == captain.Id)))
-                            .Returns(testTeams.Where(tm => tm.Captain.Id == captain.Id).FirstOrDefault());
+                            .Returns(testTeams.FirstOrDefault(tm => tm.Captain.Id == captain.Id));
 
             // Act
             var sut = BuildSUT();
@@ -639,27 +636,6 @@
             VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
         }
 
-        /// <summary>
-        /// Successful test for Delete() method.
-        /// </summary>
-        [TestMethod]
-        public void Delete_TeamPassed_RosterPlayersUpdated()
-        {
-            // Arrange
-            var expectedRoster = new PlayerServiceTestFixture().TestPlayers().Build().AsQueryable<Player>();
-            var expectedCountOfPlayers = expectedRoster.Count();
-            MockGetTeamRosterQuery(expectedRoster.ToList());
-
-            // Act
-            var ts = BuildSUT();
-            ts.Delete(new TeamId(SPECIFIC_TEAM_ID));
-
-            // Assert
-            _playerRepositoryMock.Verify(
-                                         pr => pr.UpdateTeam(It.Is<Player>(player => expectedRoster.Contains(player)), null),
-                                         Times.Exactly(expectedCountOfPlayers));
-        }
-
         #endregion
 
         #region Edit
@@ -732,7 +708,7 @@
             _getTeamByCaptainQueryMock.Setup(tm =>
                             tm.Execute(It.Is<FindByCaptainIdCriteria>(cr =>
                                                                     cr.CaptainId == captain.Id)))
-                            .Returns(testTeams.Where(tm => tm.Captain.Id == captain.Id).FirstOrDefault());
+                            .Returns(testTeams.FirstOrDefault(tm => tm.Captain.Id == captain.Id));
 
             MockGetAllTeamsQuery(CreateSeveralTeams());
             MockGetTeamByPlayerQuery(SPECIFIC_PLAYER_ID);
@@ -1193,11 +1169,6 @@
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);
         }
 
-        private void MockGetPlayerByFullNameQuery(Player player)
-        {
-            _getPlayerByFullNameQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByFullNameCriteria>())).Returns(player);
-        }
-
         private void MockGetTeamRosterQuery(List<Player> players)
         {
             _getTeamRosterQueryMock.Setup(tr => tr.Execute(It.IsAny<TeamPlayersCriteria>())).Returns(players);
@@ -1236,11 +1207,6 @@
                             t.Coach.Equals(team.Coach) &&
                             t.Achievements.Equals(team.Achievements))),
                  times);
-
-        private void VerifyEditPlayer(int playerId, int teamId, Times times)
-        {
-            _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => p.Id == playerId)), times);
-        }
 
         private void VerifyDeleteTeam(int teamId, Times times)
         {

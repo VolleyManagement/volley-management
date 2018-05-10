@@ -59,13 +59,5 @@
         /// <param name="player">Player which team should be found</param>
         /// <returns>Player's team</returns>
         Team GetPlayerTeam(Player player);
-
-        /// <summary>
-        /// Assign player to team
-        /// </summary>
-        /// <param name="player">Player which assign to team </param>
-        /// <param name="teamId">Team Id </param>
-        /// <returns>Player's team</returns>
-        void AssingPlayerToTeam(Player player, int? teamId);
     }
 }

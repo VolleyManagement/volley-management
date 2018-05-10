@@ -191,18 +191,5 @@
         {
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
-
-        public void AssingPlayerToTeam(Player player, int? teamId)
-        {
-            _authService.CheckAccess(AuthOperations.Players.Edit);
-            try
-            {
-                _playerRepository.UpdateTeam(player, teamId);
-            }
-            catch (InvalidKeyValueException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
-            }
-        }
     }
 }

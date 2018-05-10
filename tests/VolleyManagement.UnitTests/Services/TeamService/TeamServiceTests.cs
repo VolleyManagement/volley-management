@@ -614,7 +614,7 @@
 
             // Assert
             Assert.IsTrue(gotException);
-            VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once(), Times.Never());
+            VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
         }
 
         /// <summary>
@@ -1211,11 +1211,6 @@
         private void VerifyDeleteTeam(int teamId, Times times)
         {
             _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<TeamId>(id => id.Id == teamId)), times);
-        }
-
-        private void VerifyDeleteTeam(int teamId, Times repositoryTimes, Times unitOfWorkTimes)
-        {
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<TeamId>(id => id.Id == teamId)), repositoryTimes);
         }
 
         private List<Team> CreateSeveralTeams()

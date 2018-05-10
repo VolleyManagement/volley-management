@@ -34,8 +34,6 @@
         private const int SPECIFIED_TEAM_ID = 4;
         private const int TEAM_ID = 1;
         private const int SPECIFIED_PLAYER_ID = 4;
-        private const int PHOTO_ID = 1;
-        private const string FILE_DIR = "/Content/Photo/Teams/1.jpg";
         private const string SPECIFIED_FIRST_PLAYER_NAME = "Test";
         private const string SPECIFIED_LAST_PLAYER_NAME = "Name";
         private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
@@ -47,8 +45,6 @@
         private const string COACH = "TestCoach";
         private const int TEST_TEAM_ID = 1;
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
-        private const string FILE_NOT_FOUND_EX_MESSAGE = "File not found";
-        private const string FILE_LOAD_EX_MESSAGE = "File size must be less then 1 MB and greater then 0 MB";
 
         private Mock<ITeamService> _teamServiceMock;
         private Mock<HttpContextBase> _httpContextMock;
@@ -84,7 +80,7 @@
         {
             // Act
             var sut = BuildSUT();
-            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
+            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE);
 
             // Assert
             _teamServiceMock.Verify(ps => ps.Delete(It.Is<TeamId>(id => id.Id == TEAM_UNEXISTING_ID_TO_DELETE)), Times.Once());
@@ -103,7 +99,7 @@
 
             // Act
             var sut = BuildSUT();
-            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
+            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE);
 
             // Assert
             Assert.IsNotNull(actual);
@@ -121,7 +117,7 @@
 
             // Act
             var sut = BuildSUT();
-            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
+            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE);
 
             // Assert
             Assert.IsNotNull(actual);
@@ -196,7 +192,7 @@
             sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = sut.Create(viewModel) as JsonResult;
+            var result = sut.Create(viewModel);
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<CreateTeamDto>()), Times.Never());
@@ -407,7 +403,7 @@
             sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = sut.Edit(viewModel) as JsonResult;
+            var result = sut.Edit(viewModel);
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Never());
@@ -741,34 +737,6 @@
                           .Build();
         }
 
-        private List<TeamViewModel> MakeTestTeamViewModels(List<Team> teams)
-        {
-            return teams.Select(ct => new TeamMvcViewModelBuilder()
-                .WithId(ct.Id)
-                .WithName(ct.Name)
-                .WithAchievements(ct.Achievements)
-                .WithCoach(ct.Coach)
-                .WithRoster(CreateRoster())
-                .WithCaptain(CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID))
-                .Build())
-                .ToList();
-        }
-
-        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
-        {
-            Assert.AreEqual(actionName, result.RouteValues["action"]);
-        }
-
-        private void VerifyFileServiceUpload(Times times)
-        {
-            _fileServiceMock.Verify(ts => ts.Upload(_httpPostedFileBaseMock.Object, FILE_DIR), times);
-        }
-
-        private void VerifyFileServiceDelete(Times times)
-        {
-            _fileServiceMock.Verify(ts => ts.Delete(FILE_DIR), times);
-        }
-
         private void MockTeamServiceGetTeam(Team team)
         {
             _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
@@ -794,28 +762,6 @@
             _httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
-        private void SetupHttpPostedFileBaseMock()
-        {
-            _httpPostedFileBaseMock.Setup(x => x.FileName).Returns("1.jpg");
-        }
-
-        private void SetupFileServiceMockThrowsFileLoadException(HttpPostedFileBase file)
-        {
-            _fileServiceMock.Setup(x => x.Upload(file, FILE_DIR))
-                .Throws(new FileLoadException(FILE_LOAD_EX_MESSAGE));
-        }
-
-        private void SetupFileServiceMockThrowsFileNotFoundException()
-        {
-            _fileServiceMock.Setup(x => x.Delete(FILE_DIR))
-                .Throws(new FileNotFoundException(FILE_NOT_FOUND_EX_MESSAGE));
-        }
-
-        private void SetupFileServiceMock()
-        {
-            _fileServiceMock.Setup(x => x.Delete(FILE_DIR));
-        }
-
         private List<Team> MakeTestTeams()
         {
             return new TeamServiceTestFixture().TestTeams().Build();
@@ -824,13 +770,6 @@
         private List<Player> MakeTestPlayers()
         {
             return new PlayerServiceTestFixture().TestPlayers().Build();
-        }
-
-        private void VerifyExceptionThrown(Exception actual, Exception expected)
-        {
-            Assert.IsNotNull(actual);
-            Assert.IsTrue(actual.GetType().Equals(expected.GetType()), "Different exception types");
-            Assert.IsTrue(actual.Message.Equals(expected.Message));
         }
     }
 }

@@ -29,13 +29,7 @@
         /// <summary>
         /// Gets unit of work.
         /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
+        public IUnitOfWork UnitOfWork => _unitOfWork;
 
         /// <summary>
         /// Adds new game.

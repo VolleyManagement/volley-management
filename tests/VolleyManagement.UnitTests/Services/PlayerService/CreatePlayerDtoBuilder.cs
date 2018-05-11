@@ -12,7 +12,7 @@
         /// <summary>
         /// Holds test player instance
         /// </summary>
-        private CreatePlayerDto _player;
+        private readonly CreatePlayerDto _player;
 
         /// <summary>
         /// Initializes a new instance 

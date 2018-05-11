@@ -73,8 +73,8 @@
         public CreatePlayerDto ToCreatePlayerDto()
         {
             return new CreatePlayerDto {
-                FirstName = this.FirstName,
-                LastName = this.LastName,
+                FirstName = FirstName,
+                LastName = LastName,
                 BirthYear = null,
                 Height = null,
                 Weight = null

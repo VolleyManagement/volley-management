@@ -191,14 +191,11 @@
                             .Where(x => x.Id == 0)
                             .Select(x => x.ToCreatePlayerDto())
                             .ToList();
-
-                        if (playersToAddToTeam.Count != 0)
-                        {
-                            playersIdsToAddToTeam.AddRange(_playerService.CreateBulk(playersToAddToTeam)
-                                .Select(x => new PlayerId(x.Id)));
-                        }
-
-                       _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
+                        
+                        playersIdsToAddToTeam.AddRange(_playerService.CreateBulk(playersToAddToTeam)
+                            .Select(x => new PlayerId(x.Id)));
+                        
+                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
                     }
 
                     ChangeCaptain(teamViewModel);

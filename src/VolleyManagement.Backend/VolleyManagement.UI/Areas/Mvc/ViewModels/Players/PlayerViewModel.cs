@@ -125,11 +125,11 @@
         public CreatePlayerDto ToCreatePlayerDto()
         {
             return new CreatePlayerDto {
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                BirthYear = this.BirthYear,
-                Height = this.Height,
-                Weight = this.Weight
+                FirstName = FirstName,
+                LastName = LastName,
+                BirthYear = BirthYear,
+                Height = Height,
+                Weight = Weight
             };
         }
 
@@ -140,9 +140,9 @@
             if (TeamId == null)
             {
                 return new FreePlayerDto {
-                    Player_Id = new PlayerId(this.Id),
-                    FirstName = this.FirstName,
-                    LastName = this.FirstName
+                    Player_Id = new PlayerId(Id),
+                    FirstName = FirstName,
+                    LastName = FirstName
                 };
             }
 

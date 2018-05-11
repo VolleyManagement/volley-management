@@ -182,16 +182,23 @@
                 {
                     if (teamViewModel.AddedPlayers.Count > 0)
                     {
-                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
+                        var playersIdsToAddToTeam = teamViewModel.AddedPlayers
+                            .Where(x => x.Id > 0)
+                            .Select(x => new PlayerId(x.Id))
+                            .ToList();
+
+                        var playersToAddToTeam = teamViewModel.AddedPlayers
                             .Where(x => x.Id == 0)
                             .Select(x => x.ToCreatePlayerDto())
-                            .ToList());
+                            .ToList();
 
-                        var playersIdsToAddToTeam = playersToAddToTeam.Select(x => new PlayerId(x.Id)).ToList();
+                        if (playersToAddToTeam.Count != 0)
+                        {
+                            playersIdsToAddToTeam.AddRange(_playerService.CreateBulk(playersToAddToTeam)
+                                .Select(x => new PlayerId(x.Id)));
+                        }
 
-
-                        playersIdsToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
-                        _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
+                       _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
                     }
 
                     ChangeCaptain(teamViewModel);

@@ -178,14 +178,9 @@
                 throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
             }
 
-            var newTeam = Get(teamToEdit.Id);
-            newTeam.Name = teamToEdit.Name;
-            newTeam.Achievements = teamToEdit.Achievements;
-            newTeam.Coach = teamToEdit.Coach;
-
             try
             {
-                _teamRepository.Update(newTeam);
+                _teamRepository.Update(teamToEdit);
             }
             catch (ConcurrencyException ex)
             {

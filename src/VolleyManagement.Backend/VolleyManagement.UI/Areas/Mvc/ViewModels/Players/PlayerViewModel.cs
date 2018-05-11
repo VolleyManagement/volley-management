@@ -1,9 +1,7 @@
-﻿using VolleyManagement.Domain.TeamsAggregate;
-
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
-
+    using Domain.TeamsAggregate;
     using Domain;
     using Domain.PlayersAggregate;
     using Resources.UI;
@@ -139,18 +137,16 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 
         public FreePlayerDto ToFreePlayerDto()
         {
-            if (this.TeamId == null)
+            if (TeamId == null)
             {
-                return new FreePlayerDto() {
+                return new FreePlayerDto {
                     Player_Id = new PlayerId(this.Id),
                     FirstName = this.FirstName,
                     LastName = this.FirstName
                 };
             }
-            else
-            {
-                return new FreePlayerDto();
-            }
+
+            return new FreePlayerDto();
         }
-}
+    }
 }

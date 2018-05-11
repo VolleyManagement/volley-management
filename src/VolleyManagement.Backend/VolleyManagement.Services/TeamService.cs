@@ -178,23 +178,7 @@
                 throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
             }
 
-            var captainId = teamToEdit.Captain.Id;
-            var captain = GetPlayerById(captainId);
-
-            if (captain == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, captainId);
-            }
-
-            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = captain.Id });
-            // Check if captain in teamToCreate is captain of another team
-            if (teamId != 0 && teamId != teamToEdit.Id)
-            {
-                var existTeam = GetTeamLedByCaptain(captain.Id);
-                VerifyExistingTeamOrThrow(existTeam);
-            }
-
-            var newTeam = Get(teamId);
+            var newTeam = Get(teamToEdit.Id);
             newTeam.Name = teamToEdit.Name;
             newTeam.Achievements = teamToEdit.Achievements;
             newTeam.Coach = teamToEdit.Coach;

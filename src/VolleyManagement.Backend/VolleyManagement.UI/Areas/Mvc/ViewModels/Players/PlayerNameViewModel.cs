@@ -43,6 +43,21 @@
         }
 
         /// <summary>
+        /// Maps domain freePlayerDto to presentation
+        /// </summary>
+        /// <param name="player"> Domain object </param>
+        /// <returns> View model object </returns>
+        public static PlayerNameViewModel Map(FreePlayerDto player)
+        {
+            var playerNameViewModel = new PlayerNameViewModel {
+                Id = player.PlayerId.Id,
+                FirstName = player.FirstName,
+                LastName = player.LastName
+            };
+            return playerNameViewModel;
+        }
+
+        /// <summary>
         /// Maps PlayerViewModel to PlayerNameViewModel
         /// </summary>
         /// <param name="player"> Domain object </param>

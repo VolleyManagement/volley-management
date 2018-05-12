@@ -25,7 +25,7 @@
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
         private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
-        private readonly IQuery<ICollection<FreePlayerDto>, CriteriaIsNull> _getFreePlayers;
+        private readonly IQuery<ICollection<FreePlayerDto>, EmptyCriteria> _getFreePlayers;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<IQueryable<Player>, GetAllCriteria> _getAllPlayersQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
@@ -47,7 +47,7 @@
             IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
-            IQuery<ICollection<FreePlayerDto>, CriteriaIsNull> getFreePlayers,
+            IQuery<ICollection<FreePlayerDto>, EmptyCriteria> getFreePlayers,
             IQuery<IQueryable<Player>, GetAllCriteria> getAllPlayersQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IAuthorizationService authService)
@@ -73,7 +73,7 @@
 
         public ICollection<FreePlayerDto> GetFreePlayerDto()
         {
-            return _getFreePlayers.Execute(new CriteriaIsNull());
+            return _getFreePlayers.Execute(new EmptyCriteria());
         }
 
         /// <summary>

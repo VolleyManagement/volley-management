@@ -22,13 +22,13 @@ namespace VolleyManagement.Domain.PlayersAggregate
         /// <summary>
         /// Gets or sets PlayerId
         /// </summary>
-        public PlayerId Player_Id { get; set; }
+        public PlayerId PlayerId { get; set; }
 
 
         /// <summary>
-        /// Gets or sets PlayerId
+        /// Gets or sets TeamId
         /// </summary>
-        public TeamId Team_Id { get; set; }
+        public TeamId TeamId { get; set; }
 
     }
 }

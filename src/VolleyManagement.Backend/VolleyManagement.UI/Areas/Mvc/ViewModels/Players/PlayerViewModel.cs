@@ -140,7 +140,7 @@
             if (TeamId == null)
             {
                 return new FreePlayerDto {
-                    Player_Id = new PlayerId(Id),
+                    PlayerId = new PlayerId(Id),
                     FirstName = FirstName,
                     LastName = FirstName
                 };

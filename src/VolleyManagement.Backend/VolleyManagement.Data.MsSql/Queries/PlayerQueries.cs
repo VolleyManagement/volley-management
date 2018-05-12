@@ -21,7 +21,7 @@ namespace VolleyManagement.Data.MsSql.Queries
                                  IQuery<Player, FindByFullNameCriteria>,
                                  IQuery<IQueryable<Player>, GetAllCriteria>,
                                  IQuery<ICollection<Player>, TeamPlayersCriteria>,
-                                 IQuery<ICollection<FreePlayerDto>, CriteriaIsNull>
+                                 IQuery<ICollection<FreePlayerDto>, EmptyCriteria>
     {
         #region Fields
 
@@ -115,10 +115,10 @@ namespace VolleyManagement.Data.MsSql.Queries
         /// Finds Players by given criteria
         /// </summary>
         /// <returns> The <see cref="FreePlayerDto"/>. </returns>
-        public ICollection<FreePlayerDto> Execute(CriteriaIsNull criteria)
+        public ICollection<FreePlayerDto> Execute(EmptyCriteria criteria)
         {
             var players = _unitOfWork.Context.Players
-                .Where(p => p.TeamId == criteria.IsNull)
+                .Where(p => p.TeamId == null)
                 .ToList();
             return players.Select(GetFreePlayerMapping).ToList();
         }
@@ -136,7 +136,7 @@ namespace VolleyManagement.Data.MsSql.Queries
         private static FreePlayerDto GetFreePlayerMapping(PlayerEntity p)
         {
             return new FreePlayerDto {
-                Player_Id = new PlayerId(p.Id),
+                PlayerId = new PlayerId(p.Id),
                 FirstName = p.FirstName,
                 LastName = p.LastName
             };

@@ -17,6 +17,12 @@
         IQueryable<Player> Get();
 
         /// <summary>
+        /// Gets list of all free players (players without team).
+        /// </summary>
+        /// <returns>Return list of all free players.</returns>
+        ICollection<FreePlayerDto> GetFreePlayerDto();
+
+        /// <summary>
         /// Create new player.
         /// </summary>
         /// <param name="playerToCreate">New player.</param>

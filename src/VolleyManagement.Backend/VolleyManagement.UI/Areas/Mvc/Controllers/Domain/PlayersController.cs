@@ -266,6 +266,10 @@
                 .Where(p => (p.FirstName + p.LastName).Contains(searchString)
                             || (p.LastName + p.FirstName).Contains(searchString));
 
+            var _freePlayersDto = _playerService.GetFreePlayerDto().
+                Where(p => (p.FirstName + p.LastName).Contains(searchString)                                                                
+                || (p.LastName + p.FirstName).Contains(searchString));
+
             if (includeTeam.HasValue)
             {
                 if (string.IsNullOrEmpty(includeList))

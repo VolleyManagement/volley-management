@@ -26,6 +26,7 @@
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
         private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
+        private readonly IQuery<ICollection<FreePlayerDto>, CriteriaIsNull> _getFreePlayers;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<IQueryable<Player>, GetAllCriteria> _getAllPlayersQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
@@ -37,6 +38,8 @@
         /// <param name="playerRepository"> The player repository </param>
         /// <param name="getTeamByIdQuery"> Get By ID query for Teams</param>
         /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
+        /// <param name="getPlayerTeamQuery"></param>
+        /// <param name="getFreePlayers"></param>
         /// <param name="getAllPlayersQuery"> Get All players query</param>
         /// <param name="getTeamByCaptainQuery">Get Player by Captain query</param>
         /// <param name="authService">Authorization service</param>
@@ -45,12 +48,14 @@
             IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
+            IQuery<ICollection<FreePlayerDto>, CriteriaIsNull> getFreePlayers,
             IQuery<IQueryable<Player>, GetAllCriteria> getAllPlayersQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IAuthorizationService authService)
         {
             _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
+            _getFreePlayers = getFreePlayers;
             _getPlayerByIdQuery = getPlayerByIdQuery;
             _getAllPlayersQuery = getAllPlayersQuery;
             _getPlayerTeamQuery = getPlayerTeamQuery;
@@ -65,6 +70,11 @@
         public IQueryable<Player> Get()
         {
             return _getAllPlayersQuery.Execute(new GetAllCriteria());
+        }
+
+        public ICollection<FreePlayerDto> GetFreePlayerDto()
+        {
+            return _getFreePlayers.Execute(new CriteriaIsNull());
         }
 
         /// <summary>
@@ -191,5 +201,6 @@
         {
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
+
     }
 }

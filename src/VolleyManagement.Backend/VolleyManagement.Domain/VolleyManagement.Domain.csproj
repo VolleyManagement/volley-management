@@ -84,6 +84,7 @@
     <Compile Include="GamesAggregate\ResultValidation.cs" />
     <Compile Include="GamesAggregate\Score.cs" />
     <Compile Include="PlayersAggregate\CreatePlayerDto.cs" />
+    <Compile Include="PlayersAggregate\FreePlayerDto.cs" />
     <Compile Include="PlayersAggregate\IPlayerRepository.cs" />
     <Compile Include="PlayersAggregate\Player.cs" />
     <Compile Include="PlayersAggregate\PlayerValidation.cs" />

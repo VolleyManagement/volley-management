@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Data.MsSql.Queries
+﻿using VolleyManagement.Domain.TeamsAggregate;
+
+namespace VolleyManagement.Data.MsSql.Queries
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +20,8 @@
                                  IQuery<int, FindByPlayerCriteria>,
                                  IQuery<Player, FindByFullNameCriteria>,
                                  IQuery<IQueryable<Player>, GetAllCriteria>,
-                                 IQuery<ICollection<Player>, TeamPlayersCriteria>
+                                 IQuery<ICollection<Player>, TeamPlayersCriteria>,
+                                 IQuery<ICollection<FreePlayerDto>, CriteriaIsNull>
     {
         #region Fields
 
@@ -82,7 +85,7 @@
         }
 
         /// <summary>
-        /// Finds Tournament by given criteria
+        /// Finds Players by given criteria
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Player"/>. </returns>
@@ -108,6 +111,19 @@
                 .SingleOrDefault();
         }
 
+        /// <summary>
+        /// Finds Players by given criteria
+        /// </summary>
+        /// <returns> The <see cref="FreePlayerDto"/>. </returns>
+        public ICollection<FreePlayerDto> Execute(CriteriaIsNull criteria)
+        {
+            var players = _unitOfWork.Context.Players
+                .Where(p => p.TeamId == criteria.IsNull)
+                .ToList();
+            return players.Select(GetFreePlayerMapping).ToList();
+        }
+
+
         #endregion
 
         #region Mapping
@@ -117,6 +133,14 @@
             return new Player(p.Id, p.FirstName, p.LastName, p.BirthYear, p.Height, p.Weight);
         }
 
+        private static FreePlayerDto GetFreePlayerMapping(PlayerEntity p)
+        {
+            return new FreePlayerDto {
+                Player_Id = new PlayerId(p.Id),
+                FirstName = p.FirstName,
+                LastName = p.LastName
+            };
+        }
         #endregion
     }
 }

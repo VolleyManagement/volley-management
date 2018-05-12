@@ -1,0 +1,116 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g>
+  <title>Layer 1</title>
+  <g display="none" id="svg_1">
+   <rect x="-192" width="185" height="99" id="svg_2"/>
+   <rect y="-36" width="100" height="30" id="svg_3"/>
+   <text transform="matrix(1,0,0,1,66,-19.5) " fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_4">http://thenounproject.com</text>
+   <text transform="matrix(1,0,0,1,7.166,-24.5) " id="svg_5">
+    <tspan x="0" y="0" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="6.1578" id="svg_6">The Noun Project</tspan>
+    <tspan x="1.12" y="4.8" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="4" id="svg_7">Icon Template</tspan>
+   </text>
+   <text transform="matrix(1,0,0,1,-178.5,10.5) " fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="6.1578" id="svg_8">Reminders</text>
+   <line fill="#000000" stroke="#FFFFFF" stroke-miterlimit="10" x1="8" y1="-14.5" x2="18" y2="-14.5" id="svg_9"/>
+   <line fill="#000000" stroke="#FFFFFF" stroke-miterlimit="10" x1="-179" y1="16.5" x2="-162" y2="16.5" id="svg_10"/>
+   <g display="inline" id="svg_11">
+    <g id="svg_12">
+     <g id="svg_13">
+      <rect x="-170.802" y="31.318" fill="#000000" width="8.721" height="8.642" id="svg_14"/>
+      <path fill="#000000" d="m-164.455,42.312l4.747,0l0,-4.703l-4.747,0l0,4.703zm5.189,0.437l-5.63,0l0,-5.579l5.63,0l0,5.579l0,0zm-6.955,1.313l8.279,0l0,-8.203l-8.279,0l0,8.203l0,0zm8.721,0.438l-9.163,0l0,-9.079l9.163,0l0,9.079l0,0z" id="svg_15"/>
+      <polygon fill="#000000" points="-166.149,44.133 -166.292,43.991 -158.013,35.787 -157.871,35.929     " id="svg_16"/>
+     </g>
+    </g>
+   </g>
+   <rect x="-179" y="58" fill="none" width="35" height="32.5" id="svg_17"/>
+   <text transform="matrix(1,0,0,1,-179,60.1299) " id="svg_18">
+    <tspan x="0" y="0" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="3" id="svg_19">Strokes</tspan>
+    <tspan x="0" y="5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_20">Try to keep strokes at 4px</tspan>
+    <tspan x="0" y="10" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_21">Minimum stroke weight is 2px</tspan>
+    <tspan x="0" y="14.5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_22">For thicker strokes use even</tspan>
+    <tspan x="0" y="17.5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_23">numbers: 6px, 8px etc.</tspan>
+    <tspan x="0" y="22" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="2.4" id="svg_24">Remember to expand strokes</tspan>
+    <tspan x="0" y="25" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="2.4" id="svg_25">before saving as an SVG</tspan>
+   </text>
+   <rect x="-136.5" y="58" fill="none" width="35" height="32.5" id="svg_26"/>
+   <text transform="matrix(1,0,0,1,-136.5,60.1299) " id="svg_27">
+    <tspan x="0" y="0" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="3" id="svg_28">Size</tspan>
+    <tspan x="0" y="5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_29">Cannot be wider or taller than</tspan>
+    <tspan x="0" y="8.5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_30">100px (artboard size)</tspan>
+    <tspan x="0" y="13.5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_31">Scale your icon to fill as much of</tspan>
+    <tspan x="0" y="16.5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_32">the artboard as possible</tspan>
+   </text>
+   <rect x="-94" y="58" fill="none" width="35" height="32.5" id="svg_33"/>
+   <text transform="matrix(1,0,0,1,-94,60.1299) " id="svg_34">
+    <tspan x="0" y="0" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="3" id="svg_35">Ungroup</tspan>
+    <tspan x="0" y="5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_36">If your design has more than one</tspan>
+    <tspan x="0" y="8" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_37">shape, make sure to ungroup</tspan>
+   </text>
+   <rect x="-50" y="58" fill="none" width="35" height="32.5" id="svg_38"/>
+   <text transform="matrix(1,0,0,1,-50,60.1299) " id="svg_39">
+    <tspan x="0" y="0" fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="3" id="svg_40">Save as</tspan>
+    <tspan x="0" y="5" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_41">Save as .SVG and make sure “Use</tspan>
+    <tspan x="0" y="8" fill="#000000" font-family="&#x27;Helvetica'" font-size="2.4" id="svg_42">Artboards” is checked</tspan>
+   </text>
+   <text transform="matrix(1.0074,0,0,1,-125.542,30.5933) " fill="#000000" font-family="&#x27;Helvetica'" font-size="2.5731" id="svg_43">100px</text>
+   <text transform="matrix(1.0074,0,0,1,-41,39) " fill="#000000" font-family="&#x27;Helvetica-Bold'" font-size="5.1462" id="svg_44">.SVG</text>
+   <rect x="-126.514" y="34.815" fill="#000000" width="10.261" height="10.185" id="svg_45"/>
+   <rect x="-126.477" y="31.766" fill="#000000" width="0.522" height="2.337" id="svg_46"/>
+   <rect x="-116.813" y="31.766" fill="#000000" width="0.523" height="2.337" id="svg_47"/>
+   <rect x="-127" y="32.337" fill="#000000" width="11.233" height="0.572" id="svg_48"/>
+   <g display="inline" id="svg_49">
+    <rect x="-83.805" y="33.844" fill="#000000" width="10.305" height="10.156" id="svg_50"/>
+    <rect x="-76.809" y="28.707" fill="#000000" width="3.308" height="3.261" id="svg_51"/>
+   </g>
+   <rect x="-178.5" y="22.5" fill="#000000" stroke="#FFFFFF" stroke-miterlimit="10" width="30" height="30" id="svg_52"/>
+   <rect x="-136.5" y="22.5" fill="#000000" stroke="#FFFFFF" stroke-miterlimit="10" width="30" height="30" id="svg_53"/>
+   <rect x="-93.5" y="22.5" fill="#000000" stroke="#FFFFFF" stroke-miterlimit="10" width="30" height="30" id="svg_54"/>
+   <rect x="-49.5" y="22.5" fill="#000000" stroke="#FFFFFF" stroke-miterlimit="10" width="30" height="30" id="svg_55"/>
+  </g>
+  <g id="svg_56" stroke="null">
+   <g id="svg_99" stroke="null">
+    <g transform="matrix(-0.5202725136268579,-0.8385519728437361,0.8007676882759721,-0.5448216119427332,-0.19025941195616936,123.40894207133937) " id="svg_93" stroke="null">
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="14.629392" y="72.072233" width="18.55426" height="13.858992" transform="rotate(-5.0855913162231445 23.906520843506026,79.00173187255857) " id="svg_94"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="15.161099" y="60.880338" width="18.55426" height="13.858992" transform="rotate(11.59216022491455 24.438228607177717,67.80982971191406) " id="svg_95"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="21.869102" y="43.310575" width="18.55426" height="23.296528" transform="rotate(36.341670989990234 31.14623260498047,54.95883941650391) " id="svg_96"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="32.364071" y="39.580544" width="19.229981" height="10.436952" transform="rotate(18.199138641357422 41.97906112670897,44.79901885986328) " id="svg_97"/>
+    </g>
+    <g id="svg_88" transform="matrix(-0.5234946521713282,0.83635003362345,-0.7986649661594489,-0.5481957873406673,148.32728159224163,38.36908408973675) " stroke="null">
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="48.534299" y="71.404815" width="18.55426" height="13.858992" transform="rotate(-5.0855913162231445 57.81142807006821,78.33431243896486) " id="svg_89"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="49.066007" y="60.212921" width="18.55426" height="13.858992" transform="rotate(11.59216022491455 58.34313583374037,67.14241790771482) " id="svg_90"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="55.77401" y="42.643157" width="18.55426" height="23.296528" transform="rotate(36.341670989990234 65.05113983154297,54.291419982910156) " id="svg_91"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="66.268978" y="38.913127" width="19.229981" height="10.436952" transform="rotate(18.199138641357422 75.88397216796874,44.1316032409668) " id="svg_92"/>
+    </g>
+    <g id="svg_87" stroke="null">
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="30.082274" y="41.083381" width="18.55426" height="13.858992" id="svg_81" transform="matrix(0.9511818029000592,-0.08864381067418864,0.0846496122510115,0.9960633889613445,-3.8321296855966134,3.6779757181266106) "/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="30.613982" y="29.891487" width="18.55426" height="13.858992" transform="matrix(0.935462867027775,0.20094388409250036,-0.191889560514971,0.9796027538986504,7.926748935362512,-7.264828573477075) " id="svg_84"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="37.321985" y="12.321723" width="18.55426" height="23.296528" transform="matrix(0.7692026161058529,0.5925991705702234,-0.5658972648797352,0.8054975003309962,22.303976941093065,-22.952373430677483) " id="svg_85"/>
+     <rect fill="#ffd700" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="47.816954" y="8.591693" width="19.229981" height="10.436952" transform="matrix(0.9071717772791353,0.3123206370299669,-0.2982477921639461,0.9499767469181526,6.9465146021748865,-17.2463523083768) " id="svg_86"/>
+    </g>
+   </g>
+   <g id="svg_98" stroke="null">
+    <g id="svg_68" transform="matrix(-0.5035753630919197,0.8496564628946947,-0.8113718214907976,-0.5273366050837703,148.13790733473058,-4.0547963861239396) " stroke="null">
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="60.056457" y="44.816691" width="20.683213" height="19.89452" id="svg_69"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="64.003635" y="36.388097" width="18.39385" height="10.023194" id="svg_70"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="67.398208" y="32.059899" width="17.446527" height="5.239397" id="svg_71"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="73.039694" y="26.133146" width="23.19571" height="9.2421" transform="matrix(0.8252207560655233,-0.6266473909712503,0.651490022429289,0.793753420559729,-6.074235778167548,57.04485726970622) " id="svg_72"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="88.397196" y="17.556642" width="8.841679" height="5.54313" id="svg_73"/>
+    </g>
+    <g id="svg_66" stroke="null">
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="8.055269" y="35.753116" width="18.78578" height="19.672188" id="svg_60"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="11.640342" y="27.418715" width="16.706438" height="9.911179" id="svg_61"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="14.723504" y="23.138888" width="15.84602" height="5.180843" id="svg_62"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="19.338437" y="14.916847" width="23.19571" height="9.2421" id="svg_64" transform="matrix(0.7495167812049165,-0.6196442603673165,0.591723730903768,0.7848827878058234,-5.121790298392858,23.37243490658308) "/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="33.796089" y="8.797713" width="8.030562" height="5.481182" id="svg_65"/>
+    </g>
+    <g transform="matrix(-0.4496292617653021,-0.8822159238037591,0.8424641867681041,-0.4708450528433742,-5.19219652866508,157.3593646211671) " id="svg_75" stroke="null">
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="25.838357" y="84.05659" width="20.683213" height="19.89452" id="svg_76"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="29.785536" y="75.627995" width="18.39385" height="10.023194" id="svg_77"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="33.180109" y="71.299798" width="17.446527" height="5.239397" id="svg_78"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="23.452268" y="36.421061" width="23.19571" height="9.2421" transform="matrix(0.8252207560655233,-0.6266473909712503,0.651490022429289,0.793753420559729,-6.074235778167548,57.04485726970622) " id="svg_79"/>
+     <rect fill="#003ec4" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="54.179096" y="56.79654" width="8.841679" height="5.54313" id="svg_80"/>
+    </g>
+   </g>
+   <path d="m47.814344,5.459561c-23.868751,0 -43.290342,20.333 -43.290342,45.333c0,7.75 1.869775,15.05 5.155727,21.437c0,0 0.064936,0.215 0.134647,0.26c7.355911,14.072 21.634189,23.635 37.999014,23.635c15.466225,0 29.857186,-8.73 37.564515,-22.787c3.749099,-6.83 5.727736,-14.625 5.727736,-22.544c0.000955,-25.001 -19.419681,-45.334 -43.291297,-45.334zm16.757305,8.587c-5.905355,3.546 -10.68579,8.105 -13.975562,13.367c-4.20938,6.718 -5.973156,14.352 -5.253131,22.707c-4.247578,2.493 -8.846574,4.093 -13.68908,4.757c-0.138466,0.02 -0.277888,0.033 -0.418264,0.051c-0.870906,-3.399 -1.316864,-6.911 -1.316864,-10.472c0,-13.898 8.845619,-24.908 17.895595,-34.385c0,0 -0.188123,0 0,0c5.99703,-0.001 11.677019,1.429 16.757305,3.975l0.000001,0zm-34.718791,46.476c0.826024,-0.068 1.656823,-0.154 2.474252,-0.266c5.59309,-0.771 10.890148,-2.637 15.775626,-5.547c4.087148,2.611 7.630934,5.98 10.495757,9.873c-6.988258,6.324 -15.817643,9.777 -25.130228,9.777c-7.478143,0 -14.720416,-2.244 -20.955226,-6.494c-1.512627,-3.414 -2.58598,-7.078 -3.142711,-10.918c5.408786,2.424 11.284538,3.697 17.212812,3.697c1.089588,0.002 2.190635,-0.041 3.269718,-0.122zm18.247968,-8.949l0,0l0,0l0,0zm-7.659582,-40.766c-8.141827,9.026 -15.702095,19.772 -15.702095,33.648c0,3.647 0.413489,7.25 1.218505,10.759c-5.935913,-0.1 -11.790657,-1.641 -17.031373,-4.472c0.024828,-19.795 13.603135,-36.32 31.514964,-39.935l-0.000001,0zm-22.543293,65.979c4.938955,1.971 10.2045,2.994 15.571269,2.994c10.351561,0 20.178859,-3.762 28.024655,-10.656c2.888697,5.25 4.655338,11.174 5.057368,17.33c-5.658981,3.26 -12.085734,5.059 -18.737853,5.059c-12.016023,0 -22.776299,-5.731 -29.915438,-14.727l-0.000001,0zm53.533994,6.34c-0.821249,-6.436 -2.940263,-12.639 -6.231945,-18.146c-3.678433,-6.162 -8.730071,-11.35 -14.677444,-15.075c-0.499434,-5.508 0.295077,-10.689 2.283264,-15.367c6.643525,2.15 12.736049,6.224 17.396161,11.673c6.226216,7.284 10.162482,17.079 10.162482,26.868l0,0c-2.439874,3.893 -5.470857,7.277 -8.932518,10.047zm12.966189,-18.508c-1.490663,-8.137 -5.077421,-15.87 -10.338192,-22.022c-5.033494,-5.886 -11.540462,-10.355 -18.659548,-12.878c3.292637,-5.008 8.164746,-9.254 14.450168,-12.463c10.170122,7.351 16.855664,19.643 16.855664,33.537c0,4.732 -0.794511,9.41 -2.308092,13.826z" id="svg_57" fill="black"/>
+  </g>
+ </g>
+</svg>

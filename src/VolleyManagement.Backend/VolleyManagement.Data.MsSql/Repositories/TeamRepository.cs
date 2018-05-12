@@ -67,7 +67,12 @@ namespace VolleyManagement.Data.MsSql.Repositories
         /// <param name="updatedEntity">Updated team.</param>
         public void Update(Team updatedEntity)
         {
-            var teamToUpdate = _dalTeams.Find(updatedEntity.Id);
+            var teamToUpdate = _dalTeams.SingleOrDefault(t => t.Id == updatedEntity.Id);
+
+            if (teamToUpdate == null)
+            {
+                throw new ConcurrencyException();
+            }
 
             DomainToDal.Map(teamToUpdate, updatedEntity);
 
@@ -103,7 +108,7 @@ namespace VolleyManagement.Data.MsSql.Repositories
             var playerEntities = _unitOfWork.Context.Players
                 .Where(p => playersIds.Contains(p.Id));
 
-            foreach (var player in playerEntities)    
+            foreach (var player in playerEntities)
             {
                 if (playersToAdd.Contains(player.Id))
                 {

@@ -265,6 +265,7 @@
             var query = _playerService.Get()
                 .Where(p => (p.FirstName + p.LastName).Contains(searchString)
                             || (p.LastName + p.FirstName).Contains(searchString));
+            
 
             var _freePlayersDto = _playerService.GetFreePlayerDto().
                 Where(p => (p.FirstName + p.LastName).Contains(searchString)                                                                

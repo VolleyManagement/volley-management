@@ -52,7 +52,6 @@
         private Mock<IQuery<ICollection<Team>, GetAllCriteria>> _getAllTeamsQueryMock;
         private Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock;
         private Mock<IQuery<Team, FindByNameCriteria>> _getTeamByNameQueryMock;
-        private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
 
@@ -75,7 +74,6 @@
             _getAllTeamsQueryMock = new Mock<IQuery<ICollection<Team>, GetAllCriteria>>();
             _getTeamRosterQueryMock = new Mock<IQuery<ICollection<Player>, TeamPlayersCriteria>>();
             _getTeamByNameQueryMock = new Mock<IQuery<Team, FindByNameCriteria>>();
-            _unitOfWorkMock = new Mock<IUnitOfWork>();
         }
 
         #endregion
@@ -644,6 +642,7 @@
         /// Edit() method test. catch ConcurrencyException from DAL
         /// Throws MissingEntityException
         /// </summary>
+        [TestMethod]
         public void Edit_CatchDalConcurrencyException_ThrowMissingEntityException()
         {
             // Arrange
@@ -673,22 +672,6 @@
         }
 
         /// <summary>
-        /// Test for Edit() method. The method check case when captain id is invalid.
-        /// Should throw MissingEntityException
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(MissingEntityException))]
-        public void Edit_InvalidCaptainId_ThrowMissingEntityException()
-        {
-            // Arrange
-            var teamWithWrongCaptainId = new TeamBuilder().Build();
-
-            // Act
-            var sut = BuildSUT();
-            sut.Edit(teamWithWrongCaptainId);
-        }
-
-        /// <summary>
         /// Test for Edit() method. The method checks case when captain is captain of another team.
         /// Should throw ValidationException
         /// </summary>
@@ -699,16 +682,13 @@
             var newTeam = new TeamBuilder().Build();
             var captain = new PlayerBuilder().Build();
 
-            var captainLeadTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            var testTeams = new TeamServiceTestFixture().AddTeam(captainLeadTeam).Build();
             _getPlayerByIdQueryMock.Setup(pr =>
                             pr.Execute(It.Is<FindByIdCriteria>(cr =>
                                             cr.Id == captain.Id)))
                                             .Returns(captain);
-            _getTeamByCaptainQueryMock.Setup(tm =>
-                            tm.Execute(It.Is<FindByCaptainIdCriteria>(cr =>
-                                                                    cr.CaptainId == captain.Id)))
-                            .Returns(testTeams.FirstOrDefault(tm => tm.Captain.Id == captain.Id));
+            _getTeamByIdQueryMock.Setup(pr =>
+                            pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == TEAM_ID)))
+                            .Returns(newTeam);
 
             MockGetAllTeamsQuery(CreateSeveralTeams());
             MockGetTeamByPlayerQuery(SPECIFIC_PLAYER_ID);
@@ -719,7 +699,7 @@
 
             try
             {
-                sut.Edit(newTeam);
+                sut.ChangeCaptain(new TeamId(newTeam.Id), new PlayerId(captain.Id));
             }
             catch (ValidationException)
             {
@@ -762,7 +742,7 @@
             var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
             var teamWithTheSameName = new TeamBuilder().Build();
             var argExMessage =
-                   TournamentResources.TeamNameInTournamentNotUnique;
+                TournamentResources.TeamNameInTournamentNotUnique;
 
             MockGetTeamByNameQuery(teamWithTheSameName);
 
@@ -784,6 +764,7 @@
                 exception,
                 new ArgumentException(argExMessage));
         }
+
         #endregion
 
         #region Change Captain

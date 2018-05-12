@@ -14,7 +14,6 @@
     using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
-    using PlayerResources = Domain.Properties.Resources;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>

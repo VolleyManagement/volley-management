@@ -180,17 +180,24 @@
             {
                 try
                 {
-                    if (teamViewModel.AddedPlayers.Count > 0)
+                    var playersIdsToAddToTeam = teamViewModel.AddedPlayers
+                        .Where(x => x.Id > 0)
+                        .Select(x => new PlayerId(x.Id))
+                        .ToList();
+
+                    var playersToAddToTeam = teamViewModel.AddedPlayers
+                        .Where(x => x.Id == 0)
+                        .Select(x => x.ToCreatePlayerDto())
+                        .ToList();
+
+                    if (playersToAddToTeam.Count != 0)
                     {
-                        var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                            .Where(x => x.Id == 0)
-                            .Select(x => x.ToCreatePlayerDto())
-                            .ToList());
+                        playersIdsToAddToTeam.AddRange(_playerService.CreateBulk(playersToAddToTeam)
+                            .Select(x => new PlayerId(x.Id)));
+                    }
 
-                        var playersIdsToAddToTeam = playersToAddToTeam.Select(x => new PlayerId(x.Id)).ToList();
-
-
-                        playersIdsToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0).Select(x => new PlayerId(x.Id)));
+                    if (playersIdsToAddToTeam.Count != 0)
+                    {
                         _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdsToAddToTeam);
                     }
 

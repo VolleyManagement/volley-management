@@ -116,7 +116,6 @@ namespace VolleyManagement.Specs.TeamsContext
         {
             using (var context = TestDbAdapter.Context)
             {
-
                 var teamEntity = context.Teams.Find(_team.Id);
                 teamEntity.Should().BeEquivalentTo(_team, options => options.Including(x => x.CaptainId).Including(x => x.Name));
                 teamEntity.Players.Should().BeEquivalentTo(_team.Players, options => options.Including(x => x.Id));

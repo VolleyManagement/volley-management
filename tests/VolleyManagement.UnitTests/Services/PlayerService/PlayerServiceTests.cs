@@ -380,7 +380,8 @@
                 _playerRepositoryMock.Object,
                 _getTeamByIdQueryMock.Object,
                 _getPlayerByIdQueryMock.Object,
-                _getTeamByPlayerQueryMock.Object,_getFreePlayersQueryMock.Object,
+                _getTeamByPlayerQueryMock.Object,
+                _getFreePlayersQueryMock.Object,
                 _getAllPlayersQueryMock.Object,
                 _getTeamByCaptainQueryMock.Object,
                 _authServiceMock.Object);

@@ -36,6 +36,7 @@
         private Mock<IPlayerRepository> _playerRepositoryMock;
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<IQueryable<Player>, GetAllCriteria>> _getAllPlayersQueryMock;
+        private Mock<IQuery<ICollection<FreePlayerDto>, EmptyCriteria>> _getFreePlayersQueryMock;
         private Mock<ITeamRepository> _teamRepositoryMock;
         private Mock<IQuery<Team, FindByIdCriteria>> _getTeamByIdQueryMock;
         private Mock<IQuery<int, FindByPlayerCriteria>> _getTeamByPlayerQueryMock;
@@ -52,6 +53,7 @@
             _playerRepositoryMock = new Mock<IPlayerRepository>();
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getAllPlayersQueryMock = new Mock<IQuery<IQueryable<Player>, GetAllCriteria>>();
+            _getFreePlayersQueryMock = new Mock<IQuery<ICollection<FreePlayerDto>, EmptyCriteria>>();
             _teamRepositoryMock = new Mock<ITeamRepository>();
             _getTeamByIdQueryMock = new Mock<IQuery<Team, FindByIdCriteria>>();
             _getTeamByPlayerQueryMock = new Mock<IQuery<int, FindByPlayerCriteria>>();
@@ -378,7 +380,7 @@
                 _playerRepositoryMock.Object,
                 _getTeamByIdQueryMock.Object,
                 _getPlayerByIdQueryMock.Object,
-                _getTeamByPlayerQueryMock.Object,TODO,
+                _getTeamByPlayerQueryMock.Object,_getFreePlayersQueryMock.Object,
                 _getAllPlayersQueryMock.Object,
                 _getTeamByCaptainQueryMock.Object,
                 _authServiceMock.Object);

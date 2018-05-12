@@ -304,11 +304,5 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
             return result;
         }
-
-        private bool IsFreePlayer(Player player, int? includeTeam)
-        {
-            var team = _playerService.GetPlayerTeam(player);
-            return team == null || (includeTeam.HasValue && team.Id == includeTeam.Value);
-        }
     }
 }

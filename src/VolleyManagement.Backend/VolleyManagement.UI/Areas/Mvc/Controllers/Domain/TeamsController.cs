@@ -115,13 +115,11 @@
                         }
                     };
 
-                    var playersIdToAddToTeam = SeparatePlayers(teamViewModel);
+                    AddPlayerToTeam(teamViewModel);
 
                     var team = teamViewModel.ToCreateTeamDto();
                     var createdTeam = _teamService.Create(team);
                     teamViewModel.Id = createdTeam.Id;
-
-                    _teamService.AddPlayers(new TeamId(teamViewModel.Id), playersIdToAddToTeam);
 
                     result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -355,21 +353,21 @@
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
 
-        private List<PlayerId> SeparatePlayers(TeamViewModel teamViewModel)
+        private void AddPlayerToTeam(TeamViewModel teamViewModel)
         {
             var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
                 .Where(x => x.Id == 0)
                 .Select(x => x.ToCreatePlayerDto())
                 .ToList());
 
-            var playersIdToAddToTeam = playersToAddToTeam
-                .Select(x => new PlayerId(x.Id))
-                .ToList();
-
-            playersIdToAddToTeam.AddRange(teamViewModel.AddedPlayers.Where(x => x.Id > 0)
-                .Select(x => new PlayerId(x.Id)));
-
-            return playersIdToAddToTeam;
+            foreach (var player in playersToAddToTeam)
+            {
+                teamViewModel.Roster.Add(new PlayerNameViewModel {
+                    Id = player.Id,
+                    FirstName = player.FirstName,
+                    LastName = player.LastName
+                });
+            }
         }
 
         private void ChangeCaptain(TeamViewModel teamViewModel)

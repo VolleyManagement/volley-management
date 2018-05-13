@@ -35,12 +35,16 @@ namespace VolleyManagement.Data.MsSql.Repositories
 
         public Team Add(CreateTeamDto teamToCreate)
         {
+            var players = teamToCreate.Roster.Select(x => x.Id).ToList();
+            var roster = _unitOfWork.Context.Players
+                .Where(p => players.Contains(p.Id)).ToList();
+
             var newTeam = new TeamEntity {
                 Name = teamToCreate.Name,
                 Coach = teamToCreate.Coach,
                 CaptainId = teamToCreate.Captain.Id,
                 Achievements = teamToCreate.Achievements,
-                Players = new List<PlayerEntity>()
+                Players = roster
             };
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))

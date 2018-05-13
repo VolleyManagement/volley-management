@@ -178,9 +178,20 @@
                 throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
             }
 
+            var newTeam = Get(teamToEdit.Id);
+
+            if (newTeam == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound);
+            }
+
+            newTeam.Name = teamToEdit.Name;
+            newTeam.Achievements = teamToEdit.Achievements;
+            newTeam.Coach = teamToEdit.Coach;
+
             try
             {
-                _teamRepository.Update(teamToEdit);
+                _teamRepository.Update(newTeam);
             }
             catch (ConcurrencyException ex)
             {

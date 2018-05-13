@@ -37,7 +37,6 @@
         private const string SPECIFIED_FIRST_PLAYER_NAME = "Test";
         private const string SPECIFIED_LAST_PLAYER_NAME = "Name";
         private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
-        private const string SPECIFIED_NULL_EXCEPTION_MESSAGE = "Value cannot be null.\r\nParameter name: source";
         private const string ACHIEVEMENTS = "TestAchievements";
         private const string TEAM_NAME = "TestName";
         private const string PLAYER_FIRSTNAME = "Test";
@@ -93,24 +92,6 @@
         /// </summary>
         [TestMethod]
         public void Delete_PlayerDoesntExist_JsonReturned()
-        {
-            // Arrange
-            _teamServiceMock.Setup(ps => ps.Delete(new TeamId(TEAM_UNEXISTING_ID_TO_DELETE))).Throws<MissingEntityException>();
-
-            // Act
-            var sut = BuildSUT();
-            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE);
-
-            // Assert
-            Assert.IsNotNull(actual);
-        }
-
-        /// <summary>
-        /// Delete method test. Model state is not valid.
-        /// The method should return message as JavaScript Object Notation.
-        /// </summary>
-        [TestMethod]
-        public void Delete_TeamNotValid_JsonReturned()
         {
             // Arrange
             _teamServiceMock.Setup(ps => ps.Delete(new TeamId(TEAM_UNEXISTING_ID_TO_DELETE))).Throws<MissingEntityException>();
@@ -254,25 +235,6 @@
         }
 
         /// <summary>
-        /// Create method test. Invalid player Id
-        /// </summary>
-        [TestMethod]
-        public void Create_InvalidRosterNoPlayerId_ArgumentExceptionThrown()
-        {
-            // Arrange
-            var viewModel = new TeamMvcViewModelBuilder().Build();
-            viewModel.Roster = null;
-            // Act
-            var sut = BuildSUT();
-            var jsonResult = sut.Create(viewModel);
-            var actualMessage = jsonResult.Data.ToString();
-            var expetedMessage = $"{{ Success = False, Message = {SPECIFIED_NULL_EXCEPTION_MESSAGE} }}";
-
-            // Assert
-            Assert.AreEqual(actualMessage, expetedMessage);
-        }
-
-        /// <summary>
         /// Create method test. Captain of another team
         /// </summary>
         [TestMethod]
@@ -281,6 +243,7 @@
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();
             _teamServiceMock.Setup(ts => ts.Create(It.IsAny<CreateTeamDto>())).Returns(MakeTestTeams().First());
+
             // Act
             var sut = BuildSUT();
             var jsonResult = sut.Create(viewModel);

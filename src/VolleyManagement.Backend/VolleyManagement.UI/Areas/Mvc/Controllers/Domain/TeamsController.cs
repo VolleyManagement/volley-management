@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using VolleyManagement.Domain.PlayersAggregate;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -356,9 +358,9 @@
         private void AddPlayerToTeam(TeamViewModel teamViewModel)
         {
             var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                .Where(x => x.Id == 0)
-                .Select(x => x.ToCreatePlayerDto())
-                .ToList());
+                                         .Where(x => x.Id == 0)
+                                         .Select(x => x.ToCreatePlayerDto())
+                                         .ToList()) ?? new List<Player>();
 
             foreach (var player in playersToAddToTeam)
             {

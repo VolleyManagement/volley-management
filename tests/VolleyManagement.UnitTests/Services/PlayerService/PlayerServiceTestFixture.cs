@@ -13,7 +13,7 @@
         /// <summary>
         /// Holds collection of players
         /// </summary>
-        private List<Player> _players = new List<Player>();
+        private readonly List<Player> _players = new List<Player>();
 
         /// <summary>
         /// Adds players to collection

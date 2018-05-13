@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoMapper;
 using FluentAssertions;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -211,8 +210,8 @@ namespace VolleyManagement.Specs.PlayersContext
                 _playersAddedQuickCreateActual[i].LastName.Should()
                     .BeEquivalentTo(rowValue[1], $"Lastname should be eqivalent to {rowValue[1]}!");
             }
-
         }
+
         private static List<CreatePlayerDto> CreateListPlayers()
         {
             return new List<CreatePlayerDto> {

@@ -87,7 +87,7 @@
             _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
             {
-                throw new ArgumentNullException("playerToCreate");
+                throw new ArgumentNullException(nameof(playerToCreate));
             }
 
             return _playerRepository.Add(playerToCreate);

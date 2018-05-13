@@ -31,6 +31,7 @@
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
         private readonly IAuthorizationService _authService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
@@ -51,6 +52,7 @@
             IQuery<IQueryable<Player>, GetAllCriteria> getAllPlayersQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IAuthorizationService authService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
@@ -85,7 +87,7 @@
             _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
             {
-                throw new ArgumentNullException("playerToCreate");
+                throw new ArgumentNullException(nameof(playerToCreate));
             }
 
             return _playerRepository.Add(playerToCreate);
@@ -128,7 +130,7 @@
         /// <returns>A found Player.</returns>
         public Player Get(int id)
         {
-            return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            return _getPlayerByIdQuery.Execute(new FindByIdCriteria {Id = id});
         }
 
         /// <summary>
@@ -181,7 +183,7 @@
         /// <returns>Player's team</returns>
         public Team GetPlayerTeam(Player player)
         {
-            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = player.Id });
+            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria {Id = player.Id});
 
             if (teamId == default(int))
             {
@@ -193,13 +195,12 @@
 
         private Team GetPlayerLedTeam(int playerId)
         {
-            return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
+            return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria {CaptainId = playerId});
         }
 
         private Team GetTeamById(int id)
         {
-            return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            return _getTeamByIdQuery.Execute(new FindByIdCriteria {Id = id});
         }
-
     }
 }

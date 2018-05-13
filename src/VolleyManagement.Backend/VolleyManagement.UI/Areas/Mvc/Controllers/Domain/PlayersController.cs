@@ -289,20 +289,5 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
             return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, trimResult);
         }
-
-        private static List<int> ParseIntList(string source)
-        {
-            var splitted = source.Split(',');
-            var result = new List<int>();
-            foreach (var i in splitted)
-            {
-                if (int.TryParse(i, out var parsed))
-                {
-                    result.Add(parsed);
-                }
-            }
-
-            return result;
-        }
     }
 }

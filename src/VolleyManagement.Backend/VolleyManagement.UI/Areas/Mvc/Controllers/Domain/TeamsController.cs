@@ -358,9 +358,9 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         private void AddPlayerToTeam(TeamViewModel teamViewModel)
         {
             var playersToAddToTeam = _playerService.CreateBulk(teamViewModel.AddedPlayers
-                                         .Where(x => x.Id == 0)
-                                         .Select(x => x.ToCreatePlayerDto())
-                                         .ToList()) ?? new List<Player>();
+                            .Where(x => x.Id == 0)
+                            .Select(x => x.ToCreatePlayerDto())
+                            .ToList()) ?? new List<Player>();
 
             foreach (var player in playersToAddToTeam)
             {
@@ -369,6 +369,14 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                     FirstName = player.FirstName,
                     LastName = player.LastName
                 });
+            }
+
+            var existingPlayersToAddToTeam = teamViewModel.AddedPlayers
+                .Where(x => x.Id > 0);
+
+            foreach (var player in existingPlayersToAddToTeam)
+            {
+                teamViewModel.Roster.Add(player);
             }
         }
 

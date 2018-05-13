@@ -35,7 +35,7 @@ namespace VolleyManagement.Data.MsSql.Repositories
 
         public Team Add(CreateTeamDto teamToCreate)
         {
-            var players = teamToCreate.Roster.Select(x => x.Id).ToList();
+            var players = teamToCreate.Roster.Select(x => x.Id);
             var roster = _unitOfWork.Context.Players
                 .Where(p => players.Contains(p.Id)).ToList();
 

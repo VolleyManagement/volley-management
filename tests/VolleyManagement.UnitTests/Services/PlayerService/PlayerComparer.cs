@@ -9,7 +9,7 @@
     /// Comparer for player objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PlayerComparer : IComparer<Player>, IComparer
+    public class PlayerComparer : IComparer<Player>, IComparer
     {
         /// <summary>
         /// Compares two player objects.
@@ -58,8 +58,7 @@
                 x.LastName == y.LastName &&
                 x.BirthYear == y.BirthYear &&
                 x.Height == y.Height &&
-                x.Weight == y.Weight &&
-                x.TeamId == y.TeamId;
+                x.Weight == y.Weight; 
         }
     }
 }

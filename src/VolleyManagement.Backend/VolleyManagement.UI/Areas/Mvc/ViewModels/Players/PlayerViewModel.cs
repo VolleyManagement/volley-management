@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
-
+    using Domain.TeamsAggregate;
     using Domain;
     using Domain.PlayersAggregate;
     using Resources.UI;
@@ -115,16 +115,38 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player {
-                Id = Id,
+            return new Player(Id, FirstName, LastName, BirthYear, Height, Weight);
+        }
+
+        /// <summary>
+        /// Maps presentation entity to CreatePlayerDto
+        /// </summary>
+        /// <returns> CreatePlayerDto object </returns>
+        public CreatePlayerDto ToCreatePlayerDto()
+        {
+            return new CreatePlayerDto {
                 FirstName = FirstName,
                 LastName = LastName,
                 BirthYear = BirthYear,
                 Height = Height,
-                Weight = Weight,
-                TeamId = TeamId
+                Weight = Weight
             };
         }
+
         #endregion
+
+        public FreePlayerDto ToFreePlayerDto()
+        {
+            if (TeamId == null)
+            {
+                return new FreePlayerDto {
+                    PlayerId = new PlayerId(Id),
+                    FirstName = FirstName,
+                    LastName = FirstName
+                };
+            }
+
+            return new FreePlayerDto();
+        }
     }
 }

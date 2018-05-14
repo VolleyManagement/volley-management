@@ -17,16 +17,28 @@
         IQueryable<Player> Get();
 
         /// <summary>
+        /// Gets list of all free players (players without team).
+        /// </summary>
+        /// <returns>Return list of all free players.</returns>
+        ICollection<FreePlayerDto> GetFreePlayerDto();
+
+        /// <summary>
         /// Create new player.
         /// </summary>
         /// <param name="playerToCreate">New player.</param>
-        void Create(Player playerToCreate);
+        Player Create(CreatePlayerDto playerToCreate);
+
+        /// <summary>
+        /// Create new players.
+        /// </summary>
+        /// <param name="fullNames">FullNames of players.</param>
+        ICollection<Player> CreateBulk(IEnumerable<string> fullNames);
 
         /// <summary>
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        void Create(ICollection<Player> playersToCreate);
+        ICollection<Player> CreateBulk(ICollection<CreatePlayerDto> playersToCreate);
 
         /// <summary>
         /// Edit player profile.

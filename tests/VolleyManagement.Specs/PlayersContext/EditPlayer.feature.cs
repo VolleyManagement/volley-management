@@ -72,66 +72,62 @@ namespace VolleyManagement.Specs.PlayersContext
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Edit existing player", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Edit existing player")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Player")]
         [Xunit.TraitAttribute("Description", "Edit existing player")]
         public virtual void EditExistingPlayer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit existing player", new string[] {
-                        "ignore"});
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit existing player", ((string[])(null)));
+#line 6
 this.ScenarioSetup(scenarioInfo);
-#line 8
+#line 7
     testRunner.Given("John Smith player exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
+#line 8
     testRunner.And("first name changed to Jack", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
+#line 9
     testRunner.When("I execute EditPlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 11
+#line 10
     testRunner.Then("player is saved with new name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Change to very long name", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Change to very long name")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Player")]
         [Xunit.TraitAttribute("Description", "Change to very long name")]
         public virtual void ChangeToVeryLongName()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change to very long name", new string[] {
-                        "ignore"});
-#line 14
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change to very long name", ((string[])(null)));
+#line 12
 this.ScenarioSetup(scenarioInfo);
-#line 15
+#line 13
     testRunner.Given("John Smith player exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
-    testRunner.And("first name changed to Very looooooooooooooooooooooooong name which should be more" +
-                    " than 60 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 14
+    testRunner.And("first name set to Looong name which should be more than 60 symbols", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
     testRunner.When("I execute EditPlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 18
+#line 16
     testRunner.Then("EntityInvariantViolationException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Edit missing player", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Edit missing player")]
         [Xunit.TraitAttribute("FeatureTitle", "Edit Player")]
         [Xunit.TraitAttribute("Description", "Edit missing player")]
         public virtual void EditMissingPlayer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit missing player", new string[] {
-                        "ignore"});
-#line 21
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit missing player", ((string[])(null)));
+#line 18
 this.ScenarioSetup(scenarioInfo);
-#line 22
+#line 19
     testRunner.Given("Ivan Ivanov player does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 23
+#line 20
     testRunner.And("first name changed to Jack", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 21
     testRunner.When("I execute EditPlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 25
-    testRunner.Then("ConcurrencyException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+    testRunner.Then("MissingEntityException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

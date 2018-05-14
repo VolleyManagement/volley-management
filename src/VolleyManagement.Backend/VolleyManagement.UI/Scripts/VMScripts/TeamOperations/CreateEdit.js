@@ -12,6 +12,8 @@
   privates.playerIdAttributeName = "data-vm-playerid";
   privates.selectedPlayers = [];
   privates.teamPlayersTable = $("#teamRoster");
+  privates.DeletedPlayers = [];
+  privates.AddedPlayers = [];
   var teamPlayerCounter = 0;
   var fullnameRegExp = /[a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}[\s][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}/g;
   var fullNameCorrectValueCheck = /[\d`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]+/gi;
@@ -212,9 +214,13 @@
         FirstName: captainFullname[0],
         LastName: captainFullname[1]
       },
-      Roster: []
+      Roster: [],
+      AddedPlayers: [],
+      DeletedPlayers: [],
+      IsCaptainChanged: false
     };
-
+    result.AddedPlayers = privates.AddedPlayers;
+    result.DeletedPlayers = privates.DeletedPlayers;
     result.Roster.push({
       FirstName: captainFullname[0],
       LastName: captainFullname[1],
@@ -224,22 +230,51 @@
     if (privates.teamUnderEdit) {
       result.Id = privates.teamId;
     }
-
+    for (var i = 0; i < currNs.teamRoster.length; i++) {
+      if (currNs.teamRoster[i].isCaptain === true) {
+        if (currNs.teamRoster[i].name !== $("#Captain_FullName").val().trim()) {
+          result.IsCaptainChanged = true;
+        }
+      }
+    }
+    var playersWhichWasInTeam = currNs.teamRoster || [];
     for (var j = 1; j <= teamPlayerCounter; j++) {
       var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
-
       if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
         var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
-        result.Roster.push({
-          FirstName: fullName[0],
-          LastName: fullName[1],
-          Id: privates.getPlayerId(inputTeamPlayer)
-        });
+        var playerId = privates.getPlayerId(inputTeamPlayer);
+
+        var isThisPlayerIsNewForThisTeam =
+          checkIfPlayerExists(playersWhichWasInTeam, playerId);
+        if (isThisPlayerIsNewForThisTeam === false) {
+          result.AddedPlayers.push({
+            FirstName: fullName[0],
+            LastName: fullName[1],
+            Id: playerId
+          });
+        } else {
+          result.Roster.push({
+            FirstName: fullName[0],
+            LastName: fullName[1],
+            Id: playerId
+          });
+        }
       }
     }
 
     return result;
   };
+
+  function checkIfPlayerExists(playersWhichWasInTeam, playerId) {
+    var ifexist = false;
+    for (var i = 0; i < playersWhichWasInTeam.length; i++) {
+      if (+playersWhichWasInTeam[i].id === playerId) {
+        ifexist = true;
+      }
+    }
+    return ifexist;
+  }
+
 
   // Check if form valid
   privates.teamIsValid = function () {
@@ -299,7 +334,6 @@
   privates.teamPlayerCompleter = function (requestObj, responseHandler) {
     var url = privates.getAutocompleteUrl({
       searchString: requestObj.term,
-      isCaptain: false
     });
 
     privates.executeCompleter(url, responseHandler);
@@ -310,7 +344,6 @@
 
     var url = privates.getAutocompleteUrl({
       searchString: requestObj.term,
-      isCaptain: true
     });
 
     privates.executeCompleter(url, responseHandler);
@@ -369,6 +402,11 @@
   // Deletes player`s row
   currNs.deleteTeamPlayersRow = function (eventData) {
     var currentRow = eventData.target.parentElement.parentElement;
+    var currentInput = currentRow.children[0].children[0].children[0];
+    var playerId = parseInt(currentInput.name);
+    if (playerId > 0) {
+      privates.DeletedPlayers.push(playerId);
+    }
     currentRow.remove();
     return false;
   };

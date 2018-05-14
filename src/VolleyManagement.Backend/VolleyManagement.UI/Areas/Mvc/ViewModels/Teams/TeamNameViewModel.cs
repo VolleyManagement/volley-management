@@ -62,17 +62,5 @@
                 Name = team.Name
             };
         }
-
-        /// <summary>
-        /// Maps presentation entity to domain
-        /// </summary>
-        /// <returns>Domain object</returns>
-        public Team ToDomain()
-        {
-            return new Team {
-                Id = Id,
-                Name = Name
-            };
-        }
     }
 }

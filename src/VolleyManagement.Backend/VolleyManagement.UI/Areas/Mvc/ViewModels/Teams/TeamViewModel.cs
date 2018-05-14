@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using Domain;
     using Domain.PlayersAggregate;
     using Domain.TeamsAggregate;
@@ -68,7 +69,22 @@
         /// Gets or sets the roster of the team
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
-        public ICollection<PlayerNameViewModel> Roster { get; set; }
+        public ICollection<PlayerNameViewModel> Roster { get; set; } = new List<PlayerNameViewModel>();
+
+        /// <summary>
+        /// Gets or sets added players to the team
+        /// </summary>
+        public ICollection<PlayerNameViewModel> AddedPlayers { get; set; } = new List<PlayerNameViewModel>();
+
+        /// <summary>
+        /// Gets or sets deleted players from team
+        /// </summary>
+        public ICollection<int> DeletedPlayers { get; set; } = new List<int>();
+
+        /// <summary>
+        /// Gets or sets is captain has changed 
+        /// </summary>
+        public bool IsCaptainChanged{ get; set; }
 
         /// <summary>
         /// Gets or sets the photo of the team
@@ -116,15 +132,30 @@
         /// <returns> Domain object </returns>
         public Team ToDomain()
         {
-            var domainTeam = new Team {
-                Id = Id,
-                Name = Name,
-                CaptainId = Captain.Id,
-                Coach = Coach,
-                Achievements = Achievements
-            };
-            return domainTeam;
+            return new Team(Id,
+                Name,
+                Coach,
+                Achievements,
+                new PlayerId(Captain.Id),
+                Roster.Select(x => new PlayerId(x.Id)));
         }
+
+        /// <summary>
+        /// Maps presentation entity to CreateTeamDto
+        /// </summary>
+        /// <returns> Domain object </returns>
+        public CreateTeamDto ToCreateTeamDto()
+        {
+            var team = ToDomain();
+            return new CreateTeamDto {
+                Name = team.Name,
+                Achievements = team.Achievements,
+                Captain = team.Captain,
+                Coach = team.Coach,
+                Roster = team.Roster
+            };
+        }
+
         #endregion
     }
 }

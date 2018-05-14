@@ -194,6 +194,8 @@
         /// </summary>
         public static class Player
         {
+            public const int MIN_ID = 0;
+
             public const int MAX_FIRST_NAME_LENGTH = 60;
 
             public const int MAX_LAST_NAME_LENGTH = 60;
@@ -218,6 +220,8 @@
         /// </summary>
         public static class Team
         {
+            public const int MIN_ID = 0;
+
             public const int MAX_NAME_LENGTH = 30;
 
             public const int MAX_COACH_NAME_LENGTH = 60;

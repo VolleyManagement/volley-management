@@ -61,7 +61,6 @@
             to.BirthYear = from.BirthYear;
             to.Height = from.Height;
             to.Weight = from.Weight;
-            to.TeamId = from.TeamId;
         }
 
         /// <summary>
@@ -73,7 +72,7 @@
         {
             to.Id = from.Id;
             to.Name = from.Name;
-            to.CaptainId = from.CaptainId;
+            to.CaptainId = from.Captain.Id;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
         }

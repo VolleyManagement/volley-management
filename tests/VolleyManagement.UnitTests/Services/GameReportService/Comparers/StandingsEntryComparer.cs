@@ -28,25 +28,25 @@
         public void WithPointsComparer()
         {
             CleanComparerFlags();
-            this.HasComparerByPoints = true;
+            HasComparerByPoints = true;
         }
 
         public void WithGamesComparer()
         {
             CleanComparerFlags();
-            this.HasComparerByGames = true;
+            HasComparerByGames = true;
         }
 
         public void WithSetsComparer()
         {
             CleanComparerFlags();
-            this.HasComparerBySets = true;
+            HasComparerBySets = true;
         }
 
         public void WithBallsComparer()
         {
             CleanComparerFlags();
-            this.HasComparerByBalls = true;
+            HasComparerByBalls = true;
         }
 
         /// <summary>
@@ -63,7 +63,6 @@
             {
                 PointsComparer(x, y);
             }
-
             if (HasComparerByGames)
             {
                 GamesComparer(x, y);
@@ -125,7 +124,7 @@
             {
                 return -1;
             }
-            else if (secondStandingsEntry == null)
+            if (secondStandingsEntry == null)
             {
                 return 1;
             }

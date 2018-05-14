@@ -1,10 +1,11 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using VolleyManagement.Domain.TeamsAggregate;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
     using Contracts;
@@ -102,8 +103,9 @@
                 return HttpNotFound();
             }
 
-            var model = new PlayerRefererViewModel(player, returnUrl);
-            model.AllowedOperations = _authService.GetAllowedOperations(AuthOperations.Players.Edit);
+            var model = new PlayerRefererViewModel(player, returnUrl) {
+                AllowedOperations = _authService.GetAllowedOperations(AuthOperations.Players.Edit)
+            };
             return View(model);
         }
 
@@ -156,9 +158,9 @@
 
             try
             {
-                var domainPlayer = playerViewModel.ToDomain();
-                _playerService.Create(domainPlayer);
-                playerViewModel.Id = domainPlayer.Id;
+                var createPlayerDto = playerViewModel.ToCreatePlayerDto();
+                var player = _playerService.Create(createPlayerDto);
+                playerViewModel.Id = player.Id;
                 return RedirectToAction("Index");
             }
             catch (ArgumentException ex)
@@ -253,48 +255,18 @@
         /// Returns list of free players which are satisfy specified search string, team and exclude list
         /// </summary>
         /// <param name="searchString">Name of player</param>
-        /// <param name="excludeList">list of players ids should be excluded from result</param>
-        /// <param name="includeList">list of players ids should be included to result</param>
-        /// <param name="includeTeam">Id of team which players should be included to the search result</param>
         /// <returns>List of free players</returns>
-        public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
+        public JsonResult GetFreePlayers(string searchString)
         {
 #pragma warning disable S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
 #pragma warning restore S1226 // Method parameters, caught exceptions and foreach variables' initial values should not be ignored
-            var query = _playerService.Get()
-                .Where(p => (p.FirstName + p.LastName).Contains(searchString)
-                            || (p.LastName + p.FirstName).Contains(searchString));
 
-            if (includeTeam.HasValue)
-            {
-                if (string.IsNullOrEmpty(includeList))
-                {
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value);
-                }
-                else
-                {
-                    var selectedIds = ParseIntList(includeList);
-                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
-                }
-            }
-            else if (string.IsNullOrEmpty(includeList))
-            {
-                query = query.Where(p => p.TeamId == null);
-            }
-            else
-            {
-                var selectedIds = ParseIntList(includeList);
-                query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
-            }
+            var _freePlayersDto = _playerService.GetFreePlayerDto().
+                Where(p => (p.FirstName + p.LastName).Contains(searchString)
+                || (p.LastName + p.FirstName).Contains(searchString));
 
-            if (!string.IsNullOrEmpty(excludeList))
-            {
-                var selectedIds = ParseIntList(excludeList);
-                query = query.Where(p => !selectedIds.Contains(p.Id));
-            }
-
-            var result = query.OrderBy(p => p.LastName)
+            var result = _freePlayersDto.OrderBy(p => p.LastName)
 #pragma warning disable S2971 // "IEnumerable" LINQs should be simplified Enity franework error must be ToList()
                 .ToList()
 #pragma warning restore S2971 // "IEnumerable" LINQs should be simplified
@@ -316,22 +288,6 @@
             }
 
             return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, trimResult);
-        }
-
-        private static List<int> ParseIntList(string source)
-        {
-            var splitted = source.Split(',');
-            var result = new List<int>();
-            int parsed;
-            foreach (var i in splitted)
-            {
-                if (int.TryParse(i, out parsed))
-                {
-                    result.Add(parsed);
-                }
-            }
-
-            return result;
         }
     }
 }

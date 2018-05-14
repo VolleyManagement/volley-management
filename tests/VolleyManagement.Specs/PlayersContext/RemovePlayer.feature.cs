@@ -72,39 +72,37 @@ namespace VolleyManagement.Specs.PlayersContext
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Remove existing player", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Remove existing player")]
         [Xunit.TraitAttribute("FeatureTitle", "Remove Player")]
         [Xunit.TraitAttribute("Description", "Remove existing player")]
         public virtual void RemoveExistingPlayer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove existing player", new string[] {
-                        "ignore"});
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove existing player", ((string[])(null)));
+#line 6
 this.ScenarioSetup(scenarioInfo);
-#line 8
+#line 7
     testRunner.Given("John Smith player exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
+#line 8
     testRunner.When("I execute DeletePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 10
+#line 9
     testRunner.Then("player is removed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.FactAttribute(DisplayName="Remove missing player", Skip="Ignored")]
+        [Xunit.FactAttribute(DisplayName="Remove missing player")]
         [Xunit.TraitAttribute("FeatureTitle", "Remove Player")]
         [Xunit.TraitAttribute("Description", "Remove missing player")]
         public virtual void RemoveMissingPlayer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove missing player", new string[] {
-                        "ignore"});
-#line 13
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove missing player", ((string[])(null)));
+#line 11
 this.ScenarioSetup(scenarioInfo);
-#line 14
+#line 12
     testRunner.Given("Ivan Ivanov player does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 15
+#line 13
     testRunner.When("I execute DeletePlayer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 16
+#line 14
     testRunner.Then("ConcurrencyException is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

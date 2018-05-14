@@ -13,7 +13,7 @@
         /// <summary>
         /// Holds collection of players
         /// </summary>
-        private List<Player> _players = new List<Player>();
+        private readonly List<Player> _players = new List<Player>();
 
         /// <summary>
         /// Adds players to collection
@@ -21,33 +21,10 @@
         /// <returns>Builder object with collection of players</returns>
         public PlayerServiceTestFixture TestPlayers()
         {
-            _players.Add(new Player()
-            {
-                Id = 1,
-                FirstName = "FirstNameA",
-                LastName = "LastNameA",
-                BirthYear = 1989,
-                Height = 211,
-                Weight = 120
-            });
-            _players.Add(new Player()
-            {
-                Id = 2,
-                FirstName = "FirstNameB",
-                LastName = "LastNameB",
-                BirthYear = 1984,
-                Height = 205,
-                Weight = 99
-            });
-            _players.Add(new Player()
-            {
-                Id = 3,
-                FirstName = "FirstNameC",
-                LastName = "LastNameC",
-                BirthYear = 1969,
-                Height = 169,
-                Weight = 79
-            });
+            _players.Add(new Player(1, "FirstNameA", "LastNameA", 1989, 211, 120));
+            _players.Add(new Player(2, "FirstNameB", "LastNameB", 1984, 205, 99));
+            _players.Add(new Player(3, "FirstNameC", "LastNameC", 1969, 169, 79));
+
             return this;
         }
 

@@ -14,27 +14,27 @@
         /// <summary>
         /// Holds test tournament view model instance
         /// </summary>
-        private TeamViewModel _teamViewModel;
+        private readonly TeamViewModel _teamViewModel;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamMvcViewModelBuilder"/> class
         /// </summary>
         public TeamMvcViewModelBuilder()
         {
-            _teamViewModel = new TeamViewModel()
-            {
+            _teamViewModel = new TeamViewModel() {
                 Id = 1,
                 Name = "Name",
                 Coach = "Coach",
                 Achievements = "Achievements",
-                Captain = new PlayerNameViewModel() { Id = 1, FirstName = "First", LastName = "Player" },
+                Captain = new PlayerNameViewModel() { Id = 100, FirstName = "First", LastName = "Player" },
                 Roster = new List<PlayerNameViewModel>()
                 {
-                    new PlayerNameViewModel() { Id = 1, FirstName = "First", LastName = "Player" },
+                    new PlayerNameViewModel() { Id = 100, FirstName = "First", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 2, FirstName = "Second", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 3, FirstName = "Third", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 4, FirstName = "Fourth", LastName = "Player" }
-                }
+                },
+                
             };
         }
 
@@ -101,6 +101,27 @@
         public TeamMvcViewModelBuilder WithRoster(List<PlayerNameViewModel> roster)
         {
             _teamViewModel.Roster = roster;
+            return this;
+        }
+
+        /// <summary>
+        /// model with added players
+        /// </summary>
+        /// <returns>test team view model</returns>
+        public TeamMvcViewModelBuilder WithAddedPlayers()
+        {
+            _teamViewModel.AddedPlayers = new List<PlayerNameViewModel> {
+                new PlayerNameViewModel() {
+                    Id = 5,
+                    FirstName = "Fifth",
+                    LastName = "Player"
+                },
+                new PlayerNameViewModel() {
+                    Id = 6,
+                    FirstName = "Sixth",
+                    LastName = "Player"
+                }
+            };
             return this;
         }
 

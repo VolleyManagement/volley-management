@@ -77,14 +77,12 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TournamentRequestNotFound, requestId);
             }
 
-            _tournamentService.AddTeamsToTournament(new List<TeamTournamentAssignmentDto>
-                                                        {
-                                                            new TeamTournamentAssignmentDto
-                                                            {
-                                                                TeamId = tournamentRequest.TeamId,
-                                                                GroupId = tournamentRequest.GroupId
-                                                            }
-                                                        });
+            _tournamentService.AddTeamsToTournament(new List<TeamTournamentAssignmentDto> {
+                new TeamTournamentAssignmentDto {
+                    TeamId = tournamentRequest.TeamId,
+                    GroupId = tournamentRequest.GroupId
+                }
+            });
 
             NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
             _tournamentRequestRepository.Remove(requestId);

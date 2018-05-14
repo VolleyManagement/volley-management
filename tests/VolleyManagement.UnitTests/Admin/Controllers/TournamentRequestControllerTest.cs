@@ -103,7 +103,7 @@
 
             MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
-            _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
+            _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<TeamId>())).Returns(roster.ToList());
 
             var sut = BuildSUT();
             var expected = CreateTeamViewModel();
@@ -353,7 +353,7 @@
 
         private PlayerNameViewModel CreatePlayerNameModel(string firstname, string lastname, int id)
         {
-            return new PlayerNameViewModel()
+            return new PlayerNameViewModel
             {
                 FirstName = firstname,
                 LastName = lastname,
@@ -365,7 +365,7 @@
         {
             return new TeamBuilder()
                          .WithId(SPECIFIED_TEAM_ID)
-                         .WithCaptain(SPECIFIED_PLAYER_ID)
+                         .WithCaptain(new PlayerId(SPECIFIED_PLAYER_ID))
                          .WithCoach(COACH)
                          .WithAchievements(ACHIEVEMENTS)
                          .WithName(TEAM_NAME)
@@ -374,11 +374,7 @@
 
         private Player CreatePlayer(int id)
         {
-            return new PlayerBuilder()
-                        .WithId(id)
-                        .WithFirstName(PLAYER_FIRSTNAME)
-                        .WithLastName(PLAYER_LASTNAME)
-                        .WithTeamId(SPECIFIED_TEAM_ID)
+            return new PlayerBuilder(id, PLAYER_FIRSTNAME, PLAYER_LASTNAME)
                         .Build();
         }
 

@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Data.MsSql.Repositories
+﻿using System.Collections.Generic;
+
+namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System.Data.Entity;
     using System.Linq;
@@ -31,25 +33,19 @@
             _dalTeams = _unitOfWork.Context.Teams;
         }
 
-        /// <summary>
-        /// Gets unit of work.
-        /// </summary>
-        public IUnitOfWork UnitOfWork
+        public Team Add(CreateTeamDto teamToCreate)
         {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
+            var players = teamToCreate.Roster.Select(x => x.Id);
+            var roster = _unitOfWork.Context.Players
+                .Where(p => players.Contains(p.Id)).ToList();
 
-        /// <summary>
-        /// Adds new team.
-        /// </summary>
-        /// <param name="newEntity">The team for adding.</param>
-        public void Add(Team newEntity)
-        {
-            var newTeam = new TeamEntity();
-            DomainToDal.Map(newTeam, newEntity);
+            var newTeam = new TeamEntity {
+                Name = teamToCreate.Name,
+                Coach = teamToCreate.Coach,
+                CaptainId = teamToCreate.Captain.Id,
+                Achievements = teamToCreate.Achievements,
+                Players = roster
+            };
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))
             {
@@ -59,7 +55,14 @@
             _dalTeams.Add(newTeam);
             _unitOfWork.Commit();
 
-            newEntity.Id = newTeam.Id;
+            return new Team(
+                newTeam.Id,
+                newTeam.Name,
+                newTeam.Coach,
+                newTeam.Achievements,
+                new PlayerId(newTeam.CaptainId),
+                teamToCreate.Roster.ToList()
+            );
         }
 
         /// <summary>
@@ -76,17 +79,53 @@
             }
 
             DomainToDal.Map(teamToUpdate, updatedEntity);
+
+            AddAndRemovePlayersInTeam(updatedEntity, teamToUpdate);
+
+            _unitOfWork.Commit();
         }
 
         /// <summary>
         /// Removes team by id.
         /// </summary>
-        /// <param name="id">The id of team to remove.</param>
-        public void Remove(int id)
+        /// <param name="teamId">The id of team to remove.</param>
+        public void Remove(TeamId teamId)
         {
-            var dalToRemove = new TeamEntity { Id = id };
+            var dalToRemove = new TeamEntity { Id = teamId.Id };
             _dalTeams.Attach(dalToRemove);
             _dalTeams.Remove(dalToRemove);
+            _unitOfWork.Commit();
         }
+
+        #region private
+
+        private void AddAndRemovePlayersInTeam(Team teamToUpdated, TeamEntity entityToUpdate)
+        {
+            var playersInTeamToUpdate = teamToUpdated.Roster.Select(p => p.Id);
+            var playersInEntityToUpdate = entityToUpdate.Players.Select(p => p.Id);
+
+            var playersToAdd = playersInTeamToUpdate.Except(playersInEntityToUpdate);
+            var playersToRemove = playersInEntityToUpdate.Except(playersInTeamToUpdate);
+
+            var playersIds = playersToAdd.Union(playersToRemove).ToList();
+
+            var playerEntities = _unitOfWork.Context.Players
+                .Where(p => playersIds.Contains(p.Id));
+
+            foreach (var player in playerEntities)
+            {
+                if (playersToAdd.Contains(player.Id))
+                {
+                    player.TeamId = entityToUpdate.Id;
+                }
+
+                if (playersToRemove.Contains(player.Id))
+                {
+                    player.TeamId = null;
+                }
+            }
+        }
+
+        #endregion
     }
 }

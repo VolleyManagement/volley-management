@@ -7,6 +7,7 @@
     using Models;
     using Mvc.ViewModels.Teams;
     using Mvc.ViewModels.Tournaments;
+    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Provides management for tournament's requests
@@ -85,7 +86,7 @@
                 return HttpNotFound();
             }
 
-            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(new TeamId(id)));
             return View(viewModel);
         }
 

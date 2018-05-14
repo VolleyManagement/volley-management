@@ -14,7 +14,6 @@
     using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
-    using PlayerResources = Domain.Properties.Resources;
 
 #pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     /// <summary>
@@ -25,17 +24,22 @@
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
+        private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
+        private readonly IQuery<ICollection<FreePlayerDto>, EmptyCriteria> _getFreePlayers;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<IQueryable<Player>, GetAllCriteria> _getAllPlayersQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
         private readonly IAuthorizationService _authService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
         /// <param name="playerRepository"> The player repository </param>
         /// <param name="getTeamByIdQuery"> Get By ID query for Teams</param>
         /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
+        /// <param name="getPlayerTeamQuery"></param>
+        /// <param name="getFreePlayers"></param>
         /// <param name="getAllPlayersQuery"> Get All players query</param>
         /// <param name="getTeamByCaptainQuery">Get Player by Captain query</param>
         /// <param name="authService">Authorization service</param>
@@ -43,14 +47,19 @@
             IPlayerRepository playerRepository,
             IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
+            IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
+            IQuery<ICollection<FreePlayerDto>, EmptyCriteria> getFreePlayers,
             IQuery<IQueryable<Player>, GetAllCriteria> getAllPlayersQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IAuthorizationService authService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
+            _getFreePlayers = getFreePlayers;
             _getPlayerByIdQuery = getPlayerByIdQuery;
             _getAllPlayersQuery = getAllPlayersQuery;
+            _getPlayerTeamQuery = getPlayerTeamQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
             _authService = authService;
         }
@@ -64,47 +73,54 @@
             return _getAllPlayersQuery.Execute(new GetAllCriteria());
         }
 
+        public ICollection<FreePlayerDto> GetFreePlayerDto()
+        {
+            return _getFreePlayers.Execute(new EmptyCriteria());
+        }
+
         /// <summary>
         /// Create a new player.
         /// </summary>
         /// <param name="playerToCreate">A Player to create.</param>
-        public void Create(Player playerToCreate)
+        public Player Create(CreatePlayerDto playerToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
             {
-                throw new ArgumentNullException("playerToCreate");
+                throw new ArgumentNullException(nameof(playerToCreate));
             }
 
-            _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
+            return _playerRepository.Add(playerToCreate);
+        }
+
+        /// <summary>
+        /// Create new players.
+        /// </summary>
+        /// <param name="fullNames">FullNmaes of players.</param>
+        public ICollection<Player> CreateBulk(IEnumerable<string> fullNames)
+        {
+            _authService.CheckAccess(AuthOperations.Players.Create);
+
+            var players = fullNames.Select(p => _playerRepository.Add(
+                new CreatePlayerDto {
+                    FirstName = p.Substring(0, p.LastIndexOf(' ')),
+                    LastName = p.Substring(p.LastIndexOf(' ') + 1)
+                })).ToList();
+
+            return players;
         }
 
         /// <summary>
         /// Create new players.
         /// </summary>
         /// <param name="playersToCreate">New players.</param>
-        public void Create(ICollection<Player> playersToCreate)
+        public ICollection<Player> CreateBulk(ICollection<CreatePlayerDto> playersToCreate)
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            if (ValidateExistingPlayers(playersToCreate))
-            {
-                throw new ArgumentException(
-                    PlayerResources.ValidationPlayerOfAnotherTeam);
-            }
+            var players = playersToCreate.Select(p => _playerRepository.Add(p)).ToList();
 
-            var newPlayersToCreate = GetNewPlayers(playersToCreate).ToList();
-
-            if (newPlayersToCreate.Any())
-            {
-                foreach (var player in newPlayersToCreate)
-                {
-                    _playerRepository.Add(player);
-                }
-
-                _playerRepository.UnitOfWork.Commit();
-            }
+            return players;
         }
 
         /// <summary>
@@ -114,7 +130,7 @@
         /// <returns>A found Player.</returns>
         public Player Get(int id)
         {
-            return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            return _getPlayerByIdQuery.Execute(new FindByIdCriteria {Id = id});
         }
 
         /// <summary>
@@ -123,22 +139,6 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
-            // Check if player is captain of team and teamId is null or changed
-            ////Team ledTeam = GetPlayerLedTeam(playerToEdit.Id);
-            ////if (ledTeam != null &&
-            ////    (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
-            ////{
-            ////    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-            ////    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
-            ////    throw ex;
-            ////}
-
-            ////if (playerToEdit.TeamId != null
-            ////    && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
-            ////{
-            ////    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
-            ////}
-
             _authService.CheckAccess(AuthOperations.Players.Edit);
             try
             {
@@ -148,8 +148,6 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
             }
-
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -171,7 +169,6 @@
             try
             {
                 _playerRepository.Remove(id);
-                _playerRepository.UnitOfWork.Commit();
             }
             catch (InvalidKeyValueException ex)
             {
@@ -186,50 +183,24 @@
         /// <returns>Player's team</returns>
         public Team GetPlayerTeam(Player player)
         {
-            if (player.TeamId == null)
+            var teamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria {Id = player.Id});
+
+            if (teamId == default(int))
             {
                 return null;
             }
 
-            return GetTeamById(player.TeamId.GetValueOrDefault());
+            return GetTeamById(teamId);
         }
 
         private Team GetPlayerLedTeam(int playerId)
         {
-            return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
+            return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria {CaptainId = playerId});
         }
 
         private Team GetTeamById(int id)
         {
-            return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
-
-        private static IEnumerable<Player> GetNewPlayers(IEnumerable<Player> playersToCreate)
-        {
-            return playersToCreate.Where(p => p.Id == 0);
-        }
-
-        /// <summary>
-        /// Validate if Player of Another Team
-        /// </summary>
-        /// <param name="playersToCreate">List of Players</param>
-        /// <returns> Return true if Player has TeamId </returns>
-        private bool ValidateExistingPlayers(ICollection<Player> playersToCreate)
-        {
-            var existingPlayers = Get().ToList();
-
-            var teamId = playersToCreate.First().Id != 0
-                ? Get(playersToCreate.First(t => t.Id != 0).Id).TeamId
-                : null;
-
-            var isExistingPlayers = existingPlayers
-                    .Select(allPlayer => playersToCreate
-                    .FirstOrDefault(t => String.Equals(t.FirstName, allPlayer.FirstName, StringComparison.InvariantCultureIgnoreCase)
-                                  && String.Equals(t.LastName, allPlayer.LastName, StringComparison.InvariantCultureIgnoreCase)
-                                  && allPlayer.TeamId != null
-                                  && allPlayer.TeamId != teamId));
-
-            return isExistingPlayers.Any(t => t != null);
+            return _getTeamByIdQuery.Execute(new FindByIdCriteria {Id = id});
         }
     }
 }

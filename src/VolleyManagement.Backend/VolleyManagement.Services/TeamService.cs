@@ -13,7 +13,6 @@
     using Data.Queries.Player;
     using Data.Queries.Team;
     using Domain.PlayersAggregate;
-    using Domain.Properties;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
     using TournamentResources = Domain.Properties.Resources;
@@ -26,13 +25,13 @@
 #pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITeamRepository _teamRepository;
-        private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
-        private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
+        private readonly IQuery<int, FindByPlayerCriteria> _getPlayerTeamQuery;
         private readonly IQuery<ICollection<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<ICollection<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
+        private readonly IQuery<Team, FindByNameCriteria> _getTeamByNameQuery;
         private readonly IAuthorizationService _authService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
@@ -45,8 +44,10 @@
         /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
         /// <param name="getPlayerByNameQuery"> Get By Name query for Players</param>
         /// <param name="getTeamByCaptainQuery"> Get By Captain ID query for Teams</param>
+        /// <param name="getPlayerTeamQuery"></param>
         /// <param name="getAllTeamsQuery"> Get All teams query</param>
         /// <param name="getTeamRosterQuery"> Get players for team query</param>
+        /// <param name="getTeamByNameQuery"></param>
         /// <param name="authService">Authorization service</param>
         public TeamService(
             ITeamRepository teamRepository,
@@ -55,19 +56,21 @@
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
+            IQuery<int, FindByPlayerCriteria> getPlayerTeamQuery,
             IQuery<ICollection<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<ICollection<Player>, TeamPlayersCriteria> getTeamRosterQuery,
+            IQuery<Team, FindByNameCriteria> getTeamByNameQuery,
             IAuthorizationService authService)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             _teamRepository = teamRepository;
-            _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
-            _getPlayerByNameQuery = getPlayerByNameQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
+            _getPlayerTeamQuery = getPlayerTeamQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getTeamRosterQuery = getTeamRosterQuery;
+            _getTeamByNameQuery = getTeamByNameQuery;
             _authService = authService;
         }
 
@@ -84,30 +87,80 @@
         /// Create a new team.
         /// </summary>
         /// <param name="teamToCreate">A Team to create.</param>
-        public void Create(Team teamToCreate)
+        public Team Create(CreateTeamDto teamToCreate)
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
-            var captain = GetPlayerById(teamToCreate.CaptainId);
+            if (teamToCreate.Captain == null)
+            {
+                throw new EntityInvariantViolationException("Captain can not be null");
+            }
+
+            ThrowExceptionIfTeamWithSuchNameExists(teamToCreate.Name);
+
+            var captain = GetPlayerById(teamToCreate.Captain.Id);
             if (captain == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.Captain.Id);
             }
 
             // Check if captain in teamToCreate is captain of another team
-            if (captain.TeamId != null)
+            var existTeam = GetTeamLedByCaptain(captain.Id);
+            VerifyExistingTeamOrThrow(existTeam);
+
+            return _teamRepository.Add(teamToCreate);
+        }
+
+        /// <summary>
+        /// Add players to the team.
+        /// </summary>
+        /// <param name="team">Team id to which players must be added.</param>
+        /// <param name="players">Player's ids that must be added.</param>
+        public void AddPlayers(TeamId team, IEnumerable<PlayerId> players)
+        {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
+            var changedTeam = Get(team.Id);
+
+            if (changedTeam == null)
             {
-                var existTeam = GetPlayerLedTeam(captain.Id);
-                VerifyExistingTeamOrThrow(existTeam);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
             }
 
-            ValidateTeam(teamToCreate);
+            CheckIfPlayersAreNotInAnotherTeam(players);
 
-            _teamRepository.Add(teamToCreate);
+            changedTeam.AddPlayers(players);
+            _teamRepository.Update(changedTeam);
+        }
 
-            captain.TeamId = teamToCreate.Id;
-            _playerRepository.Update(captain);
-            _playerRepository.UnitOfWork.Commit();
+        private void CheckIfPlayersAreNotInAnotherTeam(IEnumerable<PlayerId> addedPlayers)
+        {
+            var playersTeams = addedPlayers
+                .Select(x => _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = x.Id }));
+            //check if players play in another team
+            if (playersTeams.Any(x => x > 0))
+            {
+                throw new ArgumentException("Player can not play in two teams");
+            }
+        }
+
+
+        /// <summary>
+        /// Remove players from the team.
+        /// </summary>
+        /// <param name="team">Team id from which players must be removed.</param>
+        /// <param name="players">Player's ids that must be removed.</param>
+        public void RemovePlayers(TeamId team, IEnumerable<PlayerId> players)
+        {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
+            var changedTeam = Get(team.Id);
+
+            if (changedTeam == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+
+            changedTeam.RemovePlayers(players);
+            _teamRepository.Update(changedTeam);
         }
 
         /// <summary>
@@ -117,36 +170,33 @@
         public void Edit(Team teamToEdit)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            var captain = GetPlayerById(teamToEdit.CaptainId);
 
-            if (captain == null)
+            var teamInDb = _getTeamByNameQuery.Execute(new FindByNameCriteria { Name = teamToEdit.Name });
+            if (teamInDb != null &&
+                teamInDb.Id != teamToEdit.Id)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToEdit.CaptainId);
+                throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
             }
 
-            // Check if captain in teamToCreate is captain of another team
-            if ((captain.TeamId != null) && (captain.TeamId != teamToEdit.Id))
+            var newTeam = Get(teamToEdit.Id);
+
+            if (newTeam == null)
             {
-                var existTeam = GetPlayerLedTeam(captain.Id);
-                VerifyExistingTeamOrThrow(existTeam);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound);
             }
 
-            ValidateTeam(teamToEdit);
-
-            teamToEdit.CaptainId = captain.Id;
+            newTeam.Name = teamToEdit.Name;
+            newTeam.Achievements = teamToEdit.Achievements;
+            newTeam.Coach = teamToEdit.Coach;
 
             try
             {
-                _teamRepository.Update(teamToEdit);
+                _teamRepository.Update(newTeam);
             }
             catch (ConcurrencyException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }
-
-            captain.TeamId = teamToEdit.Id;
-            _playerRepository.Update(captain);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -163,7 +213,7 @@
         /// Delete team by id.
         /// </summary>
         /// <param name="teamId">The id of team to delete.</param>
-        public void Delete(int teamId)
+        public void Delete(TeamId teamId)
         {
             _authService.CheckAccess(AuthOperations.Teams.Delete);
             try
@@ -172,18 +222,8 @@
             }
             catch (InvalidKeyValueException ex)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId, ex);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId.Id, ex);
             }
-
-            IEnumerable<Player> roster = GetTeamRoster(teamId);
-
-            foreach (var player in roster)
-            {
-                player.TeamId = null;
-                _playerRepository.Update(player);
-            }
-
-            _teamRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -193,7 +233,33 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return GetPlayerById(team.CaptainId);
+            return GetPlayerById(team.Captain.Id);
+        }
+
+        /// <summary>
+        /// Change captain for existing team.
+        /// </summary>
+        /// <param name="team">team for editing.</param>
+        /// <param name="captainId">Player who should become captain.</param>
+        public void ChangeCaptain(TeamId team, PlayerId captainId)
+        {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
+            var teamToEdit = Get(team.Id);
+            if (teamToEdit == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, team.Id);
+            }
+            var captainTeamId = _getPlayerTeamQuery.Execute(new FindByPlayerCriteria { Id = captainId.Id });
+
+            if (captainTeamId == teamToEdit.Id || captainTeamId == 0)
+            {
+                teamToEdit.SetCaptain(captainId);
+                _teamRepository.Update(teamToEdit);
+            }
+            else
+            {
+                throw new ValidationException(ServiceResources.ExceptionMessages.PlayerIsPlayerOfAnotherTeam);
+            }
         }
 
         /// <summary>
@@ -201,43 +267,22 @@
         /// </summary>
         /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        public ICollection<Player> GetTeamRoster(int teamId)
+        public ICollection<Player> GetTeamRoster(TeamId teamId)
         {
-            return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId });
+            return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId.Id });
         }
 
-        /// <summary>
-        /// Sets team id to roster
-        /// </summary>
-        /// <param name="roster">Players to set the team</param>
-        /// <param name="teamId">Id of team which should be set to player</param>
-        public void UpdateRosterTeamId(ICollection<Player> roster, int teamId)
+        private void ThrowExceptionIfTeamWithSuchNameExists(string name)
         {
-            if (GetTeamRoster(teamId).Count > 1)
+            if (TeamWithNameExists(name))
             {
-                foreach (var player in GetTeamRoster(teamId))
-                {
-                    if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
-                    {
-                        SetPlayerTeamIdToNull(player.Id);
-                    }
-                }
-            }
-
-            foreach (var player in roster)
-            {
-                UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
+                throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
             }
         }
 
-        private static bool ValidateTwoTeamsName(Team teamToValidate, ICollection<Team> getExistingTeams)
-        {
-            var existingTeams = from ex in getExistingTeams
-                                where ex.Id != teamToValidate.Id
-                                where String.Equals(ex.Name, teamToValidate.Name, StringComparison.InvariantCultureIgnoreCase)
-                                select ex;
-            return existingTeams.Count() != 0;
-        }
+        private bool TeamWithNameExists(string name) =>
+            _getTeamByNameQuery
+                .Execute(new FindByNameCriteria { Name = name }) != null;
 
         private static void VerifyExistingTeamOrThrow(Team existTeam)
         {
@@ -249,62 +294,7 @@
             }
         }
 
-        private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
-        {
-            var player = GetPlayerByFullName(firstName, lastName);
-
-            if (player == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
-            }
-
-            // Check if player plays in another team
-            if (player.TeamId != null && player.TeamId != teamId)
-            {
-                throw new ArgumentException(
-                    TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
-            }
-
-            // Check if player is captain of another team
-            if (player.TeamId != null)
-            {
-                var existingTeam = GetPlayerLedTeam(player.Id);
-
-                if (existingTeam != null && teamId != existingTeam.Id)
-                {
-                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
-                    throw ex;
-                }
-            }
-
-            var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
-
-            if (team == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
-            }
-
-            player.TeamId = teamId;
-            _playerRepository.Update(player);
-            _playerRepository.UnitOfWork.Commit();
-        }
-
-        private void SetPlayerTeamIdToNull(int playerId)
-        {
-            var player = GetPlayerById(playerId);
-
-            if (player == null)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
-            }
-
-            player.TeamId = null;
-            _playerRepository.Update(player);
-            _playerRepository.UnitOfWork.Commit();
-        }
-
-        private Team GetPlayerLedTeam(int playerId)
+        private Team GetTeamLedByCaptain(int playerId)
         {
             return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
         }
@@ -312,67 +302,6 @@
         private Player GetPlayerById(int id)
         {
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
-
-        private Player GetPlayerByFullName(string firstName, string lastName)
-        {
-            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
-        }
-
-        private static void ValidateTeamName(string teamName)
-        {
-            if (TeamValidation.ValidateTeamName(teamName))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationTeamName,
-                    Domain.Constants.Team.MAX_NAME_LENGTH),
-                    nameof(teamName));
-            }
-        }
-
-        private static void ValidateCoachName(string teamCoachName)
-        {
-            if (!string.IsNullOrEmpty(teamCoachName)
-                && TeamValidation.ValidateCoachName(teamCoachName))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationCoachName,
-                    Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                    nameof(teamCoachName));
-            }
-        }
-
-        private static void ValidateAchievements(string teamAchievements)
-        {
-            if (!string.IsNullOrEmpty(teamAchievements)
-                && TeamValidation.ValidateAchievements(teamAchievements))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    TournamentResources.ValidationTeamAchievements,
-                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                    nameof(teamAchievements));
-            }
-        }
-
-        private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
-        {
-            var existingTeams = Get();
-            if (ValidateTwoTeamsName(teamToValidate, existingTeams))
-            {
-                throw new ArgumentException(
-                    TournamentResources.TeamNameInTournamentNotUnique);
-            }
-        }
-
-        private void ValidateTeam(Team teamToValidate)
-        {
-            ValidateTeamName(teamToValidate.Name);
-            ValidateCoachName(teamToValidate.Coach);
-            ValidateAchievements(teamToValidate.Achievements);
-            ValidateTwoTeamsWithTheSameName(teamToValidate);
         }
     }
 }

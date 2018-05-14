@@ -32,33 +32,32 @@
         }
 
         /// <summary>
-        /// Gets unit of work.
-        /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
-
-        /// <summary>
         /// Adds new player.
         /// </summary>
-        /// <param name="newEntity">The player for adding.</param>
-        public void Add(Player newEntity)
+        /// <param name="playerDto">The player for adding.</param>
+        public Player Add(CreatePlayerDto playerDto)
         {
-            var newPlayer = new PlayerEntity();
-            DomainToDal.Map(newPlayer, newEntity);
+            var newEntity = new PlayerEntity {
+                FirstName = playerDto.FirstName,
+                LastName = playerDto.LastName,
+                BirthYear = playerDto.BirthYear,
+                Height = playerDto.Height,
+                Weight = playerDto.Weight
+            };
 
-            if (!_dbStorageSpecification.IsSatisfiedBy(newPlayer))
+            if (!_dbStorageSpecification.IsSatisfiedBy(newEntity))
             {
                 throw new InvalidEntityException();
             }
 
-            _dalPlayers.Add(newPlayer);
+            _dalPlayers.Add(newEntity);
             _unitOfWork.Commit();
-            newEntity.Id = newPlayer.Id;
+
+            return new Player(newEntity.Id, newEntity.FirstName, newEntity.LastName) {
+                BirthYear = newEntity.BirthYear,
+                Height = newEntity.Height,
+                Weight = newEntity.Weight
+            };
         }
 
         /// <summary>
@@ -82,6 +81,7 @@
             }
 
             DomainToDal.Map(playerToUpdate, updatedEntity);
+            _unitOfWork.Commit();
         }
 
         /// <summary>
@@ -93,6 +93,7 @@
             var dalToRemove = new PlayerEntity { Id = id };
             _dalPlayers.Attach(dalToRemove);
             _dalPlayers.Remove(dalToRemove);
+            _unitOfWork.Commit();
         }
     }
 }

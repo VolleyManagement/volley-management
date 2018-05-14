@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.WebAPI.Controllers
+﻿using VolleyManagement.Domain.TeamsAggregate;
+
+namespace VolleyManagement.UI.Areas.WebAPI.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -36,11 +38,11 @@
                 return BadRequest(ModelState);
             }
 
-            var teamToCreate = team.ToDomain();
-
+            var teamToCreate = team.ToCreateTeamDto();
+            
             try
             {
-                _teamService.Create(teamToCreate);
+              team.Id= _teamService.Create(teamToCreate).Id;
             }
             catch (MissingEntityException ex)
             {
@@ -48,7 +50,6 @@
                 return BadRequest(ModelState);
             }
 
-            team.Id = teamToCreate.Id;
             return Ok(team);
         }
 
@@ -70,7 +71,7 @@
         public IEnumerable<PlayerViewModel> GetPlayers(int key)
         {
             var result = _teamService
-                .GetTeamRoster(key)
+                .GetTeamRoster(new TeamId(key))
                 .Select(p => PlayerViewModel.Map(p));
 
             return result;
@@ -83,7 +84,7 @@
         {
             try
             {
-                _teamService.Delete(id);
+                _teamService.Delete(new TeamId(id));
             }
             catch (MissingEntityException ex)
             {

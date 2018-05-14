@@ -106,27 +106,33 @@
                 LastName = player.LastName,
                 BirthYear = player.BirthYear,
                 Height = player.Height,
-                Weight = player.Weight,
-                TeamId = player.TeamId
+                Weight = player.Weight
             };
 
             return playerViewModel;
         }
 
         /// <summary>
-        /// Maps presentation entity to domain
+        /// Maps entity to domain
         /// </summary>
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player {
-                Id = Id,
-                FirstName = FirstName,
-                LastName = LastName,
-                BirthYear = BirthYear,
-                Height = Height,
-                Weight = Weight,
-                TeamId = TeamId
+            return new Player(Id, FirstName, LastName, BirthYear, Height, Weight);
+        }
+
+        /// <summary>
+        /// Map entity to createPlayerDto
+        /// </summary>
+        /// <returns> CreatePlayerDto object </returns>
+        public CreatePlayerDto ToCreatePlayerDto()
+        {
+            return new CreatePlayerDto {
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                BirthYear = this.BirthYear,
+                Height = this.Height,
+                Weight = this.Weight
             };
         }
         #endregion

@@ -25,12 +25,10 @@
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)
+                .WithTeamId(1)
                 .Build();
 
-            var testDomainModel = new PlayerBuilder()
-                .WithId(1)
-                .WithFirstName("FirstName")
-                .WithLastName("LastName")
+            var testDomainModel = new PlayerBuilder(1, "FirstName", "LastName")
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)
@@ -40,7 +38,7 @@
             var actual = PlayerViewModel.Map(testDomainModel);
 
             // Assert
-            TestHelper.AreEqual<PlayerViewModel>(testViewModel, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual(testViewModel, actual, new PlayerViewModelComparer());
         }
     }
 }

@@ -19,7 +19,7 @@ namespace VolleyManagement.Domain.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -57,6 +57,15 @@ namespace VolleyManagement.Domain.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player is already a member of the team.
+        /// </summary>
+        public static string AddingMemberedPlayerToTeam {
+            get {
+                return ResourceManager.GetString("AddingMemberedPlayerToTeam", resourceCulture);
             }
         }
         
@@ -300,6 +309,24 @@ namespace VolleyManagement.Domain.Properties {
         public static string PlayoffGameEditingError {
             get {
                 return ResourceManager.GetString("PlayoffGameEditingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot remove current captain of the team.
+        /// </summary>
+        public static string RemovingCaptain {
+            get {
+                return ResourceManager.GetString("RemovingCaptain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot unmember the player, which is not a part of the team.
+        /// </summary>
+        public static string RemovingUnmemberedPlayerFromTeam {
+            get {
+                return ResourceManager.GetString("RemovingUnmemberedPlayerFromTeam", resourceCulture);
             }
         }
         
@@ -592,6 +619,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Captain&apos;s id is smaller, than required.
+        /// </summary>
+        public static string ValidationTeamCaptain {
+            get {
+                return ResourceManager.GetString("ValidationTeamCaptain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team&apos;s id is wrong.
         /// </summary>
         public static string ValidationTeamId {
@@ -606,6 +642,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string ValidationTeamName {
             get {
                 return ResourceManager.GetString("ValidationTeamName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passed roster is inappropriate.
+        /// </summary>
+        public static string ValidationTeamRoster {
+            get {
+                return ResourceManager.GetString("ValidationTeamRoster", resourceCulture);
             }
         }
         

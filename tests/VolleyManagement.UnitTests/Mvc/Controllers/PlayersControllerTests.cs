@@ -319,7 +319,9 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
+            var player = MakeTestPlayer(1);
             var sut = BuildSUT();
+            SetupCreate(player);
 
             // Act
             var result = sut.Create(testData) as RedirectToRouteResult;
@@ -405,7 +407,7 @@
             var actual = TestExtensions.GetModel<PlayerViewModel>(sut.Edit(TEST_PLAYER_ID));
 
             // Assert
-            TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual(expected, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>
@@ -516,7 +518,11 @@
 
         private Player MakeTestPlayer(int playerId)
         {
-            return new PlayerBuilder().WithId(playerId).Build();
+            return new PlayerBuilder(playerId)
+                .WithBirthYear(1983)
+                .WithHeight(186)
+                .WithWeight(95)
+                .Build();
         }
 
         private PlayerViewModel MakeTestPlayerViewModel()
@@ -539,15 +545,20 @@
             _playerServiceMock.Setup(tr => tr.Get(playerId)).Returns(player);
         }
 
+        private void SetupCreate(Player player)
+        {
+            _playerServiceMock.Setup(tr => tr.Create(It.IsAny<CreatePlayerDto>())).Returns(player);
+        }
+
         private void SetupCreateThrowsArgumentException()
         {
-            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<CreatePlayerDto>()))
                 .Throws(new ArgumentException(string.Empty, string.Empty));
         }
 
         private void SetupCreateThrowsValidationException()
         {
-            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<CreatePlayerDto>()))
                 .Throws(new ValidationException(string.Empty));
         }
 
@@ -588,7 +599,7 @@
 
         private void VerifyCreate(Times times)
         {
-            _playerServiceMock.Verify(ps => ps.Create(It.IsAny<Player>()), times);
+            _playerServiceMock.Verify(ps => ps.Create(It.IsAny<CreatePlayerDto>()), times);
         }
 
         private void VerifyEdit(Times times)

@@ -2,11 +2,21 @@
 {
     using System.Text.RegularExpressions;
 
+    using static Constants.Player;
+
     /// <summary>
     /// Player validation class.
     /// </summary>
-    public static class PlayerValidation
+    internal static class PlayerValidation
     {
+        /// <summary>
+        /// Vallidates player id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        internal static bool ValidateId(int id) =>
+            id < MIN_ID;
+
         /// <summary>
         /// Validates player first name.
         /// </summary>
@@ -14,8 +24,8 @@
         /// <returns>Validity of Player first name</returns>
         public static bool ValidateFirstName(string firstName)
         {
-            return string.IsNullOrEmpty(firstName) || !Regex.IsMatch(firstName, Constants.Player.NAME_VALIDATION_REGEX)
-                || firstName.Length > Constants.Player.MAX_FIRST_NAME_LENGTH;
+            return string.IsNullOrEmpty(firstName) || !Regex.IsMatch(firstName, NAME_VALIDATION_REGEX)
+                || firstName.Length > MAX_FIRST_NAME_LENGTH;
         }
 
         /// <summary>
@@ -23,10 +33,21 @@
         /// </summary>
         /// <param name="lastName">Player last name for validation</param>
         /// <returns>Validity of Player last name</returns>
-        public static bool ValidateLastName(string lastName)
+        internal static bool ValidateLastName(string lastName)
         {
-            return string.IsNullOrEmpty(lastName) || !Regex.IsMatch(lastName, Constants.Player.NAME_VALIDATION_REGEX)
-                || lastName.Length > Constants.Player.MAX_LAST_NAME_LENGTH;
+            return string.IsNullOrEmpty(lastName) || !Regex.IsMatch(lastName, NAME_VALIDATION_REGEX)
+                || lastName.Length > MAX_LAST_NAME_LENGTH;
+        }
+
+        /// <summary>
+        /// Generalises the validation for nullable members of Player.
+        /// </summary>
+        /// <param name="val">Value</param>
+        /// <param name="requirement">Result of requirement for value, if it's not null.</param>
+        /// <returns></returns>
+        internal static bool NullableIsInvalid(int? val, bool requirement)
+        {
+            return val.HasValue && requirement;
         }
 
         /// <summary>
@@ -34,32 +55,31 @@
         /// </summary>
         /// <param name="birthYear">Player birth year for validation</param>
         /// <returns>Validity of Player birth year.</returns>
-        public static bool ValidateBirthYear(int? birthYear)
-        {
-            return birthYear.HasValue
-                && birthYear <= Constants.Player.MIN_BIRTH_YEAR && birthYear >= Constants.Player.MAX_BIRTH_YEAR;
-        }
+        internal static bool ValidateBirthYear(short? birthYear) =>
+            NullableIsInvalid(birthYear, birthYear <= MIN_BIRTH_YEAR || birthYear >= MAX_BIRTH_YEAR);
 
         /// <summary>
         /// Validates player height.
         /// </summary>
         /// <param name="height">Player height for validation</param>
         /// <returns>Validity of Player height.</returns>
-        public static bool ValidateHeight(int? height)
-        {
-            return height.HasValue
-                && height <= Constants.Player.MIN_HEIGHT && height >= Constants.Player.MAX_HEIGHT;
-        }
+        internal static bool ValidateHeight(short? height) =>
+            NullableIsInvalid(height, height <= MIN_HEIGHT || height >= MAX_HEIGHT);
 
         /// <summary>
         /// Validates player weight.
         /// </summary>
         /// <param name="weight">Player weight for validation</param>
         /// <returns>Validity of Player weight.</returns>
-        public static bool ValidateWeight(int? weight)
-        {
-            return weight.HasValue
-                && weight <= Constants.Player.MIN_WEIGHT && weight >= Constants.Player.MAX_WEIGHT;
-        }
+        internal static bool ValidateWeight(short? weight) =>
+            NullableIsInvalid(weight, weight <= MIN_WEIGHT || weight >= MAX_WEIGHT);
+
+        /// <summary>
+        /// Validates player team id.
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        internal static bool ValidateTeamId(int? teamId) =>
+            NullableIsInvalid(teamId, teamId < MIN_ID);
     }
 }

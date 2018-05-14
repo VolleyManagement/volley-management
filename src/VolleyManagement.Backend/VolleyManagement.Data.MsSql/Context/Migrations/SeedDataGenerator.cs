@@ -149,6 +149,7 @@
         {
             var contributorTeams = new[]
             {
+                ContributorsSpecial(),
                 ContributorsProMan(),
                 Contributors042Net(),
                 Contributors052Net(),
@@ -163,10 +164,25 @@
                 Contributors091Atqc(),
                 Contributors096Net(),
                 Contributors103Net(),
-                Contributors122Net()
+                Contributors122Net(),
+                Contributors297Net()
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
+        }
+
+        private static ContributorTeamEntity ContributorsSpecial()
+        {
+            var contributors = new ContributorTeamEntity {
+                Name = "Special thanks",
+                CourseDirection = "All",
+                Contributors = new List<ContributorEntity>
+                {
+                    new ContributorEntity { Name = "Dmytro Shapoval" },
+                    new ContributorEntity { Name = "Mykola Bocharskiy" }
+                }
+            };
+            return contributors;
         }
 
         private static ContributorTeamEntity ContributorsProMan()
@@ -430,6 +446,25 @@
                     new ContributorEntity { Name = "Dmytro Lohunov" },
                     new ContributorEntity { Name = "Oleksandr Leontiev" },
                     new ContributorEntity { Name = "Sofia Babenko" }
+                }
+            };
+            return contributors;
+        }
+
+        private static ContributorTeamEntity Contributors297Net()
+        {
+            var contributors = new ContributorTeamEntity {
+                Name = "Lv-297 .NET",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity>
+                {
+                    new ContributorEntity { Name = "Andrii Pirko" },
+                    new ContributorEntity { Name = "Oleh Gerus" },
+                    new ContributorEntity { Name = "Yurii Chornyi" },
+                    new ContributorEntity { Name = "Myroslav Vyspyansky" },
+                    new ContributorEntity { Name = "Natalia Bidiuk" },
+                    new ContributorEntity { Name = "Sofia Viznyak" },
+                    new ContributorEntity { Name = "Roman Ben'" }
                 }
             };
             return contributors;

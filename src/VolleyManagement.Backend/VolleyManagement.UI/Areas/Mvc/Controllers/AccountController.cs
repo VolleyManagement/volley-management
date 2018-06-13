@@ -158,7 +158,9 @@
         [HttpPost]
         [Authorize]
 #pragma warning disable S4261 // Methods should be named according to their synchronicities
+#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
         public async Task<ActionResult> Edit(UserEditViewModel editViewModel)
+#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
 #pragma warning restore S4261 // Methods should be named according to their synchronicities
         {
             if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.UI.AuthorizationRoles.Admin))

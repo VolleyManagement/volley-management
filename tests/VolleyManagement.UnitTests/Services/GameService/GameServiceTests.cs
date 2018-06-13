@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Collections;
+    using Comparers;
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;

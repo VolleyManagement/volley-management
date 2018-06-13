@@ -1,22 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7A32AA11-6E95-4896-9E7A-FC3DF24524EA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VolleyManagement.Data</RootNamespace>
-    <AssemblyName>VolleyManagement.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>net47</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,88 +38,50 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>VolleyManagement.Data.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Contracts\Constants.cs" />
-    <Compile Include="Contracts\IQuery.cs" />
-    <Compile Include="Contracts\IQueryAsync.cs" />
-    <Compile Include="Contracts\IQueryCriteria.cs" />
-    <Compile Include="Contracts\IGenericRepository.cs" />
-    <Compile Include="Contracts\IRepository.cs" />
-    <Compile Include="Contracts\IUnitOfWork.cs" />
-    <Compile Include="Exceptions\ConcurrencyException.cs" />
-    <Compile Include="Exceptions\InvalidEntityException.cs" />
-    <Compile Include="Exceptions\InvalidKeyValueException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\Authorization\FindByUserIdCriteria.cs" />
-    <Compile Include="Queries\Common\FindByIdCriteria.cs" />
-    <Compile Include="Queries\Common\EmptyCriteria.cs" />
-    <Compile Include="Queries\Division\TournamentDivisionsCriteria.cs" />
-    <Compile Include="Queries\GameResult\GameByNumberCriteria.cs" />
-    <Compile Include="Queries\GameResult\GamesByRoundCriteria.cs" />
-    <Compile Include="Queries\GameResult\TournamentGameResultsCriteria.cs" />
-    <Compile Include="Queries\GameResult\TournamentRoundsGameResultsCriteria.cs" />
-    <Compile Include="Queries\Group\DivisionGroupsCriteria.cs" />
-    <Compile Include="Queries\Player\FindByFullNameCriteria.cs" />
-    <Compile Include="Queries\Player\TeamPlayersCriteria.cs" />
-    <Compile Include="Queries\Player\UserToPlayerCriteria.cs" />
-    <Compile Include="Queries\Team\FindByCaptainIdCriteria.cs" />
-    <Compile Include="Queries\Common\GetAllCriteria.cs" />
-    <Compile Include="Queries\Team\FindByNameCriteria.cs" />
-    <Compile Include="Queries\Team\FindByPlayerCriteria.cs" />
-    <Compile Include="Queries\Team\FindByTournamentIdCriteria.cs" />
-    <Compile Include="Queries\Team\FindByTournamentIdCriteriaOld.cs" />
-    <Compile Include="Queries\Team\FindTeamsInDivisionsByTournamentIdCriteria.cs" />
-    <Compile Include="Queries\Team\FindTeamsByGroupIdCriteria.cs" />
-    <Compile Include="Queries\TournamentRequest\FindByTeamTournamentCriteria.cs" />
-    <Compile Include="Queries\Tournament\OldTournamentsCriteria.cs" />
-    <Compile Include="Queries\Tournament\TournamentByGroupCriteria.cs" />
-    <Compile Include="Queries\Tournament\TournamentScheduleInfoCriteria.cs" />
-    <Compile Include="Queries\Tournament\UniqueTournamentCriteria.cs" />
-    <Compile Include="Queries\User\FindByEmailCriteria.cs" />
-    <Compile Include="Queries\User\FindByLoginInfoCriteria.cs" />
-    <Compile Include="Queries\User\FindByNameCriteria.cs" />
-    <Compile Include="Queries\User\FindByRoleCriteria.cs" />
-    <Compile Include="Queries\User\UniqueUserCriteria.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="VolleyManagement.Data.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A32AA11-6E95-4896-9E7A-FC3DF24524EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VolleyManagement.Data</RootNamespace>
+    <AssemblyName>VolleyManagement.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp />
+  </PropertyGroup>
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <PackageReference Include="Microsoft.Net.Compilers" Version="2.6.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.1.0.5212">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VolleyManagement.Data.ruleset" />
+  </ItemGroup>
 </Project>

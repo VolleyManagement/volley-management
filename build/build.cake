@@ -1,4 +1,4 @@
-#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+﻿#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #tool nuget:?package=JetBrains.dotCover.CommandLineTools
 #tool "nuget:?package=xunit.runner.console"
 
@@ -101,7 +101,7 @@ Task("Build")
 
 Task("UnitTests")
     .Does(() => {
-        var testsPath = utsDir.Path.FullPath + "/*.UnitTests.dll";
+        var testsPath = utsDir.Path.FullPath + "/*/*.UnitTests.dll";
         var msTestSettings = new MSTestSettings {
             ResultsFile = utResults.Path.GetFilename().FullPath,
             WorkingDirectory = testsDir
@@ -128,7 +128,7 @@ Task("UnitTests")
 Task("IntegrationTests")
     .WithCriteria(() => canRunIntegrationTests)
     .Does(() => {        
-        var testsPath = specsDir.Path.FullPath + "/*.Specs.dll";
+        var testsPath = specsDir.Path.FullPath + "/*/*.Specs.dll";
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = specsDir,
             ReportName = specResults.Path.GetFilenameWithoutExtension().FullPath,
@@ -156,7 +156,7 @@ Task("IntegrationTests")
 
 Task("DomainTests")
     .Does(() => {        
-        var testsPathDomain = domainDir.Path.FullPath + "/*.Domain.UnitTests.dll";
+        var testsPathDomain = domainDir.Path.FullPath + "/*/*.Domain.UnitTests.dll";
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = testsDir,
             ReportName = domainUTResults.Path.GetFilenameWithoutExtension().FullPath,

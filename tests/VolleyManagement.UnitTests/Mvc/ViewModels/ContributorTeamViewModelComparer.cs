@@ -11,8 +11,18 @@
     /// Comparer for contributor team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>, IComparer
+    internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>, IComparer, IEqualityComparer<ContributorsTeamViewModel>
     {
+        public bool Equals(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
+        {
+            return IsEqual(x, y);
+        }
+
+        public int GetHashCode(ContributorsTeamViewModel obj)
+        {
+            return obj.Id.GetHashCode();
+        }
+
         /// <summary>
         /// Compares two contributor team objects.
         /// </summary>

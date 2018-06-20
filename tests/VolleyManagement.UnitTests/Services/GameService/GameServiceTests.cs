@@ -1822,8 +1822,7 @@
             var sut = BuildSUT();
 
             var newScheduledGame = games
-                    .Where(g => g.GameNumber == 5)
-                    .SingleOrDefault();
+                .SingleOrDefault(g => g.GameNumber == 5);
 
             // Act
             sut.Edit(finishedGame);

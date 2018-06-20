@@ -2,35 +2,37 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Contracts;
     using Contracts.Exceptions;
     using Domain.PlayersAggregate;
     using Domain.UsersAggregate;
+    using FluentAssertions;
+    using FluentAssertions.Primitives;
     using UI.Areas.Admin.Controllers;
     using Services.PlayerService;
     using Services.UsersService;
+    using Xunit;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class RequestControllerTests
     {
         #region Fields
         private const int REQUEST_ID = 1;
         private const int USER_ID = 1;
         private const int PLAYER_ID = 1;
+        private const string INVALID_OPERATION_MESSAGE = "Invalid operation";
 
         private Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
         private Mock<IUserService> _userServiceMock = new Mock<IUserService>();
         private Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
+        private AndConstraint<ObjectAssertions> INVALID_OPERATION;
 
         #endregion
 
         #region Init
 
-        [TestInitialize]
-        public void TestInit()
+        public RequestControllerTests()
         {
             _requestServiceMock = new Mock<IRequestService>();
             _userServiceMock = new Mock<IUserService>();
@@ -41,7 +43,7 @@
 
         #region Tests
 
-        [TestMethod]
+        [Fact]
         public void UserDetails_ExistingUser_UserReturned()
         {
             // Arrange
@@ -57,7 +59,7 @@
             TestHelper.AreEqual<User>(expected, actual, new UserComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void UserDetails_NonExistentUser_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -68,10 +70,10 @@
             var actionResult = sut.UserDetails(USER_ID);
 
             // Assert
-            Assert.IsInstanceOfType(actionResult, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(actionResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void PlayerDetails_ExistingPlayer_PlayerReturned()
         {
             // Arrange
@@ -87,7 +89,7 @@
             TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void PlayerDetails_NonExistentUser_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -98,10 +100,10 @@
             var actionResult = sut.PlayerDetails(PLAYER_ID);
 
             // Assert
-            Assert.IsInstanceOfType(actionResult, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(actionResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
@@ -114,7 +116,7 @@
             AssertValidRedirectResult(actionResult, "Index");
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_AnyRequest_RequestConfirmed()
         {
             // Arrange
@@ -127,7 +129,7 @@
             AssertVerifyConfirm(_requestServiceMock, REQUEST_ID);
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_NonExistentRequest_ThrowsMissingEntityException()
         {
             // Arrange
@@ -138,10 +140,10 @@
             var actionResult = sut.Confirm(REQUEST_ID);
 
             // Assert
-            Assert.IsNotNull(actionResult, "InvalidOperation");
+            actionResult.Should().NotBeNull(INVALID_OPERATION_MESSAGE);
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
@@ -154,7 +156,7 @@
             AssertValidRedirectResult(actionResult, "Index");
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_AnyRequest_RequestDeclined()
         {
             // Arrange
@@ -167,7 +169,7 @@
             AssertVerifyDecline(_requestServiceMock, REQUEST_ID);
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_NonExistentRequest_ThrowsMissingEntityException()
         {
             // Arrange
@@ -178,7 +180,7 @@
             var actionResult = sut.Decline(REQUEST_ID);
 
             // Assert
-            Assert.IsNotNull(actionResult, "InvalidOperation");
+            actionResult.Should().NotBeNull(INVALID_OPERATION_MESSAGE);
         }
 
         #endregion
@@ -188,10 +190,10 @@
         private static void AssertValidRedirectResult(ActionResult actionResult, string view)
         {
             var result = (RedirectToRouteResult)actionResult;
-            Assert.IsNotNull(result, "Method result should be instance of RedirectToRouteResult");
-            Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
-            Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
-            Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
+            result.Should().NotBeNull("Method result should be instance of RedirectToRouteResult");
+            Assert.False(result.Permanent, "Redirect should not be permanent");
+            result.RouteValues.Count.Should().Be(1, $"Redirect should forward to Requests.{view} action");
+            result.RouteValues["action"].Should().BeEquivalentTo(view, $"Redirect should forward to Requests.{view} action");
         }
 
         #endregion

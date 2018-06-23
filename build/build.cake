@@ -105,7 +105,9 @@ Task("xUnitTests")
 
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = testsDir,
-            ReportName = utResults.Path.GetFilename().FullPath
+            ReportName = utResults.Path.GetFilename().FullPath,
+            XmlReport = true,
+            OutputDirectory = utCoverageResults.Path.GetDirectory().FullPath
         };
 
         var dotCoverSettings = new DotCoverCoverSettings{
@@ -122,7 +124,7 @@ Task("xUnitTests")
         );
 
         if (BuildSystem.IsRunningOnAppVeyor) {
-            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.MSTest);
+            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.XUnit);
         }
     });
 

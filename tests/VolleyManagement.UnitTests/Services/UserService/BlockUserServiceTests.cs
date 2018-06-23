@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.UserService
+﻿using FluentAssertions;
+
+namespace VolleyManagement.UnitTests.Services.UserService
 {
     using System;
     using System.Collections.Generic;
@@ -7,16 +9,15 @@
     using Data.Contracts;
     using Data.Queries.User;
     using Domain.PlayersAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Contracts;
     using Contracts.Exceptions;
     using Data.Queries.Common;
     using Domain.UsersAggregate;
     using VolleyManagement.Services.Authorization;
+    using Xunit;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class BlockUserServiceTests
     {
         private const int INVALID_USER_ID = -1;
@@ -37,8 +38,7 @@
         private Mock<IQuery<List<User>, UniqueUserCriteria>> _getUserListQueryMock;
         private Mock<ICurrentUserService> _currentUserServiceMock;
 
-        [TestInitialize]
-        public void TestInit()
+        public BlockUserServiceTests()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
             _authorizationServiceMock = new Mock<IAuthorizationService>();
@@ -55,7 +55,7 @@
                     .Returns(_unitOfWorkMock.Object);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetUserBlocked_UserExist_UpdatedUserReturned()
         {
             // Arrange
@@ -70,7 +70,7 @@
             VerifyEditUser(user, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void SetUserBlocked_UserExist_UserStatusIsBlocked()
         {
             // Arrange
@@ -85,7 +85,7 @@
             VerifyEditUser(user, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void SetUserBlocked_UserDoesNotExist_ExceptionThrown()
         {
             // Arrange
@@ -109,7 +109,7 @@
                 "A user with specified identifier was not found");
         }
 
-        [TestMethod]
+        [Fact]
         public void SetUserUnblocked_UserExist_UpdatedUserReturned()
         {
             // Arrange
@@ -124,7 +124,7 @@
             VerifyEditUser(user, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void SetUserUnblocked_UserExist_UserStatusIsUnblocked()
         {
             // Arrange
@@ -139,7 +139,7 @@
             VerifyEditUser(user, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void SetUserUnblocked_UserDoesNotExist_ExceptionThrown()
         {
             // Arrange
@@ -200,8 +200,8 @@
             Exception exception,
             string expectedMessage)
         {
-            Assert.IsNotNull(exception, "There is no exception thrown");
-            Assert.IsTrue(
+            exception.Should().NotBeNull("There is no exception thrown");
+            Assert.True(
                 exception.Message.Equals(expectedMessage),
                 "Expected and actual exceptions messages aren't equal");
         }

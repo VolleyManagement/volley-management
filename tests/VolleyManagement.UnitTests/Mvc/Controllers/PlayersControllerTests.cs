@@ -9,22 +9,22 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Contracts;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Contracts.Authorization;
     using Contracts.Exceptions;
     using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
+    using FluentAssertions;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.Players;
     using ViewModels;
     using Services.PlayerService;
+    using Xunit;
 
     /// <summary>
     /// Tests for MVC PlayersController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class PlayersControllerTests
     {
         private const int TEST_PLAYER_ID = 1;
@@ -58,8 +58,7 @@
         /// <summary>
         /// Initializes test data
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public PlayersControllerTests()
         {
             _playerServiceMock = new Mock<IPlayerService>();
             _authServiceMock = new Mock<IAuthorizationService>();
@@ -73,7 +72,7 @@
         /// Test for Delete method (POST action). Player with specified identifier exists.
         /// Player is deleted and JsonResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeletePostAction_ExistingPlayer_PlayerIsDeleted()
         {
             // Act
@@ -82,14 +81,14 @@
 
             // Assert
             VerifyDelete(TEST_PLAYER_ID, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Test for Delete method (POST action). Player with specified identifier does not exist.
         /// Exception is thrown during player removal and JsonResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeletePostAction_NonExistentPlayer_JsonResultIsReturned()
         {
             // Arrange
@@ -102,14 +101,14 @@
 
             // Assert
             VerifyDelete(TEST_PLAYER_ID, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Test for Delete method (POST action). Player id is valid, but exception
         /// is thrown during deleting. JsonResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeletePostAction_ValidPlayerIdWithValidationException_JsonResultIsReturned()
         {
             // Arrange
@@ -122,14 +121,14 @@
 
             // Assert
             VerifyDelete(TEST_PLAYER_ID, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Test for Index method. Players from specified existing page are requested and no search text is specified.
         /// Players from specified page are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Index_GetPlayersFromExistingPageNoSearchText_PlayersAreReturned()
         {
             // Arrange
@@ -153,7 +152,7 @@
         /// Test for Index method. Players from specified existing page are requested and search text is specified.
         /// Players from specified page are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Index_GetPlayersFromExistingPageWithSearchText_PlayersAreReturned()
         {
             // Arrange
@@ -174,14 +173,14 @@
             // Assert
             TestHelper.AreEqual(expected, playersList, new PlayerNameViewModelComparer());
             VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
-            Assert.AreEqual(actual.Referer, sut.Request.RawUrl);
+            Assert.Equal(actual.Referer, sut.Request.RawUrl);
         }
 
         /// <summary>
         /// Test for Index method. Players from specified non-existent page are requested.
         /// Exception is thrown during players retrieval and user is redirected to the Index page.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Index_GetPlayersFromNonExistentPage_ExceptionIsThrown()
         {
             // Arrange
@@ -201,7 +200,7 @@
         /// <summary>
         /// Test for Details method. Player with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Details_NonExistentPlayer_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -213,14 +212,14 @@
             var result = sut.Details(TEST_PLAYER_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
             VerifyGetAllowedOperation(_allowedOperationDetails, Times.Never());
         }
 
         /// <summary>
         /// Test for Details method. Player with specified identifier exists. View model of Player is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Details_ExistingPlayer_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -238,7 +237,7 @@
             VerifyGetAllowedOperation(_allowedOperationDetails, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void LinkWithUser_UserExists_SuccessfullMessageIsReturned()
         {
             // Arrange
@@ -252,10 +251,10 @@
             var actual = sut.LinkWithUser(TEST_PLAYER_ID);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void LinkWithUser_UserNotFound_ErrorMessageIsReturned()
         {
             // Arrange
@@ -269,13 +268,13 @@
             var actual = sut.LinkWithUser(TEST_PLAYER_ID);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         /// <summary>
         /// Test for Create player action (GET)
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreateGetAction_GetView_ReturnsViewWithDefaultData()
         {
             // Arrange
@@ -293,7 +292,7 @@
         /// Test for Create method (POST action). Player view model is not valid.
         /// Player is not created and player view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_InvalidPlayerViewModel_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -307,14 +306,14 @@
 
             // Assert
             VerifyCreate(Times.Never());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for Create method (POST action). Player view model is valid and no exception is thrown during creation.
         /// Player is created successfully and user is redirected to the Index page.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_ValidPlayerViewModelNoException_PlayerIsCreated()
         {
             // Arrange
@@ -335,7 +334,7 @@
         /// Test for Create method (POST action). Player view model is valid, but exception is thrown during creation.
         /// Player view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_ValidPlayerViewModelWithArgumentException_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -349,14 +348,14 @@
 
             // Assert
             VerifyCreate(Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for Create method (POST action). Player view model is valid, but exception is thrown during creation.
         /// Player view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_ValidPlayerViewModelWithValidationException_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -370,13 +369,13 @@
 
             // Assert
             VerifyCreate(Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for Edit method (GET action). Player with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_NonExistentPlayer_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -387,13 +386,13 @@
             var result = sut.Edit(TEST_PLAYER_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for Edit method (GET action). Player with specified identifier exists. View model of Player is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_ExistingPlayer_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -414,7 +413,7 @@
         /// Test for Edit method (POST action). Player view model is valid and no exception is thrown during editing.
         /// Player is updated successfully and user is redirected to the Index page.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_ValidPlayerViewModelNoException_PlayerIsUpdated()
         {
             // Arrange
@@ -434,7 +433,7 @@
         /// Test for Edit method (POST action). Player view model is valid, but exception is thrown during editing.
         /// Player view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_ValidPlayerViewModelWithMissingEntityException_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -448,14 +447,14 @@
 
             // Assert
             VerifyEdit(Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for Edit method (POST action). Player view model is valid, but exception is thrown during editing.
         /// Player view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_ValidPlayerViewModelWithValidationException_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -469,14 +468,15 @@
 
             // Assert
             VerifyEdit(Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+
         }
 
         /// <summary>
         /// Test for Edit method (POST action). Player view model is not valid.
         /// Player is not updated and player view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_InvalidPlayerViewModel_PlayerViewModelIsReturned()
         {
             // Arrange
@@ -489,7 +489,7 @@
 
             // Assert
             VerifyEdit(Times.Never());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         private PlayersController BuildSUT()
@@ -614,7 +614,7 @@
 
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)
         {
-            Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
+            Assert.Equal(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
         }
 
         private void VerifyGetAllowedOperations(List<AuthOperation> allowedOperations, Times times)

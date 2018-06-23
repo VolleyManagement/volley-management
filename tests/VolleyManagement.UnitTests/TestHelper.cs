@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
 
     using static System.Linq.Enumerable;
+    using Xunit;
 
     /// <summary>
     /// Class for custom asserts.
@@ -15,7 +16,7 @@
         private const string COLLECTION_IS_NULL_MESSAGE = "One of the collections is null.";
         private const string COLLECTIONS_COUNT_UNEQUAL_MESSAGE = "Number of items in collections should match.";
 
-       /// <summary>
+        /// <summary>
         /// Test equals of two objects with specific comparer.
         /// </summary>
         /// <typeparam name="T">Type of object.</typeparam>
@@ -27,7 +28,7 @@
             var equalsResult = 0;
             var compareResult = comparer.Compare(expected, actual);
 
-            Assert.AreEqual(equalsResult, compareResult);
+            Assert.Equal(equalsResult, compareResult);
         }
 
         public static void AreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, IComparer<T> comparer) =>
@@ -44,12 +45,10 @@
 
         public static void AreEqual<T>(ICollection<T> expected, ICollection<T> actual, IComparer<T> comparer, string message)
         {
-            if (expected == null || actual == null)
-            {
-                Assert.Fail(COLLECTION_IS_NULL_MESSAGE);
-            }
+            expected.Should().NotBeNull(COLLECTION_IS_NULL_MESSAGE);
+            actual.Should().NotBeNull(COLLECTION_IS_NULL_MESSAGE);
 
-            Assert.AreEqual(expected.Count, actual.Count, COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
+            actual.Count.Should().Be(expected.Count, COLLECTIONS_COUNT_UNEQUAL_MESSAGE);
 
             string preparedErrorMessage;
             foreach (var pair in expected.Zip(actual, (e, a) => new { Expected = e, Actual = a }))
@@ -59,13 +58,11 @@
 
                 if (comparer == null)
                 {
-                    Assert.AreEqual(pair.Expected,
-                        pair.Actual,
-                        preparedErrorMessage);
+                    pair.Actual.Should().Be(pair.Expected, preparedErrorMessage);
                 }
                 else
                 {
-                    Assert.IsTrue(
+                    Assert.True(
                         comparer.Compare(pair.Expected, pair.Actual) == 0,
                         preparedErrorMessage);
                 }

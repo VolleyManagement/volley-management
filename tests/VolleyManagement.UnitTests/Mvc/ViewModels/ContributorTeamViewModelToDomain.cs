@@ -2,20 +2,19 @@
 {
     using System.Collections.Generic;
     using Domain.ContributorsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Services.ContributorService;
+    using Xunit;
 
     /// <summary>
     /// View model contributor team class test
     /// </summary>
-    [TestClass]
     public class ContributorTeamViewModelToDomain
     {
         /// <summary>
         /// ToDomain() method test.
         /// Does correct contributor team view model mapped to domain model.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ToDomain_ContributorTeamViewModel_MappedToDomain()
         {
             // Arrange

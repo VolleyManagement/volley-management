@@ -99,12 +99,13 @@ Task("Build")
         );
     });
 
-Task("UnitTests")
+Task("xUnitTests")
     .Does(() => {
         var testsPath = utsDir.Path.FullPath + "/*/*.UnitTests.dll";
-        var msTestSettings = new MSTestSettings {
-            ResultsFile = utResults.Path.GetFilename().FullPath,
-            WorkingDirectory = testsDir
+
+        var xUnitSettings = new XUnit2Settings {
+            WorkingDirectory = testsDir,
+            ReportName = utResults.Path.GetFilename().FullPath
         };
 
         var dotCoverSettings = new DotCoverCoverSettings{
@@ -115,7 +116,7 @@ Task("UnitTests")
         SetCoverageFilter(dotCoverSettings);        
 
         DotCoverCover(
-            (ICakeContext c) => { c.MSTest (testsPath, msTestSettings); },
+            (ICakeContext c) => { c.XUnit2 (testsPath, xUnitSettings); },
             utCoverageResults,
             dotCoverSettings
         );
@@ -227,6 +228,9 @@ Task("SonarEnd")
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
+Task("UnitTests")
+    .IsDependentOn("xUnitTests")
+    .IsDependentOn("DomainTests");
 
 Task("Sonar")
     .IsDependentOn("Clean")
@@ -235,7 +239,6 @@ Task("Sonar")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
     .IsDependentOn("IntegrationTests")
-    .IsDependentOn("DomainTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 

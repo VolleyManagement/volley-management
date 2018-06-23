@@ -1,21 +1,20 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
+    using Xunit;
 
 
     /// <summary>
     /// As we've made SetsRatio and BallsRatio properties calculatable we have to test that
     /// </summary>
-    [TestClass]
     public class StandingsEntryTests
     {
-        [TestMethod]
+        [Fact]
         public void SetsRatio_NoWonNoLost_RatioIsNull()
         {
             // Arrange
-            var entry = new StandingsEntry
-            {
+            var entry = new StandingsEntry {
                 SetsWon = 0,
                 SetsLost = 0
             };
@@ -24,15 +23,14 @@
             var actual = entry.SetsRatio;
 
             // Assert
-            Assert.IsNull(actual, "Sets ratio should be null when no won no lost sets");
+            actual.Should().BeNull("Sets ratio should be null when no won no lost sets");
         }
 
-        [TestMethod]
+        [Fact]
         public void SetsRatio_HasWonButNoLost_RatioIsInfinity()
         {
             // Arrange
-            var entry = new StandingsEntry
-            {
+            var entry = new StandingsEntry {
                 SetsWon = 3,
                 SetsLost = 0
             };
@@ -41,16 +39,15 @@
             var actual = entry.SetsRatio;
 
             // Assert
-            Assert.IsTrue(actual.HasValue, "Ratio should not be null");
-            Assert.IsTrue(float.IsInfinity(actual.GetValueOrDefault()), "Sets ratio should be Infinity when there are no lost sets");
+            Assert.True(actual.HasValue, "Ratio should not be null");
+            Assert.True(float.IsInfinity(actual.GetValueOrDefault()), "Sets ratio should be Infinity when there are no lost sets");
         }
 
-        [TestMethod]
+        [Fact]
         public void SetsRatio_HasWonAndLost_RatioIsCalculatedProperly()
         {
             // Arrange
-            var entry = new StandingsEntry
-            {
+            var entry = new StandingsEntry {
                 SetsWon = 3,
                 SetsLost = 1
             };
@@ -61,16 +58,15 @@
             var actual = entry.SetsRatio;
 
             // Assert
-            Assert.IsTrue(actual.HasValue, "Ratio should not be null");
-            Assert.AreEqual(expected, actual.GetValueOrDefault(), 0.001f, "Sets ratio should be properly calculated");
+            Assert.True(actual.HasValue, "Ratio should not be null");
+            actual.GetValueOrDefault().Should().BeApproximately(expected, 0.001f, "Sets ratio should be properly calculated");
         }
 
-        [TestMethod]
+        [Fact]
         public void BallsRatio_NoWonNoLost_RatioIsNull()
         {
             // Arrange
-            var entry = new StandingsEntry
-            {
+            var entry = new StandingsEntry {
                 BallsWon = 0,
                 BallsLost = 0
             };
@@ -79,15 +75,14 @@
             var actual = entry.BallsRatio;
 
             // Assert
-            Assert.IsNull(actual, "Balls ratio should be null when no won no lost balls");
+            actual.Should().BeNull("Balls ratio should be null when no won no lost balls");
         }
 
-        [TestMethod]
+        [Fact]
         public void BallsRatio_HasWonButNoLost_RatioIsInfinity()
         {
             // Arrange
-            var entry = new StandingsEntry
-            {
+            var entry = new StandingsEntry {
                 BallsWon = 3,
                 BallsLost = 0
             };
@@ -96,16 +91,15 @@
             var actual = entry.BallsRatio;
 
             // Assert
-            Assert.IsTrue(actual.HasValue, "Ratio should not be null");
-            Assert.IsTrue(float.IsInfinity(actual.GetValueOrDefault()), "Balls ratio should be Infinity when there are no lost balls");
+            Assert.True(actual.HasValue, "Ratio should not be null");
+            Assert.True(float.IsInfinity(actual.GetValueOrDefault()), "Balls ratio should be Infinity when there are no lost balls");
         }
 
-        [TestMethod]
+        [Fact]
         public void BallsRatio_HasWonAndLost_RatioIsCalculatedProperly()
         {
             // Arrange
-            var entry = new StandingsEntry
-            {
+            var entry = new StandingsEntry {
                 BallsWon = 3,
                 BallsLost = 1
             };
@@ -116,8 +110,8 @@
             var actual = entry.BallsRatio;
 
             // Assert
-            Assert.IsTrue(actual.HasValue, "Ratio should not be null");
-            Assert.AreEqual(expected, actual.GetValueOrDefault(), 0.001f, "Balls ratio should be properly calculated");
+            Assert.True(actual.HasValue, "Ratio should not be null");
+            actual.GetValueOrDefault().Should().BeApproximately(expected, 0.001f, "Balls ratio should be properly calculated");
         }
     }
 }

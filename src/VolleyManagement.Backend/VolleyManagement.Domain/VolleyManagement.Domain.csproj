@@ -71,10 +71,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MSTestExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>

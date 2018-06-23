@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -18,6 +17,7 @@ using VolleyManagement.UnitTests.Services.TournamentService;
 using VolleyManagement.UnitTests.WebApi.Standings;
 using VolleyManagement.UnitTests.WebApi.ViewModels;
 using TournamentViewModelComparer = VolleyManagement.UnitTests.WebApi.ViewModels.TournamentViewModelComparer;
+using Xunit;
 
 namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
@@ -26,7 +26,6 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
     /// Tests for TournamentController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class TournamentControllerTests
     {
         /// <summary>
@@ -44,8 +43,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
         /// <summary>
         /// Initializes test data
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public TournamentControllerTests()
         {
             _tournamentServiceMock = new Mock<ITournamentService>();
             _gameReportServiceMock = new Mock<IGameReportService>();
@@ -53,7 +51,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
         }
 
         #region GetAllTournaments
-        [TestMethod]
+        [Fact]
         public void GetAllTournaments_TournamentsExist_TournamentsReturned()
         {
             // Arrange
@@ -77,7 +75,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
                 new TournamentViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAllTournaments_NoTournamentsAwailable_EmptyCollectionReturned()
         {
             // Arrange
@@ -91,7 +89,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 expected,
                 actual,
                 new TournamentViewModelComparer());
@@ -100,7 +98,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
 
         #region GetTournament
 
-        [TestMethod]
+        [Fact]
         public void GetTournament_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
@@ -114,8 +112,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
                                .WithRegulationsLink("volley.dp.ua")
                                .Build();
             MockGetTournament(testData, SPECIFIC_TOURNAMENT_ID);
-            var expected = new TournamentViewModel
-            {
+            var expected = new TournamentViewModel {
                 Id = testData.Id,
                 Name = testData.Name,
                 Description = testData.Description,
@@ -132,11 +129,11 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
             var actual = result as OkNegotiatedContentResult<TournamentViewModel>;
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<TournamentViewModel>));
+            Assert.IsType<OkNegotiatedContentResult<TournamentViewModel>>(result);
             TestHelper.AreEqual(expected, actual.Content, new TournamentViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTournament_NonExistentTournament_NotFoundIsReturned()
         {
             // Arrange
@@ -149,14 +146,14 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
             var result = sut.GetTournament(SPECIFIC_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+            Assert.IsType<NotFoundResult>(result);
         }
 
         #endregion
 
         #region Standings
 
-        [TestMethod]
+        [Fact]
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
@@ -175,7 +172,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
             TestHelper.AreEqual(expected, actual, new DivisionStandingsViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void Standings_LastUpdateTimeExists_StandingsReturnLastUpdateTime()
         {
             // Arrange
@@ -198,7 +195,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
             TestHelper.AreEqual(expected, actual, new DivisionStandingsViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void PivotStandings_StandingsRequested_StandingsReturned()
         {
             // Arrange
@@ -221,7 +218,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
             TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void PivotStandings_LastUpdateTimeExists_StandingsReturnLastUpdateTime()
         {
             // Arrange
@@ -244,7 +241,7 @@ namespace VolleyManagement.UnitTests.WebApi.Controllers
             TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void PivotStandings_PlannedGamesWithoutResults_RoundNumbersReturned()
         {
             // Arrange

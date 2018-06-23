@@ -8,7 +8,6 @@
     using System.Text;
     using Data.Queries.Player;
     using Data.Queries.Team;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Contracts.Authorization;
     using Contracts.Exceptions;
@@ -22,12 +21,12 @@
     using VolleyManagement.Services;
     using PlayerService;
     using TournamentResources = Domain.Properties.Resources;
+    using Xunit;
 
     /// <summary>
     /// Tests for TournamentService class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class TeamServiceTests
     {
         #region Fields and constants
@@ -60,8 +59,7 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public TeamServiceTests()
         {
             _teamRepositoryMock = new Mock<ITeamRepository>();
             _playerRepositoryMock = new Mock<IPlayerRepository>();
@@ -85,7 +83,7 @@
         /// <summary>
         /// Test for Get() method. The method should return existing teams
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetAll_TeamsExist_TeamsReturned()
         {
             // Arrange
@@ -107,7 +105,7 @@
         /// <summary>
         /// Test for Get() method. The method should return existing team
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetById_TeamExist_TeamReturned()
         {
             // Arrange
@@ -131,7 +129,7 @@
         /// Test for GetTeamCaptain() method.
         /// The method should return existing captain
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetTeamCaptain_CaptainExist_PlayerReturned()
         {
             // Arrange
@@ -158,7 +156,7 @@
         /// <summary>
         /// Test for Create() method. The method should create a new team.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_CreateTeamDtoPassed_TeamCreated()
         {
             // Arrange
@@ -177,7 +175,7 @@
             var team = sut.Create(newTeamDto);
 
             // Assert
-            Assert.IsNotNull(team);
+            Assert.NotNull(team);
             VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
@@ -185,7 +183,7 @@
         /// Test for Create() method. The method check case when team achievements are invalid.
         /// Should throw ArgumentException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_InvalidAchievements_ArgumentExceptionThrown()
         {
             var invalidAchievements = CreateInvalidTeamAchievements();
@@ -222,7 +220,7 @@
         /// <summary>
         /// Test for Create() method. The method should create a new team with empty achievements.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_EmptyTeamAchievements_TeamCreated()
         {
             // Arrange
@@ -242,7 +240,7 @@
         /// Test for Create() method. The method check case when team name is invalid.
         /// Should throw ArgumentException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_InvalidTeamName_ArgumentExceptionThrown()
         {
             var invalidName = CreateInvalidTeamName();
@@ -280,7 +278,7 @@
         /// Test for Create() method. The method check case when team name is invalid.
         /// Should throw ArgumentException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_EmptyTeamName_ArgumentExceptionThrown()
         {
             var invalidName = string.Empty;
@@ -317,7 +315,7 @@
         /// Test for Create() method. The method check case when team coach name is invalid.
         /// Should throw ArgumentException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_InvalidTeamCoachNameNotAllowedLength_ArgumentExceptionThrown()
         {
             var invalidCoachName = CreateInvalidTeamCoachName();
@@ -354,7 +352,7 @@
         /// Test for Create() method. The method check case when team coach name is invalid.
         /// Should throw ArgumentException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_InvalidTeamCoachNameNotAllowedSymbols_ArgumentExceptionThrown()
         {
             var invalidCoachName = "name%-)";
@@ -390,7 +388,7 @@
         /// <summary>
         /// Test for Create() method. The method should create a new team with empty coach name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_EmptyTeamCoachName_TeamCreated()
         {
             // Arrange
@@ -410,7 +408,7 @@
         /// Test for Create() method. The method check case when captain id is invalid.
         /// Should throw MissingEntityException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_InvalidCaptainId_MissingEntityExceptionThrown()
         {
             // Arrange
@@ -432,7 +430,7 @@
             }
 
             // Assert
-            Assert.IsTrue(gotException);
+            Assert.True(gotException);
             VerifyCreateTeam(newTeam, Times.Never());
         }
 
@@ -440,7 +438,7 @@
         /// Test for Create() method. The method check case when captain is captain of another team.
         /// Should throw ValidationException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
         {
             // Arrange
@@ -472,7 +470,7 @@
             }
 
             // Assert
-            Assert.IsTrue(gotException);
+            Assert.True(gotException);
             VerifyCreateTeam(newTeam, Times.Never());
         }
 
@@ -481,7 +479,7 @@
         /// The method check case when captain is player of another team.
         /// The method should create a new team.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_PlayerIsNotCaptainOfExistingTeam_TeamCreated()
         {
             // Arrange
@@ -499,7 +497,7 @@
             var createdTeam = sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreEqual(createdTeam.Captain.Id, captain.Id);
+            Assert.Equal(createdTeam.Captain.Id, captain.Id);
             VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
@@ -507,7 +505,7 @@
         /// Test for Create() method. The method check that captain's teamId
         /// was updated after creating team in DB
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_CreateDtoTeamPassed_CaptainUpdated()
         {
             // Arrange
@@ -524,7 +522,7 @@
             var newTeam = sut.Create(newTeamDto);
 
             // Assert
-            Assert.AreEqual(newTeam.Captain.Id, captain.Id);
+            Assert.Equal(newTeam.Captain.Id, captain.Id);
             VerifyCreateTeam(newTeamDto, Times.Once());
         }
 
@@ -532,7 +530,7 @@
         /// Test for Create() method. The method check if team already exist
         /// Throw exeption
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_TeamWithGivenNameAlreadyExists_ArgumentExceptionThrown()
         {
             // Arrange
@@ -570,7 +568,7 @@
         /// <summary>
         /// Test for Delete() method. The method should delete specified team.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Delete_TeamPassed_CorrectIdPostedToDatabaseLayer()
         {
             // Arrange
@@ -590,7 +588,7 @@
         /// Test for Delete() method. The method check case when team id is invalid.
         /// Should throw MissingEntityException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Delete_InvalidTeamId_MissingEntityExceptionThrown()
         {
             // Arrange
@@ -611,14 +609,14 @@
             }
 
             // Assert
-            Assert.IsTrue(gotException);
+            Assert.True(gotException);
             VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
         }
 
         /// <summary>
         /// Successful test for Delete() method.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Delete_TeamPassed_TeamDeleted()
         {
             // Arrange
@@ -642,7 +640,7 @@
         /// Edit() method test. catch ConcurrencyException from DAL
         /// Throws MissingEntityException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_CatchDalConcurrencyException_ThrowMissingEntityException()
         {
             // Arrange
@@ -675,7 +673,7 @@
         /// Test for Edit() method. The method checks case when captain is captain of another team.
         /// Should throw ValidationException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
         {
             // Arrange
@@ -707,14 +705,14 @@
             }
 
             // Assert
-            Assert.IsTrue(gotException);
+            Assert.True(gotException);
             VerifyEditTeam(newTeam, Times.Never());
         }
 
         /// <summary>
         /// Test for Edit() method. Existing team should be updated
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_TeamPassed_TeamUpdated()
         {
             // Arrange
@@ -735,7 +733,7 @@
         /// <summary>
         /// Test for Edit() method.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_TeamNameAlreadyExists_ArgumentExceptionThrown()
         {
             // Arrange
@@ -771,7 +769,7 @@
         /// <summary>
         /// Set captain one of team players. Captain updated.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ChangeCaptain_PlayerIsAlreadyPlayInTeam_CaptainUpdated()
         {
             // Arrange
@@ -788,14 +786,14 @@
             sut.ChangeCaptain(teamForEditId, newCaptainId);
 
             // Assert
-            Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
+            Assert.Equal(teamForEdit.Captain.Id, newCaptainId.Id);
         }
 
         /// <summary>
         /// Set captain of team player who does not have a team.
         /// Captain updated.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ChangeCaptain_PlayerHasNoTeam_CaptainUpdated()
         {
             // Arrange
@@ -811,14 +809,14 @@
             sut.ChangeCaptain(teamForEditId, newCaptainId);
 
             // Assert
-            Assert.AreEqual(teamForEdit.Captain.Id, newCaptainId.Id);
+            Assert.Equal(teamForEdit.Captain.Id, newCaptainId.Id);
         }
 
         /// <summary>
         /// Set captain of team player that plays in anothe team.
         /// Validate exception thrown.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ChangeCaptain_PlayerIsPlayerOfAnotherTeam_ValidateExceptionThrown()
         {
             // Arrange
@@ -845,7 +843,7 @@
             }
 
             // Assert
-            Assert.IsTrue(gotException);
+            Assert.True(gotException);
             VerifyEditTeam(teamForEdit, Times.Never());
         }
         #endregion
@@ -855,7 +853,7 @@
         /// <summary>
         /// Test for AddPlayers() method. 
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void AddPlayers_PlayersAddedToTeam_TeamUpdated()
         {
             // Arrange
@@ -878,7 +876,7 @@
         /// Test for AddPlayers() method. The method check if team with such id exist
         /// Should throw MissingEntityException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void AddPlayers_AddPlayersToNotExistTeam_MissingEntityExceptionThrown()
         {
             // Arrange
@@ -901,14 +899,14 @@
             }
 
             // Assert
-            Assert.IsTrue(gotException);
+            Assert.True(gotException);
             VerifyEditTeam(testTeam, Times.Never());
         }
 
         /// <summary>
         /// Test for RemovePlayers() method. 
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void RemovePlayers_AllPlayersRemoveFromTeam_TeamUpdated()
         {
             // Arrange
@@ -943,7 +941,7 @@
         /// Test for FromPlayers() method. The method check if team with such id exist
         /// Should throw MissingEntityException
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void RemovePlayers_RemovePlayersFromNotExistTeam_MissingEntityExceptionThrown()
         {
             // Arrange
@@ -965,7 +963,7 @@
             }
 
             // Assert
-            Assert.IsTrue(gotException);
+            Assert.True(gotException);
             VerifyEditTeam(testTeam, Times.Never());
         }
         #endregion
@@ -976,8 +974,7 @@
         /// Test for Create() method with no permission for such action. The method has to throw AuthorizationException,
         /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void Create_CreateNotPermitted_ExceptionThrown()
         {
             // Arrange
@@ -987,7 +984,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(testData);
+            Assert.Throws<AuthorizationException>(() => sut.Create(testData));
 
             // Assert
             VerifyCreateTeam(testData, Times.Never());
@@ -998,8 +995,7 @@
         /// Test for Delete() method with no permission for such action. The method has to throw AuthorizationException,
         /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void Delete_DeleteNotPermitted_ExceptionThrown()
         {
             // Arrange
@@ -1009,7 +1005,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Delete(new TeamId(testData.Id));
+            Assert.Throws<AuthorizationException>(() => sut.Delete(new TeamId(testData.Id)));
 
             // Assert
             VerifyDeleteTeam(testData.Id, Times.Never());
@@ -1020,8 +1016,7 @@
         /// Test for Edit() method with no permission for such action. The method has to throw AuthorizationException,
         /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void Edit_EditNotPermitted_ExceptionThrown()
         {
             // Arrange
@@ -1031,7 +1026,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Edit(testData);
+            Assert.Throws<AuthorizationException>(() => sut.Edit(testData));
 
             // Assert
             VerifyEditTeam(testData, Times.Never());
@@ -1042,8 +1037,7 @@
         /// Test for AddPlayers() method with no permission for such action. The method has to throw AuthorizationException,
         /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void AddPlayers_AddPlayersNotPermitted_ExceptionThrown()
         {
             // Arrange
@@ -1055,7 +1049,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.AddPlayers(testTeamId, testPlayersId);
+            Assert.Throws<AuthorizationException>(() => sut.AddPlayers(testTeamId, testPlayersId));
 
             // Assert
             VerifyEditTeam(testTeam, Times.Never());
@@ -1066,8 +1060,7 @@
         /// Test for RemovePlayers() method with no permission for such action. The method has to throw AuthorizationException,
         /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void RemovePlayers_RemovePlayersNotPermitted_ExceptionThrown()
         {
             // Arrange
@@ -1079,7 +1072,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.RemovePlayers(testTeamId, testPlayersId);
+            Assert.Throws<AuthorizationException>(() => sut.RemovePlayers(testTeamId, testPlayersId));
 
             // Assert
             VerifyEditTeam(testTeam, Times.Never());
@@ -1272,9 +1265,9 @@
         /// <param name="expected">Expected exception</param>
         private void VerifyExceptionThrown(Exception exception, Exception expected)
         {
-            Assert.IsNotNull(exception);
-            Assert.IsTrue(exception.GetType().Equals(expected.GetType()), "Exception is of the wrong type");
-            Assert.IsTrue(exception.Message.Equals(expected.Message));
+            Assert.NotNull(exception);
+            Assert.True(exception.GetType() == expected.GetType(), "Exception is of the wrong type");
+            Assert.Equal(exception.Message, expected.Message);
         }
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)

@@ -26,7 +26,6 @@
         private Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
         private Mock<IUserService> _userServiceMock = new Mock<IUserService>();
         private Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
-        private AndConstraint<ObjectAssertions> INVALID_OPERATION;
 
         #endregion
 

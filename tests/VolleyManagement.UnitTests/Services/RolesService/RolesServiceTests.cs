@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Collections;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Data.Contracts;
     using Data.Queries.Common;
@@ -11,12 +10,13 @@
     using Domain.Dto;
     using Domain.RolesAggregate;
     using VolleyManagement.Services.Authorization;
+    using VolleyManagement.Contracts.Authorization;
+    using Xunit;
 
     /// <summary>
     /// Tests <see cref="IRolesService"/> implementation
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class RolesServiceTests
     {
         #region Fields
@@ -32,8 +32,7 @@
 
         #region Init
 
-        [TestInitialize]
-        public void TestInit()
+        public RolesServiceTests()
         {
             _getAllQueryMock = new Mock<IQuery<ICollection<Role>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Role, FindByIdCriteria>>();
@@ -49,7 +48,7 @@
 
         #region Tests
 
-        [TestMethod]
+        [Fact]
         public void GetAllRoles_PreexistingRolesStored_AllRolesReturned()
         {
             // Arange
@@ -64,7 +63,7 @@
             TestHelper.AreEqual(expectedResult, actualResult, new RoleComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetRole_GetExistingRole_RoleReturned()
         {
             // Arange
@@ -80,7 +79,7 @@
             TestHelper.AreEqual(expectedResult, actualResult, new RoleComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetUsersInRole_RoleHasMembers_UsersReturned()
         {
             // Arange
@@ -97,7 +96,7 @@
             TestHelper.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAllUsersWithRoles_RoleHasMembers_AllUsersReturned()
         {
             // Arange
@@ -116,7 +115,7 @@
             TestHelper.AreEqual(expectedResult, actualResult, new UserInRoleComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangeRoleMembership_UsersToAddExist_RoleUpdatedInRepository()
         {
             // Arrange
@@ -135,7 +134,7 @@
             _uowMock.Verify(u => u.Commit(), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangeRoleMembership_UsersToDeleteExist_RoleUpdatedInRepository()
         {
             // Arrange
@@ -154,7 +153,7 @@
             _uowMock.Verify(u => u.Commit(), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangeRoleMembership_RoleUnchanged_ChangesAreNotCommited()
         {
             // Arrange

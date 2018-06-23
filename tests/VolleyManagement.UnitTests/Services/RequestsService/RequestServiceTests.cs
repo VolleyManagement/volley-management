@@ -1,10 +1,11 @@
-﻿namespace VolleyManagement.UnitTests.Services.RequestsService
+﻿using FluentAssertions;
+
+namespace VolleyManagement.UnitTests.Services.RequestsService
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
     using System.Collections;
@@ -20,12 +21,12 @@
     using Domain.UsersAggregate;
     using VolleyManagement.Services;
     using UsersService;
+    using Xunit;
 
     /// <summary>
     /// Tests for RequestService class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class RequestServiceTests : BaseTest
     {
         #region Fields and constants
@@ -57,8 +58,7 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public RequestServiceTests()
         {
             _userServiceMock = new Mock<IUserService>();
             _requestRepositoryMock = new Mock<IRequestRepository>();
@@ -77,7 +77,7 @@
         #endregion
 
         #region Request tests
-        [TestMethod]
+        [Fact]
         public void GetAll_RequestsExist_RequestsReturned()
         {
             // Arrange
@@ -92,7 +92,7 @@
             TestHelper.AreEqual(expected, actual, new RequestComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAll_NoViewListRights_AuthorizationExceptionThrown()
         {
             // Arrange
@@ -101,10 +101,11 @@
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<AuthorizationException>(() => sut.Get(), "Requested operation is not allowed");
+            Action act = () => sut.Get();
+            act.Should().Throw<AuthorizationException>("Requested operation is not allowed");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetById_RequestExists_RequestReturned()
         {
             // Arrange
@@ -120,27 +121,29 @@
             TestHelper.AreEqual<Request>(expected, actual, new RequestComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void Create_InvalidUserId_ExceptionThrown()
         {
             // Arrange
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<ArgumentException>(() => sut.Create(INVALID_REQUEST_ID, EXISTING_ID), "User's id is wrong");
+            Action act = () => sut.Create(INVALID_REQUEST_ID, EXISTING_ID);
+            act.Should().Throw<ArgumentException>("User's id is wrong");
         }
 
-        [TestMethod]
+        [Fact]
         public void Create_InvalidPlayerId_ExceptionThrown()
         {
             // Arrange
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<ArgumentException>(() => sut.Create(EXISTING_USER_ID, INVALID_PLAYER_ID), "Player's id is wrong");
+            Action act = () => sut.Create(EXISTING_USER_ID, INVALID_PLAYER_ID);
+            act.Should().Throw<ArgumentException>("Player's id is wrong");
         }
 
-        [TestMethod]
+        [Fact]
         public void Create_ValidRequest_RequestAdded()
         {
             // Arrange
@@ -161,7 +164,7 @@
             VerifyCreateRequest(newRequest, Times.Once(), "Parameter request is not equal to Instance of request");
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_NoConfirmRights_DbNotChanged()
         {
             // Arrange
@@ -186,7 +189,7 @@
             VerifyCheckAccess(AuthOperations.Requests.Confirm, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_NoConfirmRights_AuthorizationExceptionThrown()
         {
             // Arrange
@@ -196,23 +199,22 @@
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<AuthorizationException>(() => sut.Confirm(EXISTING_ID), "Requested operation is not allowed");
+            Action act = () => sut.Confirm(EXISTING_ID);
+            act.Should().Throw<AuthorizationException>("Requested operation is not allowed");
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<MissingEntityException>(
-                () =>
-                sut.Confirm(INVALID_REQUEST_ID),
-                "A request with specified identifier was not found");
+            Action act = () => sut.Confirm(INVALID_REQUEST_ID);
+            act.Should().Throw<MissingEntityException>("A request with specified identifier was not found");
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_RequestExists_UserUpdated()
         {
             // Arrange
@@ -229,7 +231,7 @@
             VerifyEditUser(user, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_RequestExists_RequestDeleted()
         {
             // Arrange
@@ -246,7 +248,7 @@
             VerifyDeleteRequest(EXISTING_ID, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_UserDoesNotExist_ExceptionThrown()
         {
             // Arrange
@@ -256,13 +258,11 @@
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<MissingEntityException>(
-                () =>
-                sut.Confirm(EXISTING_ID),
-                "A user with specified identifier was not found");
+            Action act = () => sut.Confirm(EXISTING_ID);
+            act.Should().Throw<MissingEntityException>("A user with specified identifier was not found");
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_NoDeclineRights_AuthorizationExceptionThrown()
         {
             // Arrange
@@ -272,10 +272,11 @@
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<AuthorizationException>(() => sut.Decline(EXISTING_ID), "Requested operation is not allowed");
+            Action act = () => sut.Decline(EXISTING_ID);
+            act.Should().Throw<AuthorizationException>("Requested operation is not allowed");
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_NoDeclineRights_DbNotChanged()
         {
             // Arrange
@@ -299,7 +300,7 @@
             VerifyCheckAccess(AuthOperations.Requests.Decline, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_RequestExists_RequestDeleted()
         {
             // Arrange
@@ -312,7 +313,7 @@
             VerifyDeleteRequest(EXISTING_ID, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
@@ -320,13 +321,11 @@
             var sut = BuildSUT();
 
             // Act => Assert
-            Assert.Throws<MissingEntityException>(
-            () =>
-            sut.Decline(INVALID_REQUEST_ID),
-            "A request with specified identifier was not found");
+            Action act = () => sut.Decline(INVALID_REQUEST_ID);
+            act.Should().Throw<MissingEntityException>("A request with specified identifier was not found");
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_RequestDoesNotExist_DbNotChanged()
         {
             // Arrange

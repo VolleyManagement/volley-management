@@ -50,7 +50,7 @@ build_script:
 - ps: >-
     cd .\build
 
-    .\build.ps1
+    .\build.ps1 -Verbosity Diagnostic
 
 #---------------------------------#
 #       tests configuration       #

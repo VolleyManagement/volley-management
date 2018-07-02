@@ -55,7 +55,7 @@ SonarEndSettings sonarEndSettings;
 
 var suffix = BuildSystem.IsRunningOnAppVeyor ? $"_AppVeyor_{AppVeyor.Environment.JobId}" : string.Empty;
 
-utResults = utsDir + File($"UT_Results{suffix}.trx");
+utResults = utsDir + File($"UT_Results{suffix}.xml");
 utCoverageResults = utsDir + File($"UT_Coverage{suffix}.dcvr");
 
 specResults = specsDir + File($"IT_Results{suffix}.xml");
@@ -105,9 +105,9 @@ Task("xUnitTests")
 
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = testsDir,
-            ReportName = utResults.Path.GetFilename().FullPath,
+            ReportName = utResults.Path.GetFilenameWithoutExtension().FullPath,
             XmlReport = true,
-            OutputDirectory = utCoverageResults.Path.GetDirectory().FullPath
+            OutputDirectory = utResults.Path.GetDirectory().FullPath
         };
 
         var dotCoverSettings = new DotCoverCoverSettings{

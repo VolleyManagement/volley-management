@@ -16,5 +16,12 @@
       "es2017",
       "dom"
     ]
-  }
+  },
+  "include": [
+    "spa/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }

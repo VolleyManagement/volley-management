@@ -4,19 +4,18 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Contracts;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Domain.ContributorsAggregate;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using ViewModels;
     using Services.ContributorService;
+    using Xunit;
 
     /// <summary>
     /// Tests for MVC ContributorTeamController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class ContributorsTeamControllerTests
     {
         private Mock<IContributorTeamService> _contributorTeamServiceMock;
@@ -24,8 +23,7 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public ContributorsTeamControllerTests()
         {
             _contributorTeamServiceMock = new Mock<IContributorTeamService>();
         }
@@ -33,7 +31,7 @@
         /// <summary>
         /// Test for Index method. All contributors are requested. All contributors are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Index_GetAllContributors_AllContributorsAreReturned()
         {
             // Arrange
@@ -47,7 +45,7 @@
             var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
+            Assert.Equal(expected, actual, new ContributorTeamViewModelComparer());
         }
 
         private List<ContributorTeam> MakeTestContributorTeams()

@@ -10,16 +10,15 @@
     using Contracts.Authentication.Models;
     using Contracts.Authorization;
     using Domain.RolesAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Services.UserManager;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.Users;
     using UI.Infrastructure;
     using ViewModels;
+    using Xunit;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class AccountControllerTests
     {
         #region Consts
@@ -45,8 +44,7 @@
 
         #region Init
 
-        [TestInitialize]
-        public void TestInit()
+        public AccountControllerTests()
         {
             _userManagerMock = new Mock<IVolleyUserManager<UserModel>>();
 
@@ -70,7 +68,7 @@
         /// <summary>
         /// Test for Details()
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Details_UserExists_UserIsReturned()
         {
             // Arrange
@@ -96,7 +94,7 @@
         /// Test for Edit()
         /// </summary>
         /// <returns>Asynchronous operation</returns>
-        [TestMethod]
+        [Fact]
         public async Task EditPostAction_UserExists_UserUpdated()
         {
             // Arrange
@@ -124,7 +122,7 @@
         /// Test() edit method.
         /// </summary>
         /// <returns>Asynchronous operation</returns>
-        [TestMethod]
+        [Fact]
         public async Task EditPostAction_UserIdPassed_ExceptionThrown()
         {
             // Arrange

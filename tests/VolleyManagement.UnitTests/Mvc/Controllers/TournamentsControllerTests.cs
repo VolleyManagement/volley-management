@@ -10,7 +10,6 @@
     using Contracts;
     using Contracts.Exceptions;
     using Crosscutting.Contracts.Providers;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Services.GameReportService;
     using Contracts.Authorization;
@@ -19,6 +18,7 @@
     using Domain.TeamsAggregate;
     using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
+    using FluentAssertions;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.GameResults;
     using UI.Areas.Mvc.ViewModels.Teams;
@@ -27,13 +27,13 @@
     using Services.GameService;
     using Services.TeamService;
     using Services.TournamentService;
+    using Xunit;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
-    public class TournamentsControllerTests
+    public class TournamentsControllerTests : IDisposable
     {
         private const int TEST_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
@@ -90,8 +90,7 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public TournamentsControllerTests()
         {
             _tournamentServiceMock = new Mock<ITournamentService>();
             _gameServiceMock = new Mock<IGameService>();
@@ -110,8 +109,7 @@
         /// <summary>
         /// Cleanup test data
         /// </summary>
-        [TestCleanup]
-        public void TestCleanup()
+        public void Dispose()
         {
             TimeProvider.ResetToDefault();
         }
@@ -121,7 +119,7 @@
         /// <summary>
         /// Test for Index method. Actual tournaments (current and upcoming) are requested. Actual tournaments are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Index_ActualTournamentsExist_ActualTournamentsAreReturned()
         {
             // Arrange
@@ -139,8 +137,8 @@
                 .UpcomingTournaments.ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
-            CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
+            Assert.Equal(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
+            Assert.Equal(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
         }
 
         #endregion
@@ -150,7 +148,7 @@
         /// <summary>
         /// Test IndexArchived method. Archived tournaments are requested. Only archived tournaments are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Archived_ArchivedTournamentsExist_OnlyArchivedTournamentsReturned()
         {
             // Arrange
@@ -164,7 +162,7 @@
             var actual = TestExtensions.GetModel<List<Tournament>>(sut.Archived()).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            Assert.Equal(expected, actual, new TournamentComparer());
         }
 
         #endregion
@@ -175,7 +173,7 @@
         /// Test for ManageTournamentTeams.
         /// Actual tournament teams are requested. Actual tournament teams are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
             // Arrange
@@ -195,16 +193,16 @@
                 sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(new TournamentTeamsListViewModelComparer()
+            Assert.True(new TournamentTeamsListViewModelComparer()
                 .AreEqual(expectedTeamsList, returnedTeamsList.Model));
-            Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
+            Assert.Equal(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 
         /// <summary>
         /// Test for ManageTournamentTeams while there are no teams.
         /// Actual tournament teams are requested. Empty teams list is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ManageTournamentTeams_NonExistTournamentTeams_EmptyTeamListIsReturned()
         {
             // Arrange
@@ -220,11 +218,11 @@
                 sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.AreEqual(returnedTeamsList.Model.TeamsList.Count, EMPTY_TEAMLIST_COUNT);
-            Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
+            Assert.Equal(returnedTeamsList.Model.TeamsList.Count, EMPTY_TEAMLIST_COUNT);
+            Assert.Equal(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManageTournamentTeams_NotSortedTournamentTeams_ModelContainsSortedTournamentTeamsByDivisionAndGroupName()
         {
             // Arrange
@@ -255,7 +253,7 @@
         /// Test for ShowSchedule method.
         /// Wrong tournament Id passed. View with error message is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ShowSchedule_NonExistentTournament_ErrorViewIsReturned()
         {
             // Arrange
@@ -266,9 +264,9 @@
             var result = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(sut.ModelState.IsValid);
-            Assert.IsTrue(sut.ModelState.ContainsKey("LoadError"));
-            Assert.IsNull(result, "Result should be null");
+            Assert.False(sut.ModelState.IsValid);
+            Assert.True(sut.ModelState.ContainsKey("LoadError"));
+            result.Should().BeNull("Result should be null");
 
             VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Never());
         }
@@ -277,7 +275,7 @@
         /// Test for ShowSchedule method.
         /// Valid rounds is passed, no exception occurred.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ShowSchedule_TournamentHasGamesScheduled_RoundsCreatedCorrectly()
         {
             // Arrange
@@ -298,7 +296,7 @@
             var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(new ScheduleViewModelComparer().AreRoundsEqual(actual.Rounds, expected.Rounds));
+            Assert.True(new ScheduleViewModelComparer().AreRoundsEqual(actual.Rounds, expected.Rounds));
             VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Once());
         }
 
@@ -306,7 +304,7 @@
         /// Test for ShowSchedule method.
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ShowSchedule_ValidScheduleViewModel_ScheduleViewModelIsReturned()
         {
             // Arrange
@@ -327,7 +325,7 @@
             var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(new ScheduleViewModelComparer().AreEqual(actual, expected));
+            Assert.True(new ScheduleViewModelComparer().AreEqual(actual, expected));
             VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Once());
         }
 
@@ -335,7 +333,7 @@
         /// Test for ShowSchedule method.
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ShowSchedule_PlayoffScheme_RoundNamesAreCreated()
         {
             // Arrange
@@ -359,7 +357,7 @@
             var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
-            CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
+            Assert.Equal(actual.RoundNames, expected.RoundNames);
         }
 
         #endregion
@@ -371,7 +369,7 @@
         /// Tournament teams list view model is valid and no exception is thrown during adding
         /// Teams are added successfully and json result is returned
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void AddTeamsToTournament_ValidTeamListViewModelNoException_JsonResultIsReturned()
         {
             // Arrange
@@ -389,7 +387,7 @@
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
             // Assert
-            Assert.IsTrue(new TournamentTeamsListViewModelComparer()
+            Assert.True(new TournamentTeamsListViewModelComparer()
                 .AreEqual(returnedDataResult, expectedDataResult));
         }
 
@@ -398,7 +396,7 @@
         /// Tournament teams list view model is invalid and Argument exception is thrown during adding
         /// Teams are not added and json result  with model error is returned
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void AddTeamsToTournament_InValidTeamListViewModelWithException_JsonModelErrorReturned()
         {
             // Arrange
@@ -416,7 +414,7 @@
             var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert
-            Assert.IsNotNull(modelResult.Message);
+            Assert.NotNull(modelResult.Message);
         }
 
         #endregion
@@ -426,7 +424,7 @@
         /// <summary>
         /// Test for ScheduleGame method (GET action). Wrong tournament Id passed. View with error message is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ScheduleGameGetAction_NonExistentTournament_ErrorViewIsReturned()
         {
             // Arrange
@@ -437,15 +435,15 @@
             var result = TestExtensions.GetModel<GameViewModel>(sut.ScheduleGame(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(sut.ModelState.IsValid);
-            Assert.IsNull(result);
+            Assert.False(sut.ModelState.IsValid);
+            Assert.Null(result);
         }
 
         /// <summary>
         /// Test for ScheduleGame method (GET action).
         /// Tournament with scheme 1 and no teams passed. View with error message is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ScheduleGameGetAction_NoTeamsAvailable_ErrorViewIsReturned()
         {
             // Arrange
@@ -465,7 +463,7 @@
         /// <summary>
         /// Test for ScheduleGame method (GET action). Tournament with scheme 1 and 3 teams passed. View with GameViewModel is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ScheduleGameGetAction_TournamentExists_GameViewModelIsReturned()
         {
             // Arrange
@@ -476,8 +474,7 @@
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
 
-            var expected = new GameViewModel
-            {
+            var expected = new GameViewModel {
                 TournamentId = TEST_TOURNAMENT_ID,
                 GameDate = _testDate,
                 TeamList = CreateTestTeamsList(),
@@ -502,7 +499,7 @@
         /// Valid game is passed, no exception occurs.
         /// Game is created and browser is redirected to ShowSchedule action.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ScheduleGamePostAction_ValidGameViewModel_GameIsCreatedRedirectToSchedule()
         {
             // Arrange
@@ -524,7 +521,7 @@
         /// Valid game is passed, no exception occurs.
         /// Game is created. Browser is not redirected.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ScheduleGamePostAction_ValidGameViewModel_GameIsCreated()
         {
             // Arrange
@@ -538,7 +535,7 @@
 
             // Assert
             VerifyCreateGame(Times.Once());
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
         /// <summary>
@@ -546,7 +543,7 @@
         /// Valid game is passed, but ArgumentException occurs.
         /// Game is not created. Browser is redirected to ScheduleGame action.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ScheduleGamePostAction_ServiceValidationFails_ScheduleGameViewIsReturned()
         {
             // Arrange
@@ -567,7 +564,7 @@
         /// <summary>
         /// Test for ScheduleGame method (POST action). Invalid game view model is passed, HttpNotFound returned
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ScheduleGamePostAction_InvalidGameViewModel_ScheduleGameViewIsReturned()
         {
             // Arrange
@@ -582,7 +579,7 @@
 
             // Assert
             VerifyCreateGame(Times.Never());
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
         #endregion
@@ -592,15 +589,14 @@
         /// <summary>
         /// Test for EditScheduledGame method (GET action). Correct game id passed. View with GameViewModel is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditScheduledGameGetAction_GameExists_GameViewModelIsReturned()
         {
             // Arrange
             const int MIN_ROUND_NUMBER = 1;
             const int TEST_ROUND_COUNT = 3;
 
-            var testGame = new GameResultDto
-            {
+            var testGame = new GameResultDto {
                 Id = TEST_ID,
                 HomeTeamId = TEST_ID,
                 AwayTeamId = TEST_ID,
@@ -632,7 +628,7 @@
         /// <summary>
         /// Test for EditScheduledGame method (GET action). Wrong game Id passed. View with error message is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditScheduledGameGetAction_NonExistentGame_ErrorViewIsReturned()
         {
             // Arrange
@@ -655,7 +651,7 @@
         /// Valid gameViewModel is passed, no exception occurs.
         /// Game is updated. Browser is redirected to ShowSchedule action.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditScheduledGamePostAction_ValidGameViewModel_GameIsUpdated()
         {
             // Arrange
@@ -675,7 +671,7 @@
         /// Valid game is passed, but ArgumentException occurs.
         /// Game is not updated. View with GameViewModel is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditScheduledGamePostAction_ServiceValidationFails_GameViewModelIsReturned()
         {
             // Arrange
@@ -696,7 +692,7 @@
         /// Valid game is passed, but MissingEntityException occurs.
         /// Game is not updated. View with error message is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditScheduledGamePostAction_NonExistentGameIsPassed_ErrorViewIsReturned()
         {
             // Arrange
@@ -715,7 +711,7 @@
         /// <summary>
         /// Test for EditScheduledGame method (POST action). Invalid game view model is passed, view with GameViewModel is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditScheduledGamePostAction_InvalidGameViewModel_GameViewModelIsReturned()
         {
             // Arrange
@@ -729,7 +725,7 @@
 
             // Assert
             VerifyCreateGame(Times.Never());
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
         #endregion
@@ -739,7 +735,7 @@
         /// <summary>
         /// Test for GetFinished method. Finished tournaments are requested. JsonResult with finished tournaments is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetFinished_GetFinishedTournaments_JsonResultIsReturned()
         {
             // Arrange
@@ -751,7 +747,7 @@
             var result = sut.GetFinished();
 
             // Assert
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         #endregion
@@ -761,7 +757,7 @@
         /// <summary>
         /// Test for Archive method. Service get Id of Tournament to archive
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Archive_GetTournamentToArchive_ServiceMethodArchiveIsCalled()
         {
             // Arrange
@@ -775,7 +771,7 @@
             // Assert
             VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
         }
-        
+
         #endregion
 
         #region Details
@@ -783,7 +779,7 @@
         /// <summary>
         /// Test for Details method. Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Details_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -795,13 +791,13 @@
             var result = sut.Details(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for Details method. Tournament with specified identifier exists. View model of Tournament is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Details_ExistingTournament_TournamentViewModelIsReturned()
         {
             // Arrange
@@ -826,14 +822,13 @@
         /// <summary>
         /// Test for Create method (GET action). Tournament view model is requested. Tournament view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreateGetAction_GetTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
             var now = _testDate;
 
-            var expected = new TournamentViewModel
-            {
+            var expected = new TournamentViewModel {
                 Season = (short)now.Year,
                 ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
                 ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
@@ -868,7 +863,7 @@
         /// <summary>
         /// Test for Create method (Get action). Tournament view model is returned. Tournament is new.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreateGetAction_GetTournamentViewModel_TournamentIsNew()
         {
             // Arrange
@@ -878,7 +873,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
 
             // Assert
-            Assert.IsTrue(result.IsNew, "Tournament should be new.");
+            Assert.True(result.IsNew, "Tournament should be new.");
         }
 
         #endregion
@@ -889,7 +884,7 @@
         /// Test for Create method (POST action). Tournament view model is valid and no exception is thrown during creation.
         /// Tournament is created successfully and user is redirected to the Index page.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_ValidTournamentViewModelNoException_TournamentIsCreated()
         {
             // Arrange
@@ -908,7 +903,7 @@
         /// Test for Create method (POST action). Tournament view model is valid, but exception is thrown during creation.
         /// Tournament view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_ValidTournamentViewModelWithException_TournamentViewModelIsReturned()
         {
             // Arrange
@@ -921,14 +916,14 @@
 
             // Assert
             VerifyCreate(Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for Create method (POST action). Tournament view model is not valid.
         /// Tournament is not created and tournament view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_InvalidTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
@@ -941,7 +936,7 @@
 
             // Assert
             VerifyCreate(Times.Never());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         #endregion
@@ -951,7 +946,7 @@
         /// <summary>
         /// Test for Edit method (GET action). Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -962,13 +957,13 @@
             var result = sut.Edit(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for Edit method (GET action). Tournament with specified identifier exists. View model of Tournament is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_ExistingTournament_TournamentViewModelIsReturned()
         {
             // Arrange
@@ -988,7 +983,7 @@
         /// <summary>
         /// Test for Edit method (Get action). Tournament has one division. Count of divisions is min.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_TournamentWithOneDivision_DivisionsCountIsMin()
         {
             // Arrange
@@ -1002,13 +997,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.IsDivisionsCountMin, "Count of tournament's divisions should be min.");
+            Assert.True(result.IsDivisionsCountMin, "Count of tournament's divisions should be min.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Tournament has two divisions. Count of divisions is not min.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_TournamentWithTwoDivisions_DivisionsCountIsNotMin()
         {
             // Arrange
@@ -1022,13 +1017,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.IsDivisionsCountMin, "Count of tournament's divisions shouldn't be min.");
+            Assert.False(result.IsDivisionsCountMin, "Count of tournament's divisions shouldn't be min.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Tornament has ten divisions. Count of divisions is max.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_TournamentWithTenDivisions_DivisionsCountIsMax()
         {
             var testData = MakeTestTournamentWithTenDivisions(TEST_TOURNAMENT_ID);
@@ -1041,13 +1036,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.IsDivisionsCountMax, "Count of tournament's divisions should be max.");
+            Assert.True(result.IsDivisionsCountMax, "Count of tournament's divisions should be max.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Tournament has two divisions. Count of divisions is not max.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_TournamentWithTwoDivisions_DivisionsCountIsNotMax()
         {
             // Arrange
@@ -1061,13 +1056,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.IsDivisionsCountMax, "Count of tournament's divisions shouldn't be max.");
+            Assert.False(result.IsDivisionsCountMax, "Count of tournament's divisions shouldn't be max.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Tournament has a division with one group. Count of groups is min.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_DivisionWithOneGroup_GroupsCountIsMin()
         {
             // Arrange
@@ -1081,13 +1076,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions.First().IsGroupsCountMin, "Count of division's groups should be min.");
+            Assert.True(result.Divisions.First().IsGroupsCountMin, "Count of division's groups should be min.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Tournament has a division with two groups. Count of groups is not min.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_DivisionWithTwoGroups_GroupsCountIsNotMin()
         {
             // Arrange
@@ -1101,13 +1096,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions.First().IsGroupsCountMin, "Count of division's groups shouldn't be min.");
+            Assert.False(result.Divisions.First().IsGroupsCountMin, "Count of division's groups shouldn't be min.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Tornament has a division with ten groups. Count of groups is max.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_DivisionWithTenGroups_GroupsCountIsMax()
         {
             // Arrange
@@ -1121,13 +1116,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions.First().IsGroupsCountMax, "Count of division's groups should be max.");
+            Assert.True(result.Divisions.First().IsGroupsCountMax, "Count of division's groups should be max.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Tornament has a division with two groups. Count of groups is not max.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_DivisionWithTwoGroups_GroupsCountIsNotMax()
         {
             // Arrange
@@ -1141,13 +1136,13 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions.First().IsGroupsCountMax, "Count of division's groups shouldn't be max.");
+            Assert.False(result.Divisions.First().IsGroupsCountMax, "Count of division's groups shouldn't be max.");
         }
 
         /// <summary>
         /// Test for Edit method (Get action). Existing tournament is returned. Tournament is not new.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_GetExistingTournament_TournamentIsNotNew()
         {
             // Arrange
@@ -1160,7 +1155,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.IsNew, "Tournament should not be new.");
+            Assert.False(result.IsNew, "Tournament should not be new.");
         }
 
         #endregion
@@ -1171,7 +1166,7 @@
         /// Test for Edit method (POST action). Tournament view model is valid and no exception is thrown during editing.
         /// Tournament is updated successfully and user is redirected to the Index page.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_ValidTournamentViewModelNoException_TournamentIsUpdated()
         {
             // Arrange
@@ -1190,7 +1185,7 @@
         /// Test for Edit method (POST action). Tournament view model is valid, but exception is thrown during editing.
         /// Tournament view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_ValidTournamentViewModelWithException_TournamentViewModelIsReturned()
         {
             // Arrange
@@ -1203,14 +1198,14 @@
 
             // Assert
             VerifyEdit(Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for Edit method (POST action). Tournament view model is not valid.
         /// Tournament is not updated and tournament view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_InvalidTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
@@ -1223,7 +1218,7 @@
 
             // Assert
             VerifyEdit(Times.Never());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         #endregion
@@ -1233,7 +1228,7 @@
         /// <summary>
         /// Test for Delete team from tournament method (POST action)
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeleteTeamFromTournament_TeamExists_TeamDeleted()
         {
             // Arrange
@@ -1246,14 +1241,14 @@
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
             // Assert
-            Assert.IsTrue(result.HasDeleted);
+            Assert.True(result.HasDeleted);
         }
 
         /// <summary>
         /// Test for Delete team from tournament method (POST action)
         /// team is not exists
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeleteTeamFromTournament_NonExistTeam_TeamIsNotDeleted()
         {
             // Arrange
@@ -1267,7 +1262,7 @@
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
             // Assert
-            Assert.IsFalse(result.HasDeleted);
+            Assert.False(result.HasDeleted);
         }
 
         #endregion
@@ -1277,24 +1272,24 @@
         /// <summary>
         /// Test for Delete method (GET action). Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeleteGetAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
             var sut = BuildSUT();
-     
+
             // Act
             var result = sut.Delete(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for Delete method (GET action). Tournament with specified identifier exists. View model of Tournament is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeleteGetAction_ExistingTournament_TournamentViewModelIsReturned()
         {
             // Arrange
@@ -1318,7 +1313,7 @@
         /// Test for DeleteConfirmed method (delete POST action). Tournament with specified identifier does not exist.
         /// HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeletePostAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -1330,14 +1325,14 @@
 
             // Assert
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Never());
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for DeleteConfirmed method (delete POST action). Tournament with specified identifier exists.
         /// Tournament is deleted successfully and user is redirected to the Index page.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeletePostAction_ExistingTournament_TournamentIsDeleted()
         {
             // Arrange
@@ -1361,7 +1356,7 @@
         /// Test for Activate method. Tournament with specified identifier exists.
         /// Tournament is activated successfully and user is redirected to the Archived page.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Activate_ExistingTournament_TournamentIsActivatedAndUserIsRedirected()
         {
             // Arrange
@@ -1381,7 +1376,7 @@
         /// Test for Activate method. Tournament with specified identifier does not exist.
         /// Tournament is not activated successfully and HttpNotFound is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Activate_UnExistingTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -1393,7 +1388,7 @@
 
             // Assert
             VerifyActivateTournament(TEST_TOURNAMENT_ID, Times.Once());
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         #endregion
@@ -1404,7 +1399,7 @@
         /// Test for SwapRounds method.
         /// Wrong tournament Id passed. View with error message is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void SwapRounds_NonExistentTournament_ErrorViewIsReturned()
         {
             // Arrange
@@ -1419,16 +1414,16 @@
                     SECOND_ROUND_NUMBER));
 
             // Assert
-            Assert.IsFalse(sut.ModelState.IsValid);
-            Assert.IsTrue(sut.ModelState.ContainsKey("LoadError"));
-            Assert.IsNull(result);
+            Assert.False(sut.ModelState.IsValid);
+            Assert.True(sut.ModelState.ContainsKey("LoadError"));
+            Assert.Null(result);
         }
 
         /// <summary>
         /// Test for SwapRounds method. Games are exist.
         /// All games are swapped.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void SwapRounds_ExistentGames_GamesIsSwapped()
         {
             // Arrange
@@ -1450,7 +1445,7 @@
         /// Test for SwapRounds method. Some game are not exist.
         /// All games are swapped.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void SwapRounds_NonExistentGames_ErrorViewIsReturned()
         {
             // Arrange
@@ -1471,16 +1466,16 @@
                 SECOND_ROUND_NUMBER));
 
             // Assert
-            Assert.IsFalse(sut.ModelState.IsValid);
-            Assert.IsTrue(sut.ModelState.ContainsKey("LoadError"));
-            Assert.IsNull(result);
+            Assert.False(sut.ModelState.IsValid);
+            Assert.True(sut.ModelState.ContainsKey("LoadError"));
+            Assert.Null(result);
         }
 
         #endregion
 
         #region ApplyForTournament
 
-        [TestMethod]
+        [Fact]
         public void ApplyForTournament_TournamentExists_TournamentApplyViewModelReturned()
         {
             // Arrange
@@ -1498,7 +1493,7 @@
             TestHelper.AreEqual(expected, actual, new TournamentApplyViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void ApplyForTournament_NonExistingTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -1509,10 +1504,10 @@
             var actionResult = sut.ApplyForTournament(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(actionResult, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(actionResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void ApplyForTournamentPostAction_NonExistentUser_JsonResultIsReturned()
         {
             // Arrange
@@ -1523,10 +1518,10 @@
             var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
-            Assert.IsNotNull(result, JSON_NO_RIGHTS_MESSAGE);
+            result.Should().NotBeNull(JSON_NO_RIGHTS_MESSAGE);
         }
 
-        [TestMethod]
+        [Fact]
         public void ApplyForTournamentPostAction_UserExists_JsonResultIsReturned()
         {
             // Arrange
@@ -1539,10 +1534,10 @@
 
             // Assert
             VerifyCreateTournamentRequest(Times.Once());
-            Assert.IsNotNull(result, JSON_OK_MSG);
+            result.Should().NotBeNull(JSON_OK_MSG);
         }
 
-        [TestMethod]
+        [Fact]
         public void ApplyForTournamentPostAction_ArgumentExceptionThrown_JsonResultIsReturned()
         {
             // Arrange
@@ -1554,10 +1549,10 @@
             var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
-            Assert.IsNotNull(result, INVALID_PARAMETR);
+            result.Should().NotBeNull(INVALID_PARAMETR);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAllAvailableTeams_TeamsExists_JsonResultIsReturned()
         {
             // Arrange
@@ -1571,10 +1566,10 @@
             var result = sut.GetAllAvailableTeams(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAllAvailableDivisions_DivisionsExists_JsonResultIsReturned()
         {
             // Arrange
@@ -1588,10 +1583,10 @@
             var result = sut.GetAllAvailableDivisions(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAllAvailableGroups_GroupsExists_JsonResultIsReturned()
         {
             // Arrange
@@ -1605,7 +1600,7 @@
             var result = sut.GetAllAvailableGroups(TEST_DIVISION_ID);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
         #endregion
@@ -1664,8 +1659,7 @@
 
         private TournamentTeamsListViewModel CreateExpectedTeamsList()
         {
-            var expectedTeams = new TournamentTeamsListViewModel
-            {
+            var expectedTeams = new TournamentTeamsListViewModel {
                 TeamsList = new List<TeamNameViewModel>()
                 {
                     new TeamNameViewModel()
@@ -1696,8 +1690,7 @@
         private List<SelectListItem> CreateTestRoundList(int testRoundCount)
         {
             return Enumerable.Range(1, testRoundCount)
-                .Select(r => new SelectListItem
-                {
+                .Select(r => new SelectListItem {
                     Text = r.ToString(),
                     Value = r.ToString()
                 })
@@ -1767,16 +1760,14 @@
 
         private GroupTeamViewModel MakeTestGroupTeamViewModel()
         {
-            return new GroupTeamViewModel
-            {
+            return new GroupTeamViewModel {
                 GroupId = 1,
                 TeamId = 1,
             };
         }
         private static TournamentScheduleDto CreateTournamentData(byte roundCount)
         {
-            return new TournamentScheduleDto
-            {
+            return new TournamentScheduleDto {
                 Id = TEST_TOURNAMENT_ID,
                 Name = TEST_TOURNAMENT_NAME,
                 Scheme = TournamentSchemeEnum.One,
@@ -1949,7 +1940,7 @@
 
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)
         {
-            Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
+            Assert.Equal(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
         }
 
         private void VerifyCreateGame(Times times)
@@ -1977,9 +1968,9 @@
             GameViewModel gameViewModel,
             TournamentsController sut)
         {
-            Assert.IsFalse(sut.ModelState.IsValid);
-            Assert.IsTrue(sut.ModelState.ContainsKey(expectedKey));
-            Assert.IsNull(gameViewModel);
+            Assert.False(sut.ModelState.IsValid);
+            Assert.True(sut.ModelState.ContainsKey(expectedKey));
+            Assert.Null(gameViewModel);
         }
 
         private void VerifyGetAllowedOperations(Times times)
@@ -1994,16 +1985,16 @@
 
         private void AssertEqual(GameViewModel x, GameViewModel y)
         {
-            Assert.AreEqual(x.Id, y.Id, "Actual game Id doesn't match expected");
-            Assert.AreEqual(x.TournamentId, y.TournamentId, "Actual TournamentId doesn't match expected");
-            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, "Actual HomeTeamId doesn't match expected");
-            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "Actual AwayTeamId doesn't match expected");
-            Assert.AreEqual(x.Round, y.Round, "Actual Round number doesn't match expected");
-            Assert.AreEqual(x.GameDate, y.GameDate, "Actual GameDate doesn't match expected");
-            Assert.AreEqual(x.GameTime, y.GameTime, "Actual GameTime doesn't match expected");
-            Assert.AreEqual(x.GameNumber, y.GameNumber, "Actual GameNumber doesn't match expected");
+            x.Id.Should().Be(y.Id, "Actual game Id doesn't match expected");
+            x.TournamentId.Should().Be(y.TournamentId, "Actual TournamentId doesn't match expected");
+            x.HomeTeamId.Should().Be(y.HomeTeamId, "Actual HomeTeamId doesn't match expected");
+            x.AwayTeamId.Should().Be(y.AwayTeamId, "Actual AwayTeamId doesn't match expected");
+            x.Round.Should().Be(y.Round, "Actual Round number doesn't match expected");
+            x.GameDate.Should().Be(y.GameDate, "Actual GameDate doesn't match expected");
+            x.GameTime.Should().Be(y.GameTime, "Actual GameTime doesn't match expected");
+            x.GameNumber.Should().Be(y.GameNumber, "Actual GameNumber doesn't match expected");
 
-            Assert.IsTrue(
+            Assert.True(
                 x.TeamList != null &&
                 y.TeamList != null &&
                 x.TeamList.Select(
@@ -2011,7 +2002,7 @@
                     y.TeamList.Select(team => new { Text = team.Text, Value = team.Value })),
                 "Actual Teams list doesn't match expected");
 
-            Assert.IsTrue(
+            Assert.True(
                           x.RoundList != null &&
                           y.RoundList != null &&
                          x.RoundList.Select(r => r.Value).SequenceEqual(

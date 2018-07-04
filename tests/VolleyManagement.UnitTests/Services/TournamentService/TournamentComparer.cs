@@ -9,7 +9,7 @@
     /// Comparer for tournament objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TournamentComparer : IComparer<Tournament>, IComparer
+    internal class TournamentComparer : IComparer<Tournament>, IComparer, IEqualityComparer<Tournament>
     {
         /// <summary>
         /// Compares two tournament objects.
@@ -62,5 +62,9 @@
                 && x.RegulationsLink == y.RegulationsLink
                 && x.IsArchived == y.IsArchived;
         }
+
+        public bool Equals(Tournament x, Tournament y) => AreEqual(x, y);
+
+        public int GetHashCode(Tournament obj) => obj.Id.GetHashCode();
     }
 }

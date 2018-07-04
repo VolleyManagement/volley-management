@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using VolleyManagement.Domain.GamesAggregate;
 
-namespace VolleyManagement.UnitTests.Services.GameService
+namespace VolleyManagement.UnitTests.Services.GameService.Comparers
 {
     /// <summary>
     /// Represents a comparer for <see cref="GameResultDto"/> objects.

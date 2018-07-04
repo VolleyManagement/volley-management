@@ -9,7 +9,7 @@
     /// Compares Role instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class RequestsViewModelComparer : IComparer<RequestsViewModel>, IComparer
+    public class RequestsViewModelComparer : IComparer<RequestsViewModel>, IComparer, IEqualityComparer<RequestsViewModel>
     {
         public int Compare(RequestsViewModel x, RequestsViewModel y)
         {
@@ -34,6 +34,16 @@
         public int Compare(object x, object y)
         {
             return Compare(x as RequestsViewModel, y as RequestsViewModel);
+        }
+
+        public bool Equals(RequestsViewModel x, RequestsViewModel y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(RequestsViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         private int CompareInternal(RequestsViewModel x, RequestsViewModel y)

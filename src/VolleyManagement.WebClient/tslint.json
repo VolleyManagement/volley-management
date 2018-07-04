@@ -1,4 +1,10 @@
 {
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-sonarts"
+  ],
+  "jsRules": {},
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],

@@ -10,24 +10,24 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Contracts;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Contracts.Authorization;
     using Contracts.Exceptions;
     using Domain.PlayersAggregate;
     using Domain.TeamsAggregate;
+    using FluentAssertions;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.Players;
     using UI.Areas.Mvc.ViewModels.Teams;
     using ViewModels;
     using Services.PlayerService;
     using Services.TeamService;
+    using Xunit;
 
     /// <summary>
     /// Tests for MVC TeamsController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class TeamsControllerTests
     {
         private const int TEAM_UNEXISTING_ID_TO_DELETE = 4;
@@ -56,8 +56,7 @@
         /// <summary>
         /// Initializes test data
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public TeamsControllerTests()
         {
             _teamServiceMock = new Mock<ITeamService>();
             _httpContextMock = new Mock<HttpContextBase>();
@@ -74,7 +73,7 @@
         /// Delete method test. The method should invoke Delete() method of ITeamService
         /// and return result as JavaScript Object Notation.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Delete_PlayerExists_PlayerIsDeleted()
         {
             // Act
@@ -83,14 +82,14 @@
 
             // Assert
             _teamServiceMock.Verify(ps => ps.Delete(It.Is<TeamId>(id => id.Id == TEAM_UNEXISTING_ID_TO_DELETE)), Times.Once());
-            Assert.IsNotNull(actual);
+            Assert.NotNull(actual);
         }
 
         /// <summary>
         /// Delete method test. Input parameter is team id, which doesn't exist in database.
         /// The method should return message as JavaScript Object Notation.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Delete_PlayerDoesntExist_JsonReturned()
         {
             // Arrange
@@ -101,13 +100,13 @@
             var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE);
 
             // Assert
-            Assert.IsNotNull(actual);
+            Assert.NotNull(actual);
         }
 
         /// <summary>
         /// Create method test. Positive test
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_CreateTeamDtoPassed_EntityIdIsSet()
         {
             // Arrange
@@ -128,15 +127,15 @@
             var result = sut.Create(viewModel);
 
             // Assert
-            Assert.IsNotNull(result.Data);
-            Assert.AreEqual(viewModel.Id, SPECIFIED_TEAM_ID);
+            Assert.NotNull(result.Data);
+            Assert.Equal(viewModel.Id, SPECIFIED_TEAM_ID);
         }
 
         /// <summary>
         /// Create method test. Team is not valid. Argument exception is thrown.
         /// Json is Returned
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_TeamNotValid_ArgumentExceptionThrown()
         {
             // Arrange
@@ -157,14 +156,14 @@
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<CreateTeamDto>()), Times.Once());
-            Assert.AreEqual(actualMessage, expetedMessage);
+            Assert.Equal(actualMessage, expetedMessage);
         }
 
         /// <summary>
         /// Create method test. Model state is invalid.
         /// Json is Returned
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_InValidTeamViewModel_JsonReturned()
         {
             // Arrange
@@ -177,13 +176,13 @@
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<CreateTeamDto>()), Times.Never());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Create method test. Invalid captain Id
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_InvalidCaptainId_MissingEntityExceptionThrown()
         {
             // Arrange
@@ -206,13 +205,13 @@
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<CreateTeamDto>()), Times.Once());
-            Assert.AreEqual(actualMessage, expetedMessage);
+            Assert.Equal(actualMessage, expetedMessage);
         }
 
         /// <summary>
         /// Create method test. Captain of another team
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_CaptainOfAnotherTeam_ValidationExceptionThrown()
         {
             // Arrange
@@ -231,13 +230,13 @@
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<CreateTeamDto>()), Times.Once());
             _teamServiceMock.Verify(ts => ts.ChangeCaptain(It.IsAny<TeamId>(), It.IsAny<PlayerId>()), Times.Never());
-            Assert.IsNotNull(jsonResult);
+            Assert.NotNull(jsonResult);
         }
 
         /// <summary>
         /// Create method test. Captain of another team
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_RosterPlayerIsCaptainOfAnotherTeam_ValidationExceptionThrown()
         {
             // Arrange
@@ -250,13 +249,13 @@
             var modelResult = jsonResult;
 
             // Assert
-            Assert.IsNotNull(modelResult);
+            Assert.NotNull(modelResult);
         }
 
         /// <summary>
         /// Create method test. Roster players updated
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Create_RosterPlayerPassed_PlayersUpdated()
         {
             // Arrange
@@ -299,7 +298,7 @@
         /// <summary>
         /// Edit method test. Positive test
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_TeamPassed_EntityIdIsSet()
         {
             // Arrange
@@ -325,14 +324,14 @@
             sut.Edit(viewModel);
 
             // Assert
-            Assert.AreEqual(viewModel.Id, SPECIFIED_TEAM_ID);
+            Assert.Equal(viewModel.Id, SPECIFIED_TEAM_ID);
         }
 
         /// <summary>
         /// Edit method test. Team is not valid. Argument exception is thrown.
         /// Json is Returned
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_TeamNotValid_ArgumentExceptionThrown()
         {
             // Arrange
@@ -350,14 +349,14 @@
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
-            Assert.IsNotNull(modelResult);
+            Assert.NotNull(modelResult);
         }
 
         /// <summary>
         /// Edit method test. Model state is invalid.
         /// Json is Returned
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_InValidTeamViewModel_JsonReturned()
         {
             // Arrange
@@ -370,13 +369,13 @@
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Never());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Edit method test. Invalid captain Id
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_InvalidCaptainId_MissingEntityExceptionThrown()
         {
             // Arrange
@@ -395,13 +394,13 @@
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
             _teamServiceMock.Verify(ts => ts.ChangeCaptain(It.IsAny<TeamId>(), It.IsAny<PlayerId>()), Times.Never());
-            Assert.IsNotNull(modelResult);
+            Assert.NotNull(modelResult);
         }
 
         /// <summary>
         /// Edit method test. Captain of another team
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_CaptainOfAnotherTeam_ValidationExceptionThrown()
         {
             // Arrange
@@ -419,13 +418,13 @@
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
             _teamServiceMock.Verify(ts => ts.ChangeCaptain(It.IsAny<TeamId>(), It.IsAny<PlayerId>()), Times.Never());
-            Assert.IsNotNull(jsonResult);
+            Assert.NotNull(jsonResult);
         }
 
         /// <summary>
         /// Edit method test. Invalid player Id
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_InvalidRosterPlayerId_ArgumentExceptionThrown()
         {
             // Arrange
@@ -449,13 +448,13 @@
             var jsonResult = sut.Edit(viewModel);
 
             // Assert
-            Assert.IsNotNull(jsonResult);
+            Assert.NotNull(jsonResult);
         }
 
         /// <summary>
         /// Edit method test. Captain of another team
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_RosterPlayerIsCaptainOfAnotherTeam_ValidationExceptionThrown()
         {
             // Arrange
@@ -470,20 +469,20 @@
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<TeamId>())).Returns(roster.ToList());
 
-            var viewModel = CreateViewModel();        
+            var viewModel = CreateViewModel();
 
             // Act
             var sut = BuildSUT();
             var jsonResult = sut.Edit(viewModel);
 
             // Assert
-            Assert.IsNotNull(jsonResult);
+            Assert.NotNull(jsonResult);
         }
 
         /// <summary>
         /// Edit method test. Roster players updated
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_RosterPlayerPassed_PlayersUpdated()
         {
             // Arrange
@@ -513,13 +512,13 @@
             var jsonResult = sut.Edit(viewModel);
 
             // Assert
-            Assert.IsNotNull(jsonResult);
+            Assert.NotNull(jsonResult);
         }
 
         /// <summary>
         /// Test for Details method. Team with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Details_NonExistentTeam_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -530,13 +529,13 @@
             var result = sut.Details(TEST_TEAM_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for Details method. Team with specified identifier exists. View model of Team is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Details_ExistingTeam_TeamViewModelIsReturned()
         {
             // Arrange
@@ -562,13 +561,13 @@
 
             // Assert
             TestHelper.AreEqual<TeamViewModel>(expected, actual.Model, new TeamViewModelComparer());
-            Assert.AreEqual(actual.CurrentReferrer, sut.Request.RawUrl);
+            Assert.Equal(actual.CurrentReferrer, sut.Request.RawUrl);
         }
 
         /// <summary>
         /// Test for Edit method (GET action). Valid team id.  Team view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_TeamId_TeamViewModelIsReturned()
         {
             var team = CreateTeam();
@@ -597,7 +596,7 @@
         /// <summary>
         /// Test for Edit method. Team with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_NotExistedTeam_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -608,13 +607,13 @@
             var result = sut.Edit(TEAM_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for GetAllTeams method. All teams are requested. JsonResult with all teams is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetAllTeams_GetTeams_JsonResultIsReturned()
         {
             // Arrange
@@ -626,7 +625,7 @@
             var result = sut.GetAllTeams();
 
             // Assert
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         private TeamsController BuildSUT()

@@ -1,4 +1,4 @@
-#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+﻿#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #tool nuget:?package=JetBrains.dotCover.CommandLineTools
 #tool "nuget:?package=xunit.runner.console"
 
@@ -55,7 +55,7 @@ SonarEndSettings sonarEndSettings;
 
 var suffix = BuildSystem.IsRunningOnAppVeyor ? $"_AppVeyor_{AppVeyor.Environment.JobId}" : string.Empty;
 
-utResults = utsDir + File($"UT_Results{suffix}.trx");
+utResults = utsDir + File($"UT_Results{suffix}.xml");
 utCoverageResults = utsDir + File($"UT_Coverage{suffix}.dcvr");
 
 specResults = specsDir + File($"IT_Results{suffix}.xml");
@@ -70,10 +70,10 @@ var coverageResultsToMerge = new List<FilePath>();
 coverageResultsToMerge.Add(utCoverageResults);
 coverageResultsToMerge.Add(domainUTCoverageResults);
 
-if(canRunIntegrationTests)
-{
-    coverageResultsToMerge.Add(specCoverageResults);
-}
+// if(canRunIntegrationTests)
+// {
+//     coverageResultsToMerge.Add(specCoverageResults);
+// }
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -99,12 +99,15 @@ Task("Build")
         );
     });
 
-Task("UnitTests")
+Task("xUnitTests")
     .Does(() => {
-        var testsPath = utsDir.Path.FullPath + "/*.UnitTests.dll";
-        var msTestSettings = new MSTestSettings {
-            ResultsFile = utResults.Path.GetFilename().FullPath,
-            WorkingDirectory = testsDir
+        var testsPath = utsDir.Path.FullPath + "/*/*.UnitTests.dll";
+
+        var xUnitSettings = new XUnit2Settings {
+            WorkingDirectory = testsDir,
+            ReportName = utResults.Path.GetFilenameWithoutExtension().FullPath,
+            XmlReport = true,
+            OutputDirectory = utResults.Path.GetDirectory().FullPath
         };
 
         var dotCoverSettings = new DotCoverCoverSettings{
@@ -115,20 +118,20 @@ Task("UnitTests")
         SetCoverageFilter(dotCoverSettings);        
 
         DotCoverCover(
-            (ICakeContext c) => { c.MSTest (testsPath, msTestSettings); },
+            (ICakeContext c) => { c.XUnit2 (testsPath, xUnitSettings); },
             utCoverageResults,
             dotCoverSettings
         );
 
         if (BuildSystem.IsRunningOnAppVeyor) {
-            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.MSTest);
+            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.XUnit);
         }
     });
 
 Task("IntegrationTests")
     .WithCriteria(() => canRunIntegrationTests)
     .Does(() => {        
-        var testsPath = specsDir.Path.FullPath + "/*.Specs.dll";
+        var testsPath = specsDir.Path.FullPath + "/*/*.Specs.dll";
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = specsDir,
             ReportName = specResults.Path.GetFilenameWithoutExtension().FullPath,
@@ -156,7 +159,7 @@ Task("IntegrationTests")
 
 Task("DomainTests")
     .Does(() => {        
-        var testsPathDomain = domainDir.Path.FullPath + "/*.Domain.UnitTests.dll";
+        var testsPathDomain = domainDir.Path.FullPath + "/*/*.Domain.UnitTests.dll";
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = testsDir,
             ReportName = domainUTResults.Path.GetFilenameWithoutExtension().FullPath,
@@ -201,7 +204,8 @@ Task("SonarBegin")
             Login = sonarToken,
             VsTestReportsPath = utResults,
             XUnitReportsPath = specResults,
-            DotCoverReportsPath = combinedCoverageResults
+            DotCoverReportsPath = combinedCoverageResults,
+            Exclusions = "src/VolleyManagement.WebClient/**"
         };
 
         if (BuildSystem.IsRunningOnAppVeyor &&
@@ -227,6 +231,9 @@ Task("SonarEnd")
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
+Task("UnitTests")
+    .IsDependentOn("xUnitTests")
+    .IsDependentOn("DomainTests");
 
 Task("Sonar")
     .IsDependentOn("Clean")
@@ -234,8 +241,7 @@ Task("Sonar")
     .IsDependentOn("SonarBegin")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
-    .IsDependentOn("IntegrationTests")
-    .IsDependentOn("DomainTests")
+    //.IsDependentOn("IntegrationTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 

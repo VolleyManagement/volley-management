@@ -3,31 +3,30 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
     using VolleyManagement.Services;
+    using Xunit;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class FileServiceTests
     {
         #region Delete
 
-        [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException))]
+        [Fact]
         public void Delete_InvalidNullFile_FileNotFoundException()
         {
             // Arrange
             var sut = BuildSUT();
 
             // Act
-            sut.Delete(null);
+            Assert.Throws<FileNotFoundException>(() => sut.Delete(null));
         }
 
         #endregion
 
         #region FileExists
 
-        [TestMethod]
+        [Fact]
         public void FileExists_NoFile_FileNotFound()
         {
             var expected = false;
@@ -39,22 +38,21 @@
             var actual = sut.FileExists(null);
 
             // Assert
-            Assert.AreEqual(expected, actual, "There is no file on server");
+            actual.Should().Be(expected, "There is no file on server");
         }
 
         #endregion
 
         #region Upload
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Upload_InvalidNullFile_ArgumentException()
         {
             // Arrange
             var sut = BuildSUT();
 
             // Act
-            sut.Upload(null, null);
+            Assert.Throws<ArgumentException>(() => sut.Upload(null, null));
         }
 
         #endregion

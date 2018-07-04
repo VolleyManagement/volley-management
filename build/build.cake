@@ -204,7 +204,8 @@ Task("SonarBegin")
             Login = sonarToken,
             VsTestReportsPath = utResults,
             XUnitReportsPath = specResults,
-            DotCoverReportsPath = combinedCoverageResults
+            DotCoverReportsPath = combinedCoverageResults,
+            Exclusions = "src/VolleyManagement.WebClient/**"
         };
 
         if (BuildSystem.IsRunningOnAppVeyor &&

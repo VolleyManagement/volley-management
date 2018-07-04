@@ -70,10 +70,10 @@ var coverageResultsToMerge = new List<FilePath>();
 coverageResultsToMerge.Add(utCoverageResults);
 coverageResultsToMerge.Add(domainUTCoverageResults);
 
-if(canRunIntegrationTests)
-{
-    coverageResultsToMerge.Add(specCoverageResults);
-}
+// if(canRunIntegrationTests)
+// {
+//     coverageResultsToMerge.Add(specCoverageResults);
+// }
 
 //////////////////////////////////////////////////////////////////////
 // TASKS

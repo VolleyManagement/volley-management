@@ -8,7 +8,6 @@
     using Domain.PlayersAggregate;
     using Domain.UsersAggregate;
     using FluentAssertions;
-    using FluentAssertions.Primitives;
     using UI.Areas.Admin.Controllers;
     using Services.PlayerService;
     using Services.UsersService;

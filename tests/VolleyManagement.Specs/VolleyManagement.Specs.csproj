@@ -44,18 +44,10 @@
     <NuGetPackageImportStamp />
     <SonarQubeTestProject>True</SonarQubeTestProject>
   </PropertyGroup>
-  <Import Project="$(UserProfile)\.nuget\packages\xunit.runner.visualstudio\2.3.1\build\net20\xunit.runner.visualstudio.props" Condition="Exists('$(UserProfile)\.nuget\packages\xunit.runner.visualstudio\2.3.1\build\net20\xunit.runner.visualstudio.props')" />
-  <Import Project="$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.props" Condition="Exists('$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.props')" />
-  <Import Project="$(UserProfile)\.nuget\packages\specflow\2.3.1\build\SpecFlow.targets" Condition="Exists('$(UserProfile)\.nuget\packages\specflow\2.3.1\build\SpecFlow.targets')" />
-  <Import Project="$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.targets" Condition="Exists('$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\specflow\2.3.1\build\SpecFlow.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\specflow\2.3.1\build\SpecFlow.targets'))" />
-    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.props'))" />
-    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\xunit.core\2.3.1\build\xunit.core.targets'))" />
-    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\xunit.runner.visualstudio\2.3.1\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\xunit.runner.visualstudio\2.3.1\build\net20\xunit.runner.visualstudio.props'))" />
   </Target>
   <ItemGroup>
     <ProjectReference Include="..\..\src\VolleyManagement.Backend\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj" />

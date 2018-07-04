@@ -21,9 +21,4 @@
     <None Remove="node_modules\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.TypeScript.Compiler" Version="2.9.2" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.1.0.5212" />
-  </ItemGroup>
-
 </Project>

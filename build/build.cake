@@ -240,7 +240,7 @@ Task("Sonar")
     .IsDependentOn("SonarBegin")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
-    .IsDependentOn("IntegrationTests")
+    //.IsDependentOn("IntegrationTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 

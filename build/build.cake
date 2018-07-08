@@ -1,4 +1,4 @@
-#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+﻿#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #tool nuget:?package=JetBrains.dotCover.CommandLineTools
 #tool "nuget:?package=xunit.runner.console"
 
@@ -101,10 +101,13 @@ Task("Build")
 
 Task("UnitTests")
     .Does(() => {
-        var testsPath = utsDir.Path.FullPath + "/*.UnitTests.dll";
-        var msTestSettings = new MSTestSettings {
-            ResultsFile = utResults.Path.GetFilename().FullPath,
-            WorkingDirectory = testsDir
+        var testsPath = utsDir.Path.FullPath + "/*/*.UnitTests.dll";
+
+        var xUnitSettings = new XUnit2Settings {
+            WorkingDirectory = testsDir,
+            ReportName = utResults.Path.GetFilenameWithoutExtension().FullPath,
+            XmlReport = true,
+            OutputDirectory = utResults.Path.GetDirectory().FullPath
         };
 
         var dotCoverSettings = new DotCoverCoverSettings{
@@ -115,20 +118,20 @@ Task("UnitTests")
         SetCoverageFilter(dotCoverSettings);        
 
         DotCoverCover(
-            (ICakeContext c) => { c.MSTest (testsPath, msTestSettings); },
+            (ICakeContext c) => { c.XUnit2(testsPath, xUnitSettings); },
             utCoverageResults,
             dotCoverSettings
         );
 
         if (BuildSystem.IsRunningOnAppVeyor) {
-            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.MSTest);
+            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.XUnit);
         }
     });
 
 Task("IntegrationTests")
     .WithCriteria(() => canRunIntegrationTests)
     .Does(() => {        
-        var testsPath = specsDir.Path.FullPath + "/*.Specs.dll";
+        var testsPath = specsDir.Path.FullPath + "/*/*.Specs.dll";
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = specsDir,
             ReportName = specResults.Path.GetFilenameWithoutExtension().FullPath,
@@ -156,7 +159,7 @@ Task("IntegrationTests")
 
 Task("DomainTests")
     .Does(() => {        
-        var testsPathDomain = domainDir.Path.FullPath + "/*.Domain.UnitTests.dll";
+        var testsPathDomain = domainDir.Path.FullPath + "/*/*.Domain.UnitTests.dll";
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = testsDir,
             ReportName = domainUTResults.Path.GetFilenameWithoutExtension().FullPath,
@@ -233,14 +236,17 @@ Task("Sonar")
     .IsDependentOn("Restore-NuGet-Packages")
     .IsDependentOn("SonarBegin")
     .IsDependentOn("Build")
-    .IsDependentOn("UnitTests")
+    .IsDependentOn("AllUnitTests")
     .IsDependentOn("IntegrationTests")
-    .IsDependentOn("DomainTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 
 Task("Default")
     .IsDependentOn("Sonar");
+
+Task("AllUnitTests")
+    .IsDependentOn("UnitTests")
+    .IsDependentOn("DomainTests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

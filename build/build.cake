@@ -70,10 +70,10 @@ var coverageResultsToMerge = new List<FilePath>();
 coverageResultsToMerge.Add(utCoverageResults);
 coverageResultsToMerge.Add(domainUTCoverageResults);
 
-if(canRunIntegrationTests)
-{
-    coverageResultsToMerge.Add(specCoverageResults);
-}
+// if(canRunIntegrationTests)
+// {
+//     coverageResultsToMerge.Add(specCoverageResults);
+// }
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -241,7 +241,7 @@ Task("Sonar")
     .IsDependentOn("SonarBegin")
     .IsDependentOn("Build")
     .IsDependentOn("AllUnitTests")
-    .IsDependentOn("IntegrationTests")
+    //.IsDependentOn("IntegrationTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 

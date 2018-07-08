@@ -10,7 +10,7 @@
     /// Comparer for team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TeamViewModelComparer : IComparer<TeamViewModel>, IComparer
+    internal class TeamViewModelComparer : IComparer<TeamViewModel>, IComparer, IEqualityComparer<TeamViewModel>
     {
         /// <summary>
         /// Compares two player objects.
@@ -140,6 +140,16 @@
                 }
             }
             return result;
+        }
+
+        public bool Equals(TeamViewModel x, TeamViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(TeamViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

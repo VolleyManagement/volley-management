@@ -11,7 +11,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
 
-    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer
+    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer, IEqualityComparer<UserViewModel>
     {
         public int Compare(UserViewModel x, UserViewModel y)
         {
@@ -33,6 +33,16 @@
             }
 
             return Compare(firstUser, secondUser);
+        }
+
+        public bool Equals(UserViewModel x, UserViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(UserViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         private bool AreEqual(UserViewModel x, UserViewModel y)

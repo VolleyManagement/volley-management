@@ -2,7 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Moq;
     using Contracts;
     using Domain.GameReportsAggregate;
@@ -15,7 +15,7 @@
     /// Tests for <see cref="GameReportsController"/> class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
+     
     public class GameReportsControllerTests
     {
         private const int TOURNAMENT_ID = 1;
@@ -27,8 +27,7 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public GameReportsControllerTests()
         {
             _gameReportServiceMock = new Mock<IGameReportService>();
         }
@@ -36,7 +35,7 @@
         /// <summary>
         /// Test for Standings() method. Tournament standings are requested. Tournament standings are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
@@ -55,10 +54,10 @@
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
+            Assert.Equal(expected, actual, new StandingsViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void Standings_LastUpdateTimeExists_StandingsReturnLastUpdateTime()
         {
             // Arrange
@@ -82,14 +81,14 @@
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
+            Assert.Equal(expected, actual, new StandingsViewModelComparer());
         }
 
         /// <summary>
         /// Test for Standings() method. Tournament standings view model are requested.
         /// Tournament standings not available for playoff scheme
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Standings_StandingsForPlayoffScheme_StandingsNotAvailableReturned()
         {
             // Arrange
@@ -103,7 +102,7 @@
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_PLAYOFF_ID, TOURNAMENT_NAME));
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
+            Assert.Equal(expected, actual, new StandingsViewModelComparer());
         }
 
         private GameReportsController BuildSUT()

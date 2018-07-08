@@ -3,22 +3,20 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
     /// <summary>
     /// Tests for <see cref="GameReportService"/> class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class GetStandingsTests : GameReportsServiceTestsBase
     {
-        [TestInitialize]
-        public void TestInit()
+        public GetStandingsTests()
         {
             InitializeTest();
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_NoGamesScheduled_EmptyEntryForEachTeamCreated()
         {
             // Arrange
@@ -39,7 +37,7 @@
             AssertStandingsAreEqual(expected, actual, "For each team in tournament empty standings entry should be created.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_NoResultsButGamesScheduled_StandingEntriesAreEmpty()
         {
             // Arrange
@@ -60,7 +58,7 @@
             AssertStandingsAreEqual(expected, actual, "When there are games scheduled but no results standing entries should be empty.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_GameResultsAllPossibleScores_CorrectPointStats()
         {
             // Arrange
@@ -81,7 +79,7 @@
             AssertPointsAreEqual(expected, actual, "Points should be calculated properly.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_GameResultsAllPossibleScores_CorrectGamesStats()
         {
             // Arrange
@@ -102,7 +100,7 @@
             AssertGamesAreEqual(expected, actual, "Games should be calculated properly.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_GameResultsAllPossibleScores_CorrectSetsStats()
         {
             // Arrange
@@ -123,7 +121,7 @@
             AssertSetsAreEqual(expected, actual, "Sets should be calculated properly.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_GameResultsAllPossibleScores_CorrectBallStats()
         {
             // Arrange
@@ -144,7 +142,7 @@
             AssertBallsAreEqual(expected, actual, "Balls should be calculated properly.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_GameResultsAllPossibleScores_TeamsOrderedByPoints()
         {
             // Arrange
@@ -165,7 +163,7 @@
             AssertStandingsAreEqual(expected, actual, "Teams should be ordered by points.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_SeveralTeamsWithSamePoints_TeamsOrderedByWonGames()
         {
             // Arrange
@@ -186,7 +184,7 @@
             AssertStandingsAreEqual(expected, actual, "Teams should be ordered by games won.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_SeveralTeamsWithSamePointsAndWonGames_TeamsOrderedBySetsRatio()
         {
             // Arrange
@@ -207,7 +205,7 @@
             AssertStandingsAreEqual(expected, actual, "Teams should be ordered by set ratios.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_SeveralTeamsWithSamePointsWonGamesAndSetsRatio_TeamsOrderedByBallsRatio()
         {
             // Arrange
@@ -229,7 +227,7 @@
             AssertStandingsAreEqual(expected, actual, "Teams should be ordered by balls ratio.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_OneTeamNoLostSets_GetsToTheTopWhenOrderedBySetsRatio()
         {
             // Arrange
@@ -249,7 +247,7 @@
             AssertStandingsAreEqual(expected, actual, "Team with no lost sets should be considered higher comparing to other teams when ordering by sets ratio");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_OneTeamNoLostSetsNoLostBalls_GetsToTheTopWhenOrderedByBallsRatio()
         {
             // Arrange
@@ -269,7 +267,7 @@
             AssertStandingsAreEqual(expected, actual, "Team with no lost balls should be considered higher comparing to other teams when ordering by balls ratio");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_HomeTeamHasPenalty_PenaltyDeductedFromTotalPoints()
         {
             // Arrange
@@ -290,7 +288,7 @@
             AssertStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_AwayTeamHasPenalty_PenaltyDeductedFromTotalPoints()
         {
             // Arrange
@@ -311,7 +309,7 @@
             AssertStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_OneTeamHasTechnicalDefeatInGame_BallsDontCount()
         {
             // Arrange
@@ -335,7 +333,7 @@
                 "When team has got technical defeat in game balls from this game should not be accounted in the statistics");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_OneTeamHasTechnicalDefeatInSet_BallsDontCount()
         {
             // Arrange
@@ -359,7 +357,7 @@
                 "When team has got technical defeat in set balls from this set should not be accounted in the statistics");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetStandings_HasGameResults_LastStandingsUpdateTimeIsReturned()
         {
             // Arrange
@@ -390,7 +388,7 @@
                 "Standings should be properly calclulated for case of several divisions");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetMultipleDivisionStandings_GameResultsAllPossibleScores_CorrectStats()
         {
             // Arrange
@@ -416,7 +414,7 @@
                 "Standings should be properly calclulated for case of several divisions");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetMultipleDivisionStandings_NoGameResults_StandingsAreEmpty()
         {
             // Arrange

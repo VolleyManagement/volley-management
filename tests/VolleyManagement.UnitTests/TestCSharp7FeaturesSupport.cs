@@ -2,20 +2,19 @@
 {
     using System;
     using System.Diagnostics;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
     /// <summary>
     /// This class provides way to test StyleCop support for C#7
     /// </summary>
-    [TestClass]
-    [Ignore]
+     
     public class TestCSharp7FeaturesSupport
     {
         private interface IFigure
         {
         }
 
-        [TestMethod]
+        [Fact(Skip = "Was skipped before")]
         public void CoolNewFeatures()
         {
             // Out variables

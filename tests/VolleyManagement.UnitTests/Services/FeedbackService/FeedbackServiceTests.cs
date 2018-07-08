@@ -16,16 +16,15 @@
     using Domain.RolesAggregate;
     using Domain.UsersAggregate;
     using MailService;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Moq;
-    using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
     using System.Collections;
+    using FluentAssertions;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
-    public class FeedbackServiceTests : BaseTest
+    public class FeedbackServiceTests : IDisposable
     {
         #region Fields and constants
 
@@ -64,8 +63,7 @@
 
         #endregion
 
-        [TestInitialize]
-        public void TestInit()
+        public FeedbackServiceTests()
         {
             _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
             _feedbackServiceMock = new Mock<IFeedbackService>();
@@ -84,15 +82,14 @@
             _timeMock.Setup(tp => tp.UtcNow).Returns(_feedbackTestDate);
         }
 
-        [TestCleanup]
-        public void TestCleanup()
+        public void Dispose()
         {
             TimeProvider.ResetToDefault();
         }
 
         #region GetAll
 
-        [TestMethod]
+        [Fact]
         public void GetAll_FeedbacksExist_FeedbacksReturned()
         {
             // Arrange
@@ -109,11 +106,10 @@
             var actual = sut.Get();
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new FeedbackComparer());
+            Assert.Equal(expected, actual, new FeedbackComparer());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void GetAll_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
@@ -121,14 +117,17 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Get();
+            Action act = () => sut.Get();
+
+            //Assert
+            act.Should().Throw<AuthorizationException>();
         }
 
         #endregion
 
         #region GetById
 
-        [TestMethod]
+        [Fact]
         public void GetById_FeedbackExists_FeedbackReturned()
         {
             // Arrange
@@ -141,11 +140,10 @@
             var actual = sut.Get(EXISTING_ID);
 
             // Assert
-            TestHelper.AreEqual<Feedback>(expected, actual, new FeedbackComparer());
+            Assert.Equal<Feedback>(expected, actual, new FeedbackComparer());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void Get_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
@@ -153,14 +151,17 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Get(EXISTING_ID);
+            Action act = () => sut.Get(EXISTING_ID);
+
+            //Assert
+            act.Should().Throw<AuthorizationException>();
         }
 
         #endregion
 
         #region Create
 
-        [TestMethod]
+        [Fact]
         public void Create_FeedbackPassed_FeedbackCreated()
         {
             // Arrange
@@ -187,7 +188,7 @@
                 "DB should not be updated");
         }
 
-        [TestMethod]
+        [Fact]
         public void Create_InvalidNullFeedback_ArgumentNullExceptionIsThrown()
         {
             // Arrange
@@ -212,7 +213,7 @@
                 new ArgumentNullException("feedbackToCreate"));
         }
 
-        [TestMethod]
+        [Fact]
         public void Update_FeedbackPassed_FeedbackUpdated()
         {
             // Arrange
@@ -237,20 +238,20 @@
 
         #region Close
 
-        [TestMethod]
+        [Fact]
         public void Close_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<MissingEntityException>(
-                () =>
-                 sut.Close(INVALID_FEEDBACK_ID),
-                "A feedback with specified identifier was not found");
+            // Act
+            Action act = () => sut.Close(INVALID_FEEDBACK_ID);
+
+            //Assert
+            act.Should().Throw<MissingEntityException>("A feedback with specified identifier was not found");
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_NewFeedback_UpdatedFeedbackStatusToClose()
         {
             // Arrange
@@ -267,7 +268,7 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_ReadFeedback_UpdatedFeedbackStatusToClose()
         {
             // Arrange
@@ -289,7 +290,7 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_AnsweredFeedback_UpdatedFeedbackStatusToClose()
         {
             // Arrange
@@ -310,7 +311,7 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_ClosedFeedback_InvalidOperationExceptionThrown()
         {
             // Arrange
@@ -323,14 +324,14 @@
 
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<InvalidOperationException>(
-                () =>
-                 sut.Close(EXISTING_ID),
-                "Feedback status can't be changed to this status");
+            // Act 
+            Action act = () => sut.Close(EXISTING_ID);
+
+            //Assert
+            act.Should().Throw<InvalidOperationException>("Feedback status can't be changed to this status");
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_AnsweredFeedback_LastUpdateInfoSet()
         {
             // Arrange
@@ -352,7 +353,7 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_NewFeedback_LastUpdateInfoSet()
         {
             // Arrange
@@ -373,22 +374,21 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_NoCloseRights_AuthorizationExceptionThrown()
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Close);
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<AuthorizationException>(
-                () =>
-                 sut.Close(EXISTING_ID),
-                "Requested operation is not allowed");
+            // Act
+            Action act = () => sut.Close(EXISTING_ID);
+
+            //ssert
+            act.Should().Throw<AuthorizationException>("Requested operation is not allowed");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void Close_NoCloseRights_DbNotChanged()
         {
             // Arrange
@@ -398,9 +398,10 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Close(EXISTING_ID);
+            Action act = () => sut.Close(EXISTING_ID);
 
             // Assert
+            act.Should().Throw<AuthorizationException>();
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Close, Times.Once());
         }
@@ -408,7 +409,7 @@
 
         #region GetDetails
 
-        [TestMethod]
+        [Fact]
         public void GetDetails_NewFeedback_UpdatedFeedbackStatusToRead()
         {
             // Arrange
@@ -424,21 +425,20 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetDetails_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<MissingEntityException>(
-                () =>
-                 sut.GetDetails(INVALID_FEEDBACK_ID),
-                "A feedback with specified identifier was not found");
+            // Act
+            Action act = () => sut.GetDetails(INVALID_FEEDBACK_ID);
+
+            //Assert
+            act.Should().Throw<MissingEntityException>("A feedback with specified identifier was not found");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void GetDetails_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
@@ -446,11 +446,13 @@
             var sut = BuildSUT();
 
             // Act
-            sut.GetDetails(EXISTING_ID);
+            Action act = () => sut.GetDetails(EXISTING_ID);
+
+            // Assert
+            act.Should().Throw<AuthorizationException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void GetDetails_NoReadRights_DbNotChanged()
         {
             // Arrange
@@ -460,9 +462,10 @@
             var sut = BuildSUT();
 
             // Act
-            sut.GetDetails(EXISTING_ID);
+            Action act = () => sut.GetDetails(EXISTING_ID);
 
             // Assert
+            act.Should().Throw<AuthorizationException>();
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Read, Times.Once());
         }
@@ -470,20 +473,20 @@
         #endregion
 
         #region Reply
-        [TestMethod]
+        [Fact]
         public void Reply_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<MissingEntityException>(
-                () =>
-                 sut.Reply(EXISTING_ID, MESSAGE),
-                "A feedback with specified identifier was not found");
+            // Act
+            Action act = () => sut.Reply(EXISTING_ID, MESSAGE);
+
+            //Assert
+            act.Should().Throw<MissingEntityException>("A feedback with specified identifier was not found");
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_NewFeedback_UpdatedFeedbackStatusToAnswered()
         {
             // Arrange
@@ -502,7 +505,7 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_ReadFeedback_UpdatedFeedbackStatusToAnswered()
         {
             // Arrange
@@ -524,7 +527,7 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_ClosedFeedback_InvalidOperationExceptionThrown()
         {
             // Arrange
@@ -538,15 +541,14 @@
 
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<InvalidOperationException>(
-                () =>
-                 sut.Reply(EXISTING_ID, MESSAGE),
-                "Feedback status can't be changed to this status");
+            // Act
+            Action act = () => sut.Reply(EXISTING_ID, MESSAGE);
+
+            //Assert
+            act.Should().Throw<InvalidOperationException>("Feedback status can't be changed to this status");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Reply_ClosedFeedback_DbNotChanged()
         {
             // Arrange
@@ -561,13 +563,15 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Reply(EXISTING_ID, MESSAGE);
+            Action act = () => sut.Reply(EXISTING_ID, MESSAGE);
 
             // Assert
+            act.Should().Throw<InvalidOperationException>();
+
             VerifyEditFeedback(feedback, Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_NewFeedback_LastUpdateInfoSet()
         {
             // Arrange
@@ -587,8 +591,7 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void Reply_NoReplyRights_AuthorizationExceptionThrown()
         {
             // Arrange
@@ -596,11 +599,13 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Reply(EXISTING_ID, MESSAGE);
+            Action act = () => sut.Reply(EXISTING_ID, MESSAGE);
+
+            // Assert
+            act.Should().Throw<AuthorizationException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
+        [Fact]
         public void Reply_NoReplyRights_DbNotChanged()
         {
             // Arrange
@@ -610,9 +615,10 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Reply(EXISTING_ID, MESSAGE);
+            Action act = () => sut.Reply(EXISTING_ID, MESSAGE);
 
             // Assert
+            act.Should().Throw<AuthorizationException>();
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Reply, Times.Once());
         }
@@ -638,13 +644,6 @@
             _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
         }
 
-        private void SetupEditMissingEntityException(Feedback feedback)
-        {
-            _feedbackRepositoryMock.Setup(m =>
-                m.Update(It.Is<Feedback>(grs => FeedbacksAreEqual(grs, feedback))))
-                .Throws(new ConcurrencyException());
-        }
-
         private void MockCurrentUser(int userId)
         {
             SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
@@ -661,7 +660,7 @@
 
         private void AssertFeedbackAreEquals(Feedback expected, Feedback actual)
         {
-            TestHelper.AreEqual<Feedback>(expected, actual, new FeedbackComparer());
+            Assert.Equal<Feedback>(expected, actual, new FeedbackComparer());
         }
 
         private void VerifyCreateFeedback(Feedback feedback, Times times, string message)
@@ -684,8 +683,8 @@
 
         private void VerifyExceptionThrown(Exception exception, Exception expected)
         {
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsNotNull(exception);
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(exception.Message.Equals(expected.Message));
+            Assert.NotNull(exception);
+            Assert.Equal(exception.Message, expected.Message);
         }
 
         private void VerifyEditFeedback(Feedback feedback, Times times)
@@ -696,8 +695,8 @@
 
         private void VerifyAdminName(Feedback feedback, string expectedAdminName)
         {
-            Assert.IsNotNull(feedback.AdminName, "Admin's name didn't set");
-            Assert.IsTrue(feedback.AdminName.Equals(expectedAdminName), "Expected and actual admin names aren't equal");
+            feedback.AdminName.Should().NotBeNull("Admin's name didn't set");
+            Assert.True(feedback.AdminName.Equals(expectedAdminName), "Expected and actual admin names aren't equal");
         }
 
         private void MockAuthServiceThrowsException(AuthOperation operation)

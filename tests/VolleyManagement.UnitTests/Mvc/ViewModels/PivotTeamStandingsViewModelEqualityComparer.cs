@@ -5,7 +5,8 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
+    using Xunit;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -46,11 +47,11 @@
 
         public static bool AssertAreEqual(PivotTeamStandingsViewModel expected, PivotTeamStandingsViewModel actual, string messagePrefix = "")
         {
-            Assert.AreEqual(expected.TeamId, actual.TeamId, $"{messagePrefix} TeamId should match");
-            Assert.AreEqual(expected.TeamName, actual.TeamName, $"{messagePrefix} TeamName should match");
-            Assert.AreEqual(expected.Points, actual.Points, $"{messagePrefix} Points should match");
+            actual.TeamId.Should().Be(expected.TeamId, $"{messagePrefix} TeamId should match");
+            actual.TeamName.Should().Be(expected.TeamName, $"{messagePrefix} TeamName should match");
+            actual.Points.Should().Be(expected.Points, $"{messagePrefix} Points should match");
             AssertFloatNullablesAreEqual(expected.SetsRatio, actual.SetsRatio, $"{messagePrefix} SetsRatio should match");
-            Assert.AreEqual(expected.Position, actual.Position, $"{messagePrefix} Position should match");
+            actual.Position.Should().Be(expected.Position, $"{messagePrefix} Position should match");
             AssertFloatNullablesAreEqual(expected.BallsRatio, actual.BallsRatio, $"{messagePrefix} BallsRatio should match");
             return true;
         }
@@ -62,12 +63,15 @@
                 return true;
             }
 
-            if (!expected.HasValue || !actual.HasValue)
-            {
-                Assert.Fail($"{message}. Expected: <{expected}>, Actual: <{actual}>");
-            }
+            expected.HasValue.Should().BeTrue();
+            actual.HasValue.Should().BeTrue();
 
-            Assert.AreEqual(expected.GetValueOrDefault(), actual.GetValueOrDefault(), 0.001f, message);
+            //if (!expected.HasValue || !actual.HasValue)
+            //{
+            //    Assert.Fail($"{message}. Expected: <{expected}>, Actual: <{actual}>");
+            //}
+
+            actual.GetValueOrDefault().Should().BeApproximately(expected.GetValueOrDefault(), 0.001f, message);
             return true;
         }
     }

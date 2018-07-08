@@ -1,20 +1,19 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Services.PlayerService;
     using UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// View model player class test
-    /// </summary>
-    [TestClass]
+    /// </summary> 
     public class PlayerDomainToViewModel
     {
         /// <summary>
         /// Map() method test.
         /// Does correct a player domain model mapped to a view model.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Map_DomainPlayerAsParam_MappedToViewModel()
         {
             // Arrange
@@ -38,7 +37,7 @@
             var actual = PlayerViewModel.Map(testDomainModel);
 
             // Assert
-            TestHelper.AreEqual(testViewModel, actual, new PlayerViewModelComparer());
+            Assert.Equal(testViewModel, actual, new PlayerViewModelComparer());
         }
     }
 }

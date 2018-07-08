@@ -10,7 +10,7 @@
     /// Comparer for contributor team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ContributorTeamComparer : IComparer<ContributorTeam>, IComparer
+    internal class ContributorTeamComparer : IComparer<ContributorTeam>, IComparer, IEqualityComparer<ContributorTeam>
     {
         /// <summary>
         /// Compares two contributor team objects.
@@ -58,6 +58,16 @@
                 x.Name == y.Name &&
                 x.CourseDirection == y.CourseDirection &&
                 x.Contributors.SequenceEqual(y.Contributors, new ContributorEqualityComparer());
+        }
+
+        public bool Equals(ContributorTeam x, ContributorTeam y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(ContributorTeam obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

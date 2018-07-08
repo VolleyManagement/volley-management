@@ -4,13 +4,14 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
+    using FluentAssertions;
 
     /// <summary>
     /// Represents a comparer for <see cref="StandingsEntry"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer
+    internal class StandingsEntryComparer : IComparer<StandingsEntry>, IComparer, IEqualityComparer<StandingsEntry>
     {
         private bool HasComparerByPoints { get; set; } = true;
         private bool HasComparerByGames { get; set; } = true;
@@ -57,7 +58,7 @@
         /// <returns>A signed integer that indicates the relative values of <see cref="StandingsEntry"/> x and y.</returns>
         public int Compare(StandingsEntry x, StandingsEntry y)
         {
-            Assert.AreEqual(x.TeamName, y.TeamName, "TeamNames do not match");
+            y.TeamName.Should().Be(x.TeamName, "TeamNames do not match");
 
             if (HasComparerByPoints)
             {
@@ -80,33 +81,33 @@
 
         public void PointsComparer(StandingsEntry x, StandingsEntry y)
         {
-            Assert.AreEqual(x.Points, y.Points, "Points do not match");
+            y.Points.Should().Be(x.Points, "Points do not match");
         }
 
         public void GamesComparer(StandingsEntry x, StandingsEntry y)
         {
-            Assert.AreEqual(x.GamesTotal, y.GamesTotal, "GamesTotal do not match");
-            Assert.AreEqual(x.GamesWon, y.GamesWon, "GamesWon do not match");
-            Assert.AreEqual(x.GamesLost, y.GamesLost, "GamesLost do not match");
+            y.GamesTotal.Should().Be(x.GamesTotal, "GamesTotal do not match");
+            y.GamesWon.Should().Be(x.GamesWon, "GamesWon do not match");
+            y.GamesLost.Should().Be(x.GamesLost, "GamesLost do not match");
         }
 
         public void SetsComparer(StandingsEntry x, StandingsEntry y)
         {
-            Assert.AreEqual(x.GamesWithScoreThreeNil, y.GamesWithScoreThreeNil, "GamesWithScoreThreeNil do not match");
-            Assert.AreEqual(x.GamesWithScoreThreeOne, y.GamesWithScoreThreeOne, "GamesWithScoreThreeOne do not match");
-            Assert.AreEqual(x.GamesWithScoreThreeTwo, y.GamesWithScoreThreeTwo, "GamesWithScoreThreeTwo do not match");
-            Assert.AreEqual(x.GamesWithScoreTwoThree, y.GamesWithScoreTwoThree, "GamesWithScoreTwoThree do not match");
-            Assert.AreEqual(x.GamesWithScoreOneThree, y.GamesWithScoreOneThree, "GamesWithScoreOneThree do not match");
-            Assert.AreEqual(x.GamesWithScoreNilThree, y.GamesWithScoreNilThree, "GamesWithScoreNilThree do not match");
+            y.GamesWithScoreThreeNil.Should().Be(x.GamesWithScoreThreeNil, "GamesWithScoreThreeNil do not match");
+            y.GamesWithScoreThreeOne.Should().Be(x.GamesWithScoreThreeOne, "GamesWithScoreThreeOne do not match");
+            y.GamesWithScoreThreeTwo.Should().Be(x.GamesWithScoreThreeTwo, "GamesWithScoreThreeTwo do not match");
+            y.GamesWithScoreTwoThree.Should().Be(x.GamesWithScoreTwoThree, "GamesWithScoreTwoThree do not match");
+            y.GamesWithScoreOneThree.Should().Be(x.GamesWithScoreOneThree, "GamesWithScoreOneThree do not match");
+            y.GamesWithScoreNilThree.Should().Be(x.GamesWithScoreNilThree, "GamesWithScoreNilThree do not match");
 
-            Assert.AreEqual(x.SetsWon, y.SetsWon, "SetsWon do not match");
-            Assert.AreEqual(x.SetsLost, y.SetsLost, "SetsLost do not match");
+            y.SetsWon.Should().Be(x.SetsWon, "SetsWon do not match");
+            y.SetsLost.Should().Be(x.SetsLost, "SetsLost do not match");
         }
 
         public void BallsComparer(StandingsEntry x, StandingsEntry y)
         {
-            Assert.AreEqual(x.BallsWon, y.BallsWon, "BallsWon do not match");
-            Assert.AreEqual(x.BallsLost, y.BallsLost, "BallsLost do not match");
+            y.BallsWon.Should().Be(x.BallsWon, "BallsWon do not match");
+            y.BallsLost.Should().Be(x.BallsLost, "BallsLost do not match");
         }
 
         /// <summary>
@@ -130,6 +131,16 @@
             }
 
             return Compare(firstStandingsEntry, secondStandingsEntry);
+        }
+
+        public bool Equals(StandingsEntry x, StandingsEntry y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(StandingsEntry obj)
+        {
+            return obj.TeamId.GetHashCode();
         }
     }
 }

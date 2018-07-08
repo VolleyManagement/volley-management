@@ -9,7 +9,7 @@
     /// Compares Tournament requests instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class TournamentRequestViewModelComparer : IComparer<TournamentRequestViewModel>, IComparer
+    public class TournamentRequestViewModelComparer : IComparer<TournamentRequestViewModel>, IComparer, IEqualityComparer<TournamentRequestViewModel>
     {
         public int Compare(TournamentRequestViewModel x, TournamentRequestViewModel y)
         {
@@ -33,14 +33,24 @@
             return Compare(firstRequest, secondRequest);
         }
 
+        public bool Equals(TournamentRequestViewModel x, TournamentRequestViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(TournamentRequestViewModel obj)
+        {
+            return obj.Id.GetHashCode();
+        }
+
         private bool AreEqual(TournamentRequestViewModel x, TournamentRequestViewModel y)
         {
-           return x.Id == y.Id &&
-                  x.TeamId == y.TeamId &&
-                  x.TournamentId == y.TournamentId &&
-                  x.PersonName == y.PersonName &&
-                  x.TeamTitle == y.TeamTitle &&
-                  x.TournamentTitle == y.TournamentTitle;
+            return x.Id == y.Id &&
+                   x.TeamId == y.TeamId &&
+                   x.TournamentId == y.TournamentId &&
+                   x.PersonName == y.PersonName &&
+                   x.TeamTitle == y.TeamTitle &&
+                   x.TournamentTitle == y.TournamentTitle;
         }
     }
 }

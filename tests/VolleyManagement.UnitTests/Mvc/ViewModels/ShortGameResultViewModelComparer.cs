@@ -1,15 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
 using VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports;
 
 namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
-    class ShortGameResultViewModelComparer : IComparer, IComparer<ShortGameResultViewModel>
+    class ShortGameResultViewModelComparer : IComparer, IComparer<ShortGameResultViewModel>, IEqualityComparer<ShortGameResultViewModel>
     {
         public int Compare(ShortGameResultViewModel x, ShortGameResultViewModel y)
         {
@@ -35,11 +36,21 @@ namespace VolleyManagement.UnitTests.Mvc.ViewModels
             return Compare(x as ShortGameResultViewModel, y as ShortGameResultViewModel);
         }
 
+        public bool Equals(ShortGameResultViewModel x, ShortGameResultViewModel y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(ShortGameResultViewModel obj)
+        {
+            return obj.HomeSetsScore.GetHashCode();
+        }
+
         private int CompareInternal(ShortGameResultViewModel x, ShortGameResultViewModel y)
         {
-            Assert.AreEqual(x.HomeSetsScore, y.HomeSetsScore, $"HomeSetsScore should match");
-            Assert.AreEqual(x.AwaySetsScore, y.AwaySetsScore, $" AwaySetsScore should match");
-            Assert.AreEqual(x.IsTechnicalDefeat, y.IsTechnicalDefeat, $"IsTechnicalDefeat should match");
+            y.HomeSetsScore.Should().Be(x.HomeSetsScore, $"HomeSetsScore should match");
+            y.AwaySetsScore.Should().Be(x.AwaySetsScore, $" AwaySetsScore should match");
+            y.IsTechnicalDefeat.Should().Be(x.IsTechnicalDefeat, $"IsTechnicalDefeat should match");
             return 0;
         }
     }

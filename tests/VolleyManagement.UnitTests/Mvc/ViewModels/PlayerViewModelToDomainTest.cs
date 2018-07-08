@@ -1,20 +1,19 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using Domain.PlayersAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Services.PlayerService;
 
     /// <summary>
     /// View model player class test
-    /// </summary>
-    [TestClass]
+    /// </summary> 
     public class PlayerViewModelToDomainTest
     {
         /// <summary>
         /// ToDomain() method test.
         /// Does correct player view model mapped to domain model.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ToDomain_PlayerViewModel_MappedToDomain()
         {
             // Arrange
@@ -37,7 +36,7 @@
             var actual = testViewModel.ToDomain();
 
             // Assert
-            TestHelper.AreEqual<Player>(testDomainModel, actual, new PlayerComparer());
+            Assert.Equal<Player>(testDomainModel, actual, new PlayerComparer());
         }
     }
 }

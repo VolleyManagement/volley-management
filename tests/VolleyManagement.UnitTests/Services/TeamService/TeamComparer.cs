@@ -10,7 +10,7 @@
     /// Comparer for team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class TeamComparer : IComparer<Team>, IComparer
+    public class TeamComparer : IComparer<Team>, IComparer, IEqualityComparer<Team>
     {
         /// <summary>
         /// Compares two player objects.
@@ -71,6 +71,16 @@
             {
                 return false;
             }
+        }
+
+        public bool Equals(Team x, Team y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(Team obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

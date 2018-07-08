@@ -5,13 +5,14 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Mvc;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Moq;
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
     using Domain.GamesAggregate;
     using Domain.TeamsAggregate;
+    using FluentAssertions;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.GameResults;
     using ViewModels;
@@ -21,7 +22,7 @@
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [TestClass]
+     
     public class GameResultsControllerTests
     {
         #region Consts
@@ -58,8 +59,7 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public GameResultsControllerTests()
         {
             _gameServiceMock = new Mock<IGameService>();
             _tournamentServiceMock = new Mock<ITournamentService>();
@@ -73,7 +73,7 @@
         /// <summary>
         /// Test for Create POST method. Valid model passed. Games result created. 
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_ValidModel_Created()
         {
             // Arrange
@@ -93,13 +93,13 @@
             var result = sut.Create(gameResult) as RedirectToRouteResult;
 
             // Assert
-            TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameComparer());
+            Assert.Equal(expectedGameResult, actualGameResult, new GameComparer());
         }
 
         /// <summary>
         /// Test for Create POST method. Valid model passed. Redirected to Details view.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_ValidModel_RedirectedToDetailsView()
         {
             // Arrange
@@ -118,13 +118,13 @@
             var result = sut.Create(game) as RedirectToRouteResult;
 
             // Assert
-            Assert.AreEqual(DETAILS_ACTION_NAME, result.RouteValues["action"]);
+            Assert.Equal(DETAILS_ACTION_NAME, result.RouteValues["action"]);
         }
 
         /// <summary>
         /// Test for Create POST method. Invalid model passed. Redirect to page of create view.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreatePostAction_InvalidModel_ExceptionThrown()
         {
             // Arrange
@@ -143,13 +143,13 @@
             var actual = TestExtensions.GetModel<GameResultViewModel>(sut.Create(gameResult));
 
             // Assert
-            TestHelper.AreEqual(actual, gameResult, new GameResultViewModelComparer());
+            Assert.Equal(actual, gameResult, new GameResultViewModelComparer());
         }
 
         /// <summary>
         /// Test for Create method (GET action). Game result view model is requested.  Game result view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CreateGetAction_GameResultViewModelRequested_GameResultViewModelIsReturned()
         {
             // Arrange
@@ -165,13 +165,13 @@
             var actual = TestExtensions.GetModel<GameResultViewModel>(controller.Create(TOURNAMENT_ID));
 
             // Assert
-            TestHelper.AreEqual<GameResultViewModel>(expected, actual, new GameResultViewModelComparer());
+            Assert.Equal<GameResultViewModel>(expected, actual, new GameResultViewModelComparer());
         }
 
         /// <summary>
         /// Test for Edit method (GET action). Valid game result id.  Game result view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditGetAction_ValidGameResultId_GameResultViewModelIsReturned()
         {
             // Arrange
@@ -202,13 +202,13 @@
             var actual = TestExtensions.GetModel<GameResultViewModel>(controller.Edit(TOURNAMENT_ID));
 
             // Assert
-            TestHelper.AreEqual<GameResultViewModel>(expected, actual, new GameResultViewModelComparer());
+            Assert.Equal<GameResultViewModel>(expected, actual, new GameResultViewModelComparer());
         }
 
         /// <summary>
         /// Test for Edit method. GameResult with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Edit_NotExistedGameResult_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -219,13 +219,13 @@
             var result = controller.Edit(GAME_RESULT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
         /// <summary>
         /// Test for edit post method. Invalid game results Id - redirect to  the edit view.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPost_MissingEntityException_RedirectToGameResultViewModel()
         {
             // Arrange
@@ -242,13 +242,13 @@
 
             // Assert
             VerifyEditGameResult(expectedResult, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for edit post method. Invalid game results Id - redirect to  the edit view.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPost_ValidEntity_GameResultViewModelIsReturned()
         {
             // Arrange
@@ -263,13 +263,13 @@
 
             // Assert
             VerifyEditGameResult(expectedResult, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for edit post method. Valid game results - redirect to  the tournament results.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPost_ValidEntity_RedirectToResultsList()
         {
             // Arrange
@@ -283,7 +283,7 @@
 
             // Assert
             VerifyEditGameResult(expectedResult, Times.Once());
-            Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
+            Assert.Equal(typeof(RedirectToRouteResult), result.GetType());
             VerifyRedirectingRoute(result, REDIRECT_TO_ACTION, REDIRECT_TO_CONTROLLER);
         }
 
@@ -291,7 +291,7 @@
         /// Test for Edit method (POST action). Game Result  view model is not valid.
         /// Game Result is not updated and Game Result view model is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EditPostAction_InvalidGameResultViewModel_GameResultViewModelIsReturned()
         {
             // Arrange
@@ -306,14 +306,14 @@
 
             // Assert
             VerifyEditGameResult(expectedResult, Times.Never());
-            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
         /// Test for Delete method (POST action). Player with specified identifier exists.
         /// Player is deleted and JsonResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeleteGamePostAction_ExistingGame_GameIsDeleted()
         {
             // Arrange
@@ -325,14 +325,14 @@
 
             // Assert
             VerifyDelete(GAME_RESULTS_ID, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Test for Delete method (POST action). Player with specified identifier does not exist.
         /// Exception is thrown during player removal and JsonResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeleteGamePostAction_NonExistentGame_JsonResultIsReturned()
         {
             // Arrange
@@ -344,14 +344,14 @@
 
             // Assert
             VerifyDelete(GAME_RESULTS_ID, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Test for Delete method (POST action). Player id is valid, but exception
         /// is thrown during deleting. JsonResult is returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DeleteGamePostAction_ValidGameIdWithArgumentException_JsonResultIsReturned()
         {
             // Arrange
@@ -363,13 +363,13 @@
 
             // Assert
             VerifyDelete(GAME_RESULTS_ID, Times.Once());
-            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+            result.Should().NotBeNull(ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
         /// Test for TournamentResults method. Tournament results are requested. Tournament results are returned.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TournamentResults_TournamentResultsRequested_TournamentResultsReturned()
         {
             // Arrange
@@ -384,7 +384,7 @@
             var actual = TestExtensions.GetModel<TournamentResultsViewModel>(sut.TournamentResults(TOURNAMENT_ID, TOURNAMENT_NAME));
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new TournamentResultsViewModelComparer());
+            Assert.Equal(expected, actual, new TournamentResultsViewModelComparer());
         }
 
         #endregion
@@ -466,9 +466,9 @@
         private void VerifyRedirectingRoute(ActionResult result, string action, string controller)
         {
             var routeValues = ((RedirectToRouteResult)result).RouteValues;
-            Assert.AreEqual(TOURNAMENT_ID, routeValues["tournamentId"]);
-            Assert.AreEqual(action, routeValues["action"]);
-            Assert.AreEqual(controller, routeValues["controller"]);
+            Assert.Equal(TOURNAMENT_ID, routeValues["tournamentId"]);
+            Assert.Equal(action, routeValues["action"]);
+            Assert.Equal(controller, routeValues["controller"]);
         }
 
         private static bool AreResultsEqual(Result actual, Result expected)

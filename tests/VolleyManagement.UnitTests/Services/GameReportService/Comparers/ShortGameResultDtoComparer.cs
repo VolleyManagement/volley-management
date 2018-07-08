@@ -2,23 +2,23 @@
 {
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
 
     internal class ShortGameResultDtoComparer : IComparer<ShortGameResultDto>
     {
         public int Compare(ShortGameResultDto x, ShortGameResultDto y)
         {
-            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, "HomeTeamId do not match");
-            Assert.AreEqual(x.HomeGameScore, y.HomeGameScore, "HomeGameScore do not match");
+            y.HomeTeamId.Should().Be(x.HomeTeamId, "HomeTeamId do not match");
+            y.HomeGameScore.Should().Be(x.HomeGameScore, "HomeGameScore do not match");
 
-            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "AwayTeamId do not match");
-            Assert.AreEqual(x.AwayGameScore, y.AwayGameScore, "AwayGameScore do not match");
+            y.AwayTeamId.Should().Be(x.AwayTeamId, "AwayTeamId do not match");
+            y.AwayGameScore.Should().Be(x.AwayGameScore, "AwayGameScore do not match");
 
-            Assert.AreEqual(x.IsTechnicalDefeat, y.IsTechnicalDefeat, "IsTechnicalDefeat do not match");
+            y.IsTechnicalDefeat.Should().Be(x.IsTechnicalDefeat, "IsTechnicalDefeat do not match");
 
-            Assert.AreEqual(x.RoundNumber, y.RoundNumber, "RoundNumber do not match");
+            y.RoundNumber.Should().Be(x.RoundNumber, "RoundNumber do not match");
 
-            Assert.AreEqual(x.WasPlayed, y.WasPlayed, "WasPlayed do not match");
+            y.WasPlayed.Should().Be(x.WasPlayed, "WasPlayed do not match");
 
             return 0;
         }

@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -8,9 +8,10 @@
     using System.Text;
     using System.Threading.Tasks;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
+    using FluentAssertions;
 
 
-    class GroupViewModelComparer : IComparer, IComparer<GroupViewModel>
+    class GroupViewModelComparer : IComparer, IComparer<GroupViewModel>, IEqualityComparer<GroupViewModel>
     {
         public int Compare(GroupViewModel x, GroupViewModel y)
         {
@@ -39,18 +40,22 @@
         public int CompareInternal(GroupViewModel x, GroupViewModel y)
         {
             var result = x.Id.CompareTo(y.Id);
-            if (result != 0)
-            {
-                Assert.Fail("Ids should be equal.");
-            }
+            result.Should().Be(0, "Ids should be equal.");
 
             result = x.Name.CompareTo(y.Name);
-            if (result != 0)
-            {
-                Assert.Fail($"[Id:{x.Id}]Name should be equal.");
-            }
+            result.Should().Be(0, $"[Id:{x.Id}]Name should be equal.");
 
             return 0;
+        }
+
+        public bool Equals(GroupViewModel x, GroupViewModel y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(GroupViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

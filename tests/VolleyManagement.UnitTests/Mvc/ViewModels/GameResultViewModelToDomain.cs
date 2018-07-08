@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Services.GameService;
     using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// View model game result class test
     /// </summary>
-    [TestClass]
     public class GameResultViewModelToDomain
     {
         private const int TEST_GAME_NUMBER = 5;
@@ -18,7 +17,7 @@
         /// Map() method test.
         /// Does correct game result mapped to a view model.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Map_GameResultDtoAsParam_MappedToViewModel()
         {
             // Arrange
@@ -74,7 +73,7 @@
             var actual = GameResultViewModel.Map(testDomainModel);
 
             // Assert
-            TestHelper.AreEqual<GameResultViewModel>(testViewModel, actual, new GameResultViewModelComparer());
+            Assert.Equal<GameResultViewModel>(testViewModel, actual, new GameResultViewModelComparer());
         }
     }
 }

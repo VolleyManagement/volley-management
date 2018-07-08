@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
 
-    internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
+    internal class PivotStandingsComparer : IComparer<PivotStandingsDto>, IEqualityComparer<PivotStandingsDto>
     {
         private TeamStandingsDtoComparer teamsComparer;
         private bool hasComparerByGames = true;
@@ -42,9 +42,12 @@
         }
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
-            Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
-            Assert.AreEqual(x.DivisionName, y.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
-            Assert.AreEqual(x.LastUpdateTime, y.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
+            y.DivisionId.Should().Be(x.DivisionId, "Division Ids do not match");
+            y.DivisionName.Should().Be(x.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
+            y.LastUpdateTime.Should().Be(x.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
+
+            x.Teams.Count.Should().Be(y.Teams.Count,
+                $"[DivisionId={x.DivisionId}] Number of team entries does not match.");
 
             if (x.Teams.Count == y.Teams.Count)
             {
@@ -56,13 +59,11 @@
                     }
                 }
             }
-            else
-            {
-                Assert.Fail($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
-            }
 
             if (hasComparerByGames)
             {
+                x.GameResults.Count.Should().Be(y.GameResults.Count,
+                    $"[DivisionId={x.DivisionId}] Number of game result entries does not match.");
                 if (x.GameResults.Count == y.GameResults.Count)
                 {
                     var gameResultComparer = new ShortGameResultDtoComparer();
@@ -74,12 +75,18 @@
                         }
                     }
                 }
-                else
-                {
-                    Assert.Fail($"[DivisionId={x.DivisionId}] Number of game result entries does not match.");
-                }
             }
             return 0;
+        }
+
+        public bool Equals(PivotStandingsDto x, PivotStandingsDto y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(PivotStandingsDto obj)
+        {
+            return obj.DivisionId.GetHashCode();
         }
     }
 }

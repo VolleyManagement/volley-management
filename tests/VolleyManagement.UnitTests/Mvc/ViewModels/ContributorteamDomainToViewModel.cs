@@ -2,21 +2,20 @@
 {
     using System.Collections.Generic;
     using Domain.ContributorsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Services.ContributorService;
     using UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
     /// <summary>
     /// View model contributor team class test
-    /// </summary>
-    [TestClass]
+    /// </summary>   
     public class ContributorteamDomainToViewModel
     {
         /// <summary>
         /// Map() method test.
         /// Does correct a contributor team domain model mapped to a view model.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Map_DomainContributorTeamAsParam_MappedToViewModel()
         {
             var contributors = new List<Contributor>
@@ -60,7 +59,7 @@
             var actual = ContributorsTeamViewModel.Map(testDomainModel);
 
             // Assert
-            TestHelper.AreEqual<ContributorsTeamViewModel>(testViewModel, actual, new ContributorTeamViewModelComparer());
+            Assert.Equal<ContributorsTeamViewModel>(testViewModel, actual, new ContributorTeamViewModelComparer());
         }
     }
 }

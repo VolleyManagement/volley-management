@@ -4,7 +4,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
+    using Xunit;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -17,10 +18,8 @@
         {
             if (expected != null || actual != null)
             {
-                if (expected == null || actual == null)
-                {
-                    Assert.Fail($"{messagePrefix} One of the results table is null");
-                }
+                expected.Should().NotBeNull($"{messagePrefix} One of the results table is null");
+                actual.Should().NotBeNull($"{messagePrefix} One of the results table is null");
 
                 for (var i = 0; i < expected.Length; i++)
                 {
@@ -29,15 +28,10 @@
 
                     if (expected[i] != null || actualCell != null)
                     {
-                        if (expected[i] == null || actualCell == null)
-                        {
-                            Assert.Fail($"{messagePrefix}Pos:({pos.Row},{pos.Col}) One of the results cell is null");
-                        }
+                        expected[i].Should().NotBeNull($"{messagePrefix}Pos:({pos.Row},{pos.Col}) One of the results cell is null");
+                        actualCell.Should().NotBeNull($"{messagePrefix}Pos:({pos.Row},{pos.Col}) One of the results cell is null");
 
-                        Assert.AreEqual(
-                            expected[i].Count,
-                            actualCell.Count,
-                            $"{messagePrefix}Pos:({pos.Row},{pos.Col}) Number of cell results do not match");
+                        actualCell.Count.Should().Be(expected[i].Count, $"{messagePrefix}Pos:({pos.Row},{pos.Col}) Number of cell results do not match");
 
                         for (var j = 0; j < expected[i].Count; j++)
                         {

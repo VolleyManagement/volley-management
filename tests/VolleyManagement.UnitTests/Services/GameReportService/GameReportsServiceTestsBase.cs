@@ -12,7 +12,7 @@
     using Domain.GamesAggregate;
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Moq;
     using VolleyManagement.Services;
 
@@ -77,29 +77,28 @@
             TournamentStandings<T> expected,
             TournamentStandings<T> actual,
             string message,
-            IComparer<T> comparer)
+            IEqualityComparer<T> comparer)
         {
             int compareResult;
             var errorDetails = string.Empty;
-            try
-            {
-                compareResult = new TournamentStandingsComparer<T>(comparer)
-                    .Compare(expected, actual);
-            }
-            catch (AssertFailedException e)
-            {
-                compareResult = -1;
-                errorDetails = $" Error Details: {e.Message}";
-            }
+            //try
+            //{
+            compareResult = new TournamentStandingsComparer<T>(comparer)
+                .Compare(expected, actual);
+            //}
+            //catch (AssertFailedException e)
+            //{
+            //    compareResult = -1;
+            //    errorDetails = $" Error Details: {e.Message}";
+            //}
 
-            Assert.IsTrue(compareResult == 0, $"{message}{errorDetails}");
+            Assert.True(compareResult == 0, $"{message}{errorDetails}");
         }
 
         protected static Tournament CreateSingleDivisionTournament(int tournamentId,
             DateTime? lastStandingsUpdateTime = null)
         {
-            return new Tournament
-            {
+            return new Tournament {
                 Id = tournamentId,
                 Name = $"Tournament #{tournamentId}",
                 Season = 17,
@@ -129,8 +128,7 @@
 
         protected static Tournament CreateTwoDivisionsTournament(int tournamentId, DateTime? lastStandingsUpdateTime = null)
         {
-            return new Tournament
-            {
+            return new Tournament {
                 Id = tournamentId,
                 Name = $"Tournament #{tournamentId}",
                 Season = 17,

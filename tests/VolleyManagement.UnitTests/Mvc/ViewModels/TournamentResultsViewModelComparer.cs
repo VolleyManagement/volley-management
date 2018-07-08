@@ -4,15 +4,16 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using UI.Areas.Mvc.ViewModels.GameReports;
     using UI.Areas.Mvc.ViewModels.GameResults;
+    using FluentAssertions;
 
     /// <summary>
     /// Represents a comparer for <see cref="TournamentResultsViewModel"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TournamentResultsViewModelComparer : IComparer<TournamentResultsViewModel>, IComparer
+    internal class TournamentResultsViewModelComparer : IComparer<TournamentResultsViewModel>, IComparer, IEqualityComparer<TournamentResultsViewModel>
     {
         /// <summary>
         /// Compares two <see cref="StandingsViewModel"/> objects.
@@ -48,6 +49,16 @@
             return Compare(firstTournamentResultsViewModel, secondTournamentResultsViewModel);
         }
 
+        public bool Equals(TournamentResultsViewModel x, TournamentResultsViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(TournamentResultsViewModel obj)
+        {
+            return obj.Id.GetHashCode();
+        }
+
         /// <summary>
         /// Finds out whether two <see cref="StandingsViewModel"/> objects are equal.
         /// </summary>
@@ -56,8 +67,8 @@
         /// <returns>True if given <see cref="StandingsViewModel"/> objects are equal.</returns>
         internal bool AreEqual(TournamentResultsViewModel x, TournamentResultsViewModel y)
         {
-            Assert.AreEqual(x.Id, y.Id, "Id should be equal.");
-            Assert.AreEqual(x.Name, y.Name, "Name should be equal.");
+            y.Id.Should().Be(x.Id, "Id should be equal.");
+            y.Name.Should().Be(x.Name, "Name should be equal.");
 
             return x.GameResults.SequenceEqual(y.GameResults, new GameResultViewModelEqualityComparer());
         }

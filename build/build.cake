@@ -55,7 +55,7 @@ SonarEndSettings sonarEndSettings;
 
 var suffix = BuildSystem.IsRunningOnAppVeyor ? $"_AppVeyor_{AppVeyor.Environment.JobId}" : string.Empty;
 
-utResults = utsDir + File($"UT_Results{suffix}.trx");
+utResults = utsDir + File($"UT_Results{suffix}.xml");
 utCoverageResults = utsDir + File($"UT_Coverage{suffix}.dcvr");
 
 specResults = specsDir + File($"IT_Results{suffix}.xml");
@@ -118,7 +118,7 @@ Task("UnitTests")
         SetCoverageFilter(dotCoverSettings);        
 
         DotCoverCover(
-            (ICakeContext c) => { c.XUnit2(testsPath, xUnitSettings); },
+            (ICakeContext c) => { c.XUnit2 (testsPath, xUnitSettings); },
             utCoverageResults,
             dotCoverSettings
         );
@@ -204,7 +204,8 @@ Task("SonarBegin")
             Login = sonarToken,
             VsTestReportsPath = utResults,
             XUnitReportsPath = specResults,
-            DotCoverReportsPath = combinedCoverageResults
+            DotCoverReportsPath = combinedCoverageResults,
+            Exclusions = "src/VolleyManagement.WebClient/**"
         };
 
         if (BuildSystem.IsRunningOnAppVeyor &&
@@ -230,6 +231,9 @@ Task("SonarEnd")
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
+Task("AllUnitTests")
+    .IsDependentOn("UnitTests")
+    .IsDependentOn("DomainTests");
 
 Task("Sonar")
     .IsDependentOn("Clean")
@@ -243,10 +247,6 @@ Task("Sonar")
 
 Task("Default")
     .IsDependentOn("Sonar");
-
-Task("AllUnitTests")
-    .IsDependentOn("UnitTests")
-    .IsDependentOn("DomainTests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

@@ -70,7 +70,7 @@ var coverageResultsToMerge = new List<FilePath>();
 coverageResultsToMerge.Add(utCoverageResults);
 coverageResultsToMerge.Add(domainUTCoverageResults);
 
-var utResultsToMerge = "";
+var utResultsToMerge = new List<FilePath>();
 
 if(canRunIntegrationTests)
 {
@@ -127,7 +127,7 @@ Task("UnitTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.XUnit);    
-            utResultsToMerge += utResults + ",";
+            utResultsToMerge.Add(utResults);
         }
     });
 
@@ -157,7 +157,7 @@ Task("IntegrationTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(specResults, AppVeyorTestResultsType.XUnit);
-            utResultsToMerge += specResults + ",";
+            utResultsToMerge.Add(specResults);
         }
     });
 
@@ -185,7 +185,7 @@ Task("DomainTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(domainUTResults, AppVeyorTestResultsType.XUnit);
-            utResultsToMerge += domainUTResults;
+            utResultsToMerge.Add(domainUTResults);
         }
     });
 
@@ -207,7 +207,7 @@ Task("SonarBegin")
             Key = "volley-management",
             Organization = "volleymanagement",
             Login = sonarToken,
-            XUnitReportsPath = utResultsToMerge,
+            XUnitReportsPath = string.Join(",", utResultsToMerge),
             DotCoverReportsPath = combinedCoverageResults,
             Exclusions = "src/VolleyManagement.WebClient/**"
         };

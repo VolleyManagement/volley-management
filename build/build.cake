@@ -70,11 +70,15 @@ var coverageResultsToMerge = new List<FilePath>();
 coverageResultsToMerge.Add(utCoverageResults);
 coverageResultsToMerge.Add(domainUTCoverageResults);
 
-var utResultsToMerge = new StringBuilder();
+var utResultsToMerge = new List<FilePath>();
+utResultsToMerge.Add(utResults);
+utResultsToMerge.Add(domainUTResults);
+
 
 if(canRunIntegrationTests)
 {
     coverageResultsToMerge.Add(specCoverageResults);
+    utResultsToMerge.Add(specResults);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -209,7 +213,7 @@ Task("SonarBegin")
             Key = "volley-management",
             Organization = "volleymanagement",
             Login = sonarToken,
-            XUnitReportsPath = utResultsToMerge.ToString(),
+            XUnitReportsPath = string.Join(",", utResultsToMerge),
             DotCoverReportsPath = combinedCoverageResults,
             Exclusions = "src/VolleyManagement.WebClient/**"
         };

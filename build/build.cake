@@ -127,7 +127,7 @@ Task("UnitTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.XUnit);    
-            utResultsToMerge.Append(utResults + ",");
+            utResultsToMerge += utResults + ",";
         }
     });
 
@@ -157,7 +157,7 @@ Task("IntegrationTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(specResults, AppVeyorTestResultsType.XUnit);
-            utResultsToMerge.Append(specResults + ",");
+            utResultsToMerge += specResults + ",";
         }
     });
 
@@ -185,7 +185,7 @@ Task("DomainTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(domainUTResults, AppVeyorTestResultsType.XUnit);
-            utResultsToMerge.Append(domainUTResults);
+            utResultsToMerge += domainUTResults;
         }
     });
 

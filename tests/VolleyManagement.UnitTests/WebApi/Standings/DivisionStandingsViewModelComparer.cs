@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace VolleyManagement.UnitTests.WebApi.Standings
+﻿namespace VolleyManagement.UnitTests.WebApi.Standings
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -8,6 +6,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
     using Xunit;
     using UI.Areas.WebAPI.ViewModels.GameReports;
     using FluentAssertions;
+    using System.Linq;
 
     /// <summary>
     /// Represents a comparer for <see cref="DivisionStandingsViewModel"/> objects.

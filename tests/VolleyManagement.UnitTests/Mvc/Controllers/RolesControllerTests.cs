@@ -247,16 +247,8 @@
             actual.Id.Should().Be(expected.Id, "Role ID does not match");
             actual.Name.Should().Be(expected.Name, "Role Names are different");
 
-
-            //Assert.Equal(expected.UsersInRole,
-            //    actual.UsersInRole,
-            //    new UserViewModelComparer(),
-            //    "Users in Role lists are different");
-            //Assert.Equal(
-            //    expected.UsersOutsideRole,
-            //    actual.UsersOutsideRole,
-            //    new UserViewModelComparer(),
-            //    "Users outside Role lists are different");
+            actual.UsersInRole.Should().BeEquivalentTo(expected.UsersInRole, "Users in Role lists are different");
+            actual.UsersOutsideRole.Should().BeEquivalentTo(expected.UsersOutsideRole, "Users outside Role lists are different");
         }
 
         private static void AssertValidRedirectResult(ActionResult actionResult)

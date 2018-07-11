@@ -79,18 +79,10 @@
             string message,
             IEqualityComparer<T> comparer)
         {
-            int compareResult;
             var errorDetails = string.Empty;
-            //try
-            //{
-            compareResult = new TournamentStandingsComparer<T>(comparer)
+
+            var compareResult = new TournamentStandingsComparer<T>(comparer)
                 .Compare(expected, actual);
-            //}
-            //catch (AssertFailedException e)
-            //{
-            //    compareResult = -1;
-            //    errorDetails = $" Error Details: {e.Message}";
-            //}
 
             Assert.True(compareResult == 0, $"{message}{errorDetails}");
         }

@@ -95,11 +95,6 @@
             expected.HasValue.Should().BeTrue();
             actual.HasValue.Should().BeTrue();
 
-            //if (!expected.HasValue || !actual.HasValue)
-            //{
-            //    Assert.Fail($"{message}. Expected: <{expected}>, Actual: <{actual}>");
-            //}
-
             actual.GetValueOrDefault().Should().BeApproximately(expected.GetValueOrDefault(), 0.001f, message);
             return true;
         }

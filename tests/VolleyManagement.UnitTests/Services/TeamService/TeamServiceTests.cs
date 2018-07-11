@@ -871,7 +871,6 @@
             // Assert
             VerifyEditTeam(testTeam, Times.Once());
             testTeam.Should().Be(exeptedTeam);
-            //Assert.Equal(exeptedTeam, testTeam);
         }
 
         /// <summary>

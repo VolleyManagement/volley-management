@@ -9,7 +9,7 @@
     /// Compares User instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer, IComparer<UI.Areas.Admin.Models.UserViewModel>, IEqualityComparer<UserViewModel>
+    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer, IEqualityComparer<UserViewModel>
     {
         public int Compare(UserViewModel x, UserViewModel y)
         {

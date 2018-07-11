@@ -258,7 +258,6 @@
     <Compile Include="Services\UsersService\UserComparer.cs" />
     <Compile Include="Services\UsersService\UserServiceTestFixture.cs" />
     <Compile Include="Services\UsersService\UserServiceTests.cs" />
-    <Compile Include="TestCSharp7FeaturesSupport.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="WebApi\Controllers\ScheduleTests.cs" />
@@ -266,7 +265,7 @@
     <Compile Include="WebApi\Standings\DivisionStandingsViewModelTestFixture.cs" />
     <Compile Include="WebApi\Standings\PivotStandingsViewModelTestFixture.cs" />
     <Compile Include="WebApi\Standings\StandingsEntryViewModelEqualityComparer.cs" />
-    <Compile Include="WebApi\Standings\StandingsViewModelComparer.cs" />
+    <Compile Include="WebApi\Standings\DivisionStandingsViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />

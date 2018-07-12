@@ -2,18 +2,16 @@
 {
     using System;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
     public class GetPivotStandingsTests : GameReportsServiceTestsBase
     {
-        [TestInitialize]
-        public void TestInit()
+        public GetPivotStandingsTests()
         {
             InitializeTest();
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_NoGamesScheduled_EmptyEntryForEachTeamCreated()
         {
             // Arrange
@@ -34,7 +32,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "For each team in tournament empty standings entry should be created");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_ScheduledGamesButNoResults_StandingEntriesAreEmpty()
         {
             // Arrange
@@ -55,7 +53,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "When there are games scheduled but no results standing entries should be empty");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_GameResultsAllPossibleScores_CorrectPointStats()
         {
             // Arrange
@@ -76,7 +74,7 @@
             AssertPointsAreEqual(expected, actual, "Points should be calculated properly.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_GameResultsAllPossibleScores_CorrectBallStats()
         {
             // Arrange
@@ -96,7 +94,7 @@
             // Assert
             AssertBallsAreEqual(expected, actual, "Balls should be calculated properly.");
         }
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_GameResultsAllPossibleScores_CorrectGamesStats()
         {
             // Arrange
@@ -116,7 +114,7 @@
             // Assert
             AssertGameStatusAreEqual(expected, actual, "Game status should be correct.");
         }
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_GameResultsAllPossibleScores_CorrectSetsStats()
         {
             // Arrange
@@ -136,7 +134,7 @@
             // Assert
             AssertSetsAreEqual(expected, actual, "Sets should be calculated properly.");
         }
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_GameResultsAllPossibleScores_TeamsOrderedByPoints()
         {
             // Arrange
@@ -157,7 +155,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Teams should be ordered by points.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_SeveralTeamsWithSamePoints_TeamsOrderedByWonGames()
         {
             // Arrange
@@ -178,7 +176,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Teams should be ordered by games won.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_SeveralTeamsWithSamePointsAndWonGames_TeamsOrderedBySetsRatio()
         {
             // Arrange
@@ -199,7 +197,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Teams should be ordered by set ratios.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_SeveralTeamsWithSamePointsWonGamesAndSetsRatio_TeamsOrderedByBallsRatio()
         {
             // Arrange
@@ -221,7 +219,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Teams should be ordered by balls ratio.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_OneTeamNoLostSets_GetsToTheTopWhenOrderedBySetsRatio()
         {
             // Arrange
@@ -242,7 +240,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Team with no lost sets should be considered higher comparing to other teams when ordering by sets ratio");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_OneTeamNoLostSetsNoLostBalls_GetsToTheTopWhenOrderedByBallsRatio()
         {
             // Arrange
@@ -262,7 +260,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Team with no lost balls should be considered higher comparing to other teams when ordering by balls ratio");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_HomeTeamHasPenalty_PenaltyDeductedFromTotalPoints()
         {
             // Arrange
@@ -283,7 +281,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Total points should be reduced by penalty amount for penalized team");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_AwayTeamHasPenalty_PenaltyDeductedFromTotalPoints()
         {
             // Arrange
@@ -306,7 +304,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_OneTeamHasTechnicalDefeatInGame_BallsDontCount()
         {
             // Arrange
@@ -330,7 +328,7 @@
                 "When team has got technical defeat in game balls from this game should not be accounted in the statistics");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_OneTeamHasTechnicalDefeatInSet_BallDoesntCount()
         {
             // Arrange
@@ -351,7 +349,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "When team has got technical defeat in set balls from this set should not be accounted in the statistics");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_HasGameResults_LastStandingsUpdateTimeIsReturned()
         {
             // Arrange
@@ -379,7 +377,7 @@
             AssertPivotStandingsAreEqual(expected, actual, "Points, games, sets and balls should be calculated properly.");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetMultipleDivisionPivotStandings_GameResultsAllPossibleScores_CorrectStats()
         {
             // Arrange
@@ -410,7 +408,7 @@
                 "Standings should be properly calclulated for case of several divisions");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetMultipleDivisionPivotStandings_NoGameResults_StandingsAreEmpty()
         {
             // Arrange
@@ -436,7 +434,7 @@
                 "Standings should be properly calclulated for case of several divisions");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPivotStandings_PlannedGamesWithoutResults_StandingsContainPlannedGames()
         {
             // Arrange

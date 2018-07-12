@@ -10,7 +10,7 @@
     /// Comparer for request objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class RequestComparer : IComparer<Request>, IComparer
+    internal class RequestComparer : IComparer<Request>, IComparer, IEqualityComparer<Request>
     {
         /// <summary>
         /// Compares two request objects.
@@ -57,6 +57,16 @@
             return x.Id == y.Id &&
                    x.UserId == y.UserId &&
                    x.PlayerId == y.PlayerId;
+        }
+
+        public bool Equals(Request x, Request y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(Request obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

@@ -9,7 +9,7 @@
     /// Comparer for feedback objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class FeedbackComparer : IComparer<Feedback>, IComparer
+    internal class FeedbackComparer : IComparer<Feedback>, IComparer, IEqualityComparer<Feedback>
     {
         /// <summary>
         /// Compare two feedback objects.
@@ -46,6 +46,16 @@
             }
 
             return Compare(firstFeedback, secondFeedback);
+        }
+
+        public bool Equals(Feedback x, Feedback y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(Feedback obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>

@@ -5,7 +5,8 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
+    using Xunit;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -46,12 +47,12 @@
 
         public static bool AreEqual(PivotGameResultViewModel expected, PivotGameResultViewModel actual, string messagePrefix = "")
         {
-            Assert.AreEqual(expected.HomeTeamId, actual.HomeTeamId, $"{messagePrefix} HomeTeamId should match.");
-            Assert.AreEqual(expected.AwayTeamId, actual.AwayTeamId, $"{messagePrefix} AwayTeamId should match.");
-            Assert.AreEqual(expected.HomeSetsScore, actual.HomeSetsScore, $"{messagePrefix} HomeSetsScore should match.");
-            Assert.AreEqual(expected.AwaySetsScore, actual.AwaySetsScore, $"{messagePrefix} AwaySetsScore should match.");
-            Assert.AreEqual(expected.IsTechnicalDefeat, actual.IsTechnicalDefeat, $"{messagePrefix} IsTechnicalDefeat should match.");
-            Assert.AreEqual(expected.CssClass, actual.CssClass, $"{messagePrefix} CssClass should match.");
+            actual.HomeTeamId.Should().Be(expected.HomeTeamId, $"{messagePrefix} HomeTeamId should match.");
+            actual.AwayTeamId.Should().Be(expected.AwayTeamId, $"{messagePrefix} AwayTeamId should match.");
+            actual.HomeSetsScore.Should().Be(expected.HomeSetsScore, $"{messagePrefix} HomeSetsScore should match.");
+            actual.AwaySetsScore.Should().Be(expected.AwaySetsScore, $"{messagePrefix} AwaySetsScore should match.");
+            actual.IsTechnicalDefeat.Should().Be(expected.IsTechnicalDefeat, $"{messagePrefix} IsTechnicalDefeat should match.");
+            actual.CssClass.Should().Be(expected.CssClass, $"{messagePrefix} CssClass should match.");
             return true;
         }
     }

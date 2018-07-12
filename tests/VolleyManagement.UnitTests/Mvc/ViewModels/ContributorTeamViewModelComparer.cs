@@ -11,7 +11,7 @@
     /// Comparer for contributor team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>, IComparer
+    internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>, IComparer, IEqualityComparer<ContributorsTeamViewModel>
     {
         /// <summary>
         /// Compares two contributor team objects.
@@ -21,14 +21,7 @@
         /// <returns>A signed integer that indicates the relative values of contributor team.</returns>
         public int Compare(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
         {
-            if (IsEqual(x, y))
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return IsEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
@@ -52,6 +45,16 @@
             }
 
             return Compare(firstViewModel, secondViewModel);
+        }
+
+        public bool Equals(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
+        {
+            return IsEqual(x, y);
+        }
+
+        public int GetHashCode(ContributorsTeamViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>

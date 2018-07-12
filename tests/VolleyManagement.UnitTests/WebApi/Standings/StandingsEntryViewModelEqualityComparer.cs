@@ -3,8 +3,9 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using UI.Areas.WebApi.ViewModels.GameReports;
+    using FluentAssertions;
 
     /// <summary>
     /// Represents an equality comparer for <see cref="StandingsEntryViewModel"/> objects.
@@ -57,28 +58,28 @@
 
         public static bool AssertAreEqual(StandingsEntryViewModel expected, StandingsEntryViewModel actual, string messagePrefix = "")
         {
-            Assert.AreEqual(expected.TeamName, actual.TeamName, $"[{messagePrefix}] TeamName should match");
+            actual.TeamName.Should().Be(expected.TeamName, $"[{messagePrefix}] TeamName should match");
 
-            Assert.AreEqual(expected.Position, actual.Position, $"[{messagePrefix}Team:{expected.TeamName}] Position should match");
-            Assert.AreEqual(expected.Points, actual.Points, $"[{messagePrefix}Team:{expected.TeamName}] Points should match");
+            actual.Position.Should().Be(expected.Position, $"[{messagePrefix}Team:{expected.TeamName}] Position should match");
+            actual.Points.Should().Be(expected.Points, $"[{messagePrefix}Team:{expected.TeamName}] Points should match");
 
-            Assert.AreEqual(expected.GamesTotal, actual.GamesTotal, $"[{messagePrefix}Team:{expected.TeamName}] GamesTotal should match");
-            Assert.AreEqual(expected.GamesWon, actual.GamesWon, $"[{messagePrefix}Team:{expected.TeamName}] GamesWon should match");
-            Assert.AreEqual(expected.GamesLost, actual.GamesLost, $"[{messagePrefix}Team:{expected.TeamName}] GamesLost should match");
+            actual.GamesTotal.Should().Be(expected.GamesTotal, $"[{messagePrefix}Team:{expected.TeamName}] GamesTotal should match");
+            actual.GamesWon.Should().Be(expected.GamesWon, $"[{messagePrefix}Team:{expected.TeamName}] GamesWon should match");
+            actual.GamesLost.Should().Be(expected.GamesLost, $"[{messagePrefix}Team:{expected.TeamName}] GamesLost should match");
 
-            Assert.AreEqual(expected.GamesWithScoreThreeNil, actual.GamesWithScoreThreeNil, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeNil should match");
-            Assert.AreEqual(expected.GamesWithScoreThreeOne, actual.GamesWithScoreThreeOne, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeOne should match");
-            Assert.AreEqual(expected.GamesWithScoreThreeTwo, actual.GamesWithScoreThreeTwo, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeTwo should match");
-            Assert.AreEqual(expected.GamesWithScoreTwoThree, actual.GamesWithScoreTwoThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreTwoThree should match");
-            Assert.AreEqual(expected.GamesWithScoreOneThree, actual.GamesWithScoreOneThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreOneThree should match");
-            Assert.AreEqual(expected.GamesWithScoreNilThree, actual.GamesWithScoreNilThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreNilThree should match");
+            actual.GamesWithScoreThreeNil.Should().Be(expected.GamesWithScoreThreeNil, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeNil should match");
+            actual.GamesWithScoreThreeOne.Should().Be(expected.GamesWithScoreThreeOne, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeOne should match");
+            actual.GamesWithScoreThreeTwo.Should().Be(expected.GamesWithScoreThreeTwo, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeTwo should match");
+            actual.GamesWithScoreTwoThree.Should().Be(expected.GamesWithScoreTwoThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreTwoThree should match");
+            actual.GamesWithScoreOneThree.Should().Be(expected.GamesWithScoreOneThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreOneThree should match");
+            actual.GamesWithScoreNilThree.Should().Be(expected.GamesWithScoreNilThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreNilThree should match");
 
-            Assert.AreEqual(expected.SetsWon, actual.SetsWon, $"[{messagePrefix}Team:{expected.TeamName}] SetsWon should match");
-            Assert.AreEqual(expected.SetsLost, actual.SetsLost, $"[{messagePrefix}Team:{expected.TeamName}] SetsLost should match");
+            actual.SetsWon.Should().Be(expected.SetsWon, $"[{messagePrefix}Team:{expected.TeamName}] SetsWon should match");
+            actual.SetsLost.Should().Be(expected.SetsLost, $"[{messagePrefix}Team:{expected.TeamName}] SetsLost should match");
             AssertFloatNullablesAreEqual(expected.SetsRatio, actual.SetsRatio, $"[{messagePrefix}Team:{expected.TeamName}] SetsRatio should match");
 
-            Assert.AreEqual(expected.BallsWon, actual.BallsWon, $"[{messagePrefix}Team:{expected.TeamName}] BallsWon should match");
-            Assert.AreEqual(expected.BallsLost, actual.BallsLost, $"[{messagePrefix}Team:{expected.TeamName}] BallsLost should match");
+            actual.BallsWon.Should().Be(expected.BallsWon, $"[{messagePrefix}Team:{expected.TeamName}] BallsWon should match");
+            actual.BallsLost.Should().Be(expected.BallsLost, $"[{messagePrefix}Team:{expected.TeamName}] BallsLost should match");
             AssertFloatNullablesAreEqual(expected.BallsRatio, actual.BallsRatio, $"[{messagePrefix}Team:{expected.TeamName}] BallsRatio should match");
 
             return true;
@@ -91,12 +92,10 @@
                 return true;
             }
 
-            if (!expected.HasValue || !actual.HasValue)
-            {
-                Assert.Fail($"{message}. Expected: <{expected}>, Actual: <{actual}>");
-            }
+            expected.HasValue.Should().BeTrue();
+            actual.HasValue.Should().BeTrue();
 
-            Assert.AreEqual(expected.GetValueOrDefault(), actual.GetValueOrDefault(), 0.001f, message);
+            actual.GetValueOrDefault().Should().BeApproximately(expected.GetValueOrDefault(), 0.001f, message);
             return true;
         }
     }

@@ -3,11 +3,12 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
+    using FluentAssertions;
     using UI.Areas.WebApi.ViewModels.GameReports;
 
     [ExcludeFromCodeCoverage]
-    internal class PivotStandingsEntryViewModelComparer : IComparer, IComparer<PivotStandingsTeamViewModel>
+    internal class PivotStandingsEntryViewModelComparer : IComparer, IComparer<PivotStandingsTeamViewModel>, IEqualityComparer<PivotStandingsTeamViewModel>
     {
         public int Compare(PivotStandingsTeamViewModel x, PivotStandingsTeamViewModel y)
         {
@@ -33,29 +34,28 @@
             return Compare(x as PivotStandingsTeamViewModel, y as PivotStandingsTeamViewModel);
         }
 
+        public bool Equals(PivotStandingsTeamViewModel x, PivotStandingsTeamViewModel y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(PivotStandingsTeamViewModel obj)
+        {
+            return obj.TeamId.GetHashCode();
+        }
+
         private int CompareInternal(PivotStandingsTeamViewModel x, PivotStandingsTeamViewModel y)
         {
             var result = x.TeamName.CompareTo(y.TeamName);
-            if (result != 0)
-            {
-                Assert.Fail($"TeamName should match");
-            }
+            result.Should().Be(0, $"TeamName should match");
 
             result = x.TeamId.CompareTo(y.TeamId);
-            if (result != 0)
-            {
-                Assert.Fail($"[TeamName{x.TeamName}] TeamId should match");
-            }
+            result.Should().Be(0, $"[TeamName{x.TeamName}] TeamId should match");
 
             result = x.Points.CompareTo(y.Points);
-            if (result != 0)
-            {
-                Assert.Fail($"[TeamName{x.TeamName}] Points should match");
-            }
+            result.Should().Be(0, $"[TeamName{x.TeamName}] Points should match");
 
-            Assert.AreEqual(x.SetsRatio.GetValueOrDefault(),
-                y.SetsRatio.GetValueOrDefault(),
-                0.001, $"[TeamName{x.TeamName}] SetsRatio should match");
+            y.SetsRatio.GetValueOrDefault().Should().BeApproximately(x.SetsRatio.GetValueOrDefault(), 0.001f, $"[TeamName{x.TeamName}] SetsRatio should match");
 
             return 0;
         }

@@ -1,15 +1,17 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels.Comparers
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using UI.Areas.Mvc.ViewModels.GameResults;
+    using FluentAssertions;
+
 
     public static class ScoreViewModelComparer
     {
-        public static void AssertAreEqual(ScoreViewModel expected, ScoreViewModel actual, string messagePrefix = "")
+        public static void AssertEqual(ScoreViewModel expected, ScoreViewModel actual, string messagePrefix = "")
         {
-            Assert.AreEqual(expected.Home, expected.Home, $"{messagePrefix}Home score should be equal.");
-            Assert.AreEqual(expected.Away, expected.Away, $"{messagePrefix}Away score should be equal.");
-            Assert.AreEqual(expected.IsTechnicalDefeat, expected.IsTechnicalDefeat, $"{messagePrefix}IsTechnicalDefeat should be equal.");
+            actual.Home.Should().Be(expected.Home, $"{messagePrefix}Home score should be equal.");
+            actual.Away.Should().Be(expected.Away, $"{messagePrefix}Away score should be equal.");
+            actual.IsTechnicalDefeat.Should().Be(expected.IsTechnicalDefeat, $"{messagePrefix}IsTechnicalDefeat should be equal.");
         }
     }
 }

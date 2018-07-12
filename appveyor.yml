@@ -46,6 +46,12 @@ services:
 #       build configuration       #
 #---------------------------------#
 
+# In VolleyManagement.WebClient we have angular application, dependencies for this project can't be downloaded because MSBuild can't build it.
+# So without resolved dependencies error is thrown and sonar can't analyze code without typescript.
+# Command used to install typescript locally.
+install:
+  - npm install -D typescript
+  
 build_script:
 - ps: >-
     cd .\build

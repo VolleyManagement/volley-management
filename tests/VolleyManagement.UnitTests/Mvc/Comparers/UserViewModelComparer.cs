@@ -9,7 +9,7 @@
     /// Compares User instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer, IComparer<UI.Areas.Admin.Models.UserViewModel>
+    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer, IEqualityComparer<UserViewModel>
     {
         public int Compare(UserViewModel x, UserViewModel y)
         {
@@ -58,6 +58,16 @@
 
             result = string.CompareOrdinal(x.Email, y.Email);
             return result;
+        }
+
+        public bool Equals(UserViewModel x, UserViewModel y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(UserViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

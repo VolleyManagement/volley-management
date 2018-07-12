@@ -9,7 +9,7 @@
     /// Comparer for Group objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class GroupComparer : IComparer<Group>, IComparer
+    internal class GroupComparer : IComparer<Group>, IComparer, IEqualityComparer<Group>
     {
         /// <summary>
         /// Compares two Groups.
@@ -57,6 +57,16 @@
             return x.Id == y.Id &&
                    x.Name == y.Name &&
                    x.DivisionId == y.DivisionId;
+        }
+
+        public bool Equals(Group x, Group y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(Group obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

@@ -9,7 +9,7 @@
     /// Comparer for team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class DivisionComparer : IComparer<Division>, IComparer
+    internal class DivisionComparer : IComparer<Division>, IComparer, IEqualityComparer<Division>
     {
         /// <summary>
         /// Compares two Divisions.
@@ -57,6 +57,16 @@
             return x.Id == y.Id &&
                    x.Name == y.Name &&
                    x.TournamentId == y.TournamentId;
+        }
+
+        public bool Equals(Division x, Division y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(Division obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

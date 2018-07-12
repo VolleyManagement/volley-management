@@ -6,7 +6,6 @@
     using Comparers;
     using Contracts;
     using Domain.UsersAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Contracts.Authorization;
     using UI.Areas.Admin.Controllers;
@@ -15,9 +14,9 @@
     using ViewModels;
     using Mvc.ViewModels;
     using Services.UsersService;
+    using Xunit;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class UsersControllerTest
     {
         private const int EXISTING_ID = 1;
@@ -25,14 +24,13 @@
         private Mock<IUserService> _userServiceMock;
         private Mock<ICurrentUserService> _currentUserService;
 
-        [TestInitialize]
-        public void TestInit()
+        public UsersControllerTest()
         {
             _userServiceMock = new Mock<IUserService>();
             _currentUserService = new Mock<ICurrentUserService>();
         }
 
-        [TestMethod]
+        [Fact]
         public void UserDetails_NonExistentUser_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -43,10 +41,10 @@
             var result = sut.UserDetails(EXISTING_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void UserDetails_ExistingUser_UserViewModelIsReturned()
         {
             // Arrange
@@ -60,7 +58,7 @@
             var actual = TestExtensions.GetModel<UserViewModel>(sut.UserDetails(EXISTING_ID));
 
             // Assert
-            TestHelper.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+            Assert.Equal<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
 
         private UsersController BuildSUT()

@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{B955D566-45CA-4850-8BAF-4BE1B8196351}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.UnitTests", "..\tests\VolleyManagement.UnitTests\VolleyManagement.UnitTests.csproj", "{96908ED1-5E16-4771-AD88-5C9820823F28}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Crosscutting.Contracts", "VolleyManagement.Backend\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj", "{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Crosscutting", "VolleyManagement.Backend\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj", "{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}"
@@ -42,7 +40,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Specs", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Domain.UnitTests", "..\tests\VolleyManagement.Domain.UnitTests\VolleyManagement.Domain.UnitTests.csproj", "{D13FB5D4-9AD8-41BC-8913-1655EB7BF9A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.API", "VolleyManagement.API\VolleyManagement.API.csproj", "{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyManagement.API", "VolleyManagement.API\VolleyManagement.API.csproj", "{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.UnitTests", "..\tests\VolleyManagement.UnitTests\VolleyManagement.UnitTests.csproj", "{3AE3F373-1DA3-45F2-B4A6-098F1133ABAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,10 +50,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -102,12 +98,15 @@ Global
 		{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DE9619C-AF1E-45B6-899B-1CCC04B7AEEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AE3F373-1DA3-45F2-B4A6-098F1133ABAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AE3F373-1DA3-45F2-B4A6-098F1133ABAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AE3F373-1DA3-45F2-B4A6-098F1133ABAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AE3F373-1DA3-45F2-B4A6-098F1133ABAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{96908ED1-5E16-4771-AD88-5C9820823F28} = {5E4D0731-0E27-4F7E-9831-8CA590C230FA}
 		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C} = {E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}
 		{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28} = {E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}
 		{F82FF279-9D06-4494-BC61-1B7AC88A737D} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
@@ -119,10 +118,11 @@ Global
 		{CD3417AE-DA02-4F48-9CFB-51DD58DD329C} = {7FA1212A-3834-421F-8FCA-CBBF7650948E}
 		{0E146539-A134-4E21-AF45-A91ED0D15D50} = {5E4D0731-0E27-4F7E-9831-8CA590C230FA}
 		{D13FB5D4-9AD8-41BC-8913-1655EB7BF9A6} = {5E4D0731-0E27-4F7E-9831-8CA590C230FA}
+		{3AE3F373-1DA3-45F2-B4A6-098F1133ABAB} = {5E4D0731-0E27-4F7E-9831-8CA590C230FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8050531E-5404-4E87-A058-33A22288018A}
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35
+		SolutionGuid = {8050531E-5404-4E87-A058-33A22288018A}
 	EndGlobalSection
 EndGlobal

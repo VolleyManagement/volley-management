@@ -10,7 +10,7 @@
     /// Comparer for player objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PlayerNameViewModelComparer : IComparer<PlayerNameViewModel>, IComparer
+    internal class PlayerNameViewModelComparer : IComparer<PlayerNameViewModel>, IComparer, IEqualityComparer<PlayerNameViewModel>
     {
         /// <summary>
         /// Compares two players objects.
@@ -44,6 +44,16 @@
             }
 
             return Compare(firstPlayer, secondPlayer);
+        }
+
+        public bool Equals(PlayerNameViewModel x, PlayerNameViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(PlayerNameViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>

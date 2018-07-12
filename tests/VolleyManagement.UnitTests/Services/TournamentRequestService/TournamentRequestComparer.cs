@@ -9,7 +9,7 @@
     /// Comparer for tournament request objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class TournamentRequestComparer : IComparer<TournamentRequest>, IComparer
+    public class TournamentRequestComparer : IComparer<TournamentRequest>, IComparer, IEqualityComparer<TournamentRequest>
     {
         /// <summary>
         /// Compares two tournament requests objects (non-generic implementation).
@@ -57,6 +57,16 @@
                 x.TeamId == y.TeamId &&
                 x.TournamentId == y.TournamentId &&
                 x.UserId == y.UserId;
+        }
+
+        public bool Equals(TournamentRequest x, TournamentRequest y)
+        {
+            return AreEquals(x, y);
+        }
+
+        public int GetHashCode(TournamentRequest obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

@@ -16,16 +16,14 @@
     using Domain.TournamentRequestAggregate;
     using Domain.UsersAggregate;
     using MailService;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Moq;
-    using MSTestExtensions;
     using UserManager;
     using VolleyManagement.Services;
-    using System.Collections;
+    using FluentAssertions;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
-    public class TournamentRequestServiceTests : BaseTest
+    public class TournamentRequestServiceTests
     {
         private const int EXISTING_ID = 1;
         private const int INVALID_REQUEST_ID = -1;
@@ -42,8 +40,7 @@
         private Mock<IMailService> _mailServiceMock;
         private Mock<IUserService> _userServiceMock;
 
-        [TestInitialize]
-        public void TestInit()
+        public TournamentRequestServiceTests()
         {
             _tournamentRequestRepositoryMock
               = new Mock<ITournamentRequestRepository>();
@@ -68,7 +65,7 @@
                 .Returns(_unitOfWorkMock.Object);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAll_RequestsExist_RequestsReturned()
         {
             // Arrange
@@ -82,24 +79,23 @@
             var actual = sut.Get();
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new TournamentRequestComparer());
+            Assert.Equal(expected, actual, new TournamentRequestComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAll_NoViewListRights_AuthorizationExceptionThrows()
         {
             // Arrange
             MockAuthServiceThrownException(AuthOperations.TournamentRequests.ViewList);
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<AuthorizationException>(
-                () =>
-                sut.Get(),
-                "Requested operation is not allowed");
+            // Act 
+            Action act = () => sut.Get();
+            // Assert
+            act.Should().Throw<AuthorizationException>("Requested operation is not allowed");
         }
 
-        [TestMethod]
+        [Fact]
         public void GetById_RequestExists_RequestReturned()
         {
             // Arrange
@@ -112,10 +108,10 @@
             var actual = sut.Get(EXISTING_ID);
 
             // Assert
-            TestHelper.AreEqual<TournamentRequest>(expected, actual, new TournamentRequestComparer());
+            Assert.Equal<TournamentRequest>(expected, actual, new TournamentRequestComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void Create_InvalidUserId_ExceptionThrows()
         {
             var newTournamentRequest = new TournamentRequestBuilder()
@@ -128,14 +124,13 @@
             // Arrange
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<ArgumentException>(
-                () =>
-                 sut.Create(newTournamentRequest),
-                "User's id is wrong");
+            // Act
+            Action act = () => sut.Create(newTournamentRequest);
+            //Assert
+            act.Should().Throw<ArgumentException>("User's id is wrong");
         }
 
-        [TestMethod]
+        [Fact]
         public void Create_ValidTournamentRequest_RequestAdded()
         {
             // Arrange
@@ -161,7 +156,7 @@
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Once(), "Parameter request is not equal to Instance of request");
         }
 
-        [TestMethod]
+        [Fact]
         public void Create_TournamentRequesExist_RequestNotAdded()
         {
             // Arrange
@@ -188,21 +183,20 @@
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Never(), "Parameter request is not equal to Instance of request");
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_NoConfirmRights_AuthorizationExceptionThrows()
         {
             // Arrange
             MockAuthServiceThrownException(AuthOperations.TournamentRequests.Confirm);
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<AuthorizationException>(
-                () =>
-                sut.Confirm(EXISTING_ID),
-                "Requested operation is not allowed");
+            // Act
+            Action act = () => sut.Confirm(EXISTING_ID);
+            //Assert
+            act.Should().Throw<AuthorizationException>("Requested operation is not allowed");
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_RequestExists_TeamAdded()
         {
             // Arrange
@@ -224,20 +218,21 @@
             VerifyAddedTeamToTournament(Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Confirm_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
             var sut = BuildSUT();
 
-            // Act => Assert
-            Assert.Throws<MissingEntityException>(
-                () =>
-                sut.Confirm(INVALID_REQUEST_ID),
-                "A tournament request with specified identifier was not found");
+            // Act
+            Action act = () =>
+                sut.Confirm(INVALID_REQUEST_ID);
+
+            //Assert
+            act.Should().Throw<MissingEntityException>("A tournament request with specified identifier was not found");
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_RequestExist_RequestDeleted()
         {
             // Arrange
@@ -255,7 +250,7 @@
             VerifyDeleteRequest(EXISTING_ID, Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Decline_RequestDoesNotExist_DbNotChanged()
         {
             // Arrange

@@ -7,7 +7,7 @@
     "SA1008:Opening parenthesis must be spaced correctly",
     Justification = "C# 7 Tuple",
     Scope = "member",
-    Target = "~M:VolleyManagement.UnitTests.Services.GameReportService.GameReportServiceTests.AssertPositionsAreEqual(System.Collections.Generic.List{System.Collections.Generic.List{VolleyManagement.Domain.GameReportsAggregate.StandingsEntry}},System.Collections.Generic.List{VolleyManagement.Domain.GameReportsAggregate.StandingsEntry})")]
+    Target = "~M:VolleyManagement.UnitTests.Services.GameReportService.GameReportServiceTests.AssertPositionsEqual(System.Collections.Generic.List{System.Collections.Generic.List{VolleyManagement.Domain.GameReportsAggregate.StandingsEntry}},System.Collections.Generic.List{VolleyManagement.Domain.GameReportsAggregate.StandingsEntry})")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
     "StyleCop.CSharp.SpacingRules",
     "SA1008:Opening parenthesis must be spaced correctly",

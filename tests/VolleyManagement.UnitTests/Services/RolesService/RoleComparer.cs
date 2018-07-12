@@ -9,7 +9,7 @@
     /// Compares Role instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class RoleComparer : IComparer<Role>, IComparer
+    public class RoleComparer : IComparer<Role>, IComparer, IEqualityComparer<Role>
     {
         public int Compare(Role x, Role y)
         {
@@ -34,6 +34,16 @@
         public int Compare(object x, object y)
         {
             return Compare(x as Role, y as Role);
+        }
+
+        public bool Equals(Role x, Role y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(Role obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         private int CompareInternal(Role x, Role y)

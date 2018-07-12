@@ -5,16 +5,16 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
     using Contracts;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Moq;
     using Contracts.Exceptions;
     using Domain.FeedbackAggregate;
+    using FluentAssertions;
     using UI.Areas.Admin.Controllers;
     using UI.Areas.Admin.Models;
     using Comparers;
 
     [ExcludeFromCodeCoverage]
-    [TestClass]
     public class RequestsControllerTests
     {
         #region Fields
@@ -29,8 +29,7 @@
 
         #region Init
 
-        [TestInitialize]
-        public void TestInit()
+        public RequestsControllerTests()
         {
             _feedbacksServiceMock = new Mock<IFeedbackService>();
         }
@@ -39,7 +38,7 @@
 
         #region Tests
 
-        [TestMethod]
+        [Fact]
         public void Index_FeedbacksExist_AllFeedbacksReturned()
         {
             // Arrange
@@ -54,10 +53,10 @@
 
             // Assert
             var actual = TestExtensions.GetModel<List<RequestsViewModel>>(actionResult);
-            CollectionAssert.AreEqual(expected, actual, new RequestsViewModelComparer());
+            Assert.Equal(expected, actual, new RequestsViewModelComparer());
         }
 
-        [TestMethod]
+        [Fact]
         public void Details_FeedbackWithReplies_DetailsModelReturned()
         {
             // Arrange
@@ -76,7 +75,7 @@
             AreDetailsModelsEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Details_FeedbackDoesNotExist_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -88,10 +87,10 @@
             var result = sut.Details(EXISTING_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsType<HttpNotFoundResult>(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_AnyFeedback_FeedbackRedirectToIndex()
         {
             // Arrange
@@ -106,7 +105,7 @@
             AssertValidRedirectResult(actionResult, "Index");
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_AnyFeedback_FeedbackRedirectToErrorPage()
         {
             // Arrange
@@ -117,10 +116,10 @@
             var actionResult = sut.Close(EXISTING_ID) as ViewResult;
 
             // Assert
-            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
+            Assert.Equal(ERROR_PAGE, actionResult.ViewName);
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_FeedbackDoesNotExist_FeedbackRedirectToErrorPage()
         {
             // Arrange
@@ -132,10 +131,10 @@
             var actionResult = sut.Close(EXISTING_ID) as ViewResult;
 
             // Assert
-            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
+            Assert.Equal(ERROR_PAGE, actionResult.ViewName);
         }
 
-        [TestMethod]
+        [Fact]
         public void Close_AnyFeedback_FeedbackClosed()
         {
             // Arrange
@@ -150,7 +149,7 @@
             AssertCloseVerify(_feedbacksServiceMock, FEEDBACK_ID);
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_AnyFeedback_FeedbackFromIndexRedirectToReply()
         {
             // Arrange
@@ -164,7 +163,7 @@
             AssertValidRedirectResult(actionResult, "Index");
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_AnyFeedback_FeedbackReplied()
         {
             // Arrange
@@ -178,7 +177,7 @@
             AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID, MESSAGE);
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_AnyFeedback_FeedbackRedirectToErrorPage()
         {
             // Arrange
@@ -189,10 +188,10 @@
             var actionResult = sut.Reply(EXISTING_ID, "message") as ViewResult;
 
             // Assert
-            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
+            Assert.Equal(ERROR_PAGE, actionResult.ViewName);
         }
 
-        [TestMethod]
+        [Fact]
         public void Reply_FeedbackDoesNotExist_FeedbackRedirectToErrorPage()
         {
             // Arrange
@@ -203,7 +202,7 @@
             var actionResult = sut.Reply(EXISTING_ID, "message") as ViewResult;
 
             // Assert
-            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
+            Assert.Equal(ERROR_PAGE, actionResult.ViewName);
         }
         #endregion
 
@@ -255,8 +254,7 @@
 
         private static Feedback GetAnyFeedback(int feedbackId)
         {
-            return new Feedback
-            {
+            return new Feedback {
                 Id = feedbackId,
                 Content = "Content2",
                 UsersEmail = "2@gmail.com",
@@ -269,8 +267,7 @@
 
         private static Feedback GetNotClosedFeedback(int feedbackId)
         {
-            return new Feedback
-            {
+            return new Feedback {
                 Id = feedbackId,
                 Content = "Content2",
                 UsersEmail = "2@gmail.com",
@@ -287,21 +284,21 @@
 
         private static void AreDetailsModelsEqual(RequestsViewModel expected, RequestsViewModel actual)
         {
-            Assert.AreEqual(expected.Id, actual.Id, "Requests ID does not match");
-            Assert.AreEqual(expected.Content, actual.Content, "Requests Content are different");
-            Assert.AreEqual(expected.AdminName, actual.AdminName, "Requests AdminName are different");
-            Assert.AreEqual(expected.Date, actual.Date, "Requests Date are different");
-            Assert.AreEqual(expected.Status, actual.Status, "Requests Status are different");
-            Assert.AreEqual(expected.UpdateDate, actual.UpdateDate, "Requests UpdateDate are different");
-            Assert.AreEqual(expected.UsersEmail, actual.UsersEmail, "Requests UsersEmail are different");
+            actual.Id.Should().Be(expected.Id, "Requests ID does not match");
+            actual.Content.Should().Be(expected.Content, "Requests Content are different");
+            actual.AdminName.Should().Be(expected.AdminName, "Requests AdminName are different");
+            actual.Date.Should().Be(expected.Date, "Requests Date are different");
+            actual.Status.Should().Be(expected.Status, "Requests Status are different");
+            actual.UpdateDate.Should().Be(expected.UpdateDate, "Requests UpdateDate are different");
+            actual.UsersEmail.Should().Be(expected.UsersEmail, "Requests UsersEmail are different");
         }
 
         private static void AssertValidRedirectResult(ActionResult actionResult, string view)
         {
             var result = (RedirectToRouteResult)actionResult;
-            Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
-            Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
-            Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
+            Assert.False(result.Permanent, "Redirect should not be permanent");
+            result.RouteValues.Count.Should().Be(1, $"Redirect should forward to Requests.{view} action");
+            result.RouteValues["action"].Should().Be(view, $"Redirect should forward to Requests.{view} action");
         }
 
         private static void AssertCloseVerify(Mock<IFeedbackService> mock, int feedbackId)

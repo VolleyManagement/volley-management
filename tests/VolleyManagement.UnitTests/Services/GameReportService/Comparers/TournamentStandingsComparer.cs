@@ -2,13 +2,15 @@
 {
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
+    using FluentAssertions;
+    using System.Linq;
 
-    public class TournamentStandingsComparer<T> : IComparer<TournamentStandings<T>>
+    public class TournamentStandingsComparer<T> : IEqualityComparer<TournamentStandings<T>>
     {
-        private readonly IComparer<T> _groupItemComparer;
+        private readonly IEqualityComparer<T> _groupItemComparer;
 
-        public TournamentStandingsComparer(IComparer<T> groupItemComparer)
+        public TournamentStandingsComparer(IEqualityComparer<T> groupItemComparer)
         {
             _groupItemComparer = groupItemComparer;
         }
@@ -20,14 +22,22 @@
                 return 0;
             }
 
-            if (x == null || y == null)
-            {
-                throw new AssertFailedException("One instance is null");
-            }
+            x.Should().NotBeNull("One instance is null");
+            y.Should().NotBeNull("One instance is null");
 
-            TestHelper.AreEqual(x.Divisions, y.Divisions, _groupItemComparer);
+            Assert.Equal(x.Divisions, y.Divisions, _groupItemComparer);
 
             return 0;
+        }
+
+        public bool Equals(TournamentStandings<T> x, TournamentStandings<T> y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(TournamentStandings<T> obj)
+        {
+            return obj.Divisions.First().GetHashCode();
         }
     }
 }

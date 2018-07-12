@@ -11,7 +11,7 @@
     /// Comparer for user objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class UserComparer : IComparer<User>, IComparer
+    internal class UserComparer : IComparer<User>, IComparer, IEqualityComparer<User>
     {
         /// <summary>
         /// Compare two users objects.
@@ -49,6 +49,16 @@
             }
 
             return Compare(firstUser, secondUser);
+        }
+
+        public bool Equals(User x, User y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(User obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>

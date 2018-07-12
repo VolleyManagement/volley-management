@@ -9,7 +9,7 @@
     /// Compares message instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class MessageViewModelComparer : IComparer<MessageViewModel>, IComparer
+    public class MessageViewModelComparer : IComparer<MessageViewModel>, IComparer, IEqualityComparer<MessageViewModel>
     {
         public int Compare(MessageViewModel x, MessageViewModel y)
         {
@@ -31,6 +31,16 @@
             }
 
             return Compare(firstMessage, secondMessage);
+        }
+
+        public bool Equals(MessageViewModel x, MessageViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(MessageViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         private bool AreEqual(MessageViewModel x, MessageViewModel y)

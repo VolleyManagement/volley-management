@@ -9,7 +9,7 @@
     /// Comparer for tournament objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TournamentViewModelComparer : IComparer<TournamentViewModel>, IComparer
+    internal class TournamentViewModelComparer : IComparer<TournamentViewModel>, IComparer, IEqualityComparer<TournamentViewModel>
     {
         /// <summary>
         /// Compares two tournament objects.
@@ -43,6 +43,16 @@
             }
 
             return Compare(firstTournament, secondTournament);
+        }
+
+        public bool Equals(TournamentViewModel x, TournamentViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(TournamentViewModel obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>

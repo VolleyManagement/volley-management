@@ -1,4 +1,4 @@
-#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+﻿#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #tool nuget:?package=JetBrains.dotCover.CommandLineTools
 #tool "nuget:?package=xunit.runner.console"
 
@@ -55,7 +55,7 @@ SonarEndSettings sonarEndSettings;
 
 var suffix = BuildSystem.IsRunningOnAppVeyor ? $"_AppVeyor_{AppVeyor.Environment.JobId}" : string.Empty;
 
-utResults = utsDir + File($"UT_Results{suffix}.trx");
+utResults = utsDir + File($"UT_Results{suffix}.xml");
 utCoverageResults = utsDir + File($"UT_Coverage{suffix}.dcvr");
 
 specResults = specsDir + File($"IT_Results{suffix}.xml");
@@ -68,11 +68,16 @@ combinedCoverageResults = testsDir + File($"CoverageResults{suffix}.html");
 
 var coverageResultsToMerge = new List<FilePath>();
 coverageResultsToMerge.Add(utCoverageResults);
-coverageResultsToMerge.Add(domainUTCoverageResults);
+
+var utResultsToMerge = new List<FilePath>();
+utResultsToMerge.Add(utResults);
+utResultsToMerge.Add(domainUTResults);
+
 
 if(canRunIntegrationTests)
 {
     coverageResultsToMerge.Add(specCoverageResults);
+    utResultsToMerge.Add(specResults);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -102,9 +107,12 @@ Task("Build")
 Task("UnitTests")
     .Does(() => {
         var testsPath = utsDir.Path.FullPath + "/*.UnitTests.dll";
-        var msTestSettings = new MSTestSettings {
-            ResultsFile = utResults.Path.GetFilename().FullPath,
-            WorkingDirectory = testsDir
+
+        var xUnitSettings = new XUnit2Settings {
+            WorkingDirectory = testsDir,
+            ReportName = utResults.Path.GetFilenameWithoutExtension().FullPath,
+            XmlReport = true,
+            OutputDirectory = utResults.Path.GetDirectory().FullPath
         };
 
         var dotCoverSettings = new DotCoverCoverSettings{
@@ -115,13 +123,15 @@ Task("UnitTests")
         SetCoverageFilter(dotCoverSettings);        
 
         DotCoverCover(
-            (ICakeContext c) => { c.MSTest (testsPath, msTestSettings); },
+            (ICakeContext c) => { c.XUnit2 (testsPath, xUnitSettings); },
             utCoverageResults,
             dotCoverSettings
         );
 
         if (BuildSystem.IsRunningOnAppVeyor) {
-            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.MSTest);
+            AppVeyor.UploadTestResults(utResults, AppVeyorTestResultsType.XUnit);    
+            utResultsToMerge.Append(utResults);
+            utResultsToMerge.Append(",");
         }
     });
 
@@ -151,33 +161,8 @@ Task("IntegrationTests")
 
         if (BuildSystem.IsRunningOnAppVeyor) {
             AppVeyor.UploadTestResults(specResults, AppVeyorTestResultsType.XUnit);
-        }
-    });
-
-Task("DomainTests")
-    .Does(() => {        
-        var testsPathDomain = domainDir.Path.FullPath + "/*.Domain.UnitTests.dll";
-        var xUnitSettings = new XUnit2Settings {
-            WorkingDirectory = testsDir,
-            ReportName = domainUTResults.Path.GetFilenameWithoutExtension().FullPath,
-            XmlReport = true,
-            OutputDirectory = domainUTResults.Path.GetDirectory().FullPath
-        };
-
-        var dotCoverSettingsDomain = new DotCoverCoverSettings {
-            WorkingDirectory = domainDir,
-            TargetWorkingDir = domainDir
-        };
-
-        SetCoverageFilter(dotCoverSettingsDomain);        
-
-        DotCoverCover (
-            (ICakeContext c) => { c.XUnit2(testsPathDomain, xUnitSettings); },
-            domainUTCoverageResults,
-            dotCoverSettingsDomain);
-
-        if (BuildSystem.IsRunningOnAppVeyor) {
-            AppVeyor.UploadTestResults(domainUTResults, AppVeyorTestResultsType.XUnit);
+            utResultsToMerge.Append(specResults);
+            utResultsToMerge.Append(",");
         }
     });
 
@@ -199,9 +184,9 @@ Task("SonarBegin")
             Key = "volley-management",
             Organization = "volleymanagement",
             Login = sonarToken,
-            VsTestReportsPath = utResults,
-            XUnitReportsPath = specResults,
-            DotCoverReportsPath = combinedCoverageResults
+            XUnitReportsPath = string.Join(",", utResultsToMerge),
+            DotCoverReportsPath = combinedCoverageResults,
+            Exclusions = "src/VolleyManagement.WebClient/**"
         };
 
         if (BuildSystem.IsRunningOnAppVeyor &&
@@ -235,7 +220,6 @@ Task("Sonar")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests")
     .IsDependentOn("IntegrationTests")
-    .IsDependentOn("DomainTests")
     .IsDependentOn("GenerateCoverageReport")
     .IsDependentOn("SonarEnd");
 

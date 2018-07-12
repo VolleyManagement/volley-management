@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using Moq;
     using Data.Contracts;
     using Domain.ContributorsAggregate;
@@ -10,8 +10,7 @@
 
     /// <summary>
     /// Tests for ContributorTeamServiceTests class.
-    /// </summary>
-    [TestClass]
+    /// </summary>  
     [ExcludeFromCodeCoverage]
     public class ContributorTeamServiceTests
     {
@@ -22,8 +21,7 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-        [TestInitialize]
-        public void TestInit()
+        public ContributorTeamServiceTests()
         {
             _contributorTeamRepositoryMock = new Mock<IContributorTeamRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -34,7 +32,7 @@
         /// <summary>
         /// Test for Get() method. The method should return existing contributors teams
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetAll_ContributorsTeamExist_ContributorsTeamReturned()
         {
             // Arrange
@@ -53,7 +51,7 @@
             var actual = sut.Get();
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new ContributorTeamComparer());
+            Assert.Equal(expected, actual, new ContributorTeamComparer());
         }
 
         private ContributorTeamService BuildSUT()
@@ -66,9 +64,5 @@
             _contributorTeamRepositoryMock.Setup(tr => tr.Find()).Returns(testData);
         }
 
-        private bool PlayersAreEqual(ContributorTeam x, ContributorTeam y)
-        {
-            return new ContributorTeamComparer().Compare(x, y) == 0;
-        }
     }
 }

@@ -9,7 +9,7 @@
     /// Comparer for player objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class PlayerComparer : IComparer<Player>, IComparer
+    public class PlayerComparer : IComparer<Player>, IComparer, IEqualityComparer<Player>
     {
         /// <summary>
         /// Compares two player objects.
@@ -58,7 +58,17 @@
                 x.LastName == y.LastName &&
                 x.BirthYear == y.BirthYear &&
                 x.Height == y.Height &&
-                x.Weight == y.Weight; 
+                x.Weight == y.Weight;
+        }
+
+        public bool Equals(Player x, Player y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(Player obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

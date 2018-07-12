@@ -3,14 +3,16 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using UI.Areas.WebAPI.ViewModels.GameReports;
+    using FluentAssertions;
+    using System.Linq;
 
     /// <summary>
     /// Represents a comparer for <see cref="DivisionStandingsViewModel"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class DivisionStandingsViewModelComparer : IComparer<DivisionStandingsViewModel>, IComparer
+    internal class DivisionStandingsViewModelComparer : IComparer<DivisionStandingsViewModel>, IComparer, IEqualityComparer<DivisionStandingsViewModel>
     {
         /// <summary>
         /// Compares two <see cref="DivisionStandingsViewModel"/> objects.
@@ -46,6 +48,16 @@
             return Compare(firstStandingsViewModel, secondStandingsViewModel);
         }
 
+        public bool Equals(DivisionStandingsViewModel x, DivisionStandingsViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(DivisionStandingsViewModel obj)
+        {
+            return obj.StandingsTable.First().GamesTotal.GetHashCode();
+        }
+
         /// <summary>
         /// Finds out whether two <see cref="DivisionStandingsViewModel"/> objects are equal.
         /// </summary>
@@ -54,21 +66,19 @@
         /// <returns>True if given <see cref="DivisionStandingsViewModel"/> objects are equal.</returns>
         internal bool AreEqual(DivisionStandingsViewModel expected, DivisionStandingsViewModel actual)
         {
-            Assert.AreEqual(expected.LastUpdateTime, actual.LastUpdateTime, "LastTimeUpdated should match");
-            Assert.AreEqual(expected.DivisionName, actual.DivisionName, "DivisionName should match");
+            actual.LastUpdateTime.Should().Be(expected.LastUpdateTime, "LastTimeUpdated should match");
+            actual.DivisionName.Should().Be(expected.DivisionName, "DivisionName should match");
 
             if (expected.StandingsTable != null || actual.StandingsTable != null)
             {
-                if (expected.StandingsTable == null || actual.StandingsTable == null)
-                {
-                    Assert.Fail("One of the Standings colection is null");
-                }
+                expected.StandingsTable.Should().NotBeNull("One of the Standings colection is null");
+                actual.StandingsTable.Should().NotBeNull("One of the Standings colection is null");
 
-                Assert.AreEqual(expected.StandingsTable.Count, actual.StandingsTable.Count, "Number of Standings divisions should match");
+                actual.StandingsTable.Count.Should().Be(expected.StandingsTable.Count, "Number of Standings divisions should match");
 
                 for (var i = 0; i < expected.StandingsTable.Count; i++)
                 {
-                    Assert.IsTrue(StandingsEntryViewModelEqualityComparer.AssertAreEqual(
+                    Assert.True(StandingsEntryViewModelEqualityComparer.AssertAreEqual(
                         expected.StandingsTable[i],
                         actual.StandingsTable[i],
                         $"[Standings#{i}] "));

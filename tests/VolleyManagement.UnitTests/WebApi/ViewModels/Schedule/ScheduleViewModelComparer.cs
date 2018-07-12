@@ -1,8 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels.Schedule
 {
     using System.Diagnostics.CodeAnalysis;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
     using UI.Areas.WebAPI.ViewModels.Schedule;
+    using FluentAssertions;
+
 
     [ExcludeFromCodeCoverage]
     internal static class ScheduleViewModelComparer
@@ -16,9 +18,9 @@
         {
             if (expected == null && actual == null) return;
 
-            Assert.IsFalse(expected == null || actual == null, "Instance should not be null.");
+            Assert.False(expected == null || actual == null, "Instance should not be null.");
 
-            Assert.AreEqual(expected.Schedule.Count, actual.Schedule.Count, $"Number of Week entries does not match.");
+            actual.Schedule.Count.Should().Be(expected.Schedule.Count, $"Number of Week entries does not match.");
 
             for (var i = 0; i < expected.Schedule.Count; i++)
             {

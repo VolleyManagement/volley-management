@@ -11,7 +11,7 @@
     /// Represents a comparer for <see cref="Game"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class GameComparer : IComparer<Game>, IComparer
+    internal class GameComparer : IComparer<Game>, IComparer, IEqualityComparer<Game>
     {
         /// <summary>
         /// Compares two <see cref="Game"/> objects.
@@ -45,6 +45,16 @@
             }
 
             return Compare(firstGameResult, secondGameResult);
+        }
+
+        public bool Equals(Game x, Game y)
+        {
+            return AreEqual(x, y);
+        }
+
+        public int GetHashCode(Game obj)
+        {
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>

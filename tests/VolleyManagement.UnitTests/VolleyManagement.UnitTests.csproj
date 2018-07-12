@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\src\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\src\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\src\packages\xunit.core.2.3.1\build\xunit.core.props" Condition="Exists('..\..\src\packages\xunit.core.2.3.1\build\xunit.core.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{96908ED1-5E16-4771-AD88-5C9820823F28}</ProjectGuid>
+    <ProjectGuid>{3AE3F373-1DA3-45F2-B4A6-098F1133ABAB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VolleyManagement.UnitTests</RootNamespace>
@@ -12,31 +12,22 @@
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\src</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <SonarQubeTestProject>True</SonarQubeTestProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\bin\UnitTests\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <Prefer32Bit>false</Prefer32Bit>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,68 +36,80 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Castle.Core.4.3.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=5.4.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\FluentAssertions.5.4.1\lib\net47\FluentAssertions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Spatial, Version=6.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Microsoft.Spatial.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Core">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.core\2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Microsoft.VisualStudio.QualityTools.UnitTestFramework.11.0.50727.1\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Moq.4.8.3\lib\net45\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="MSTestExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.IdentityModel" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web">
-      <Private>True</Private>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\xunit.assert.2.3.1\lib\netstandard1.1\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\xunit.extensibility.core.2.3.1\lib\netstandard1.1\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\xunit.extensibility.execution.2.3.1\lib\net452\xunit.execution.desktop.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise />
-  </Choose>
   <ItemGroup>
     <Compile Include="Admin\Comparers\MessageViewModelComparer.cs" />
     <Compile Include="Admin\Comparers\TournamentRequestViewModelComparer.cs" />
@@ -116,8 +119,6 @@
     <Compile Include="Admin\ViewModels\TournamentRequestsViewModelsBuilder.cs" />
     <Compile Include="Admin\ViewModels\UserAdminViewModelBuilder.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Mvc\ViewModels\DivisionViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\GroupViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\RequestsViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Mvc\ViewModels\ContributorTeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelToDomain.cs" />
+    <Compile Include="Mvc\ViewModels\DivisionViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameMvcEqualityComparer.cs" />
@@ -146,8 +148,8 @@
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\GroupViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotGameResultsViewModelEqualityComparer.cs" />
-    <Compile Include="Mvc\ViewModels\ShortGameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotTableEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotTeamStandingsViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />
@@ -157,14 +159,9 @@
     <Compile Include="Mvc\ViewModels\PlayerViewModelToDomainTest.cs" />
     <Compile Include="Mvc\ViewModels\ScheduleViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ScheduleViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\ShortGameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
-    <Compile Include="Services\PlayerService\CreatePlayerDtoBuilder.cs" />
-    <Compile Include="Services\TeamService\CreateTeamDtoBuilder.cs" />
-    <Compile Include="Services\TeamService\CreateTeamDtoComparer.cs" />
-    <Compile Include="Services\TeamService\TeamInTournamentComparer.cs" />
-    <Compile Include="WebApi\Standings\PivotStandingsViewModelTestFixture.cs" />
-    <Compile Include="WebApi\Standings\DivisionStandingsViewModelTestFixture.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamNameViewModelBuilder.cs" />
@@ -193,33 +190,34 @@
     <Compile Include="Services\FeedbackService\FeedbackServiceTestFixture.cs" />
     <Compile Include="Services\FeedbackService\FeedbackServiceTests.cs" />
     <Compile Include="Services\FileService\FileServiceTests.cs" />
+    <Compile Include="Services\GameReportService\Comparers\PivotStandingsComparer.cs" />
+    <Compile Include="Services\GameReportService\Comparers\ShortGameResultDtoComparer.cs" />
+    <Compile Include="Services\GameReportService\Comparers\StandingsDtoComparer.cs" />
+    <Compile Include="Services\GameReportService\Comparers\StandingsEntryComparer.cs" />
+    <Compile Include="Services\GameReportService\Comparers\TeamStandingsDtoComparer.cs" />
+    <Compile Include="Services\GameReportService\Comparers\TournamentStandingsComparer.cs" />
+    <Compile Include="Services\GameReportService\Fixture\GameResultsTestFixture.cs" />
+    <Compile Include="Services\GameReportService\Fixture\PivotStandingsTestFixture.cs" />
+    <Compile Include="Services\GameReportService\Fixture\ShortGameResultDtoTestFixture.cs" />
+    <Compile Include="Services\GameReportService\Fixture\StandingsTestFixture.cs" />
     <Compile Include="Services\GameReportService\Fixture\TeamInTournamentTestFixture.cs" />
     <Compile Include="Services\GameReportService\GameReportsServiceTestsBase.cs" />
     <Compile Include="Services\GameReportService\GetPivotStandingsTests.cs" />
-    <Compile Include="Services\GameReportService\Comparers\TournamentStandingsComparer.cs" />
     <Compile Include="Services\GameReportService\GetStandingsTests.cs" />
-    <Compile Include="Services\GameReportService\Comparers\StandingsDtoComparer.cs" />
-    <Compile Include="Services\GameReportService\Comparers\PivotStandingsComparer.cs" />
-    <Compile Include="Services\GameReportService\Comparers\ShortGameResultDtoComparer.cs" />
-    <Compile Include="Services\GameReportService\Fixture\ShortGameResultDtoTestFixture.cs" />
-    <Compile Include="Services\GameReportService\Comparers\StandingsEntryComparer.cs" />
-    <Compile Include="Services\GameReportService\Fixture\StandingsTestFixture.cs" />
-    <Compile Include="Services\GameReportService\Comparers\TeamStandingsDtoComparer.cs" />
-    <Compile Include="Services\GameReportService\Fixture\PivotStandingsTestFixture.cs" />
     <Compile Include="Services\GameReportService\StandingsEntryTests.cs" />
+    <Compile Include="Services\GameService\Comparers\GameComparer.cs" />
+    <Compile Include="Services\GameService\Comparers\GameResultDtoComparer.cs" />
+    <Compile Include="Services\GameService\Comparers\ScoreComparer.cs" />
     <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
     <Compile Include="Services\GameService\Fixture\GameBuilder.cs" />
-    <Compile Include="Services\GameService\Comparers\GameComparer.cs" />
     <Compile Include="Services\GameService\Fixture\GameResultDtoBuilder.cs" />
-    <Compile Include="Services\GameService\Comparers\GameResultDtoComparer.cs" />
-    <Compile Include="Services\GameReportService\Fixture\GameResultsTestFixture.cs" />
     <Compile Include="Services\GameService\Fixture\GameServiceTestFixture.cs" />
-    <Compile Include="Services\GameService\GameServiceTests.cs" />
     <Compile Include="Services\GameService\Fixture\GameTestFixture.cs" />
-    <Compile Include="Services\GameService\Comparers\ScoreComparer.cs" />
+    <Compile Include="Services\GameService\GameServiceTests.cs" />
     <Compile Include="Services\GroupTeamService\GroupTeamServiceTestFixture.cs" />
     <Compile Include="Services\GroupTeamService\TournamentTeamsListViewModelTestFixture.cs" />
     <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
+    <Compile Include="Services\PlayerService\CreatePlayerDtoBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerComparer.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTestFixture.cs" />
@@ -231,8 +229,11 @@
     <Compile Include="Services\RolesService\RoleComparer.cs" />
     <Compile Include="Services\RolesService\RolesServiceTests.cs" />
     <Compile Include="Services\RolesService\UserInRoleComparer.cs" />
+    <Compile Include="Services\TeamService\CreateTeamDtoBuilder.cs" />
+    <Compile Include="Services\TeamService\CreateTeamDtoComparer.cs" />
     <Compile Include="Services\TeamService\TeamBuilder.cs" />
     <Compile Include="Services\TeamService\TeamComparer.cs" />
+    <Compile Include="Services\TeamService\TeamInTournamentComparer.cs" />
     <Compile Include="Services\TeamService\TeamServiceTestFixture.cs" />
     <Compile Include="Services\TeamService\TeamServiceTests.cs" />
     <Compile Include="Services\TournamentRequestService\TournamentRequestBuilder.cs" />
@@ -257,17 +258,14 @@
     <Compile Include="Services\UsersService\UserComparer.cs" />
     <Compile Include="Services\UsersService\UserServiceTestFixture.cs" />
     <Compile Include="Services\UsersService\UserServiceTests.cs" />
-    <Compile Include="TestCSharp7FeaturesSupport.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="WebApi\Controllers\ScheduleTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\Standings\DivisionStandingsViewModelTestFixture.cs" />
+    <Compile Include="WebApi\Standings\PivotStandingsViewModelTestFixture.cs" />
     <Compile Include="WebApi\Standings\StandingsEntryViewModelEqualityComparer.cs" />
-    <Compile Include="WebApi\Standings\StandingsViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\ScheduleDayViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\DivisionTitleViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\ScheduleViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\WeekViewModelComparer.cs" />
+    <Compile Include="WebApi\Standings\DivisionStandingsViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />
@@ -281,6 +279,11 @@
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\DivisionTitleViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\ScheduleDayViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\ScheduleViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\ScheduleViewModelTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\WeekViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelServiceTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\TeamViewModelBuilder.cs" />
@@ -289,17 +292,10 @@
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelServiceTestFixture.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\ScheduleViewModelTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\VolleyManagement.Backend\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
@@ -323,46 +319,21 @@
       <Name>VolleyManagement.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\VolleyManagement.Backend\VolleyManagement.UI\VolleyManagement.UI.csproj">
-      <Project>{a0fe5d5b-b9c7-4c0f-9fa9-f0dd5119fccb}</Project>
+      <Project>{A0FE5D5B-B9C7-4C0F-9FA9-F0DD5119FCCB}</Project>
       <Name>VolleyManagement.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <Analyzer Include="..\..\src\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" /> -->
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <!-- <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" /> -->
-    <Error Condition="!Exists('..\..\src\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\..\src\packages\xunit.core.2.3.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\xunit.core.2.3.1\build\xunit.core.props'))" />
+    <Error Condition="!Exists('..\..\src\packages\xunit.core.2.3.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\xunit.core.2.3.1\build\xunit.core.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\src\packages\xunit.core.2.3.1\build\xunit.core.targets" Condition="Exists('..\..\src\packages\xunit.core.2.3.1\build\xunit.core.targets')" />
 </Project>

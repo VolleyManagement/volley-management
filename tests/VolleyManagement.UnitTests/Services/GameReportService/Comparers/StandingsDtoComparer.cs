@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
+    using FluentAssertions;
 
-    public class StandingsDtoComparer : IComparer<StandingsDto>
+    public class StandingsDtoComparer : IComparer<StandingsDto>, IEqualityComparer<StandingsDto>
     {
         private StandingsEntryComparer standingsComparer;
 
@@ -19,13 +20,23 @@
 
         public int Compare(StandingsDto x, StandingsDto y)
         {
-            Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
-            Assert.AreEqual(x.DivisionName, y.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
-            Assert.AreEqual(x.LastUpdateTime, y.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
+            y.DivisionId.Should().Be(x.DivisionId, "Division Ids do not match");
+            y.DivisionName.Should().Be(x.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
+            y.LastUpdateTime.Should().Be(x.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
 
-            TestHelper.AreEqual(x.Standings, y.Standings, new StandingsEntryComparer());
+            Assert.Equal(x.Standings, y.Standings, new StandingsEntryComparer());
 
             return 0;
+        }
+
+        public bool Equals(StandingsDto x, StandingsDto y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(StandingsDto obj)
+        {
+            return obj.DivisionId.GetHashCode();
         }
     }
 }

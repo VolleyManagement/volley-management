@@ -189,16 +189,6 @@ Task("SonarBegin")
             Exclusions = "src/VolleyManagement.WebClient/**"
         };
 
-        if (BuildSystem.IsRunningOnAppVeyor &&
-            AppVeyor.Environment.PullRequest.IsPullRequest) {
-            settings.Version = AppVeyor.Environment.Build.Version;
-            settings.ArgumentCustomization =
-                args => args.Append ("/d:\"sonar.analysis.mode=preview\"")
-                .Append ($"/d:\"sonar.github.pullRequest={AppVeyor.Environment.PullRequest.Number}\"")
-                .Append ("/d:\"sonar.github.repository=VolleyManagement/volley-management\"")
-                .AppendSecret ($"/d:\"sonar.github.oauth={EnvironmentVariable("GITHUB_SONAR_PR_TOKEN")}\"");
-        }
-
         sonarEndSettings = settings.GetEndSettings();
         SonarBegin(settings);
     });

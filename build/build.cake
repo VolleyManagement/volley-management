@@ -138,7 +138,7 @@ Task("UnitTests")
 Task("IntegrationTests")
     .WithCriteria(() => canRunIntegrationTests)
     .Does(() => {        
-        var testsPath = specsDir.Path.FullPath + "/*.Specs.dll";
+        var testsPath = specsDir.Path.FullPath + "/*/*.Specs.dll";
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = specsDir,
             ReportName = specResults.Path.GetFilenameWithoutExtension().FullPath,

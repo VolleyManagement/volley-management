@@ -1,22 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{996EEE53-56AC-4002-891F-B989659323D1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VolleyManagement.Domain</RootNamespace>
-    <AssemblyName>VolleyManagement.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>net47</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,130 +36,54 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>VolleyManagement.Domain.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="MSTestExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="ContributorsAggregate\Contributor.cs" />
-    <Compile Include="ContributorsAggregate\ContributorTeam.cs" />
-    <Compile Include="ContributorsAggregate\IContributorTeamRepository.cs" />
-    <Compile Include="Dto\UserInRoleDto.cs" />
-    <Compile Include="EntityInvariantViolationException.cs" />
-    <Compile Include="FeedbackAggregate\Feedback.cs" />
-    <Compile Include="FeedbackAggregate\FeedbackStatusEnum.cs" />
-    <Compile Include="FeedbackAggregate\FeedbackValidation.cs" />
-    <Compile Include="FeedbackAggregate\IFeedbackRepository.cs" />
-    <Compile Include="GameReportsAggregate\DivisionStandingsDtoBase.cs" />
-    <Compile Include="GameReportsAggregate\StandingsDto.cs" />
-    <Compile Include="GameReportsAggregate\TournamentStandings.cs" />
-    <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
-    <Compile Include="GameReportsAggregate\TeamStandingsDto.cs" />
-    <Compile Include="GameReportsAggregate\ShortGameResultDto.cs" />
-    <Compile Include="GameReportsAggregate\PivotStandingsDto.cs" />
-    <Compile Include="GamesAggregate\Game.cs" />
-    <Compile Include="GamesAggregate\GameResultDto.cs" />
-    <Compile Include="GamesAggregate\GameValidation.cs" />
-    <Compile Include="GamesAggregate\IGameRepository.cs" />
-    <Compile Include="GamesAggregate\Penalty.cs" />
-    <Compile Include="GamesAggregate\Result.cs" />
-    <Compile Include="GamesAggregate\ResultValidation.cs" />
-    <Compile Include="GamesAggregate\Score.cs" />
-    <Compile Include="PlayersAggregate\CreatePlayerDto.cs" />
-    <Compile Include="PlayersAggregate\FreePlayerDto.cs" />
-    <Compile Include="PlayersAggregate\IPlayerRepository.cs" />
-    <Compile Include="PlayersAggregate\Player.cs" />
-    <Compile Include="PlayersAggregate\PlayerValidation.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RequestsAggregate\IRequestRepository.cs" />
-    <Compile Include="RequestsAggregate\Request.cs" />
-    <Compile Include="RequestsAggregate\RequestValidation.cs" />
-    <Compile Include="RolesAggregate\AuthOperation.cs" />
-    <Compile Include="RolesAggregate\AuthOperations.cs" />
-    <Compile Include="RolesAggregate\IRoleRepository.cs" />
-    <Compile Include="RolesAggregate\Role.cs" />
-    <Compile Include="TeamsAggregate\CreateTeamDto.cs" />
-    <Compile Include="TeamsAggregate\ITeamRepository.cs" />
-    <Compile Include="TeamsAggregate\PlayerId.cs" />
-    <Compile Include="TeamsAggregate\TeamId.cs" />
-    <Compile Include="TeamsAggregate\TeamTournamentDto.cs" />
-    <Compile Include="TeamsAggregate\TeamValidation.cs" />
-    <Compile Include="TournamentRequestAggregate\ITournamentRequestRepository.cs" />
-    <Compile Include="TournamentRequestAggregate\TournamentRequest.cs" />
-    <Compile Include="TournamentRequestAggregate\TournamentRequestValidation.cs" />
-    <Compile Include="TournamentsAggregate\DivisionScheduleDto.cs" />
-    <Compile Include="TournamentsAggregate\Divisions\Division.cs" />
-    <Compile Include="TournamentsAggregate\Divisions\DivisionValidation.cs" />
-    <Compile Include="TournamentsAggregate\Groups\Group.cs" />
-    <Compile Include="TournamentsAggregate\Groups\GroupValidation.cs" />
-    <Compile Include="TournamentsAggregate\ITournamentRepository.cs" />
-    <Compile Include="TournamentsAggregate\TournamentScheduleDto.cs" />
-    <Compile Include="TournamentsAggregate\TournamentSchemeEnum.cs" />
-    <Compile Include="TournamentsAggregate\Tournament.cs" />
-    <Compile Include="TournamentsAggregate\TournamentStateEnum.cs" />
-    <Compile Include="TournamentsAggregate\TournamentValidationSpecification.cs" />
-    <Compile Include="UsersAggregate\IUserRepository.cs" />
-    <Compile Include="UsersAggregate\LoginProviderInfo.cs" />
-    <Compile Include="UsersAggregate\User.cs" />
-    <Compile Include="UsersAggregate\UserValidation.cs" />
-    <Compile Include="TeamsAggregate\Team.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
-      <Project>{ba2d2bb6-9862-4d96-9d64-54ece7f8ca2c}</Project>
-      <Name>VolleyManagement.Crosscutting.Contracts</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj">
-      <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
-      <Name>VolleyManagement.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="VolleyManagement.Domain.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{996EEE53-56AC-4002-891F-B989659323D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VolleyManagement.Domain</RootNamespace>
+    <AssemblyName>VolleyManagement.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp />
+  </PropertyGroup>
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Compilers" Version="2.6.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.0.1.4822">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MSTestExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="VolleyManagement.Domain.ruleset" />
+  </ItemGroup>
 </Project>

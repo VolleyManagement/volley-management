@@ -1,22 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VolleyManagement.Data.MsSql</RootNamespace>
-    <AssemblyName>VolleyManagement.Data.MsSql</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>net47</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +36,47 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>VolleyManagement.Data.MsSql.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VolleyManagement.Data.MsSql</RootNamespace>
+    <AssemblyName>VolleyManagement.Data.MsSql</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp />
+  </PropertyGroup>
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <PackageReference Include="FeatureToggle" Version="3.5.1" />
+    <PackageReference Include="FeatureToggle.Core" Version="3.5.1" />
+    <PackageReference Include="Microsoft.Net.Compilers" Version="2.6.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.0.1.4822">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.4.0" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -58,357 +92,122 @@
     <Reference Include="FeatureToggle.Core, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FeatureToggle.Core.3.5.1\lib\portable-net40+sl50+wp81+wpa+win\FeatureToggle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.4.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\Migrations\201510171413220_InitialCreate.cs" />
-    <Compile Include="Context\Migrations\201510171413220_InitialCreate.Designer.cs">
+    <Compile Update="Context\Migrations\201510171413220_InitialCreate.Designer.cs">
       <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201510171919218_DropExtraIndexes.cs" />
-    <Compile Include="Context\Migrations\201510171919218_DropExtraIndexes.Designer.cs">
+    <Compile Update="Context\Migrations\201510171919218_DropExtraIndexes.Designer.cs">
       <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201510241559278_UserIdentity.cs" />
-    <Compile Include="Context\Migrations\201510241559278_UserIdentity.Designer.cs">
+    <Compile Update="Context\Migrations\201510241559278_UserIdentity.Designer.cs">
       <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201510311319565_AddRolesSupport.cs" />
-    <Compile Include="Context\Migrations\201510311319565_AddRolesSupport.Designer.cs">
+    <Compile Update="Context\Migrations\201510311319565_AddRolesSupport.Designer.cs">
       <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.cs" />
-    <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.Designer.cs">
+    <Compile Update="Context\Migrations\201511081957142_OptionalTransferPeriod.Designer.cs">
       <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511301922059_AddDivisions.cs" />
-    <Compile Include="Context\Migrations\201511301922059_AddDivisions.Designer.cs">
+    <Compile Update="Context\Migrations\201511301922059_AddDivisions.Designer.cs">
       <DependentUpon>201511301922059_AddDivisions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511301927551_AddGroups.cs" />
-    <Compile Include="Context\Migrations\201511301927551_AddGroups.Designer.cs">
+    <Compile Update="Context\Migrations\201511301927551_AddGroups.Designer.cs">
       <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201512171559020_AddGameResults.cs" />
-    <Compile Include="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
+    <Compile Update="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.cs" />
-    <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.Designer.cs">
+    <Compile Update="Context\Migrations\201604021015192_TeamTournamentRelation.Designer.cs">
       <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201604061543141_ModifyGameResult.cs" />
-    <Compile Include="Context\Migrations\201604061543141_ModifyGameResult.Designer.cs">
+    <Compile Update="Context\Migrations\201604061543141_ModifyGameResult.Designer.cs">
       <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.cs" />
-    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.Designer.cs">
+    <Compile Update="Context\Migrations\201604140531421_NullableAwayTeam.Designer.cs">
       <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.cs" />
-    <Compile Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.Designer.cs">
+    <Compile Update="Context\Migrations\201604271211049_AddRolesToOperationsMap.Designer.cs">
       <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201605070838352_NullableHomeTeam.cs" />
-    <Compile Include="Context\Migrations\201605070838352_NullableHomeTeam.Designer.cs">
+    <Compile Update="Context\Migrations\201605070838352_NullableHomeTeam.Designer.cs">
       <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.cs" />
-    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.Designer.cs">
+    <Compile Update="Context\Migrations\201605071138277_GameNumberInGameResult.Designer.cs">
       <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.cs" />
-    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.Designer.cs">
+    <Compile Update="Context\Migrations\201605141828548_HomeTeamOptional.Designer.cs">
       <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.cs" />
-    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.Designer.cs">
+    <Compile Update="Context\Migrations\201605150733454_GameStartTimeNullable.Designer.cs">
       <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.cs" />
-    <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.Designer.cs">
+    <Compile Update="Context\Migrations\201605161743580_LastTimeUpdate.Designer.cs">
       <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201610141515542_MergedMigration.cs" />
-    <Compile Include="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
+    <Compile Update="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.cs" />
-    <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.Designer.cs">
+    <Compile Update="Context\Migrations\201610171943183_AddFeedbacks.Designer.cs">
       <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.cs" />
-    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
+    <Compile Update="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
       <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.cs" />
-    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
+    <Compile Update="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
       <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.cs" />
-    <Compile Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.Designer.cs">
+    <Compile Update="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.Designer.cs">
       <DependentUpon>201611192118036_AddedUserEnvironmentToFeedback.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611212206547_AddRequestsTable.cs" />
-    <Compile Include="Context\Migrations\201611212206547_AddRequestsTable.Designer.cs">
+    <Compile Update="Context\Migrations\201611212206547_AddRequestsTable.Designer.cs">
       <DependentUpon>201611212206547_AddRequestsTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611222024248_BlockUser.cs" />
-    <Compile Include="Context\Migrations\201611222024248_BlockUser.Designer.cs">
+    <Compile Update="Context\Migrations\201611222024248_BlockUser.Designer.cs">
       <DependentUpon>201611222024248_BlockUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611232119533_AddTournamentRequestTable.cs" />
-    <Compile Include="Context\Migrations\201611232119533_AddTournamentRequestTable.Designer.cs">
+    <Compile Update="Context\Migrations\201611232119533_AddTournamentRequestTable.Designer.cs">
       <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201707111817526_AddTeamGroupRelations.cs" />
-    <Compile Include="Context\Migrations\201707111817526_AddTeamGroupRelations.Designer.cs">
+    <Compile Update="Context\Migrations\201707111817526_AddTeamGroupRelations.Designer.cs">
       <DependentUpon>201707111817526_AddTeamGroupRelations.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201707140851580_ChangeTournamentRequest.cs" />
-    <Compile Include="Context\Migrations\201707140851580_ChangeTournamentRequest.Designer.cs">
+    <Compile Update="Context\Migrations\201707140851580_ChangeTournamentRequest.Designer.cs">
       <DependentUpon>201707140851580_ChangeTournamentRequest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201708091004233_AddIsArchivedFlag.cs" />
-    <Compile Include="Context\Migrations\201708091004233_AddIsArchivedFlag.Designer.cs">
+    <Compile Update="Context\Migrations\201708091004233_AddIsArchivedFlag.Designer.cs">
       <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.cs" />
-    <Compile Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.Designer.cs">
+    <Compile Update="Context\Migrations\201710160802100_TechnicalDefeatForSet.Designer.cs">
       <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201711042048383_GamePenalty.cs" />
-    <Compile Include="Context\Migrations\201711042048383_GamePenalty.Designer.cs">
+    <Compile Update="Context\Migrations\201711042048383_GamePenalty.Designer.cs">
       <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.cs" />
-    <Compile Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.Designer.cs">
+    <Compile Update="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.Designer.cs">
       <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.cs" />
-    <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.Designer.cs">
+    <Compile Update="Context\Migrations\201804080807417_AddTournamentLocation.Designer.cs">
       <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
-    <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
-    <Compile Include="Context\VolleyDatabaseMetadata.cs" />
-    <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
-    <Compile Include="Context\VolleyManagementDbContextFactory.cs" />
-    <Compile Include="Entities\FeedbackEntity.cs" />
-    <Compile Include="Entities\GameResultEntity.cs" />
-    <Compile Include="Entities\GroupEntity.cs" />
-    <Compile Include="Entities\DivisionEntity.cs" />
-    <Compile Include="Entities\LoginInfoEntity.cs" />
-    <Compile Include="Entities\RequestEntity.cs" />
-    <Compile Include="Entities\RoleEntity.cs" />
-    <Compile Include="Entities\RoleToOperationEntity.cs" />
-    <Compile Include="Entities\TournamentRequestEntity.cs" />
-    <Compile Include="Entities\ValidationConstants.cs" />
-    <Compile Include="Entities\ContributorEntity.cs" />
-    <Compile Include="Infrastructure\IocDataAccessModule.cs" />
-    <Compile Include="Mappers\DomainToDal.cs" />
-    <Compile Include="Entities\PlayerEntity.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\AuthorizationQueries.cs" />
-    <Compile Include="Queries\DivisionQueries.cs" />
-    <Compile Include="Queries\FeedbackQueries.cs" />
-    <Compile Include="Queries\GameResultQueries.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Queries\PlayerQueries.cs" />
-    <Compile Include="Queries\RequestQueries.cs" />
-    <Compile Include="Queries\RolesQueries.cs" />
-    <Compile Include="Queries\TeamQueries.cs" />
-    <Compile Include="Queries\TournamentQueries.cs" />
-    <Compile Include="Queries\TournamentRequestQueries.cs" />
-    <Compile Include="Queries\UserQueries.cs" />
-    <Compile Include="Repositories\ContributorTeamRepository.cs" />
-    <Compile Include="Repositories\FeedbackRepository.cs" />
-    <Compile Include="Repositories\GameRepository.cs" />
-    <Compile Include="Repositories\PlayerRepository.cs" />
-    <Compile Include="Repositories\RequestRepository.cs" />
-    <Compile Include="Repositories\RoleRepostitory.cs" />
-    <Compile Include="Repositories\Specifications\FeedbackStorageSpecification.cs" />
-    <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
-    <Compile Include="Repositories\Specifications\TeamStorageSpecification.cs" />
-    <Compile Include="Repositories\Specifications\TournamentsStorageSpecification.cs" />
-    <Compile Include="Repositories\TeamRepository.cs" />
-    <Compile Include="Repositories\TournamentRepository.cs" />
-    <Compile Include="Repositories\TournamentRequestRepository.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="VolleyUnitOfWork.cs" />
-    <Compile Include="Entities\ContributorTeamEntity.cs" />
-    <Compile Include="Entities\TeamEntity.cs" />
-    <Compile Include="Entities\TournamentEntity.cs" />
-    <Compile Include="Entities\UserEntity.cs" />
-    <Compile Include="Context\VolleyManagementEntities.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
-      <Project>{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}</Project>
-      <Name>VolleyManagement.Crosscutting.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj">
-      <Project>{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}</Project>
-      <Name>VolleyManagement.Crosscutting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj">
-      <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
-      <Name>VolleyManagement.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
-      <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
-      <Name>VolleyManagement.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="VolleyManagement.Data.MsSql.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Sql\CreateDatabase.sql" />
     <Content Include="Sql\InsertValues.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Context\Migrations\201510171413220_InitialCreate.resx">
-      <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201510171919218_DropExtraIndexes.resx">
-      <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201510241559278_UserIdentity.resx">
-      <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201510311319565_AddRolesSupport.resx">
-      <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511081957142_OptionalTransferPeriod.resx">
-      <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511301922059_AddDivisions.resx">
-      <DependentUpon>201511301922059_AddDivisions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511301927551_AddGroups.resx">
-      <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201512171559020_AddGameResults.resx">
-      <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201604021015192_TeamTournamentRelation.resx">
-      <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201604061543141_ModifyGameResult.resx">
-      <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201604140531421_NullableAwayTeam.resx">
-      <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.resx">
-      <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201605070838352_NullableHomeTeam.resx">
-      <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201605071138277_GameNumberInGameResult.resx">
-      <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201605141828548_HomeTeamOptional.resx">
-      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201605150733454_GameStartTimeNullable.resx">
-      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201605161743580_LastTimeUpdate.resx">
-      <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201610141515542_MergedMigration.resx">
-      <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201610171943183_AddFeedbacks.resx">
-      <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
-      <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
-      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.resx">
-      <DependentUpon>201611192118036_AddedUserEnvironmentToFeedback.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611212206547_AddRequestsTable.resx">
-      <DependentUpon>201611212206547_AddRequestsTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611222024248_BlockUser.resx">
-      <DependentUpon>201611222024248_BlockUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611232119533_AddTournamentRequestTable.resx">
-      <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201707111817526_AddTeamGroupRelations.resx">
-      <DependentUpon>201707111817526_AddTeamGroupRelations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201707140851580_ChangeTournamentRequest.resx">
-      <DependentUpon>201707140851580_ChangeTournamentRequest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201708091004233_AddIsArchivedFlag.resx">
-      <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.resx">
-      <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201711042048383_GamePenalty.resx">
-      <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.resx">
-      <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201804080807417_AddTournamentLocation.resx">
-      <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

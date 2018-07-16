@@ -106,7 +106,7 @@ Task("Build")
 
 Task("UnitTests")
     .Does(() => {
-        var testsPath = utsDir.Path.FullPath + "/*.UnitTests.dll";
+        var testsPath = utsDir.Path.FullPath + "/*/*.UnitTests.dll";
 
         var xUnitSettings = new XUnit2Settings {
             WorkingDirectory = testsDir,

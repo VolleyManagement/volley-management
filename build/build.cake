@@ -53,6 +53,12 @@ var canRunSonar = sonarToken != null //Has Sonar token
 var canRunIntegrationTests = localDev || isCiForMasterOrPr;
 SonarEndSettings sonarEndSettings;
 
+Information($"Sonar token exists: {sonarToken != null}");
+Information($"BuildSystem.IsRunningOnAppVeyor : {BuildSystem.IsRunningOnAppVeyor}");
+Information($"AppVeyor.Environment.Repository.Branch: {AppVeyor.Environment.Repository.Branch}");
+Information($"AppVeyor.Environment.PullRequest.IsPullRequest: {AppVeyor.Environment.PullRequest.IsPullRequest}");
+Information($"canRunSonar: {canRunSonar}");
+
 var suffix = BuildSystem.IsRunningOnAppVeyor ? $"_AppVeyor_{AppVeyor.Environment.JobId}" : string.Empty;
 
 utResults = utsDir + File($"UT_Results{suffix}.xml");
@@ -194,7 +200,8 @@ Task("SonarBegin")
             settings.Version = AppVeyor.Environment.Build.Version;
             settings.ArgumentCustomization =
                 args => args.Append($"/d:\"sonar.pullrequest.key={AppVeyor.Environment.PullRequest.Number}\"")
-                .Append($"/d:\"sonar.pullrequest.branch={AppVeyor.Environment.PullRequest.Title}\"");
+                .Append($"/d:\"sonar.pullrequest.branch={AppVeyor.Environment.PullRequest.Title}\"")
+                .Append($"/d:\"sonar.pullrequest.base={AppVeyor.Environment.Repository.Branch}\"");
         }
 
         sonarEndSettings = settings.GetEndSettings();

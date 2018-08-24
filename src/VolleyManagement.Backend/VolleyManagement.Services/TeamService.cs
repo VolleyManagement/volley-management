@@ -17,12 +17,7 @@
     using Domain.TeamsAggregate;
     using TournamentResources = Domain.Properties.Resources;
 
-#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
-    /// <summary>
-    /// Defines TeamService
-    /// </summary>
     public class TeamService : ITeamService
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         private readonly ITeamRepository _teamRepository;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;

@@ -18,7 +18,7 @@
     using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
-    /// Defines TeamService
+    /// Defines Team Service
     /// </summary>
     public class TeamService : ITeamService
     {

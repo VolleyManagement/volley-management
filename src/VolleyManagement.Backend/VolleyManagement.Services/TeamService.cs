@@ -17,9 +17,6 @@
     using Domain.TeamsAggregate;
     using TournamentResources = Domain.Properties.Resources;
 
-    /// <summary>
-    /// Defines Team Service
-    /// </summary>
     public class TeamService : ITeamService
     {
         private readonly ITeamRepository _teamRepository;

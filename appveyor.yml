@@ -1,9 +1,3 @@
-# Notes:
-#   - Minimal appveyor.yml file is an empty file. All sections are optional.
-#   - Indent each level of configuration with 2 spaces. Do not use tabs!
-#   - All section names are case-sensitive.
-#   - Section names should be unique on each level.
-
 #---------------------------------#
 #      general configuration      #
 #---------------------------------#
@@ -32,9 +26,7 @@ image: Visual Studio 2017
 # environment variables
 environment:
   SONAR_TOKEN:
-    secure: +v6PmDXb6BsEnMx0hJSdUWbBL7Y/VipzkMUgQa1DgmRbl6XVAR0+RgUc7M7Q9G77
-  GITHUB_SONAR_PR_TOKEN:
-    secure: Yw7T+6L/sj76jLwFSis3fGNkotT3iI99pJhoKdr8ocvW5xdIk/WfjSQb5PoAtryH
+    secure: Al/QvEu97dsdwBLxeWeYnHPw4XjgBmkVmLLLw5X+qAMAAkoMVz5aRIBow4iQKsur
 
 cache:
   - packages -> **\packages.config
@@ -72,7 +64,7 @@ notifications:
 # Regular Slack notification
 - provider: Slack
   incoming_webhook: 
-    secure: luby6/6oxEkccvelC2OAWgSoJBO+gLqYVKLwylU1KMYz8Plwycoshmlv2pQJkFZCm4EckYt7AAfL8k7vR70BhM9b26TnBqeuNpmMlF3KZAc=
+    secure: jtHxp04P8ZgVc9mY2zXKJs/yDfE72wGJrqJxpovpjaoabGHAA5FWpsyQFOMn3eauhMX03M71DtukIEXKP7NUKpsmdXROh85iXtkk+8lWX+4=
   on_build_success: false
   on_build_failure: true
   on_build_status_changed: true

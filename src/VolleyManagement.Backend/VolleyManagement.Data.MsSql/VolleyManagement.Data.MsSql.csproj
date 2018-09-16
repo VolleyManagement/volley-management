@@ -77,8 +77,106 @@
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Context\Migrations\201510171413220_InitialCreate.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201510171919218_DropExtraIndexes.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201510241559278_UserIdentity.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201510311319565_AddRolesSupport.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201511081957142_OptionalTransferPeriod.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201511301922059_AddDivisions.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201511301927551_AddGroups.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201512171559020_AddGameResults.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201604021015192_TeamTournamentRelation.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201604061543141_ModifyGameResult.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201604140531421_NullableAwayTeam.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201605070838352_NullableHomeTeam.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201605071138277_GameNumberInGameResult.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201605141828548_HomeTeamOptional.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>  
+    <Content Include="Context\Migrations\201605150733454_GameStartTimeNullable.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201605161743580_LastTimeUpdate.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201610141515542_MergedMigration.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201610171943183_AddFeedbacks.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201611212206547_AddRequestsTable.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201611222024248_BlockUser.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201611232119533_AddTournamentRequestTable.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201707111817526_AddTeamGroupRelations.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201707140851580_ChangeTournamentRequest.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201708091004233_AddIsArchivedFlag.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201711042048383_GamePenalty.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Context\Migrations\201804080807417_AddTournamentLocation.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="Context\Migrations\201510171413220_InitialCreate.Designer.cs">
-      <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>
+      <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>      
     </Compile>
     <Compile Update="Context\Migrations\201510171919218_DropExtraIndexes.Designer.cs">
       <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
@@ -182,6 +280,6 @@
     <None Include="VolleyManagement.Data.MsSql.ruleset" />
     <Content Include="Sql\CreateDatabase.sql" />
     <Content Include="Sql\InsertValues.sql" />
-    <EmbeddedResource Include=".\**\*.resx" Exclude=".\bin\**\*.json;.\obj\**\*.json" />
+
   </ItemGroup>
 </Project>

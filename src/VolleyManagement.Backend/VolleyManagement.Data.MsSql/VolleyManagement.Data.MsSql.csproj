@@ -25,5 +25,234 @@
     <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj" />
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context\Migrations\201510171413220_InitialCreate.cs" />
+    <Compile Include="Context\Migrations\201510171413220_InitialCreate.Designer.cs">
+      <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201510171919218_DropExtraIndexes.cs" />
+    <Compile Include="Context\Migrations\201510171919218_DropExtraIndexes.Designer.cs">
+      <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201510241559278_UserIdentity.cs" />
+    <Compile Include="Context\Migrations\201510241559278_UserIdentity.Designer.cs">
+      <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201510311319565_AddRolesSupport.cs" />
+    <Compile Include="Context\Migrations\201510311319565_AddRolesSupport.Designer.cs">
+      <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.cs" />
+    <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.Designer.cs">
+      <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201511301922059_AddDivisions.cs" />
+    <Compile Include="Context\Migrations\201511301922059_AddDivisions.Designer.cs">
+      <DependentUpon>201511301922059_AddDivisions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201511301927551_AddGroups.cs" />
+    <Compile Include="Context\Migrations\201511301927551_AddGroups.Designer.cs">
+      <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201512171559020_AddGameResults.cs" />
+    <Compile Include="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
+      <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.cs" />
+    <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.Designer.cs">
+      <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201604061543141_ModifyGameResult.cs" />
+    <Compile Include="Context\Migrations\201604061543141_ModifyGameResult.Designer.cs">
+      <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.cs" />
+    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.Designer.cs">
+      <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.cs" />
+    <Compile Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.Designer.cs">
+      <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605070838352_NullableHomeTeam.cs" />
+    <Compile Include="Context\Migrations\201605070838352_NullableHomeTeam.Designer.cs">
+      <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.cs" />
+    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.Designer.cs">
+      <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.cs" />
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.Designer.cs">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.cs" />
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.Designer.cs">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.cs" />
+    <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.Designer.cs">
+      <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201610141515542_MergedMigration.cs" />
+    <Compile Include="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
+      <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.cs" />
+    <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.Designer.cs">
+      <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.cs" />
+    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
+      <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.cs" />
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.cs" />
+    <Compile Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.Designer.cs">
+      <DependentUpon>201611192118036_AddedUserEnvironmentToFeedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201611212206547_AddRequestsTable.cs" />
+    <Compile Include="Context\Migrations\201611212206547_AddRequestsTable.Designer.cs">
+      <DependentUpon>201611212206547_AddRequestsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201611222024248_BlockUser.cs" />
+    <Compile Include="Context\Migrations\201611222024248_BlockUser.Designer.cs">
+      <DependentUpon>201611222024248_BlockUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201611232119533_AddTournamentRequestTable.cs" />
+    <Compile Include="Context\Migrations\201611232119533_AddTournamentRequestTable.Designer.cs">
+      <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201707111817526_AddTeamGroupRelations.cs" />
+    <Compile Include="Context\Migrations\201707111817526_AddTeamGroupRelations.Designer.cs">
+      <DependentUpon>201707111817526_AddTeamGroupRelations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201707140851580_ChangeTournamentRequest.cs" />
+    <Compile Include="Context\Migrations\201707140851580_ChangeTournamentRequest.Designer.cs">
+      <DependentUpon>201707140851580_ChangeTournamentRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201708091004233_AddIsArchivedFlag.cs" />
+    <Compile Include="Context\Migrations\201708091004233_AddIsArchivedFlag.Designer.cs">
+      <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.cs" />
+    <Compile Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.Designer.cs">
+      <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201711042048383_GamePenalty.cs" />
+    <Compile Include="Context\Migrations\201711042048383_GamePenalty.Designer.cs">
+      <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.cs" />
+    <Compile Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.Designer.cs">
+      <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.cs" />
+    <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.Designer.cs">
+      <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
+    </Compile>
 
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Context\Migrations\201510171413220_InitialCreate.resx">
+      <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201510171919218_DropExtraIndexes.resx">
+      <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201510241559278_UserIdentity.resx">
+      <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201510311319565_AddRolesSupport.resx">
+      <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201511081957142_OptionalTransferPeriod.resx">
+      <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201511301922059_AddDivisions.resx">
+      <DependentUpon>201511301922059_AddDivisions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201511301927551_AddGroups.resx">
+      <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201512171559020_AddGameResults.resx">
+      <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604021015192_TeamTournamentRelation.resx">
+      <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604061543141_ModifyGameResult.resx">
+      <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604140531421_NullableAwayTeam.resx">
+      <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.resx">
+      <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605070838352_NullableHomeTeam.resx">
+      <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605071138277_GameNumberInGameResult.resx">
+      <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605141828548_HomeTeamOptional.resx">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605150733454_GameStartTimeNullable.resx">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605161743580_LastTimeUpdate.resx">
+      <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201610141515542_MergedMigration.resx">
+      <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201610171943183_AddFeedbacks.resx">
+      <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
+      <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.resx">
+      <DependentUpon>201611192118036_AddedUserEnvironmentToFeedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611212206547_AddRequestsTable.resx">
+      <DependentUpon>201611212206547_AddRequestsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611222024248_BlockUser.resx">
+      <DependentUpon>201611222024248_BlockUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611232119533_AddTournamentRequestTable.resx">
+      <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201707111817526_AddTeamGroupRelations.resx">
+      <DependentUpon>201707111817526_AddTeamGroupRelations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201707140851580_ChangeTournamentRequest.resx">
+      <DependentUpon>201707140851580_ChangeTournamentRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201708091004233_AddIsArchivedFlag.resx">
+      <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.resx">
+      <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201711042048383_GamePenalty.resx">
+      <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201712291116409_AddUrlToGameVideo_Property.resx">
+      <DependentUpon>201712291116409_AddUrlToGameVideo_Property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201804080807417_AddTournamentLocation.resx">
+      <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+  </ItemGroup>
 </Project>

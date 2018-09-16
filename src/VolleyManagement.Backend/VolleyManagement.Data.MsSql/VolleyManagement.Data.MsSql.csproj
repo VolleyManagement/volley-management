@@ -12,6 +12,7 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
 
   <ItemGroup>
@@ -154,6 +155,58 @@
     <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.Designer.cs">
       <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
+    <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
+    <Compile Include="Context\VolleyDatabaseMetadata.cs" />
+    <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
+    <Compile Include="Context\VolleyManagementDbContextFactory.cs" />
+    <Compile Include="Context\VolleyManagementEntities.cs" />
+    <Compile Include="Entities\ContributorEntity.cs" />
+    <Compile Include="Entities\ContributorTeamEntity.cs" />
+    <Compile Include="Entities\DivisionEntity.cs" />
+    <Compile Include="Entities\FeedbackEntity.cs" />
+    <Compile Include="Entities\GameResultEntity.cs" />
+    <Compile Include="Entities\GroupEntity.cs" />
+    <Compile Include="Entities\LoginInfoEntity.cs" />
+    <Compile Include="Entities\PlayerEntity.cs" />
+    <Compile Include="Entities\RequestEntity.cs" />
+    <Compile Include="Entities\RoleEntity.cs" />
+    <Compile Include="Entities\RoleToOperationEntity.cs" />
+    <Compile Include="Entities\TeamEntity.cs" />
+    <Compile Include="Entities\TournamentEntity.cs" />
+    <Compile Include="Entities\TournamentRequestEntity.cs" />
+    <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Entities\ValidationConstants.cs" />
+    <Compile Include="Infrastructure\IOCDataAccessModule.cs" />
+    <Compile Include="Mappers\DomainToDal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Queries\AuthorizationQueries.cs" />
+    <Compile Include="Queries\DivisionQueries.cs" />
+    <Compile Include="Queries\FeedbackQueries.cs" />
+    <Compile Include="Queries\GameResultQueries.cs" />
+    <Compile Include="Queries\PlayerQueries.cs" />
+    <Compile Include="Queries\RequestQueries.cs" />
+    <Compile Include="Queries\RolesQueries.cs" />
+    <Compile Include="Queries\TeamQueries.cs" />
+    <Compile Include="Queries\TournamentQueries.cs" />
+    <Compile Include="Queries\TournamentRequestQueries.cs" />
+    <Compile Include="Queries\UserQueries.cs" />
+    <Compile Include="Repositories\ContributorTeamRepository.cs" />
+    <Compile Include="Repositories\FeedbackRepository.cs" />
+    <Compile Include="Repositories\GameRepository.cs" />
+    <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Repositories\RequestRepository.cs" />
+    <Compile Include="Repositories\RoleRepostitory.cs" />
+    <Compile Include="Repositories\Specifications\FeedbackStorageSpecification.cs" />
+    <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
+    <Compile Include="Repositories\Specifications\TeamStorageSpecification.cs" />
+    <Compile Include="Repositories\Specifications\TournamentsStorageSpecification.cs" />
+    <Compile Include="Repositories\TeamRepository.cs" />
+    <Compile Include="Repositories\TournamentRepository.cs" />
+    <Compile Include="Repositories\TournamentRequestRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="VolleyUnitOfWork.cs" />
 
   </ItemGroup>
   <ItemGroup>

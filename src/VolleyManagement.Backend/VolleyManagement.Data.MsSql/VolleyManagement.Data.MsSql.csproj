@@ -182,5 +182,6 @@
     <None Include="VolleyManagement.Data.MsSql.ruleset" />
     <Content Include="Sql\CreateDatabase.sql" />
     <Content Include="Sql\InsertValues.sql" />
+    <EmbeddedResource Include=".\**\*.resx" Exclude=".\bin\**\*.json;.\obj\**\*.json" />
   </ItemGroup>
 </Project>

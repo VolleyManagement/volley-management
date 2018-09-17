@@ -1,81 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VolleyManagement.Data.MsSql</RootNamespace>
-    <AssemblyName>VolleyManagement.Data.MsSql</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>net47</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <Prefer32Bit>false</Prefer32Bit>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>VolleyManagement.Data.MsSql.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>VolleyManagement.Data.MsSql.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FeatureToggle, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FeatureToggle.3.5.1\lib\net40\FeatureToggle.dll</HintPath>
-    </Reference>
-    <Reference Include="FeatureToggle.Core, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FeatureToggle.Core.3.5.1\lib\portable-net40+sl50+wp81+wpa+win\FeatureToggle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.4.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj" />
+    <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\Migrations\201510171413220_InitialCreate.cs" />
@@ -211,30 +160,31 @@
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
     <Compile Include="Context\VolleyManagementDbContextFactory.cs" />
+    <Compile Include="Context\VolleyManagementEntities.cs" />
+    <Compile Include="Entities\ContributorEntity.cs" />
+    <Compile Include="Entities\ContributorTeamEntity.cs" />
+    <Compile Include="Entities\DivisionEntity.cs" />
     <Compile Include="Entities\FeedbackEntity.cs" />
     <Compile Include="Entities\GameResultEntity.cs" />
     <Compile Include="Entities\GroupEntity.cs" />
-    <Compile Include="Entities\DivisionEntity.cs" />
     <Compile Include="Entities\LoginInfoEntity.cs" />
+    <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Entities\RequestEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\RoleToOperationEntity.cs" />
+    <Compile Include="Entities\TeamEntity.cs" />
+    <Compile Include="Entities\TournamentEntity.cs" />
     <Compile Include="Entities\TournamentRequestEntity.cs" />
+    <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
-    <Compile Include="Entities\ContributorEntity.cs" />
-    <Compile Include="Infrastructure\IocDataAccessModule.cs" />
+    <Compile Include="Infrastructure\IOCDataAccessModule.cs" />
     <Compile Include="Mappers\DomainToDal.cs" />
-    <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Queries\AuthorizationQueries.cs" />
     <Compile Include="Queries\DivisionQueries.cs" />
     <Compile Include="Queries\FeedbackQueries.cs" />
     <Compile Include="Queries\GameResultQueries.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Queries\PlayerQueries.cs" />
     <Compile Include="Queries\RequestQueries.cs" />
     <Compile Include="Queries\RolesQueries.cs" />
@@ -257,38 +207,7 @@
     <Compile Include="Repositories\TournamentRequestRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="VolleyUnitOfWork.cs" />
-    <Compile Include="Entities\ContributorTeamEntity.cs" />
-    <Compile Include="Entities\TeamEntity.cs" />
-    <Compile Include="Entities\TournamentEntity.cs" />
-    <Compile Include="Entities\UserEntity.cs" />
-    <Compile Include="Context\VolleyManagementEntities.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
-      <Project>{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}</Project>
-      <Name>VolleyManagement.Crosscutting.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj">
-      <Project>{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}</Project>
-      <Name>VolleyManagement.Crosscutting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj">
-      <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
-      <Name>VolleyManagement.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
-      <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
-      <Name>VolleyManagement.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="VolleyManagement.Data.MsSql.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Sql\CreateDatabase.sql" />
-    <Content Include="Sql\InsertValues.sql" />
+
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Context\Migrations\201510171413220_InitialCreate.resx">
@@ -387,28 +306,6 @@
     <EmbeddedResource Include="Context\Migrations\201804080807417_AddTournamentLocation.resx">
       <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx" />
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\..\packages\SonarAnalyzer.CSharp.7.0.1.4822\analyzers\SonarAnalyzer.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

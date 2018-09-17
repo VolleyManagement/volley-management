@@ -750,7 +750,7 @@
       <Name>VolleyManagement.Crosscutting</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Data.MsSql\VolleyManagement.Data.MsSql.csproj">
-      <Project>{f82ff279-9d06-4494-bc61-1b7ac88a737d}</Project>
+      <Project>{3c6d9f6f-adef-4988-a602-dc563d073053}</Project>
       <Name>VolleyManagement.Data.MsSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">

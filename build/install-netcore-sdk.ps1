@@ -1,3 +1,7 @@
+Write-Host "Install .NET Core 3 SDK Preview 7"
+
+dir
+
 $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetsdk"
 $dotnetPath = "$env:DOTNET_INSTALL_DIR\dotnet.exe"
 $fileExists = Test-Path $dotnetPath

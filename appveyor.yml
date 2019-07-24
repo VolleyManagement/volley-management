@@ -30,12 +30,7 @@ cache:
 install:
   # Download .NET Core 3.0 Preview 7 SDK and add to PATH
   # We need it cause appveyor is on preview 1 right now
-- ps: >-
-    cd .\build
-
-    .\install-netcore-sdk.ps1
-
-    cd .\..
+- ps: .\build\install-netcore-sdk.ps1
 
 #---------------------------------#
 #       build configuration       #

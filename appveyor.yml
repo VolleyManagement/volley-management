@@ -35,6 +35,8 @@ install:
 
     .\install-netcore-sdk.ps1
 
+    cd .\..
+
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#

@@ -1,8 +1,11 @@
 Write-Host "Install .NET Core 3 SDK Preview 7"
 
-dir
+Get-ChildItem | Write-Host
 
 $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetsdk"
+
+Get-ChildItem $env:DOTNET_INSTALL_DIR | Write-Host
+
 $dotnetPath = "$env:DOTNET_INSTALL_DIR\dotnet.exe"
 $fileExists = Test-Path $dotnetPath
 Write-Host "Check SDK cache"

@@ -7,7 +7,7 @@ $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetsdk"
 
 $dotnetPath = "$env:DOTNET_INSTALL_DIR\dotnet.exe"
 $fileExists = Test-Path $dotnetPath
-Write-Host "Check SDK cache"
+Write-Host "Check SDK cache: $dotnetPath"
 
 If ($fileExists -eq $False) {
     Write-Host "No cache. Loading SDK."

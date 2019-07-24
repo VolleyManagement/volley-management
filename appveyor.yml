@@ -25,7 +25,7 @@ image: Visual Studio 2019 Preview
 
 cache:
   - packages -> **\packages.config
-  - C:\projects\volley-management\.dotnetsdk -> appveyor.yml
+  - .dotnetsdk -> appveyor.yml
 
 install:
   # Download .NET Core 3.0 Preview 7 SDK and add to PATH

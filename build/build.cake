@@ -24,7 +24,6 @@ Information($"AppVeyor.Environment.PullRequest.IsPullRequest: {AppVeyor.Environm
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
-// Are atomic and small. Next region is responsible for setting order
 //////////////////////////////////////////////////////////////////////
 
 Task("Clean")
@@ -33,6 +32,7 @@ Task("Clean")
     });
 
 Task("Build")
+    .IsDependentOn("Clean")
     .Does(() =>
 {
     var settings = new DotNetCoreBuildSettings
@@ -51,7 +51,6 @@ Task("Build")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Clean")
     .IsDependentOn("Build");
 
 

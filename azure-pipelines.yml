@@ -22,3 +22,4 @@ stages:
             inputs:
               filePath: './build/build.sh'
               arguments: '-t "Build"'
+              workingDirectory: './build'

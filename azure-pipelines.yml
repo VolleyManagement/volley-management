@@ -15,5 +15,5 @@ stages:
             displayName: 'Use .NET Core 3 SDK Preview 7'
             inputs:
               packageType: sdk
-              version: 2.2.2033.0.100-preview7-012821
+              version: 3.0.100-preview7-012821
               installationPath: $(Agent.ToolsDirectory)/dotnet

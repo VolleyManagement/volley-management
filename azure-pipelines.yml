@@ -19,6 +19,6 @@ stages:
               installationPath: $(Agent.ToolsDirectory)/dotnet
           - task: Cake@0
             inputs:
-              script: 'build/build.cake'
+              script: 'build/build.sh'
               target: 'Build'
               verbosity: 'Normal'

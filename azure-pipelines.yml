@@ -7,7 +7,7 @@ trigger:
 stages:
   - stage: 'Build'
     jobs:
-      - job: dotnet-build
+      - job: dotnet_build
         pool:
           vmImage: 'ubuntu-latest'
         steps:

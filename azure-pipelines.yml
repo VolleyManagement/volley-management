@@ -17,8 +17,4 @@ stages:
               packageType: sdk
               version: 3.0.100-preview7-012821
               installationPath: $(Agent.ToolsDirectory)/dotnet
-          - task: Cake@0
-            inputs:
-              script: 'build/build.sh'
-              target: 'Build'
-              verbosity: 'Normal'
+          - script: ./build/build.sh -t "Build"

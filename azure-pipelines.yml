@@ -17,4 +17,8 @@ stages:
               packageType: sdk
               version: 3.0.100-preview7-012821
               installationPath: $(Agent.ToolsDirectory)/dotnet
-          - script: ./build/build.sh -t "Build"
+          - task: Bash@3
+            displayName: 'dotnet build'
+            inputs:
+              filePath: './build/build.sh'
+              arguments: '-t "Build"'

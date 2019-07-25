@@ -1,19 +1,19 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
+name: 'VolleyManagement Pipeline'
 trigger:
 - master
+- Release
+- issue/*
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: 'Build'
+    jobs:
+      - job: dotnet-build
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: UseDotNet@2
+            displayName: 'Use .NET Core 3 SDK Preview 7'
+            inputs:
+              packageType: sdk
+              version: 2.2.2033.0.100-preview7-012821
+              installationPath: $(Agent.ToolsDirectory)/dotnet

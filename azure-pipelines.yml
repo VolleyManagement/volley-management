@@ -15,6 +15,10 @@ stages:
           - task: Docker@2
             inputs:
               containerRegistry: 'VM on Personal DockerHub'
+              command: 'login'
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'VM on Personal DockerHub'
               repository: 'volleymanagement'
               command: 'buildAndPush'
               Dockerfile: './src/VolleyManagement.API/Dockerfile'

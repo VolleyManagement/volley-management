@@ -27,3 +27,9 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 - [ ] Test is Isolated
 - [ ] Mock instances and expected instances do not share references
 - [ ] When new property is added all related comparers are updated
+
+### New Project Checklist
+
+- [ ] Dockerfile is present
+- [ ] Azure Pipelines updated
+- [ ] Development setup guide updated

@@ -1,4 +1,5 @@
 name: 'VolleyManagement Pipeline'
+
 trigger:
 - master
 - Release
@@ -7,19 +8,14 @@ trigger:
 stages:
   - stage: 'Build'
     jobs:
-      - job: dotnet_build
+      - job: container_build
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          - task: UseDotNet@2
-            displayName: 'Use .NET Core 3 SDK Preview 7'
+          - task: Docker@2
             inputs:
-              packageType: sdk
-              version: 3.0.100-preview7-012821
-              installationPath: $(Agent.ToolsDirectory)/dotnet
-          - task: Bash@3
-            displayName: 'dotnet build'
-            inputs:
-              filePath: './build/build.sh'
-              arguments: '-t "Build"'
-              workingDirectory: './build'
+              containerRegistry: 'VM on Personal DockerHub'
+              repository: 'volleymanagement'
+              command: 'buildAndPush'
+              Dockerfile: './src/VolleyManagement.API/Dockerfile'
+              buildContext: './src'

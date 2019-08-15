@@ -1,4 +1,12 @@
 {
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/VolleyManagement.API",
+      "sslPort": 0
+    }
+  },
   "profiles": {
     "VolleyManagement.API": {
       "commandName": "Project",
@@ -6,7 +14,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5001"
+      "applicationUrl": "http://localhost:5000;https://localhost:5001"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

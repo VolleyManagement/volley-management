@@ -48,7 +48,7 @@ stages:
   - stage: deploy_prod
     displayName: 'Deploy Production'
     dependsOn: build
-    condition: and(eq(variables['System.PullRequest.PullRequestId'], 0), eq(variables['Build.SourceBranchName'], 'master'))
+    condition: and(eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
     jobs:
       - job: deploy_app_service
         displayName: Deploy App Service

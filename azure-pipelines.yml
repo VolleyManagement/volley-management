@@ -15,7 +15,7 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          - script: ./build/az-pipe-get-pr-vars.sh
+          - bash: ./build/az-pipe-get-pr-vars.sh
             displayName: 'Set docker tag'
           - task: Docker@2
             displayName: Docker Build and Push
@@ -34,5 +34,5 @@ stages:
       - job: deploy_app_service
         displayName: Deploy App Service
         steps:
-          - script: ./build/az-pipe-get-pr-vars.sh
+          - bash: ./build/az-pipe-get-pr-vars.sh
             displayName: 'Set docker tag'

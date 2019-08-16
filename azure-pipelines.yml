@@ -9,9 +9,11 @@ trigger:
 - issue/*
 
 stages:
-  - stage: 'Build'
+  - stage: build
+    displayName: 'Build'
     jobs:
       - job: container_build
+        displayName: Build Container
         pool:
           vmImage: 'ubuntu-latest'
         steps:
@@ -40,7 +42,13 @@ stages:
               Dockerfile: './src/VolleyManagement.API/Dockerfile'
               buildContext: './src'
               tags: $(image_tag)
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(Pipeline.Workspace)'
-              artifact: 'vm-app-artifact'
+  
+  - stage: deploy_prod
+    displayName: 'Deploy Production'
+    dependsOn: build
+    condition: and(eq(variables['System.PullRequest.PullRequestId'], 0), eq(variables['Build.SourceBranchName']', 'master'))
+    jobs:
+      - job: deploy_app_service
+        displayName: Deploy App Service
+        steps:
+          - script: echo DEPLOYED

@@ -1,5 +1,8 @@
 name: 'VolleyManagement Pipeline'
 
+variables:
+  isPullRequest: ne(System.PullRequest.PullRequestNumber, null)
+
 trigger:
 - master
 - Release
@@ -12,6 +15,11 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
+          - script: |
+              echo $(Build.SourceBranch)
+              echo $(System.PullRequest.PullRequestNumber)
+              echo $(isPullRequest)
+            name: echovar
           - task: Docker@2
             displayName: Docker Build and Push
             inputs:

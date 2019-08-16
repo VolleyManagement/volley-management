@@ -5,7 +5,6 @@ variables:
 
 trigger:
 - master
-- Release
 
 stages:
   - stage: build
@@ -47,7 +46,7 @@ stages:
   - stage: deploy_prod
     displayName: 'Deploy Production'
     dependsOn: build
-    condition: and(eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
+    condition: and(succeeded(), eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
     jobs:
       - job: deploy_app_service
         displayName: Deploy App Service

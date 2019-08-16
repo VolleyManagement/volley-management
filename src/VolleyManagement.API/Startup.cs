@@ -25,7 +25,7 @@ namespace VolleyManagement.API
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Hello World! CD is working");
                 });
             });
         }

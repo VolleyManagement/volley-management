@@ -40,3 +40,7 @@ stages:
               Dockerfile: './src/VolleyManagement.API/Dockerfile'
               buildContext: './src'
               tags: $(image_tag)
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Pipeline.Workspace)'
+              artifact: 'vm-app-artifact'

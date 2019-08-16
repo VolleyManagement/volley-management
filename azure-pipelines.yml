@@ -38,7 +38,6 @@ stages:
               command: 'build'
               Dockerfile: './src/VolleyManagement.API/Dockerfile'
               buildContext: './src'
-              arguments: '--version=$(version)'
               addPipelineData: false
               tags: $(image_name)
           - task: Docker@2

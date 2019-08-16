@@ -2,7 +2,6 @@ name: Volley Management - 3.0$(Rev:.r)
 
 variables:
   docker_repository_name: sdiachen/volleymanagement
-  is_pull_request: false
 
 trigger:
 - master
@@ -33,29 +32,11 @@ stages:
               fi
             displayName: 'Check Pull Request variables'
           - task: Docker@2
-            displayName: Docker Build
+            displayName: Docker Build and Push
             inputs:
-              command: 'build'
+              containerRegistry: 'VM on Personal DockerHub'
+              repository: $(docker_repository_name)
+              command: 'buildAndPush'
               Dockerfile: './src/VolleyManagement.API/Dockerfile'
               buildContext: './src'
-              tags: |
-                $(image_tag)
-                latest
-              addPipelineData: false
-          - task: Docker@2
-            displayName: Docker Push Version
-            inputs:
-              containerRegistry: 'VM on Personal DockerHub'
-              repository: '$(docker_repository_name)'
-              command: 'push'
               tags: $(image_tag)
-              addPipelineData: false
-          - task: Docker@2
-            condition: eq('${{ variables['System.PullRequest.PullRequestId'] }}', 0)
-            displayName: Docker Push Latest
-            inputs:
-              containerRegistry: 'VM on Personal DockerHub'
-              repository: '$(docker_repository_name)'
-              command: 'push'
-              tags: latest
-              addPipelineData: false

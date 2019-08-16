@@ -1,7 +1,7 @@
 name: 'VolleyManagement Pipeline'
 
 variables:
-  isPullRequest: ne(System.PullRequest.PullRequestNumber, null)
+  isPullRequest: 'ne(System.PullRequest.PullRequestNumber, null)'
 
 trigger:
 - master

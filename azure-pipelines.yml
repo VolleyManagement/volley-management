@@ -27,7 +27,7 @@ stages:
                 version=0.$(System.PullRequest.PullRequestId).$(build.buildId)
                 echo "##vso[task.setvariable variable=version]$version"
                 echo "##vso[task.setvariable variable=imageName]$(docker_repository_name):$version-pr"
-                echo "##vso[task.setvariable variable=is_pull_request]true"
+                echo "##vso[task.setvariable variable=is_pull_request;isOutput=true]true"
               else
                 echo "Branch is not for master nor a pull request"
                 exit 1

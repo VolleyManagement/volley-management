@@ -30,7 +30,7 @@ stages:
                 echo "Branch is not for master nor a pull request"
                 exit 1
               fi
-              displayName: 'Set version and imageName variables'
+            displayName: 'Check Pull Request variables'
           - task: Docker@2
             displayName: Docker Build and Push
             inputs:

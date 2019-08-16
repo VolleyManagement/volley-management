@@ -18,6 +18,9 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
           - script: |
+              echo Source=$(Build.SourceBranchName)
+              echo PR ID=$(System.PullRequest.PullRequestId)
+              echo Build Num=$(Build.BuildNumber)
               if [ "$(Build.SourceBranchName)" == "master" ]; then
                 echo "Versioning for master build"
                 version=$(echo "$(Build.BuildNumber)" | cut -d "-" -f 2)

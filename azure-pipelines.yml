@@ -1,4 +1,7 @@
-name: Volley Management - $(Rev:.r)
+name: Volley Management - 3.0$(Rev:.r)
+
+variables:
+  docker_repository_name: sdiachen/volleymanagement
 
 trigger:
 - master
@@ -17,12 +20,12 @@ stages:
                 echo "Versioning for master build"
                 version=$(echo "$(Build.BuildNumber)" | cut -d "-" -f 2)
                 echo "##vso[task.setvariable variable=version]$version"
-                echo "##vso[task.setvariable variable=imageName]$(repositoryName):$version"
+                echo "##vso[task.setvariable variable=imageName]$(docker_repository_name):$version"
               elif [ -n "$(System.PullRequest.PullRequestId)" ]; then
                 echo "Versioning for PR build"
                 version=0.$(System.PullRequest.PullRequestId).$(build.buildId)
                 echo "##vso[task.setvariable variable=version]$version"
-                echo "##vso[task.setvariable variable=imageName]$(repositoryName):$version-pr"
+                echo "##vso[task.setvariable variable=imageName]$(docker_repository_name):$version-pr"
               else
                 echo "Branch is not for master nor a pull request"
                 exit 1
@@ -32,7 +35,7 @@ stages:
             displayName: Docker Build and Push
             inputs:
               containerRegistry: 'VM on Personal DockerHub'
-              repository: 'sdiachen/volleymanagement'
+              repository: $(docker_repository_name)
               command: 'buildAndPush'
               Dockerfile: './src/VolleyManagement.API/Dockerfile'
               buildContext: './src'

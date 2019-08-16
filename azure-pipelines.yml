@@ -1,4 +1,4 @@
-name: Volley Management - 3.0$(Rev:.r)
+name: Volley Management-3.0$(Rev:.r)
 
 variables:
   docker_repository_name: sdiachen/volleymanagement
@@ -6,7 +6,6 @@ variables:
 trigger:
 - master
 - Release
-- issue/*
 
 stages:
   - stage: build

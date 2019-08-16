@@ -34,7 +34,7 @@ stages:
               fi
             displayName: 'Check Pull Request variables'
           - script: echo "PR Condition TRUE"
-            condition: eq('${{ is_pull_request }}', 'true')
+            condition: eq('${{ variables['is_pull_request'] }}', 'true')
             displayName: 'Conditional Step'
           - task: Docker@2
             displayName: Docker Build and Push

@@ -6,6 +6,9 @@ variables:
 trigger:
 - master
 
+pr:
+- master
+
 stages:
   - stage: build
     displayName: 'Build'

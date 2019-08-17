@@ -15,8 +15,7 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          - script: bash ./build/az-pipe-get-pr-vars.sh
-            displayName: 'Set docker tag'
+          - template: build/azure-pipeline/set-docker-tag.yml
           - task: Docker@2
             displayName: Docker Build and Push
             inputs:
@@ -34,5 +33,4 @@ stages:
       - job: deploy_app_service
         displayName: Deploy App Service
         steps:
-          - bash: ./build/az-pipe-get-pr-vars.sh
-            displayName: 'Set docker tag'
+          - template: build/azure-pipeline/set-docker-tag.yml

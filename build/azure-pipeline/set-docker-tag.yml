@@ -1,0 +1,5 @@
+# checks if it is PR or master branch build
+# sets proper tag for docker image
+
+- script: bash ./build/azure-pipeline/az-pipe-get-pr-vars.sh
+  displayName: 'Set docker tag'

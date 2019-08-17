@@ -15,7 +15,11 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          - bash: ./build/az-pipe-get-pr-vars.sh
+          - script: |
+              cd build
+              chmod -x az-pipe-get-pr-vars.sh
+            displayName: 'Set script permissions'
+          - script: ./build/az-pipe-get-pr-vars.sh
             displayName: 'Set docker tag'
           - task: Docker@2
             displayName: Docker Build and Push

@@ -2,7 +2,7 @@
 # Runs as part of Azure Pipeline and sets correct version and docker tag
 # respects PR builds
 
-if [ "$(Build.SourceBranchName)" == "master" ]; then
+if [ "$BUILD_SOURCEBRANCHNAME" == "master" ]; then
   echo "Versioning for master build"
   version=$(echo "$BUILD_BUILDNUMBER" | cut -d "-" -f 2)
   echo "##vso[task.setvariable variable=version]$version"

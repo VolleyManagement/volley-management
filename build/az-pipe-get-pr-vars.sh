@@ -9,7 +9,7 @@ if [ "$(Build.SourceBranchName)" == "master" ]; then
   echo "##vso[task.setvariable variable=image_tag]$version"
 elif [ -n "$SYSTEM_PULLREQUEST_PULLREQUESTID" ]; then
   echo "Versioning for PR build"
-  version=0.$SYSTEM_PULLREQUEST_PULLREQUESTID.$BUILD_BUILDID)
+  version=0.$SYSTEM_PULLREQUEST_PULLREQUESTID.$BUILD_BUILDID
   echo "##vso[task.setvariable variable=version]$version"
   echo "##vso[task.setvariable variable=image_tag]$version-pr"
 else

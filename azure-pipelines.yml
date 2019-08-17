@@ -28,9 +28,15 @@ stages:
   - stage: deploy_prod
     displayName: 'Deploy Production'
     dependsOn: build
-    condition: and(succeeded(), eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
+    # condition: and(succeeded(), eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
     jobs:
       - job: deploy_app_service
         displayName: Deploy App Service
         steps:
           - template: build/azure-pipeline/set-docker-tag.yml
+          - task: AzureWebAppContainer@1
+            displayName: 'Deploy App Service'
+            inputs:
+              azureSubscription: 'Azure Main'
+              appName: 'volley-prod'
+              containers: '$(docker_repository_name):$(image_tag)'

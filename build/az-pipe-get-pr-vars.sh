@@ -4,12 +4,12 @@
 
 if [ "$(Build.SourceBranchName)" == "master" ]; then
   echo "Versioning for master build"
-  version=$(echo "$(Build.BuildNumber)" | cut -d "-" -f 2)
+  version=$(echo "$BUILD_BUILDNUMBER" | cut -d "-" -f 2)
   echo "##vso[task.setvariable variable=version]$version"
   echo "##vso[task.setvariable variable=image_tag]$version"
-elif [ -n "$(System.PullRequest.PullRequestId)" ]; then
+elif [ -n "$SYSTEM_PULLREQUEST_PULLREQUESTID" ]; then
   echo "Versioning for PR build"
-  version=0.$(System.PullRequest.PullRequestId).$(build.buildId)
+  version=0.$SYSTEM_PULLREQUEST_PULLREQUESTID.$BUILD_BUILDID)
   echo "##vso[task.setvariable variable=version]$version"
   echo "##vso[task.setvariable variable=image_tag]$version-pr"
 else

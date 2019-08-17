@@ -17,7 +17,9 @@ stages:
         steps:
           - script: |
               cd build
+              ls -l
               chmod -x az-pipe-get-pr-vars.sh
+              ls -l
             displayName: 'Set script permissions'
           - script: ./build/az-pipe-get-pr-vars.sh
             displayName: 'Set docker tag'

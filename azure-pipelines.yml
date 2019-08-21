@@ -1,4 +1,4 @@
-name: Volley Management - 3.0$(Rev:.r)
+name: Volley Management-3.0$(Rev:.r)
 
 variables:
   docker_repository_name: sdiachen/volleymanagement
@@ -8,8 +8,6 @@ trigger:
   branches:
     include:
     - master
-    - Release
-    - issue/*
   paths:
     exclude:
       - docs/*
@@ -20,7 +18,6 @@ pr:
   branches:
     include:
     - master
-    - Release
 
 stages:
   - stage: build
@@ -31,25 +28,7 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          - script: |
-              echo Source=$(Build.SourceBranchName)
-              echo PR ID=$(System.PullRequest.PullRequestId)
-              echo Build Num=$(Build.BuildNumber)
-              if [ "$(Build.SourceBranchName)" == "master" ]; then
-                echo "Versioning for master build"
-                version=$(echo "$(Build.BuildNumber)" | cut -d "-" -f 2)
-                echo "##vso[task.setvariable variable=version]$version"
-                echo "##vso[task.setvariable variable=image_tag]$version"
-              elif [ -n "$(System.PullRequest.PullRequestId)" ]; then
-                echo "Versioning for PR build"
-                version=0.$(System.PullRequest.PullRequestId).$(build.buildId)
-                echo "##vso[task.setvariable variable=version]$version"
-                echo "##vso[task.setvariable variable=image_tag]$version-pr"
-              else
-                echo "Branch is not for master nor a pull request"
-                exit 1
-              fi
-            displayName: 'Check Pull Request variables'
+          - template: build/azure-pipeline/set-docker-tag.yml
           - task: Docker@2
             displayName: Docker Build and Push
             inputs:
@@ -62,9 +41,15 @@ stages:
   - stage: deploy_prod
     displayName: 'Deploy Production'
     dependsOn: build
-    condition: and(eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
+    condition: and(succeeded(), eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
     jobs:
       - job: deploy_app_service
         displayName: Deploy App Service
         steps:
-          - script: echo DEPLOYED
+          - template: build/azure-pipeline/set-docker-tag.yml
+          - task: AzureWebAppContainer@1
+            displayName: 'Deploy App Service'
+            inputs:
+              azureSubscription: 'Azure Main'
+              appName: 'volley-prod'
+              containers: '$(docker_repository_name):$(image_tag)'

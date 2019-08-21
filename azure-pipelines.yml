@@ -4,9 +4,23 @@ variables:
   docker_repository_name: sdiachen/volleymanagement
 
 trigger:
-- master
-- Release
-- issue/*
+  batch: true
+  branches:
+    include:
+    - master
+    - Release
+    - issue/*
+  paths:
+    exclude:
+      - docs/*
+      - dev-env/*
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+    - master
+    - Release
 
 stages:
   - stage: build

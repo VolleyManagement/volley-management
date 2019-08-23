@@ -32,27 +32,22 @@ dotnet CLI is quite good at it as well but it requires a little bit more specifi
 
 ### Negative Consequences
 
-Not yet faced :)
+Local development for docker might be harder as you need to rebuild container. While VS team puts a lot of effort into it it is still slower than run it locally on .NET Core.
 
-## Pros and Cons of the Options <!-- optional -->
+We can do major development using local setup with .NET Core, but all CI steps automated using docker.
+
+## Pros and Cons of the Options
 
 ### dotnet CLI
-
-[example | description | pointer to more information | …] <!-- optional -->
 
 * ✔ Consistent environment
 * ✔ Automation capabilities
 * ✔+- Ease of deployment
 * ✔ Ease of development
 
-### [option 2]
+### Docker
 
-[example | description | pointer to more information | …] <!-- optional -->
-
-* ✔ [argument a]
-* ✔ [argument b]
-* ❌ [argument c]
-* Consistent environment
-* Automation capabilities
-* Ease of deployment
-* Ease of development
+* ✔ Consistent environment
+* ✔ Automation capabilities
+* ✔ Ease of deployment
+* ✔+- Ease of development

@@ -7,6 +7,7 @@ This log lists the architectural decisions for [project name].
 - [ADR-0000](0000-use-markdown-architectural-decision-records.md) - Use Markdown Architectural Decision Records
 - [ADR-0001](0001-use-auth0-as-authentication-provider.md) - Use Auth0 as authentication provider
 - [ADR-0002](0002-use-sendgrid-as-mailing-system.md) - Use SendGrid for sending emails
+- [ADR-0003](0003-use-angular-for-spa.md) - Use Angular Framework for VolleyManagement.SPA container
 
 <!-- adrlogstop -->
 

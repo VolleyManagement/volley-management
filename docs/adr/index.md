@@ -8,6 +8,7 @@ This log lists the architectural decisions for [project name].
 - [ADR-0001](0001-use-auth0-as-authentication-provider.md) - Use Auth0 as authentication provider
 - [ADR-0002](0002-use-sendgrid-as-mailing-system.md) - Use SendGrid for sending emails
 - [ADR-0003](0003-use-angular-for-spa.md) - Use Angular Framework for VolleyManagement.SPA container
+- [ADR-0004](0004-use-docker-for-hosting-application.md) - Use Docker for hosting application
 
 <!-- adrlogstop -->
 

@@ -36,7 +36,7 @@ Chosen option: Auth0, because it has free tier and integration will take 2-5 hou
 
   * Free tier has limit on number of authentications per minute
 
-## Pros and Cons of the Options 
+## Pros and Cons of the Options
 
 ### Write custom logic based on ASP.NET Identity and/or IdentityServer
 
@@ -57,7 +57,7 @@ Use ASP.NET identity to store user information and issue authentication tokens.
 
 ### Azure AD B2C
 
-Azure AD B2C is IDaaS solution intented to work with various identity providers
+Azure AD B2C is IDaaS solution intended to work with various identity providers
 
 * ✔ quick to integrate
 * ✔ Free tier

@@ -1,6 +1,6 @@
 # Use Angular Framework for VolleyManagement.SPA container
 
-* Status: ✔ approved
+* Status: ✔ accepted
 * Deciders: Sergii Diachenko
 * Date: 2019-08-23
 

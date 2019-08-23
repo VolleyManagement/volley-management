@@ -6,7 +6,6 @@
     /// <typeparam name="TParam">Query parameters</typeparam>
     /// <typeparam name="TResult">Query result</typeparam>
     public interface IQuery<in TParam, out TResult>
-        where TParam : notnull
     {
         TResult Execute(TParam param);
     }

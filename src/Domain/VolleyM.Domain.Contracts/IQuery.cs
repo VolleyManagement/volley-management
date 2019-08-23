@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VolleyM.Domain.Contracts
+﻿namespace VolleyM.Domain.Contracts
 {
     /// <summary>
     /// Represents Query object to be executed against persistence layer

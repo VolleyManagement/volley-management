@@ -51,3 +51,7 @@ We can do major development using local setup with .NET Core, but all CI steps a
 * ✔ Automation capabilities
 * ✔ Ease of deployment
 * ✔+- Ease of development
+
+## Links
+
+* Affects [ADR-0005](0005-use-azure-app-services-for-hosting.md)

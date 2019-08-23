@@ -10,6 +10,7 @@ This log lists the architectural decisions for [project name].
 - [ADR-0003](0003-use-angular-for-spa.md) - Use Angular Framework for VolleyManagement.SPA container
 - [ADR-0004](0004-use-docker-for-hosting-application.md) - Use Docker for hosting application
 - [ADR-0005](0005-use-azure-app-services-for-hosting.md) - Use Azure App Services for deploying VolleyManagement.API container
+- [ADR-0006](0006-use-azure-table-storage-for-persistence.md) - Use Azure Table Storage for persistence
 
 <!-- adrlogstop -->
 

@@ -31,3 +31,4 @@ Honestly this was chosen because I had experience running VolleyManagement V2 on
 ## Links
 
 * Depends on [ADR-0004](0004-use-docker-for-hosting-application.md)
+* Influences [ADR-0006](0006-use-azure-table-storage-for-persistence.md)

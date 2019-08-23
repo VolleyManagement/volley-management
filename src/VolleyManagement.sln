@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29111.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.API", "VolleyManagement.API\VolleyManagement.API.csproj", "{BF7C6167-E3C9-4993-9F09-189171C7B3E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyManagement.API", "VolleyManagement.API\VolleyManagement.API.csproj", "{BF7C6167-E3C9-4993-9F09-189171C7B3E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{DBC68672-2998-4C61-8C5F-5F6E300F3280}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Contributors.Contracts", "Domain\VolleyM.Domain.Contributors.Contracts\VolleyM.Domain.Contributors.Contracts.csproj", "{C5085F77-ED93-4E72-8611-97D334E610D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Domain.Contracts", "Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj", "{44BA04D7-4715-4A1F-ABB6-3670E9B83F4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,21 @@ Global
 		{BF7C6167-E3C9-4993-9F09-189171C7B3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF7C6167-E3C9-4993-9F09-189171C7B3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF7C6167-E3C9-4993-9F09-189171C7B3E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5085F77-ED93-4E72-8611-97D334E610D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5085F77-ED93-4E72-8611-97D334E610D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5085F77-ED93-4E72-8611-97D334E610D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5085F77-ED93-4E72-8611-97D334E610D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44BA04D7-4715-4A1F-ABB6-3670E9B83F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44BA04D7-4715-4A1F-ABB6-3670E9B83F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44BA04D7-4715-4A1F-ABB6-3670E9B83F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44BA04D7-4715-4A1F-ABB6-3670E9B83F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5085F77-ED93-4E72-8611-97D334E610D7} = {DBC68672-2998-4C61-8C5F-5F6E300F3280}
+		{44BA04D7-4715-4A1F-ABB6-3670E9B83F4F} = {DBC68672-2998-4C61-8C5F-5F6E300F3280}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4379AC9-D1D3-439C-971A-BA4BFFA373B5}

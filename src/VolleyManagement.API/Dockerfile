@@ -4,14 +4,12 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
-COPY ["VolleyManagement.API/VolleyManagement.API.csproj", "VolleyManagement.API/"]
-RUN dotnet restore "VolleyManagement.API/VolleyManagement.API.csproj"
 COPY . .
-WORKDIR "/src/VolleyManagement.API"
-RUN dotnet build "VolleyManagement.API.csproj" -c Release -o /app
+RUN dotnet build "VolleyManagement.sln" -c Release -o /artifacts
 
 FROM build AS publish
-RUN dotnet publish "VolleyManagement.API.csproj" -c Release -o /app
+RUN mkdir /app && cp /artifacts/VolleyM.Domain.* /app/
+RUN dotnet publish "VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

@@ -3,9 +3,11 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
-WORKDIR /src
-COPY . .
-RUN dotnet build "VolleyManagement.sln" -c Release -o /artifacts
+WORKDIR /build-dir
+COPY ./src ./src
+COPY ./tests ./tests
+RUN dotnet build "./src/VolleyManagement.sln" -c Release -o /artifacts
+RUN dotnet test "./src/VolleyManagement.sln" --logger "trx;LogFileName=vm-ut-result.trx"
 
 FROM build AS publish
 RUN mkdir /app \

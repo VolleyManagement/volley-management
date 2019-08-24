@@ -14,7 +14,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
-        private GetAllContributors.IQueryObject _queryMock;
+        private readonly GetAllContributors.IQueryObject _queryMock;
 
         private List<ContributorDto> _expectedResult;
         private List<ContributorDto> _actualResult;

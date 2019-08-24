@@ -1,4 +1,4 @@
-﻿namespace VolleyM.Domain.Contributors.GetAllContributors
+﻿namespace VolleyM.Domain.Contributors
 {
     public class ContributorDto
     {

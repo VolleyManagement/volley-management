@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MediatR;
 using NSubstitute;
+using System.Collections.Generic;
+using System.Threading;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contributors.GetAllContributors;
-using Xunit;
 using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
@@ -15,15 +13,15 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
     {
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
-        private IRequestHandler<GetAllContributorsRequest, List<ContributorDto>> _handler;
-        private IQuery<Null, List<ContributorDto>> _queryMock;
+        private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
+        private GetAllContributors.IQueryObject _queryMock;
 
         private List<ContributorDto> _expectedResult;
         private List<ContributorDto> _actualResult;
 
         public ContributorsSteps()
         {
-            _queryMock = Substitute.For<IQuery<Null, List<ContributorDto>>>();
+            _queryMock = Substitute.For<GetAllContributors.IQueryObject>();
         }
 
         [Given("several contributor exist")]
@@ -39,7 +37,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         {
             _handler = CreateHandler();
 
-            _actualResult = await _handler.Handle(new GetAllContributorsRequest(), _cts.Token);
+            _actualResult = await _handler.Handle(new GetAllContributors.Request(), _cts.Token);
         }
 
         [Then("I receive all existing contributors")]
@@ -48,8 +46,8 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
             _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available contributors");
         }
 
-        private GetAllContributorsQueryHandler CreateHandler() =>
-            new GetAllContributorsQueryHandler(_queryMock);
+        private GetAllContributors.Handler CreateHandler() =>
+            new GetAllContributors.Handler(_queryMock);
 
         private void MockQueryObject(List<ContributorDto> testData) =>
             _queryMock.Execute(Null.Value).Returns<List<ContributorDto>>(testData);

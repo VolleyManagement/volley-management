@@ -3,13 +3,14 @@ using MediatR;
 using NSubstitute;
 using System.Collections.Generic;
 using System.Threading;
-using TestStack.BDDfy;
 using VolleyM.Domain.Contracts;
 using Xunit;
+using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
 {
-    public class ContributorsSteps
+    [FeatureFile(@"./GetAll/Contributors.feature")]
+    public class ContributorsSteps : Feature
     {
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
@@ -24,30 +25,24 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
             _queryMock = Substitute.For<GetAllContributors.IQueryObject>();
         }
 
-        [Fact]
-        public void ExistingContributorsRetrieved()
-        {
-            this.Given(_ => GivenSeveralContributorsExist())
-                .When(_ => WhenIQueryAllContributors())
-                .Then(_ => ThenAllContributorsReceived())
-                .BDDfy("Query all contributors");
-        }
-
-        private void GivenSeveralContributorsExist()
+        [Given("several contributors exist")]
+        public void GivenSeveralContributorsExist()
         {
             _expectedResult = GetMockData();
 
             MockQueryObject(GetMockData());
         }
 
-        private async void WhenIQueryAllContributors()
+        [When("I query all contributors")]
+        public async void WhenIQueryAllContributors()
         {
             _handler = CreateHandler();
 
             _actualResult = await _handler.Handle(new GetAllContributors.Request(), _cts.Token);
         }
 
-        private void ThenAllContributorsReceived()
+        [Then("all contributors received")]
+        public void ThenAllContributorsReceived()
         {
             _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available contributors");
         }

@@ -33,21 +33,21 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
                 .BDDfy("Query all contributors");
         }
 
-        public void GivenSeveralContributorsExist()
+        private void GivenSeveralContributorsExist()
         {
             _expectedResult = GetMockData();
 
             MockQueryObject(GetMockData());
         }
 
-        public async void WhenIQueryAllContributors()
+        private async void WhenIQueryAllContributors()
         {
             _handler = CreateHandler();
 
             _actualResult = await _handler.Handle(new GetAllContributors.Request(), _cts.Token);
         }
 
-        public void ThenAllContributorsReceived()
+        private void ThenAllContributorsReceived()
         {
             _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available contributors");
         }

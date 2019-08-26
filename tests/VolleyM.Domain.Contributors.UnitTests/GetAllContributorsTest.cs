@@ -1,16 +1,15 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Threading;
+using FluentAssertions;
 using MediatR;
 using NSubstitute;
-using System.Collections.Generic;
-using System.Threading;
+using TestStack.BDDfy;
 using VolleyM.Domain.Contracts;
 using Xunit;
-using Xunit.Gherkin.Quick;
 
-namespace VolleyM.Domain.Contributors.UnitTests.GetAll
+namespace VolleyM.Domain.Contributors.UnitTests
 {
-    [FeatureFile(@"./GetAll/Contributors.feature")]
-    public class ContributorsSteps : Feature
+    public class GetAllContributorsTest
     {
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
@@ -20,29 +19,35 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         private List<ContributorDto> _expectedResult;
         private List<ContributorDto> _actualResult;
 
-        public ContributorsSteps()
+        public GetAllContributorsTest()
         {
             _queryMock = Substitute.For<GetAllContributors.IQueryObject>();
         }
 
-        [Given("several contributors exist")]
-        public void GivenSeveralContributorsExist()
+        [Fact]
+        public void ExistingContributorsRetrieved()
+        {
+            this.Given(_ => GivenSeveralContributorsExist())
+                .When(_ => WhenIQueryAllContributors())
+                .Then(_ => ThenAllContributorsReceived())
+                .BDDfy("Query all contributors");
+        }
+
+        private void GivenSeveralContributorsExist()
         {
             _expectedResult = GetMockData();
 
             MockQueryObject(GetMockData());
         }
 
-        [When("I query all contributors")]
-        public async void WhenIQueryAllContributors()
+        private async void WhenIQueryAllContributors()
         {
             _handler = CreateHandler();
 
             _actualResult = await _handler.Handle(new GetAllContributors.Request(), _cts.Token);
         }
 
-        [Then("all contributors received")]
-        public void ThenAllContributorsReceived()
+        private void ThenAllContributorsReceived()
         {
             _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available contributors");
         }

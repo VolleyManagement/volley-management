@@ -13,7 +13,7 @@ FROM build AS publish
 RUN mkdir /app \
     && cp /artifacts/VolleyM.Domain.* /app/ \
     && cp /artifacts/VolleyM.Infrastructure.Hardcoded.* /app/
-RUN dotnet publish "VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
+RUN dotnet publish "src/VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

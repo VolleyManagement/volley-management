@@ -23,6 +23,21 @@ stages:
   - stage: build
     displayName: 'Build'
     jobs:
+      - job: build_code
+        pool:
+          vmImage: 'ubuntu-latest'
+        displayName: Build Source Code
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'build'
+              projects: './src/VolleyManagement.sln'
+              arguments: '-c Release -o artifacts'
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'test'
+              projects: './src/VolleyManagement.sln'
+              arguments: '--logger "trx;LogFileName=artifacts/test-results/vm-ut-result.trx"'
       - job: container_build
         displayName: Build Container
         pool:

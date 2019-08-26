@@ -44,6 +44,13 @@ stages:
               Dockerfile: './Dockerfile'
               buildContext: '.'
               tags: $(image_tag)
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'VSTest'
+              testResultsFiles: 'vm-ut-result.trx'
+              searchFolder: '$(Build.ArtifactStagingDirectory)/test-results'
+              mergeTestResults: true
+              testRunTitle: 'Unit Tests' 
   - stage: deploy_prod
     displayName: 'Deploy Production'
     dependsOn: build

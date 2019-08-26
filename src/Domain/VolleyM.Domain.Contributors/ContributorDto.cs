@@ -1,4 +1,4 @@
-﻿namespace VolleyM.Domain.Contributors.Contracts
+﻿namespace VolleyM.Domain.Contributors
 {
     public class ContributorDto
     {

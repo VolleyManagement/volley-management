@@ -29,15 +29,28 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
           - template: build/azure-pipeline/set-docker-tag.yml
+          - script: |
+              docker build --target build -t $(docker_repository_name):$(image_tag) . 
+              docker create -ti --name testcontainer $(docker_repository_name):$(image_tag) 
+              docker cp testcontainer:/build-dir/test-results/ $(Build.ArtifactStagingDirectory)/test-results 
+              docker rm -fv testcontainer
+            displayName: Build and run unit tests
           - task: Docker@2
             displayName: Docker Build and Push
             inputs:
               containerRegistry: 'VM on Personal DockerHub'
               repository: $(docker_repository_name)
               command: 'buildAndPush'
-              Dockerfile: './src/VolleyManagement.API/Dockerfile'
-              buildContext: './src'
+              Dockerfile: './Dockerfile'
+              buildContext: '.'
               tags: $(image_tag)
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'VSTest'
+              testResultsFiles: 'vm-ut-result.trx'
+              searchFolder: '$(Build.ArtifactStagingDirectory)/test-results'
+              mergeTestResults: true
+              testRunTitle: 'Unit Tests' 
   - stage: deploy_prod
     displayName: 'Deploy Production'
     dependsOn: build

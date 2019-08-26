@@ -3,15 +3,17 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
-WORKDIR /src
-COPY . .
-RUN dotnet build "VolleyManagement.sln" -c Release -o /artifacts
+WORKDIR /build-dir
+COPY ./src ./src
+COPY ./tests ./tests
+RUN dotnet build "./src/VolleyManagement.sln" -c Release -o /artifacts
+RUN dotnet test "./src/VolleyManagement.sln" --logger "trx;LogFileName=/build-dir/test-results/vm-ut-result.trx"
 
 FROM build AS publish
 RUN mkdir /app \
     && cp /artifacts/VolleyM.Domain.* /app/ \
     && cp /artifacts/VolleyM.Infrastructure.Hardcoded.* /app/
-RUN dotnet publish "VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
+RUN dotnet publish "src/VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

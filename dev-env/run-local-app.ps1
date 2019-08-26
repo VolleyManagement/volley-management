@@ -1,2 +1,2 @@
-docker build -f ./src/VolleyManagement.API/Dockerfile -t volleymanagement/api:local ./src
+docker build -t volleymanagement/api:local .
 docker run -d --rm --name vm-api -p 5000:80 --env ASPNETCORE_ENVIRONMENT=Development volleymanagement/api:local

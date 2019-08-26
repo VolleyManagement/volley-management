@@ -44,6 +44,7 @@ stages:
               arguments: '--logger "trx;LogFileName=artifacts/test-results/vm-ut-result.trx"'
       - job: container_build
         displayName: Build Container
+        dependsOn: build_code
         pool:
           vmImage: 'ubuntu-latest'
         steps:

@@ -7,7 +7,7 @@ WORKDIR /build-dir
 COPY ./src ./src
 COPY ./tests ./tests
 RUN dotnet build "./src/VolleyManagement.sln" -c Release -o /artifacts
-RUN dotnet test "./src/VolleyManagement.sln" --logger "trx;LogFileName=vm-ut-result.trx"
+RUN dotnet test "./src/VolleyManagement.sln" --logger "trx;LogFileName=/build-dir/test-results/vm-ut-result.trx"
 
 FROM build AS publish
 RUN mkdir /app \

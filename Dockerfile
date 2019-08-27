@@ -12,6 +12,7 @@ RUN dotnet test "./src/VolleyManagement.sln" --logger "trx;LogFileName=/build-di
 FROM build AS publish
 RUN mkdir /app \
     && cp /artifacts/VolleyM.Domain.* /app/ \
+    && cp /artifacts/VolleyM.Infrastructure.Bootstrap.* /app/ \
     && cp /artifacts/VolleyM.Infrastructure.Hardcoded.* /app/
 RUN dotnet publish "src/VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
 

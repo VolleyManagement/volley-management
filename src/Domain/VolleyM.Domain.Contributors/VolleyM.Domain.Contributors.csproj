@@ -13,8 +13,4 @@
     <ProjectReference Include="..\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="dotnet publish --no-build -c $(ConfigurationName) -o ../../../artifacts/publish" />
-  </Target>
-
 </Project>

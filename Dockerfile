@@ -7,14 +7,13 @@ WORKDIR /build-dir
 COPY ./src ./src
 COPY ./tests ./tests
 RUN dotnet build "./src/VolleyManagement.sln" -c Release -o /artifacts
-RUN dotnet test "./src/VolleyManagement.sln" --logger "trx;LogFileName=/build-dir/test-results/vm-ut-result.trx"
 
 FROM build AS publish
-RUN mkdir /app \
-    && cp /artifacts/VolleyM.Domain.* /app/ \
-    && cp /artifacts/VolleyM.Infrastructure.Bootstrap.* /app/ \
-    && cp /artifacts/VolleyM.Infrastructure.Hardcoded.* /app/
-RUN dotnet publish "src/VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
+RUN dotnet publish "src/Domain/VolleyM.Domain.Contracts/VolleyM.Domain.Contracts.csproj" -c Release -o /app \
+    && dotnet publish "src/Domain/VolleyM.Domain.Contributors/VolleyM.Domain.Contributors.csproj" -c Release -o /app \
+    && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.Bootstrap/VolleyM.Infrastructure.Bootstrap.csproj" -c Release -o /app \
+    && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.Hardcoded/VolleyM.Infrastructure.Hardcoded.csproj" -c Release -o /app\
+    && dotnet publish "src/VolleyManagement.API/VolleyManagement.API.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

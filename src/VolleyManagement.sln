@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29111.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyManagement.API", "VolleyManagement.API\VolleyManagement.API.csproj", "{BF7C6167-E3C9-4993-9F09-189171C7B3E1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0685AA9C-D01A-49AC-9D50-0D62BD66B97B} = {0685AA9C-D01A-49AC-9D50-0D62BD66B97B}
+		{D0E5ADBF-F1C0-43E4-B562-7274060DA20E} = {D0E5ADBF-F1C0-43E4-B562-7274060DA20E}
+		{44BA04D7-4715-4A1F-ABB6-3670E9B83F4F} = {44BA04D7-4715-4A1F-ABB6-3670E9B83F4F}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{DBC68672-2998-4C61-8C5F-5F6E300F3280}"
 EndProject
@@ -12,12 +17,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{4AE5524F-A9EE-41E7-A36C-17FAB69588B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Infrastructure.Hardcoded", "Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj", "{0685AA9C-D01A-49AC-9D50-0D62BD66B97B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6} = {D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Domain.Contributors", "Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj", "{D0E5ADBF-F1C0-43E4-B562-7274060DA20E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Contributors", "Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj", "{D0E5ADBF-F1C0-43E4-B562-7274060DA20E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2D85CDB8-A2D9-42C0-B104-467453C93A14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Domain.Contributors.UnitTests", "..\tests\VolleyM.Domain.Contributors.UnitTests\VolleyM.Domain.Contributors.UnitTests.csproj", "{E9960073-B47C-4666-86E0-CE4D74A0F155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Contributors.UnitTests", "..\tests\VolleyM.Domain.Contributors.UnitTests\VolleyM.Domain.Contributors.UnitTests.csproj", "{E9960073-B47C-4666-86E0-CE4D74A0F155}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Infrastructure.Bootstrap", "Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj", "{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +55,10 @@ Global
 		{E9960073-B47C-4666-86E0-CE4D74A0F155}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9960073-B47C-4666-86E0-CE4D74A0F155}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9960073-B47C-4666-86E0-CE4D74A0F155}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +68,7 @@ Global
 		{0685AA9C-D01A-49AC-9D50-0D62BD66B97B} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 		{D0E5ADBF-F1C0-43E4-B562-7274060DA20E} = {DBC68672-2998-4C61-8C5F-5F6E300F3280}
 		{E9960073-B47C-4666-86E0-CE4D74A0F155} = {2D85CDB8-A2D9-42C0-B104-467453C93A14}
+		{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4379AC9-D1D3-439C-971A-BA4BFFA373B5}

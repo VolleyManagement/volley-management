@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.IO;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyManagement.API
 {
@@ -7,6 +9,10 @@ namespace VolleyManagement.API
     {
         public static void Main(string[] args)
         {
+            var bootstrapper = new AssemblyBootstrapper();
+
+            bootstrapper.Compose(Directory.GetCurrentDirectory());
+
             CreateHostBuilder(args).Build().Run();
         }
 

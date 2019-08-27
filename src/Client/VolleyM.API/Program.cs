@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using VolleyM.Infrastructure.Bootstrap;
 
-namespace VolleyManagement.API
+namespace VolleyM.API
 {
     public class Program
     {

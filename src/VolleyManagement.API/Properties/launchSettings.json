@@ -10,7 +10,6 @@
   "profiles": {
     "VolleyManagement.API": {
       "commandName": "Project",
-      "workingDirectory": "../../artifacts/publish",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

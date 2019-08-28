@@ -23,12 +23,12 @@ pr:
 
 stages:
   - stage: build
-    displayName: 'Build'
+    displayName: Build
     jobs:
       - job: build_code
         pool:
           vmImage: 'ubuntu-latest'
-        displayName: Build Source Code
+        displayName: Source Code
         steps:
           - task: DotNetCoreInstaller@0
             displayName: 'Install .net core 3.0 (preview)'
@@ -54,7 +54,7 @@ stages:
               mergeTestResults: true
               testRunTitle: 'Unit Tests' 
       - job: container_build
-        displayName: Build Container
+        displayName: Container
         dependsOn: build_code
         pool:
           vmImage: 'ubuntu-latest'

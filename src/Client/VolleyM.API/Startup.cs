@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.Loader;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +15,10 @@ namespace VolleyM.API
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            var contributors = AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName("VolleyM.API.Contributors"));
+
+            services.AddControllers()
+                .AddApplicationPart(contributors);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

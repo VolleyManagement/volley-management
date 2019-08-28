@@ -30,6 +30,7 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 
 ### New Project Checklist
 
-- [ ] Dockerfile is present
+- [ ] Dockerfile is updated
 - [ ] Azure Pipelines updated
 - [ ] Development setup guide updated
+- [ ] VolleyM.API has reference added to assist debugging

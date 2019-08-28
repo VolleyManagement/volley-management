@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ApplicationIcon>volley-mgmt-logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(Configuration)=='Debug'">
+    <!--Debug Mode Plugin deployment-->
+
+    <!--API plugins-->
+    <ProjectReference Include="..\VolleyM.API.Contributors\VolleyM.API.Contributors.csproj" />
   </ItemGroup>
 
 </Project>

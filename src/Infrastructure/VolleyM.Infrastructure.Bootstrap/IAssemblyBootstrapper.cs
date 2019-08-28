@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using SimpleInjector;
 
 namespace VolleyM.Infrastructure.Bootstrap
 {
@@ -8,6 +7,6 @@ namespace VolleyM.Infrastructure.Bootstrap
     /// </summary>
     public interface IAssemblyBootstrapper
     {
-        Task Register();
+        void Register(Container container);
     }
 }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading.Tasks;
+using SimpleInjector;
 
 namespace VolleyM.Infrastructure.Bootstrap
 {
@@ -23,7 +23,7 @@ namespace VolleyM.Infrastructure.Bootstrap
         /// 
         /// </summary>
         /// <param name="assemblyPath">Location where bootstrapped assemblies located</param>
-        public void Compose(string assemblyPath)
+        public void Compose(Container iocContainer, string assemblyPath)
         {
             // Catalogs does not exists in Dotnet Core, so you need to manage your own.
             var assemblies = DiscoverAssemblies(assemblyPath, "VolleyM.");
@@ -34,30 +34,19 @@ namespace VolleyM.Infrastructure.Bootstrap
             var bootstrappers = container.GetExports<IAssemblyBootstrapper>().ToList();
             Console.WriteLine($"Discovered {bootstrappers.Count} bootstrappers.");
 
-            static Task RegisterBootstrapper(IAssemblyBootstrapper assemblyBootstrapper)
+            void RegisterBootstrapper(IAssemblyBootstrapper assemblyBootstrapper)
             {
                 try
                 {
-                    return assemblyBootstrapper.Register();
+                    assemblyBootstrapper.Register(iocContainer);
                 }
                 catch (Exception e)
                 {
-                    return Task.FromException(e);
+                    Console.WriteLine($"Failed to register bootstrapper. Type={assemblyBootstrapper.GetType().FullName}. Exception={e}");
                 }
             }
 
-            var registerTasks = bootstrappers.Select(b => (Name: b.GetType().FullName, Task: RegisterBootstrapper(b)))
-                .ToList();
-
-            Task.WhenAll(registerTasks.Select(t => t.Task));
-
-            foreach (var (name, task) in registerTasks)
-            {
-                if (task.IsFaulted)
-                {
-                    Console.WriteLine($"Failed to register bootstrapper. Type={name}. Exception={task.Exception}");
-                }
-            }
+            bootstrappers.ForEach(RegisterBootstrapper);
         }
 
         private static IEnumerable<Assembly> DiscoverAssemblies(string assemblyPath, string assemblyPrefix)

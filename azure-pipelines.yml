@@ -13,6 +13,7 @@ trigger:
     exclude:
       - docs/*
       - dev-env/*
+      - archive/*
 
 pr:
   autoCancel: true

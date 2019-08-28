@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <ApplicationIcon>..\..\..\docs\logo\volley-mgmt-logo.ico</ApplicationIcon>
+    <ApplicationIcon>volley-mgmt-logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

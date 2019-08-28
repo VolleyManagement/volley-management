@@ -1,24 +1,26 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.Loader;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VolleyM.API.Extensions;
 
 namespace VolleyM.API
 {
     public class Startup
     {
+        private readonly IConfiguration _config;
+
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            var contributors = AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName("VolleyM.API.Contributors"));
-
             services.AddControllers()
-                .AddApplicationPart(contributors);
+                .AddVolleyManagementApiParts(_config[Constants.VM_PLUGIN_PATH]);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

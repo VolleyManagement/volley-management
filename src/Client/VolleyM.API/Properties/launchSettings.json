@@ -1,14 +1,6 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "http://localhost/VolleyManagement.API",
-      "sslPort": 0
-    }
-  },
   "profiles": {
-    "VolleyManagement.API": {
+    "VolleyM.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

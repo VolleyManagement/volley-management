@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contributors;
 
 namespace VolleyM.API.Contributors
 {
@@ -7,14 +10,20 @@ namespace VolleyM.API.Contributors
     [ApiController]
     public class ContributorsController : ControllerBase
     {
+        private readonly IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
+
+        public ContributorsController(IRequestHandler<GetAllContributors.Request, List<ContributorDto>> handler)
+        {
+            _handler = handler;
+        }
+
         [HttpGet]
         [Route("")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(new List<Contributor> {
-                new Contributor {FullName = "API1", CourseDirection = "All", Team = "Special"},
-                new Contributor {FullName = "API2", CourseDirection = "All", Team = "Special"},
-            });
+            var result = await _handler.Handle(new GetAllContributors.Request());
+
+            return Ok(result);
         }
     }
 }

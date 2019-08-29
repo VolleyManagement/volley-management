@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
-using MediatR;
 using NSubstitute;
 using System.Collections.Generic;
 using System.Threading;
 using VolleyM.Domain.Contracts;
-using Xunit;
 using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
@@ -12,8 +10,6 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
     [FeatureFile(@"./GetAll/Contributors.feature")]
     public class ContributorsSteps : Feature
     {
-        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
-
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
         private readonly GetAllContributors.IQueryObject _queryMock;
 
@@ -38,7 +34,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         {
             _handler = CreateHandler();
 
-            _actualResult = await _handler.Handle(new GetAllContributors.Request(), _cts.Token);
+            _actualResult = await _handler.Handle(new GetAllContributors.Request());
         }
 
         [Then("all contributors received")]
@@ -51,7 +47,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
             new GetAllContributors.Handler(_queryMock);
 
         private void MockQueryObject(List<ContributorDto> testData) =>
-            _queryMock.Execute(Null.Value).Returns<List<ContributorDto>>(testData);
+            _queryMock.Execute(Unit.Value).Returns<List<ContributorDto>>(testData);
 
         private static List<ContributorDto> GetMockData() =>
             new List<ContributorDto> {

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using AutoMapper.Configuration;
+using SimpleInjector;
 
 namespace VolleyM.Infrastructure.Bootstrap
 {
@@ -8,6 +8,8 @@ namespace VolleyM.Infrastructure.Bootstrap
     /// </summary>
     public interface IAssemblyBootstrapper
     {
-        Task Register();
+        void RegisterDependencies(Container container);
+
+        void RegisterMappingProfiles(MapperConfigurationExpression mce);
     }
 }

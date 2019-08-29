@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="SimpleInjector" Version="4.6.2" />
     <PackageReference Include="System.Composition" Version="1.2.0" />
     <PackageReference Include="System.Composition.Hosting" Version="1.2.0" />
   </ItemGroup>

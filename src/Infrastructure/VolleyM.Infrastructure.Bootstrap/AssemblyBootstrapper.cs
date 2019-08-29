@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading.Tasks;
+using AutoMapper.Configuration;
+using SimpleInjector;
 
 namespace VolleyM.Infrastructure.Bootstrap
 {
@@ -14,10 +16,15 @@ namespace VolleyM.Infrastructure.Bootstrap
         /// <summary>
         /// Initializes Bootstrapper
         /// </summary>
-        public AssemblyBootstrapper()
-        {
+        public AssemblyBootstrapper() =>
+            DiscoveredAssemblies = Enumerable.Empty<Assembly>().ToImmutableList();
 
-        }
+        /// <summary>
+        /// Returns all assemblies that were discovered by bootstrapper during compose
+        /// </summary>
+        public ImmutableList<Assembly> DiscoveredAssemblies { get; private set; }
+
+        private List<IAssemblyBootstrapper> Bootstrappers { get; set; }
 
         /// <summary>
         /// 
@@ -31,32 +38,43 @@ namespace VolleyM.Infrastructure.Bootstrap
                 .WithAssemblies(assemblies);
 
             using var container = configuration.CreateContainer();
-            var bootstrappers = container.GetExports<IAssemblyBootstrapper>().ToList();
-            Console.WriteLine($"Discovered {bootstrappers.Count} bootstrappers.");
+            Bootstrappers = container.GetExports<IAssemblyBootstrapper>().ToList();
+            var bootstrappedAssemblies = new List<Assembly>();
+            Console.WriteLine($"Discovered {Bootstrappers.Count} bootstrappers.");
 
-            static Task RegisterBootstrapper(IAssemblyBootstrapper assemblyBootstrapper)
+            foreach (var bootstrapper in Bootstrappers)
             {
-                try
-                {
-                    return assemblyBootstrapper.Register();
-                }
-                catch (Exception e)
-                {
-                    return Task.FromException(e);
-                }
+                bootstrappedAssemblies.Add(Assembly.GetAssembly(bootstrapper.GetType()));
             }
 
-            var registerTasks = bootstrappers.Select(b => (Name: b.GetType().FullName, Task: RegisterBootstrapper(b)))
-                .ToList();
+            DiscoveredAssemblies = bootstrappedAssemblies.ToImmutableList();
+        }
 
-            Task.WhenAll(registerTasks.Select(t => t.Task));
-
-            foreach (var (name, task) in registerTasks)
+        public void RegisterDependencies(Container iocContainer)
+        {
+            foreach (var bootstrapper in Bootstrappers)
             {
-                if (task.IsFaulted)
-                {
-                    Console.WriteLine($"Failed to register bootstrapper. Type={name}. Exception={task.Exception}");
-                }
+                RunAction(p => p.RegisterDependencies(iocContainer), bootstrapper, "Register Dependencies");
+            }
+        }
+
+        public void RegisterMappingProfiles(MapperConfigurationExpression mce)
+        {
+            foreach (var bootstrapper in Bootstrappers)
+            {
+                RunAction(p => p.RegisterMappingProfiles(mce), bootstrapper, "Mapper Profiles");
+            }
+        }
+
+        private void RunAction(Action<IAssemblyBootstrapper> action, IAssemblyBootstrapper instance, string name)
+        {
+            try
+            {
+                action(instance);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to {name} in bootstrapper. Type={instance.GetType().FullName}. Exception={e}");
             }
         }
 

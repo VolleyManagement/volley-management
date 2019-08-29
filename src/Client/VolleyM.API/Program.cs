@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.IO;
 using System.Reflection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.API
 {
@@ -11,16 +10,12 @@ namespace VolleyM.API
     {
         public static void Main(string[] args)
         {
-            var bootstrapper = new AssemblyBootstrapper();
             var pluginPath = GetPluginPath();
-            bootstrapper.Compose(pluginPath);
 
-            CreateHostBuilder(args, pluginPath)
-                .Build()
-                .Run();
+            CreateHostBuilder(args, pluginPath).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args, string pluginPath) =>
+        private static IHostBuilder CreateHostBuilder(string[] args, string pluginPath) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

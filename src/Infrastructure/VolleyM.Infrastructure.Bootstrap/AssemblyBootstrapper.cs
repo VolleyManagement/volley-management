@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using AutoMapper.Configuration;
 using SimpleInjector;
 
 namespace VolleyM.Infrastructure.Bootstrap
@@ -14,16 +16,21 @@ namespace VolleyM.Infrastructure.Bootstrap
         /// <summary>
         /// Initializes Bootstrapper
         /// </summary>
-        public AssemblyBootstrapper()
-        {
+        public AssemblyBootstrapper() =>
+            DiscoveredAssemblies = Enumerable.Empty<Assembly>().ToImmutableList();
 
-        }
+        /// <summary>
+        /// Returns all assemblies that were discovered by bootstrapper during compose
+        /// </summary>
+        public ImmutableList<Assembly> DiscoveredAssemblies { get; private set; }
+
+        private List<IAssemblyBootstrapper> Bootstrappers { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="assemblyPath">Location where bootstrapped assemblies located</param>
-        public void Compose(Container iocContainer, string assemblyPath)
+        public void Compose(string assemblyPath)
         {
             // Catalogs does not exists in Dotnet Core, so you need to manage your own.
             var assemblies = DiscoverAssemblies(assemblyPath, "VolleyM.");
@@ -31,22 +38,44 @@ namespace VolleyM.Infrastructure.Bootstrap
                 .WithAssemblies(assemblies);
 
             using var container = configuration.CreateContainer();
-            var bootstrappers = container.GetExports<IAssemblyBootstrapper>().ToList();
-            Console.WriteLine($"Discovered {bootstrappers.Count} bootstrappers.");
+            Bootstrappers = container.GetExports<IAssemblyBootstrapper>().ToList();
+            var bootstrappedAssemblies = new List<Assembly>();
+            Console.WriteLine($"Discovered {Bootstrappers.Count} bootstrappers.");
 
-            void RegisterBootstrapper(IAssemblyBootstrapper assemblyBootstrapper)
+            foreach (var bootstrapper in Bootstrappers)
             {
-                try
-                {
-                    assemblyBootstrapper.Register(iocContainer);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Failed to register bootstrapper. Type={assemblyBootstrapper.GetType().FullName}. Exception={e}");
-                }
+                bootstrappedAssemblies.Add(Assembly.GetAssembly(bootstrapper.GetType()));
             }
 
-            bootstrappers.ForEach(RegisterBootstrapper);
+            DiscoveredAssemblies = bootstrappedAssemblies.ToImmutableList();
+        }
+
+        public void RegisterDependencies(Container iocContainer)
+        {
+            foreach (var bootstrapper in Bootstrappers)
+            {
+                RunAction(p => p.RegisterDependencies(iocContainer), bootstrapper, "Register Dependencies");
+            }
+        }
+
+        public void RegisterMappingProfiles(MapperConfigurationExpression mce)
+        {
+            foreach (var bootstrapper in Bootstrappers)
+            {
+                RunAction(p => p.RegisterMappingProfiles(mce), bootstrapper, "Mapper Profiles");
+            }
+        }
+
+        private void RunAction(Action<IAssemblyBootstrapper> action, IAssemblyBootstrapper instance, string name)
+        {
+            try
+            {
+                action(instance);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to {name} in bootstrapper. Type={instance.GetType().FullName}. Exception={e}");
+            }
         }
 
         private static IEnumerable<Assembly> DiscoverAssemblies(string assemblyPath, string assemblyPrefix)

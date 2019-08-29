@@ -1,4 +1,6 @@
-﻿using SimpleInjector;
+﻿using AutoMapper;
+using AutoMapper.Configuration;
+using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using VolleyM.Infrastructure.Bootstrap;
 
@@ -18,12 +20,25 @@ namespace VolleyM.API.Extensions
         /// <summary>
         /// Loads plugins, composes DI.
         /// </summary>
-        /// <param name="container"></param>
-        /// <param name="pluginLocation"></param>
-        public static void RegisterApplicationServices(this Container container, string pluginLocation)
+        public static void RegisterApplicationServices(this Container container, AssemblyBootstrapper bootstrapper)
         {
-            var bootstrapper = new AssemblyBootstrapper();
-            bootstrapper.Compose(container, pluginLocation);
+            // Application Assemblies
+            bootstrapper.RegisterDependencies(container);
+
+            RegisterAutoMapper(container, bootstrapper);
+        }
+
+        private static void RegisterAutoMapper(Container container, AssemblyBootstrapper bootstrapper)
+        {
+            var mce = new MapperConfigurationExpression();
+            mce.ConstructServicesUsing(container.GetInstance);
+
+            bootstrapper.RegisterMappingProfiles(mce);
+
+            var mc = new MapperConfiguration(mce);
+            mc.AssertConfigurationIsValid();
+
+            container.RegisterSingleton(() => new Mapper(mc, container.GetInstance));
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Contributors
@@ -22,15 +21,15 @@ namespace VolleyM.Domain.Contributors
                 _query = query;
             }
 
-            public Task<List<ContributorDto>> Handle(Request request,
-                CancellationToken cancellationToken)
+            public Task<List<ContributorDto>> Handle(Request request)
             {
-                return _query.Execute(Null.Value);
+                return _query.Execute(Unit.Value);
             }
         }
 
-        public interface IQueryObject : IQuery<Null, List<ContributorDto>>
+        public interface IQueryObject : IQuery<Unit, List<ContributorDto>>
         {
+
         }
     }
 }

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using FluentAssertions;
-using Microsoft.Build.Construction;
-using NetArchTest.Rules;
 using NetArchTest.Rules.Policies;
 using Xunit;
 
@@ -15,28 +11,10 @@ namespace VolleyM.Architecture.UnitTests
 {
     public class PackageStructureTests
     {
-        private const string ROOT_NS = "VolleyM";
+        private static readonly string FULL_DOMAIN_NS = $"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.DOMAIN_NS}";
 
-        private const string DOMAIN_NS = "Domain";
-
-        private static readonly string[] AllowedLayers = {
-            DOMAIN_NS,
-            "Infrastructure",
-            "API"
-        };
-
-        private static readonly string[] BoundedContexts = {
-            "Contributors",
-            "Teams",
-            "Players",
-            "Tournaments",
-            "TournamentCalendar",
-            //Not context but allowed
-            "Contracts"
-        };
-
-        [Fact]
-        public void AllProjectsFollowPackageNaming()
+        [Fact(DisplayName = nameof(AllProjectsUseAllowedLayers))]
+        public void AllProjectsUseAllowedLayers()
         {
             var architecturePolicy = Policy.Define("Package Naming",
                 "All assemblies should be named according to the guidelines: " +
@@ -45,27 +23,64 @@ namespace VolleyM.Architecture.UnitTests
                 .Add(t =>
                     t.ThatNotCompilerGenerated()
                     .Should()
-                        .ResideInNamespace(ROOT_NS))
+                        .ResideInNamespace(PackageNamingConstants.ROOT_NS))
                 .Add(t =>
                     t.ThatNotCompilerGenerated()
                     .Should()
-                        .ResideInAllowedNamespace($"{ROOT_NS}", AllowedLayers),
-                    "Allowed Layers", string.Empty)
-                .Add(t =>
-                    t.ThatNotCompilerGenerated()
-                        .And().ResideInNamespace($"{ROOT_NS}.{DOMAIN_NS}")
-                        .Should()
-                        .ResideInAllowedNamespace($"{ROOT_NS}.{DOMAIN_NS}", BoundedContexts),
-                    "Allowed Domains", string.Empty);
+                        .ResideInAllowedNamespace($"{PackageNamingConstants.ROOT_NS}", PackageNamingConstants.AllowedLayers),
+                    "Allowed Layers", string.Empty);
 
             var result = architecturePolicy.Evaluate();
             result.AssertHasNoViolations();
         }
 
+        [Fact(DisplayName = nameof(DomainProjectsUseAllowedContexts))]
+        public void DomainProjectsUseAllowedContexts()
+        {
+            var domainAssemblies = AssembliesFixture.GetDomainAssemblies();
+
+            var allowedVmAssemblies = new[]
+            {
+                $"{FULL_DOMAIN_NS}.Contracts",
+                $"{PackageNamingConstants.ROOT_NS}.Infrastructure.Bootstrap"
+            };
+
+            foreach (var domainAssembly in domainAssemblies)
+            {
+                domainAssembly.AssertContextNameIsAllowed(PackageNamingConstants.BoundedContexts);
+                var references = domainAssembly.GetReferencedAssemblies();
+
+                var filtered = references
+                    .Where(NotSystemDependency)
+                    .Where(p => NotDependency(p, PackageNamingConstants.SIMPLE_INJECTOR_NS))
+                    .Where(p => NotDependency(p, PackageNamingConstants.MEDIATR_NS))
+                    .Where(p => NotDependency(p, PackageNamingConstants.AUTOMAPPER_NS));
+
+                if (!IsDomainContracts(domainAssembly))
+                {
+                    filtered = filtered.Where(a => NotDependency(a, allowedVmAssemblies));
+                }
+
+                filtered.Should().BeEmpty("{0} assembly should reference only allowed assemblies",
+                    domainAssembly.GetName().Name);
+            }
+        }
+
+        [Fact(DisplayName = nameof(ApiProjectsUseAllowedContexts))]
+        public void ApiProjectsUseAllowedContexts()
+        {
+            var apiAssemblies = AssembliesFixture.GetApiAssemblies();
+
+            foreach (var domainAssembly in apiAssemblies)
+            {
+                domainAssembly.AssertContextNameIsAllowed(PackageNamingConstants.BoundedContexts);
+            }
+        }
+
         [Fact]
         public void AllAssembliesAddedToTheArchitectureTests()
         {
-            var assemblies = TypesFixture.AllAssemblyNames();
+            var assemblies = AssembliesFixture.AllAssemblyNames;
             var failedAssemblies = new List<string>();
 
             foreach (var assembly in assemblies)
@@ -82,5 +97,21 @@ namespace VolleyM.Architecture.UnitTests
 
             failedAssemblies.Should().BeEmpty("all projects should be referenced by Architecture.UnitTests");
         }
+
+        private static bool NotSystemDependency(AssemblyName assembly)
+            => !StartsWith(assembly, PackageNamingConstants.SYSTEM_NS);
+        private static bool NotMicrosoftDependency(AssemblyName assembly)
+            => NotDependency(assembly, PackageNamingConstants.AllowedMicrosoftReferences);
+        private static bool NotDependency(AssemblyName assembly, string packageName)
+            => !StartsWith(assembly, packageName);
+
+        private static bool NotDependency(AssemblyName assembly, IEnumerable<string> allowed)
+            => !allowed.Any(dep => StartsWith(assembly, dep));
+        private static bool StartsWith(AssemblyName assembly, string packageName)
+                => assembly.Name.StartsWith(packageName, StringComparison.OrdinalIgnoreCase);
+
+        private static bool IsDomainContracts(Assembly assembly) =>
+            string.Compare(assembly.GetName().Name,
+                $"{FULL_DOMAIN_NS}.Contracts", StringComparison.OrdinalIgnoreCase) == 0;
     }
 }

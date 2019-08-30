@@ -1,4 +1,7 @@
-﻿using NetArchTest.Rules;
+﻿using System;
+using System.Reflection;
+using FluentAssertions;
+using NetArchTest.Rules;
 
 namespace VolleyM.Architecture.UnitTests
 {
@@ -14,6 +17,20 @@ namespace VolleyM.Architecture.UnitTests
             }
 
             return result;
+        }
+
+        public static void AssertContextNameIsAllowed(this Assembly assembly, string[] allowedContexts)
+        {
+            var contextNames = assembly.GetName().Name.Split('.', StringSplitOptions.RemoveEmptyEntries);
+
+            if (contextNames.Length < 3)
+            {
+                //this is covered by another case
+            }
+            else
+            {
+                contextNames[2].Should().BeOneOf(allowedContexts, "Domain packages should use context names");
+            }
         }
     }
 }

@@ -45,14 +45,6 @@ stages:
             inputs:
               command: 'test'
               projects: $(sln_path)
-              arguments: '--logger "trx;LogFileName=$(Build.ArtifactStagingDirectory)/test-results/vm-ut-result.trx"'
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFormat: 'VSTest'
-              testResultsFiles: 'vm-ut-result.trx'
-              searchFolder: '$(Build.ArtifactStagingDirectory)/test-results'
-              mergeTestResults: true
-              testRunTitle: 'Unit Tests' 
       - job: container_build
         displayName: Container
         dependsOn: build_code

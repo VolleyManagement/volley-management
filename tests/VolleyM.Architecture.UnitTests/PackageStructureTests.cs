@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using FluentAssertions;
 using Microsoft.Build.Construction;
@@ -14,21 +15,51 @@ namespace VolleyM.Architecture.UnitTests
 {
     public class PackageStructureTests
     {
+        private const string ROOT_NS = "VolleyM";
+
+        private const string DOMAIN_NS = "Domain";
+
+        private static readonly string[] AllowedLayers = {
+            DOMAIN_NS,
+            "Infrastructure",
+            "API"
+        };
+
+        private static readonly string[] BoundedContexts = {
+            "Contributors",
+            "Teams",
+            "Players",
+            "Tournaments",
+            "TournamentCalendar",
+            //Not context but allowed
+            "Contracts"
+        };
+
         [Fact]
-        public void Test1()
+        public void AllProjectsFollowPackageNaming()
         {
             var architecturePolicy = Policy.Define("Package Naming",
                 "All assemblies should be named according to the guidelines: " +
                             "https://github.com/VolleyManagement/volley-management/wiki/Solution-Architecture#volleymanagementapi")
-                //.For(Types.)
-                ;
-            var slnPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../../src/VolleyManagement.sln");
-            var file = new FileInfo(slnPath);
+                .For(TypesFixture.AllProjectTypes)
+                .Add(t =>
+                    t.ThatNotCompilerGenerated()
+                    .Should()
+                        .ResideInNamespace(ROOT_NS))
+                .Add(t =>
+                    t.ThatNotCompilerGenerated()
+                    .Should()
+                        .ResideInAllowedNamespace($"{ROOT_NS}", AllowedLayers),
+                    "Allowed Layers", string.Empty)
+                .Add(t =>
+                    t.ThatNotCompilerGenerated()
+                        .And().ResideInNamespace($"{ROOT_NS}.{DOMAIN_NS}")
+                        .Should()
+                        .ResideInAllowedNamespace($"{ROOT_NS}.{DOMAIN_NS}", BoundedContexts),
+                    "Allowed Domains", string.Empty);
 
-            var sln = SolutionFile.Parse(file.FullName);
-
-            var projects = sln.ProjectsInOrder.Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat).ToList();
-            projects.Should().HaveCount(8);
+            var result = architecturePolicy.Evaluate();
+            result.AssertHasNoViolations();
         }
 
         [Fact]

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
+    <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
   </ItemGroup>
 
   <ItemGroup>

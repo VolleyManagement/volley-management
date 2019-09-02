@@ -95,7 +95,7 @@ stages:
               echo list karate dir
               ls $(System.DefaultWorkingDirectory)/karate
               cd tests/api-tests
-              java -jar $(System.DefaultWorkingDirectory)/karate/karate.jar -e integration .
+              java -jar $(System.DefaultWorkingDirectory)/karate.jar -e integration .
             displayName: 'Run Karate tests'
   - stage: deploy_prod
     displayName: 'Deploy Production'

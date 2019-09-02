@@ -3,7 +3,7 @@ name: Update Karate artifact
 trigger: none
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'ubuntu-latest'
 
 steps:
 - task: PowerShell@2

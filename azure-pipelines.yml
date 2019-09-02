@@ -78,6 +78,7 @@ stages:
       - job: get_karate
         displayName: Get Karate
         steps:
+          - checkout: none
           - task: UniversalPackages@0
             displayName: 'Download Karate from Artifacts'
             inputs:
@@ -85,18 +86,19 @@ stages:
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
               vstsPackageVersion: 0.9.4
-              downloadDirectory: '$(Build.SourcesDirectory)\tests\api-tests'
+              downloadDirectory: '$(Build.StagingDirectory)\karate'
       - job: run_api_tests
         displayName: Run API Tests
         dependsOn:
         - deploy_app_service_int
         - get_karate
         steps:
+          - checkout: none #done by deploy job
           - script: |
               ls
               cd tests/api-tests
               ls
-              java -jar karate.jar -e integration .
+              java -jar $(Build.StagingDirectory)/karate.jar -e integration .
             displayName: 'Run Karate tests'
   - stage: deploy_prod
     displayName: 'Deploy Production'

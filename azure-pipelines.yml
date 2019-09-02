@@ -95,6 +95,7 @@ stages:
         steps:
           - checkout: none #done by deploy job
           - script: |
+              echo $(Build.StagingDirectory)
               echo list staging dir
               ls $(Build.StagingDirectory)
               echo list karate dir

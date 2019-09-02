@@ -85,7 +85,7 @@ stages:
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
               vstsPackageVersion: 0.9.4
-              downloadDirectory: '$(Build.SourcesDirectory)\test\api-tests'
+              downloadDirectory: '$(Build.SourcesDirectory)\tests\api-tests'
       - job: run_api_tests
         displayName: Run API Tests
         dependsOn:
@@ -93,7 +93,9 @@ stages:
         - get_karate
         steps:
           - script: |
-              cd test/api-tests
+              ls
+              cd tests/api-tests
+              ls
               java -jar karate.jar -e integration .
             displayName: 'Run Karate tests'
   - stage: deploy_prod

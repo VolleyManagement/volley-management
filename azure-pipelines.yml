@@ -95,6 +95,10 @@ stages:
         steps:
           - checkout: none #done by deploy job
           - script: |
+              echo list staging dir
+              ls $(Build.StagingDirectory)
+              echo list karate dir
+              ls $(Build.StagingDirectory)/karate
               cd tests/api-tests
               java -jar $(Build.StagingDirectory)/karate/karate.jar -e integration .
             displayName: 'Run Karate tests'

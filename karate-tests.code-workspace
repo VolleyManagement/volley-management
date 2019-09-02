@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "tests\\api-tests"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.background": "#2da8d9",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#bd2291",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"titleBar.activeBackground": "#2089b3",
+			"titleBar.inactiveBackground": "#2089b399",
+			"titleBar.activeForeground": "#e7e7e7",
+			"titleBar.inactiveForeground": "#e7e7e799",
+			"statusBar.background": "#2089b3",
+			"statusBarItem.hoverBackground": "#2da8d9",
+			"statusBar.foreground": "#e7e7e7"
+		},
+		"peacock.color": "#2089b3",
+		"karateRunner.karateJar.commandLineArgs": "java -cp ${workspaceRoot}\\karate.jar com.intuit.karate.Main -e dev",
+		"karateRunner.tests.toTarget": "**/*.feature"
+	}
+}

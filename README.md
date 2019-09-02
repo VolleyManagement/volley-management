@@ -38,12 +38,6 @@ Database is automatically deployed to server first time you run application. Spe
 
 By default it is configured to use SQL Server 2016 LocalDB. But you can can change altering connection string.
 
-### How to run tests (🚧 outdated) ###
-
-Project uses MSTest framework. Tests can be triggered via Visual Studio test menu.
-
-🚧 ToDo: Add guide how to run Code Coverage using JetBrains dotCover CLI runner
-
 ### Deployment instructions ###
 
 To run code locally it is recommended to use Docker to spin up local instance and test. This options is the closest to the production setting.
@@ -53,9 +47,43 @@ You have few options there:
 
 * Build and run container manually. See `/dev-env` folder for some scripts.
 
-If you want to shorten development cycle you can run application locally. Use `VolleyManagement.API` launch profile. It will execute `dotnet run`.
+If you want to shorten development cycle you can run application locally. Use `VolleyM.API` launch profile. It will execute `dotnet run`.
 
 In production we use Azure DevOps Pipeline to build and deploy code.
+
+### How to run tests ###
+
+#### Unit Tests ####
+
+Project uses xUnit framework.
+
+* Run tests using `dotnet`
+
+> `dotnet test src/VolleyManagement.sln`
+
+* Run using Visual Studio UI
+
+#### API Tests ####
+
+Project uses [Karate](https://github.com/intuit/karate) to test API.
+
+Before you run them you need to run application locally.
+
+1. Open `karate-tests` VS Code workspace
+  
+  * install recommended extensions
+
+2. Download Karate Standalone using script.
+
+> `.\get-karate.ps1`
+
+3. Install latest Java Runtime.
+
+4. Run all tests:
+
+> `java -jar karate.jar -e dev .`
+
+5. You can use Karate Runner extension to run any particular test as well.
 
 ## Additional references ##
 
@@ -63,6 +91,6 @@ In production we use Azure DevOps Pipeline to build and deploy code.
 * [Contribution Guidelines](/CONTRIBUTING.md)
 * [Code of Conduct](/CODE_OF_CONDUCT.md)
 
-## Who do I talk to? ##
+## Who do I talk to❓ ##
 
-* All questions should be directed to Sergii Diachenko(mailto:sdiachenko AT outlook DOT com)
+* All questions should be directed to Sergii Diachenko (sdiachenko AT outlook DOT com)

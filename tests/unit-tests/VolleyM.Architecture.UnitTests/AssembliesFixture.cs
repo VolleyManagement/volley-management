@@ -31,7 +31,7 @@ namespace VolleyM.Architecture.UnitTests
 
         private static ImmutableList<string> GetAllAssemblyNames()
         {
-            var slnPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../../src/VolleyManagement.sln");
+            var slnPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../../../src/VolleyManagement.sln");
             var file = new FileInfo(slnPath);
 
             var sln = SolutionFile.Parse(file.FullName);

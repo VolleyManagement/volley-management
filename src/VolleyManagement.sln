@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Contributors
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2D85CDB8-A2D9-42C0-B104-467453C93A14}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Contributors.UnitTests", "..\tests\VolleyM.Domain.Contributors.UnitTests\VolleyM.Domain.Contributors.UnitTests.csproj", "{E9960073-B47C-4666-86E0-CE4D74A0F155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Contributors.UnitTests", "..\tests\unit-tests\VolleyM.Domain.Contributors.UnitTests\VolleyM.Domain.Contributors.UnitTests.csproj", "{E9960073-B47C-4666-86E0-CE4D74A0F155}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Infrastructure.Bootstrap", "Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj", "{D9DFEF4C-B62B-4A96-A73E-23F4A24F57D6}"
 EndProject
@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{3139D39B-56D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.API.Contributors", "Client\VolleyM.API.Contributors\VolleyM.API.Contributors.csproj", "{F3876753-A039-4ECF-A7BF-5DF517650987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Architecture.UnitTests", "..\tests\VolleyM.Architecture.UnitTests\VolleyM.Architecture.UnitTests.csproj", "{8DE8419A-5451-44E6-AD58-101821E5EE13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Architecture.UnitTests", "..\tests\unit-tests\VolleyM.Architecture.UnitTests\VolleyM.Architecture.UnitTests.csproj", "{8DE8419A-5451-44E6-AD58-101821E5EE13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

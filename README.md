@@ -73,11 +73,17 @@ Before you run them you need to run application locally.
   
   * install recommended extensions
 
-2. Run `.\get-karate.ps1` script to download Karate Standalone.
+2. Download Karate Standalone using script.
+
+> `.\get-karate.ps1`
 
 3. Install latest Java Runtime.
 
-4. Execute `java -jar karate.jar -e dev .` to run all tests.
+4. Run all tests:
+
+> `java -jar karate.jar -e dev .`
+
+5. You can use Karate Runner extension to run any particular test as well.
 
 ## Additional references ##
 

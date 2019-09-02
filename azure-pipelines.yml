@@ -95,10 +95,8 @@ stages:
         steps:
           - checkout: none #done by deploy job
           - script: |
-              ls
               cd tests/api-tests
-              ls
-              java -jar $(Build.StagingDirectory)/karate.jar -e integration .
+              java -jar $(Build.StagingDirectory)/karate/karate.jar -e integration .
             displayName: 'Run Karate tests'
   - stage: deploy_prod
     displayName: 'Deploy Production'

@@ -8,7 +8,7 @@ function fn() {
     vmAppUrl: 'http://localhost:5000'
   };
 
-  if (env === 'staging') {
+  if (env === 'integration') {
     config.vmAppUrl = 'https://staging-volley-mgmt.azurewebsites.net/';
   }
 

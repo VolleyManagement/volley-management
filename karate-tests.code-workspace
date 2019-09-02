@@ -19,6 +19,8 @@
 			"statusBarItem.hoverBackground": "#359268",
 			"statusBar.foreground": "#15202b"
 		},
-		"peacock.color": "#42b883"
+		"peacock.color": "#42b883",
+		"karateRunner.karateJar.commandLineArgs": "java -cp ${workspaceRoot}\\karate.jar com.intuit.karate.Main -e dev",
+		"karateRunner.tests.toTarget": "**/*.feature"
 	}
 }

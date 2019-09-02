@@ -86,16 +86,16 @@ stages:
               command: download
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
-              vstsPackageVersion: 0.9.4
-              downloadDirectory: '$(Build.SourcesDirectory)\karate'
+              vstsPackageVersion: '0.9.4'
+              downloadDirectory: '$(System.DefaultWorkingDirectory)'
           - script: |
-              echo $(Build.SourcesDirectory)
+              echo $(System.DefaultWorkingDirectory)
               echo list staging dir
-              ls $(Build.SourcesDirectory)
+              ls $(System.DefaultWorkingDirectory)
               echo list karate dir
-              ls $(Build.SourcesDirectory)/karate
+              ls $(System.DefaultWorkingDirectory)/karate
               cd tests/api-tests
-              java -jar $(Build.SourcesDirectory)/karate/karate.jar -e integration .
+              java -jar $(System.DefaultWorkingDirectory)/karate/karate.jar -e integration .
             displayName: 'Run Karate tests'
   - stage: deploy_prod
     displayName: 'Deploy Production'

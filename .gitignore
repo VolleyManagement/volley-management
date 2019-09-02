@@ -165,3 +165,7 @@ VolleyManagement.UI/package-lock.json
 .sonarqube/
 src/.nuget/
 .vscode/
+
+# API tests
+tests/api-tests/karate.jar
+tests/api-tests/target/

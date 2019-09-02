@@ -75,10 +75,10 @@ stages:
               azureSubscription: 'Azure VM Integration'
               appName: 'staging-volley-mgmt'
               containers: '$(docker_repository_name):$(image_tag)'
-          - script: |
-              cd test/api-tests
-              java -jar karate.jar -e integration .
-            displayName: 'Run Karate tests'
+          # - script: |
+          #     cd test/api-tests
+          #     java -jar karate.jar -e integration .
+          #   displayName: 'Run Karate tests'
   - stage: deploy_prod
     displayName: 'Deploy Production'
     dependsOn: integration

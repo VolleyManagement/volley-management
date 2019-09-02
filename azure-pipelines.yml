@@ -89,11 +89,6 @@ stages:
               vstsPackageVersion: '0.9.4'
               downloadDirectory: '$(System.DefaultWorkingDirectory)'
           - script: |
-              echo $(System.DefaultWorkingDirectory)
-              echo list staging dir
-              ls $(System.DefaultWorkingDirectory)
-              echo list karate dir
-              ls $(System.DefaultWorkingDirectory)/karate
               cd tests/api-tests
               java -jar $(System.DefaultWorkingDirectory)/karate.jar -e integration .
             displayName: 'Run Karate tests'

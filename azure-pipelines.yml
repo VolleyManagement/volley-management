@@ -87,15 +87,15 @@ stages:
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
               vstsPackageVersion: 0.9.4
-              downloadDirectory: '$(Build.StagingDirectory)\karate'
+              downloadDirectory: '$(Build.SourcesDirectory)\karate'
           - script: |
-              echo $(Build.StagingDirectory)
+              echo $(Build.SourcesDirectory)
               echo list staging dir
-              ls $(Build.StagingDirectory)
+              ls $(Build.SourcesDirectory)
               echo list karate dir
-              ls $(Build.StagingDirectory)/karate
+              ls $(Build.SourcesDirectory)/karate
               cd tests/api-tests
-              java -jar $(Build.StagingDirectory)/karate/karate.jar -e integration .
+              java -jar $(Build.SourcesDirectory)/karate/karate.jar -e integration .
             displayName: 'Run Karate tests'
   - stage: deploy_prod
     displayName: 'Deploy Production'

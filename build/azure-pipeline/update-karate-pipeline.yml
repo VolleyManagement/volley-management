@@ -8,11 +8,11 @@ pool:
 steps:
 - script: |
     ls
-    ls tests/api-tests/
+    ls ./tests/api-tests/
 - task: PowerShell@2
   inputs: 
     targetType: 'filePath'
-    filePath: tests/api-tests/get-karate.ps1
+    filePath: ./tests/api-tests/get-karate.ps1
   displayName: 'Download Karate'
 
 - script: |

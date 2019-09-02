@@ -8,7 +8,7 @@ pool:
 steps:
 - script: |
     ls
-    ls ./tests/api-tests/
+    ls tests/api-tests/
 - task: PowerShell@2
   inputs: 
     targetType: 'filePath'

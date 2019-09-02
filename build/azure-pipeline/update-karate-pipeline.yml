@@ -6,6 +6,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- script: |
+    ls
+    ls tests/api-tests/
 - task: PowerShell@2
   inputs: 
     targetType: 'filePath'

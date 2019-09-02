@@ -1,0 +1,11 @@
+pool:
+  vmImage: 'windows-2019'
+
+steps:
+- script: ./tests/api-tests/get-karate.ps1
+  displayName: 'Download Karate'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'

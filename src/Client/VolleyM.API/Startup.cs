@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleInjector;
+using VolleyM.API.Authentication;
 using VolleyM.API.Extensions;
 using VolleyM.Infrastructure.Bootstrap;
 
@@ -26,6 +27,9 @@ namespace VolleyM.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.UseJwtAuth()
+                .AddAuth0JwtBearer(_config.GetSection("Auth0").Get<Auth0Options>());
+
             services.AddControllers()
                 .AddVolleyManagementApiParts(_assemblyBootstrapper);
 
@@ -49,6 +53,14 @@ namespace VolleyM.API
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            if (env.IsDevelopment())
+            {
+                // Turn on on dev only until we have UI ready
+                app.UseAuthorization();
+            }
 
             app.UseEndpoints(endpoints =>
             {

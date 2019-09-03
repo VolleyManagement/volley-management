@@ -17,7 +17,7 @@ namespace VolleyM.API.Authentication
         public static AuthenticationBuilder AddAuth0JwtBearer(this AuthenticationBuilder builder, Auth0Options opts) =>
             builder.AddJwtBearer(options =>
             {
-                options.Authority = opts.Domain;
+                options.Authority = $"https://{opts.Domain}/";
                 options.Audience = opts.ApiIdentifier;
             });
     }

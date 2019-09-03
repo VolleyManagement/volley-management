@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contributors;
@@ -8,6 +9,7 @@ namespace VolleyM.API.Contributors
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ContributorsController : ControllerBase
     {
         private readonly IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;

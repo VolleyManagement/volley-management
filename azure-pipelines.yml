@@ -75,6 +75,7 @@ stages:
               azureSubscription: 'Azure VM Integration'
               appName: 'staging-volley-mgmt'
               containers: '$(docker_repository_name):$(image_tag)'
+              appSettings: '-ASPNETCORE_ENVIRONMENT Staging'
       - job: run_api_tests
         displayName: Run API Tests
         dependsOn:
@@ -107,3 +108,4 @@ stages:
               azureSubscription: 'Azure VM Prod'
               appName: 'volley-prod'
               containers: '$(docker_repository_name):$(image_tag)'
+              appSettings: '-ASPNETCORE_ENVIRONMENT Production'

@@ -7,5 +7,21 @@
 			"path": "src\\VolleyManagement.WebClient"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.background": "#a4fb5b",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#4497fa",
+			"activityBarBadge.foreground": "#15202b",
+			"titleBar.activeBackground": "#88fa29",
+			"titleBar.inactiveBackground": "#88fa2999",
+			"titleBar.activeForeground": "#15202b",
+			"titleBar.inactiveForeground": "#15202b99",
+			"statusBar.background": "#88fa29",
+			"statusBarItem.hoverBackground": "#6eea05",
+			"statusBar.foreground": "#15202b"
+		},
+		"peacock.color": "#88fa29"
+	}
 }

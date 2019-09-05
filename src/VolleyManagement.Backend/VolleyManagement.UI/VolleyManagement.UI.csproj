@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VolleyManagement.UI</RootNamespace>
     <AssemblyName>VolleyManagement.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>43125</IISExpressSSLPort>
@@ -584,6 +584,8 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Areas\Mvc\Views\Tournaments\Archived.cshtml" />
+    <None Include="Properties\PublishProfiles\volley-mgmt - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\volley-mgmt - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\volley-mgmt-app - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />

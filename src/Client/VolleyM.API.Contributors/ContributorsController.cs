@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contributors;
 
@@ -20,6 +21,17 @@ namespace VolleyM.API.Contributors
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAll()
+        {
+            var result = await _handler.Handle(new GetAllContributors.Request());
+
+            return Ok(result);
+        }
+
+        // Temporary to test authentication
+        [HttpGet]
+        [Authorize]
+        [Route("protected")]
+        public async Task<IActionResult> GetProtected()
         {
             var result = await _handler.Handle(new GetAllContributors.Request());
 

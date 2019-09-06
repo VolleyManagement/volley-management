@@ -27,6 +27,7 @@ namespace VolleyM.API.Contributors
             return Ok(result);
         }
 
+        // Temporary to test authentication
         [HttpGet]
         [Authorize]
         [Route("protected")]

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleInjector;
 using VolleyM.API.Authentication;
+using VolleyM.API.CORS;
 using VolleyM.API.Extensions;
 using VolleyM.Infrastructure.Bootstrap;
 
@@ -30,6 +31,8 @@ namespace VolleyM.API
             services.UseJwtAuth()
                 .AddAuth0JwtBearer(_config.GetSection("Auth0").Get<Auth0Options>());
 
+            services.AddCorsFromSettings(_config.GetSection("CORS").Get<CorsOptions>());
+
             services.AddControllers()
                 .AddVolleyManagementApiParts(_assemblyBootstrapper);
 
@@ -53,6 +56,8 @@ namespace VolleyM.API
             }
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 

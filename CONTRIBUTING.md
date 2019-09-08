@@ -2,7 +2,7 @@
 
 First off, thanks for taking the time to contribute!
 
-The following is a set of guidelines for contributing to Volley Managment. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to Volley Management. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 🏗 UNDER CONSTRUCTION 🏗
 
@@ -32,13 +32,15 @@ Before creating bug reports, please check existing open issues as you might find
 
 Log issue in the [issue tracker](https://github.com/VolleyManagement/volley-management/issues).
 
-Before creating suggestions reports, please check existing open issues as you might find out that you don't need to create one. Please include as many details as possible including but not limited to reasononing, design decisions, potential impact on existing code.
+Before creating suggestions reports, please check existing open issues as you might find out that you don't need to create one. Please include as many details as possible including but not limited to reasoning, design decisions, potential impact on existing code.
 
 ### Branch naming
 
 Project has a CI configured to work with following branch naming pattern:
 
-**issue_#{issue number}_short_issue_description_with_underscores**
+**ab#{issue number}_short_issue_description_with_underscores**
+
+_Note: 'ab' stands for Azure Boards and used to link issue to the corresponding work item._
 
 ### Pull Requests
 
@@ -54,19 +56,17 @@ Check out integrated issue tracker to see what team is working on. We have a cou
 
 ## Development Environment
 
-Minimum sofware requirements:
+Minimum software requirements:
 
-* .NET 4.7
-* VS 2017 any edition
-* SpecFlow extension for VS 2017
-* SQL Server 2008-2016 (2016 LocalDB is default but you can change connection string)
+* .NET Core 3
+* VS 2019 any edition
+* Azure Storage Emulator
 
 All dependencies are managed via NuGet so you don't need to take any additional steps to acquire dependencies.
 
 Project uses integration with several external systems:
 
-* Google OAuth provider
-* Re-captcha
+* Auth0
 * Gmail and/or SendGrid
 
 In order to test/debug/use features using those integrations you might need to create appropriate profiles at following providers and use secrets provided in order to run system.

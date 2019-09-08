@@ -60,12 +60,7 @@ namespace VolleyM.API
             app.UseCors();
 
             app.UseAuthentication();
-
-            if (env.IsDevelopment())
-            {
-                // Turn on on dev only until we have UI ready
-                app.UseAuthorization();
-            }
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

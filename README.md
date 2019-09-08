@@ -79,11 +79,17 @@ Before you run them you need to run application locally.
 
 3. Install latest Java Runtime.
 
-4. Run all tests:
+4. Set Environment variables required to run locally:
+
+> `.\set-dev-envirronment.ps1`
+
+_Note: You might need to restart VS Code in order for variable to take effect_
+
+5. Run all tests:
 
 > `java -jar karate.jar -e dev .`
 
-5. You can use Karate Runner extension to run any particular test as well.
+6. You can use Karate Runner extension to run any particular test as well.
 
 ## Additional references ##
 

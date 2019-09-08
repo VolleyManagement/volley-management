@@ -91,7 +91,9 @@ stages:
               downloadDirectory: '$(System.DefaultWorkingDirectory)'
           - script: |
               cd tests/api-tests
-              java -jar $(System.DefaultWorkingDirectory)/karate.jar -e integration .
+              java -jar $(System.DefaultWorkingDirectory)/karate.jar -e staging .
+            env:
+              VM_KARATE_AUTH0_CLIENT_SECRET: $(vm_api_tests_auth0_secret)
             displayName: 'Run Karate tests'
   - stage: deploy_prod
     displayName: 'Deploy Production'

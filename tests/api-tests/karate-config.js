@@ -26,7 +26,7 @@ function fn() {
   }
 
   // Authenticate request
-  var result = karate.callSingle('authenticate.feature', config);
+  var result = karate.callSingle('file:./common/authenticate.feature', config);
   config.auth_header = 'Bearer ' + result.access_token;
 
   return config;

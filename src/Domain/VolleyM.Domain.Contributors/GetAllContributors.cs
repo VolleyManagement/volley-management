@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Contributors
@@ -23,6 +23,7 @@ namespace VolleyM.Domain.Contributors
 
             public Task<List<ContributorDto>> Handle(Request request)
             {
+                Log.Information("Handler {Handler} action called.", nameof(GetAllContributors));
                 return _query.Execute(Unit.Value);
             }
         }

@@ -10,6 +10,8 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 
 ### Checklist
 
+- [ ] Logger logs all newly added types correctly
+
 #### Design
 
 - [ ] Web API layer contains as little logic as possible

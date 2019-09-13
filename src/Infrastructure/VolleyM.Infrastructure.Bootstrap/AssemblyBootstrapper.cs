@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AutoMapper.Configuration;
+using Serilog;
+using SimpleInjector;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition.Hosting;
@@ -6,8 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using AutoMapper.Configuration;
-using SimpleInjector;
 
 namespace VolleyM.Infrastructure.Bootstrap
 {
@@ -32,6 +33,7 @@ namespace VolleyM.Infrastructure.Bootstrap
         /// <param name="assemblyPath">Location where bootstrapped assemblies located</param>
         public void Compose(string assemblyPath)
         {
+            Log.Debug("AssemblyBootstrapper started");
             // Catalogs does not exists in Dotnet Core, so you need to manage your own.
             var assemblies = DiscoverAssemblies(assemblyPath, "VolleyM.");
             var configuration = new ContainerConfiguration()
@@ -40,7 +42,7 @@ namespace VolleyM.Infrastructure.Bootstrap
             using var container = configuration.CreateContainer();
             Bootstrappers = container.GetExports<IAssemblyBootstrapper>().ToList();
             var bootstrappedAssemblies = new List<Assembly>();
-            Console.WriteLine($"Discovered {Bootstrappers.Count} bootstrappers.");
+            Log.Debug("Discovered {BootstrappersCount} bootstrappers.", Bootstrappers.Count);
 
             foreach (var bootstrapper in Bootstrappers)
             {
@@ -48,6 +50,7 @@ namespace VolleyM.Infrastructure.Bootstrap
             }
 
             DiscoveredAssemblies = bootstrappedAssemblies.ToImmutableList();
+            Log.Information("Discovered and loaded {BootstrappersCount} bootstrappers.", Bootstrappers.Count);
         }
 
         public void RegisterDependencies(Container iocContainer)
@@ -74,7 +77,7 @@ namespace VolleyM.Infrastructure.Bootstrap
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Failed to {name} in bootstrapper. Type={instance.GetType().FullName}. Exception={e}");
+                Log.Warning(e, $"Failed to {name} in bootstrapper. Type={{BootstrapperType}}", instance.GetType().FullName);
             }
         }
 

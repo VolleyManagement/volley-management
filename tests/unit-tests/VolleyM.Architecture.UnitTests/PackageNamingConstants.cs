@@ -10,8 +10,8 @@
         internal const string API_NS = "API";
 
         internal const string SIMPLE_INJECTOR_NS = "SimpleInjector";
-        internal const string MEDIATR_NS = "MediatR";
         internal const string AUTOMAPPER_NS = "AutoMapper";
+        internal const string SERILOG_NS = "Serilog";
 
         internal static readonly string[] AllowedLayers = {
             DOMAIN_NS,

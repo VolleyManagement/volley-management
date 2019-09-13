@@ -53,13 +53,10 @@ namespace VolleyM.Architecture.UnitTests
                 var filtered = references
                     .Where(NotSystemDependency)
                     .Where(p => NotDependency(p, PackageNamingConstants.SIMPLE_INJECTOR_NS))
-                    .Where(p => NotDependency(p, PackageNamingConstants.MEDIATR_NS))
-                    .Where(p => NotDependency(p, PackageNamingConstants.AUTOMAPPER_NS));
-
-                if (!IsDomainContracts(domainAssembly))
-                {
-                    filtered = filtered.Where(a => NotDependency(a, allowedVmAssemblies));
-                }
+                    .Where(p => NotDependency(p, PackageNamingConstants.AUTOMAPPER_NS))
+                    .Where(p => NotDependency(p, PackageNamingConstants.SERILOG_NS))
+                    .Where(p => NotDependency(p, $"{PackageNamingConstants.ROOT_NS}.Infrastructure.Bootstrap"))
+                    .Where(a => NotDependency(a, allowedVmAssemblies));
 
                 filtered.Should().BeEmpty("{0} assembly should reference only allowed assemblies",
                     domainAssembly.GetName().Name);
@@ -109,9 +106,5 @@ namespace VolleyM.Architecture.UnitTests
             => !allowed.Any(dep => StartsWith(assembly, dep));
         private static bool StartsWith(AssemblyName assembly, string packageName)
                 => assembly.Name.StartsWith(packageName, StringComparison.OrdinalIgnoreCase);
-
-        private static bool IsDomainContracts(Assembly assembly) =>
-            string.Compare(assembly.GetName().Name,
-                $"{FULL_DOMAIN_NS}.Contracts", StringComparison.OrdinalIgnoreCase) == 0;
     }
 }

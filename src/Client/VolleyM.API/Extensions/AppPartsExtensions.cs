@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Runtime.Loader;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+using Serilog;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.API.Extensions
@@ -17,7 +16,7 @@ namespace VolleyM.API.Extensions
                 .Select(a => new AssemblyPart(a))
                 .ToList();
 
-            Console.WriteLine($"API: Parts discovered. Count={pluginAssemblies.Count}.");
+            Log.Information("API: {APIParts} Parts discovered.", pluginAssemblies.Count);
 
             return mvcBuilder.ConfigureApplicationPartManager(apm => pluginAssemblies.ForEach(apm.ApplicationParts.Add));
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contributors;
 
@@ -22,6 +23,7 @@ namespace VolleyM.API.Contributors
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
+            Log.Information("Controller {Action} action called.", nameof(GetAll));
             var result = await _handler.Handle(new GetAllContributors.Request());
 
             return Ok(result);
@@ -33,6 +35,7 @@ namespace VolleyM.API.Contributors
         [Route("protected")]
         public async Task<IActionResult> GetProtected()
         {
+            Log.Information("Controller {Action} action called.", nameof(GetProtected));
             var result = await _handler.Handle(new GetAllContributors.Request());
 
             return Ok(result);

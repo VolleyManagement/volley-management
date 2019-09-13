@@ -11,14 +11,14 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
     public class ContributorsSteps : Feature
     {
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
-        private readonly GetAllContributors.IQueryObject _queryMock;
+        private readonly IQuery<Unit, List<ContributorDto>> _queryMock;
 
         private List<ContributorDto> _expectedResult;
         private List<ContributorDto> _actualResult;
 
         public ContributorsSteps()
         {
-            _queryMock = Substitute.For<GetAllContributors.IQueryObject>();
+            _queryMock = Substitute.For<IQuery<Unit, List<ContributorDto>>>();
         }
 
         [Given("several contributors exist")]

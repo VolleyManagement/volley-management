@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Serilog;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Contributors
 {
+    using IQueryObject = IQuery<Unit, List<ContributorDto>>;
+
     public class GetAllContributors
     {
         public class Request : IRequest<List<ContributorDto>>
@@ -16,21 +17,9 @@ namespace VolleyM.Domain.Contributors
         {
             private readonly IQueryObject _query;
 
-            public Handler(IQueryObject query)
-            {
-                _query = query;
-            }
+            public Handler(IQueryObject query) => _query = query;
 
-            public Task<List<ContributorDto>> Handle(Request request)
-            {
-                Log.Information("Handler {Handler} action called.", nameof(GetAllContributors));
-                return _query.Execute(Unit.Value);
-            }
-        }
-
-        public interface IQueryObject : IQuery<Unit, List<ContributorDto>>
-        {
-
+            public Task<List<ContributorDto>> Handle(Request request) => _query.Execute(Unit.Value);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
@@ -14,8 +15,7 @@ namespace VolleyM.API
             Serilog.Debugging.SelfLog.Enable(Console.Error);
 
             var config = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .ReadFrom.Configuration(ReadConfiguration())
                 .Enrich.FromLogContext()
                 .WriteTo.File(new RenderedCompactJsonFormatter(), "volleym-api.log", LogEventLevel.Information)
                 .WriteTo.Console(theme: GetVolleyMTheme());
@@ -36,5 +36,17 @@ namespace VolleyM.API
 
             return new SystemConsoleTheme(dictionary);
         }
+
+        private static IConfigurationRoot ReadConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("serilog.json", true, reloadOnChange: true)
+                .AddJsonFile($"serilog.{GetEnvironmentName()}.json", true, reloadOnChange: true);
+
+            return builder.Build();
+        }
+
+        private static string GetEnvironmentName() =>
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
     }
 }

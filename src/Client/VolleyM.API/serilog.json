@@ -1,0 +1,16 @@
+{
+  "Serilog": {
+    "LevelSwitches": {
+      "$appLogLevel": "Debug",
+      "$msfLogLevel": "Information",
+      "$sysLogLevel": "Error"
+    },
+    "MinimumLevel": {
+      "ControlledBy": "$appLogLevel",
+      "Override": {
+        "Microsoft": "$msfLogLevel",
+        "System": "$sysLogLevel"
+      }
+    }
+  } 
+}

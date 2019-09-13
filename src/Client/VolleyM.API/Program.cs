@@ -3,8 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Serilog.Core;
 
 namespace VolleyM.API
 {
@@ -14,7 +16,7 @@ namespace VolleyM.API
         {
             Console.WriteLine("VolleyM.API Host starting...");
 
-            Log.Logger = Logging.CreateLoggerConfig().CreateLogger();
+            Log.Logger = ConfigureLogging();
 
             try
             {
@@ -34,6 +36,14 @@ namespace VolleyM.API
             {
                 Log.CloseAndFlush();
             }
+        }
+
+        private static Logger ConfigureLogging()
+        {
+            // Integrate W3C Trace Context specification
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
+            return Logging.CreateLoggerConfig().CreateLogger();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args, string pluginPath) =>

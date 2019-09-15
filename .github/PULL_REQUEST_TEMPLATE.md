@@ -26,9 +26,7 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 
 - [ ] Naming: Initial state and expected result are properly stated
 - [ ] Test follows [AAA](https://medium.com/@pjbgf/title-testing-code-ocd-and-the-aaa-pattern-df453975ab80) pattern.
-- [ ] Test is Isolated
-- [ ] Mock instances and expected instances do not share references
-- [ ] When new property is added all related comparers are updated
+- [ ] Tests resolve `IRequestHandler<,>` instance instead of concrete implementation
 
 ### New Project Checklist
 

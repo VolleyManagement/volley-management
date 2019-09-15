@@ -25,13 +25,13 @@
             "Players",
             "Tournaments",
             "TournamentCalendar",
+            "IdentityAndAccess",
             //Not context but allowed
             "Contracts"
         };
 
         internal static readonly string[] AllowedMicrosoftReferences = {
-            "Microsoft.AspNetCore",
-            "Microsoft.Extensions"
+            "Microsoft.CodeAnalysis.LiveUnitTesting.Runtime"
         };
     }
 }

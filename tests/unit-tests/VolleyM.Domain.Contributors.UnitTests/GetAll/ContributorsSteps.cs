@@ -1,14 +1,14 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using System.Collections.Generic;
-using System.Threading;
+using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
 {
     [FeatureFile(@"./GetAll/Contributors.feature")]
-    public class ContributorsSteps : Feature
+    public class ContributorsSteps : ContributorsStepsBase
     {
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
         private readonly IQuery<Unit, List<ContributorDto>> _queryMock;
@@ -16,9 +16,11 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         private List<ContributorDto> _expectedResult;
         private List<ContributorDto> _actualResult;
 
-        public ContributorsSteps()
+        public ContributorsSteps(ContributorsFixture fixture) : base(fixture)
         {
             _queryMock = Substitute.For<IQuery<Unit, List<ContributorDto>>>();
+
+            Register(() => _queryMock, Lifestyle.Scoped);
         }
 
         [Given("several contributors exist")]
@@ -32,7 +34,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         [When("I query all contributors")]
         public async void WhenIQueryAllContributors()
         {
-            _handler = CreateHandler();
+            _handler = Resolve<IRequestHandler<GetAllContributors.Request, List<ContributorDto>>>();
 
             _actualResult = await _handler.Handle(new GetAllContributors.Request());
         }
@@ -42,9 +44,6 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         {
             _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available contributors");
         }
-
-        private GetAllContributors.Handler CreateHandler() =>
-            new GetAllContributors.Handler(_queryMock);
 
         private void MockQueryObject(List<ContributorDto> testData) =>
             _queryMock.Execute(Unit.Value).Returns<List<ContributorDto>>(testData);

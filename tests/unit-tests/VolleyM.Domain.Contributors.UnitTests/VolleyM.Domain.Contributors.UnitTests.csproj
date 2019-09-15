@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
+    <ProjectReference Include="..\VolleyM.Domain.UnitTests.Framework\VolleyM.Domain.UnitTests.Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

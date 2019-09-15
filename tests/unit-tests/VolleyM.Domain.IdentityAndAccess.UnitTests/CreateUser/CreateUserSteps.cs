@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using Xunit.Gherkin.Quick;
@@ -6,7 +7,7 @@ using Xunit.Gherkin.Quick;
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
     [FeatureFile(@"./CreateUser/CreateUser.feature")]
-    public class CreateUserSteps : Feature
+    public class CreateUserSteps : IdentityAndAccessStepsBase
     {
         private readonly UserId aUserId = new UserId("google|123321");
         private readonly TenantId aTenantIdId = new TenantId("unit-tests");
@@ -17,9 +18,12 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
         private IUserRepository _repositoryMock;
 
-        public CreateUserSteps()
+        public CreateUserSteps(IdentityAndAccessFixture fixture)
+            : base(fixture)
         {
             _repositoryMock = Substitute.For<IUserRepository>();
+
+            Register<IUserRepository>(() => _repositoryMock, Lifestyle.Scoped);
         }
 
         [Given("UserId provided")]
@@ -37,12 +41,10 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [When("I execute CreateUser")]
         public async void WhenExecuteCommand()
         {
-            _handler = CreateHandler();
+            _handler = Resolve<IRequestHandler<CreateUser.Request, Unit>>();
 
             await _handler.Handle(_request);
         }
-
-        private IRequestHandler<CreateUser.Request, Unit> CreateHandler() => new CreateUser.Handler(_repositoryMock);
 
         [Then("user is created")]
         public void ThenUserIsCreated()

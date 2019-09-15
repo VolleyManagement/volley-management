@@ -15,7 +15,7 @@ namespace VolleyM.Architecture.UnitTests
     {
         private static readonly AssembliesFixture Instance = new AssembliesFixture();
 
-        private Lazy<ImmutableList<string>> _allAssemblyNames { get; } 
+        private Lazy<ImmutableList<string>> _allAssemblyNames { get; }
             = new Lazy<ImmutableList<string>>(GetAllAssemblyNames, LazyThreadSafetyMode.ExecutionAndPublication);
 
         private Lazy<ImmutableList<Assembly>> _allAssemblies { get; }
@@ -24,14 +24,14 @@ namespace VolleyM.Architecture.UnitTests
         internal static ImmutableList<string> AllAssemblyNames => Instance._allAssemblyNames.Value;
         internal static ImmutableList<Assembly> AllAssemblies => Instance._allAssemblies.Value;
 
-        internal static IEnumerable<Assembly> GetDomainAssemblies() 
+        internal static IEnumerable<Assembly> GetDomainAssemblies()
             => AllAssemblies.Where(a => a.FullName.StartsWith($"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.DOMAIN_NS}"));
         internal static IEnumerable<Assembly> GetApiAssemblies()
             => AllAssemblies.Where(a => a.FullName.StartsWith($"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.API_NS}"));
 
         private static ImmutableList<string> GetAllAssemblyNames()
         {
-            var slnPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../../../src/VolleyManagement.sln");
+            var slnPath = Path.Combine(GetRepositoryRootPath(), "src/VolleyManagement.sln");
             var file = new FileInfo(slnPath);
 
             var sln = SolutionFile.Parse(file.FullName);
@@ -57,6 +57,26 @@ namespace VolleyM.Architecture.UnitTests
             }
 
             return assemblies.ToImmutableList();
+        }
+
+        private static string GetRepositoryRootPath()
+        {
+            static bool IsRoot(DirectoryInfo di) => di.Parent == null;
+
+            static bool HasGitFolder(DirectoryInfo di)
+            {
+                return di.EnumerateDirectories()
+                    .Any(cd => cd.Name.Equals(".git", StringComparison.OrdinalIgnoreCase));
+            }
+
+            var repoDir = new DirectoryInfo(Directory.GetCurrentDirectory());
+
+            while (!HasGitFolder(repoDir) || IsRoot(repoDir))
+            {
+                repoDir = repoDir?.Parent;
+            }
+
+            return repoDir?.FullName;
         }
     }
 }

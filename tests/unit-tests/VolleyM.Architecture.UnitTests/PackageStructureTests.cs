@@ -52,6 +52,7 @@ namespace VolleyM.Architecture.UnitTests
 
                 var filtered = references
                     .Where(NotSystemDependency)
+                    .Where(NotMicrosoftDependency)
                     .Where(p => NotDependency(p, PackageNamingConstants.SIMPLE_INJECTOR_NS))
                     .Where(p => NotDependency(p, PackageNamingConstants.AUTOMAPPER_NS))
                     .Where(p => NotDependency(p, PackageNamingConstants.SERILOG_NS))
@@ -74,11 +75,11 @@ namespace VolleyM.Architecture.UnitTests
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(AllAssembliesAddedToTheArchitectureTests))]
         public void AllAssembliesAddedToTheArchitectureTests()
         {
             var assemblies = AssembliesFixture.AllAssemblyNames;
-            var failedAssemblies = new List<string>();
+            var missingAssemblies = new List<string>();
 
             foreach (var assembly in assemblies)
             {
@@ -88,11 +89,11 @@ namespace VolleyM.Architecture.UnitTests
                 }
                 catch (Exception)
                 {
-                    failedAssemblies.Add(assembly);
+                    missingAssemblies.Add(assembly);
                 }
             }
 
-            failedAssemblies.Should().BeEmpty("all projects should be referenced by Architecture.UnitTests");
+            missingAssemblies.Should().BeEmpty("all projects should be referenced by Architecture.UnitTests");
         }
 
         private static bool NotSystemDependency(AssemblyName assembly)

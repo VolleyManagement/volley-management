@@ -9,33 +9,33 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
     [FeatureFile(@"./CreateUser/CreateUser.feature")]
     public class CreateUserSteps : IdentityAndAccessStepsBase
     {
-        private readonly UserId aUserId = new UserId("google|123321");
-        private readonly TenantId aTenantIdId = new TenantId("unit-tests");
+        private readonly UserId _aUserId = new UserId("google|123321");
+        private readonly TenantId _aTenantIdId = new TenantId("unit-tests");
 
-        private CreateUser.Request _request = new CreateUser.Request();
+        private readonly CreateUser.Request _request = new CreateUser.Request();
 
         private IRequestHandler<CreateUser.Request, Unit> _handler;
 
-        private IUserRepository _repositoryMock;
+        private readonly IUserRepository _repositoryMock;
 
         public CreateUserSteps(IdentityAndAccessFixture fixture)
             : base(fixture)
         {
             _repositoryMock = Substitute.For<IUserRepository>();
 
-            Register<IUserRepository>(() => _repositoryMock, Lifestyle.Scoped);
+            Register(() => _repositoryMock, Lifestyle.Scoped);
         }
 
         [Given("UserId provided")]
         public void GivenUserIdProvided()
         {
-            _request.Id = aUserId;
+            _request.Id = _aUserId;
         }
 
         [And("Tenant provided")]
         public void AndTenantProvided()
         {
-            _request.Tenant = aTenantIdId;
+            _request.Tenant = _aTenantIdId;
         }
 
         [When("I execute CreateUser")]
@@ -50,7 +50,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         public void ThenUserIsCreated()
         {
             _repositoryMock.Received()
-                .Add(Arg.Is<User>(u => u.Id == aUserId || u.Tenant == aTenantIdId));
+                .Add(Arg.Is<User>(u => u.Id == _aUserId || u.Tenant == _aTenantIdId));
         }
     }
 }

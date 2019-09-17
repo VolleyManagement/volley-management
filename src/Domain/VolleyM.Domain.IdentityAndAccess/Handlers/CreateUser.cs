@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
@@ -21,10 +22,17 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                 _repository = repository;
             }
 
-            public Task<Unit> Handle(Request request)
+            public async Task<Result<Unit>> Handle(Request request)
             {
+                var existing = await _repository.Get(request.Id);
+
+                if (existing.IsSuccessful)
+                {
+                    return Error.Conflict();
+                }
+
                 var user = new User(request.Id, request.Tenant);
-                return _repository.Add(user);
+                return await _repository.Add(user);
             }
         }
     }

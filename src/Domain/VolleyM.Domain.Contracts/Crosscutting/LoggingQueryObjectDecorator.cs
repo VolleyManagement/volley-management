@@ -4,12 +4,13 @@ using Serilog;
 namespace VolleyM.Domain.Contracts.Crosscutting
 {
     public class LoggingQueryObjectDecorator<TParam, TResponse> : IQuery<TParam, TResponse>
+        where TResponse: class
     {
         private readonly IQuery<TParam, TResponse> _query;
 
         public LoggingQueryObjectDecorator(IQuery<TParam, TResponse> query) => _query = query;
 
-        public Task<TResponse> Execute(TParam param)
+        public Task<Result<TResponse>> Execute(TParam param)
         {
             var logger = Log.ForContext(_query.GetType());
 

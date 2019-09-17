@@ -13,8 +13,8 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
         private readonly IQuery<Unit, List<ContributorDto>> _queryMock;
 
-        private List<ContributorDto> _expectedResult;
-        private List<ContributorDto> _actualResult;
+        private Result<List<ContributorDto>> _expectedResult;
+        private Result<List<ContributorDto>> _actualResult;
 
         public ContributorsSteps(ContributorsFixture fixture) : base(fixture)
         {
@@ -46,7 +46,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         }
 
         private void MockQueryObject(List<ContributorDto> testData) =>
-            _queryMock.Execute(Unit.Value).Returns<List<ContributorDto>>(testData);
+            _queryMock.Execute(Unit.Value).Returns(testData);
 
         private static List<ContributorDto> GetMockData() =>
             new List<ContributorDto> {

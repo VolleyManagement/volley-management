@@ -8,11 +8,12 @@ namespace VolleyM.Domain.UnitTests.Framework
     public class DomainStepsBase<TFixture> : Feature
         where TFixture : DomainPipelineFixtureBase
     {
-        private readonly Container _container = new Container();
+        private readonly Container _container;
         private readonly Scope _scope;
 
         protected DomainStepsBase(TFixture fixture)
         {
+            _container = new Container();
             _container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             foreach (var bootstrapper in fixture.GetBootstrappers())

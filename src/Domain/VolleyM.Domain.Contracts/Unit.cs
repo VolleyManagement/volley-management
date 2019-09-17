@@ -6,7 +6,7 @@ namespace VolleyM.Domain.Contracts
     /// <summary>
     /// Represents a void type, since <see cref="System.Void"/> is not a valid return type in C#.
     /// </summary>
-    public struct Unit : IEquatable<Unit>, IComparable<Unit>, IComparable
+    public class Unit : IEquatable<Unit>, IComparable<Unit>, IComparable
     {
         /// <summary>
         /// Default and only value of the <see cref="Unit"/> type.

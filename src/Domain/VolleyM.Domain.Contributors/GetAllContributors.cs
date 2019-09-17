@@ -19,7 +19,7 @@ namespace VolleyM.Domain.Contributors
 
             public Handler(IQueryObject query) => _query = query;
 
-            public Task<List<ContributorDto>> Handle(Request request) => _query.Execute(Unit.Value);
+            public Task<Result<List<ContributorDto>>> Handle(Request request) => _query.Execute(Unit.Value);
         }
     }
 }

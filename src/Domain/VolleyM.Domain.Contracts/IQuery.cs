@@ -8,7 +8,8 @@ namespace VolleyM.Domain.Contracts
     /// <typeparam name="TParam">Query parameters</typeparam>
     /// <typeparam name="TResult">Query result</typeparam>
     public interface IQuery<in TParam, TResult>
+        where TResult : class
     {
-        Task<TResult> Execute(TParam param);
+        Task<Result<TResult>> Execute(TParam param);
     }
 }

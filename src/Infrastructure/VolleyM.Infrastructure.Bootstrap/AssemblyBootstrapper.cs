@@ -77,7 +77,9 @@ namespace VolleyM.Infrastructure.Bootstrap
             }
             catch (Exception e)
             {
+#pragma warning disable Serilog004 // Constant MessageTemplate verifier
                 Log.Warning(e, $"Failed to {name} in bootstrapper. Type={{BootstrapperType}}", instance.GetType().FullName);
+#pragma warning restore Serilog004 // Constant MessageTemplate verifier
             }
         }
 

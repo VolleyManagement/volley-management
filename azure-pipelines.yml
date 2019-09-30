@@ -31,9 +31,9 @@ stages:
         displayName: Source Code
         steps:
           - task: DotNetCoreInstaller@0
-            displayName: 'Install .net core 3.0 (preview)'
+            displayName: 'Install .net core 3.0'
             inputs:
-              version: '3.0.100-preview9-014004'
+              version: '3.0.100'
           - task: DotNetCoreCLI@2
             displayName: .net build
             inputs:

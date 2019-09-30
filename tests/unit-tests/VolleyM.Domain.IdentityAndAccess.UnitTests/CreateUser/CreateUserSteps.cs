@@ -45,13 +45,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [And("such user already exists")]
         public void AndUserExists()
         {
-            _repositoryMock.Get(aUserId).Returns(new User(aUserId, aTenantIdId));
+            _repositoryMock.Get(_aUserId).Returns(new User(_aUserId, _aTenantIdId));
         }
 
         [And("user does not exist")]
         public void AndDoesNotUserExist()
         {
-            _repositoryMock.Get(aUserId).Returns(Error.NotFound());
+            _repositoryMock.Get(_aUserId).Returns(Error.NotFound());
         }
 
         [When("I execute CreateUser")]

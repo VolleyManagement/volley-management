@@ -91,6 +91,8 @@ _Note: You might need to restart VS Code in order for variable to take effect_
 
 6. You can use Karate Runner extension to run any particular test as well.
 
+More info [here](../../wiki/Unit-Testing-Conventions).
+
 ## Additional references ##
 
 * [License](/LICENSE.md)

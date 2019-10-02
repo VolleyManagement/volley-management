@@ -26,7 +26,7 @@ namespace VolleyM.API.Contributors
             Log.Information("Controller {Action} action called.", nameof(GetAll));
             var result = await _handler.Handle(new GetAllContributors.Request());
 
-            return Ok(result);
+            return Ok(result.Value);
         }
 
         // Temporary to test authentication
@@ -38,7 +38,7 @@ namespace VolleyM.API.Contributors
             Log.Information("Controller {Action} action called.", nameof(GetProtected));
             var result = await _handler.Handle(new GetAllContributors.Request());
 
-            return Ok(result);
+            return Ok(result.Value);
         }
     }
 }

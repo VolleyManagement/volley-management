@@ -9,17 +9,23 @@ namespace VolleyM.Domain.UnitTests.Framework
 {
     public abstract class DomainPipelineFixtureBase : IDisposable
     {
-        public DomainPipelineFixtureBase()
+        protected DomainPipelineFixtureBase()
         {
             ConfigureLogger();
+
+            Log.Information("Test run started");
         }
 
-        private void ConfigureLogger()
+        private static void ConfigureLogger()
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Debug()
-                .WriteTo.Console(LogEventLevel.Information)
+                .WriteTo.File(
+                    "test-run.log",
+                    rollOnFileSizeLimit: true,
+                    fileSizeLimitBytes: 10 * 1024 * 1024/*10 MB*/,
+                    retainedFileCountLimit: 10)
                 .CreateLogger();
         }
 

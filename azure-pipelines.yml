@@ -45,6 +45,7 @@ stages:
             inputs:
               command: 'test'
               projects: $(sln_path)
+              arguments: '--filter Category=@unit'
       - job: container_build
         displayName: Container
         dependsOn: build_code
@@ -65,6 +66,16 @@ stages:
     displayName: "Integration"
     dependsOn: build
     jobs:
+      - job: integration_test
+        displayName: Integration Tests
+        steps:
+          - script: echo "##vso[task.setvariable TestTarget=azurecloud] test target configured"
+          - task: DotNetCoreCLI@2
+            displayName: .net test
+            inputs:
+              command: 'test'
+              projects: $(sln_path)
+              arguments: '--filter Category=@azurecloud'
       - job: deploy_app_service_int
         displayName: Deploy App Service
         steps:

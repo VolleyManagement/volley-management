@@ -3,6 +3,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Infrastructure.Bootstrap;
 
@@ -13,6 +14,7 @@ namespace VolleyM.Domain.UnitTests.Framework
         private const string TEST_TARGET_KEY = "TestTarget";
 
         private IConfiguration _configuration;
+        private Container _container;
 
         protected TestTarget Target { get; private set; }
 
@@ -23,8 +25,42 @@ namespace VolleyM.Domain.UnitTests.Framework
             ConfigureLogger();
 
             Log.Information("Test run started");
-
             Log.Information("Test is started for {Target}.", Target);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // no dispose in base
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected abstract IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers();
+
+        internal IEnumerable<IAssemblyBootstrapper> GetBootstrappers() =>
+            new List<IAssemblyBootstrapper>(GetAssemblyBootstrappers()) {
+                new DomainContractsAssemblyBootstrapper()
+            };
+
+        internal void ApplyContainer(Container container)
+        {
+            _container = container;
+        }
+
+        public TService Resolve<TService>() where TService : class
+            => _container.GetInstance<TService>();
+
+        public void Register<TInterface>(Func<TInterface> instanceCreator, Lifestyle lifestyle)
+            where TInterface : class
+        {
+            _container.Register(instanceCreator, lifestyle);
         }
 
         private void InitConfiguration()
@@ -68,26 +104,5 @@ namespace VolleyM.Domain.UnitTests.Framework
                     retainedFileCountLimit: 10)
                 .CreateLogger();
         }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // no dispose in base
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected abstract IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers();
-
-        internal IEnumerable<IAssemblyBootstrapper> GetBootstrappers() =>
-            new List<IAssemblyBootstrapper>(GetAssemblyBootstrappers()) {
-                new DomainContractsAssemblyBootstrapper()
-            };
     }
 }

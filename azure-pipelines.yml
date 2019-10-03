@@ -69,7 +69,7 @@ stages:
       - job: integration_test
         displayName: Integration Tests
         steps:
-          - script: echo "##vso[task.setvariable TestTarget=azurecloud] test target configured"
+          - script: echo "##vso[task.setvariable variable=TestTarget;]azurecloud"
           - task: DotNetCoreCLI@2
             displayName: .net test
             inputs:

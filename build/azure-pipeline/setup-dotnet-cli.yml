@@ -1,0 +1,7 @@
+# installs correct dotnet tool
+
+steps:
+  - task: DotNetCoreInstaller@0
+    displayName: 'Install .NET Core 3.0'
+    inputs:
+      version: '3.0.100'

@@ -106,7 +106,7 @@ This projects follows official [Angular Style Guide](https://angular.io/guide/st
 
 We put a lot of emphasis on writing useful unit tests which will communicate requirements, ease maintainability and serve as a safety net.
 
-See more details at [Unit Testing Conventions](../../wiki/Unit-Testing-Conventions)
+See more details at [Test Automation Strategy](../../wiki/Test-Automation-Strategy)
 
 ## Additional references
 

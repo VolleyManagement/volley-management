@@ -2,7 +2,7 @@
 
 Welcome to Volley Management project repository
 
-## Status
+## Status ##
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1ueugqjgg8qv7ajm?svg=true)](https://ci.appveyor.com/project/VolleyManagement/volley-management) [![Build Status](https://dev.azure.com/VolleyManagement/%CE%94%CE%B9%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%80%CE%B7/_apis/build/status/VolleyManagement.volley-management?branchName=master)](https://dev.azure.com/VolleyManagement/%CE%94%CE%B9%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%80%CE%B7/_build/latest?definitionId=1&branchName=master)
 
@@ -53,45 +53,7 @@ In production we use Azure DevOps Pipeline to build and deploy code.
 
 ### How to run tests ###
 
-#### Unit Tests ####
-
-Project uses xUnit framework.
-
-* Run tests using `dotnet`
-
-> `dotnet test src/VolleyManagement.sln`
-
-* Run using Visual Studio UI
-
-#### API Tests ####
-
-Project uses [Karate](https://github.com/intuit/karate) to test API.
-
-Before you run them you need to run application locally.
-
-1. Open `karate-tests` VS Code workspace
-  
-  * install recommended extensions
-
-2. Download Karate Standalone using script.
-
-> `.\get-karate.ps1`
-
-3. Install latest Java Runtime.
-
-4. Set Environment variables required to run locally:
-
-> `.\set-dev-envirronment.ps1`
-
-_Note: You might need to restart VS Code in order for variable to take effect_
-
-5. Run all tests:
-
-> `java -jar karate.jar -e dev .`
-
-6. You can use Karate Runner extension to run any particular test as well.
-
-More info [here](../../wiki/Unit-Testing-Conventions).
+[Instructions](../../wiki/Automated-Testing-Setup).
 
 ## Additional references ##
 

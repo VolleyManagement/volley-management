@@ -15,14 +15,14 @@ namespace VolleyM.Architecture.UnitTests
     {
         private static readonly AssembliesFixture Instance = new AssembliesFixture();
 
-        private Lazy<ImmutableList<string>> _allAssemblyNames { get; }
+        private Lazy<ImmutableList<string>> AllAssemblyNamesLazy { get; }
             = new Lazy<ImmutableList<string>>(GetAllAssemblyNames, LazyThreadSafetyMode.ExecutionAndPublication);
 
-        private Lazy<ImmutableList<Assembly>> _allAssemblies { get; }
+        private Lazy<ImmutableList<Assembly>> AllAssembliesLazy { get; }
             = new Lazy<ImmutableList<Assembly>>(GetAllAssemblies, LazyThreadSafetyMode.ExecutionAndPublication);
 
-        internal static ImmutableList<string> AllAssemblyNames => Instance._allAssemblyNames.Value;
-        internal static ImmutableList<Assembly> AllAssemblies => Instance._allAssemblies.Value;
+        internal static ImmutableList<string> AllAssemblyNames => Instance.AllAssemblyNamesLazy.Value;
+        internal static ImmutableList<Assembly> AllAssemblies => Instance.AllAssembliesLazy.Value;
 
         internal static IEnumerable<Assembly> GetDomainAssemblies()
             => AllAssemblies.Where(a => a.FullName.StartsWith($"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.DOMAIN_NS}"));

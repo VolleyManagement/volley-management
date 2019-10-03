@@ -1,17 +1,18 @@
-﻿using System;
+﻿using FluentAssertions;
+using NetArchTest.Rules.Policies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using FluentAssertions;
-using NetArchTest.Rules.Policies;
 using Xunit;
 
 namespace VolleyM.Architecture.UnitTests
 {
+
     public class PackageStructureTests
     {
-        private static readonly string FULL_DOMAIN_NS = $"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.DOMAIN_NS}";
+        private static readonly string FullDomainNs = $"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.DOMAIN_NS}";
 
         [Fact(DisplayName = nameof(AllProjectsUseAllowedLayers))]
         public void AllProjectsUseAllowedLayers()
@@ -41,7 +42,7 @@ namespace VolleyM.Architecture.UnitTests
 
             var allowedVmAssemblies = new[]
             {
-                $"{FULL_DOMAIN_NS}.Contracts",
+                $"{FullDomainNs}.Contracts",
                 $"{PackageNamingConstants.ROOT_NS}.Infrastructure.Bootstrap"
             };
 

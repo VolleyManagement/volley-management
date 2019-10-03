@@ -22,6 +22,8 @@ namespace VolleyM.Domain.UnitTests.Framework
             }
 
             _scope = AsyncScopedLifestyle.BeginScope(_container);
+
+            fixture.ApplyContainer(_container);
         }
 
         protected TService Resolve<TService>() where TService : class

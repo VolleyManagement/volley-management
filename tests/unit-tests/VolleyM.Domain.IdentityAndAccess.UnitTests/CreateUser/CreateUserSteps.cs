@@ -1,9 +1,7 @@
-﻿using System;
-using FluentAssertions;
-using NSubstitute;
-using SimpleInjector;
+﻿using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
+using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
@@ -13,45 +11,50 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
     {
         private readonly UserId _aUserId = new UserId("google|123321");
         private readonly TenantId _aTenantIdId = new TenantId("unit-tests");
+        
+        private readonly IdentityAndAccessFixture _fixture;
 
         private readonly CreateUser.Request _request = new CreateUser.Request();
+        private UserBuilder _expectedUser;
 
         private IRequestHandler<CreateUser.Request, Unit> _handler;
-
-        private readonly IUserRepository _repositoryMock;
 
         private Result<Unit> _actualResult = Unit.Value;
 
         public CreateUserSteps(IdentityAndAccessFixture fixture)
             : base(fixture)
         {
-            _repositoryMock = Substitute.For<IUserRepository>();
+            _fixture = fixture;
 
-            Register(() => _repositoryMock, Lifestyle.Scoped);
+            _fixture.Initialize();
+
+            _expectedUser = UserBuilder.New();
         }
 
         [Given("UserId provided")]
         public void GivenUserIdProvided()
         {
             _request.Id = _aUserId;
+            _expectedUser.WithId(_aUserId);
         }
 
         [And("Tenant provided")]
         public void AndTenantProvided()
         {
             _request.Tenant = _aTenantIdId;
+            _expectedUser.WithTenant(_aTenantIdId);
         }
 
         [And("such user already exists")]
-        public void AndUserExists()
+        public async void AndUserExists()
         {
-            _repositoryMock.Get(_aUserId).Returns(new User(_aUserId, _aTenantIdId));
+            await _fixture.ConfigureUserExists(_aUserId, _expectedUser.Build());
         }
 
         [And("user does not exist")]
-        public void AndDoesNotUserExist()
+        public async void AndDoesNotUserExist()
         {
-            _repositoryMock.Get(_aUserId).Returns(Error.NotFound());
+            await _fixture.ConfigureUserDoesNotExist(_aUserId);
         }
 
         [When("I execute CreateUser")]
@@ -65,8 +68,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [Then("user is created")]
         public void ThenUserIsCreated()
         {
-            _repositoryMock.Received()
-                .Add(Arg.Is<User>(u => u.Id == _aUserId || u.Tenant == _aTenantIdId));
+            _fixture.VerifyUserCreated(_expectedUser.Build());
         }
 
         [Then("conflict error is returned")]

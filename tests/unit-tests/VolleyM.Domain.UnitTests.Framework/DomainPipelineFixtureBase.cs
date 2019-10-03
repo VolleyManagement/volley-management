@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
 using Serilog;
-using Serilog.Events;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using VolleyM.Domain.Contracts;
 using VolleyM.Infrastructure.Bootstrap;
 
@@ -9,11 +10,50 @@ namespace VolleyM.Domain.UnitTests.Framework
 {
     public abstract class DomainPipelineFixtureBase : IDisposable
     {
+        private const string TEST_TARGET_KEY = "TestTarget";
+
+        private IConfiguration _configuration;
+
+        protected TestTarget Target { get; private set; }
+
         protected DomainPipelineFixtureBase()
         {
+            InitConfiguration();
+
             ConfigureLogger();
 
             Log.Information("Test run started");
+
+            Log.Information("Test is started for {Target}.", Target);
+        }
+
+        private void InitConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("test-config.json", true)
+                .AddEnvironmentVariables("VOLLEYM_");
+
+            _configuration = builder.Build();
+
+            Target = ReadTarget();
+        }
+
+        private TestTarget ReadTarget()
+        {
+            var result = TestTarget.Unit;
+
+            var targetString = _configuration[TEST_TARGET_KEY];
+
+            if (!string.IsNullOrWhiteSpace(targetString))
+            {
+                if (!Enum.TryParse(targetString, false, out result))
+                {
+                    result = TestTarget.Unit;
+                }
+            }
+
+            return result;
         }
 
         private static void ConfigureLogger()

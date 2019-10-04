@@ -48,7 +48,9 @@ namespace VolleyM.Architecture.UnitTests
 
             foreach (var domainAssembly in domainAssemblies)
             {
-                domainAssembly.AssertContextNameIsAllowed(PackageNamingConstants.BoundedContexts);
+                var allowedNames =
+                    PackageNamingConstants.BoundedContexts.Union(PackageNamingConstants.AllowedDomainPackages).ToArray();
+                domainAssembly.AssertContextNameIsAllowed(allowedNames);
                 var references = domainAssembly.GetReferencedAssemblies();
 
                 var filtered = references
@@ -70,9 +72,24 @@ namespace VolleyM.Architecture.UnitTests
         {
             var apiAssemblies = AssembliesFixture.GetApiAssemblies();
 
-            foreach (var domainAssembly in apiAssemblies)
+            foreach (var apiAssembly in apiAssemblies)
             {
-                domainAssembly.AssertContextNameIsAllowed(PackageNamingConstants.BoundedContexts);
+                apiAssembly.AssertContextNameIsAllowed(PackageNamingConstants.BoundedContexts);
+            }
+        }
+
+        [Fact(DisplayName = nameof(InfrastructureProjectsUseAllowedContexts))]
+        public void InfrastructureProjectsUseAllowedContexts()
+        {
+            var infraAssemblies = AssembliesFixture.GetInfrastructureAssemblies();
+
+            foreach (var infraAssembly in infraAssemblies)
+            {
+                var allowedNames = new List<string>();
+                allowedNames.AddRange(PackageNamingConstants.BoundedContexts);
+                allowedNames.AddRange(PackageNamingConstants.InfrastructureServices);
+
+                infraAssembly.AssertContextNameIsAllowed(allowedNames);
             }
         }
 

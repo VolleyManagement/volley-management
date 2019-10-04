@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using FluentAssertions;
 using NetArchTest.Rules;
@@ -19,7 +20,12 @@ namespace VolleyM.Architecture.UnitTests
             return result;
         }
 
-        public static void AssertContextNameIsAllowed(this Assembly assembly, string[] allowedContexts)
+        public static void AssertContextNameIsAllowed(this Assembly assembly, IEnumerable<string> allowedNames)
+        {
+            AssertNameIsAllowed(assembly, 2, allowedNames);
+        }
+
+        public static void AssertNameIsAllowed(this Assembly assembly, int level, IEnumerable<string> allowedNames)
         {
             var contextNames = assembly.GetName().Name.Split('.', StringSplitOptions.RemoveEmptyEntries);
 
@@ -29,7 +35,7 @@ namespace VolleyM.Architecture.UnitTests
             }
             else
             {
-                contextNames[2].Should().BeOneOf(allowedContexts, "Domain packages should use context names");
+                contextNames[level].Should().BeOneOf(allowedNames, "Packages should use allowed names");
             }
         }
     }

@@ -16,35 +16,27 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             _baseFixture = baseFixture;
         }
 
-        public Task Initialize()
+        public void Initialize()
         {
             _repositoryMock = Substitute.For<IUserRepository>();
 
             _baseFixture.Register(() => _repositoryMock, Lifestyle.Scoped);
-
-            return Task.CompletedTask;
         }
 
-        public Task ConfigureUserExists(UserId id, User user)
+        public void ConfigureUserExists(UserId id, User user)
         {
             _repositoryMock.Get(id).Returns(user);
-
-            return Task.CompletedTask;
         }
 
-        public Task ConfigureUserDoesNotExist(UserId id)
+        public void ConfigureUserDoesNotExist(UserId id)
         {
             _repositoryMock.Get(id).Returns(Error.NotFound());
-
-            return Task.CompletedTask;
         }
 
-        public Task VerifyUserCreated(User user)
+        public void VerifyUserCreated(User user)
         {
             _repositoryMock.Received()
                 .Add(Arg.Is<User>(u => u.Id == user.Id || u.Tenant == user.Tenant));
-
-            return Task.CompletedTask;
         }
     }
 }

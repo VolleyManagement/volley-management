@@ -14,43 +14,50 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
         public IdentityAndAccessFixture()
         {
-            _testFixture = (IIdentityAndAccessFixture) CreateTestFixture(Target);
+            _testFixture = (IIdentityAndAccessFixture)CreateTestFixture(Target);
         }
 
-        protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers() =>
-            new[] {
-                new DomainIdentityAndAccessAssemblyBootstrapper()
-            };
+        protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers()
+        {
+            var result = new List<IAssemblyBootstrapper> { new DomainIdentityAndAccessAssemblyBootstrapper() };
+
+            if (Target == TestTarget.AzureCloud)
+            {
+                //result.Add(new InfrastructureIdentityAndAccessAzureStorageAssemblyBootstrapper());
+            }
+
+            return result;
+        }
 
         private ITestFixture CreateTestFixture(TestTarget target)
         {
             return target switch
             {
-                TestTarget.Unit => new UnitTestIdentityAndAccessFixture(this),
-                TestTarget.AzureCloud => new UnitTestIdentityAndAccessFixture(this),// Same for now
+                TestTarget.Unit => (ITestFixture)new UnitTestIdentityAndAccessFixture(this),
+                TestTarget.AzureCloud => new AzureCloudIdentityAndAccessFixture(this),
                 TestTarget.OnPremSql => throw new NotSupportedException(),
                 _ => throw new ArgumentOutOfRangeException(nameof(target), target, null)
             };
         }
 
-        public Task Initialize()
+        public void Initialize()
         {
-            return _testFixture.Initialize();
+            _testFixture.Initialize();
         }
 
-        public Task ConfigureUserExists(UserId id, User user)
+        public void ConfigureUserExists(UserId id, User user)
         {
-            return _testFixture.ConfigureUserExists(id, user);
+            _testFixture.ConfigureUserExists(id, user);
         }
 
-        public Task ConfigureUserDoesNotExist(UserId id)
+        public void ConfigureUserDoesNotExist(UserId id)
         {
-            return _testFixture.ConfigureUserDoesNotExist(id);
+            _testFixture.ConfigureUserDoesNotExist(id);
         }
 
-        public Task VerifyUserCreated(User user)
+        public void VerifyUserCreated(User user)
         {
-            return _testFixture.VerifyUserCreated(user);
+            _testFixture.VerifyUserCreated(user);
         }
     }
 

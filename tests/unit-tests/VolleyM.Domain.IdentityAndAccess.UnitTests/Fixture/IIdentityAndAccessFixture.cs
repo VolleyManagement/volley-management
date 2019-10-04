@@ -5,12 +5,12 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
     public interface IIdentityAndAccessFixture : ITestFixture
     {
-        Task Initialize();
+        void Initialize();
 
-        Task ConfigureUserExists(UserId id, User user);
+        void ConfigureUserExists(UserId id, User user);
 
-        Task ConfigureUserDoesNotExist(UserId id);
+        void ConfigureUserDoesNotExist(UserId id);
 
-        Task VerifyUserCreated(User user);
+        void VerifyUserCreated(User user);
     }
 }

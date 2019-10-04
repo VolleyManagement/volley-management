@@ -6,8 +6,9 @@
 
         internal const string ROOT_NS = "VolleyM";
 
-        internal const string DOMAIN_NS = "Domain";
         internal const string API_NS = "API";
+        internal const string DOMAIN_NS = "Domain";
+        internal const string INFRASTRUCTURE_NS = "Infrastructure";
 
         internal const string SIMPLE_INJECTOR_NS = "SimpleInjector";
         internal const string AUTOMAPPER_NS = "AutoMapper";
@@ -15,7 +16,7 @@
 
         internal static readonly string[] AllowedLayers = {
             DOMAIN_NS,
-            "Infrastructure",
+            INFRASTRUCTURE_NS,
             API_NS
         };
 
@@ -25,9 +26,18 @@
             "Players",
             "Tournaments",
             "TournamentCalendar",
-            "IdentityAndAccess",
-            //Not context but allowed
+            "IdentityAndAccess"
+        };
+
+        internal static readonly string[] AllowedDomainPackages = {
             "Contracts"
+        };
+
+        internal static readonly string[] InfrastructureServices = {
+            "AzureStorage",
+            "Hardcoded",
+            //Not service but allowed
+            "Bootstrap"
         };
 
         internal static readonly string[] AllowedMicrosoftReferences = {

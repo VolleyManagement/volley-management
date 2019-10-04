@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Build.Construction;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -6,8 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading;
-using Microsoft.Build.Construction;
-using NetArchTest.Rules;
 
 namespace VolleyM.Architecture.UnitTests
 {
@@ -28,6 +27,9 @@ namespace VolleyM.Architecture.UnitTests
             => AllAssemblies.Where(a => a.FullName.StartsWith($"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.DOMAIN_NS}"));
         internal static IEnumerable<Assembly> GetApiAssemblies()
             => AllAssemblies.Where(a => a.FullName.StartsWith($"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.API_NS}"));
+
+        internal static IEnumerable<Assembly> GetInfrastructureAssemblies()
+            => AllAssemblies.Where(a => a.FullName.StartsWith($"{PackageNamingConstants.ROOT_NS}.{PackageNamingConstants.INFRASTRUCTURE_NS}"));
 
         private static ImmutableList<string> GetAllAssemblyNames()
         {

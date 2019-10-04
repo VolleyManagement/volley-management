@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.Bootstrap;
+using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 using Xunit;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
@@ -23,7 +23,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
             if (Target == TestTarget.AzureCloud)
             {
-                //result.Add(new InfrastructureIdentityAndAccessAzureStorageAssemblyBootstrapper());
+                result.Add(new InfrastructureIdentityAndAccessAzureStorageAssemblyBootstrapper());
             }
 
             return result;

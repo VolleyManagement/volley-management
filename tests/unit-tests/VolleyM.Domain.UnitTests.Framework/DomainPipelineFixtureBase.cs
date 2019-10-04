@@ -88,6 +88,10 @@ namespace VolleyM.Domain.UnitTests.Framework
                 {
                     result = TestTarget.Unit;
                 }
+                else
+                {
+                    Log.Warning("Failed to parse test target string. {TargetString}", targetString);
+                }
             }
 
             return result;

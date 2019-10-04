@@ -1,24 +1,25 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
+using Serilog;
+using System;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess;
+using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 {
     public class AzureStorageUserRepository : IUserRepository
     {
-        public async Task<Result<Unit>> Add(User user)
+        private readonly IdentityContextTableStorageOptions _options;
+
+        public AzureStorageUserRepository(IdentityContextTableStorageOptions options)
         {
-            var conn = await OpenConnection();
+            _options = options;
+        }
 
-            if (!conn.IsSuccessful)
-            {
-                return conn.Error;
-            }
-
-            var tableRef = conn.Value;
-
-            try
+        public Task<Result<Unit>> Add(User user)
+        {
+            return PerformStorageOperation<Unit>(async tableRef =>
             {
                 var userEntity = new UserEntity(user);
                 var createOperation = TableOperation.Insert(userEntity);
@@ -26,53 +27,29 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
                 await tableRef.ExecuteAsync(createOperation);
 
                 return Unit.Value;
-            }
-            catch (StorageException e)
-            {
-                return Error.InternalError($"Azure Storage Failed to store record.");
-            }
+            }, "Add User");
         }
 
-        public async Task<Result<User>> Get(TenantId tenant, UserId id)
+        public Task<Result<User>> Get(TenantId tenant, UserId id)
         {
-            var conn = await OpenConnection();
-            if (!conn.IsSuccessful)
-            {
-                return conn.Error;
-            }
-            var tableRef = conn.Value;
-
-            try
+            return PerformStorageOperation<User>(async tableRef =>
             {
                 var getOperation = TableOperation.Retrieve<UserEntity>(tenant.ToString(), id.ToString());
 
                 var result = await tableRef.ExecuteAsync(getOperation);
 
-                var userEntity = result.Result as UserEntity;
-
-                if (userEntity != null)
+                if (result.Result is UserEntity userEntity)
                 {
                     return new User(new UserId(userEntity.RowKey), new TenantId(userEntity.RowKey));
                 }
 
                 return Error.NotFound();
-            }
-            catch (StorageException e)
-            {
-                return Error.InternalError($"Azure Storage Failed to retrieve record.");
-            }
+            }, "Get User");
         }
 
-        public async Task<Result<Unit>> Delete(TenantId tenant, UserId id)
+        public Task<Result<Unit>> Delete(TenantId tenant, UserId id)
         {
-            var conn = await OpenConnection();
-            if (!conn.IsSuccessful)
-            {
-                return conn.Error;
-            }
-            var tableRef = conn.Value;
-
-            try
+            return PerformStorageOperation<Unit>(async tableRef =>
             {
                 var userEntity = new UserEntity(tenant, id);
                 var deleteOperation = TableOperation.Delete(userEntity);
@@ -80,31 +57,42 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
                 await tableRef.ExecuteAsync(deleteOperation);
 
                 return Unit.Value;
-            }
-            catch (StorageException e)
-            {
-                return Error.InternalError($"Azure Storage Failed to retrieve record.");
-            }
+            }, "Delete User");
         }
 
-        private static async Task<Result<CloudTable>> OpenConnection()
+        private Result<CloudTable> OpenConnection()
         {
-            if (!CloudStorageAccount.TryParse(
-                "AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;"
-                , out CloudStorageAccount account))
+            if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
             {
-                {
-                    return Error.InternalError("Azure Storage account connection is invalid.");
-                }
+                Log.Error("Failed to initialize Azure Storage connection. Check connection string.");
+                return Error.InternalError("Failed to initialize Azure Storage connection. Check connection string.");
             }
 
             var client = account.CreateCloudTableClient();
-
-            var tableRef = client.GetTableReference("users");
-
-            await tableRef.CreateIfNotExistsAsync();
+            var tableRef = client.GetTableReference(_options.UsersTable);
 
             return tableRef;
+        }
+
+        private async Task<Result<T>> PerformStorageOperation<T>(Func<CloudTable, Task<Result<T>>> operation, string operationName)
+            where T : class
+        {
+            var conn = OpenConnection();
+            if (!conn.IsSuccessful)
+            {
+                return conn.Error;
+            }
+            var tableRef = conn.Value;
+
+            try
+            {
+                return await operation(tableRef);
+            }
+            catch (StorageException e)
+            {
+                Log.Error(e, "{AzureStorageOperation} Azure Storage operation failed.", operationName);
+                return Error.InternalError($"{operationName} Azure Storage operation failed.");
+            }
         }
     }
 }

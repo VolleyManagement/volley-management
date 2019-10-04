@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SimpleInjector;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 
@@ -67,6 +68,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             var result = _tableConfig.ConfigureTables().Result;
 
             result.Should().BeSuccessful("Azure Storage should be configured correctly");
+
+            _baseFixture.Register(() => options, Lifestyle.Singleton);
         }
 
         public void OneTimeTearDown()

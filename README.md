@@ -32,11 +32,9 @@ Target framework is .NET Core 3.0.
 
 All .NET dependencies are managed via NuGet. Angular uses NPM.
 
-### Database configuration (🚧 outdated) ###
+### Development Environment Setup ###
 
-Database is automatically deployed to server first time you run application. Specify proper connection string in Web.config file in VolleyManagement.UI project.
-
-By default it is configured to use SQL Server 2016 LocalDB. But you can can change altering connection string.
+Follow this [Guide](../../wiki/Dev-Env-Guide).
 
 ### Deployment instructions ###
 

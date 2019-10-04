@@ -24,7 +24,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
 
             public async Task<Result<Unit>> Handle(Request request)
             {
-                var existing = await _repository.Get(request.Id);
+                var existing = await _repository.Get(request.Tenant, request.Id);
 
                 if (existing.IsSuccessful)
                 {

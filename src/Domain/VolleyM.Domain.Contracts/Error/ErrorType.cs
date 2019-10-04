@@ -4,6 +4,7 @@
     {
         Unknown = 0,
         Conflict = 1,
-        NotFound = 2
+        NotFound = 2,
+        InternalError = 3
     }
 }

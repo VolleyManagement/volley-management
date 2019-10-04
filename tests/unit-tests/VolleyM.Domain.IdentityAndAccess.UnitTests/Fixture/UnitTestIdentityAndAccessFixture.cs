@@ -23,14 +23,14 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             _baseFixture.Register(() => _repositoryMock, Lifestyle.Scoped);
         }
 
-        public void ConfigureUserExists(UserId id, User user)
+        public void ConfigureUserExists(TenantId tenant, UserId id, User user)
         {
-            _repositoryMock.Get(id).Returns(user);
+            _repositoryMock.Get(tenant, id).Returns(user);
         }
 
-        public void ConfigureUserDoesNotExist(UserId id)
+        public void ConfigureUserDoesNotExist(TenantId tenant, UserId id)
         {
-            _repositoryMock.Get(id).Returns(Error.NotFound());
+            _repositoryMock.Get(tenant, id).Returns(Error.NotFound());
         }
 
         public void VerifyUserCreated(User user)

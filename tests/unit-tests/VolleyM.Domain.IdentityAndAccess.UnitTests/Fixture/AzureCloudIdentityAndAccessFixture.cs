@@ -16,11 +16,11 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         {
         }
 
-        public void ConfigureUserExists(UserId id, User user)
+        public void ConfigureUserExists(TenantId tenant, UserId id, User user)
         {
         }
 
-        public void ConfigureUserDoesNotExist(UserId id)
+        public void ConfigureUserDoesNotExist(TenantId tenant, UserId id)
         {
         }
 
@@ -28,7 +28,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         {
             var repo = _baseFixture.Resolve<IUserRepository>();
 
-            var savedUser = repo.Get(user.Id).Result;
+            var savedUser = repo.Get(user.Tenant, user.Id).Result;
 
             savedUser.Should().BeSuccessful("user should be created");
             savedUser.Value.Should().BeEquivalentTo(user, "all attributes should be saved correctly");

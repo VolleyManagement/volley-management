@@ -7,7 +7,7 @@ using VolleyM.Infrastructure.Bootstrap;
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 {
     [Export(typeof(IAssemblyBootstrapper))]
-    public class InfrastructureIdentityAndAccessAzureStorageAssemblyBootstrapper : IAssemblyBootstrapper
+    public class InfrastructureIdentityAndAccessAzureStorageBootstrapper : IAssemblyBootstrapper
     {
         public void RegisterDependencies(Container container)
         {

@@ -10,8 +10,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
     public class CreateUserSteps : IdentityAndAccessStepsBase
     {
         private readonly UserId _aUserId = new UserId("google|123321");
-        private readonly TenantId _aTenantIdId = new TenantId("unit-tests");
-        
+        private readonly TenantId _aTenantIdId = new TenantId("auto-tests-tenant");
+
         private readonly IdentityAndAccessFixture _fixture;
 
         private readonly CreateUser.Request _request = new CreateUser.Request();
@@ -48,13 +48,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [And("such user already exists")]
         public void AndUserExists()
         {
-            _fixture.ConfigureUserExists(_aUserId, _expectedUser.Build());
+            _fixture.ConfigureUserExists(_aTenantIdId, _aUserId, _expectedUser.Build());
         }
 
         [And("user does not exist")]
         public void AndDoesNotUserExist()
         {
-            _fixture.ConfigureUserDoesNotExist(_aUserId);
+            _fixture.ConfigureUserDoesNotExist(_aTenantIdId, _aUserId);
         }
 
         [When("I execute CreateUser")]

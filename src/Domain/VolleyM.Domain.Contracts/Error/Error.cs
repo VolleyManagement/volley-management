@@ -16,5 +16,7 @@
             => new Error(ErrorType.Conflict, message);
         public static Error NotFound(string message = "Entity not found")
             => new Error(ErrorType.NotFound, message);
+        public static Error InternalError(string message)
+            => new Error(ErrorType.InternalError, message);
     }
 }

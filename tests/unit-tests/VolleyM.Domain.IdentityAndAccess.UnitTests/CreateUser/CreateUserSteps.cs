@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
@@ -10,12 +12,14 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
     public class CreateUserSteps : IdentityAndAccessStepsBase
     {
         private readonly UserId _aUserId = new UserId("google|123321");
-        private readonly TenantId _aTenantIdId = new TenantId("auto-tests-tenant");
+        private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");
 
         private readonly IdentityAndAccessFixture _fixture;
 
         private readonly CreateUser.Request _request = new CreateUser.Request();
         private UserBuilder _expectedUser;
+
+        private List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
 
         private IRequestHandler<CreateUser.Request, Unit> _handler;
 
@@ -26,9 +30,14 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         {
             _fixture = fixture;
 
-            _fixture.Initialize();
+            _fixture.Setup();
 
             _expectedUser = UserBuilder.New();
+        }
+
+        ~CreateUserSteps()
+        {
+            _fixture.CleanUpUsers(_usersToTeardown);
         }
 
         [Given("UserId provided")]
@@ -41,20 +50,21 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [And("Tenant provided")]
         public void AndTenantProvided()
         {
-            _request.Tenant = _aTenantIdId;
-            _expectedUser.WithTenant(_aTenantIdId);
+            _request.Tenant = _aTenantId;
+            _expectedUser.WithTenant(_aTenantId);
         }
 
         [And("such user already exists")]
         public void AndUserExists()
         {
-            _fixture.ConfigureUserExists(_aTenantIdId, _aUserId, _expectedUser.Build());
+            _fixture.ConfigureUserExists(_aTenantId, _aUserId, _expectedUser.Build());
+            _usersToTeardown.Add(Tuple.Create(_aTenantId, _aUserId));
         }
 
         [And("user does not exist")]
         public void AndDoesNotUserExist()
         {
-            _fixture.ConfigureUserDoesNotExist(_aTenantIdId, _aUserId);
+            _fixture.ConfigureUserDoesNotExist(_aTenantId, _aUserId);
         }
 
         [When("I execute CreateUser")]
@@ -68,7 +78,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [Then("user is created")]
         public void ThenUserIsCreated()
         {
-            _fixture.VerifyUserCreated(_expectedUser.Build());
+            var user = _expectedUser.Build();
+            _fixture.VerifyUserCreated(user);
+            _usersToTeardown.Add(Tuple.Create(user.Tenant, user.Id));
         }
 
         [Then("conflict error is returned")]

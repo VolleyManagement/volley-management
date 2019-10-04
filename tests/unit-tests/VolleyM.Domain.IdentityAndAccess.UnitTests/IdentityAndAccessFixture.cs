@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.Bootstrap;
@@ -15,6 +16,16 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         public IdentityAndAccessFixture()
         {
             _testFixture = (IIdentityAndAccessFixture)CreateTestFixture(Target);
+
+            _testFixture.OneTimeSetup(Configuration);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _testFixture.OneTimeTearDown();
+            }
         }
 
         protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers()
@@ -23,7 +34,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
             if (Target == TestTarget.AzureCloud)
             {
-                result.Add(new InfrastructureIdentityAndAccessAzureStorageAssemblyBootstrapper());
+                result.Add(new InfrastructureIdentityAndAccessAzureStorageBootstrapper());
             }
 
             return result;
@@ -40,24 +51,39 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             };
         }
 
-        public void Initialize()
+        public void OneTimeSetup(IConfiguration configuration)
         {
-            _testFixture.Initialize();
+            _testFixture.OneTimeSetup(configuration);
         }
 
-        public void ConfigureUserExists(UserId id, User user)
+        public void OneTimeTearDown()
         {
-            _testFixture.ConfigureUserExists(id, user);
+            _testFixture.OneTimeTearDown();
         }
 
-        public void ConfigureUserDoesNotExist(UserId id)
+        public void Setup()
         {
-            _testFixture.ConfigureUserDoesNotExist(id);
+            _testFixture.Setup();
+        }
+
+        public void ConfigureUserExists(TenantId tenant, UserId id, User user)
+        {
+            _testFixture.ConfigureUserExists(tenant, id, user);
+        }
+
+        public void ConfigureUserDoesNotExist(TenantId tenant, UserId id)
+        {
+            _testFixture.ConfigureUserDoesNotExist(tenant, id);
         }
 
         public void VerifyUserCreated(User user)
         {
             _testFixture.VerifyUserCreated(user);
+        }
+
+        public void CleanUpUsers(List<Tuple<TenantId, UserId>> usersToTeardown)
+        {
+            _testFixture.CleanUpUsers(usersToTeardown);
         }
     }
 

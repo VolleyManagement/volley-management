@@ -8,5 +8,7 @@ namespace VolleyM.Domain.IdentityAndAccess
         Task<Result<Unit>> Add(User user);
 
         Task<Result<User>> Get(TenantId tenant, UserId id);
+
+        Task<Result<Unit>> Delete(TenantId tenant, UserId id);
     }
 }

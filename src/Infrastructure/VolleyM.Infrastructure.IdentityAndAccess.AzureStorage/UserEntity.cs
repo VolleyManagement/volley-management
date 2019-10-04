@@ -11,9 +11,14 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
         }
 
         public UserEntity(User user)
+        : this(user.Tenant, user.Id)
         {
-            PartitionKey = user.Tenant.ToString();
-            RowKey = user.Id.ToString();
+        }
+
+        public UserEntity(TenantId tenant, UserId id)
+        {
+            PartitionKey = tenant.ToString();
+            RowKey = id.ToString();
         }
     }
 }

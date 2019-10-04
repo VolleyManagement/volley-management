@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
@@ -16,7 +19,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             _baseFixture = baseFixture;
         }
 
-        public void Initialize()
+        public void Setup()
         {
             _repositoryMock = Substitute.For<IUserRepository>();
 
@@ -37,6 +40,21 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         {
             _repositoryMock.Received()
                 .Add(Arg.Is<User>(u => u.Id == user.Id || u.Tenant == user.Tenant));
+        }
+
+        public void CleanUpUsers(List<Tuple<TenantId, UserId>> usersToTeardown)
+        {
+            // do nothing
+        }
+
+        public void OneTimeSetup(IConfiguration configuration)
+        {
+            // nothing to do
+        }
+
+        public void OneTimeTearDown()
+        {
+            // nothing to do
         }
     }
 }

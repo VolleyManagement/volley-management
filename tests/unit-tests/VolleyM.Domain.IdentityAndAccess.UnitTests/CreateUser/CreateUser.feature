@@ -11,7 +11,7 @@ Scenario: Create new user
 	When I execute CreateUser
 	Then user is created
 
-@unit @azurecloud @ab:1026 @ignore
+@unit @azurecloud @ab:1026
 Scenario: Create existing user
     Given UserId provided
     And Tenant provided

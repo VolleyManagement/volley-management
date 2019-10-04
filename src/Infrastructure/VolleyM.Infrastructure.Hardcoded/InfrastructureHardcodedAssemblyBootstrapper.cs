@@ -1,7 +1,7 @@
-﻿using System.Composition;
-using System.Reflection;
-using AutoMapper.Configuration;
+﻿using AutoMapper.Configuration;
 using SimpleInjector;
+using System.Composition;
+using System.Reflection;
 using VolleyM.Domain.Contracts;
 using VolleyM.Infrastructure.Bootstrap;
 

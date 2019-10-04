@@ -24,8 +24,8 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 
 #### Unit Tests
 
-- [ ] Naming: Initial state and expected result are properly stated
-- [ ] Test follows [AAA](https://medium.com/@pjbgf/title-testing-code-ocd-and-the-aaa-pattern-df453975ab80) pattern.
+- [ ] Tests have appropriate category set: `@unit`, `@azurecloud`, `@onpremsql`
+- [ ] Story/bug tag is assigned to created/affected test: `@ab:123`
 - [ ] Tests resolve `IRequestHandler<,>` instance instead of concrete implementation
 
 ### New Project Checklist

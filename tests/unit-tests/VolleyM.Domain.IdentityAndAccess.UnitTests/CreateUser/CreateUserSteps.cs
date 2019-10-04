@@ -46,23 +46,23 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         }
 
         [And("such user already exists")]
-        public async void AndUserExists()
+        public void AndUserExists()
         {
-            await _fixture.ConfigureUserExists(_aUserId, _expectedUser.Build());
+            _fixture.ConfigureUserExists(_aUserId, _expectedUser.Build());
         }
 
         [And("user does not exist")]
-        public async void AndDoesNotUserExist()
+        public void AndDoesNotUserExist()
         {
-            await _fixture.ConfigureUserDoesNotExist(_aUserId);
+            _fixture.ConfigureUserDoesNotExist(_aUserId);
         }
 
         [When("I execute CreateUser")]
-        public async void WhenExecuteCommand()
+        public void WhenExecuteCommand()
         {
             _handler = Resolve<IRequestHandler<CreateUser.Request, Unit>>();
 
-            _actualResult = await _handler.Handle(_request);
+            _actualResult = _handler.Handle(_request).Result;
         }
 
         [Then("user is created")]

@@ -1,7 +1,7 @@
 ﻿namespace VolleyM.Domain.Contracts
 {
-    public class Result<TResult>
-        where TResult: class
+    public class Result<TResult> : IResult
+        where TResult : class
     {
         public TResult Value { get; }
         public Error Error { get; }
@@ -19,5 +19,15 @@
 
         public static implicit operator Result<TResult>(Error error)
             => new Result<TResult>(null, error);
+    }
+
+    /// <summary>
+    /// Needed to use in places where we can't specify generic type
+    /// </summary>
+    public interface IResult
+    {
+        bool IsSuccessful { get; }
+
+        Error Error { get; }
     }
 }

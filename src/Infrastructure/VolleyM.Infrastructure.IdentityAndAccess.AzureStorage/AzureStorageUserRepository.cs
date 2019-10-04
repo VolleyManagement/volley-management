@@ -36,12 +36,10 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
         public async Task<Result<User>> Get(TenantId tenant, UserId id)
         {
             var conn = await OpenConnection();
-
             if (!conn.IsSuccessful)
             {
                 return conn.Error;
             }
-
             var tableRef = conn.Value;
 
             try
@@ -58,6 +56,30 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
                 }
 
                 return Error.NotFound();
+            }
+            catch (StorageException e)
+            {
+                return Error.InternalError($"Azure Storage Failed to retrieve record.");
+            }
+        }
+
+        public async Task<Result<Unit>> Delete(TenantId tenant, UserId id)
+        {
+            var conn = await OpenConnection();
+            if (!conn.IsSuccessful)
+            {
+                return conn.Error;
+            }
+            var tableRef = conn.Value;
+
+            try
+            {
+                var userEntity = new UserEntity(tenant, id);
+                var deleteOperation = TableOperation.Delete(userEntity);
+
+                await tableRef.ExecuteAsync(deleteOperation);
+
+                return Unit.Value;
             }
             catch (StorageException e)
             {

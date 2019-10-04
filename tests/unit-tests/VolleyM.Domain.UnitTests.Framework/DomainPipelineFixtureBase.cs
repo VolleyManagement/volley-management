@@ -13,7 +13,8 @@ namespace VolleyM.Domain.UnitTests.Framework
     {
         private const string TEST_TARGET_KEY = "TestTarget";
 
-        private IConfiguration _configuration;
+        public IConfiguration Configuration { get; private set; }
+
         private Container _container;
 
         protected TestTarget Target { get; private set; }
@@ -70,7 +71,7 @@ namespace VolleyM.Domain.UnitTests.Framework
                 .AddJsonFile("test-config.json", true)
                 .AddEnvironmentVariables("VOLLEYM_");
 
-            _configuration = builder.Build();
+            Configuration = builder.Build();
 
             Target = ReadTarget();
         }
@@ -79,7 +80,7 @@ namespace VolleyM.Domain.UnitTests.Framework
         {
             var result = TestTarget.Unit;
 
-            var targetString = _configuration[TEST_TARGET_KEY];
+            var targetString = Configuration[TEST_TARGET_KEY];
 
             if (!string.IsNullOrWhiteSpace(targetString))
             {

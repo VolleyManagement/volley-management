@@ -28,6 +28,10 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 - [ ] Story/bug tag is assigned to created/affected test: `@ab:123`
 - [ ] Tests resolve `IRequestHandler<,>` instance instead of concrete implementation
 
+#### Integration Tests
+
+- [ ] Teardown deletes test data after each test
+
 ### New Project Checklist
 
 - [ ] Dockerfile is updated

@@ -28,6 +28,9 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             Log.Information("Test run started");
             Log.Information("Test is started for {Target}.", Target);
+
+            Log.Debug("TestTarget: {EnvVar}", Environment.GetEnvironmentVariable("VOLLEYM_TESTTARGET"));
+            Log.Debug("ConnString: {EnvVar}", Environment.GetEnvironmentVariable("VOLLEYM_IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING"));
         }
 
         protected virtual void Dispose(bool disposing)

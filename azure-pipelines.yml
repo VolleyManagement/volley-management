@@ -70,8 +70,7 @@ stages:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
           - script: |
               echo "##vso[task.setvariable variable=TestTarget;]azurecloud"
-            env:
-              VOLLEYM_IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING: $(vm_azstorage_connection_string_staging)
+              echo "##vso[task.setvariable variable=VOLLEYM_IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING;]$(vm_azstorage_connection_string_staging)"
           - task: DotNetCoreCLI@2
             displayName: .NET test
             inputs:

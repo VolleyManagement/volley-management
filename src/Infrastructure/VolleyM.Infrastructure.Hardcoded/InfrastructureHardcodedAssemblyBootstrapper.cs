@@ -10,7 +10,7 @@ namespace VolleyM.Infrastructure.Hardcoded
     [Export(typeof(IAssemblyBootstrapper))]
     public class InfrastructureHardcodedAssemblyBootstrapper : IAssemblyBootstrapper
     {
-        public void RegisterDependencies(Container container)
+        public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
             container.Register(typeof(IQuery<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
         }

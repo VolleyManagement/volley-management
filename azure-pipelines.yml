@@ -41,6 +41,7 @@ stages:
             displayName: .net test
             inputs:
               command: 'test'
+              testRunTitle: 'Unit Tests'
               projects: $(sln_path)
               arguments: '--filter Category=@unit'
       - job: container_build
@@ -67,11 +68,15 @@ stages:
         displayName: Integration Tests
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
-          - script: echo "##vso[task.setvariable variable=TestTarget;]azurecloud"
+          - script: |
+              echo "##vso[task.setvariable variable=TestTarget;]azurecloud"
+            env:
+              VOLLEYM_IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING: $(vm_azstorage_connection_string_staging)
           - task: DotNetCoreCLI@2
             displayName: .NET test
             inputs:
               command: 'test'
+              testRunTitle: 'Azure Cloud Integration Tests'
               projects: $(sln_path)
               arguments: '--filter Category=@azurecloud'
       - job: deploy_app_service_int
@@ -84,7 +89,9 @@ stages:
               azureSubscription: 'Azure VM Integration'
               appName: 'staging-volley-mgmt'
               containers: '$(docker_repository_name):$(image_tag)'
-              appSettings: '-ASPNETCORE_ENVIRONMENT Staging'
+              appSettings: >-
+                -ASPNETCORE_ENVIRONMENT Staging
+                -IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING $(vm_azstorage_connection_string_staging)
       - job: run_api_tests
         displayName: Run API Tests
         dependsOn:
@@ -119,4 +126,6 @@ stages:
               azureSubscription: 'Azure VM Prod'
               appName: 'volley-prod'
               containers: '$(docker_repository_name):$(image_tag)'
-              appSettings: '-ASPNETCORE_ENVIRONMENT Production'
+              appSettings: >-
+                -ASPNETCORE_ENVIRONMENT Production
+                -IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING $(vm_azstorage_connection_string_production)

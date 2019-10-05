@@ -41,7 +41,8 @@
         };
 
         internal static readonly string[] AllowedMicrosoftReferences = {
-            "Microsoft.CodeAnalysis.LiveUnitTesting.Runtime"
+            "Microsoft.CodeAnalysis.LiveUnitTesting.Runtime",
+            "Microsoft.Extensions.Configuration.Abstractions"
         };
     }
 }

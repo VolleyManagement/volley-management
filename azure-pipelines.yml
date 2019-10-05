@@ -46,6 +46,7 @@ stages:
               arguments: '--filter Category=@unit'
           - publish: $(Build.SourcesDirectory)/tests/unit-tests #note: files which are published controlled by .artifactignore file
             artifact: unitTestsResults
+            condition: succeededOrFailed()
       - job: container_build
         displayName: Container
         dependsOn: build_code
@@ -82,6 +83,7 @@ stages:
               arguments: '--filter Category=@azurecloud'
           - publish: $(Build.SourcesDirectory)/tests/unit-tests #note: files which are published controlled by .artifactignore file
             artifact: integrationTestsResults
+            condition: succeededOrFailed()
       - job: deploy_app_service_int
         displayName: Deploy App Service
         steps:

@@ -12,6 +12,7 @@ namespace VolleyM.Domain.UnitTests.Framework
     public abstract class DomainPipelineFixtureBase : IDisposable
     {
         private const string TEST_TARGET_KEY = "TestTarget";
+        private const string TEST_LOG_KEY = "TestLogName";
 
         public IConfiguration Configuration { get; private set; }
 
@@ -23,7 +24,7 @@ namespace VolleyM.Domain.UnitTests.Framework
         {
             InitConfiguration();
 
-            ConfigureLogger();
+            ConfigureLogger(Configuration);
 
             Log.Information("Test run started");
             Log.Information("Test is started for {Target}.", Target);
@@ -97,17 +98,22 @@ namespace VolleyM.Domain.UnitTests.Framework
             return result;
         }
 
-        private static void ConfigureLogger()
+        private static void ConfigureLogger(IConfiguration config)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Debug()
                 .WriteTo.File(
-                    "test-run.log",
+                    GetLogName(config),
                     rollOnFileSizeLimit: true,
                     fileSizeLimitBytes: 10 * 1024 * 1024/*10 MB*/,
                     retainedFileCountLimit: 10)
                 .CreateLogger();
+        }
+
+        private static string GetLogName(IConfiguration config)
+        {
+            return config[TEST_LOG_KEY] ?? "test-run.log";
         }
     }
 }

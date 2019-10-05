@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
+using Serilog;
+using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SimpleInjector;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 
@@ -14,6 +15,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         private readonly DomainPipelineFixtureBase _baseFixture;
 
         private TableConfiguration _tableConfig;
+        private IdentityContextTableStorageOptions _options;
 
         public AzureCloudIdentityAndAccessFixture(DomainPipelineFixtureBase baseFixture)
         {
@@ -22,7 +24,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
         public void Setup()
         {
-
+            //_baseFixture.Register(() => _options, Lifestyle.Singleton);
         }
 
         public void ConfigureUserExists(TenantId tenant, UserId id, User user)
@@ -61,15 +63,14 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
         public void OneTimeSetup(IConfiguration configuration)
         {
-            var options = configuration.GetSection("IdentityContextTableStorageOptions")
+            _options = configuration.GetSection("IdentityContextTableStorageOptions")
                 .Get<IdentityContextTableStorageOptions>();
 
-            _tableConfig = new TableConfiguration(options);
+            _tableConfig = new TableConfiguration(_options);
             var result = _tableConfig.ConfigureTables().Result;
+            Log.Debug("AzureStorage tests using connection: {AccountName}", _tableConfig.AccountName);
 
             result.Should().BeSuccessful("Azure Storage should be configured correctly");
-
-            _baseFixture.Register(() => options, Lifestyle.Singleton);
         }
 
         public void OneTimeTearDown()

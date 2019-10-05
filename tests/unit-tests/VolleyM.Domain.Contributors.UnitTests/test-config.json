@@ -1,3 +1,4 @@
 {
-  "TestTarget": "Unit"
+  "TestTarget": "Unit",
+  "TestLogName": "contributors-test-run.log"
 }

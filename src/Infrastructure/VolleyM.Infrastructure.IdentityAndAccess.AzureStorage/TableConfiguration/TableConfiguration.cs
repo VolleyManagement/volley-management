@@ -15,6 +15,8 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             _options = options;
         }
 
+        public string AccountName { get; private set; }
+
         public async Task<Result<Unit>> ConfigureTables()
         {
             var conn = OpenConnection();
@@ -73,6 +75,8 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             {
                 return Error.InternalError("Azure Storage account connection is invalid.");
             }
+
+            AccountName = account.Credentials.AccountName;
 
             return account.CreateCloudTableClient();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using Xunit.Gherkin.Quick;
@@ -13,6 +14,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         protected DomainStepsBase(TFixture fixture)
         {
+            Log.Information("Test case started.");
             _container = new Container();
             _container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 

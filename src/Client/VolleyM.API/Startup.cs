@@ -47,7 +47,7 @@ namespace VolleyM.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            _container.RegisterApplicationServices(_assemblyBootstrapper);
+            _container.RegisterApplicationServices(_assemblyBootstrapper, _config);
 
             _container.Verify();
 

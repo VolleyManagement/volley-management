@@ -1,5 +1,6 @@
 ﻿using AutoMapper.Configuration;
 using SimpleInjector;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace VolleyM.Infrastructure.Bootstrap
 {
@@ -8,7 +9,7 @@ namespace VolleyM.Infrastructure.Bootstrap
     /// </summary>
     public interface IAssemblyBootstrapper
     {
-        void RegisterDependencies(Container container);
+        void RegisterDependencies(Container container, IConfiguration config);
 
         void RegisterMappingProfiles(MapperConfigurationExpression mce);
     }

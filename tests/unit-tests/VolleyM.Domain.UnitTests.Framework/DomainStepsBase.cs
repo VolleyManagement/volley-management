@@ -18,7 +18,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             foreach (var bootstrapper in fixture.GetBootstrappers())
             {
-                bootstrapper.RegisterDependencies(_container);
+                bootstrapper.RegisterDependencies(_container, fixture.Configuration);
             }
 
             _scope = AsyncScopedLifestyle.BeginScope(_container);

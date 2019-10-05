@@ -20,10 +20,13 @@ namespace VolleyM.API.Extensions
         /// <summary>
         /// Loads plugins, composes DI.
         /// </summary>
-        public static void RegisterApplicationServices(this Container container, AssemblyBootstrapper bootstrapper)
+        public static void RegisterApplicationServices(
+            this Container container, 
+            AssemblyBootstrapper bootstrapper, 
+            Microsoft.Extensions.Configuration.IConfiguration config)
         {
             // Application Assemblies
-            bootstrapper.RegisterDependencies(container);
+            bootstrapper.RegisterDependencies(container, config);
 
             RegisterAutoMapper(container, bootstrapper);
         }

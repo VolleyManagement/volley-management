@@ -53,11 +53,11 @@ namespace VolleyM.Infrastructure.Bootstrap
             Log.Information("Discovered and loaded {BootstrappersCount} bootstrappers.", Bootstrappers.Count);
         }
 
-        public void RegisterDependencies(Container iocContainer)
+        public void RegisterDependencies(Container iocContainer, Microsoft.Extensions.Configuration.IConfiguration config)
         {
             foreach (var bootstrapper in Bootstrappers)
             {
-                RunAction(p => p.RegisterDependencies(iocContainer), bootstrapper, "Register Dependencies");
+                RunAction(p => p.RegisterDependencies(iocContainer, config), bootstrapper, "Register Dependencies");
             }
         }
 

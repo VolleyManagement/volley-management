@@ -17,7 +17,8 @@
         internal static readonly string[] AllowedLayers = {
             DOMAIN_NS,
             INFRASTRUCTURE_NS,
-            API_NS
+            API_NS,
+            "Tools"
         };
 
         internal static readonly string[] BoundedContexts = {

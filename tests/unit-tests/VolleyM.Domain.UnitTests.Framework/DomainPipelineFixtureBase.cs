@@ -88,7 +88,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             if (!string.IsNullOrWhiteSpace(targetString))
             {
-                if (!Enum.TryParse(targetString, false, out result))
+                if (!Enum.TryParse(targetString, true, out result))
                 {
                     result = TestTarget.Unit;
                 }

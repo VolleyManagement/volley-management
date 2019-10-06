@@ -73,7 +73,7 @@ stages:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
           - script: |
               echo "##vso[task.setvariable variable=VOLLEYM_TESTTARGET;]AzureCloud"
-              echo "##vso[task.setvariable variable=VOLLEYM_IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING;]$(vm_azstorage_connection_string_staging)"
+              echo "##vso[task.setvariable variable=VOLLEYM_IDENTITYCONTEXTTABLESTORAGEOPTIONS__CONNECTIONSTRING;]$(vm_azstorage_connection_string_staging)"
           - task: DotNetCoreCLI@2
             displayName: .NET test
             inputs:
@@ -98,7 +98,7 @@ stages:
                 -ASPNETCORE_ENVIRONMENT Staging
                 -IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING $(vm_azstorage_connection_string_staging)
       - job: run_api_tests
-        displayName: Run API Tests
+        displayName: API Tests
         dependsOn:
         - deploy_app_service_int
         steps:

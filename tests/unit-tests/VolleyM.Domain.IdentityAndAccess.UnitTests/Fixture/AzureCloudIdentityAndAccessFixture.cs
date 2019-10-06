@@ -24,7 +24,6 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
         public void Setup()
         {
-            //_baseFixture.Register(() => _options, Lifestyle.Singleton);
         }
 
         public void ConfigureUserExists(TenantId tenant, UserId id, User user)

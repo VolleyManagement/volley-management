@@ -43,7 +43,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.IdentityAndA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.UnitTests.Framework", "..\tests\unit-tests\VolleyM.Domain.UnitTests.Framework\VolleyM.Domain.UnitTests.Framework.csproj", "{798C279E-4C13-4032-943C-DE65FB311611}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Infrastructure.IdentityAndAccess.AzureStorage", "Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj", "{2C77EF17-0CCC-41E6-9FDA-4A632637A76B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Infrastructure.IdentityAndAccess.AzureStorage", "Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj", "{2C77EF17-0CCC-41E6-9FDA-4A632637A76B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{DFBC9B5C-D413-41B5-9E15-30D65AEED754}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Tools.MigrationTool", "..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj", "{65264D47-9632-4146-A2C4-2E0B8C07425C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +103,10 @@ Global
 		{2C77EF17-0CCC-41E6-9FDA-4A632637A76B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C77EF17-0CCC-41E6-9FDA-4A632637A76B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C77EF17-0CCC-41E6-9FDA-4A632637A76B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65264D47-9632-4146-A2C4-2E0B8C07425C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65264D47-9632-4146-A2C4-2E0B8C07425C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65264D47-9632-4146-A2C4-2E0B8C07425C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65264D47-9632-4146-A2C4-2E0B8C07425C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +125,7 @@ Global
 		{ADF52643-093A-4E1C-8ABB-A82EB2469B17} = {2D85CDB8-A2D9-42C0-B104-467453C93A14}
 		{798C279E-4C13-4032-943C-DE65FB311611} = {2D85CDB8-A2D9-42C0-B104-467453C93A14}
 		{2C77EF17-0CCC-41E6-9FDA-4A632637A76B} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
+		{65264D47-9632-4146-A2C4-2E0B8C07425C} = {DFBC9B5C-D413-41B5-9E15-30D65AEED754}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4379AC9-D1D3-439C-971A-BA4BFFA373B5}

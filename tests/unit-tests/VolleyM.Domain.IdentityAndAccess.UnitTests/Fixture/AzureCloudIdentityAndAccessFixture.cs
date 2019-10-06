@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
-using Serilog;
-using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -67,7 +65,6 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
             _tableConfig = new TableConfiguration(_options);
             var result = _tableConfig.ConfigureTables().Result;
-            Log.Debug("AzureStorage tests using connection: {AccountName}", _tableConfig.AccountName);
 
             result.Should().BeSuccessful("Azure Storage should be configured correctly");
         }

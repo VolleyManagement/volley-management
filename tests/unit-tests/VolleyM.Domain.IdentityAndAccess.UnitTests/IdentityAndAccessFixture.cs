@@ -24,7 +24,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         {
             if (disposing)
             {
-                //_testFixture.OneTimeTearDown();
+                _testFixture.OneTimeTearDown();
             }
         }
 

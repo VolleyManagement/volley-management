@@ -14,7 +14,6 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         protected DomainStepsBase(TFixture fixture)
         {
-            Log.Information("Test case started.");
             _container = new Container();
             _container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 

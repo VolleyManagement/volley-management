@@ -6,6 +6,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /build-dir
 COPY ./src ./src
 COPY ./tests ./tests
+COPY ./tools ./tools
 RUN dotnet build "./src/VolleyManagement.sln" -c Release -o /artifacts
 
 FROM build AS publish

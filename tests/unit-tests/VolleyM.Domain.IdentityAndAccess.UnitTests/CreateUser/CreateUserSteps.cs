@@ -35,9 +35,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             _expectedUser = UserBuilder.New();
         }
 
-        ~CreateUserSteps()
+        protected override void Dispose(bool disposing)
         {
-            _fixture.CleanUpUsers(_usersToTeardown);
+            if (disposing)
+            {
+                _fixture.CleanUpUsers(_usersToTeardown);
+            }
+            base.Dispose(disposing);
         }
 
         [Given("UserId provided")]

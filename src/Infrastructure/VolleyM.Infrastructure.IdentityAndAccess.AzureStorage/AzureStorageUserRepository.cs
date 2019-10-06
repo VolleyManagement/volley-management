@@ -52,6 +52,8 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             return PerformStorageOperation<Unit>(async tableRef =>
             {
                 var userEntity = new UserEntity(tenant, id);
+
+                userEntity.ETag = "*"; //Delete disregarding concurrency checks
                 var deleteOperation = TableOperation.Delete(userEntity);
 
                 await tableRef.ExecuteAsync(deleteOperation);

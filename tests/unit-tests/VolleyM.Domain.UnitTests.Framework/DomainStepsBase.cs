@@ -6,7 +6,7 @@ using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {
-    public class DomainStepsBase<TFixture> : Feature
+    public class DomainStepsBase<TFixture> : Feature, IDisposable
         where TFixture : DomainPipelineFixtureBase
     {
         private readonly Container _container;
@@ -36,6 +36,24 @@ namespace VolleyM.Domain.UnitTests.Framework
             _container.Register(instanceCreator, lifestyle);
         }
 
-        ~DomainStepsBase() => _scope.Dispose();
+        ~DomainStepsBase()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _container.Dispose();
+                _scope.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

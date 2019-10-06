@@ -86,11 +86,18 @@ namespace VolleyM.Infrastructure.Bootstrap
         private static IEnumerable<Assembly> DiscoverAssemblies(string assemblyPath, string assemblyPrefix)
         {
             var list = new List<Assembly>();
-            var pluginAssemblies = Directory.GetFiles(assemblyPath, "*.dll", SearchOption.TopDirectoryOnly)
-                .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
-                // Ensure that the assembly contains an implementation for the given type.
-                .Where(s => s.FullName.StartsWith(assemblyPrefix, StringComparison.OrdinalIgnoreCase));
-            list.AddRange(pluginAssemblies);
+            try
+            {
+                var pluginAssemblies = Directory.GetFiles(assemblyPath, "*.dll", SearchOption.TopDirectoryOnly)
+                    .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
+                    // Ensure that the assembly contains an implementation for the given type.
+                    .Where(s => s.FullName.StartsWith(assemblyPrefix, StringComparison.OrdinalIgnoreCase));
+                list.AddRange(pluginAssemblies);
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Log.Warning(e, "Plugin directory missing: {PluginDirectory}", assemblyPath);
+            }
             return list;
         }
     }

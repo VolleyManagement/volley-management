@@ -17,6 +17,8 @@ namespace VolleyM.Tools.AzureStorageMigrator
         public void Discover(string assemblyPath)
         {
             Log.Debug("MigrationTaskDiscoverer started");
+            Log.Debug("Path to assemblies {MigrationTasksPath}.", assemblyPath);
+
             // Catalogs does not exists in Dotnet Core, so you need to manage your own.
             var assemblies = DiscoverAssemblies(assemblyPath, "VolleyM.");
             var configuration = new ContainerConfiguration()

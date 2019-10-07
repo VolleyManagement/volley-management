@@ -38,6 +38,7 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 - [ ] Azure Pipelines updated
 - [ ] Development setup guide updated
 - [ ] VolleyM.API has reference added to assist debugging
+- [ ] Project added into required migrations
 
 ### Azure Storage
 

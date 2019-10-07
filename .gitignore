@@ -169,3 +169,6 @@ src/.nuget/
 # API tests
 tests/api-tests/karate.jar
 tests/api-tests/target/
+
+#Migrations output
+migrations/azure-storage-migrations/

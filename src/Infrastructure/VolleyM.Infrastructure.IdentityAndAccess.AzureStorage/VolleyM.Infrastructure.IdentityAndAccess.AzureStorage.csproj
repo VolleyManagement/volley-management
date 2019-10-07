@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
     <ProjectReference Include="..\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />

@@ -25,7 +25,7 @@ namespace VolleyM.Tools.AzureStorageMigrator
             var discoverer = new MigrationTaskDiscoverer();
 
             discoverer.Discover(GetMigrationTasksDirectory());
-            
+
             await Task.WhenAll(discoverer.MigrationTasks.Select(RunMigrationTask));
             Log.Information("AzureStorageMigrator completed.");
         }
@@ -41,7 +41,7 @@ namespace VolleyM.Tools.AzureStorageMigrator
 
         private static string GetMigrationTasksDirectory()
         {
-            return Path.Combine(Directory.GetCurrentDirectory(), "migrationTasks");
+            return Directory.GetCurrentDirectory();
         }
 
         private static void InitConfiguration()

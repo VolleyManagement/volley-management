@@ -1,14 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Formatting.Compact;
-using VolleyM.Tools.AzureStorageMigrator.Contracts;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using VolleyM.Tools.MigrationTool.Contracts;
 
-namespace VolleyM.Tools.AzureStorageMigrator
+namespace VolleyM.Tools.MigrationTool
 {
     public class Program
     {
@@ -44,8 +43,8 @@ namespace VolleyM.Tools.AzureStorageMigrator
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(GetAssemblyFolder(migrationTask))
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile($"appsettings.{GetEnvironmentName()}.json", true)
+                .AddJsonFile("pluginsettings.json", true)
+                .AddJsonFile($"pluginsettings.{GetEnvironmentName()}.json", true)
                 .AddEnvironmentVariables("VOLLEYM_MIGRATION_");
 
             return builder.Build();

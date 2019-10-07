@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace VolleyM.Tools.AzureStorageMigrator.Contracts
 {
@@ -7,7 +8,7 @@ namespace VolleyM.Tools.AzureStorageMigrator.Contracts
     /// </summary>
     public interface IMigrationTask
     {
-        Task Initialize();
+        Task Initialize(IConfiguration config);
 
         Task MigrateUp();
     }

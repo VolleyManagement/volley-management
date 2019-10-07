@@ -32,11 +32,23 @@ namespace VolleyM.Tools.AzureStorageMigrator
 
         private static async Task RunMigrationTask(IMigrationTask migrationTask)
         {
+            IConfiguration config = LoadPluginConfiguration(migrationTask);
             Log.Debug("Migration started for {MigrationName}.", migrationTask.GetType().Name);
-            await migrationTask.Initialize();
+            await migrationTask.Initialize(config);
             Log.Debug("Initialized {MigrationName} migration.", migrationTask.GetType().Name);
             await migrationTask.MigrateUp();
             Log.Debug("Migration {MigrationName} complete.", migrationTask.GetType().Name);
+        }
+
+        private static IConfiguration LoadPluginConfiguration(IMigrationTask migrationTask)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(migrationTask.GetType().Assembly.Location)
+                .AddJsonFile("migration-config.json", true)
+                .AddJsonFile($"migration-config.{GetEnvironmentName()}.json", true)
+                .AddEnvironmentVariables("VOLLEYM_MIGRATION_");
+
+            return builder.Build();
         }
 
         private static string GetMigrationTasksDirectory()
@@ -49,9 +61,14 @@ namespace VolleyM.Tools.AzureStorageMigrator
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appconfig.json", true)
-                .AddEnvironmentVariables("VOLLEYM_");
+                .AddEnvironmentVariables("VOLLEYM_MIGRATION_");
 
             _configuration = builder.Build();
+        }
+
+        private static string GetEnvironmentName()
+        {
+            return _configuration["EnvironmentName"] ?? "Development";
         }
 
         private static void ConfigureLogger(IConfiguration config)

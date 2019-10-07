@@ -43,17 +43,23 @@ namespace VolleyM.Tools.AzureStorageMigrator
         private static IConfiguration LoadPluginConfiguration(IMigrationTask migrationTask)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(migrationTask.GetType().Assembly.Location)
-                .AddJsonFile("migration-config.json", true)
-                .AddJsonFile($"migration-config.{GetEnvironmentName()}.json", true)
+                .SetBasePath(GetAssemblyFolder(migrationTask))
+                .AddJsonFile("appsettings.json", true)
+                .AddJsonFile($"appsettings.{GetEnvironmentName()}.json", true)
                 .AddEnvironmentVariables("VOLLEYM_MIGRATION_");
 
             return builder.Build();
         }
 
+        private static string GetAssemblyFolder(IMigrationTask migrationTask)
+        {
+            var fileInfo = new FileInfo(migrationTask.GetType().Assembly.Location);
+            return fileInfo.DirectoryName;
+        }
+
         private static string GetMigrationTasksDirectory()
         {
-            return Directory.GetCurrentDirectory();
+            return Path.Combine(AppContext.BaseDirectory, "tasks"); ;
         }
 
         private static void InitConfiguration()

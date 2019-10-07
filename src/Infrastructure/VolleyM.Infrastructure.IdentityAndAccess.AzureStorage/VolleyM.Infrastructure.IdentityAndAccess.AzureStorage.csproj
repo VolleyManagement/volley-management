@@ -19,10 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="migration-config.Development.json">
+    <None Update="appsettings.Production.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="migration-config.json">
+    <None Update="appsettings.Staging.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

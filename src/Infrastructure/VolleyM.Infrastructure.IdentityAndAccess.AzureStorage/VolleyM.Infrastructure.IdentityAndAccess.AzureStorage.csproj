@@ -19,16 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.Production.json">
+    <None Update="pluginsettings.Production.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings.Staging.json">
+    <None Update="pluginsettings.Staging.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings.Development.json">
+    <None Update="pluginsettings.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings.json">
+    <None Update="pluginsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

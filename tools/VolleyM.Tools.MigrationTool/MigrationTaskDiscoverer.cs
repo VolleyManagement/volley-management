@@ -1,14 +1,13 @@
-﻿using System;
-using McMaster.NETCore.Plugins;
+﻿using McMaster.NETCore.Plugins;
 using Serilog;
+using System;
 using System.Collections.Generic;
-using System.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using VolleyM.Tools.AzureStorageMigrator.Contracts;
+using VolleyM.Tools.MigrationTool.Contracts;
 
-namespace VolleyM.Tools.AzureStorageMigrator
+namespace VolleyM.Tools.MigrationTool
 {
     public class MigrationTaskDiscoverer
     {

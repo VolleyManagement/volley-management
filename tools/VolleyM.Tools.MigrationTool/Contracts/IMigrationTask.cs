@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace VolleyM.Tools.AzureStorageMigrator.Contracts
+namespace VolleyM.Tools.MigrationTool.Contracts
 {
     /// <summary>
     /// Task to migrate data

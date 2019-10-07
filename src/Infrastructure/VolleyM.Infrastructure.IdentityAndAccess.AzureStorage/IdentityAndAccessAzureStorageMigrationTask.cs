@@ -1,9 +1,9 @@
-﻿using System.Composition;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Serilog;
+using System.Composition;
+using System.Threading.Tasks;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
-using VolleyM.Tools.AzureStorageMigrator.Contracts;
+using VolleyM.Tools.MigrationTool.Contracts;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 {

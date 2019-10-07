@@ -1,11 +1,11 @@
 ﻿using System;
+using McMaster.NETCore.Plugins;
+using Serilog;
 using System.Collections.Generic;
 using System.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
-using Serilog;
 using VolleyM.Tools.AzureStorageMigrator.Contracts;
 
 namespace VolleyM.Tools.AzureStorageMigrator
@@ -20,32 +20,58 @@ namespace VolleyM.Tools.AzureStorageMigrator
             Log.Debug("Path to assemblies {MigrationTasksPath}.", assemblyPath);
 
             // Catalogs does not exists in Dotnet Core, so you need to manage your own.
-            var assemblies = DiscoverAssemblies(assemblyPath, "VolleyM.");
-            var configuration = new ContainerConfiguration()
-                .WithAssemblies(assemblies);
+            var assemblies = DiscoverAssemblies(assemblyPath);
 
-            using var container = configuration.CreateContainer();
-            MigrationTasks = container.GetExports<IMigrationTask>().ToList();
+            MigrationTasks = assemblies.Select(CreateTaskInstance).Where(t => t != null).ToList();
             Log.Information("Discovered {MigrationTaskCount} migration tasks.", MigrationTasks.Count);
         }
 
-        private static IEnumerable<Assembly> DiscoverAssemblies(string assemblyPath, string assemblyPrefix)
+        private static IEnumerable<Assembly> DiscoverAssemblies(string assemblyPath)
         {
             var list = new List<Assembly>();
 
             try
             {
-                var pluginAssemblies = Directory.GetFiles(assemblyPath, "*.dll", SearchOption.TopDirectoryOnly)
-                    .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
-                    // Ensure that the assembly contains an implementation for the given type.
-                    .Where(s => s.FullName.StartsWith(assemblyPrefix, StringComparison.OrdinalIgnoreCase));
-                list.AddRange(pluginAssemblies);
+                foreach (var dir in Directory.GetDirectories(assemblyPath))
+                {
+                    var dirName = Path.GetFileName(dir);
+                    var pluginDll = Path.Combine(dir, dirName + ".dll");
+                    if (File.Exists(pluginDll))
+                    {
+                        var loader = PluginLoader.CreateFromAssemblyFile(pluginDll, sharedTypes: new[] { typeof(IMigrationTask) });
+                        list.Add(loader.LoadDefaultAssembly());
+                    }
+                }
             }
             catch (DirectoryNotFoundException e)
             {
                 Log.Warning(e, "Plugin directory missing: {PluginDirectory}", assemblyPath);
             }
             return list;
+        }
+
+        private static IMigrationTask CreateTaskInstance(Assembly assembly)
+        {
+            var task = assembly.GetExportedTypes()
+                .FirstOrDefault(t => t.GetInterfaces().Contains(typeof(IMigrationTask)));
+
+            if (task == null)
+            {
+                Log.Warning("Assembly {AssemblyName} does not have any types implementing {InterfaceName}.",
+                    assembly.GetName().Name,
+                    nameof(IMigrationTask));
+                return null;
+            }
+
+            try
+            {
+                return (IMigrationTask)Activator.CreateInstance(task);
+            }
+            catch (Exception e)
+            {
+                Log.Warning(e, "Failed to instantiate {Type} as migration task.", task);
+                return null;
+            }
         }
     }
 }

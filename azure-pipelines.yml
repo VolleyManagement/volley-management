@@ -47,6 +47,10 @@ stages:
           - publish: $(Build.SourcesDirectory)/tests/unit-tests #note: files which are published controlled by .artifactignore file
             artifact: unitTestsResults
             condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging
+          - pwsh: ./migrations/publish-azure-storage-migration.ps1
+            displayName: Preapre Azure Storage migration
+          - publish: $(Build.SourcesDirectory)/migrations/azure-storage-migrations
+            artifact: azureStorageMigration
       - job: container_build
         displayName: Container
         dependsOn: build_code
@@ -84,8 +88,14 @@ stages:
           - publish: $(Build.SourcesDirectory)/tests/unit-tests #note: files which are published controlled by .artifactignore file
             artifact: integrationTestsResults
             condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging
+      - job: azure_storage_migrations
+        displayName: Run Azure Storage Migrations
+        steps:
+          - script: echo "Azure Storage Migrations"
       - job: deploy_app_service_int
         displayName: Deploy App Service
+        dependsOn:
+        - azure_storage_migrations
         steps:
           - template: build/azure-pipeline/set-docker-tag.yml
           - task: AzureWebAppContainer@1

@@ -140,8 +140,23 @@ stages:
     dependsOn: integration
     condition: and(succeeded(), eq(0, variables['System.PullRequest.PullRequestId']), eq(variables['Build.SourceBranchName'], 'master'))
     jobs:
+      - job: azure_storage_migrations
+        displayName: Run Azure Storage Migrations
+        steps:
+          - download: current
+            artifact: azureStorageMigration
+          - template: build/azure-pipeline/setup-dotnet-cli.yml
+          - pwsh: |
+              cd $(Pipeline.Workspace)/azureStorageMigration
+              dotnet VolleyM.Tools.MigrationTool.dll 
+            displayName: Run migration
+            env:
+              VOLLEYM_MIGRATION_ENVIRONMENTNAME: Production
+              VOLLEYM_MIGRATION_IDENTITYCONTEXTTABLESTORAGEOPTIONS__CONNECTIONSTRING: $(vm_azstorage_connection_string_production)
       - job: deploy_app_service_prod
         displayName: Deploy App Service
+        dependsOn:
+          azure_storage_migrations
         steps:
           - template: build/azure-pipeline/set-docker-tag.yml
           - task: AzureWebAppContainer@1

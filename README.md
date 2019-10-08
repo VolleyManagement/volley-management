@@ -49,6 +49,7 @@ In order to configure Azure Storage locally you need to run migrations to setup 
 2. Run migration itself:
 
     > cd ./migrations/azureStorageMigration
+    
     > dotnet VolleyM.Tools.MigrationTool.dll
 
 #### Run Code ####

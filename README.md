@@ -38,6 +38,21 @@ Follow this [Guide](../../wiki/Dev-Env-Guide).
 
 ### Deployment instructions ###
 
+#### Prepare Azure Storage ####
+
+In order to configure Azure Storage locally you need to run migrations to setup all required tables.
+
+1. Prepare migration. Run following command:
+
+    > ./migrations/publish-azure-storage-migration.ps1
+
+2. Run migration itself:
+
+    > cd ./migrations/azureStorageMigration
+    > dotnet VolleyM.Tools.MigrationTool.dll
+
+#### Run Code ####
+
 To run code locally it is recommended to use Docker to spin up local instance and test. This options is the closest to the production setting.
 You have few options there:
 

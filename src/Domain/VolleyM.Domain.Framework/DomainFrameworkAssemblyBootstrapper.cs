@@ -2,6 +2,8 @@
 using AutoMapper.Configuration;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.Logging;
 using VolleyM.Infrastructure.Bootstrap;
 
@@ -12,11 +14,13 @@ namespace VolleyM.Domain.Framework
     {
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
+            container.Register<IAuthorizationHandler, DefaultAuthorizationHandler>(Lifestyle.Scoped);
+
             container.RegisterDecorator(typeof(IRequestHandler<,>), typeof(LoggingRequestHandlerDecorator<,>));
 
             container.RegisterDecorator(
                 typeof(IQuery<,>),
-                typeof(LoggingQueryObjectDecorator<,>), 
+                typeof(LoggingQueryObjectDecorator<,>),
                 Lifestyle.Scoped);
         }
 

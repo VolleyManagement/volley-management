@@ -2,7 +2,7 @@
 
 namespace VolleyM.Domain.Contracts.Crosscutting
 {
-    public interface IAuthorizationService
+    public interface IAuthorizationHandler
     {
         Task<Result<Unit>> AuthorizeUser();
     }

@@ -13,11 +13,19 @@ namespace VolleyM.API.Authorization
             _container = container;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, DefaultVolleyMAuthorizationRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, DefaultVolleyMAuthorizationRequirement requirement)
         {
-            context.Succeed(requirement);
+            var authZHandler = _container.GetInstance<VolleyM.Domain.Contracts.Crosscutting.IAuthorizationHandler>();
 
-            return Task.CompletedTask;
+            var authResult = await authZHandler.AuthorizeUser();
+            if (authResult.IsSuccessful)
+            {
+                context.Succeed(requirement);
+            }
+            else
+            {
+                context.Fail();
+            }
         }
     }
 }

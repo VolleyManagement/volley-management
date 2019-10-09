@@ -1,13 +1,14 @@
-﻿using AutoMapper.Configuration;
+﻿using System.Composition;
+using AutoMapper.Configuration;
 using SimpleInjector;
-using System.Composition;
-using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Framework.Logging;
 using VolleyM.Infrastructure.Bootstrap;
 
-namespace VolleyM.Domain.Contracts
+namespace VolleyM.Domain.Framework
 {
     [Export(typeof(IAssemblyBootstrapper))]
-    public class DomainContractsAssemblyBootstrapper : IAssemblyBootstrapper
+    public class DomainFrameworkAssemblyBootstrapper : IAssemblyBootstrapper
     {
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {

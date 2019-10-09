@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-using Serilog;
+﻿using Serilog;
+using System.Threading.Tasks;
+using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.Contracts.Crosscutting
+namespace VolleyM.Domain.Framework.Logging
 {
     public class LoggingRequestHandlerDecorator<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

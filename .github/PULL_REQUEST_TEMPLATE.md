@@ -2,8 +2,6 @@
 
 _Describe main changes going into those pull requests._
 
-_Use "closes #(issue number)" to enable GitHub to close issue when PR is merged_
-
 ### Areas Of Interest
 
 _Any specific places you want to bring attention of the reviewers? Some places you are uncertain in/some design decisions. (If none remove this section)_

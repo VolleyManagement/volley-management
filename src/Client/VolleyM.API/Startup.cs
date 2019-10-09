@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using SimpleInjector;
 using VolleyM.API.Authentication;
+using VolleyM.API.Authorization;
 using VolleyM.API.CORS;
 using VolleyM.API.Extensions;
 using VolleyM.Infrastructure.Bootstrap;
@@ -36,6 +37,8 @@ namespace VolleyM.API
 
             services.AddControllers()
                 .AddVolleyManagementApiParts(_assemblyBootstrapper);
+
+            services.AddDefaultVolleyMAuthorization(_container);
 
             services.AddSimpleInjector(_container, options =>
             {

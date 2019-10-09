@@ -31,7 +31,8 @@
         };
 
         internal static readonly string[] AllowedDomainPackages = {
-            "Contracts"
+            "Contracts",
+            "Framework"
         };
 
         internal static readonly string[] InfrastructureServices = {

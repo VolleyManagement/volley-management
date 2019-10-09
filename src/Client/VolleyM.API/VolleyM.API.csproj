@@ -39,6 +39,7 @@
     <ProjectReference Include="..\VolleyM.API.Contributors\VolleyM.API.Contributors.csproj" />
 
     <!--Domain-->
+    <ProjectReference Include="..\..\Domain\VolleyM.Domain.Framework\VolleyM.Domain.Framework.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
 

@@ -1,13 +1,12 @@
-﻿using System.Net.Http.Headers;
+﻿using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess
 {
-    public class UserId
+    public class UserId : IdBase<string>
     {
-        private readonly string _id;
+        public UserId(string id) : base(id)
+        {
 
-        public UserId(string id) => _id = id;
-
-        public override string ToString() => _id;
+        }
     }
 }

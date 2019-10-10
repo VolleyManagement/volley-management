@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
     <ProjectReference Include="..\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
+    <ProjectReference Include="..\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
   </ItemGroup>
 
 </Project>

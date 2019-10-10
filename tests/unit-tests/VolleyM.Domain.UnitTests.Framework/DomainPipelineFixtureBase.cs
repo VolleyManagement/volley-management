@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using SimpleInjector;
-using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Framework;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -48,7 +48,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         internal IEnumerable<IAssemblyBootstrapper> GetBootstrappers() =>
             new List<IAssemblyBootstrapper>(GetAssemblyBootstrappers()) {
-                new DomainContractsAssemblyBootstrapper()
+                new DomainFrameworkAssemblyBootstrapper()
             };
 
         internal void ApplyContainer(Container container)

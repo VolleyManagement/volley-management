@@ -11,6 +11,11 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
             public UserId Id { get; set; }
 
             public TenantId Tenant { get; set; }
+
+            public override string ToString()
+            {
+                return $"Id:{Id};Tenant:{Tenant}";
+            }
         }
 
         public class Handler : IRequestHandler<Request, Unit>

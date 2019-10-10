@@ -36,11 +36,12 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
             MockCreateUserSuccess();
         }
 
-        private void MockCreateUserSuccess()
+        [Given("existing user is being authorized")]
+        public void GivenExistingUserIsBeingAuthorized()
         {
-            _handler.Handle(Arg.Any<CreateUser.Request>())
-                .Returns(Unit.Value)
-                .AndDoes(ci => { _actualRequest = ci.Arg<CreateUser.Request>(); });
+            _userClaims = new ClaimsIdentity();
+            _userClaims.AddClaim(new Claim("sub", "user123"));
+            MockCreateUserConflict();
         }
 
         [And(@"user has '(\S+)' claim with '(\S+)' value")]
@@ -76,14 +77,27 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         [And("new user should be created in the system")]
         public void AndNewUserIsCreated()
         {
-            var expectedUserRequest = new CreateUser.Request {Tenant = TenantId.Default, Id = _expectedId};
+            var expectedUserRequest = new CreateUser.Request { Tenant = TenantId.Default, Id = _expectedId };
             _actualRequest.Should().BeEquivalentTo(expectedUserRequest, "all user attributes should be extracted");
         }
-        
+
         [And("new user should not be created in the system")]
         public void AndNewUserIsNotCreated()
         {
             _handler.DidNotReceive().Handle(Arg.Any<CreateUser.Request>());
+        }
+
+        private void MockCreateUserSuccess()
+        {
+            _handler.Handle(Arg.Any<CreateUser.Request>())
+                .Returns(Unit.Value)
+                .AndDoes(ci => { _actualRequest = ci.Arg<CreateUser.Request>(); });
+        }
+
+        private void MockCreateUserConflict()
+        {
+            _handler.Handle(Arg.Any<CreateUser.Request>())
+                .Returns(Error.Conflict());
         }
     }
 }

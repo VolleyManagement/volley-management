@@ -62,6 +62,8 @@ namespace VolleyM.Architecture.UnitTests
                     .Where(p => NotDependency(p, $"{PackageNamingConstants.ROOT_NS}.Infrastructure.Bootstrap"))
                     .Where(a => NotDependency(a, allowedVmAssemblies));
 
+                FilterDomainFrameworkAssembly(ref filtered);
+
                 filtered.Should().BeEmpty("{0} assembly should reference only allowed assemblies",
                     domainAssembly.GetName().Name);
             }
@@ -125,5 +127,10 @@ namespace VolleyM.Architecture.UnitTests
             => !allowed.Any(dep => StartsWith(assembly, dep));
         private static bool StartsWith(AssemblyName assembly, string packageName)
                 => assembly.Name.StartsWith(packageName, StringComparison.OrdinalIgnoreCase);
+
+        private void FilterDomainFrameworkAssembly(ref IEnumerable<AssemblyName> filtered)
+        {
+            filtered = filtered.Where(p => NotDependency(p, "VolleyM.Domain.IdentityAndAccess"));
+        }
     }
 }

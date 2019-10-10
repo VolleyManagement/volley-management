@@ -115,7 +115,7 @@ stages:
               containers: '$(docker_repository_name):$(image_tag)'
               appSettings: >-
                 -ASPNETCORE_ENVIRONMENT Staging
-                -IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING $(vm_azstorage_connection_string_staging)
+                -IDENTITYCONTEXTTABLESTORAGEOPTIONS__CONNECTIONSTRING $(vm_azstorage_connection_string_staging)
       - job: run_api_tests
         displayName: API Tests
         dependsOn:
@@ -167,4 +167,4 @@ stages:
               containers: '$(docker_repository_name):$(image_tag)'
               appSettings: >-
                 -ASPNETCORE_ENVIRONMENT Production
-                -IDENTITYCONTEXTTABLESTORAGEOPTIONS_CONNECTIONSTRING $(vm_azstorage_connection_string_production)
+                -IDENTITYCONTEXTTABLESTORAGEOPTIONS__CONNECTIONSTRING $(vm_azstorage_connection_string_production)

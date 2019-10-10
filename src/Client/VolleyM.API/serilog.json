@@ -1,5 +1,6 @@
 {
   "Serilog": {
+    "UseElastic": false,
     "LevelSwitches": {
       "$appLogLevel": "Debug",
       "$msfLogLevel": "Information",
@@ -12,5 +13,5 @@
         "System": "$sysLogLevel"
       }
     }
-  } 
+  }
 }

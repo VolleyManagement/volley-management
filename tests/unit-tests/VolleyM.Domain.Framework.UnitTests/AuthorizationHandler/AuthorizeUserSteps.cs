@@ -77,7 +77,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         [And("new user should be created in the system")]
         public void AndNewUserIsCreated()
         {
-            var expectedUserRequest = new CreateUser.Request { Tenant = TenantId.Default, Id = _expectedId };
+            var expectedUserRequest = new CreateUser.Request { Tenant = TenantId.Default, UserId = _expectedId };
             _actualRequest.Should().BeEquivalentTo(expectedUserRequest, "all user attributes should be extracted");
         }
 

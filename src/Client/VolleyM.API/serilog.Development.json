@@ -1,7 +1,7 @@
 {
   "Serilog": {
     "LevelSwitches": {
-      "$appLogLevel": "Information",
+      "$appLogLevel": "Debug",
       "$msfLogLevel": "Information",
       "$sysLogLevel": "Error"
     }

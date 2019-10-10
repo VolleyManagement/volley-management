@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Destructurama;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
+using Serilog.Sinks.Elasticsearch;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace VolleyM.API
@@ -14,13 +16,28 @@ namespace VolleyM.API
         {
             Serilog.Debugging.SelfLog.Enable(Console.Error);
 
-            var config = new LoggerConfiguration()
-                .ReadFrom.Configuration(ReadConfiguration())
+            var config = ReadConfiguration();
+
+            var logConfig = new LoggerConfiguration()
+                .ReadFrom.Configuration(config)
                 .Enrich.FromLogContext()
-                .WriteTo.File(new RenderedCompactJsonFormatter(), "volleym-api.log", LogEventLevel.Information)
+                .Destructure.UsingAttributes()
+                .WriteTo.File(new RenderedCompactJsonFormatter(), "volleym-api.log", LogEventLevel.Debug)
                 .WriteTo.Console(theme: GetVolleyMTheme());
 
-            return config;
+            if (ShouldConfigureElasticSearch(config))
+            {
+                logConfig.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                {
+                    AutoRegisterTemplate = true,
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                    MinimumLogEventLevel = LogEventLevel.Debug,
+                    InlineFields = true
+                });
+            }
+
+
+            return logConfig;
         }
 
         private static SystemConsoleTheme GetVolleyMTheme()
@@ -48,5 +65,17 @@ namespace VolleyM.API
 
         private static string GetEnvironmentName() =>
             Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
+        private static bool ShouldConfigureElasticSearch(IConfiguration config)
+        {
+            var elasticSwitch = config["Serilog:UseElastic"];
+
+            if (bool.TryParse(elasticSwitch, out var result))
+            {
+                return result;
+            }
+
+            return false;
+        }
     }
 }

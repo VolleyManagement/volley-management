@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
@@ -8,13 +7,13 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
     {
         public class Request : IRequest<Unit>
         {
-            public UserId Id { get; set; }
+            public UserId UserId { get; set; }
 
             public TenantId Tenant { get; set; }
 
             public override string ToString()
             {
-                return $"Id:{Id};Tenant:{Tenant}";
+                return $"UserId:{UserId};Tenant:{Tenant}";
             }
         }
 
@@ -29,14 +28,14 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
 
             public async Task<Result<Unit>> Handle(Request request)
             {
-                var existing = await _repository.Get(request.Tenant, request.Id);
+                var existing = await _repository.Get(request.Tenant, request.UserId);
 
                 if (existing.IsSuccessful)
                 {
                     return Error.Conflict();
                 }
 
-                var user = new User(request.Id, request.Tenant);
+                var user = new User(request.UserId, request.Tenant);
                 return await _repository.Add(user);
             }
         }

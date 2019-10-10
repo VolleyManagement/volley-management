@@ -29,12 +29,12 @@ namespace VolleyM.Domain.Framework.Authorization
 
             if (idValue == null)
             {
-                return Error.NotAuthorized("Id claim is missing");
+                return Error.NotAuthorized("UserId claim is missing");
             }
 
             var newUser = new CreateUser.Request
             {
-                Id = new UserId(idValue),
+                UserId = new UserId(idValue),
                 Tenant = TenantId.Default
             };
 

@@ -3,6 +3,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Destructurama;
 using SimpleInjector;
 using VolleyM.Domain.Framework;
 using VolleyM.Infrastructure.Bootstrap;
@@ -102,6 +103,7 @@ namespace VolleyM.Domain.UnitTests.Framework
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
+                .Destructure.UsingAttributes()
                 .WriteTo.Debug()
                 .WriteTo.File(
                     GetLogName(config),

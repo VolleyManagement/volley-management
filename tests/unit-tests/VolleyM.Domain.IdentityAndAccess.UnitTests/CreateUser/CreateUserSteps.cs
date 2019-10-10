@@ -47,7 +47,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [Given("UserId provided")]
         public void GivenUserIdProvided()
         {
-            _request.Id = _aUserId;
+            _request.UserId = _aUserId;
             _expectedUser.WithId(_aUserId);
         }
 

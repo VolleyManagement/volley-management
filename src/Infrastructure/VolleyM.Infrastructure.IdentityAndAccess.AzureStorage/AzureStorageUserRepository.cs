@@ -40,7 +40,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
                 if (result.Result is UserEntity userEntity)
                 {
-                    return new User(new UserId(userEntity.RowKey), new TenantId(userEntity.RowKey));
+                    return new User(new UserId(userEntity.RowKey), new TenantId(userEntity.PartitionKey));
                 }
 
                 return Error.NotFound();

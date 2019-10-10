@@ -46,5 +46,10 @@
             "Microsoft.CodeAnalysis.LiveUnitTesting.Runtime",
             "Microsoft.Extensions.Configuration.Abstractions"
         };
+
+        internal static readonly string[] AllowedLoggerReferences = {
+            "Serilog",
+            "Destructurama.Attributed"
+        };
     }
 }

@@ -1,11 +1,11 @@
-﻿namespace VolleyM.Domain.IdentityAndAccess
+﻿using VolleyM.Domain.Contracts;
+
+namespace VolleyM.Domain.IdentityAndAccess
 {
-    public class TenantId
+    public class TenantId : IdBase<string>
     {
-        private readonly string _id;
+        public TenantId(string id) : base(id) { }
 
-        public TenantId(string id) => _id = id;
-
-        public override string ToString() => _id;
+        public static TenantId Default { get; } = new TenantId("V011EYMG-0D29-4E9C-BF36-0074DBFC192B");
     }
 }

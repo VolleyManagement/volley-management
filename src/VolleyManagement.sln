@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Tools.MigrationTool
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Domain.Framework", "Domain\VolleyM.Domain.Framework\VolleyM.Domain.Framework.csproj", "{F8712EE3-1625-44BF-B156-57F0308E778D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Domain.Framework.UnitTests", "..\tests\unit-tests\VolleyM.Domain.Framework.UnitTests\VolleyM.Domain.Framework.UnitTests.csproj", "{DB773095-E706-44FC-8993-F9E401A1DAF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,10 @@ Global
 		{F8712EE3-1625-44BF-B156-57F0308E778D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8712EE3-1625-44BF-B156-57F0308E778D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8712EE3-1625-44BF-B156-57F0308E778D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB773095-E706-44FC-8993-F9E401A1DAF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB773095-E706-44FC-8993-F9E401A1DAF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB773095-E706-44FC-8993-F9E401A1DAF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB773095-E706-44FC-8993-F9E401A1DAF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +139,7 @@ Global
 		{2C77EF17-0CCC-41E6-9FDA-4A632637A76B} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 		{65264D47-9632-4146-A2C4-2E0B8C07425C} = {DFBC9B5C-D413-41B5-9E15-30D65AEED754}
 		{F8712EE3-1625-44BF-B156-57F0308E778D} = {DBC68672-2998-4C61-8C5F-5F6E300F3280}
+		{DB773095-E706-44FC-8993-F9E401A1DAF4} = {2D85CDB8-A2D9-42C0-B104-467453C93A14}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4379AC9-D1D3-439C-971A-BA4BFFA373B5}

@@ -40,7 +40,13 @@ namespace VolleyM.Domain.Framework.Authorization
 
             var createResult = await _createUserHandler.Handle(newUser);
 
-            return createResult;
+            return UserExists(createResult) ? Unit.Value : createResult;
+        }
+
+        private static bool UserExists(Result<Unit> createResult)
+        {
+            return !createResult.IsSuccessful
+                   && createResult.Error.Type == ErrorType.Conflict;
         }
 
         private string GetUserIdFromClaims(ClaimsPrincipal user)

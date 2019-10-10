@@ -19,3 +19,8 @@ Scenario: New user does not have supported Id Claim
 	When I authorize user
 	Then user should not be authorized
 	And new user should not be created in the system
+
+Scenario: Existing user authorizes
+	Given existing user is being authorized
+	When I authorize user
+	Then user should be authorized

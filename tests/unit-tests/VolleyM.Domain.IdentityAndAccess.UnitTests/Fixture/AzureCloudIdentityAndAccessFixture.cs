@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 

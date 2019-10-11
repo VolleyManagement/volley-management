@@ -1,4 +1,7 @@
-﻿namespace VolleyM.Domain.IdentityAndAccess
+﻿using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
+
+namespace VolleyM.Domain.IdentityAndAccess
 {
     public class User
     {

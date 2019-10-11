@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using SimpleInjector;
+using System.Linq;
 using System.Security.Claims;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -14,9 +15,11 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
     [FeatureFile(@"./AuthorizationHandler/AuthorizeUser.feature")]
     public class AuthorizeUserSteps : DomainFrameworkStepsBase
     {
-        private IRequestHandler<CreateUser.Request, Unit> _handler;
+        private IRequestHandler<CreateUser.Request, Unit> _createHandler;
+        private IRequestHandler<GetUser.Request, User> _getHandler;
 
         private UserId _expectedId;
+        private TenantId _expectedTenant = TenantId.Default;
         private ClaimsIdentity _userClaims;
 
         private CreateUser.Request _actualRequest;
@@ -25,14 +28,20 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         public AuthorizeUserSteps(DomainFrameworkFixture fixture)
             : base(fixture)
         {
-            _handler = Substitute.For<IRequestHandler<CreateUser.Request, Unit>>();
-            Register(() => _handler, Lifestyle.Scoped);
+            _createHandler = Substitute.For<IRequestHandler<CreateUser.Request, Unit>>();
+            Register(() => _createHandler, Lifestyle.Scoped);
+
+            _getHandler = Substitute.For<IRequestHandler<GetUser.Request, User>>();
+            Register(() => _getHandler, Lifestyle.Scoped);
         }
+
+        #region Given
 
         [Given("new user is being authorized")]
         public void GivenNewUserIsBeingAuthorized()
         {
             _userClaims = new ClaimsIdentity();
+            MockUserNotFound();
             MockCreateUserSuccess();
         }
 
@@ -40,8 +49,8 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         public void GivenExistingUserIsBeingAuthorized()
         {
             _userClaims = new ClaimsIdentity();
-            _userClaims.AddClaim(new Claim("sub", "user123"));
-            MockCreateUserConflict();
+            AndUserHasIdClaim();
+            MockExistingUser();
         }
 
         [And(@"user has '(\S+)' claim with '(\S+)' value")]
@@ -53,6 +62,36 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
             _userClaims.AddClaim(new Claim(claim, value));
         }
 
+        [And(@"user has no claims")]
+        public void AndUserHasNoClaims()
+        {
+            var claims = _userClaims.Claims.ToList();
+
+            claims.ForEach(_userClaims.RemoveClaim);
+        }
+
+        [And(@"user has correct ID claim")]
+        public void AndUserHasIdClaim()
+        {
+            AndUserHasClaim("sub", "user123");
+        }
+
+        [And(@"get user operation has error")]
+        public void AndGetUserReturnsError()
+        {
+            MockGetUserError();
+        }
+
+        [And(@"create user operation has error")]
+        public void AndCreateUserReturnsError()
+        {
+            MockCreateUserError();
+        }
+
+        #endregion
+
+        #region When
+
         [When("I authorize user")]
         public void WhenIAuthorizeUser()
         {
@@ -61,6 +100,10 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
             var handler = Resolve<IAuthorizationHandler>();
             _actualResult = handler.AuthorizeUser(userToAuthorize).Result;
         }
+
+        #endregion
+
+        #region Then
 
         [Then("user should be authorized")]
         public void ThenUserShouldBeAuthorized()
@@ -74,30 +117,71 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
             _actualResult.Should().NotBeSuccessful("user should not be authorized");
         }
 
+        [Then("this user is set into current context")]
+        public void UserIsSetAsCurrent()
+        {
+            var currentUser = Resolve<ICurrentUserProvider>();
+
+            currentUser.User.Should().Be(_expectedId, "user with this Id was logged in");
+            currentUser.Tenant.Should().Be(_expectedTenant, "current tenant should be set");
+        }
+
         [And("new user should be created in the system")]
         public void AndNewUserIsCreated()
         {
-            var expectedUserRequest = new CreateUser.Request { Tenant = TenantId.Default, UserId = _expectedId };
+            var expectedUserRequest = new CreateUser.Request { Tenant = _expectedTenant, UserId = _expectedId };
             _actualRequest.Should().BeEquivalentTo(expectedUserRequest, "all user attributes should be extracted");
         }
 
         [And("new user should not be created in the system")]
         public void AndNewUserIsNotCreated()
         {
-            _handler.DidNotReceive().Handle(Arg.Any<CreateUser.Request>());
+            _createHandler.DidNotReceive().Handle(Arg.Any<CreateUser.Request>());
         }
+
+        #endregion
+
+        #region Mock
 
         private void MockCreateUserSuccess()
         {
-            _handler.Handle(Arg.Any<CreateUser.Request>())
+            _createHandler.Handle(Arg.Any<CreateUser.Request>())
                 .Returns(Unit.Value)
                 .AndDoes(ci => { _actualRequest = ci.Arg<CreateUser.Request>(); });
         }
 
-        private void MockCreateUserConflict()
+        public void MockCreateUserError()
         {
-            _handler.Handle(Arg.Any<CreateUser.Request>())
-                .Returns(Error.Conflict());
+            MockCreateUser(Error.InternalError("random test error"));
         }
+
+        private void MockCreateUser(Result<Unit> result)
+        {
+            _createHandler.Handle(Arg.Any<CreateUser.Request>())
+                .Returns(result);
+        }
+
+        private void MockExistingUser()
+        {
+            MockGetUser(new User(_expectedId, _expectedTenant));
+        }
+
+        private void MockUserNotFound()
+        {
+            MockGetUser(Error.NotFound());
+        }
+
+        private void MockGetUserError()
+        {
+            MockGetUser(Error.InternalError("any test error"));
+        }
+
+        private void MockGetUser(Result<User> result)
+        {
+            _getHandler.Handle(Arg.Any<GetUser.Request>())
+                .Returns(result);
+        }
+
+        #endregion
     }
 }

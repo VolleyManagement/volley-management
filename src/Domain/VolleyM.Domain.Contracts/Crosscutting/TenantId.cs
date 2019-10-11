@@ -1,7 +1,6 @@
 ﻿using Destructurama.Attributed;
-using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.IdentityAndAccess
+namespace VolleyM.Domain.Contracts
 {
     [LogAsScalar()]
     public class TenantId : IdBase<string>

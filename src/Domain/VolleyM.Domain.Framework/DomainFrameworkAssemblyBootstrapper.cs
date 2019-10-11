@@ -16,9 +16,12 @@ namespace VolleyM.Domain.Framework
         {
             container.Register<IAuthorizationHandler, DefaultAuthorizationHandler>(Lifestyle.Scoped);
 
+            container.Register<ICurrentUserProvider, CurrentUserProvider>(Lifestyle.Scoped);
+            container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);
+
             container.RegisterDecorator(
-                typeof(IRequestHandler<,>), 
-                typeof(LoggingRequestHandlerDecorator<,>), 
+                typeof(IRequestHandler<,>),
+                typeof(LoggingRequestHandlerDecorator<,>),
                 Lifestyle.Scoped);
 
             container.RegisterDecorator(

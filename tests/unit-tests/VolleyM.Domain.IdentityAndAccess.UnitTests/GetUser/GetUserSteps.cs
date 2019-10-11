@@ -11,7 +11,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
     [FeatureFile(@"./GetUser/GetUser.feature")]
     public class GetUserSteps : IdentityAndAccessStepsBase
     {
-        private IdentityAndAccessFixture _fixture;
+        private readonly IdentityAndAccessFixture _fixture;
 
         private readonly UserId _aUserId = new UserId("google|123321");
         private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");
@@ -19,7 +19,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         private readonly GetUser.Request _request = new GetUser.Request();
         private User _expectedUser;
 
-        private List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
+        private readonly List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
 
         private IRequestHandler<GetUser.Request, User> _handler;
 

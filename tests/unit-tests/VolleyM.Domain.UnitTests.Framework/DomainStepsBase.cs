@@ -1,7 +1,8 @@
-﻿using System;
-using Serilog;
+﻿using FluentAssertions;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
+using System;
+using VolleyM.Domain.Contracts;
 using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -54,6 +55,15 @@ namespace VolleyM.Domain.UnitTests.Framework
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected void AssertErrorReturned<T>(
+            Result<T> actualResult, 
+            Error expected, 
+            string because = "error should be reported", 
+            params object[] becauseArgs) where T : class
+        {
+            actualResult.Error.Should().BeEquivalentTo(expected, because, becauseArgs);
         }
     }
 }

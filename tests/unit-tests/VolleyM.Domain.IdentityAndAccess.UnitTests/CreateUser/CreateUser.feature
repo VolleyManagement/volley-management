@@ -17,4 +17,4 @@ Scenario: Create existing user
     And Tenant provided
     And such user already exists
     When I execute CreateUser
-    Then conflict error is returned
+    Then Conflict error is returned

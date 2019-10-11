@@ -52,6 +52,14 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             _usersToTeardown.Add(Tuple.Create(_aTenantId, _aUserId));
         }
 
+        [Given("user does not exist")]
+        public void GivenDoesNotUserExist()
+        {
+            _request.UserId = _aUserId;
+            _request.Tenant = _aTenantId;
+            _fixture.ConfigureUserDoesNotExist(_aTenantId, _aUserId);
+        }
+
         [When("I get user")]
         public void WhenExecuteCommand()
         {
@@ -65,6 +73,12 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         {
             _actualResult.Should().BeSuccessful("user exists");
             _actualResult.Value.Should().BeEquivalentTo(_expectedUser, "all user attributes should be returned");
+        }
+
+        [Then("NotFound error is returned")]
+        public void ThenNotFoundErrorReturned()
+        {
+            AssertErrorReturned(_actualResult, Error.NotFound(), "such user should not exist");
         }
     }
 }

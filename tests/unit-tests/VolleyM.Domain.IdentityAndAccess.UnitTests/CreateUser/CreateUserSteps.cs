@@ -87,12 +87,10 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             _usersToTeardown.Add(Tuple.Create(user.Tenant, user.Id));
         }
 
-        [Then("conflict error is returned")]
+        [Then("Conflict error is returned")]
         public void ThenConflictErrorReturned()
         {
-            Result<Unit> expected = Error.Conflict();
-
-            _actualResult.Should().BeEquivalentTo(expected, "such user already exists");
+            AssertErrorReturned(_actualResult, Error.Conflict(), "such user already exists");
         }
     }
 }

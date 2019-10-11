@@ -47,18 +47,6 @@ namespace VolleyM.Domain.Framework.Authorization
             };
             var getUser = await _getUserHandler.Handle(getRequest);
 
-            //switch (getUser)
-            //{
-            //    case Error e when e.Type == ErrorType.NotFound:
-            //        break;
-            //    case Error e:
-            //        break;
-            //    case User u:
-            //        break;
-            //    default:
-            //        throw new InvalidOperationException("This is unreachable");
-            //}
-
             if (getUser.IsSuccessful)
             {
                 result = Unit.Value;

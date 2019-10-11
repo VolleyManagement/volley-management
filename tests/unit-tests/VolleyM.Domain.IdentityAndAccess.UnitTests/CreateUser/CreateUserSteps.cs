@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
@@ -17,9 +16,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         private readonly IdentityAndAccessFixture _fixture;
 
         private readonly CreateUser.Request _request = new CreateUser.Request();
-        private UserBuilder _expectedUser;
+        private readonly UserBuilder _expectedUser;
 
-        private List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
+        private readonly List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
 
         private IRequestHandler<CreateUser.Request, Unit> _handler;
 

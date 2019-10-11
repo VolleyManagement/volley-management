@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture

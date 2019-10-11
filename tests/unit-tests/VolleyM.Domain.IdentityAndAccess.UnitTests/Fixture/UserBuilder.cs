@@ -1,4 +1,5 @@
 ﻿using System;
+using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {

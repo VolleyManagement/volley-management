@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage

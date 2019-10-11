@@ -28,7 +28,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
 
             public async Task<Result<User>> Handle(Request request)
             {
-                return null;
+                return await _repository.Get(request.Tenant, request.UserId);
             }
         }
     }

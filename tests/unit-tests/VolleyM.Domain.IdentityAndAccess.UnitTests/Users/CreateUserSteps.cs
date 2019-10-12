@@ -7,7 +7,7 @@ using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    [FeatureFile(@"./CreateUser/CreateUser.feature")]
+    [FeatureFile(@"./Users/CreateUser.feature")]
     public class CreateUserSteps : IdentityAndAccessStepsBase
     {
         private readonly UserId _aUserId = new UserId("google|123321");

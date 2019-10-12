@@ -8,7 +8,7 @@ using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    [FeatureFile(@"./GetUser/GetUser.feature")]
+    [FeatureFile(@"./Users/GetUser.feature")]
     public class GetUserSteps : IdentityAndAccessStepsBase
     {
         private readonly IdentityAndAccessFixture _fixture;

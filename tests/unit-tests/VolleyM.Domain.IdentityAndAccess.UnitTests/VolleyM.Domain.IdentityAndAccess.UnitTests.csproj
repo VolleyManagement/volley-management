@@ -33,11 +33,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="CreateUser\CreateUser.feature">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="Roles\Role.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="GetUser\GetUser.feature">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="Users\CreateUser.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Users\GetUser.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="test-config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

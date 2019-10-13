@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Serilog;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.Framework.Authorization
@@ -18,7 +19,18 @@ namespace VolleyM.Domain.Framework.Authorization
         {
             var user = _currentUserManager.Context.User;
 
+            if (!user.HasRole)
+            {
+                return false;
+            }
+
             var role = await _rolesStore.Get(user.Role);
+
+            if (!role.IsSuccessful)
+            {
+                Log.Warning("Cannot authorize user because RolesStore returned an {Error}", role.Error);
+                return false;
+            }
 
             return role.Value.HasPermission(permission);
         }

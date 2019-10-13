@@ -42,6 +42,23 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             SetCurrentUser(currentUser);
         }
 
+        [Given("role storage returns error")]
+        public void GivenRoleStorageReturnsError()
+        {
+            var currentUser = CreateAUser();
+            currentUser.AssignRole(new RoleId("test role"));
+            SetCurrentUser(currentUser);
+
+            _rolesStore.Get(Arg.Any<RoleId>()).Returns(Error.InternalError("random test error"));
+        }
+
+        [Given("user has no role")]
+        public void GivenUserHasNoRole()
+        {
+            var currentUser = CreateAUser();
+            SetCurrentUser(currentUser);
+        }
+
         [And(@"(\S+) has (\S+)")]
         public void AndRoleHasPermission(string roleKey, string permissionKey)
         {

@@ -17,6 +17,8 @@ namespace VolleyM.Domain.IdentityAndAccess
 
         public RoleId Role { get; private set; }
 
+        public bool HasRole => Role != null;
+
         public void AssignRole(RoleId role)
         {
             Role = role;

@@ -144,8 +144,9 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         [And("new user should be created in the system")]
         public void AndNewUserIsCreated()
         {
-            var expectedUserRequest = new CreateUser.Request { Tenant = _expectedTenant, UserId = _expectedId };
-            _actualRequest.Should().BeEquivalentTo(expectedUserRequest, "all user attributes should be extracted");
+            _actualRequest.UserId.Should().Be(_expectedId, "this value was in ID claim");
+            _actualRequest.Tenant.Should().Be(_expectedTenant, "this is default tenant");
+            _actualRequest.Role.Should().Be(_visitorRole, "all new users are assigned visitor role");
         }
 
         [And("new user should not be created in the system")]

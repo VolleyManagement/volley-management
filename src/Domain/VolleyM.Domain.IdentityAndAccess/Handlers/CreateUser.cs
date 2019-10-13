@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
@@ -10,6 +11,8 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
             public UserId UserId { get; set; }
 
             public TenantId Tenant { get; set; }
+
+            public RoleId Role { get; set; }
 
             public override string ToString()
             {
@@ -36,6 +39,8 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                 }
 
                 var user = new User(request.UserId, request.Tenant);
+
+                //FIXME: Assign ROle
                 return await _repository.Add(user);
             }
         }

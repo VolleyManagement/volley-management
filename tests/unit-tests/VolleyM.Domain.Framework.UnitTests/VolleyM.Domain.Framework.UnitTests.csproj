@@ -29,7 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="AuthorizationHandler\AuthorizeUser.feature">
+    <None Update="Authorization\CheckAccess.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Authorization\AuthorizeUser.feature">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

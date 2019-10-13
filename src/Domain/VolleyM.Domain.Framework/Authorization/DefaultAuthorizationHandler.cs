@@ -24,6 +24,8 @@ namespace VolleyM.Domain.Framework.Authorization
             "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
         };
 
+        private static readonly RoleId VisitorRole = new RoleId("visitor");
+
         public DefaultAuthorizationHandler(
             IRequestHandler<CreateUser.Request, User> createUserHandler,
             ICurrentUserManager currentUserManager,
@@ -72,7 +74,8 @@ namespace VolleyM.Domain.Framework.Authorization
                 var createRequest = new CreateUser.Request
                 {
                     UserId = new UserId(idValue),
-                    Tenant = TenantId.Default
+                    Tenant = TenantId.Default,
+                    Role = VisitorRole
                 };
                 var createUser = await _createUserHandler.Handle(createRequest);
                 if (createUser.IsSuccessful)
@@ -117,7 +120,7 @@ namespace VolleyM.Domain.Framework.Authorization
         {
             var result = new User(userId, TenantId.Default);
 
-            result.AssignRole(new RoleId("visitor"));
+            result.AssignRole(VisitorRole);
 
             return result;
         }

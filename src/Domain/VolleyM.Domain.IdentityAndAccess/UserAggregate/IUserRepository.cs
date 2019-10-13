@@ -5,7 +5,7 @@ namespace VolleyM.Domain.IdentityAndAccess
 {
     public interface IUserRepository
     {
-        Task<Result<Unit>> Add(User user);
+        Task<Result<User>> Add(User user);
 
         Task<Result<User>> Get(TenantId tenant, UserId id);
 

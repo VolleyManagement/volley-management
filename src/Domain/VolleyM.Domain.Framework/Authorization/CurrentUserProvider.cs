@@ -5,14 +5,10 @@ namespace VolleyM.Domain.Framework.Authorization
 {
     public class CurrentUserProvider : ICurrentUserProvider, ICurrentUserManager
     {
-        private CurrentUserContext _context;
+        public UserId UserId => Context?.User?.Id;
 
-        public UserId User => _context?.User;
-        public TenantId Tenant => _context?.Tenant;
+        public TenantId Tenant => Context?.User?.Tenant;
 
-        public void SetCurrentContext(CurrentUserContext context)
-        {
-            _context = context;
-        }
+        public CurrentUserContext Context { get; set; }
     }
 }

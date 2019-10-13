@@ -4,10 +4,13 @@ using SimpleInjector;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 using Xunit.Gherkin.Quick;
 
@@ -16,7 +19,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
     [FeatureFile(@"./Authorization/AuthorizeUser.feature")]
     public class AuthorizeUserSteps : DomainFrameworkStepsBase
     {
-        private IRequestHandler<CreateUser.Request, Unit> _createHandler;
+        private IRequestHandler<CreateUser.Request, User> _createHandler;
         private IRequestHandler<GetUser.Request, User> _getHandler;
 
         private UserId _expectedId;
@@ -24,6 +27,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private ClaimsIdentity _userClaims;
 
         private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
+        private readonly RoleId _visitorRole = new RoleId("visitor");
 
         private CreateUser.Request _actualRequest;
         private Result<Unit> _actualResult;
@@ -31,7 +35,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         public AuthorizeUserSteps(DomainFrameworkFixture fixture)
             : base(fixture)
         {
-            _createHandler = Substitute.For<IRequestHandler<CreateUser.Request, Unit>>();
+            _createHandler = Substitute.For<IRequestHandler<CreateUser.Request, User>>();
             Register(() => _createHandler, Lifestyle.Scoped);
 
             _getHandler = Substitute.For<IRequestHandler<GetUser.Request, User>>();
@@ -133,7 +137,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         {
             var currentUser = Resolve<ICurrentUserProvider>();
 
-            currentUser.User.Should().Be(_expectedId, "user with this Id was logged in");
+            currentUser.UserId.Should().Be(_expectedId, "user with this Id was logged in");
             currentUser.Tenant.Should().Be(_expectedTenant, "current tenant should be set");
         }
 
@@ -153,9 +157,10 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         [And("anonymous visitor set as current user")]
         public void AndAnonymousSetAsCurrentUser()
         {
-            var currentUser = Resolve<ICurrentUserProvider>();
+            var currentUser = Resolve<ICurrentUserManager>();
 
-            currentUser.User.Should().Be(_predefinedAnonymousUserId, "user was not authenticated");
+            currentUser.Context.User.Id.Should().Be(_predefinedAnonymousUserId, "user was not authenticated");
+            currentUser.Context.User.Role.Should().Be(_visitorRole, "anonymous user should have Visitor role assigned");
         }
 
         #endregion
@@ -185,7 +190,10 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private void MockCreateUserSuccess()
         {
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
-                .Returns(Unit.Value)
+                .Returns(ci=>Task.FromResult(
+                    (Result<User>)new User(
+                        ci.Arg<CreateUser.Request>().UserId, 
+                        ci.Arg<CreateUser.Request>().Tenant)))
                 .AndDoes(ci => { _actualRequest = ci.Arg<CreateUser.Request>(); });
         }
 
@@ -194,7 +202,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             MockCreateUser(Error.InternalError("random test error"));
         }
 
-        private void MockCreateUser(Result<Unit> result)
+        private void MockCreateUser(Result<User> result)
         {
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
                 .Returns(result);

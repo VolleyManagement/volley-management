@@ -1,5 +1,5 @@
 ﻿using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.IdentityAndAccess
 {
@@ -12,6 +12,14 @@ namespace VolleyM.Domain.IdentityAndAccess
         }
 
         public UserId Id { get; }
+
         public TenantId Tenant { get; }
+
+        public RoleId Role { get; private set; }
+
+        public void AssignRole(RoleId role)
+        {
+            Role = role;
+        }
     }
 }

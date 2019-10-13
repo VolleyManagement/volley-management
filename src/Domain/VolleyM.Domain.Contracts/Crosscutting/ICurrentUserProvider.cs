@@ -5,7 +5,7 @@
     /// </summary>
     public interface ICurrentUserProvider
     {
-        UserId User { get; }
+        UserId UserId { get; }
 
         TenantId Tenant { get; }
     }

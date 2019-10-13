@@ -15,6 +15,7 @@ namespace VolleyM.Domain.Framework
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
             container.Register<IAuthorizationHandler, DefaultAuthorizationHandler>(Lifestyle.Scoped);
+            container.Register<IAuthorizationService, AuthorizationService>(Lifestyle.Scoped);
 
             container.Register<ICurrentUserProvider, CurrentUserProvider>(Lifestyle.Scoped);
             container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);

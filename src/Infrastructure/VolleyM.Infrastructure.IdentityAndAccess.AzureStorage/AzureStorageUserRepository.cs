@@ -17,16 +17,17 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             _options = options;
         }
 
-        public Task<Result<Unit>> Add(User user)
+        public Task<Result<User>> Add(User user)
         {
-            return PerformStorageOperation<Unit>(async tableRef =>
+            return PerformStorageOperation<User>(async tableRef =>
             {
                 var userEntity = new UserEntity(user);
                 var createOperation = TableOperation.Insert(userEntity);
 
                 await tableRef.ExecuteAsync(createOperation);
 
-                return Unit.Value;
+                //FIXME: add tests
+                return new User(user.Id, user.Tenant);
             }, "Add User");
         }
 

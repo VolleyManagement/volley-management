@@ -20,9 +20,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
         private readonly List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
 
-        private IRequestHandler<CreateUser.Request, Unit> _handler;
+        private IRequestHandler<CreateUser.Request, User> _handler;
 
-        private Result<Unit> _actualResult = Unit.Value;
+        private Result<User> _actualResult;
 
         public CreateUserSteps(IdentityAndAccessFixture fixture)
             : base(fixture)
@@ -73,7 +73,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [When("I execute CreateUser")]
         public void WhenExecuteCommand()
         {
-            _handler = Resolve<IRequestHandler<CreateUser.Request, Unit>>();
+            _handler = Resolve<IRequestHandler<CreateUser.Request, User>>();
 
             _actualResult = _handler.Handle(_request).Result;
         }

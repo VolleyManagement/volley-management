@@ -6,6 +6,7 @@ using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.Framework.Authorization
 {
@@ -14,7 +15,7 @@ namespace VolleyM.Domain.Framework.Authorization
         private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
 
         private readonly IRequestHandler<GetUser.Request, User> _getUserHandler;
-        private readonly IRequestHandler<CreateUser.Request, Unit> _createUserHandler;
+        private readonly IRequestHandler<CreateUser.Request, User> _createUserHandler;
         private readonly ICurrentUserManager _currentUserManager;
 
         private readonly List<string> _idClaimTypes = new List<string>
@@ -24,7 +25,7 @@ namespace VolleyM.Domain.Framework.Authorization
         };
 
         public DefaultAuthorizationHandler(
-            IRequestHandler<CreateUser.Request, Unit> createUserHandler,
+            IRequestHandler<CreateUser.Request, User> createUserHandler,
             ICurrentUserManager currentUserManager,
             IRequestHandler<GetUser.Request, User> getUserHandler)
         {
@@ -37,7 +38,7 @@ namespace VolleyM.Domain.Framework.Authorization
         {
             if (!user.Identity.IsAuthenticated)
             {
-                SetCurrentContext(_predefinedAnonymousUserId, TenantId.Default);
+                SetCurrentContext(GetAnonymousVisitor(_predefinedAnonymousUserId));
                 return Unit.Value;
             }
 
@@ -64,7 +65,7 @@ namespace VolleyM.Domain.Framework.Authorization
             if (getUser.IsSuccessful)
             {
                 result = Unit.Value;
-                SetCurrentContext(getUser.Value.Id, getUser.Value.Tenant);
+                SetCurrentContext(getUser.Value);
             }
             else if (getUser.Error.Type == ErrorType.NotFound)
             {
@@ -77,7 +78,7 @@ namespace VolleyM.Domain.Framework.Authorization
                 if (createUser.IsSuccessful)
                 {
                     result = Unit.Value;
-                    SetCurrentContext(createRequest.UserId, createRequest.Tenant);
+                    SetCurrentContext(createUser.Value);
                 }
                 else
                 {
@@ -92,15 +93,12 @@ namespace VolleyM.Domain.Framework.Authorization
             return result;
         }
 
-        private void SetCurrentContext(UserId user, TenantId tenant)
+        private void SetCurrentContext(User user)
         {
-            var userCtx = new CurrentUserContext
+            _currentUserManager.Context = new CurrentUserContext
             {
-                Tenant = tenant,
                 User = user
-            };
-
-            _currentUserManager.SetCurrentContext(userCtx);
+            }; ;
         }
 
         private string GetUserIdFromClaims(ClaimsPrincipal user)
@@ -113,6 +111,15 @@ namespace VolleyM.Domain.Framework.Authorization
         {
             return _predefinedAnonymousUserId.ToString()
                 .Equals(idValue, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static User GetAnonymousVisitor(UserId userId)
+        {
+            var result = new User(userId, TenantId.Default);
+
+            result.AssignRole(new RoleId("visitor"));
+
+            return result;
         }
     }
 }

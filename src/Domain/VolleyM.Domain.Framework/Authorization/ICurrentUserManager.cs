@@ -2,6 +2,6 @@
 {
     public interface ICurrentUserManager
     {
-        void SetCurrentContext(CurrentUserContext context);
+        CurrentUserContext Context { get; set; }
     }
 }

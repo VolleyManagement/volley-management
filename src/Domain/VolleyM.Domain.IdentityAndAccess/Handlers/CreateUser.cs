@@ -5,7 +5,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
     public class CreateUser
     {
-        public class Request : IRequest<Unit>
+        public class Request : IRequest<User>
         {
             public UserId UserId { get; set; }
 
@@ -17,7 +17,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
             }
         }
 
-        public class Handler : IRequestHandler<Request, Unit>
+        public class Handler : IRequestHandler<Request, User>
         {
             private readonly IUserRepository _repository;
 
@@ -26,7 +26,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                 _repository = repository;
             }
 
-            public async Task<Result<Unit>> Handle(Request request)
+            public async Task<Result<User>> Handle(Request request)
             {
                 var existing = await _repository.Get(request.Tenant, request.UserId);
 

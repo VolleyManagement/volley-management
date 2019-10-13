@@ -3,6 +3,7 @@ using NSubstitute;
 using SimpleInjector;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.IdentityAndAccess;
@@ -10,9 +11,9 @@ using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.UnitTests.Framework;
 using Xunit.Gherkin.Quick;
 
-namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
+namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {
-    [FeatureFile(@"./AuthorizationHandler/AuthorizeUser.feature")]
+    [FeatureFile(@"./Authorization/AuthorizeUser.feature")]
     public class AuthorizeUserSteps : DomainFrameworkStepsBase
     {
         private IRequestHandler<CreateUser.Request, Unit> _createHandler;
@@ -21,6 +22,8 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         private UserId _expectedId;
         private TenantId _expectedTenant = TenantId.Default;
         private ClaimsIdentity _userClaims;
+
+        private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
 
         private CreateUser.Request _actualRequest;
         private Result<Unit> _actualResult;
@@ -40,7 +43,15 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         [Given("new user is being authorized")]
         public void GivenNewUserIsBeingAuthorized()
         {
-            _userClaims = new ClaimsIdentity();
+            _userClaims = CreateAuthenticatedIdentity();
+            MockUserNotFound();
+            MockCreateUserSuccess();
+        }
+
+        [Given("unauthenticated user is being authorized")]
+        public void GivenNotAuthenticatedUserIsBeingAuthorized()
+        {
+            _userClaims = CreateNotAuthenticatedIdentity();
             MockUserNotFound();
             MockCreateUserSuccess();
         }
@@ -48,7 +59,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         [Given("existing user is being authorized")]
         public void GivenExistingUserIsBeingAuthorized()
         {
-            _userClaims = new ClaimsIdentity();
+            _userClaims = CreateAuthenticatedIdentity();
             AndUserHasIdClaim();
             MockExistingUser();
         }
@@ -137,6 +148,34 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandler
         public void AndNewUserIsNotCreated()
         {
             _createHandler.DidNotReceive().Handle(Arg.Any<CreateUser.Request>());
+        }
+
+        [And("anonymous visitor set as current user")]
+        public void AndAnonymousSetAsCurrentUser()
+        {
+            var currentUser = Resolve<ICurrentUserProvider>();
+
+            currentUser.User.Should().Be(_predefinedAnonymousUserId, "user was not authenticated");
+        }
+
+        #endregion
+
+        #region Creation methods
+
+        private static ClaimsIdentity CreateAuthenticatedIdentity()
+        {
+            var baseIdentity = Substitute.For<IIdentity>();
+            baseIdentity.IsAuthenticated.Returns(true);
+            baseIdentity.AuthenticationType.Returns("AuthenticationTypes.Federation");
+            return new ClaimsIdentity(baseIdentity);
+        }
+
+
+        private static ClaimsIdentity CreateNotAuthenticatedIdentity()
+        {
+            var baseIdentity = Substitute.For<IIdentity>();
+            baseIdentity.IsAuthenticated.Returns(false);
+            return new ClaimsIdentity(baseIdentity);
         }
 
         #endregion

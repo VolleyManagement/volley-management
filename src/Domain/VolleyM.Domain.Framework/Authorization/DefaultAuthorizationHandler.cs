@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
@@ -10,6 +11,8 @@ namespace VolleyM.Domain.Framework.Authorization
 {
     public class DefaultAuthorizationHandler : IAuthorizationHandler
     {
+        private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
+
         private readonly IRequestHandler<GetUser.Request, User> _getUserHandler;
         private readonly IRequestHandler<CreateUser.Request, Unit> _createUserHandler;
         private readonly ICurrentUserManager _currentUserManager;
@@ -32,11 +35,22 @@ namespace VolleyM.Domain.Framework.Authorization
 
         public async Task<Result<Unit>> AuthorizeUser(ClaimsPrincipal user)
         {
+            if (!user.Identity.IsAuthenticated)
+            {
+                SetCurrentContext(_predefinedAnonymousUserId, TenantId.Default);
+                return Unit.Value;
+            }
+
             var idValue = GetUserIdFromClaims(user);
 
             if (idValue == null)
             {
                 return Error.NotAuthorized("UserId claim is missing");
+            }
+
+            if (IsPredefinedSystemId(idValue))
+            {
+                return Error.NotAuthorized("User Id is invalid");
             }
 
             Result<Unit> result;
@@ -93,6 +107,12 @@ namespace VolleyM.Domain.Framework.Authorization
         {
             var idClaim = user.FindFirst(type => _idClaimTypes.Contains(type.Type));
             return idClaim?.Value;
+        }
+
+        private bool IsPredefinedSystemId(string idValue)
+        {
+            return _predefinedAnonymousUserId.ToString()
+                .Equals(idValue, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

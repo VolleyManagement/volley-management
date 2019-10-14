@@ -13,6 +13,8 @@ namespace VolleyM.Domain.IdentityAndAccess
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
             container.Register(typeof(IRequestHandler<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
+
+            container.Register<UserFactory>(Lifestyle.Singleton);
         }
 
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)

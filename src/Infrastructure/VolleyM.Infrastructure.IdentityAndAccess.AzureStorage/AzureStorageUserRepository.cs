@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using AutoMapper;
+using Microsoft.Azure.Cosmos.Table;
 using Serilog;
 using System;
 using System.Threading.Tasks;
@@ -11,10 +12,14 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
     public class AzureStorageUserRepository : IUserRepository
     {
         private readonly IdentityContextTableStorageOptions _options;
+        private readonly UserFactory _userFactory;
+        private readonly IMapper _mapper;
 
-        public AzureStorageUserRepository(IdentityContextTableStorageOptions options)
+        public AzureStorageUserRepository(IdentityContextTableStorageOptions options, UserFactory userFactory, IMapper mapper)
         {
             _options = options;
+            _userFactory = userFactory;
+            _mapper = mapper;
         }
 
         public Task<Result<User>> Add(User user)
@@ -24,10 +29,16 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
                 var userEntity = new UserEntity(user);
                 var createOperation = TableOperation.Insert(userEntity);
 
-                await tableRef.ExecuteAsync(createOperation);
+                var createResult = await tableRef.ExecuteAsync(createOperation);
 
-                //FIXME: add tests
-                return new User(user.Id, user.Tenant);
+                if (createResult.Result is UserEntity created)
+                {
+                    var newUser = _userFactory.CreateUser(_mapper.Map<UserEntity, UserFactoryDto>(created));
+
+                    return newUser;
+                }
+
+                return Error.InternalError($"Azure Storage: Failed to create user with {createResult.HttpStatusCode} error.");
             }, "Add User");
         }
 
@@ -41,7 +52,9 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
                 if (result.Result is UserEntity userEntity)
                 {
-                    return new User(new UserId(userEntity.RowKey), new TenantId(userEntity.PartitionKey));
+                    var userDto = _mapper.Map<UserEntity, UserFactoryDto>(userEntity);
+
+                    return _userFactory.CreateUser(userDto);
                 }
 
                 return Error.NotFound();
@@ -91,11 +104,18 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             {
                 return await operation(tableRef);
             }
+            catch (StorageException e) when (IsConflictError(e))
+            {
+                return Error.Conflict();
+            }
             catch (StorageException e)
             {
                 Log.Error(e, "{AzureStorageOperation} Azure Storage operation failed.", operationName);
                 return Error.InternalError($"{operationName} Azure Storage operation failed.");
             }
         }
+
+        private static bool IsConflictError(StorageException e) =>
+            string.Compare("Conflict", e.Message, StringComparison.OrdinalIgnoreCase) == 0;
     }
 }

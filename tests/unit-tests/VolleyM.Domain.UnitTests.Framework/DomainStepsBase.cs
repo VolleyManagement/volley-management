@@ -2,6 +2,8 @@
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using System;
+using AutoMapper;
+using AutoMapper.Configuration;
 using VolleyM.Domain.Contracts;
 using Xunit.Gherkin.Quick;
 
@@ -18,10 +20,20 @@ namespace VolleyM.Domain.UnitTests.Framework
             _container = new Container();
             _container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
+
+            var mce = new MapperConfigurationExpression();
+            mce.ConstructServicesUsing(_container.GetInstance);
+
             foreach (var bootstrapper in fixture.GetBootstrappers())
             {
                 bootstrapper.RegisterDependencies(_container, fixture.Configuration);
+                bootstrapper.RegisterMappingProfiles(mce);
             }
+
+            var mc = new MapperConfiguration(mce);
+            mc.AssertConfigurationIsValid();
+
+            _container.RegisterSingleton<IMapper>(() => new Mapper(mc, _container.GetInstance));
 
             _scope = AsyncScopedLifestyle.BeginScope(_container);
 

@@ -11,6 +11,12 @@ namespace VolleyM.Domain.IdentityAndAccess
             Tenant = tenant;
         }
 
+        internal User(UserFactoryDto userDto)
+            : this(userDto.Id, userDto.Tenant)
+        {
+            Role = userDto.Role;
+        }
+
         public UserId Id { get; }
 
         public TenantId Tenant { get; }

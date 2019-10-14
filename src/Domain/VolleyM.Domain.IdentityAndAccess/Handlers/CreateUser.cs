@@ -31,17 +31,15 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
 
             public async Task<Result<User>> Handle(Request request)
             {
-                var existing = await _repository.Get(request.Tenant, request.UserId);
-
-                if (existing.IsSuccessful)
+                var user = new User(request.UserId, request.Tenant);
+                if (request.Role != null)
                 {
-                    return Error.Conflict();
+                    user.AssignRole(request.Role);
                 }
 
-                var user = new User(request.UserId, request.Tenant);
+                var addResult = await _repository.Add(user);
 
-                //FIXME: Assign ROle
-                return await _repository.Add(user);
+                return addResult;
             }
         }
     }

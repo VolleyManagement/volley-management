@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VolleyM.Domain.Contracts
 {
-    public abstract class IdBase<TUnderlyingType>:IEquatable<IdBase<TUnderlyingType>>
+    public abstract class IdBase<TUnderlyingType> : IEquatable<IdBase<TUnderlyingType>>
     {
         private readonly TUnderlyingType _value;
 
@@ -47,12 +47,34 @@ namespace VolleyM.Domain.Contracts
                 return false;
             }
 
-            return Equals((IdBase<TUnderlyingType>) obj);
+            return Equals((IdBase<TUnderlyingType>)obj);
         }
 
         public override int GetHashCode()
         {
             return EqualityComparer<TUnderlyingType>.Default.GetHashCode(_value);
+        }
+
+        public static bool operator ==(IdBase<TUnderlyingType> left, IdBase<TUnderlyingType> right)
+        {
+            if (ReferenceEquals(null, left) && ReferenceEquals(null, right))
+                return false;
+
+            if (!ReferenceEquals(null, left))
+                return left.Equals(right);
+
+            return false;
+        }
+
+        public static bool operator !=(IdBase<TUnderlyingType> left, IdBase<TUnderlyingType> right)
+        {
+            if (ReferenceEquals(null, left) && ReferenceEquals(null, right))
+                return true;
+
+            if (!ReferenceEquals(null, left))
+                return !left.Equals(right);
+
+            return true;
         }
     }
 }

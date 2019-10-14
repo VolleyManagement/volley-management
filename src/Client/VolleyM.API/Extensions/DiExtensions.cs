@@ -41,7 +41,7 @@ namespace VolleyM.API.Extensions
             var mc = new MapperConfiguration(mce);
             mc.AssertConfigurationIsValid();
 
-            container.RegisterSingleton(() => new Mapper(mc, container.GetInstance));
+            container.RegisterSingleton<IMapper>(() => new Mapper(mc, container.GetInstance));
         }
     }
 }

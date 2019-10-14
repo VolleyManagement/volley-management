@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using Xunit.Gherkin.Quick;
 
@@ -12,6 +14,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
     {
         private readonly UserId _aUserId = new UserId("google|123321");
         private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");
+        private readonly RoleId _aRoleId = new RoleId("roleA");
 
         private readonly IdentityAndAccessFixture _fixture;
 
@@ -57,6 +60,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             _expectedUser.WithTenant(_aTenantId);
         }
 
+        [And("Role provided")]
+        public void AndRoleProvided()
+        {
+            _request.Role = _aRoleId;
+            _expectedUser.WithRole(_aRoleId);
+        }
+
         [And("such user already exists")]
         public void AndUserExists()
         {
@@ -90,6 +100,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         public void ThenConflictErrorReturned()
         {
             AssertErrorReturned(_actualResult, Error.Conflict(), "such user already exists");
+        }
+
+        [And("user is returned")]
+        public void AndUserIsReturned()
+        {
+            _actualResult.Value.Should()
+                .BeEquivalentTo(_expectedUser.Build(), "created user should be returned");
         }
     }
 }

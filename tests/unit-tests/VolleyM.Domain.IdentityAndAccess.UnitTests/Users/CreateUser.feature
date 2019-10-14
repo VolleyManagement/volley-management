@@ -7,9 +7,11 @@ But we still need a minimal feature to have users referenced in authorization po
 Scenario: Create new user
 	Given UserId provided
     And Tenant provided
+	And Role provided
     And user does not exist
 	When I execute CreateUser
 	Then user is created
+	And user is returned
 
 @unit @azurecloud @ab:1026
 Scenario: Create existing user
@@ -18,3 +20,12 @@ Scenario: Create existing user
     And such user already exists
     When I execute CreateUser
     Then Conflict error is returned
+
+@unit @azurecloud @ab:1026
+Scenario: Create new without Role
+	Given UserId provided
+    And Tenant provided
+    And user does not exist
+	When I execute CreateUser
+	Then user is created
+	And user is returned

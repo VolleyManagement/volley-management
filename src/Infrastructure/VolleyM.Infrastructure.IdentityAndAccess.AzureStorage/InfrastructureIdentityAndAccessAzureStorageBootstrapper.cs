@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using SimpleInjector;
 using System.Composition;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Infrastructure.Bootstrap;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 
@@ -23,7 +25,17 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)
         {
-            //no mapping
+            mce.CreateMap<UserEntity, UserFactoryDto>()
+                .ForMember(m => m.Id,
+                    m => m.MapFrom(src => new UserId(src.RowKey)))
+                .ForMember(m => m.Tenant,
+                    m => m.MapFrom(src => new TenantId(src.PartitionKey)))
+                .ForMember(m => m.Role,
+                    m =>
+                    {
+                        m.Condition(src => !string.IsNullOrEmpty(src.RoleId));
+                        m.MapFrom(src => new RoleId(src.RoleId));
+                    });
         }
     }
 }

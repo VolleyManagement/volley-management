@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using SimpleInjector;
@@ -12,6 +13,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
     {
         private readonly DomainPipelineFixtureBase _baseFixture;
         private IUserRepository _repositoryMock;
+        private User _actualUser;
 
         public UnitTestIdentityAndAccessFixture(DomainPipelineFixtureBase baseFixture)
         {
@@ -28,17 +30,20 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         public void ConfigureUserExists(TenantId tenant, UserId id, User user)
         {
             _repositoryMock.Get(tenant, id).Returns(user);
+            _repositoryMock.Add(Arg.Any<User>()).Returns(Error.Conflict());
         }
 
         public void ConfigureUserDoesNotExist(TenantId tenant, UserId id)
         {
             _repositoryMock.Get(tenant, id).Returns(Error.NotFound());
+            _repositoryMock.Add(Arg.Any<User>())
+                .Returns(ci => ci.Arg<User>())
+                .AndDoes(ci => { _actualUser = ci.Arg<User>(); });
         }
 
         public void VerifyUserCreated(User user)
         {
-            _repositoryMock.Received()
-                .Add(Arg.Is<User>(u => u.Id == user.Id || u.Tenant == user.Tenant));
+            _actualUser.Should().BeEquivalentTo(user, "all user parameters should be stored");
         }
 
         public void CleanUpUsers(List<Tuple<TenantId, UserId>> usersToTeardown)

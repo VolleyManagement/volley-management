@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
-using Microsoft.Extensions.Configuration;
+﻿using FluentAssertions;
 using NSubstitute;
 using SimpleInjector;
+using System;
+using System.Collections.Generic;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
     internal class UnitTestIdentityAndAccessFixture : IIdentityAndAccessFixture
     {
-        private readonly DomainPipelineFixtureBase _baseFixture;
         private IUserRepository _repositoryMock;
         private User _actualUser;
 
-        public UnitTestIdentityAndAccessFixture(DomainPipelineFixtureBase baseFixture)
+        private Container Container { get; }
+
+        public UnitTestIdentityAndAccessFixture(Container container)
         {
-            _baseFixture = baseFixture;
+            Container = container;
         }
 
         public void Setup()
         {
             _repositoryMock = Substitute.For<IUserRepository>();
 
-            _baseFixture.Register(() => _repositoryMock, Lifestyle.Scoped);
+            Container.Register(() => _repositoryMock, Lifestyle.Scoped);
         }
 
         public void ConfigureUserExists(TenantId tenant, UserId id, User user)
@@ -49,16 +48,6 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         public void CleanUpUsers(List<Tuple<TenantId, UserId>> usersToTeardown)
         {
             // do nothing
-        }
-
-        public void OneTimeSetup(IConfiguration configuration)
-        {
-            // nothing to do
-        }
-
-        public void OneTimeTearDown()
-        {
-            // nothing to do
         }
     }
 }

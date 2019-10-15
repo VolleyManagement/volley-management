@@ -1,24 +1,20 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.Configuration;
+using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.UnitTests.Framework;
-using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
     public class AzureCloudIdentityAndAccessFixture : IIdentityAndAccessFixture
     {
-        private readonly DomainPipelineFixtureBase _baseFixture;
+        private Container Container { get; }
 
-        private TableConfiguration _tableConfig;
-        private IdentityContextTableStorageOptions _options;
-
-        public AzureCloudIdentityAndAccessFixture(DomainPipelineFixtureBase baseFixture)
+        public AzureCloudIdentityAndAccessFixture(Container container)
         {
-            _baseFixture = baseFixture;
+            Container = container;
         }
 
         public void Setup()
@@ -27,7 +23,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
         public void ConfigureUserExists(TenantId tenant, UserId id, User user)
         {
-            var repo = _baseFixture.Resolve<IUserRepository>();
+            var repo = Container.GetInstance<IUserRepository>();
 
             repo.Add(user);
         }
@@ -39,7 +35,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
         public void VerifyUserCreated(User user)
         {
-            var repo = _baseFixture.Resolve<IUserRepository>();
+            var repo = Container.GetInstance<IUserRepository>();
 
             var savedUser = repo.Get(user.Tenant, user.Id).Result;
 
@@ -49,7 +45,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
         public void CleanUpUsers(List<Tuple<TenantId, UserId>> usersToTeardown)
         {
-            var repo = _baseFixture.Resolve<IUserRepository>();
+            var repo = Container.GetInstance<IUserRepository>();
             var deleteTasks = new List<Task>();
             foreach (var (tenant, user) in usersToTeardown)
             {
@@ -57,23 +53,6 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             }
 
             Task.WaitAll(deleteTasks.ToArray());
-        }
-
-        public void OneTimeSetup(IConfiguration configuration)
-        {
-            _options = configuration.GetSection("IdentityContextTableStorageOptions")
-                .Get<IdentityContextTableStorageOptions>();
-
-            _tableConfig = new TableConfiguration(_options);
-            var result = _tableConfig.ConfigureTables().Result;
-
-            result.Should().BeSuccessful("Azure Storage should be configured correctly");
-        }
-
-        public void OneTimeTearDown()
-        {
-            var result = _tableConfig.CleanTables().Result;
-            result.Should().BeSuccessful("Azure Storage should be cleaned up correctly");
         }
     }
 }

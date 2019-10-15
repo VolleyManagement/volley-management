@@ -43,7 +43,7 @@ stages:
               command: 'test'
               testRunTitle: 'Unit Tests'
               projects: $(sln_path)
-              arguments: '--filter Category=@unit'
+              arguments: '--filter Category=unit'
           - publish: $(Build.SourcesDirectory)/tests/unit-tests #note: files which are published controlled by .artifactignore file
             artifact: unitTestsResults
             condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging
@@ -84,7 +84,7 @@ stages:
               command: 'test'
               testRunTitle: 'Azure Cloud Integration Tests'
               projects: $(sln_path)
-              arguments: '--filter Category=@azurecloud'
+              arguments: '--filter Category=azurecloud'
           - publish: $(Build.SourcesDirectory)/tests/unit-tests #note: files which are published controlled by .artifactignore file
             artifact: integrationTestsResults
             condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging

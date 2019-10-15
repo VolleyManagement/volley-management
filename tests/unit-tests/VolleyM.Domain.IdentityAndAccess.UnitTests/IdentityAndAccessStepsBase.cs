@@ -8,7 +8,7 @@ using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    public class IdentityAndAccessBindingBase : SpecFlowBindingBase
+    public class IdentityAndAccessStepsBase : SpecFlowBindingBase
     {
         protected IIdentityAndAccessFixture Fixture { get; private set; }
 

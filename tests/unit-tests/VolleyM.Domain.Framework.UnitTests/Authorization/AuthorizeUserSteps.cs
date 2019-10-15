@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
@@ -12,18 +13,18 @@ using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
-using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {
-    [FeatureFile(@"./Authorization/AuthorizeUser.feature")]
+    [Binding]
+    [Scope(Feature = "Authorize User")]
     public class AuthorizeUserSteps : DomainFrameworkStepsBase
     {
         private IRequestHandler<CreateUser.Request, User> _createHandler;
         private IRequestHandler<GetUser.Request, User> _getHandler;
 
         private UserId _expectedId;
-        private TenantId _expectedTenant = TenantId.Default;
+        private TenantId _expectedTenant;
         private ClaimsIdentity _userClaims;
 
         private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
@@ -32,14 +33,17 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private CreateUser.Request _actualRequest;
         private Result<Unit> _actualResult;
 
-        public AuthorizeUserSteps(DomainFrameworkFixture fixture)
-            : base(fixture)
+        public override void BeforeEachScenario()
         {
+            base.BeforeEachScenario();
+
+            _expectedTenant = TenantId.Default;
+
             _createHandler = Substitute.For<IRequestHandler<CreateUser.Request, User>>();
-            Register(() => _createHandler, Lifestyle.Scoped);
+            Container.Register(() => _createHandler, Lifestyle.Scoped);
 
             _getHandler = Substitute.For<IRequestHandler<GetUser.Request, User>>();
-            Register(() => _getHandler, Lifestyle.Scoped);
+            Container.Register(() => _getHandler, Lifestyle.Scoped);
         }
 
         #region Given
@@ -64,12 +68,12 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         public void GivenExistingUserIsBeingAuthorized()
         {
             _userClaims = CreateAuthenticatedIdentity();
-            AndUserHasIdClaim();
+            GivenUserHasIdClaim();
             MockExistingUser();
         }
 
-        [And(@"user has '(\S+)' claim with '(\S+)' value")]
-        public void AndUserHasClaim(string claim, string value)
+        [Given(@"user has '(\S+)' claim with '(\S+)' value")]
+        public void GivenUserHasClaim(string claim, string value)
         {
             //Note: this might not work if you have several 'user has claim' statements in spec
             _expectedId = new UserId(value);
@@ -77,28 +81,28 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             _userClaims.AddClaim(new Claim(claim, value));
         }
 
-        [And(@"user has no claims")]
-        public void AndUserHasNoClaims()
+        [Given(@"user has no claims")]
+        public void GivenUserHasNoClaims()
         {
             var claims = _userClaims.Claims.ToList();
 
             claims.ForEach(_userClaims.RemoveClaim);
         }
 
-        [And(@"user has correct ID claim")]
-        public void AndUserHasIdClaim()
+        [Given(@"user has correct ID claim")]
+        public void GivenUserHasIdClaim()
         {
-            AndUserHasClaim("sub", "user123");
+            GivenUserHasClaim("sub", "user123");
         }
 
-        [And(@"get user operation has error")]
-        public void AndGetUserReturnsError()
+        [Given(@"get user operation has error")]
+        public void GivenGetUserReturnsError()
         {
             MockGetUserError();
         }
 
-        [And(@"create user operation has error")]
-        public void AndCreateUserReturnsError()
+        [Given(@"create user operation has error")]
+        public void GivenCreateUserReturnsError()
         {
             MockCreateUserError();
         }
@@ -112,7 +116,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         {
             var userToAuthorize = new ClaimsPrincipal(_userClaims);
 
-            var handler = Resolve<IAuthorizationHandler>();
+            var handler = Container.GetInstance<IAuthorizationHandler>();
             _actualResult = handler.AuthorizeUser(userToAuthorize).Result;
         }
 
@@ -135,30 +139,30 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         [Then("this user is set into current context")]
         public void UserIsSetAsCurrent()
         {
-            var currentUser = Resolve<ICurrentUserProvider>();
+            var currentUser = Container.GetInstance<ICurrentUserProvider>();
 
             currentUser.UserId.Should().Be(_expectedId, "user with this Id was logged in");
             currentUser.Tenant.Should().Be(_expectedTenant, "current tenant should be set");
         }
 
-        [And("new user should be created in the system")]
-        public void AndNewUserIsCreated()
+        [Then("new user should be created in the system")]
+        public void ThenNewUserIsCreated()
         {
             _actualRequest.UserId.Should().Be(_expectedId, "this value was in ID claim");
             _actualRequest.Tenant.Should().Be(_expectedTenant, "this is default tenant");
             _actualRequest.Role.Should().Be(_visitorRole, "all new users are assigned visitor role");
         }
 
-        [And("new user should not be created in the system")]
-        public void AndNewUserIsNotCreated()
+        [Then("new user should not be created in the system")]
+        public void ThenNewUserIsNotCreated()
         {
             _createHandler.DidNotReceive().Handle(Arg.Any<CreateUser.Request>());
         }
 
-        [And("anonymous visitor set as current user")]
-        public void AndAnonymousSetAsCurrentUser()
+        [Then("anonymous visitor set as current user")]
+        public void ThenAnonymousSetAsCurrentUser()
         {
-            var currentUser = Resolve<ICurrentUserManager>();
+            var currentUser = Container.GetInstance<ICurrentUserManager>();
 
             currentUser.Context.User.Id.Should().Be(_predefinedAnonymousUserId, "user was not authenticated");
             currentUser.Context.User.Role.Should().Be(_visitorRole, "anonymous user should have Visitor role assigned");
@@ -191,9 +195,9 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private void MockCreateUserSuccess()
         {
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
-                .Returns(ci=>Task.FromResult(
+                .Returns(ci => Task.FromResult(
                     (Result<User>)new User(
-                        ci.Arg<CreateUser.Request>().UserId, 
+                        ci.Arg<CreateUser.Request>().UserId,
                         ci.Arg<CreateUser.Request>().Tenant)))
                 .AndDoes(ci => { _actualRequest = ci.Arg<CreateUser.Request>(); });
         }
@@ -208,7 +212,6 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
                 .Returns(result);
         }
-
         private void MockExistingUser()
         {
             MockGetUser(new User(_expectedId, _expectedTenant));

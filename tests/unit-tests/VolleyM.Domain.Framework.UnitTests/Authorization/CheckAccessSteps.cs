@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
 using SimpleInjector;
+using System.Collections.Generic;
+using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
-using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {
-    [FeatureFile(@"./Authorization/CheckAccess.feature")]
+    [Binding]
+    [Scope(Feature = "Check Access")]
     public class CheckAccessSteps : DomainFrameworkStepsBase
     {
         private static readonly Dictionary<string, Permission> _permissions = new Dictionary<string, Permission>
@@ -22,14 +22,15 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 
         private bool _actualResult;
 
-        private readonly IRolesStore _rolesStore;
+        private IRolesStore _rolesStore;
 
-        public CheckAccessSteps(DomainFrameworkFixture fixture)
-            : base(fixture)
+        public override void BeforeEachScenario()
         {
+            base.BeforeEachScenario();
+
             _rolesStore = Substitute.For<IRolesStore>();
 
-            Register(() => _rolesStore, Lifestyle.Scoped);
+            Container.Register(() => _rolesStore, Lifestyle.Scoped);
         }
 
         [Given(@"user has (\S+) assigned")]
@@ -59,8 +60,8 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             SetCurrentUser(currentUser);
         }
 
-        [And(@"(\S+) has (\S+)")]
-        public void AndRoleHasPermission(string roleKey, string permissionKey)
+        [Given(@"(\S+) has (\S+)")]
+        public void GivenRoleHasPermission(string roleKey, string permissionKey)
         {
             var role = new Role(new RoleId(roleKey));
             role.AddPermission(_permissions[permissionKey]);
@@ -70,7 +71,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         [When(@"I check access to (\S+)")]
         public void WhenCheckAccess(string permissionKey)
         {
-            var authZService = Resolve<IAuthorizationService>();
+            var authZService = Container.GetInstance<IAuthorizationService>();
 
             _actualResult = authZService.CheckAccess(_permissions[permissionKey]).Result;
         }
@@ -90,7 +91,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 
         private void SetCurrentUser(User currentUser)
         {
-            var currentUserMgr = Resolve<ICurrentUserManager>();
+            var currentUserMgr = Container.GetInstance<ICurrentUserManager>();
             currentUserMgr.Context = new CurrentUserContext
             {
                 User = currentUser

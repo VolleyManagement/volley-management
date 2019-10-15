@@ -67,7 +67,7 @@ namespace VolleyM.Domain.UnitTests.Framework
             var mce = new MapperConfigurationExpression();
             mce.ConstructServicesUsing(Container.GetInstance);
 
-            foreach (var bootstrapper in GetAssemblyBootstrappers())
+            foreach (var bootstrapper in GetBootstrappers())
             {
                 bootstrapper.RegisterDependencies(Container, Configuration);
                 bootstrapper.RegisterMappingProfiles(mce);

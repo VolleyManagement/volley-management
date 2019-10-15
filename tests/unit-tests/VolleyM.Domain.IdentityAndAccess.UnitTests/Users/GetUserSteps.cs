@@ -10,7 +10,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
     [Binding]
     [Scope(Feature = "Get User by ID")]
-    public class GetUserSteps : IdentityAndAccessBindingBase
+    public class GetUserSteps : IdentityAndAccessStepsBase
     {
         private readonly UserId _aUserId = new UserId("google|123321");
         private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");

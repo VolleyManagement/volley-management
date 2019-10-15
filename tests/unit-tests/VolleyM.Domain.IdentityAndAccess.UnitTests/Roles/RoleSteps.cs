@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using System.Collections.Generic;
+using TechTalk.SpecFlow;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
-using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    [FeatureFile(@"./Roles/Role.feature")]
-    public class RoleSteps : Feature
+    [Binding]
+    public class RoleSteps
     {
         private Role _role;
         private readonly IDictionary<string, Permission> _permissionStore = new Dictionary<string, Permission>

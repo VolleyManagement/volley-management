@@ -8,6 +8,7 @@ using VolleyM.Domain.Contracts;
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
 {
     [Binding]
+    [Scope(Feature = "Contributors")]
     public class ContributorsSteps : ContributorsStepsBase
     {
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;

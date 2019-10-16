@@ -1,49 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
+using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
-using Xunit.Gherkin.Quick;
 
-namespace VolleyM.Domain.IdentityAndAccess.UnitTests
+namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
 {
-    [FeatureFile(@"./Users/CreateUser.feature")]
+    [Binding]
+    [Scope(Feature = "Create User")]
     public class CreateUserSteps : IdentityAndAccessStepsBase
     {
         private readonly UserId _aUserId = new UserId("google|123321");
         private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");
         private readonly RoleId _aRoleId = new RoleId("roleA");
 
-        private readonly IdentityAndAccessFixture _fixture;
+        private CreateUser.Request _request;
+        private UserBuilder _expectedUser;
 
-        private readonly CreateUser.Request _request = new CreateUser.Request();
-        private readonly UserBuilder _expectedUser;
-
-        private readonly List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
+        private List<Tuple<TenantId, UserId>> _usersToTeardown;
 
         private IRequestHandler<CreateUser.Request, User> _handler;
 
         private Result<User> _actualResult;
 
-        public CreateUserSteps(IdentityAndAccessFixture fixture)
-            : base(fixture)
+        public override void BeforeEachScenario()
         {
-            _fixture = fixture;
-
-            _fixture.Setup();
+            base.BeforeEachScenario();
 
             _expectedUser = UserBuilder.New();
+            _request = new CreateUser.Request();
+
+            _usersToTeardown = new List<Tuple<TenantId, UserId>>();
         }
 
-        protected override void Dispose(bool disposing)
+        public override void AfterEachScenario()
         {
-            if (disposing)
-            {
-                _fixture.CleanUpUsers(_usersToTeardown);
-            }
-            base.Dispose(disposing);
+            Fixture.CleanUpUsers(_usersToTeardown);
+
+            base.AfterEachScenario();
         }
 
         [Given("UserId provided")]
@@ -53,37 +50,37 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             _expectedUser.WithId(_aUserId);
         }
 
-        [And("Tenant provided")]
-        public void AndTenantProvided()
+        [Given("Tenant provided")]
+        public void GivenTenantProvided()
         {
             _request.Tenant = _aTenantId;
             _expectedUser.WithTenant(_aTenantId);
         }
 
-        [And("Role provided")]
-        public void AndRoleProvided()
+        [Given("Role provided")]
+        public void GivenRoleProvided()
         {
             _request.Role = _aRoleId;
             _expectedUser.WithRole(_aRoleId);
         }
 
-        [And("such user already exists")]
-        public void AndUserExists()
+        [Given("such user already exists")]
+        public void GivenUserExists()
         {
-            _fixture.ConfigureUserExists(_aTenantId, _aUserId, _expectedUser.Build());
+            Fixture.ConfigureUserExists(_aTenantId, _aUserId, _expectedUser.Build());
             _usersToTeardown.Add(Tuple.Create(_aTenantId, _aUserId));
         }
 
-        [And("user does not exist")]
-        public void AndDoesNotUserExist()
+        [Given("user does not exist")]
+        public void GivenDoesNotUserExist()
         {
-            _fixture.ConfigureUserDoesNotExist(_aTenantId, _aUserId);
+            Fixture.ConfigureUserDoesNotExist(_aTenantId, _aUserId);
         }
 
         [When("I execute CreateUser")]
         public void WhenExecuteCommand()
         {
-            _handler = Resolve<IRequestHandler<CreateUser.Request, User>>();
+            _handler = Container.GetInstance<IRequestHandler<CreateUser.Request, User>>();
 
             _actualResult = _handler.Handle(_request).Result;
         }
@@ -92,7 +89,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         public void ThenUserIsCreated()
         {
             var user = _expectedUser.Build();
-            _fixture.VerifyUserCreated(user);
+            Fixture.VerifyUserCreated(user);
             _usersToTeardown.Add(Tuple.Create(user.Tenant, user.Id));
         }
 
@@ -102,8 +99,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             AssertErrorReturned(_actualResult, Error.Conflict(), "such user already exists");
         }
 
-        [And("user is returned")]
-        public void AndUserIsReturned()
+        [Then("user is returned")]
+        public void ThenUserIsReturned()
         {
             _actualResult.Value.Should()
                 .BeEquivalentTo(_expectedUser.Build(), "created user should be returned");

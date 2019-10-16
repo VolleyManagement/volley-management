@@ -1,54 +1,51 @@
-﻿using FluentAssertions;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using FluentAssertions;
+using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.UnitTests.Framework;
-using Xunit.Gherkin.Quick;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    [FeatureFile(@"./Users/GetUser.feature")]
+    [Binding]
+    [Scope(Feature = "Get User by ID")]
     public class GetUserSteps : IdentityAndAccessStepsBase
     {
-        private readonly IdentityAndAccessFixture _fixture;
-
         private readonly UserId _aUserId = new UserId("google|123321");
         private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");
 
-        private readonly GetUser.Request _request = new GetUser.Request();
+        private GetUser.Request _request;
         private User _expectedUser;
 
-        private readonly List<Tuple<TenantId, UserId>> _usersToTeardown = new List<Tuple<TenantId, UserId>>();
+        private List<Tuple<TenantId, UserId>> _usersToTeardown;
 
         private IRequestHandler<GetUser.Request, User> _handler;
 
         private Result<User> _actualResult;
 
-        public GetUserSteps(IdentityAndAccessFixture fixture)
-            : base(fixture)
+        public override void BeforeEachScenario()
         {
-            _fixture = fixture;
+            base.BeforeEachScenario();
 
-            _fixture.Setup();
+            _request = new GetUser.Request();
+            _usersToTeardown = new List<Tuple<TenantId, UserId>>();
         }
 
-        protected override void Dispose(bool disposing)
+        public override void AfterEachScenario()
         {
-            if (disposing)
-            {
-                _fixture.CleanUpUsers(_usersToTeardown);
-            }
-            base.Dispose(disposing);
+            Fixture.CleanUpUsers(_usersToTeardown);
+
+            base.AfterEachScenario();
         }
 
         [Given("user exists")]
-        public void AndUserExists()
+        public void GivenUserExists()
         {
             _expectedUser = new User(_aUserId, _aTenantId);
             _request.UserId = _aUserId;
             _request.Tenant = _aTenantId;
-            _fixture.ConfigureUserExists(_aTenantId, _aUserId, _expectedUser);
+            Fixture.ConfigureUserExists(_aTenantId, _aUserId, _expectedUser);
             _usersToTeardown.Add(Tuple.Create(_aTenantId, _aUserId));
         }
 
@@ -57,13 +54,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         {
             _request.UserId = _aUserId;
             _request.Tenant = _aTenantId;
-            _fixture.ConfigureUserDoesNotExist(_aTenantId, _aUserId);
+            Fixture.ConfigureUserDoesNotExist(_aTenantId, _aUserId);
         }
 
         [When("I get user")]
         public void WhenExecuteCommand()
         {
-            _handler = Resolve<IRequestHandler<GetUser.Request, User>>();
+            _handler = Container.GetInstance<IRequestHandler<GetUser.Request, User>>();
 
             _actualResult = _handler.Handle(_request).Result;
         }

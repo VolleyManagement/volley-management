@@ -25,6 +25,7 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 - [ ] Tests have appropriate category set: `@unit`, `@azurecloud`, `@onpremsql`
 - [ ] Story/bug tag is assigned to created/affected test: `@ab:123`
 - [ ] Tests resolve `IRequestHandler<,>` instance instead of concrete implementation
+- [ ] Step definition class has `Scope` attribute
 
 #### Integration Tests
 

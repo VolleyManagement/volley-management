@@ -7,6 +7,10 @@ namespace VolleyM.Domain.UnitTests.Framework
     /// </summary>
     public interface ITestFixture
     {
+    }
+
+    public interface IOneTimeTestFixture
+    {
         void OneTimeSetup(IConfiguration configuration);
 
         void OneTimeTearDown();

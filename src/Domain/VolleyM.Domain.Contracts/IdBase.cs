@@ -69,7 +69,7 @@ namespace VolleyM.Domain.Contracts
         public static bool operator !=(IdBase<TUnderlyingType> left, IdBase<TUnderlyingType> right)
         {
             if (ReferenceEquals(null, left) && ReferenceEquals(null, right))
-                return true;
+                return false;
 
             if (!ReferenceEquals(null, left))
                 return !left.Equals(right);

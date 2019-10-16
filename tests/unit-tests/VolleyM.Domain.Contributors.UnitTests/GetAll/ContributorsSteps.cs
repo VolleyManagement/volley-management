@@ -50,9 +50,10 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
             _queryMock.Execute(Unit.Value).Returns(testData);
 
         private static List<ContributorDto> GetMockData() =>
-            new List<ContributorDto> {
-                new ContributorDto{CourseDirection = "Test", FullName = "Name 1", Team = "Team 2" },
-                new ContributorDto{CourseDirection = "Test", FullName = "Name 2", Team = "Team 1" }
+            new List<ContributorDto>
+            {
+                new ContributorDto {CourseDirection = "Test", FullName = "Name 1", Team = "Team 2"},
+                new ContributorDto {CourseDirection = "Test", FullName = "Name 2", Team = "Team 1"}
             };
     }
 }

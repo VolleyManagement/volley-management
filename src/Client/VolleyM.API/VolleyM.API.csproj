@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
+    <ProjectReference Include="..\..\Domain\VolleyM.Domain.Players\VolleyM.Domain.Players.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
   </ItemGroup>
 

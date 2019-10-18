@@ -10,5 +10,10 @@ namespace VolleyM.Domain.Framework.Authorization
         public TenantId Tenant => Context?.User?.Tenant;
 
         public CurrentUserContext Context { get; set; }
+
+        public CurrentUserScope BeginScope(CurrentUserContext userScope)
+        {
+            return new CurrentUserScope(this, userScope);
+        }
     }
 }

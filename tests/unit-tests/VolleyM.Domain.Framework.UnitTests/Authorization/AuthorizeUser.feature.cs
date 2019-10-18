@@ -461,16 +461,22 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Authorized user id matches system Id")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Authorized user id matches system Id")]
         [Xunit.TraitAttribute("FeatureTitle", "Authorize User")]
         [Xunit.TraitAttribute("Description", "Authorized user id matches system Id")]
         [Xunit.TraitAttribute("Category", "ab:1026")]
-        public virtual void AuthorizedUserIdMatchesSystemId()
+        [Xunit.InlineDataAttribute("anonym@volleym.idp", new string[0])]
+        [Xunit.InlineDataAttribute("authz.user@volleym.idp", new string[0])]
+        public virtual void AuthorizedUserIdMatchesSystemId(string userId, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
+            string[] @__tags = new string[] {
                     "ab:1026"};
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Authorized user id matches system Id", null, new string[] {
-                        "ab:1026"});
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Authorized user id matches system Id", null, @__tags);
 #line 69
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -495,7 +501,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("new user is being authorized", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 71
- testRunner.And("user has \'sub\' claim with \'anonym@volleym.idp\' value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("user has \'sub\' claim with \'{0}\' value", userId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 72
  testRunner.When("I authorize user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

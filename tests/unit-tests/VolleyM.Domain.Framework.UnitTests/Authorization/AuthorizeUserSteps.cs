@@ -200,6 +200,8 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
                         ci.Arg<CreateUser.Request>().UserId,
                         ci.Arg<CreateUser.Request>().Tenant)))
                 .AndDoes(ci => { _actualRequest = ci.Arg<CreateUser.Request>(); });
+            SetupPermissionAttribute(typeof(CreateUser.Request),
+                new PermissionAttribute("IdentityAndAccess", "CreateUser"));
         }
 
         public void MockCreateUserError()
@@ -211,6 +213,8 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         {
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
                 .Returns(result);
+            SetupPermissionAttribute(typeof(CreateUser.Request),
+                new PermissionAttribute("IdentityAndAccess", "CreateUser"));
         }
         private void MockExistingUser()
         {
@@ -231,6 +235,8 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         {
             _getHandler.Handle(Arg.Any<GetUser.Request>())
                 .Returns(result);
+            SetupPermissionAttribute(typeof(GetUser.Request), 
+                new PermissionAttribute("IdentityAndAccess", "GetUser"));
         }
 
         #endregion

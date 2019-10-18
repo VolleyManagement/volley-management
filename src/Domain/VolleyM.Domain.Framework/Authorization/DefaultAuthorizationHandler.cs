@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
@@ -12,7 +13,10 @@ namespace VolleyM.Domain.Framework.Authorization
 {
     public class DefaultAuthorizationHandler : IAuthorizationHandler
     {
-        private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
+        private static readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
+        private static readonly UserId _authZUserId = new UserId("authz.user@volleym.idp");
+
+        private static readonly RoleId _visitorRole = new RoleId("visitor");
 
         private readonly IRequestHandler<GetUser.Request, User> _getUserHandler;
         private readonly IRequestHandler<CreateUser.Request, User> _createUserHandler;
@@ -24,7 +28,6 @@ namespace VolleyM.Domain.Framework.Authorization
             "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
         };
 
-        private static readonly RoleId VisitorRole = new RoleId("visitor");
 
         public DefaultAuthorizationHandler(
             IRequestHandler<CreateUser.Request, User> createUserHandler,
@@ -62,7 +65,12 @@ namespace VolleyM.Domain.Framework.Authorization
                 UserId = new UserId(idValue),
                 Tenant = TenantId.Default
             };
-            var getUser = await _getUserHandler.Handle(getRequest);
+
+            Result<User> getUser;
+            using (var _ = BeginAuthZUserScope())
+            {
+                getUser = await _getUserHandler.Handle(getRequest);
+            }
 
             if (getUser.IsSuccessful)
             {
@@ -75,9 +83,13 @@ namespace VolleyM.Domain.Framework.Authorization
                 {
                     UserId = new UserId(idValue),
                     Tenant = TenantId.Default,
-                    Role = VisitorRole
+                    Role = _visitorRole
                 };
-                var createUser = await _createUserHandler.Handle(createRequest);
+                Result<User> createUser;
+                using (var _ = BeginAuthZUserScope())
+                {
+                    createUser = await _createUserHandler.Handle(createRequest);
+                }
                 if (createUser.IsSuccessful)
                 {
                     result = Unit.Value;
@@ -96,12 +108,26 @@ namespace VolleyM.Domain.Framework.Authorization
             return result;
         }
 
+        /// <summary>
+        /// Starts Current user scope with internal AuthZ handler user
+        /// </summary>
+        /// <returns></returns>
+        private CurrentUserScope BeginAuthZUserScope()
+        {
+            return _currentUserManager.BeginScope(BuildCurrentUserContext(GetAuthZHandlerUser()));
+        }
+
         private void SetCurrentContext(User user)
         {
-            _currentUserManager.Context = new CurrentUserContext
+            _currentUserManager.Context = BuildCurrentUserContext(user);
+        }
+
+        private static CurrentUserContext BuildCurrentUserContext(User user)
+        {
+            return new CurrentUserContext
             {
                 User = user
-            }; ;
+            };
         }
 
         private string GetUserIdFromClaims(ClaimsPrincipal user)
@@ -110,17 +136,27 @@ namespace VolleyM.Domain.Framework.Authorization
             return idClaim?.Value;
         }
 
-        private bool IsPredefinedSystemId(string idValue)
+        private static bool IsPredefinedSystemId(string idValue)
         {
-            return _predefinedAnonymousUserId.ToString()
-                .Equals(idValue, StringComparison.OrdinalIgnoreCase);
+            var systemUsers = new[] {_predefinedAnonymousUserId, _authZUserId}
+                .Select(id => id.ToString().ToLowerInvariant());
+            return systemUsers.Contains(idValue, StringComparer.OrdinalIgnoreCase);
         }
 
         private static User GetAnonymousVisitor(UserId userId)
         {
             var result = new User(userId, TenantId.Default);
 
-            result.AssignRole(VisitorRole);
+            result.AssignRole(_visitorRole);
+
+            return result;
+        }
+
+        private static User GetAuthZHandlerUser()
+        {
+            var result = new User(_authZUserId, TenantId.Default);
+
+            result.AssignRole(AuthorizationService._authZRoleId);
 
             return result;
         }

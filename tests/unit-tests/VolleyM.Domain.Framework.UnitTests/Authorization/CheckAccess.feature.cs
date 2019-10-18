@@ -111,7 +111,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
- testRunner.Given("user has RoleA assigned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("user has RoleA role assigned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
  testRunner.And("RoleA has Permission1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -157,7 +157,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 13
- testRunner.Given("user has RoleA assigned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("user has RoleA role assigned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 14
  testRunner.And("RoleA has Permission1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -215,16 +215,22 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="User does not have any role assigned")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="AuthZ Handler role authorization")]
         [Xunit.TraitAttribute("FeatureTitle", "Check Access")]
-        [Xunit.TraitAttribute("Description", "User does not have any role assigned")]
+        [Xunit.TraitAttribute("Description", "AuthZ Handler role authorization")]
         [Xunit.TraitAttribute("Category", "ab:1026")]
-        public virtual void UserDoesNotHaveAnyRoleAssigned()
+        [Xunit.InlineDataAttribute("IdentityAndAccess", "GetUser", new string[0])]
+        [Xunit.InlineDataAttribute("IdentityAndAccess", "CreateUser", new string[0])]
+        public virtual void AuthZHandlerRoleAuthorization(string permissionContext, string permissionAction, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
+            string[] @__tags = new string[] {
                     "ab:1026"};
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User does not have any role assigned", null, new string[] {
-                        "ab:1026"});
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AuthZ Handler role authorization", null, @__tags);
 #line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -246,12 +252,55 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 26
- testRunner.Given("user has no role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("user has authz.handler role assigned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 27
- testRunner.When("I check access to Permission1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I check access to permission from \'{0}\' for \'{1}\'", permissionContext, permissionAction), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 28
+ testRunner.Then("access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="User does not have any role assigned")]
+        [Xunit.TraitAttribute("FeatureTitle", "Check Access")]
+        [Xunit.TraitAttribute("Description", "User does not have any role assigned")]
+        [Xunit.TraitAttribute("Category", "ab:1026")]
+        public virtual void UserDoesNotHaveAnyRoleAssigned()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ab:1026"};
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User does not have any role assigned", null, new string[] {
+                        "ab:1026"});
+#line 36
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 37
+ testRunner.Given("user has no role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 38
+ testRunner.When("I check access to Permission1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
  testRunner.Then("access is denied", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

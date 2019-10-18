@@ -31,6 +31,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         {
             base.ScenarioSetup();
 
+            MockTestUserPermission(new Permission(Permissions.Context, Permissions.User.CreateUser));
+
             _expectedUser = UserBuilder.New();
             _request = new CreateUser.Request();
 

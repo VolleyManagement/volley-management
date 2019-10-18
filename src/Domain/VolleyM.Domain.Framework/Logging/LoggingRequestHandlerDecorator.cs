@@ -4,20 +4,19 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.Logging
 {
-    public class LoggingRequestHandlerDecorator<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
+    public class LoggingRequestHandlerDecorator<TRequest, TResponse> : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse: class
+        where TResponse : class
     {
-        private readonly IRequestHandler<TRequest, TResponse> _handler;
-
-        public LoggingRequestHandlerDecorator(IRequestHandler<TRequest, TResponse> handler) => _handler = handler;
+        public LoggingRequestHandlerDecorator(IRequestHandler<TRequest, TResponse> handler)
+            : base(handler) { }
 
         public Task<Result<TResponse>> Handle(TRequest request)
         {
-            var logger = Log.ForContext(_handler.GetType());
+            var logger = Log.ForContext(RootInstance.GetType());
 
             logger.Debug("Handling request {@Request}", request);
-            var result = _handler.Handle(request);
+            var result = Decoratee.Handle(request);
             logger.Debug("Request handling complete.");
 
             return result;

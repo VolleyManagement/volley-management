@@ -20,20 +20,39 @@ namespace VolleyM.Domain.Framework
             container.Register<ICurrentUserProvider, CurrentUserProvider>(Lifestyle.Scoped);
             container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);
 
-            container.RegisterDecorator(
-                typeof(IRequestHandler<,>),
-                typeof(LoggingRequestHandlerDecorator<,>),
-                Lifestyle.Scoped);
+            container.Register<PermissionAttributeMappingStore>(Lifestyle.Singleton);
 
-            container.RegisterDecorator(
-                typeof(IQuery<,>),
-                typeof(LoggingQueryObjectDecorator<,>),
-                Lifestyle.Scoped);
+            RegisterHandlerDecorators(container);
+
+            RegisterQueryObjectDecorators(container);
         }
 
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)
         {
             // no need for mappers
+        }
+
+        private static void RegisterHandlerDecorators(Container container)
+        {
+            // order is important. First decorator will wrap real instance
+            container.RegisterDecorator(
+                typeof(IRequestHandler<,>),
+                typeof(AuthorizationHandlerDecorator<,>),
+                Lifestyle.Scoped);
+
+            container.RegisterDecorator(
+                typeof(IRequestHandler<,>),
+                typeof(LoggingRequestHandlerDecorator<,>),
+                Lifestyle.Scoped);
+        }
+
+        private static void RegisterQueryObjectDecorators(Container container)
+        {
+            // order is important. First decorator will wrap real instance
+            container.RegisterDecorator(
+                typeof(IQuery<,>),
+                typeof(LoggingQueryObjectDecorator<,>),
+                Lifestyle.Scoped);
         }
     }
 }

@@ -18,7 +18,7 @@
             => new Error(ErrorType.NotFound, message);
         public static Error InternalError(string message)
             => new Error(ErrorType.InternalError, message);
-        public static Result<Unit> NotAuthorized(string message)
+        public static Error NotAuthorized(string message)
             => new Error(ErrorType.NotAuthorized, message);
     }
 }

@@ -26,9 +26,9 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         private Result<Unit> _actualResult;
         private IAuthorizationService _authorizationService;
 
-        public override void BeforeEachScenario()
+        protected override void RegisterDependenciesForScenario(Container container)
         {
-            base.BeforeEachScenario();
+            base.RegisterDependenciesForScenario(container);
 
             RegisterHandlers();
 

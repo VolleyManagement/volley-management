@@ -17,10 +17,10 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         private Result<List<ContributorDto>> _expectedResult;
         private Result<List<ContributorDto>> _actualResult;
 
-        public override void BeforeEachScenario()
+        protected override void RegisterDependenciesForScenario(Container container)
         {
-            base.BeforeEachScenario();
-
+            base.RegisterDependenciesForScenario(container); 
+            
             _queryMock = Substitute.For<IQuery<Unit, List<ContributorDto>>>();
 
             Container.Register(() => _queryMock, Lifestyle.Scoped);

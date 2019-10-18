@@ -24,19 +24,17 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
         private Result<User> _actualResult;
 
-        public override void BeforeEachScenario()
+        protected override void ScenarioSetup()
         {
-            base.BeforeEachScenario();
+            base.ScenarioSetup();
 
             _request = new GetUser.Request();
             _usersToTeardown = new List<Tuple<TenantId, UserId>>();
         }
 
-        public override void AfterEachScenario()
+        protected override void ScenarioTearDown()
         {
             Fixture.CleanUpUsers(_usersToTeardown);
-
-            base.AfterEachScenario();
         }
 
         [Given("user exists")]

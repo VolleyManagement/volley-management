@@ -17,8 +17,19 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             Container = container;
         }
 
-        public void Setup()
+        public void RegisterScenarioDependencies(Container container)
         {
+            //do nothing
+        }
+
+        public void ScenarioSetup()
+        {
+            //do nothing
+        }
+
+        public void ScenarioTearDown()
+        {
+            //do nothing
         }
 
         public void ConfigureUserExists(TenantId tenant, UserId id, User user)

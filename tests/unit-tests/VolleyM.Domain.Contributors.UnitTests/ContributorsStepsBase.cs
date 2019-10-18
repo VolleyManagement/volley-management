@@ -7,7 +7,7 @@ namespace VolleyM.Domain.Contributors.UnitTests
 {
     public class ContributorsStepsBase : SpecFlowBindingBase
     {
-        [BeforeTestRun(Order = ONETIME_DOMAIN_FIXTURE_ORDER)]
+        [BeforeTestRun]
         public static void OneTimeSetup()
         {
             BeforeTestRun();

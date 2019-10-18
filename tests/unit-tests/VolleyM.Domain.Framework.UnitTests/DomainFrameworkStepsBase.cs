@@ -13,7 +13,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 {
     public class DomainFrameworkStepsBase : SpecFlowBindingBase
     {
-        [BeforeTestRun(Order = ONETIME_DOMAIN_FIXTURE_ORDER)]
+        [BeforeTestRun]
         public static void OneTimeSetup()
         {
             BeforeTestRun();

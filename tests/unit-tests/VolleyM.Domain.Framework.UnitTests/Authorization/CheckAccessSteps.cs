@@ -24,13 +24,18 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 
         private IRolesStore _rolesStore;
 
-        public override void BeforeEachScenario()
+        protected override void RegisterDependenciesForScenario(Container container)
         {
-            base.BeforeEachScenario();
+            base.RegisterDependenciesForScenario(container);
 
             _rolesStore = Substitute.For<IRolesStore>();
 
-            Container.Register(() => _rolesStore, Lifestyle.Scoped);
+            IRolesStore InstanceCreator()
+            {
+                return _rolesStore;
+            }
+
+            container.Register(InstanceCreator, Lifestyle.Scoped);
         }
 
         [Given(@"user has (\S+) role assigned")]

@@ -7,8 +7,6 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
     public interface IIdentityAndAccessFixture : ITestFixture
     {
-        void Setup();
-
         void ConfigureUserExists(TenantId tenant, UserId id, User user);
 
         void ConfigureUserDoesNotExist(TenantId tenant, UserId id);

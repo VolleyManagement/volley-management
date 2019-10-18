@@ -37,7 +37,6 @@ namespace VolleyM.Domain.Framework.Authorization
 
             if (!IsSystemRole(user.Role, out Role role))
             {
-
                 var roleStoreResult = await _rolesStore.Get(user.Role);
 
                 if (!roleStoreResult.IsSuccessful)

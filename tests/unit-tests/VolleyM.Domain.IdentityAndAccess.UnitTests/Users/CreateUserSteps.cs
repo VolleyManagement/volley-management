@@ -20,15 +20,16 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         private CreateUser.Request _request;
         private UserBuilder _expectedUser;
 
+        //ToDo: move to Azure fixture
         private List<Tuple<TenantId, UserId>> _usersToTeardown;
 
         private IRequestHandler<CreateUser.Request, User> _handler;
 
         private Result<User> _actualResult;
 
-        public override void BeforeEachScenario()
+        protected override void ScenarioSetup()
         {
-            base.BeforeEachScenario();
+            base.ScenarioSetup();
 
             _expectedUser = UserBuilder.New();
             _request = new CreateUser.Request();
@@ -36,11 +37,11 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
             _usersToTeardown = new List<Tuple<TenantId, UserId>>();
         }
 
-        public override void AfterEachScenario()
+        protected override void ScenarioTearDown()
         {
             Fixture.CleanUpUsers(_usersToTeardown);
 
-            base.AfterEachScenario();
+            base.ScenarioTearDown();
         }
 
         [Given("UserId provided")]

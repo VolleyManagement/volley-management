@@ -10,19 +10,19 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
     public class IdentityAndAccessStepsBase : SpecFlowBindingBase
     {
-        protected IIdentityAndAccessFixture Fixture { get; private set; }
+        protected IIdentityAndAccessFixture Fixture => (IIdentityAndAccessFixture)BaseTestFixture;
 
-        [BeforeTestRun(Order = ONETIME_DOMAIN_FIXTURE_ORDER)]
+        [BeforeTestRun]
         public static void OneTimeSetup()
         {
             OneTimeFixtureCreator = CreateOneTimeTestFixture;
-            SpecFlowBindingBase.BeforeTestRun();
+            BeforeTestRun();
         }
 
         [AfterTestRun]
         public static void OneTimeTearDown()
         {
-            SpecFlowBindingBase.AfterTestRun();
+            AfterTestRun();
         }
 
         private static IOneTimeTestFixture CreateOneTimeTestFixture(TestTarget target)
@@ -36,19 +36,11 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             };
         }
 
-        public override void BeforeEachScenario()
-        {
-            base.BeforeEachScenario();
-
-            Fixture = CreateTestFixture(Target);
-            Fixture.Setup();
-        }
-
-        private IIdentityAndAccessFixture CreateTestFixture(TestTarget target)
+        protected override ITestFixture CreateTestFixture(TestTarget target)
         {
             return target switch
             {
-                TestTarget.Unit => (IIdentityAndAccessFixture)new UnitTestIdentityAndAccessFixture(Container),
+                TestTarget.Unit => (IIdentityAndAccessFixture)new UnitTestIdentityAndAccessFixture(),
                 TestTarget.AzureCloud => new AzureCloudIdentityAndAccessFixture(Container),
                 TestTarget.OnPremSql => throw new NotSupportedException(),
                 _ => throw new ArgumentOutOfRangeException(nameof(target), target, null)

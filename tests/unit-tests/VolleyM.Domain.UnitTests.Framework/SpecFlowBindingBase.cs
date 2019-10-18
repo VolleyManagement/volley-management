@@ -1,15 +1,15 @@
-﻿using Destructurama;
+﻿using AutoMapper;
+using AutoMapper.Configuration;
+using Destructurama;
+using FluentAssertions;
 using Microsoft.Extensions.Configuration;
+using NSubstitute;
 using Serilog;
 using SimpleInjector;
+using SimpleInjector.Lifestyles;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using AutoMapper;
-using AutoMapper.Configuration;
-using FluentAssertions;
-using NSubstitute;
-using SimpleInjector.Lifestyles;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework;
@@ -22,28 +22,40 @@ namespace VolleyM.Domain.UnitTests.Framework
 {
     public abstract class SpecFlowBindingBase
     {
+        #region Constants
+
         private const string TEST_TARGET_KEY = "TestTarget";
         private const string TEST_LOG_KEY = "TestLogName";
 
+        private static readonly RoleId _testUserRoleId = new RoleId("testuser@volleym.idp");
 
-        public const int ONETIME_FRAMEWORK_ORDER = 200;
-        public const int ONETIME_DOMAIN_FIXTURE_ORDER = 100;
+        #endregion
+
+        #region Test Run variables
 
         private static IConfiguration Configuration { get; set; }
-        public Container Container { get; set; }
-        private Scope _scope;
-
-        private static readonly RoleId _testUserRoleId = new RoleId("testuser@volleym.idp");
-        private Role _testUserRole;
 
         protected static TestTarget Target { get; private set; }
 
-        protected static IOneTimeTestFixture OneTimeFixture { get; private set; }
+        private static IOneTimeTestFixture OneTimeFixture { get; set; }
 
         protected static Func<TestTarget, IOneTimeTestFixture> OneTimeFixtureCreator { get; set; }
 
-        [BeforeTestRun(Order = ONETIME_FRAMEWORK_ORDER)]
-        public static void BeforeTestRun()
+        #endregion
+
+        #region Scenario variables
+
+        protected Container Container { get; private set; }
+
+        protected ITestFixture BaseTestFixture { get; private set; }
+
+        private Scope _scope;
+
+        private Role _testUserRole;
+
+        #endregion
+
+        protected static void BeforeTestRun()
         {
             InitConfiguration();
 
@@ -57,42 +69,80 @@ namespace VolleyM.Domain.UnitTests.Framework
             OneTimeFixture.OneTimeSetup(Configuration);
         }
 
-        [AfterTestRun]
-        public static void AfterTestRun()
+        protected static void AfterTestRun()
         {
             OneTimeFixture.OneTimeTearDown();
         }
 
         [BeforeScenario]
-        public virtual void BeforeEachScenario()
+        public void BeforeEachScenario()
         {
             Container = new Container();
             Container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
             // Allow some tests to override existing registrations to replace it with test doubles
             Container.Options.AllowOverridingRegistrations = true;
 
-            RegisterAutoMapper();
+            RegisterAssemblyBootstrappers();
 
+            BaseTestFixture = CreateTestFixture(Target);
+            
             MockTestAuthorization();
+            RegisterDependenciesForScenario(Container);
 
             _scope = AsyncScopedLifestyle.BeginScope(Container);
+
+            ScenarioSetup();
         }
 
         [AfterScenario]
-        public virtual void AfterEachScenario()
+        public void AfterEachScenario()
         {
+            ScenarioTearDown();
+
             _scope.Dispose();
             _scope = null;
             Container.Dispose();
             Container = null;
         }
 
+        protected virtual ITestFixture CreateTestFixture(TestTarget testTarget)
+        {
+            return new NoOpTestFixture();
+        }
+
+        /// <summary>
+        /// Hook to register dependencies for each scenario. Called before <see cref="ScenarioSetup"/>
+        /// </summary>
+        /// <param name="container"></param>
+        protected virtual void RegisterDependenciesForScenario(Container container)
+        {
+            BaseTestFixture.RegisterScenarioDependencies(container);
+        }
+
+        /// <summary>
+        /// Logic to run to set up scenario. Called after <see cref="RegisterDependenciesForScenario"/>
+        /// </summary>
+        protected virtual void ScenarioSetup()
+        {
+            BaseTestFixture.ScenarioSetup();
+        }
+
+        /// <summary>
+        /// Hook to run scenario clean up
+        /// </summary>
+        protected virtual void ScenarioTearDown()
+        {
+            BaseTestFixture.ScenarioTearDown();
+        }
+
         protected abstract IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers();
 
-        internal IEnumerable<IAssemblyBootstrapper> GetBootstrappers() =>
+        private IEnumerable<IAssemblyBootstrapper> GetBootstrappers() =>
             new List<IAssemblyBootstrapper>(GetAssemblyBootstrappers()) {
                 new DomainFrameworkAssemblyBootstrapper()
             };
+
+        #region Test Configuration
 
         private static void InitConfiguration()
         {
@@ -146,7 +196,7 @@ namespace VolleyM.Domain.UnitTests.Framework
             return config[TEST_LOG_KEY] ?? "test-run.log";
         }
 
-        private void RegisterAutoMapper()
+        private void RegisterAssemblyBootstrappers()
         {
             var mce = new MapperConfigurationExpression();
             mce.ConstructServicesUsing(Container.GetInstance);
@@ -162,6 +212,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             Container.RegisterSingleton<IMapper>(() => new Mapper(mc, Container.GetInstance));
         }
+
+        #endregion
 
         private void MockTestAuthorization()
         {

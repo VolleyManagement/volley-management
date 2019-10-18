@@ -12,18 +12,21 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         private IUserRepository _repositoryMock;
         private User _actualUser;
 
-        private Container Container { get; }
-
-        public UnitTestIdentityAndAccessFixture(Container container)
-        {
-            Container = container;
-        }
-
-        public void Setup()
+        public void RegisterScenarioDependencies(Container container)
         {
             _repositoryMock = Substitute.For<IUserRepository>();
 
-            Container.Register(() => _repositoryMock, Lifestyle.Scoped);
+            container.Register(() => _repositoryMock, Lifestyle.Scoped);
+        }
+
+        public void ScenarioSetup()
+        {
+            // do nothing
+        }
+
+        public void ScenarioTearDown()
+        {
+            // do nothing
         }
 
         public void ConfigureUserExists(TenantId tenant, UserId id, User user)

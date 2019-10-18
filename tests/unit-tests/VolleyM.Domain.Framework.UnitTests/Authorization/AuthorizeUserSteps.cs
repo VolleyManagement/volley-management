@@ -33,17 +33,22 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private CreateUser.Request _actualRequest;
         private Result<Unit> _actualResult;
 
-        public override void BeforeEachScenario()
+        protected override void RegisterDependenciesForScenario(Container container)
         {
-            base.BeforeEachScenario();
-
-            _expectedTenant = TenantId.Default;
+            base.RegisterDependenciesForScenario(container);
 
             _createHandler = Substitute.For<IRequestHandler<CreateUser.Request, User>>();
             Container.Register(() => _createHandler, Lifestyle.Scoped);
 
             _getHandler = Substitute.For<IRequestHandler<GetUser.Request, User>>();
             Container.Register(() => _getHandler, Lifestyle.Scoped);
+        }
+
+        protected override void ScenarioSetup()
+        {
+            base.ScenarioSetup();
+
+            _expectedTenant = TenantId.Default;
         }
 
         #region Given

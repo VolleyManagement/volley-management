@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.Contributors
 {
     using IQueryObject = IQuery<Unit, List<ContributorDto>>;
 
-    [Permission("Contributors", "GetAll")]
+    [Permission(Permissions.GetAll)]
     public class GetAllContributors
     {
         public class Request : IRequest<List<ContributorDto>>

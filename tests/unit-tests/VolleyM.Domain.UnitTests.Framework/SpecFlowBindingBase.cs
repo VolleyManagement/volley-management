@@ -14,6 +14,7 @@ using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.Authorization;
+using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Infrastructure.Bootstrap;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
@@ -27,7 +28,8 @@ namespace VolleyM.Domain.UnitTests.Framework
         private const string TEST_TARGET_KEY = "TestTarget";
         private const string TEST_LOG_KEY = "TestLogName";
 
-        private static readonly RoleId _testUserRoleId = new RoleId("testuser@volleym.idp");
+        private static readonly UserId _testUserId = new UserId("testuser@volleym.idp");
+        private static readonly RoleId _testUserRoleId = new RoleId("test-user-role");
 
         #endregion
 
@@ -51,6 +53,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         private Scope _scope;
 
+        private User _testUser;
         private Role _testUserRole;
 
         #endregion
@@ -85,11 +88,13 @@ namespace VolleyM.Domain.UnitTests.Framework
             RegisterAssemblyBootstrappers();
 
             BaseTestFixture = CreateTestFixture(Target);
-            
-            MockTestAuthorization();
+
+            MockTestUserRole();
             RegisterDependenciesForScenario(Container);
 
             _scope = AsyncScopedLifestyle.BeginScope(Container);
+
+            MockTestUser();
 
             ScenarioSetup();
         }
@@ -215,7 +220,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         #endregion
 
-        private void MockTestAuthorization()
+        private void MockTestUserRole()
         {
             var store = Substitute.For<IRolesStore>();
 
@@ -225,7 +230,19 @@ namespace VolleyM.Domain.UnitTests.Framework
             Container.Register(() => store, Lifestyle.Scoped);
         }
 
-        protected void ConfigurePermission(Permission permission)
+        private void MockTestUser()
+        {
+            _testUser = new User(_testUserId, TenantId.Default);
+            _testUser.AssignRole(_testUserRoleId);
+
+            var manager = Container.GetInstance<ICurrentUserManager>();
+            manager.Context = new CurrentUserContext
+            {
+                User = _testUser
+            };
+        }
+
+        protected void MockTestUserPermission(Permission permission)
         {
             _testUserRole.AddPermission(permission);
         }

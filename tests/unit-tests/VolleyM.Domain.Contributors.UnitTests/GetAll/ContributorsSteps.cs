@@ -4,6 +4,7 @@ using SimpleInjector;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
 {
@@ -19,11 +20,18 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
 
         protected override void RegisterDependenciesForScenario(Container container)
         {
-            base.RegisterDependenciesForScenario(container); 
-            
+            base.RegisterDependenciesForScenario(container);
+
             _queryMock = Substitute.For<IQuery<Unit, List<ContributorDto>>>();
 
             Container.Register(() => _queryMock, Lifestyle.Scoped);
+        }
+
+        protected override void ScenarioSetup()
+        {
+            base.ScenarioSetup();
+
+            MockTestUserPermission(new Permission(Permissions.Context, Permissions.GetAll));
         }
 
         [Given(@"several contributors exist")]

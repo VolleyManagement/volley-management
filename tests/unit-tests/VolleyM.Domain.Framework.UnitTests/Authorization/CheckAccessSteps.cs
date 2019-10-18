@@ -33,7 +33,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             Container.Register(() => _rolesStore, Lifestyle.Scoped);
         }
 
-        [Given(@"user has (\S+) assigned")]
+        [Given(@"user has (\S+) role assigned")]
         public void GivenUserHasRole(string roleKey)
         {
             var currentUser = CreateAUser();
@@ -76,6 +76,14 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             _actualResult = authZService.CheckAccess(_permissions[permissionKey]).Result;
         }
 
+        [When(@"I check access to permission from '(\S+)' for '(\S+)'")]
+        public void WhenCheckAccess(string context, string action)
+        {
+            var authZService = Container.GetInstance<IAuthorizationService>();
+
+            _actualResult = authZService.CheckAccess(new Permission(context, action)).Result;
+        }
+
         [Then("access is granted")]
         public void ThenAccessIsGranted()
         {
@@ -87,20 +95,6 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         public void ThenAccessIsDenied()
         {
             _actualResult.Should().BeFalse("because user does not have role with correct permission");
-        }
-
-        private void SetCurrentUser(User currentUser)
-        {
-            var currentUserMgr = Container.GetInstance<ICurrentUserManager>();
-            currentUserMgr.Context = new CurrentUserContext
-            {
-                User = currentUser
-            };
-        }
-
-        private static User CreateAUser()
-        {
-            return new User(new UserId("user|abc"), TenantId.Default);
         }
     }
 }

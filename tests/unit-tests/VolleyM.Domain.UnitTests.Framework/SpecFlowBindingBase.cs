@@ -8,10 +8,13 @@ using System.IO;
 using AutoMapper;
 using AutoMapper.Configuration;
 using FluentAssertions;
+using NSubstitute;
 using SimpleInjector.Lifestyles;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework;
+using VolleyM.Domain.Framework.Authorization;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Infrastructure.Bootstrap;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
@@ -29,6 +32,9 @@ namespace VolleyM.Domain.UnitTests.Framework
         private static IConfiguration Configuration { get; set; }
         public Container Container { get; set; }
         private Scope _scope;
+
+        private static readonly RoleId _testUserRoleId = new RoleId("testuser@volleym.idp");
+        private Role _testUserRole;
 
         protected static TestTarget Target { get; private set; }
 
@@ -62,21 +68,12 @@ namespace VolleyM.Domain.UnitTests.Framework
         {
             Container = new Container();
             Container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+            // Allow some tests to override existing registrations to replace it with test doubles
+            Container.Options.AllowOverridingRegistrations = true;
 
+            RegisterAutoMapper();
 
-            var mce = new MapperConfigurationExpression();
-            mce.ConstructServicesUsing(Container.GetInstance);
-
-            foreach (var bootstrapper in GetBootstrappers())
-            {
-                bootstrapper.RegisterDependencies(Container, Configuration);
-                bootstrapper.RegisterMappingProfiles(mce);
-            }
-
-            var mc = new MapperConfiguration(mce);
-            mc.AssertConfigurationIsValid();
-
-            Container.RegisterSingleton<IMapper>(() => new Mapper(mc, Container.GetInstance));
+            MockTestAuthorization();
 
             _scope = AsyncScopedLifestyle.BeginScope(Container);
         }
@@ -149,12 +146,45 @@ namespace VolleyM.Domain.UnitTests.Framework
             return config[TEST_LOG_KEY] ?? "test-run.log";
         }
 
+        private void RegisterAutoMapper()
+        {
+            var mce = new MapperConfigurationExpression();
+            mce.ConstructServicesUsing(Container.GetInstance);
+
+            foreach (var bootstrapper in GetBootstrappers())
+            {
+                bootstrapper.RegisterDependencies(Container, Configuration);
+                bootstrapper.RegisterMappingProfiles(mce);
+            }
+
+            var mc = new MapperConfiguration(mce);
+            mc.AssertConfigurationIsValid();
+
+            Container.RegisterSingleton<IMapper>(() => new Mapper(mc, Container.GetInstance));
+        }
+
+        private void MockTestAuthorization()
+        {
+            var store = Substitute.For<IRolesStore>();
+
+            _testUserRole = new Role(_testUserRoleId);
+            store.Get(_testUserRoleId).Returns(_testUserRole);
+
+            Container.Register(() => store, Lifestyle.Scoped);
+        }
+
+        protected void ConfigurePermission(Permission permission)
+        {
+            _testUserRole.AddPermission(permission);
+        }
+
         protected void AssertErrorReturned<T>(
             Result<T> actualResult,
             Error expected,
             string because = "error should be reported",
             params object[] becauseArgs) where T : class
         {
+            actualResult.Should().NotBeSuccessful("error is expected");
             actualResult.Error.Should().BeEquivalentTo(expected, because, becauseArgs);
         }
     }

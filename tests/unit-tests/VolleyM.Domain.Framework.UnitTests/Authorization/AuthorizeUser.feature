@@ -64,11 +64,16 @@ Scenario: Not authenticated user
 	Then user should be authorized
 	And anonymous visitor set as current user
 	And new user should not be created in the system
-	
+
 @ab:1026
-Scenario: Authorized user id matches system Id
+Scenario Outline: Authorized user id matches system Id
 	Given new user is being authorized
-	And user has 'sub' claim with 'anonym@volleym.idp' value
+	And user has 'sub' claim with '<userId>' value
 	When I authorize user
 	Then user should not be authorized
 	And new user should not be created in the system
+
+	Examples: restricted users
+		| userId                 |
+		| anonym@volleym.idp     |
+		| authz.user@volleym.idp |

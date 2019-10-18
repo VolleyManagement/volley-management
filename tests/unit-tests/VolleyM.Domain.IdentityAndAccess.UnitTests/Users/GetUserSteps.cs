@@ -4,6 +4,7 @@ using FluentAssertions;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
@@ -27,6 +28,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         protected override void ScenarioSetup()
         {
             base.ScenarioSetup();
+
+            MockTestUserPermission(new Permission(Permissions.Context, Permissions.User.GetUser));
 
             _request = new GetUser.Request();
             _usersToTeardown = new List<Tuple<TenantId, UserId>>();

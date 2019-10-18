@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
+    [Permission("IdentityAndAccess", "CreateUser")]
     public class CreateUser
     {
         public class Request : IRequest<User>

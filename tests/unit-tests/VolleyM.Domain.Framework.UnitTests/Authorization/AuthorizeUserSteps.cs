@@ -18,37 +18,33 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {
     [Binding]
     [Scope(Feature = "Authorize User")]
-    public class AuthorizeUserSteps : DomainFrameworkStepsBase
+    public class AuthorizeUserSteps
     {
-        private IRequestHandler<CreateUser.Request, User> _createHandler;
-        private IRequestHandler<GetUser.Request, User> _getHandler;
+        private readonly IDomainFrameworkTestFixture _testFixture;
+        private readonly Container _container;
 
-        private UserId _expectedId;
-        private TenantId _expectedTenant;
         private ClaimsIdentity _userClaims;
 
         private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
         private readonly RoleId _visitorRole = new RoleId("visitor");
 
-        private CreateUser.Request _actualRequest;
         private Result<Unit> _actualResult;
+        private CreateUser.Request _expectedRequest;
 
-        protected override void RegisterDependenciesForScenario(Container container)
+        public AuthorizeUserSteps(IDomainFrameworkTestFixture testFixture, Container container)
         {
-            base.RegisterDependenciesForScenario(container);
-
-            _createHandler = Substitute.For<IRequestHandler<CreateUser.Request, User>>();
-            Container.Register(() => _createHandler, Lifestyle.Scoped);
-
-            _getHandler = Substitute.For<IRequestHandler<GetUser.Request, User>>();
-            Container.Register(() => _getHandler, Lifestyle.Scoped);
+            _testFixture = testFixture;
+            _container = container;
         }
 
-        protected override void ScenarioSetup()
+        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
+        public void ScenarioSetup()
         {
-            base.ScenarioSetup();
-
-            _expectedTenant = TenantId.Default;
+            _expectedRequest = new CreateUser.Request
+            {
+                Tenant = TenantId.Default,
+                Role = _visitorRole
+            };
         }
 
         #region Given
@@ -57,16 +53,16 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         public void GivenNewUserIsBeingAuthorized()
         {
             _userClaims = CreateAuthenticatedIdentity();
-            MockUserNotFound();
-            MockCreateUserSuccess();
+            _testFixture.MockUserNotFound();
+            _testFixture.MockCreateUserSuccess();
         }
 
         [Given("unauthenticated user is being authorized")]
         public void GivenNotAuthenticatedUserIsBeingAuthorized()
         {
             _userClaims = CreateNotAuthenticatedIdentity();
-            MockUserNotFound();
-            MockCreateUserSuccess();
+            _testFixture.MockUserNotFound();
+            _testFixture.MockCreateUserSuccess();
         }
 
         [Given("existing user is being authorized")]
@@ -74,14 +70,14 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         {
             _userClaims = CreateAuthenticatedIdentity();
             GivenUserHasIdClaim();
-            MockExistingUser();
+            _testFixture.MockUserExists(new User(_expectedRequest.UserId, _expectedRequest.Tenant));
         }
 
         [Given(@"user has '(\S+)' claim with '(\S+)' value")]
         public void GivenUserHasClaim(string claim, string value)
         {
             //Note: this might not work if you have several 'user has claim' statements in spec
-            _expectedId = new UserId(value);
+            _expectedRequest.UserId = new UserId(value);
 
             _userClaims.AddClaim(new Claim(claim, value));
         }
@@ -103,13 +99,13 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         [Given(@"get user operation has error")]
         public void GivenGetUserReturnsError()
         {
-            MockGetUserError();
+            _testFixture.MockGetUserError();
         }
 
         [Given(@"create user operation has error")]
         public void GivenCreateUserReturnsError()
         {
-            MockCreateUserError();
+            _testFixture.MockCreateUserError();
         }
 
         #endregion
@@ -117,12 +113,12 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         #region When
 
         [When("I authorize user")]
-        public void WhenIAuthorizeUser()
+        public async Task WhenIAuthorizeUser()
         {
             var userToAuthorize = new ClaimsPrincipal(_userClaims);
 
-            var handler = Container.GetInstance<IAuthorizationHandler>();
-            _actualResult = handler.AuthorizeUser(userToAuthorize).Result;
+            var handler = _container.GetInstance<IAuthorizationHandler>();
+            _actualResult = await handler.AuthorizeUser(userToAuthorize);
         }
 
         #endregion
@@ -144,30 +140,28 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         [Then("this user is set into current context")]
         public void UserIsSetAsCurrent()
         {
-            var currentUser = Container.GetInstance<ICurrentUserProvider>();
+            var currentUser = _container.GetInstance<ICurrentUserProvider>();
 
-            currentUser.UserId.Should().Be(_expectedId, "user with this Id was logged in");
-            currentUser.Tenant.Should().Be(_expectedTenant, "current tenant should be set");
+            currentUser.UserId.Should().Be(_expectedRequest.UserId, "user with this Id was logged in");
+            currentUser.Tenant.Should().Be(_expectedRequest.Tenant, "current tenant should be set");
         }
 
         [Then("new user should be created in the system")]
         public void ThenNewUserIsCreated()
         {
-            _actualRequest.UserId.Should().Be(_expectedId, "this value was in ID claim");
-            _actualRequest.Tenant.Should().Be(_expectedTenant, "this is default tenant");
-            _actualRequest.Role.Should().Be(_visitorRole, "all new users are assigned visitor role");
+            _testFixture.VerifyUserCreated(_expectedRequest);
         }
 
         [Then("new user should not be created in the system")]
         public void ThenNewUserIsNotCreated()
         {
-            _createHandler.DidNotReceive().Handle(Arg.Any<CreateUser.Request>());
+            _testFixture.VerifyUserNotCreated();
         }
 
         [Then("anonymous visitor set as current user")]
         public void ThenAnonymousSetAsCurrentUser()
         {
-            var currentUser = Container.GetInstance<ICurrentUserManager>();
+            var currentUser = _container.GetInstance<ICurrentUserManager>();
 
             currentUser.Context.User.Id.Should().Be(_predefinedAnonymousUserId, "user was not authenticated");
             currentUser.Context.User.Role.Should().Be(_visitorRole, "anonymous user should have Visitor role assigned");
@@ -191,57 +185,6 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
             var baseIdentity = Substitute.For<IIdentity>();
             baseIdentity.IsAuthenticated.Returns(false);
             return new ClaimsIdentity(baseIdentity);
-        }
-
-        #endregion
-
-        #region Mock
-
-        private void MockCreateUserSuccess()
-        {
-            _createHandler.Handle(Arg.Any<CreateUser.Request>())
-                .Returns(ci => Task.FromResult(
-                    (Result<User>)new User(
-                        ci.Arg<CreateUser.Request>().UserId,
-                        ci.Arg<CreateUser.Request>().Tenant)))
-                .AndDoes(ci => { _actualRequest = ci.Arg<CreateUser.Request>(); });
-            SetupPermissionAttribute(typeof(CreateUser.Request),
-                new PermissionAttribute("IdentityAndAccess", "CreateUser"));
-        }
-
-        public void MockCreateUserError()
-        {
-            MockCreateUser(Error.InternalError("random test error"));
-        }
-
-        private void MockCreateUser(Result<User> result)
-        {
-            _createHandler.Handle(Arg.Any<CreateUser.Request>())
-                .Returns(result);
-            SetupPermissionAttribute(typeof(CreateUser.Request),
-                new PermissionAttribute("IdentityAndAccess", "CreateUser"));
-        }
-        private void MockExistingUser()
-        {
-            MockGetUser(new User(_expectedId, _expectedTenant));
-        }
-
-        private void MockUserNotFound()
-        {
-            MockGetUser(Error.NotFound());
-        }
-
-        private void MockGetUserError()
-        {
-            MockGetUser(Error.InternalError("any test error"));
-        }
-
-        private void MockGetUser(Result<User> result)
-        {
-            _getHandler.Handle(Arg.Any<GetUser.Request>())
-                .Returns(result);
-            SetupPermissionAttribute(typeof(GetUser.Request), 
-                new PermissionAttribute("IdentityAndAccess", "GetUser"));
         }
 
         #endregion

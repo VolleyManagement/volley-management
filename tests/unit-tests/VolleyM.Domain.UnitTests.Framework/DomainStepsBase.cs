@@ -32,8 +32,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         #endregion
 
-        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_TEST_FRAMEWORK_ORDER)]
-        public void BeforeEachScenario()
+        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_INIT_CONTAINER_ORDER)]
+        public void InitializeContainer()
         {
             Container = new Container();
             Container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
@@ -47,12 +47,16 @@ namespace VolleyM.Domain.UnitTests.Framework
             BaseTestFixture = CreateAndRegisterTestFixtureIfNeeded(TestRunFixtureBase.Target);
             AuthFixture = CreateAndRegisterAuthFixtureIfNeeded();
 
-            AuthFixture.ConfigureTestUserRole(Container);
+            AuthFixture?.ConfigureTestUserRole(Container);
             BaseTestFixture.RegisterScenarioDependencies(Container);
+        }
 
+        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
+        public void ScenarioSetup()
+        {
             _scope = ThreadScopedLifestyle.BeginScope(Container);
 
-            AuthFixture.ConfigureTestUser(Container);
+            AuthFixture?.ConfigureTestUser(Container);
 
             BaseTestFixture.ScenarioSetup();
         }

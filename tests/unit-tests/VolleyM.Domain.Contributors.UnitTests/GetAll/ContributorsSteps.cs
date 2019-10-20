@@ -1,51 +1,50 @@
 ﻿using FluentAssertions;
-using NSubstitute;
 using SimpleInjector;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
 {
     [Binding]
     [Scope(Feature = "Contributors")]
-    public class ContributorsSteps : ContributorsStepsBase
+    public class ContributorsSteps
     {
+        private readonly IContributorsTestFixture _testFixture;
+        private readonly IAuthFixture _authFixture;
+        private readonly Container _container;
+
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
-        private IQuery<Unit, List<ContributorDto>> _queryMock;
 
         private Result<List<ContributorDto>> _expectedResult;
         private Result<List<ContributorDto>> _actualResult;
 
-        protected override void RegisterDependenciesForScenario(Container container)
+        public ContributorsSteps(IContributorsTestFixture testFixture, IAuthFixture authFixture, Container container)
         {
-            base.RegisterDependenciesForScenario(container);
-
-            _queryMock = Substitute.For<IQuery<Unit, List<ContributorDto>>>();
-
-            Container.Register(() => _queryMock, Lifestyle.Scoped);
+            _testFixture = testFixture;
+            _authFixture = authFixture;
+            _container = container;
         }
 
-        protected override void ScenarioSetup()
+        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
+        public void ScenarioSetup()
         {
-            base.ScenarioSetup();
-
-            MockTestUserPermission(new Permission(Permissions.Context, Permissions.GetAll));
+            _authFixture.SetTestUserPermission(new Permission(Permissions.Context, Permissions.GetAll));
         }
 
         [Given(@"several contributors exist")]
         public void GivenSeveralContributorsExist()
         {
             _expectedResult = GetMockData();
-
-            MockQueryObject(GetMockData());
+            _testFixture.MockSeveralContributorsExist(GetMockData());
         }
 
         [When(@"I query all contributors")]
         public async void WhenIQueryAllContributors()
         {
-            _handler = Container.GetInstance<IRequestHandler<GetAllContributors.Request, List<ContributorDto>>>();
+            _handler = _container.GetInstance<IRequestHandler<GetAllContributors.Request, List<ContributorDto>>>();
 
             _actualResult = await _handler.Handle(new GetAllContributors.Request());
         }
@@ -55,8 +54,6 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         {
             _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available contributors");
         }
-        private void MockQueryObject(List<ContributorDto> testData) =>
-            _queryMock.Execute(Unit.Value).Returns(testData);
 
         private static List<ContributorDto> GetMockData() =>
             new List<ContributorDto>

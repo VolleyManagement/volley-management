@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using SimpleInjector;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -10,9 +11,9 @@ namespace VolleyM.Domain.UnitTests.Framework
     {
         void RegisterScenarioDependencies(Container container);
 
-        void ScenarioSetup();
+        Task ScenarioSetup();
 
-        void ScenarioTearDown();
+        Task ScenarioTearDown();
     }
 
     public interface IOneTimeTestFixture

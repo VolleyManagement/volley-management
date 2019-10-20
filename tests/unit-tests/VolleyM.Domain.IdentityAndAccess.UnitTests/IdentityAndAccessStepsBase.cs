@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BoDi;
+using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
@@ -8,21 +9,24 @@ using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    public class IdentityAndAccessStepsBase : SpecFlowBindingBase
+    [Binding]
+    public class IdentityAndAccessStepsBase : DomainStepsBase
     {
-        protected IIdentityAndAccessFixture Fixture => (IIdentityAndAccessFixture)BaseTestFixture;
+        public IdentityAndAccessStepsBase(IObjectContainer objectContainer) : base(objectContainer) { }
+
+        #region One Time Fixture Setup
 
         [BeforeTestRun]
-        public static void OneTimeSetup()
+        public static void BeforeTestRun()
         {
-            OneTimeFixtureCreator = CreateOneTimeTestFixture;
-            BeforeTestRun();
+            TestRunFixtureBase.OneTimeFixtureCreator = CreateOneTimeTestFixture;
+            TestRunFixtureBase.BeforeTestRun();
         }
 
         [AfterTestRun]
-        public static void OneTimeTearDown()
+        public static void AfterTestRun()
         {
-            AfterTestRun();
+            TestRunFixtureBase.AfterTestRun();
         }
 
         private static IOneTimeTestFixture CreateOneTimeTestFixture(TestTarget target)
@@ -36,6 +40,10 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             };
         }
 
+        #endregion
+
+        #region Test Fixture Setup
+
         protected override ITestFixture CreateTestFixture(TestTarget target)
         {
             return target switch
@@ -47,16 +55,22 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             };
         }
 
-        protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers()
+        protected override bool RequiresAuthorizationFixture => true;
+
+        protected override Type GetConcreteTestFixtureType => typeof(IIdentityAndAccessFixture);
+
+        protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers(TestTarget target)
         {
             var result = new List<IAssemblyBootstrapper> { new DomainIdentityAndAccessAssemblyBootstrapper() };
 
-            if (Target == TestTarget.AzureCloud)
+            if (target == TestTarget.AzureCloud)
             {
                 result.Add(new InfrastructureIdentityAndAccessAzureStorageBootstrapper());
             }
 
             return result;
         }
+
+        #endregion
     }
 }

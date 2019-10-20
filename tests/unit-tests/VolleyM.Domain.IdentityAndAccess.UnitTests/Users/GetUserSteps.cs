@@ -1,69 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
+using SimpleInjector;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
     [Binding]
     [Scope(Feature = "Get User by ID")]
-    public class GetUserSteps : IdentityAndAccessStepsBase
+    public class GetUserSteps
     {
-        private readonly UserId _aUserId = new UserId("google|123321");
+        private readonly IIdentityAndAccessFixture _testFixture;
+        private readonly IAuthFixture _authFixture;
+        private readonly Container _container;
+
         private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");
+
+        private UserBuilder _userBuilder;
 
         private GetUser.Request _request;
         private User _expectedUser;
-
-        private List<Tuple<TenantId, UserId>> _usersToTeardown;
 
         private IRequestHandler<GetUser.Request, User> _handler;
 
         private Result<User> _actualResult;
 
-        protected override void ScenarioSetup()
+        public GetUserSteps(IIdentityAndAccessFixture testFixture, IAuthFixture authFixture, Container container)
         {
-            base.ScenarioSetup();
-
-            MockTestUserPermission(new Permission(Permissions.Context, Permissions.User.GetUser));
-
-            _request = new GetUser.Request();
-            _usersToTeardown = new List<Tuple<TenantId, UserId>>();
+            _testFixture = testFixture;
+            _authFixture = authFixture;
+            _container = container;
         }
 
-        protected override void ScenarioTearDown()
+        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
+        public void ScenarioSetup()
         {
-            Fixture.CleanUpUsers(_usersToTeardown);
+            _authFixture.SetTestUserPermission(new Permission(Permissions.Context, Permissions.User.GetUser));
+
+            _request = new GetUser.Request();
+            _userBuilder = UserBuilder.New();
         }
 
         [Given("user exists")]
-        public void GivenUserExists()
+        public async Task GivenUserExists()
         {
-            _expectedUser = new User(_aUserId, _aTenantId);
-            _request.UserId = _aUserId;
+            _userBuilder
+                .WithAnyId()
+                .WithTenant(_aTenantId);
+
+            _expectedUser = _userBuilder.Build();
+
+            _request.UserId = _userBuilder.Id;
             _request.Tenant = _aTenantId;
-            Fixture.ConfigureUserExists(_aTenantId, _aUserId, _expectedUser);
-            _usersToTeardown.Add(Tuple.Create(_aTenantId, _aUserId));
+            await _testFixture.ConfigureUserExists(_aTenantId, _userBuilder.Id, _expectedUser);
         }
 
         [Given("user does not exist")]
-        public void GivenDoesNotUserExist()
+        public async Task GivenDoesNotUserExist()
         {
-            _request.UserId = _aUserId;
+            _userBuilder
+                .WithAnyId()
+                .WithTenant(_aTenantId);
+
+            _request.UserId = _userBuilder.Id;
             _request.Tenant = _aTenantId;
-            Fixture.ConfigureUserDoesNotExist(_aTenantId, _aUserId);
+            await _testFixture.ConfigureUserDoesNotExist(_aTenantId, _userBuilder.Id);
         }
 
         [When("I get user")]
-        public void WhenExecuteCommand()
+        public async Task WhenExecuteCommand()
         {
-            _handler = Container.GetInstance<IRequestHandler<GetUser.Request, User>>();
+            _handler = _container.GetInstance<IRequestHandler<GetUser.Request, User>>();
 
-            _actualResult = _handler.Handle(_request).Result;
+            _actualResult = await _handler.Handle(_request);
         }
 
         [Then("user is returned")]
@@ -76,7 +89,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [Then("NotFound error is returned")]
         public void ThenNotFoundErrorReturned()
         {
-            AssertErrorReturned(_actualResult, Error.NotFound(), "such user should not exist");
+            _actualResult.ShouldBeError(Error.NotFound(), "such user should not exist");
         }
     }
 }

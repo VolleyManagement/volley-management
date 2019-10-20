@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using SimpleInjector;
-using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
@@ -19,38 +18,41 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             container.Register(() => _repositoryMock, Lifestyle.Scoped);
         }
 
-        public void ScenarioSetup()
+        public Task ScenarioSetup()
         {
             // do nothing
+            return Task.CompletedTask;
         }
 
-        public void ScenarioTearDown()
+        public Task ScenarioTearDown()
         {
             // do nothing
+            return Task.CompletedTask;
         }
 
-        public void ConfigureUserExists(TenantId tenant, UserId id, User user)
+        public Task ConfigureUserExists(TenantId tenant, UserId id, User user)
         {
             _repositoryMock.Get(tenant, id).Returns(user);
             _repositoryMock.Add(Arg.Any<User>()).Returns(Error.Conflict());
+
+            return Task.CompletedTask;
         }
 
-        public void ConfigureUserDoesNotExist(TenantId tenant, UserId id)
+        public Task ConfigureUserDoesNotExist(TenantId tenant, UserId id)
         {
             _repositoryMock.Get(tenant, id).Returns(Error.NotFound());
             _repositoryMock.Add(Arg.Any<User>())
                 .Returns(ci => ci.Arg<User>())
                 .AndDoes(ci => { _actualUser = ci.Arg<User>(); });
+
+            return Task.CompletedTask;
         }
 
-        public void VerifyUserCreated(User user)
+        public Task VerifyUserCreated(User user)
         {
             _actualUser.Should().BeEquivalentTo(user, "all user parameters should be stored");
-        }
 
-        public void CleanUpUsers(List<Tuple<TenantId, UserId>> usersToTeardown)
-        {
-            // do nothing
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SimpleInjector;
+﻿using System.Threading.Tasks;
+using SimpleInjector;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {
@@ -9,14 +10,16 @@ namespace VolleyM.Domain.UnitTests.Framework
             //do nothing
         }
 
-        public void ScenarioSetup()
+        public Task ScenarioSetup()
         {
             //do nothing
+            return Task.CompletedTask;
         }
 
-        public void ScenarioTearDown()
+        public Task ScenarioTearDown()
         {
             //do nothing
+            return Task.CompletedTask;
         }
     }
 }

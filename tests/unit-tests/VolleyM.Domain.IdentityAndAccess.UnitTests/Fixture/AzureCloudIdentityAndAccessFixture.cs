@@ -12,6 +12,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
     {
         private Container Container { get; }
 
+        private List<Tuple<TenantId, UserId>> _usersToTeardown;
+
         public AzureCloudIdentityAndAccessFixture(Container container)
         {
             Container = container;
@@ -22,39 +24,42 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             //do nothing
         }
 
-        public void ScenarioSetup()
+        public Task ScenarioSetup()
         {
-            //do nothing
+            _usersToTeardown = new List<Tuple<TenantId, UserId>>();
+            return Task.CompletedTask;
         }
 
-        public void ScenarioTearDown()
+        public async Task ScenarioTearDown()
         {
-            //do nothing
+            await CleanUpUsers(_usersToTeardown);
         }
 
-        public void ConfigureUserExists(TenantId tenant, UserId id, User user)
+        public async Task ConfigureUserExists(TenantId tenant, UserId id, User user)
         {
             var repo = Container.GetInstance<IUserRepository>();
 
-            repo.Add(user);
+            await repo.Add(user);
+            _usersToTeardown.Add(Tuple.Create(tenant, id));
         }
 
-        public void ConfigureUserDoesNotExist(TenantId tenant, UserId id)
+        public Task ConfigureUserDoesNotExist(TenantId tenant, UserId id)
         {
             // do nothing
+            return Task.CompletedTask;
         }
 
-        public void VerifyUserCreated(User user)
+        public async Task VerifyUserCreated(User user)
         {
             var repo = Container.GetInstance<IUserRepository>();
 
-            var savedUser = repo.Get(user.Tenant, user.Id).Result;
+            var savedUser = await repo.Get(user.Tenant, user.Id);
 
             savedUser.Should().BeSuccessful("user should be created");
             savedUser.Value.Should().BeEquivalentTo(user, "all attributes should be saved correctly");
         }
 
-        public void CleanUpUsers(List<Tuple<TenantId, UserId>> usersToTeardown)
+        private async Task CleanUpUsers(IEnumerable<Tuple<TenantId, UserId>> usersToTeardown)
         {
             var repo = Container.GetInstance<IUserRepository>();
             var deleteTasks = new List<Task>();
@@ -63,7 +68,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
                 deleteTasks.Add(repo.Delete(tenant, user));
             }
 
-            Task.WaitAll(deleteTasks.ToArray());
+            await Task.WhenAll(deleteTasks.ToArray());
         }
     }
 }

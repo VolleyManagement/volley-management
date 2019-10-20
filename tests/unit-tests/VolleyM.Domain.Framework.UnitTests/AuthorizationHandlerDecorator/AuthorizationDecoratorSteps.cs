@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
 using SimpleInjector;
+using System;
+using System.Reflection;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.Authorization;
@@ -14,7 +14,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
 {
     [Binding]
     [Scope(Feature = "Authorization Decorator")]
-    public class AuthorizationDecoratorSteps : DomainFrameworkStepsBase
+    public class AuthorizationDecoratorSteps
     {
         private enum HandlerType
         {
@@ -26,14 +26,20 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         private Result<Unit> _actualResult;
         private IAuthorizationService _authorizationService;
 
-        protected override void RegisterDependenciesForScenario(Container container)
-        {
-            base.RegisterDependenciesForScenario(container);
+        private readonly Container _container;
 
+        public AuthorizationDecoratorSteps(Container container)
+        {
+            _container = container;
+        }
+
+        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_REGISTER_DEPENDENCIES_ORDER)]
+        public void RegisterDependenciesForScenario()
+        {
             RegisterHandlers();
 
             _authorizationService = Substitute.For<IAuthorizationService>();
-            Container.RegisterInstance(_authorizationService);
+            _container.RegisterInstance(_authorizationService);
         }
 
         [Given(@"I have no permission attribute on a handler")]
@@ -71,7 +77,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         [Then(@"NotAuthorized error should be returned with message ([A-Za-z ]+)")]
         public void ThenNotAuthorizedErrorShouldBeReturned(string errorMessage)
         {
-            AssertErrorReturned(_actualResult, Error.NotAuthorized(errorMessage));
+            _actualResult.ShouldBeError(Error.NotAuthorized(errorMessage));
         }
 
         [Then(@"success result is returned")]
@@ -102,14 +108,14 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
 
         private Result<Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
         {
-            var handler = Container.GetInstance<IRequestHandler<T, Unit>>();
+            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
             return handler.Handle(request).Result;
         }
 
         private void RegisterHandlers()
         {
-            Container.Register(typeof(IRequestHandler<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
+            _container.Register(typeof(IRequestHandler<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
         }
     }
 }

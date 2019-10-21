@@ -33,6 +33,13 @@ Scenario Outline: AuthZ Handler role authorization
 		| IdentityAndAccess | CreateUser       |
 
 @ab:1026
+Scenario: Permission check is case insensitive
+	Given user has RoleB role assigned
+	And RoleB has LowerCasePermission3
+	When I check access to UpperCasePermission3
+	Then access is granted
+
+@ab:1026
 Scenario: User does not have any role assigned
 	Given user has no role
 	When I check access to Permission1

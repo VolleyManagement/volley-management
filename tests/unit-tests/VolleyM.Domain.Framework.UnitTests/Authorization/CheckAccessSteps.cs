@@ -14,7 +14,9 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private static readonly Dictionary<string, Permission> _permissions = new Dictionary<string, Permission>
         {
             ["Permission1"] = new Permission("ContextA", "Action1"),
-            ["Permission2"] = new Permission("ContextA", "Action2")
+            ["Permission2"] = new Permission("ContextA", "Action2"),
+            ["LowerCasePermission3"] = new Permission("contexta", "action2"),
+            ["UpperCasePermission3"] = new Permission("ContextA", "Action2")
         };
 
         private readonly IDomainFrameworkTestFixture _testFixture;

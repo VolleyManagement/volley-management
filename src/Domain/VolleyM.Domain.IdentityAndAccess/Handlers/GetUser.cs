@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
-    [Permission("IdentityAndAccess", "GetUser")]
+    [Permission(Permissions.User.GetUser)]
     public class GetUser
     {
         public class Request : IRequest<User>

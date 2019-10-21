@@ -10,9 +10,9 @@ using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
     [Binding]
-    public class IdentityAndAccessStepsBase : DomainStepsBase
+    public class IdentityAndAccessTestSetup : DomainTestSetupBase
     {
-        public IdentityAndAccessStepsBase(IObjectContainer objectContainer) : base(objectContainer) { }
+        public IdentityAndAccessTestSetup(IObjectContainer objectContainer) : base(objectContainer) { }
 
         #region One Time Fixture Setup
 

@@ -15,12 +15,15 @@ namespace VolleyM.Domain.IdentityAndAccess.RolesAggregate
 
         public void AddPermission(Permission permission)
         {
-            _permissions.Add(permission.ToString());
+            _permissions.Add(GetPermissionKey(permission));
         }
 
         public bool HasPermission(Permission permission)
         {
-            return _permissions.TryGetValue(permission.ToString(), out var actual);
+            return _permissions.TryGetValue(GetPermissionKey(permission), out var actual);
         }
+
+        private static string GetPermissionKey(Permission permission) 
+            => permission.ToString().ToLowerInvariant();
     }
 }

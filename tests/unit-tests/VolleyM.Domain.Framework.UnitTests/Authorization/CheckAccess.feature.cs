@@ -264,15 +264,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="User does not have any role assigned")]
+        [Xunit.SkippableFactAttribute(DisplayName="Permission check is case insensitive")]
         [Xunit.TraitAttribute("FeatureTitle", "Check Access")]
-        [Xunit.TraitAttribute("Description", "User does not have any role assigned")]
+        [Xunit.TraitAttribute("Description", "Permission check is case insensitive")]
         [Xunit.TraitAttribute("Category", "ab:1026")]
-        public virtual void UserDoesNotHaveAnyRoleAssigned()
+        public virtual void PermissionCheckIsCaseInsensitive()
         {
             string[] tagsOfScenario = new string[] {
                     "ab:1026"};
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User does not have any role assigned", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Permission check is case insensitive", null, new string[] {
                         "ab:1026"});
 #line 36
 this.ScenarioInitialize(scenarioInfo);
@@ -295,12 +295,58 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 37
- testRunner.Given("user has no role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("user has RoleB role assigned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 38
- testRunner.When("I check access to Permission1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("RoleB has LowerCasePermission3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 39
+ testRunner.When("I check access to UpperCasePermission3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 40
+ testRunner.Then("access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="User does not have any role assigned")]
+        [Xunit.TraitAttribute("FeatureTitle", "Check Access")]
+        [Xunit.TraitAttribute("Description", "User does not have any role assigned")]
+        [Xunit.TraitAttribute("Category", "ab:1026")]
+        public virtual void UserDoesNotHaveAnyRoleAssigned()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ab:1026"};
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User does not have any role assigned", null, new string[] {
+                        "ab:1026"});
+#line 43
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 44
+ testRunner.Given("user has no role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 45
+ testRunner.When("I check access to Permission1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 46
  testRunner.Then("access is denied", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

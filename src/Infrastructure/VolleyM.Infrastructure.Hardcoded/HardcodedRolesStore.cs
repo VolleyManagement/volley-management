@@ -9,15 +9,14 @@ namespace VolleyM.Infrastructure.Hardcoded
     public class HardcodedRolesStore : IRolesStore
     {
         private static readonly RoleId _visitor = new RoleId("visitor");
-        private readonly Dictionary<RoleId, Role> _roles = new Dictionary<RoleId, Role>
-        {
-            [_visitor] = new Role(_visitor)
-        };
+        private readonly Dictionary<RoleId, Role> _roles = new Dictionary<RoleId, Role>();
 
         public HardcodedRolesStore()
         {
             var visitor = new Role(_visitor);
             visitor.AddPermission(new Permission("contributors", "getall"));
+
+            _roles[_visitor] = visitor;
         }
 
         public Task<Result<Role>> Get(RoleId roleId)

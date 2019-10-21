@@ -11,7 +11,7 @@ using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {
-    public abstract class DomainStepsBase
+    public abstract class DomainTestSetupBase
     {
         private readonly IObjectContainer _objectContainer;
 
@@ -25,7 +25,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         private Scope _scope;
 
-        protected DomainStepsBase(IObjectContainer objectContainer)
+        protected DomainTestSetupBase(IObjectContainer objectContainer)
         {
             _objectContainer = objectContainer;
         }

@@ -8,9 +8,9 @@ using VolleyM.Infrastructure.Bootstrap;
 namespace VolleyM.Domain.Contributors.UnitTests
 {
     [Binding]
-    public class ContributorsStepsBase : DomainStepsBase
+    public class ContributorsTestSetup : DomainTestSetupBase
     {
-        public ContributorsStepsBase(IObjectContainer objectContainer) : base(objectContainer)
+        public ContributorsTestSetup(IObjectContainer objectContainer) : base(objectContainer)
         {
         }
 

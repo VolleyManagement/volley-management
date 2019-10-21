@@ -9,9 +9,9 @@ using VolleyM.Infrastructure.Bootstrap;
 namespace VolleyM.Domain.Framework.UnitTests
 {
     [Binding]
-    public class DomainFrameworkStepsBase : DomainStepsBase
+    public class DomainFrameworkTestSetup : DomainTestSetupBase
     {
-        public DomainFrameworkStepsBase(IObjectContainer objectContainer) : base(objectContainer) { }
+        public DomainFrameworkTestSetup(IObjectContainer objectContainer) : base(objectContainer) { }
 
         [BeforeTestRun]
         public static void OneTimeSetup()

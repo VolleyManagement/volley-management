@@ -28,17 +28,5 @@ namespace VolleyM.API.Contributors
 
             return Ok(result.Value);
         }
-
-        // Temporary to test authentication
-        [HttpGet]
-        [Authorize]
-        [Route("protected")]
-        public async Task<IActionResult> GetProtected()
-        {
-            Log.Information("Controller {Action} action called.", nameof(GetProtected));
-            var result = await _handler.Handle(new GetAllContributors.Request());
-
-            return Ok(result.Value);
-        }
     }
 }

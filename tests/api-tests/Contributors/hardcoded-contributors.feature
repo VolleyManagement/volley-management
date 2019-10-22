@@ -13,7 +13,7 @@ Feature: Hardcoded Contributors API
 
     Scenario: Get All protected contributors
 
-        Given path 'api/contributors/protected'
+        Given path 'api/contributors'
         And header Authorization = auth_header
         When method GET
         Then status 200

@@ -3,6 +3,7 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
+    [Permission(Permissions.User.GetUser)]
     public class GetUser
     {
         public class Request : IRequest<User>

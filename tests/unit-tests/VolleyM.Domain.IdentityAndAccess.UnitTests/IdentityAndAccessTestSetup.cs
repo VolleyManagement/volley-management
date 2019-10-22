@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BoDi;
+using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
@@ -8,21 +9,24 @@ using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    public class IdentityAndAccessStepsBase : SpecFlowBindingBase
+    [Binding]
+    public class IdentityAndAccessTestSetup : DomainTestSetupBase
     {
-        protected IIdentityAndAccessFixture Fixture { get; private set; }
+        public IdentityAndAccessTestSetup(IObjectContainer objectContainer) : base(objectContainer) { }
 
-        [BeforeTestRun(Order = ONETIME_DOMAIN_FIXTURE_ORDER)]
-        public static void OneTimeSetup()
+        #region One Time Fixture Setup
+
+        [BeforeTestRun]
+        public static void BeforeTestRun()
         {
-            OneTimeFixtureCreator = CreateOneTimeTestFixture;
-            SpecFlowBindingBase.BeforeTestRun();
+            TestRunFixtureBase.OneTimeFixtureCreator = CreateOneTimeTestFixture;
+            TestRunFixtureBase.BeforeTestRun();
         }
 
         [AfterTestRun]
-        public static void OneTimeTearDown()
+        public static void AfterTestRun()
         {
-            SpecFlowBindingBase.AfterTestRun();
+            TestRunFixtureBase.AfterTestRun();
         }
 
         private static IOneTimeTestFixture CreateOneTimeTestFixture(TestTarget target)
@@ -36,35 +40,37 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             };
         }
 
-        public override void BeforeEachScenario()
-        {
-            base.BeforeEachScenario();
+        #endregion
 
-            Fixture = CreateTestFixture(Target);
-            Fixture.Setup();
-        }
+        #region Test Fixture Setup
 
-        private IIdentityAndAccessFixture CreateTestFixture(TestTarget target)
+        protected override ITestFixture CreateTestFixture(TestTarget target)
         {
             return target switch
             {
-                TestTarget.Unit => (IIdentityAndAccessFixture)new UnitTestIdentityAndAccessFixture(Container),
+                TestTarget.Unit => (IIdentityAndAccessFixture)new UnitTestIdentityAndAccessFixture(),
                 TestTarget.AzureCloud => new AzureCloudIdentityAndAccessFixture(Container),
                 TestTarget.OnPremSql => throw new NotSupportedException(),
                 _ => throw new ArgumentOutOfRangeException(nameof(target), target, null)
             };
         }
 
-        protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers()
+        protected override bool RequiresAuthorizationFixture => true;
+
+        protected override Type GetConcreteTestFixtureType => typeof(IIdentityAndAccessFixture);
+
+        protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers(TestTarget target)
         {
             var result = new List<IAssemblyBootstrapper> { new DomainIdentityAndAccessAssemblyBootstrapper() };
 
-            if (Target == TestTarget.AzureCloud)
+            if (target == TestTarget.AzureCloud)
             {
                 result.Add(new InfrastructureIdentityAndAccessAzureStorageBootstrapper());
             }
 
             return result;
         }
+
+        #endregion
     }
 }

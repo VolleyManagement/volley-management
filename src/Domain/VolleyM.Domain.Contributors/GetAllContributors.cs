@@ -6,6 +6,7 @@ namespace VolleyM.Domain.Contributors
 {
     using IQueryObject = IQuery<Unit, List<ContributorDto>>;
 
+    [Permission(Permissions.GetAll)]
     public class GetAllContributors
     {
         public class Request : IRequest<List<ContributorDto>>

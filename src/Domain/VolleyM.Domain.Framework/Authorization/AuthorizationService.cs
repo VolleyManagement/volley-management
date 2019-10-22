@@ -1,13 +1,24 @@
-﻿using System.Threading.Tasks;
-using Serilog;
+﻿using Serilog;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using IAPermissions = VolleyM.Domain.IdentityAndAccess.Permissions;
 
 namespace VolleyM.Domain.Framework.Authorization
 {
     internal class AuthorizationService : IAuthorizationService
     {
+        internal static RoleId _authZRoleId = new RoleId("authz.handler");
+
         private readonly IRolesStore _rolesStore;
         private readonly ICurrentUserManager _currentUserManager;
+
+        private static readonly Dictionary<RoleId, Role> _systemRoleStore = new Dictionary<RoleId, Role>();
+
+        static AuthorizationService()
+        {
+            PopulateSystemRoles();
+        }
 
         public AuthorizationService(IRolesStore rolesStore, ICurrentUserManager currentUserManager)
         {
@@ -24,15 +35,33 @@ namespace VolleyM.Domain.Framework.Authorization
                 return false;
             }
 
-            var role = await _rolesStore.Get(user.Role);
-
-            if (!role.IsSuccessful)
+            if (!IsSystemRole(user.Role, out Role role))
             {
-                Log.Warning("Cannot authorize user because RolesStore returned an {Error}", role.Error);
-                return false;
+                var roleStoreResult = await _rolesStore.Get(user.Role);
+
+                if (!roleStoreResult.IsSuccessful)
+                {
+                    Log.Warning("Cannot authorize user because RolesStore returned an {Error}", roleStoreResult.Error);
+                    return false;
+                }
+
+                role = roleStoreResult.Value;
             }
 
-            return role.Value.HasPermission(permission);
+            return role.HasPermission(permission);
+        }
+
+        private static bool IsSystemRole(RoleId roleId, out Role role)
+        {
+            return _systemRoleStore.TryGetValue(roleId, out role);
+        }
+
+        private static void PopulateSystemRoles()
+        {
+            var authZRole = new Role(_authZRoleId);
+            authZRole.AddPermission(new Permission(IAPermissions.Context, IAPermissions.User.GetUser));
+            authZRole.AddPermission(new Permission(IAPermissions.Context, IAPermissions.User.CreateUser));
+            _systemRoleStore[_authZRoleId] = authZRole;
         }
     }
 }

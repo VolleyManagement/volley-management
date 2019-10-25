@@ -18,13 +18,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             _tableConfig = new TableConfiguration(_options);
             var result = _tableConfig.ConfigureTables().Result;
 
-            result.Should().BeSuccessful("Azure Storage should be configured correctly");
+            result.IsRight.Should().BeTrue("Azure Storage should be configured correctly");
         }
 
         public void OneTimeTearDown()
         {
             var result = _tableConfig.CleanTables().Result;
-            result.Should().BeSuccessful("Azure Storage should be cleaned up correctly");
+            result.IsRight.Should().BeTrue("Azure Storage should be cleaned up correctly");
         }
     }
 }

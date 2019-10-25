@@ -7,7 +7,6 @@ using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
-using Unit = VolleyM.Domain.Contracts.Unit;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 {
@@ -24,35 +23,15 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             _mapper = mapper;
         }
 
-        public Task<Result<User>> Add(User user)
+        public Task<Either<Error, User>> Add(User user)
         {
-            return PerformStorageOperation<User>(async tableRef =>
-            {
-                var userEntity = new UserEntity(user);
-                var createOperation = TableOperation.Insert(userEntity);
-
-                var createResult = await tableRef.ExecuteAsync(createOperation);
-
-                if (createResult.Result is UserEntity created)
-                {
-                    var newUser = _userFactory.CreateUser(_mapper.Map<UserEntity, UserFactoryDto>(created));
-
-                    return newUser;
-                }
-
-                return Error.InternalError($"Azure Storage: Failed to create user with {createResult.HttpStatusCode} error.");
-            }, "Add User");
-        }
-
-        public Task<Either<Error, User>> Add1(User user)
-        {
-            return PerformStorageOperation1(async tableRef =>
+            return PerformStorageOperation(async tableRef =>
             {
                 var userEntity = new UserEntity(user);
                 var createOperation = TableOperation.Insert(userEntity);
 
                 var createResult = (Either<Error, TableResult>)await tableRef.ExecuteAsync(createOperation);
-                
+
                 return createResult.Match(
                     tableResult => tableResult.Result switch
                     {
@@ -66,28 +45,9 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             }, "Add User");
         }
 
-        public Task<Result<User>> Get(TenantId tenant, UserId id)
+        public Task<Either<Error, User>> Get(TenantId tenant, UserId id)
         {
-            return PerformStorageOperation<User>(async tableRef =>
-            {
-                var getOperation = TableOperation.Retrieve<UserEntity>(tenant.ToString(), id.ToString());
-
-                var result = await tableRef.ExecuteAsync(getOperation);
-
-                if (result.Result is UserEntity userEntity)
-                {
-                    var userDto = _mapper.Map<UserEntity, UserFactoryDto>(userEntity);
-
-                    return _userFactory.CreateUser(userDto);
-                }
-
-                return Error.NotFound();
-            }, "Get User");
-        }
-
-        public Task<Either<Error, User>> Get1(TenantId tenant, UserId id)
-        {
-            return PerformStorageOperation1(async tableRef =>
+            return PerformStorageOperation(async tableRef =>
             {
                 var getOperation = TableOperation.Retrieve<UserEntity>(tenant.ToString(), id.ToString());
 
@@ -105,7 +65,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             }, "Get User");
         }
 
-        public Task<Result<Unit>> Delete(TenantId tenant, UserId id)
+        public Task<Either<Error, Unit>> Delete(TenantId tenant, UserId id)
         {
             return PerformStorageOperation<Unit>(async tableRef =>
             {
@@ -116,11 +76,11 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
                 await tableRef.ExecuteAsync(deleteOperation);
 
-                return Unit.Value;
+                return Unit.Default;
             }, "Delete User");
         }
 
-        private Result<CloudTable> OpenConnection()
+        private Either<Error, CloudTable> OpenConnection()
         {
             if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
             {
@@ -134,44 +94,15 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             return tableRef;
         }
 
-        private async Task<Result<T>> PerformStorageOperation<T>(Func<CloudTable, Task<Result<T>>> operation, string operationName)
-            where T : class
+        private async Task<Either<Error, T>> PerformStorageOperation<T>(Func<CloudTable, Task<Either<Error, T>>> operation, string operationName)
         {
             var conn = OpenConnection();
-            if (!conn.IsSuccessful)
-            {
-                return conn.Error;
-            }
-            var tableRef = conn.Value;
 
             try
             {
-                return await operation(tableRef);
-            }
-            catch (StorageException e) when (IsConflictError(e))
-            {
-                return Error.Conflict();
-            }
-            catch (StorageException e)
-            {
-                Log.Error(e, "{AzureStorageOperation} Azure Storage operation failed.", operationName);
-                return Error.InternalError($"{operationName} Azure Storage operation failed.");
-            }
-        }
-
-        private async Task<Either<Error, T>> PerformStorageOperation1<T>(Func<CloudTable, Task<Either<Error, T>>> operation, string operationName)
-            where T : class
-        {
-            var conn = OpenConnection();
-            if (!conn.IsSuccessful)
-            {
-                return conn.Error;
-            }
-            var tableRef = conn.Value;
-
-            try
-            {
-                return await operation(tableRef);
+                return await conn.Match(
+                    operation,
+                    e => Task.FromResult((Either<Error, T>)e));
             }
             catch (StorageException e) when (IsConflictError(e))
             {

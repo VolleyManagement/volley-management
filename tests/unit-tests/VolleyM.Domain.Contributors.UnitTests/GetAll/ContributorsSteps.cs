@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using SimpleInjector;
+﻿using SimpleInjector;
 using System.Collections.Generic;
+using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
@@ -18,8 +18,8 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
 
         private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
 
-        private Result<List<ContributorDto>> _expectedResult;
-        private Result<List<ContributorDto>> _actualResult;
+        private List<ContributorDto> _expectedResult;
+        private Either<Error, List<ContributorDto>> _actualResult;
 
         public ContributorsSteps(IContributorsTestFixture testFixture, IAuthFixture authFixture, Container container)
         {
@@ -52,7 +52,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         [Then(@"all contributors received")]
         public void ThenAllContributorsReceived()
         {
-            _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available contributors");
+            _actualResult.ShouldBeEquivalent(_expectedResult, "handler should return all available contributors");
         }
 
         private static List<ContributorDto> GetMockData() =>

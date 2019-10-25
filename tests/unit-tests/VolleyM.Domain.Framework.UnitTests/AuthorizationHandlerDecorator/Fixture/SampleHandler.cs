@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 
@@ -17,9 +18,9 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator.Fixtu
 
         public class Handler : IRequestHandler<Request, Unit>
         {
-            public Task<Result<Unit>> Handle(Request request)
+            public Task<Either<Error, Unit>> Handle(Request request)
             {
-                return Task.FromResult<Result<Unit>>(Unit.Value);
+                return Task.FromResult<Either<Error, Unit>>(Unit.Default);
             }
         }
     }

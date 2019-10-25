@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using SimpleInjector;
 using System.Threading.Tasks;
+using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
@@ -26,7 +27,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
 
         private IRequestHandler<CreateUser.Request, User> _handler;
 
-        private Result<User> _actualResult;
+        private Either<Error, User> _actualResult;
 
         public CreateUserSteps(IIdentityAndAccessFixture testFixture, IAuthFixture authFixture, Container container)
         {
@@ -103,8 +104,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         [Then("user is returned")]
         public void ThenUserIsReturned()
         {
-            _actualResult.Value.Should()
-                .BeEquivalentTo(_expectedUser.Build(), "created user should be returned");
+            _actualResult.IsRight.Should().BeTrue("created user should be returned");
+            _actualResult.IfRight(u => u.Should()
+                .BeEquivalentTo(_expectedUser.Build(), "created user should be returned"));
         }
     }
 }

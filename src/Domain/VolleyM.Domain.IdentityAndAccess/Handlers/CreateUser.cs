@@ -31,29 +31,6 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                 _repository = repository;
             }
 
-            public async Task<Result<User>> Handle(Request request)
-            {
-                var user = new User(request.UserId, request.Tenant);
-                if (request.Role != null)
-                {
-                    user.AssignRole(request.Role);
-                }
-
-                var addResult = await _repository.Add(user);
-
-                return addResult;
-            }
-        }
-
-        public class Handler1 : IRequestHandler1<Request, User>
-        {
-            private readonly IUserRepository _repository;
-
-            public Handler1(IUserRepository repository)
-            {
-                _repository = repository;
-            }
-
             public async Task<Either<Error, User>> Handle(Request request)
             {
                 var user = new User(request.UserId, request.Tenant);
@@ -62,7 +39,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                     user.AssignRole(request.Role);
                 }
 
-                var addResult = await _repository.Add1(user);
+                var addResult = await _repository.Add(user);
 
                 return addResult;
             }

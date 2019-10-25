@@ -26,7 +26,9 @@ namespace VolleyM.API.Contributors
             Log.Information("Controller {Action} action called.", nameof(GetAll));
             var result = await _handler.Handle(new GetAllContributors.Request());
 
-            return Ok(result.Value);
+            return result.Match<IActionResult>(
+                Ok,
+                BadRequest);
         }
     }
 }

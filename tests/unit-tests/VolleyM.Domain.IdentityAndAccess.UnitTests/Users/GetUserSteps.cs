@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using SimpleInjector;
 using System.Threading.Tasks;
+using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
@@ -27,7 +28,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
         private IRequestHandler<GetUser.Request, User> _handler;
 
-        private Result<User> _actualResult;
+        private Either<Error, User> _actualResult;
 
         public GetUserSteps(IIdentityAndAccessFixture testFixture, IAuthFixture authFixture, Container container)
         {
@@ -82,8 +83,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [Then("user is returned")]
         public void ThenUserIsReturned()
         {
-            _actualResult.Should().BeSuccessful("user exists");
-            _actualResult.Value.Should().BeEquivalentTo(_expectedUser, "all user attributes should be returned");
+            _actualResult.IsRight.Should().BeTrue("user exists");
+            _actualResult.IfRight(u => u.Should().BeEquivalentTo(_expectedUser, "all user attributes should be returned"));
         }
 
         [Then("NotFound error is returned")]

@@ -10,7 +10,6 @@ using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
-using Unit = VolleyM.Domain.Contracts.Unit;
 
 namespace VolleyM.Domain.Framework.Authorization
 {
@@ -21,8 +20,8 @@ namespace VolleyM.Domain.Framework.Authorization
 
         private static readonly RoleId _visitorRole = new RoleId("visitor");
 
-        private readonly IRequestHandler1<GetUser.Request, User> _getUserHandler;
-        private readonly IRequestHandler1<CreateUser.Request, User> _createUserHandler;
+        private readonly IRequestHandler<GetUser.Request, User> _getUserHandler;
+        private readonly IRequestHandler<CreateUser.Request, User> _createUserHandler;
         private readonly ICurrentUserManager _currentUserManager;
 
         private readonly List<string> _idClaimTypes = new List<string>
@@ -32,9 +31,9 @@ namespace VolleyM.Domain.Framework.Authorization
 
 
         public DefaultAuthorizationHandler(
-            IRequestHandler1<CreateUser.Request, User> createUserHandler,
+            IRequestHandler<CreateUser.Request, User> createUserHandler,
             ICurrentUserManager currentUserManager,
-            IRequestHandler1<GetUser.Request, User> getUserHandler)
+            IRequestHandler<GetUser.Request, User> getUserHandler)
         {
             _createUserHandler = createUserHandler;
             _currentUserManager = currentUserManager;
@@ -66,10 +65,10 @@ namespace VolleyM.Domain.Framework.Authorization
 
             return (await createUserMap.ToEither())
                 .Do(SetCurrentContext)
-                .Map(_ => Unit.Value);
+                .Map(_ => Unit.Default);
         }
 
-        private EitherAsync<Error, User> CheckUnauthenticatedUser(ClaimsPrincipal user)
+        private static EitherAsync<Error, User> CheckUnauthenticatedUser(ClaimsPrincipal user)
         {
             if (user.Identity.IsAuthenticated)
                 // it will be replaced by real user later
@@ -78,7 +77,7 @@ namespace VolleyM.Domain.Framework.Authorization
             return Error.NotAuthenticated();
         }
 
-        private EitherAsync<Error, User> GetAnonymousUser()
+        private static EitherAsync<Error, User> GetAnonymousUser()
         {
             return GetAnonymousVisitor(_predefinedAnonymousUserId);
         }
@@ -98,7 +97,7 @@ namespace VolleyM.Domain.Framework.Authorization
 
             return systemUsers.Contains(idValue, StringComparer.OrdinalIgnoreCase)
                 ? Option<Unit>.None
-                : Option<Unit>.Some(Unit.Value);
+                : Option<Unit>.Some(Unit.Default);
         }
 
         private static User GetAnonymousVisitor(UserId userId)

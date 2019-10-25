@@ -14,7 +14,6 @@ using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
-using Unit = VolleyM.Domain.Contracts.Unit;
 
 namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {

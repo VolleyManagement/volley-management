@@ -17,8 +17,8 @@ namespace VolleyM.Domain.Framework.UnitTests
     {
         private readonly Container _container;
 
-        private IRequestHandler1<CreateUser.Request, User> _createHandler;
-        private IRequestHandler1<GetUser.Request, User> _getHandler;
+        private IRequestHandler<CreateUser.Request, User> _createHandler;
+        private IRequestHandler<GetUser.Request, User> _getHandler;
         private IRolesStore _rolesStore;
 
         private CreateUser.Request _actualCreateRequest;
@@ -30,10 +30,10 @@ namespace VolleyM.Domain.Framework.UnitTests
 
         public void RegisterScenarioDependencies(Container container)
         {
-            _createHandler = Substitute.For<IRequestHandler1<CreateUser.Request, User>>();
+            _createHandler = Substitute.For<IRequestHandler<CreateUser.Request, User>>();
             container.Register(() => _createHandler, Lifestyle.Scoped);
 
-            _getHandler = Substitute.For<IRequestHandler1<GetUser.Request, User>>();
+            _getHandler = Substitute.For<IRequestHandler<GetUser.Request, User>>();
             container.Register(() => _getHandler, Lifestyle.Scoped);
 
             _rolesStore = Substitute.For<IRolesStore>();

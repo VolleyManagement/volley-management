@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
@@ -39,6 +40,29 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                 }
 
                 var addResult = await _repository.Add(user);
+
+                return addResult;
+            }
+        }
+
+        public class Handler1 : IRequestHandler1<Request, User>
+        {
+            private readonly IUserRepository _repository;
+
+            public Handler1(IUserRepository repository)
+            {
+                _repository = repository;
+            }
+
+            public async Task<Either<Error, User>> Handle(Request request)
+            {
+                var user = new User(request.UserId, request.Tenant);
+                if (request.Role != null)
+                {
+                    user.AssignRole(request.Role);
+                }
+
+                var addResult = await _repository.Add1(user);
 
                 return addResult;
             }

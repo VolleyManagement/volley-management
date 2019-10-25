@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LanguageExt;
+using LanguageExt.UnsafeValueAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -8,6 +10,7 @@ using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using Unit = VolleyM.Domain.Contracts.Unit;
 
 namespace VolleyM.Domain.Framework.Authorization
 {
@@ -18,28 +21,27 @@ namespace VolleyM.Domain.Framework.Authorization
 
         private static readonly RoleId _visitorRole = new RoleId("visitor");
 
-        private readonly IRequestHandler<GetUser.Request, User> _getUserHandler;
-        private readonly IRequestHandler<CreateUser.Request, User> _createUserHandler;
+        private readonly IRequestHandler1<GetUser.Request, User> _getUserHandler;
+        private readonly IRequestHandler1<CreateUser.Request, User> _createUserHandler;
         private readonly ICurrentUserManager _currentUserManager;
 
         private readonly List<string> _idClaimTypes = new List<string>
         {
-            "sub",
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            "sub", "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
         };
 
 
         public DefaultAuthorizationHandler(
-            IRequestHandler<CreateUser.Request, User> createUserHandler,
+            IRequestHandler1<CreateUser.Request, User> createUserHandler,
             ICurrentUserManager currentUserManager,
-            IRequestHandler<GetUser.Request, User> getUserHandler)
+            IRequestHandler1<GetUser.Request, User> getUserHandler)
         {
             _createUserHandler = createUserHandler;
             _currentUserManager = currentUserManager;
             _getUserHandler = getUserHandler;
         }
 
-        public async Task<Result<Unit>> AuthorizeUser(ClaimsPrincipal user)
+        public async Task<Either<Error, Unit>> AuthorizeUser(ClaimsPrincipal user)
         {
             if (!user.Identity.IsAuthenticated)
             {
@@ -47,65 +49,26 @@ namespace VolleyM.Domain.Framework.Authorization
                 return Unit.Value;
             }
 
-            var idValue = GetUserIdFromClaims(user);
+            var idValueOption = GetUserIdFromClaims(user);
 
-            if (idValue == null)
-            {
-                return Error.NotAuthorized("UserId claim is missing");
-            }
+            var r = from id in idValueOption
+                        .ToEither(Error.NotAuthorized("UserId claim is missing")).ToAsync()
+                    from isSystem in IsNotPredefinedSystemId(id)
+                        .ToEither(Error.NotAuthorized("User Id is invalid")).ToAsync()
+                    from user1 in GetUser(id)
+                    select user1;
 
-            if (IsPredefinedSystemId(idValue))
+            var mapped = r.MapLeft(e => e switch
             {
-                return Error.NotAuthorized("User Id is invalid");
-            }
+                { Type: ErrorType.NotFound } => CreateUser(idValueOption.ValueUnsafe()),
+                var left => left
+            });
 
-            Result<Unit> result;
-            var getRequest = new GetUser.Request
-            {
-                UserId = new UserId(idValue),
-                Tenant = TenantId.Default
-            };
+            var matched = await mapped.Match(EitherAsync<Error, User>.Right,l => l);
 
-            Result<User> getUser;
-            using (var _ = BeginAuthZUserScope())
-            {
-                getUser = await _getUserHandler.Handle(getRequest);
-            }
-
-            if (getUser.IsSuccessful)
-            {
-                result = Unit.Value;
-                SetCurrentContext(getUser.Value);
-            }
-            else if (getUser.Error.Type == ErrorType.NotFound)
-            {
-                var createRequest = new CreateUser.Request
-                {
-                    UserId = new UserId(idValue),
-                    Tenant = TenantId.Default,
-                    Role = _visitorRole
-                };
-                Result<User> createUser;
-                using (var _ = BeginAuthZUserScope())
-                {
-                    createUser = await _createUserHandler.Handle(createRequest);
-                }
-                if (createUser.IsSuccessful)
-                {
-                    result = Unit.Value;
-                    SetCurrentContext(createUser.Value);
-                }
-                else
-                {
-                    result = createUser.Error;
-                }
-            }
-            else
-            {
-                result = getUser.Error;
-            }
-
-            return result;
+            return (await matched.ToEither())
+                .Do(SetCurrentContext)
+                .Map(_ => Unit.Value);
         }
 
         /// <summary>
@@ -124,23 +87,25 @@ namespace VolleyM.Domain.Framework.Authorization
 
         private static CurrentUserContext BuildCurrentUserContext(User user)
         {
-            return new CurrentUserContext
-            {
-                User = user
-            };
+            return new CurrentUserContext { User = user };
         }
 
-        private string GetUserIdFromClaims(ClaimsPrincipal user)
+        private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)
         {
             var idClaim = user.FindFirst(type => _idClaimTypes.Contains(type.Type));
-            return idClaim?.Value;
+            return idClaim != null
+                ? Option<string>.Some(idClaim.Value)
+                : Option<string>.None;
         }
 
-        private static bool IsPredefinedSystemId(string idValue)
+        private static Option<Unit> IsNotPredefinedSystemId(string idValue)
         {
-            var systemUsers = new[] {_predefinedAnonymousUserId, _authZUserId}
+            var systemUsers = new[] { _predefinedAnonymousUserId, _authZUserId }
                 .Select(id => id.ToString().ToLowerInvariant());
-            return systemUsers.Contains(idValue, StringComparer.OrdinalIgnoreCase);
+
+            return systemUsers.Contains(idValue, StringComparer.OrdinalIgnoreCase)
+                ? Option<Unit>.None
+                : Option<Unit>.Some(Unit.Value);
         }
 
         private static User GetAnonymousVisitor(UserId userId)
@@ -159,6 +124,36 @@ namespace VolleyM.Domain.Framework.Authorization
             result.AssignRole(AuthorizationService._authZRoleId);
 
             return result;
+        }
+
+        private EitherAsync<Error, User> GetUser(string idValue)
+        {
+            var getRequest = new GetUser.Request { UserId = new UserId(idValue), Tenant = TenantId.Default };
+
+            EitherAsync<Error, User> getUser;
+            using (var _ = BeginAuthZUserScope())
+            {
+                getUser = _getUserHandler.Handle(getRequest).ToAsync();
+            }
+
+            return getUser;
+        }
+
+        private EitherAsync<Error, User> CreateUser(string idValue)
+        {
+            var createRequest = new CreateUser.Request
+            {
+                UserId = new UserId(idValue),
+                Tenant = TenantId.Default,
+                Role = _visitorRole
+            };
+            EitherAsync<Error, User> createUser;
+            using (var _ = BeginAuthZUserScope())
+            {
+                createUser = _createUserHandler.Handle(createRequest).ToAsync();
+            }
+
+            return createUser;
         }
     }
 }

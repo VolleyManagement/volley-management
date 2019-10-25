@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
+    <PackageReference Include="LanguageExt.Core" Version="3.3.29" />
   </ItemGroup>
 
   <ItemGroup>

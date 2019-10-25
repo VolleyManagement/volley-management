@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LanguageExt;
 
 namespace VolleyM.Domain.Contracts
 {
@@ -17,5 +18,17 @@ namespace VolleyM.Domain.Contracts
         /// <param name="request">The request</param>
         /// <returns>Response from the request</returns>
         Task<Result<TResponse>> Handle(TRequest request);
+    }
+
+    public interface IRequestHandler1<in TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
+        where TResponse : class
+    {
+        /// <summary>
+        /// Handles a request
+        /// </summary>
+        /// <param name="request">The request</param>
+        /// <returns>Response from the request</returns>
+        Task<Either<Error,TResponse>> Handle(TRequest request);
     }
 }

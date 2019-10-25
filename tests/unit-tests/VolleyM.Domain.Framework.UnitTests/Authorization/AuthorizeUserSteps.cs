@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -13,6 +14,7 @@ using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
+using Unit = VolleyM.Domain.Contracts.Unit;
 
 namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {
@@ -28,7 +30,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
         private readonly RoleId _visitorRole = new RoleId("visitor");
 
-        private Result<Unit> _actualResult;
+        private Either<Error,Unit> _actualResult;
         private CreateUser.Request _expectedRequest;
 
         public AuthorizeUserSteps(IDomainFrameworkTestFixture testFixture, Container container)
@@ -128,13 +130,13 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         [Then("user should be authorized")]
         public void ThenUserShouldBeAuthorized()
         {
-            _actualResult.Should().BeSuccessful("user should be authorized");
+            _actualResult.IsRight.Should().BeTrue("user should be authorized");
         }
 
         [Then("user should not be authorized")]
         public void ThenUserShouldNotBeAuthorized()
         {
-            _actualResult.Should().NotBeSuccessful("user should not be authorized");
+            _actualResult.IsLeft.Should().BeTrue("user should not be authorized");
         }
 
         [Then("this user is set into current context")]

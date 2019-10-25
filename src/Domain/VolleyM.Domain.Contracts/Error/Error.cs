@@ -20,5 +20,7 @@
             => new Error(ErrorType.InternalError, message);
         public static Error NotAuthorized(string message)
             => new Error(ErrorType.NotAuthorized, message);
+        public static Error NotAuthenticated()
+            => new Error(ErrorType.NotAuthenticated, "User is not authenticated");
     }
 }

@@ -43,51 +43,44 @@ namespace VolleyM.Domain.Framework.Authorization
 
         public async Task<Either<Error, Unit>> AuthorizeUser(ClaimsPrincipal user)
         {
-            if (!user.Identity.IsAuthenticated)
-            {
-                SetCurrentContext(GetAnonymousVisitor(_predefinedAnonymousUserId));
-                return Unit.Value;
-            }
-
             var idValueOption = GetUserIdFromClaims(user);
 
-            var r = from id in idValueOption
-                        .ToEither(Error.NotAuthorized("UserId claim is missing")).ToAsync()
-                    from isSystem in IsNotPredefinedSystemId(id)
-                        .ToEither(Error.NotAuthorized("User Id is invalid")).ToAsync()
-                    from user1 in GetUser(id)
-                    select user1;
+            var getUser =
+                from anonUser in CheckUnauthenticatedUser(user)
+                from id in idValueOption
+                    .ToEither(Error.NotAuthorized("UserId claim is missing")).ToAsync()
+                from isSystem in IsNotPredefinedSystemId(id)
+                    .ToEither(Error.NotAuthorized("User Id is invalid")).ToAsync()
+                from user1 in GetUser(id)
+                select user1;
 
-            var mapped = r.MapLeft(e => e switch
-            {
-                { Type: ErrorType.NotFound } => CreateUser(idValueOption.ValueUnsafe()),
-                var left => left
-            });
+            var createUserMap = await getUser.MapLeft(e => e switch
+                {
+                    { Type: ErrorType.NotAuthenticated} 
+                        => GetAnonymousUser(),
+                    { Type: ErrorType.NotFound } 
+                        => CreateUser(idValueOption.ValueUnsafe()),
+                    var left => left
+                })
+                .Match(EitherAsync<Error, User>.Right, l => l);
 
-            var matched = await mapped.Match(EitherAsync<Error, User>.Right,l => l);
-
-            return (await matched.ToEither())
+            return (await createUserMap.ToEither())
                 .Do(SetCurrentContext)
                 .Map(_ => Unit.Value);
         }
 
-        /// <summary>
-        /// Starts Current user scope with internal AuthZ handler user
-        /// </summary>
-        /// <returns></returns>
-        private CurrentUserScope BeginAuthZUserScope()
+        private EitherAsync<Error, User> CheckUnauthenticatedUser(ClaimsPrincipal user)
         {
-            return _currentUserManager.BeginScope(BuildCurrentUserContext(GetAuthZHandlerUser()));
+            if (user.Identity.IsAuthenticated)
+                // it will be replaced by real user later
+                return GetAnonymousVisitor(_predefinedAnonymousUserId);
+
+            return Error.NotAuthenticated();
         }
 
-        private void SetCurrentContext(User user)
+        private EitherAsync<Error, User> GetAnonymousUser()
         {
-            _currentUserManager.Context = BuildCurrentUserContext(user);
-        }
-
-        private static CurrentUserContext BuildCurrentUserContext(User user)
-        {
-            return new CurrentUserContext { User = user };
+            return GetAnonymousVisitor(_predefinedAnonymousUserId);
         }
 
         private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)
@@ -128,15 +121,14 @@ namespace VolleyM.Domain.Framework.Authorization
 
         private EitherAsync<Error, User> GetUser(string idValue)
         {
-            var getRequest = new GetUser.Request { UserId = new UserId(idValue), Tenant = TenantId.Default };
-
-            EitherAsync<Error, User> getUser;
-            using (var _ = BeginAuthZUserScope())
+            var getRequest = new GetUser.Request
             {
-                getUser = _getUserHandler.Handle(getRequest).ToAsync();
-            }
+                UserId = new UserId(idValue),
+                Tenant = TenantId.Default
+            };
 
-            return getUser;
+            using var _ = BeginAuthZUserScope();
+            return _getUserHandler.Handle(getRequest).ToAsync();
         }
 
         private EitherAsync<Error, User> CreateUser(string idValue)
@@ -147,13 +139,27 @@ namespace VolleyM.Domain.Framework.Authorization
                 Tenant = TenantId.Default,
                 Role = _visitorRole
             };
-            EitherAsync<Error, User> createUser;
-            using (var _ = BeginAuthZUserScope())
-            {
-                createUser = _createUserHandler.Handle(createRequest).ToAsync();
-            }
+            using var _ = BeginAuthZUserScope();
+            return _createUserHandler.Handle(createRequest).ToAsync();
+        }
 
-            return createUser;
+        /// <summary>
+        /// Starts Current user scope with internal AuthZ handler user
+        /// </summary>
+        /// <returns></returns>
+        private CurrentUserScope BeginAuthZUserScope()
+        {
+            return _currentUserManager.BeginScope(BuildCurrentUserContext(GetAuthZHandlerUser()));
+        }
+
+        private void SetCurrentContext(User user)
+        {
+            _currentUserManager.Context = BuildCurrentUserContext(user);
+        }
+
+        private static CurrentUserContext BuildCurrentUserContext(User user)
+        {
+            return new CurrentUserContext { User = user };
         }
     }
 }

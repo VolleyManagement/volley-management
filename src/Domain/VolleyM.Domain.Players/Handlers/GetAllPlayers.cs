@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.Players.Handlers
 {
     using IQueryObject = IQuery<TenantId, List<PlayerDto>>;
-
+    
+    [Permission(Permissions.GetAll)]
     public class GetAllPlayers
     {
         public class Request : IRequest<List<PlayerDto>>
@@ -25,7 +27,7 @@ namespace VolleyM.Domain.Players.Handlers
 
             public Task<Result<List<PlayerDto>>> Handle(Request request)
             {
-                throw new NotImplementedException();
+                return _query.Execute(TenantId.Default);
             }
         }
     }

@@ -23,6 +23,7 @@ namespace VolleyM.Infrastructure.AzureStorage
         {
             if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
             {
+                Log.Error("Azure Storage connection failed. Connection string is invalid");
                 return Error.InternalError("Azure Storage account connection is invalid.");
             }
 

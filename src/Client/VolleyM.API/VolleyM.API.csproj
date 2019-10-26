@@ -48,6 +48,7 @@
 
     <!--Infrastructure-->
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" />
   </ItemGroup>
 

@@ -1,22 +1,22 @@
 ﻿using AutoMapper;
-using Microsoft.Azure.Cosmos.Table;
-using Serilog;
-using System;
-using System.Threading.Tasks;
 using LanguageExt;
+using Microsoft.Azure.Cosmos.Table;
+using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess;
+using VolleyM.Infrastructure.AzureStorage;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 {
-    public class AzureStorageUserRepository : IUserRepository
+    public class AzureStorageUserRepository : AzureTableConnection, IUserRepository
     {
         private readonly IdentityContextTableStorageOptions _options;
         private readonly UserFactory _userFactory;
         private readonly IMapper _mapper;
 
         public AzureStorageUserRepository(IdentityContextTableStorageOptions options, UserFactory userFactory, IMapper mapper)
+            : base(options)
         {
             _options = options;
             _userFactory = userFactory;
@@ -25,7 +25,8 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public Task<Either<Error, User>> Add(User user)
         {
-            return PerformStorageOperation(async tableRef =>
+            return PerformStorageOperation(_options.UsersTable,
+                async tableRef =>
             {
                 var userEntity = new UserEntity(user);
                 var createOperation = TableOperation.Insert(userEntity);
@@ -47,7 +48,8 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public Task<Either<Error, User>> Get(TenantId tenant, UserId id)
         {
-            return PerformStorageOperation(async tableRef =>
+            return PerformStorageOperation(_options.UsersTable, 
+                async tableRef =>
             {
                 var getOperation = TableOperation.Retrieve<UserEntity>(tenant.ToString(), id.ToString());
 
@@ -67,7 +69,8 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public Task<Either<Error, Unit>> Delete(TenantId tenant, UserId id)
         {
-            return PerformStorageOperation<Unit>(async tableRef =>
+            return PerformStorageOperation<Unit>(_options.UsersTable,
+                async tableRef =>
             {
                 var userEntity = new UserEntity(tenant, id);
 
@@ -79,43 +82,5 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
                 return Unit.Default;
             }, "Delete User");
         }
-
-        private Either<Error, CloudTable> OpenConnection()
-        {
-            if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
-            {
-                Log.Error("Failed to initialize Azure Storage connection. Check connection string.");
-                return Error.InternalError("Failed to initialize Azure Storage connection. Check connection string.");
-            }
-
-            var client = account.CreateCloudTableClient();
-            var tableRef = client.GetTableReference(_options.UsersTable);
-
-            return tableRef;
-        }
-
-        private async Task<Either<Error, T>> PerformStorageOperation<T>(Func<CloudTable, Task<Either<Error, T>>> operation, string operationName)
-        {
-            var conn = OpenConnection();
-
-            try
-            {
-                return await conn.Match(
-                    operation,
-                    e => Task.FromResult((Either<Error, T>)e));
-            }
-            catch (StorageException e) when (IsConflictError(e))
-            {
-                return Error.Conflict();
-            }
-            catch (StorageException e)
-            {
-                Log.Error(e, "{AzureStorageOperation} Azure Storage operation failed.", operationName);
-                return Error.InternalError($"{operationName} Azure Storage operation failed.");
-            }
-        }
-
-        private static bool IsConflictError(StorageException e) =>
-            string.Compare("Conflict", e.Message, StringComparison.OrdinalIgnoreCase) == 0;
     }
 }

@@ -49,9 +49,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{DFBC9B5C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Tools.MigrationTool", "..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj", "{65264D47-9632-4146-A2C4-2E0B8C07425C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Domain.Framework", "Domain\VolleyM.Domain.Framework\VolleyM.Domain.Framework.csproj", "{F8712EE3-1625-44BF-B156-57F0308E778D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Framework", "Domain\VolleyM.Domain.Framework\VolleyM.Domain.Framework.csproj", "{F8712EE3-1625-44BF-B156-57F0308E778D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Domain.Framework.UnitTests", "..\tests\unit-tests\VolleyM.Domain.Framework.UnitTests\VolleyM.Domain.Framework.UnitTests.csproj", "{DB773095-E706-44FC-8993-F9E401A1DAF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Framework.UnitTests", "..\tests\unit-tests\VolleyM.Domain.Framework.UnitTests\VolleyM.Domain.Framework.UnitTests.csproj", "{DB773095-E706-44FC-8993-F9E401A1DAF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Infrastructure.AzureStorage", "Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj", "{BD78354A-5BFA-47BC-852A-CBCE3A55CE60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,10 @@ Global
 		{DB773095-E706-44FC-8993-F9E401A1DAF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB773095-E706-44FC-8993-F9E401A1DAF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB773095-E706-44FC-8993-F9E401A1DAF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD78354A-5BFA-47BC-852A-CBCE3A55CE60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD78354A-5BFA-47BC-852A-CBCE3A55CE60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD78354A-5BFA-47BC-852A-CBCE3A55CE60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD78354A-5BFA-47BC-852A-CBCE3A55CE60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +146,7 @@ Global
 		{65264D47-9632-4146-A2C4-2E0B8C07425C} = {DFBC9B5C-D413-41B5-9E15-30D65AEED754}
 		{F8712EE3-1625-44BF-B156-57F0308E778D} = {DBC68672-2998-4C61-8C5F-5F6E300F3280}
 		{DB773095-E706-44FC-8993-F9E401A1DAF4} = {2D85CDB8-A2D9-42C0-B104-467453C93A14}
+		{BD78354A-5BFA-47BC-852A-CBCE3A55CE60} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4379AC9-D1D3-439C-971A-BA4BFFA373B5}

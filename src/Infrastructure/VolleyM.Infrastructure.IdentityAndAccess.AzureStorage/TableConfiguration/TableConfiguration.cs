@@ -1,17 +1,18 @@
 ﻿using LanguageExt;
-using Microsoft.Azure.Cosmos.Table;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
+using VolleyM.Infrastructure.AzureStorage;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration
 {
-    public class TableConfiguration
+    public class TableConfiguration : AzureTableConnection
     {
         private readonly IdentityContextTableStorageOptions _options;
 
         public TableConfiguration(IdentityContextTableStorageOptions options)
+            : base(options)
         {
             _options = options;
         }
@@ -62,16 +63,6 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             {
                 options.UsersTable
             };
-        }
-
-        private Either<Error, CloudTableClient> OpenConnection()
-        {
-            if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
-            {
-                return Error.InternalError("Azure Storage account connection is invalid.");
-            }
-
-            return account.CreateCloudTableClient();
         }
     }
 }

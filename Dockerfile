@@ -16,6 +16,7 @@ RUN dotnet publish "src/Domain/VolleyM.Domain.Contracts/VolleyM.Domain.Contracts
     && dotnet publish "src/Domain/VolleyM.Domain.IdentityAndAccess/VolleyM.Domain.IdentityAndAccess.csproj" -c Release -o /app \
     && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.Bootstrap/VolleyM.Infrastructure.Bootstrap.csproj" -c Release -o /app \
     && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.Hardcoded/VolleyM.Infrastructure.Hardcoded.csproj" -c Release -o /app\
+    && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.AzureStorage/VolleyM.Infrastructure.AzureStorage.csproj" -c Release -o /app\
     && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.IdentityAndAccess.AzureStorage/VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" -c Release -o /app\
     && dotnet publish "src/Client/VolleyM.API.Contributors/VolleyM.API.Contributors.csproj" -c Release -o /app\
     && dotnet publish "src/Client/VolleyM.API/VolleyM.API.csproj" -c Release -o /app

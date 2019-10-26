@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LanguageExt.Core" Version="3.3.29" />
+    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

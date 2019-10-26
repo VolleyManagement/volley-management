@@ -7,7 +7,6 @@ namespace VolleyM.Domain.Framework.Logging
 {
     public class LoggingRequestHandlerDecorator<TRequest, TResponse> : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : class
     {
         public LoggingRequestHandlerDecorator(IRequestHandler<TRequest, TResponse> handler)
             : base(handler) { }

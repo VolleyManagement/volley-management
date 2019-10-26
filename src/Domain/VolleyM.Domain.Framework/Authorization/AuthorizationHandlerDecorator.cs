@@ -13,7 +13,6 @@ namespace VolleyM.Domain.Framework.Authorization
     public class AuthorizationHandlerDecorator<TRequest, TResponse>
         : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : class
     {
         private readonly IAuthorizationService _authZService;
         private readonly PermissionAttributeMappingStore _permissionAttributeMap;

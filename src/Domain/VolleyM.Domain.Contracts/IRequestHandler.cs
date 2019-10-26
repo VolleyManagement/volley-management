@@ -16,6 +16,6 @@ namespace VolleyM.Domain.Contracts
         /// </summary>
         /// <param name="request">The request</param>
         /// <returns>Response from the request</returns>
-        Task<Either<Error,TResponse>> Handle(TRequest request);
+        Task<Either<Error, TResponse>> Handle(TRequest request);
     }
 }

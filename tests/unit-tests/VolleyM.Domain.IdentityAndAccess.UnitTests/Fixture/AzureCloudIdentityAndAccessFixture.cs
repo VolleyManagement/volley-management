@@ -55,8 +55,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 
             var savedUser = await repo.Get(user.Tenant, user.Id);
 
-            savedUser.Should().BeSuccessful("user should be created");
-            savedUser.Value.Should().BeEquivalentTo(user, "all attributes should be saved correctly");
+            savedUser.IsRight.Should().BeTrue("user should be created");
+            savedUser.IfRight(u => u.Should().BeEquivalentTo(user, "all attributes should be saved correctly"));
         }
 
         private async Task CleanUpUsers(IEnumerable<Tuple<TenantId, UserId>> usersToTeardown)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using LanguageExt;
+using Microsoft.Azure.Cosmos.Table;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,48 +16,44 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             _options = options;
         }
 
-        public async Task<Result<Unit>> ConfigureTables()
+        public async Task<Either<Error, Unit>> ConfigureTables()
         {
             var conn = OpenConnection();
-            if (!conn.IsSuccessful)
+
+            return await conn.MapAsync(async client =>
             {
-                return conn.Error;
-            }
-            var client = conn.Value;
+                var tables = GetTables(_options);
 
-            var tables = GetTables(_options);
+                var createTasks = tables.Select(table =>
+                {
+                    var tableRef = client.GetTableReference(table);
+                    return tableRef.CreateIfNotExistsAsync();
+                }).ToList();
 
-            var createTasks = tables.Select(table =>
-            {
-                var tableRef = client.GetTableReference(table);
-                return tableRef.CreateIfNotExistsAsync();
-            }).ToList();
+                await Task.WhenAll(createTasks);
 
-            await Task.WhenAll(createTasks);
-
-            return Unit.Value;
+                return Unit.Default;
+            });
         }
 
-        public async Task<Result<Unit>> CleanTables()
+        public async Task<Either<Error, Unit>> CleanTables()
         {
             var conn = OpenConnection();
-            if (!conn.IsSuccessful)
-            {
-                return conn.Error;
-            }
-            var client = conn.Value;
 
-            var tables = GetTables(_options);
-
-            var deleteTasks = tables.Select(table =>
+            return await conn.MapAsync(async client =>
             {
-                var tableRef = client.GetTableReference(table);
-                return tableRef.DeleteIfExistsAsync();
+                var tables = GetTables(_options);
+
+                var deleteTasks = tables.Select(table =>
+                {
+                    var tableRef = client.GetTableReference(table);
+                    return tableRef.DeleteIfExistsAsync();
+                });
+
+                await Task.WhenAll(deleteTasks);
+
+                return Unit.Default;
             });
-
-            await Task.WhenAll(deleteTasks);
-
-            return Unit.Value;
         }
 
         private static IEnumerable<string> GetTables(IdentityContextTableStorageOptions options)
@@ -67,7 +64,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             };
         }
 
-        private Result<CloudTableClient> OpenConnection()
+        private Either<Error, CloudTableClient> OpenConnection()
         {
             if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
             {

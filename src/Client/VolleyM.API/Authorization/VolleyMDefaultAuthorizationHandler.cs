@@ -18,14 +18,11 @@ namespace VolleyM.API.Authorization
             var authZHandler = _container.GetInstance<VolleyM.Domain.Contracts.Crosscutting.IAuthorizationHandler>();
 
             var authResult = await authZHandler.AuthorizeUser(context.User);
-            if (authResult.IsSuccessful)
-            {
-                context.Succeed(requirement);
-            }
-            else
-            {
-                context.Fail();
-            }
+
+            authResult.Match(
+                _ => context.Succeed(requirement),
+                _ => context.Fail()
+            );
         }
     }
 }

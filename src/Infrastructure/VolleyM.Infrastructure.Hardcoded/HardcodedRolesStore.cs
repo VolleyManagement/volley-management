@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LanguageExt;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.Authorization;
@@ -19,13 +20,13 @@ namespace VolleyM.Infrastructure.Hardcoded
             _roles[_visitor] = visitor;
         }
 
-        public Task<Result<Role>> Get(RoleId roleId)
+        public Task<Either<Error, Role>> Get(RoleId roleId)
         {
             if (_roles.TryGetValue(roleId, out var role))
             {
-                return Task.FromResult<Result<Role>>(role);
+                return Task.FromResult<Either<Error, Role>>(role);
             }
-            return Task.FromResult<Result<Role>>(Error.NotFound());
+            return Task.FromResult<Either<Error, Role>>(Error.NotFound());
         }
     }
 }

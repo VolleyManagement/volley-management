@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
@@ -79,7 +80,7 @@ namespace VolleyM.Domain.Framework.UnitTests
         {
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
                 .Returns(ci => Task.FromResult(
-                    (Result<User>)new User(
+                    (Either<Error, User>)new User(
                         ci.Arg<CreateUser.Request>().UserId,
                         ci.Arg<CreateUser.Request>().Tenant)))
                 .AndDoes(ci => { _actualCreateRequest = ci.Arg<CreateUser.Request>(); });
@@ -92,7 +93,7 @@ namespace VolleyM.Domain.Framework.UnitTests
             MockCreateUser(Error.InternalError("random test error"));
         }
 
-        private void MockCreateUser(Result<User> result)
+        private void MockCreateUser(Either<Error, User> result)
         {
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
                 .Returns(result);
@@ -114,7 +115,7 @@ namespace VolleyM.Domain.Framework.UnitTests
             MockGetUser(Error.InternalError("any test error"));
         }
 
-        private void MockGetUser(Result<User> result)
+        private void MockGetUser(Either<Error, User> result)
         {
             _getHandler.Handle(Arg.Any<GetUser.Request>())
                 .Returns(result);

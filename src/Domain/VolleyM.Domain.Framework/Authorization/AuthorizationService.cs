@@ -1,6 +1,8 @@
 ﻿using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LanguageExt;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using IAPermissions = VolleyM.Domain.IdentityAndAccess.Permissions;
 
@@ -35,25 +37,29 @@ namespace VolleyM.Domain.Framework.Authorization
                 return false;
             }
 
-            if (!IsSystemRole(user.Role, out Role role))
-            {
-                var roleStoreResult = await _rolesStore.Get(user.Role);
+            var roleRes = GetSystemRole(user.Role)
+                .ToEither(Error.NotFound())
+                .MapLeft(_ => _rolesStore.Get(user.Role).ToAsync())
+                .Match(EitherAsync<Error, Role>.Right, l => l);
 
-                if (!roleStoreResult.IsSuccessful)
-                {
-                    Log.Warning("Cannot authorize user because RolesStore returned an {Error}", roleStoreResult.Error);
-                    return false;
-                }
-
-                role = roleStoreResult.Value;
-            }
-
-            return role.HasPermission(permission);
+            return (await roleRes.ToEither())
+                .Match(
+                    role => role.HasPermission(permission),
+                    e =>
+                    {
+                        Log.Warning("Cannot authorize user because RolesStore returned an {Error}", e);
+                        return false;
+                    });
         }
 
-        private static bool IsSystemRole(RoleId roleId, out Role role)
+        private static Option<Role> GetSystemRole(RoleId roleId)
         {
-            return _systemRoleStore.TryGetValue(roleId, out role);
+            if (_systemRoleStore.TryGetValue(roleId, out var role))
+            {
+                return role;
+            }
+
+            return Option<Role>.None;
         }
 
         private static void PopulateSystemRoles()

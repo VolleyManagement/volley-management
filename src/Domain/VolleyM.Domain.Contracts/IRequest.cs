@@ -1,4 +1,6 @@
-﻿namespace VolleyM.Domain.Contracts
+﻿using LanguageExt;
+
+namespace VolleyM.Domain.Contracts
 {
     /// <summary>
     /// Marker interface to represent a request with a void response

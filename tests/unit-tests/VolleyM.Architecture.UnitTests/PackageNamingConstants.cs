@@ -13,6 +13,7 @@
         internal const string SIMPLE_INJECTOR_NS = "SimpleInjector";
         internal const string AUTOMAPPER_NS = "AutoMapper";
         internal const string SERILOG_NS = "Serilog";
+        internal const string LANGUAGE_EXT = "LanguageExt.Core";
 
         internal static readonly string[] AllowedLayers = {
             DOMAIN_NS,

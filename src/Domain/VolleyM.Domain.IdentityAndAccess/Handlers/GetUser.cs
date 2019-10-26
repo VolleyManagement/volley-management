@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
@@ -27,9 +28,9 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                 _repository = repository;
             }
 
-            public async Task<Result<User>> Handle(Request request)
+            public Task<Either<Error, User>> Handle(Request request)
             {
-                return await _repository.Get(request.Tenant, request.UserId);
+                return _repository.Get(request.Tenant, request.UserId);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.Logging
@@ -9,7 +10,7 @@ namespace VolleyM.Domain.Framework.Logging
     {
         public LoggingQueryObjectDecorator(IQuery<TParam, TResponse> query) : base(query) { }
 
-        public Task<Result<TResponse>> Execute(TParam param)
+        public Task<Either<Error, TResponse>> Execute(TParam param)
         {
             var logger = Log.ForContext(RootInstance.GetType());
 

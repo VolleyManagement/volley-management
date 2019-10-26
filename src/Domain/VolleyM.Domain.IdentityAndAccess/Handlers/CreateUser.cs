@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
@@ -30,7 +31,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
                 _repository = repository;
             }
 
-            public async Task<Result<User>> Handle(Request request)
+            public async Task<Either<Error, User>> Handle(Request request)
             {
                 var user = new User(request.UserId, request.Tenant);
                 if (request.Role != null)

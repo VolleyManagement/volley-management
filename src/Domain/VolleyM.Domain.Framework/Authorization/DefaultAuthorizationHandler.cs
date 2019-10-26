@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LanguageExt;
+using LanguageExt.UnsafeValueAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -24,8 +26,7 @@ namespace VolleyM.Domain.Framework.Authorization
 
         private readonly List<string> _idClaimTypes = new List<string>
         {
-            "sub",
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            "sub", "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
         };
 
 
@@ -39,108 +40,64 @@ namespace VolleyM.Domain.Framework.Authorization
             _getUserHandler = getUserHandler;
         }
 
-        public async Task<Result<Unit>> AuthorizeUser(ClaimsPrincipal user)
+        public async Task<Either<Error, Unit>> AuthorizeUser(ClaimsPrincipal user)
         {
-            if (!user.Identity.IsAuthenticated)
-            {
-                SetCurrentContext(GetAnonymousVisitor(_predefinedAnonymousUserId));
-                return Unit.Value;
-            }
+            var idValueOption = GetUserIdFromClaims(user);
 
-            var idValue = GetUserIdFromClaims(user);
+            var getUser =
+                from anonUser in CheckUnauthenticatedUser(user)
+                from id in idValueOption
+                    .ToEither(Error.NotAuthorized("UserId claim is missing")).ToAsync()
+                from isSystem in IsNotPredefinedSystemId(id)
+                    .ToEither(Error.NotAuthorized("User Id is invalid")).ToAsync()
+                from user1 in GetUser(id)
+                select user1;
 
-            if (idValue == null)
-            {
-                return Error.NotAuthorized("UserId claim is missing");
-            }
-
-            if (IsPredefinedSystemId(idValue))
-            {
-                return Error.NotAuthorized("User Id is invalid");
-            }
-
-            Result<Unit> result;
-            var getRequest = new GetUser.Request
-            {
-                UserId = new UserId(idValue),
-                Tenant = TenantId.Default
-            };
-
-            Result<User> getUser;
-            using (var _ = BeginAuthZUserScope())
-            {
-                getUser = await _getUserHandler.Handle(getRequest);
-            }
-
-            if (getUser.IsSuccessful)
-            {
-                result = Unit.Value;
-                SetCurrentContext(getUser.Value);
-            }
-            else if (getUser.Error.Type == ErrorType.NotFound)
-            {
-                var createRequest = new CreateUser.Request
+            var createUserMap = await getUser.MapLeft(e => e switch
                 {
-                    UserId = new UserId(idValue),
-                    Tenant = TenantId.Default,
-                    Role = _visitorRole
-                };
-                Result<User> createUser;
-                using (var _ = BeginAuthZUserScope())
-                {
-                    createUser = await _createUserHandler.Handle(createRequest);
-                }
-                if (createUser.IsSuccessful)
-                {
-                    result = Unit.Value;
-                    SetCurrentContext(createUser.Value);
-                }
-                else
-                {
-                    result = createUser.Error;
-                }
-            }
-            else
-            {
-                result = getUser.Error;
-            }
+                    { Type: ErrorType.NotAuthenticated} 
+                        => GetAnonymousUser(),
+                    { Type: ErrorType.NotFound } 
+                        => CreateUser(idValueOption.ValueUnsafe()),
+                    var left => left
+                })
+                .Match(EitherAsync<Error, User>.Right, l => l);
 
-            return result;
+            return (await createUserMap.ToEither())
+                .Do(SetCurrentContext)
+                .Map(_ => Unit.Default);
         }
 
-        /// <summary>
-        /// Starts Current user scope with internal AuthZ handler user
-        /// </summary>
-        /// <returns></returns>
-        private CurrentUserScope BeginAuthZUserScope()
+        private static EitherAsync<Error, User> CheckUnauthenticatedUser(ClaimsPrincipal user)
         {
-            return _currentUserManager.BeginScope(BuildCurrentUserContext(GetAuthZHandlerUser()));
+            if (user.Identity.IsAuthenticated)
+                // it will be replaced by real user later
+                return GetAnonymousVisitor(_predefinedAnonymousUserId);
+
+            return Error.NotAuthenticated();
         }
 
-        private void SetCurrentContext(User user)
+        private static EitherAsync<Error, User> GetAnonymousUser()
         {
-            _currentUserManager.Context = BuildCurrentUserContext(user);
+            return GetAnonymousVisitor(_predefinedAnonymousUserId);
         }
 
-        private static CurrentUserContext BuildCurrentUserContext(User user)
-        {
-            return new CurrentUserContext
-            {
-                User = user
-            };
-        }
-
-        private string GetUserIdFromClaims(ClaimsPrincipal user)
+        private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)
         {
             var idClaim = user.FindFirst(type => _idClaimTypes.Contains(type.Type));
-            return idClaim?.Value;
+            return idClaim != null
+                ? Option<string>.Some(idClaim.Value)
+                : Option<string>.None;
         }
 
-        private static bool IsPredefinedSystemId(string idValue)
+        private static Option<Unit> IsNotPredefinedSystemId(string idValue)
         {
-            var systemUsers = new[] {_predefinedAnonymousUserId, _authZUserId}
+            var systemUsers = new[] { _predefinedAnonymousUserId, _authZUserId }
                 .Select(id => id.ToString().ToLowerInvariant());
-            return systemUsers.Contains(idValue, StringComparer.OrdinalIgnoreCase);
+
+            return systemUsers.Contains(idValue, StringComparer.OrdinalIgnoreCase)
+                ? Option<Unit>.None
+                : Option<Unit>.Some(Unit.Default);
         }
 
         private static User GetAnonymousVisitor(UserId userId)
@@ -159,6 +116,49 @@ namespace VolleyM.Domain.Framework.Authorization
             result.AssignRole(AuthorizationService._authZRoleId);
 
             return result;
+        }
+
+        private EitherAsync<Error, User> GetUser(string idValue)
+        {
+            var getRequest = new GetUser.Request
+            {
+                UserId = new UserId(idValue),
+                Tenant = TenantId.Default
+            };
+
+            using var _ = BeginAuthZUserScope();
+            return _getUserHandler.Handle(getRequest).ToAsync();
+        }
+
+        private EitherAsync<Error, User> CreateUser(string idValue)
+        {
+            var createRequest = new CreateUser.Request
+            {
+                UserId = new UserId(idValue),
+                Tenant = TenantId.Default,
+                Role = _visitorRole
+            };
+            using var _ = BeginAuthZUserScope();
+            return _createUserHandler.Handle(createRequest).ToAsync();
+        }
+
+        /// <summary>
+        /// Starts Current user scope with internal AuthZ handler user
+        /// </summary>
+        /// <returns></returns>
+        private CurrentUserScope BeginAuthZUserScope()
+        {
+            return _currentUserManager.BeginScope(BuildCurrentUserContext(GetAuthZHandlerUser()));
+        }
+
+        private void SetCurrentContext(User user)
+        {
+            _currentUserManager.Context = BuildCurrentUserContext(user);
+        }
+
+        private static CurrentUserContext BuildCurrentUserContext(User user)
+        {
+            return new CurrentUserContext { User = user };
         }
     }
 }

@@ -42,6 +42,10 @@
             //Not service but allowed
             "Bootstrap"
         };
+        
+        internal static readonly string[] ApiServices = {
+            "Contracts"
+        };
 
         internal static readonly string[] AllowedMicrosoftReferences = {
             "Microsoft.CodeAnalysis.LiveUnitTesting.Runtime",

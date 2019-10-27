@@ -77,7 +77,11 @@ namespace VolleyM.Architecture.UnitTests
 
             foreach (var apiAssembly in apiAssemblies)
             {
-                apiAssembly.AssertContextNameIsAllowed(PackageNamingConstants.BoundedContexts);
+                var allowedNames = new List<string>();
+                allowedNames.AddRange(PackageNamingConstants.BoundedContexts);
+                allowedNames.AddRange(PackageNamingConstants.ApiServices);
+
+                apiAssembly.AssertContextNameIsAllowed(allowedNames);
             }
         }
 

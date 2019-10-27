@@ -16,6 +16,16 @@ namespace VolleyM.Domain.UnitTests.Framework
             actualResult.IfLeft(e => e.Should().BeEquivalentTo(expected, because, becauseArgs));
         }
 
+        public static void ShouldBeError<T>(
+            this Either<Error, T> actualResult,
+            ErrorType expectedType,
+            string because = "error should be reported",
+            params object[] becauseArgs)
+        {
+            actualResult.IsLeft.Should().BeTrue("error is expected");
+            actualResult.IfLeft(e => e.Type.Should().BeEquivalentTo(expectedType, because, becauseArgs));
+        }
+
         public static void ShouldBeEquivalent<T>(
             this Either<Error, T> actualResult,
             T expected,

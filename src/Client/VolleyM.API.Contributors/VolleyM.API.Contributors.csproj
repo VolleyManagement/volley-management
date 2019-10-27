@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
+    <ProjectReference Include="..\VolleyM.API.Contracts\VolleyM.API.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

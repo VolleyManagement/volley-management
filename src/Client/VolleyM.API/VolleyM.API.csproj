@@ -52,4 +52,8 @@
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
+
 </Project>

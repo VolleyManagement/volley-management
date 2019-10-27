@@ -7,6 +7,7 @@
         NotFound = 2,
         InternalError = 3,
         NotAuthorized = 4,
-        NotAuthenticated = 5
+        NotAuthenticated = 5,
+        ValidationFailed = 6
     }
 }

@@ -6,6 +6,10 @@ Welcome to Volley Management project repository
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1ueugqjgg8qv7ajm?svg=true)](https://ci.appveyor.com/project/VolleyManagement/volley-management) [![Build Status](https://dev.azure.com/VolleyManagement/%CE%94%CE%B9%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%80%CE%B7/_apis/build/status/VolleyManagement.volley-management?branchName=master)](https://dev.azure.com/VolleyManagement/%CE%94%CE%B9%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%80%CE%B7/_build/latest?definitionId=1&branchName=master)
 
+## Work Pulse ##
+
+[![Board Status](https://dev.azure.com/VolleyManagement/3cabe726-089e-4d7d-b377-a6c3d0eaadc1/8af7bab4-ea54-4a3a-9e10-47e87243e749/_apis/work/boardbadge/68442d34-2fb7-4c56-b3d1-e0e6c463fa6a)](https://dev.azure.com/VolleyManagement/3cabe726-089e-4d7d-b377-a6c3d0eaadc1/_boards/board/t/8af7bab4-ea54-4a3a-9e10-47e87243e749/Microsoft.RequirementCategory/)
+
 🚧 ⬇ Not actual. Will be fixed soon.
 
 ![Sonar Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=alert_status) ![LoC](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=ncloc) ![Coverage](https://sonarcloud.io/api/project_badges/measure?project=volley-management&metric=coverage)

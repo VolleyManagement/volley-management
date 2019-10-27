@@ -40,10 +40,9 @@
     <None Update="AuthorizationHandlerDecorator\AuthorizationDecorator.feature">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ValidationDecorator\" />
+    <None Update="ValidationDecorator\ValidationDecorator.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

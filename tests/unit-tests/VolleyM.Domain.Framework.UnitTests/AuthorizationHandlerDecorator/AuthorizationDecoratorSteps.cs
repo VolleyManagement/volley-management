@@ -7,7 +7,7 @@ using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.Authorization;
-using VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator.Fixture;
+using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 

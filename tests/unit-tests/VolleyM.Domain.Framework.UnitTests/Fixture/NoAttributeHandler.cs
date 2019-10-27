@@ -2,7 +2,7 @@
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator.Fixture
+namespace VolleyM.Domain.Framework.UnitTests.Fixture
 {
     public class NoAttributeHandler
     {

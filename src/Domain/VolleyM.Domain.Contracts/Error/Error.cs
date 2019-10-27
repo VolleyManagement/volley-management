@@ -2,7 +2,7 @@
 {
     public class Error
     {
-        private Error(ErrorType type, string message)
+        protected Error(ErrorType type, string message)
         {
             Type = type;
             Message = message;

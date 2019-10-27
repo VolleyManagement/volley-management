@@ -85,6 +85,7 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
             return handlerType switch
             {
                 HandlerType.NoValidationHandler => ResolveAndCallSpecificHandler(new NoValidationHandler.Request()),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
                 _ => throw new NotSupportedException()
             };
         }

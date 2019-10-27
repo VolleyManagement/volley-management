@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
@@ -22,13 +23,24 @@ namespace VolleyM.API.Contracts
         {
             return e switch
             {
-                { Type: ErrorType.NotFound } => new NotFoundResult(),
+                { Type: ErrorType.NotFound } => (IActionResult)new NotFoundResult(),
                 { Type: ErrorType.Conflict } => new ConflictResult(),
                 { Type: ErrorType.NotAuthenticated } => new UnauthorizedResult(),
                 { Type: ErrorType.NotAuthorized } => new UnauthorizedResult(),
-                { Type: ErrorType.ValidationFailed } => new UnprocessableEntityResult(),
+                ValidationError validationError => CreateValidationErrorResponse(validationError),
                 _ => new StatusCodeResult(500),
             };
+        }
+
+        private static UnprocessableEntityObjectResult CreateValidationErrorResponse(ValidationError validationError)
+        {
+            var details = new ValidationProblemDetails(
+                validationError.Result
+                    .Errors.ToDictionary(
+                        e => e.PropertyName,
+                        e => new[] { e.ErrorMessage }));
+
+            return new UnprocessableEntityObjectResult(details);
         }
     }
 }

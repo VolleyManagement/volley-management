@@ -14,6 +14,7 @@
         internal const string AUTOMAPPER_NS = "AutoMapper";
         internal const string SERILOG_NS = "Serilog";
         internal const string LANGUAGE_EXT = "LanguageExt.Core";
+        internal const string FLUENT_VALIDATION = "FluentValidation";
 
         internal static readonly string[] AllowedLayers = {
             DOMAIN_NS,

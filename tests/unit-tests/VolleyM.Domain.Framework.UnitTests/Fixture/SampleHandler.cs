@@ -21,7 +21,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Fixture
         {
             public Validator()
             {
-                RuleFor(r => r.A).IsDefault();
+                RuleFor(r => r.A).Equal(0);
             }
         }
 

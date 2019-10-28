@@ -1,10 +1,13 @@
 ﻿using System.Composition;
+using System.Linq;
 using AutoMapper.Configuration;
+using FluentValidation;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.Logging;
+using VolleyM.Domain.Framework.Validation;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.Framework
@@ -35,6 +38,18 @@ namespace VolleyM.Domain.Framework
         private static void RegisterHandlerDecorators(Container container)
         {
             // order is important. First decorator will wrap real instance
+            bool Predicate(DecoratorPredicateContext c) =>
+                c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
+                    .GetNestedTypes() //Find classes that implement IValidator<>
+                    .Any(t => t.GetInterfaces()
+                        .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
+
+            container.RegisterDecorator(
+                typeof(IRequestHandler<,>),
+                typeof(ValidationHandlerDecorator<,>),
+                Lifestyle.Scoped,
+                Predicate);
+
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
                 typeof(AuthorizationHandlerDecorator<,>),

@@ -6,6 +6,7 @@ using System.Reflection;
 using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
@@ -116,7 +117,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
 
         private void RegisterHandlers()
         {
-            _container.Register(typeof(IRequestHandler<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
+            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
     }
 }

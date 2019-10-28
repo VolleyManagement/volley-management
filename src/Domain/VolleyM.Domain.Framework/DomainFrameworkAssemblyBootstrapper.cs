@@ -38,17 +38,11 @@ namespace VolleyM.Domain.Framework
         private static void RegisterHandlerDecorators(Container container)
         {
             // order is important. First decorator will wrap real instance
-            bool Predicate(DecoratorPredicateContext c) =>
-                c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
-                    .GetNestedTypes() //Find classes that implement IValidator<>
-                    .Any(t => t.GetInterfaces()
-                        .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
-
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
                 typeof(ValidationHandlerDecorator<,>),
                 Lifestyle.Scoped,
-                Predicate);
+                DecorateWhenHasValidator);
 
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
@@ -60,6 +54,12 @@ namespace VolleyM.Domain.Framework
                 typeof(LoggingRequestHandlerDecorator<,>),
                 Lifestyle.Scoped);
         }
+
+        private static bool DecorateWhenHasValidator(DecoratorPredicateContext c) =>
+            c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
+                .GetNestedTypes() //Find classes that implement IValidator<>
+                .Any(t => t.GetInterfaces()
+                    .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
 
         private static void RegisterQueryObjectDecorators(Container container)
         {

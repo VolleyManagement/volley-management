@@ -1,8 +1,8 @@
-﻿using System.Composition;
-using System.Linq;
-using AutoMapper.Configuration;
+﻿using AutoMapper.Configuration;
 using FluentValidation;
 using SimpleInjector;
+using System.Composition;
+using System.Linq;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;

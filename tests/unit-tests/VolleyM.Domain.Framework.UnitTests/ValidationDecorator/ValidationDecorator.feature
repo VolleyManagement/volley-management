@@ -4,8 +4,6 @@
 	based on presense of some interface, e.g. IValidator<TRequest>
 	so Validators can be added by creating validator implementation
 
-# Several validators
-
 @unit @ab:1103
 Scenario: No validator exists
 	Given I have a handler

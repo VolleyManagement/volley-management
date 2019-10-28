@@ -3,10 +3,10 @@ using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 
-namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator.Fixture
+namespace VolleyM.Domain.Framework.UnitTests.Fixture
 {
-    [Permission("DomainFrameworkTests", "SampleHandler")]
-    public class SampleHandler
+    [Permission("DomainFrameworkTests", "NoValidationHandler")]
+    public class NoValidationHandler
     {
         public class Request : IRequest<Unit>
         {

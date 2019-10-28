@@ -1,10 +1,13 @@
-﻿using System.Composition;
-using AutoMapper.Configuration;
+﻿using AutoMapper.Configuration;
+using FluentValidation;
 using SimpleInjector;
+using System.Composition;
+using System.Linq;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.Logging;
+using VolleyM.Domain.Framework.Validation;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.Framework
@@ -37,6 +40,12 @@ namespace VolleyM.Domain.Framework
             // order is important. First decorator will wrap real instance
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
+                typeof(ValidationHandlerDecorator<,>),
+                Lifestyle.Scoped,
+                DecorateWhenHasValidator);
+
+            container.RegisterDecorator(
+                typeof(IRequestHandler<,>),
                 typeof(AuthorizationHandlerDecorator<,>),
                 Lifestyle.Scoped);
 
@@ -45,6 +54,12 @@ namespace VolleyM.Domain.Framework
                 typeof(LoggingRequestHandlerDecorator<,>),
                 Lifestyle.Scoped);
         }
+
+        private static bool DecorateWhenHasValidator(DecoratorPredicateContext c) =>
+            c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
+                .GetNestedTypes() //Find classes that implement IValidator<>
+                .Any(t => t.GetInterfaces()
+                    .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
 
         private static void RegisterQueryObjectDecorators(Container container)
         {

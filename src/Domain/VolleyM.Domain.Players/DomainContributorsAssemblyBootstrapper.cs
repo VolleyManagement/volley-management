@@ -3,6 +3,7 @@ using SimpleInjector;
 using System.Composition;
 using System.Reflection;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.Players
@@ -12,7 +13,7 @@ namespace VolleyM.Domain.Players
     {
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
-            container.Register(typeof(IRequestHandler<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
+            container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
 
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)

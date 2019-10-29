@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LanguageExt;
+using LanguageExt.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +28,7 @@ namespace VolleyM.Domain.Players.Handlers
                 _query = query;
                 _currentUser = currentUser;
             }
-
-            public Task<Result<List<PlayerDto>>> Handle(Request request)
+            public Task<Either<Contracts.Error, List<PlayerDto>>> Handle(Request request)
             {
                 return _query.Execute(_currentUser.Tenant);
             }

@@ -10,6 +10,7 @@ using VolleyM.Domain.IdentityAndAccess;
 using FluentAssertions;
 using SimpleInjector;
 using System.Threading.Tasks;
+using LanguageExt;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
@@ -23,8 +24,8 @@ namespace VolleyM.Domain.Players.UnitTests
 
         private IRequestHandler<GetAllPlayers.Request, List<PlayerDto>> _handler;
 
-        private Result<List<PlayerDto>> _expectedResult;
-        private Result<List<PlayerDto>> _actualResult;
+        private List<PlayerDto> _expectedResult;
+        private Either<Error, List<PlayerDto>> _actualResult;
 
         public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
         {

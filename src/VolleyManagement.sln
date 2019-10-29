@@ -56,6 +56,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Players", "Domain\VolleyM.Domain.Players\VolleyM.Domain.Players.csproj", "{AD22C20A-83BA-4B70-B94E-A6A8BDD62AB2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Players.UnitTests", "..\tests\unit-tests\VolleyM.Domain.Players.UnitTests\VolleyM.Domain.Players.UnitTests.csproj", "{7574EE1B-5C38-4AB9-A5F7-4ADC65AF21C4}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Infrastructure.AzureStorage", "Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj", "{BD78354A-5BFA-47BC-852A-CBCE3A55CE60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.API.Contracts", "Client\VolleyM.API.Contracts\VolleyM.API.Contracts.csproj", "{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5}"

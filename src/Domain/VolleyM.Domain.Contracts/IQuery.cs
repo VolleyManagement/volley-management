@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LanguageExt;
 
 namespace VolleyM.Domain.Contracts
 {
@@ -10,6 +11,6 @@ namespace VolleyM.Domain.Contracts
     public interface IQuery<in TParam, TResult>
         where TResult : class
     {
-        Task<Result<TResult>> Execute(TParam param);
+        Task<Either<Error, TResult>> Execute(TParam param);
     }
 }

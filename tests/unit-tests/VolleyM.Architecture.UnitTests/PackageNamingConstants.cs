@@ -13,6 +13,8 @@
         internal const string SIMPLE_INJECTOR_NS = "SimpleInjector";
         internal const string AUTOMAPPER_NS = "AutoMapper";
         internal const string SERILOG_NS = "Serilog";
+        internal const string LANGUAGE_EXT = "LanguageExt.Core";
+        internal const string FLUENT_VALIDATION = "FluentValidation";
 
         internal static readonly string[] AllowedLayers = {
             DOMAIN_NS,
@@ -40,6 +42,10 @@
             "Hardcoded",
             //Not service but allowed
             "Bootstrap"
+        };
+        
+        internal static readonly string[] ApiServices = {
+            "Contracts"
         };
 
         internal static readonly string[] AllowedMicrosoftReferences = {

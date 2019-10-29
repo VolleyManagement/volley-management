@@ -2,7 +2,7 @@
 {
     public class Error
     {
-        private Error(ErrorType type, string message)
+        protected Error(ErrorType type, string message)
         {
             Type = type;
             Message = message;
@@ -20,5 +20,7 @@
             => new Error(ErrorType.InternalError, message);
         public static Error NotAuthorized(string message)
             => new Error(ErrorType.NotAuthorized, message);
+        public static Error NotAuthenticated()
+            => new Error(ErrorType.NotAuthenticated, "User is not authenticated");
     }
 }

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VolleyM.API.Contracts;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contributors;
 
@@ -21,12 +21,11 @@ namespace VolleyM.API.Contributors
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAll()
+        public Task<IActionResult> GetAll()
         {
             Log.Information("Controller {Action} action called.", nameof(GetAll));
-            var result = await _handler.Handle(new GetAllContributors.Request());
 
-            return Ok(result.Value);
+            return _handler.ExecuteHandler(new GetAllContributors.Request());
         }
     }
 }

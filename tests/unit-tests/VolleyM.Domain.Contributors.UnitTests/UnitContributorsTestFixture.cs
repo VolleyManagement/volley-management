@@ -2,6 +2,7 @@
 using SimpleInjector;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Contributors.UnitTests
@@ -28,6 +29,6 @@ namespace VolleyM.Domain.Contributors.UnitTests
         }
 
         public void MockSeveralContributorsExist(List<ContributorDto> testData) =>
-            _queryMock.Execute(Unit.Value).Returns(testData);
+            _queryMock.Execute(Unit.Default).Returns(testData);
     }
 }

@@ -58,6 +58,8 @@ namespace VolleyM.Architecture.UnitTests
                     .Where(NotMicrosoftDependency)
                     .Where(p => NotDependency(p, PackageNamingConstants.SIMPLE_INJECTOR_NS))
                     .Where(p => NotDependency(p, PackageNamingConstants.AUTOMAPPER_NS))
+                    .Where(p => NotDependency(p, PackageNamingConstants.LANGUAGE_EXT))
+                    .Where(p => NotDependency(p, PackageNamingConstants.FLUENT_VALIDATION))
                     .Where(p => NotDependency(p, PackageNamingConstants.AllowedLoggerReferences))
                     .Where(p => NotDependency(p, $"{PackageNamingConstants.ROOT_NS}.Infrastructure.Bootstrap"))
                     .Where(a => NotDependency(a, allowedVmAssemblies));
@@ -76,7 +78,11 @@ namespace VolleyM.Architecture.UnitTests
 
             foreach (var apiAssembly in apiAssemblies)
             {
-                apiAssembly.AssertContextNameIsAllowed(PackageNamingConstants.BoundedContexts);
+                var allowedNames = new List<string>();
+                allowedNames.AddRange(PackageNamingConstants.BoundedContexts);
+                allowedNames.AddRange(PackageNamingConstants.ApiServices);
+
+                apiAssembly.AssertContextNameIsAllowed(allowedNames);
             }
         }
 

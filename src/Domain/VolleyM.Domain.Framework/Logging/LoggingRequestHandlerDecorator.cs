@@ -1,17 +1,17 @@
 ﻿using Serilog;
 using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.Logging
 {
     public class LoggingRequestHandlerDecorator<TRequest, TResponse> : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : class
     {
         public LoggingRequestHandlerDecorator(IRequestHandler<TRequest, TResponse> handler)
             : base(handler) { }
 
-        public Task<Result<TResponse>> Handle(TRequest request)
+        public Task<Either<Error, TResponse>> Handle(TRequest request)
         {
             var logger = Log.ForContext(RootInstance.GetType());
 

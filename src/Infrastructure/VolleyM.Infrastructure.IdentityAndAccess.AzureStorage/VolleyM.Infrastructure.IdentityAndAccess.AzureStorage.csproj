@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.5" />
-    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
     <PackageReference Include="SimpleInjector" Version="4.7.1" />
   </ItemGroup>
@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
+    <ProjectReference Include="..\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj" />
     <ProjectReference Include="..\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
   </ItemGroup>
 

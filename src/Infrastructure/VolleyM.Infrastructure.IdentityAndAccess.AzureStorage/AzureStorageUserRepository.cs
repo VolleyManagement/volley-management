@@ -1,69 +1,76 @@
 ﻿using AutoMapper;
+using LanguageExt;
 using Microsoft.Azure.Cosmos.Table;
-using Serilog;
-using System;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess;
+using VolleyM.Infrastructure.AzureStorage;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 {
-    public class AzureStorageUserRepository : IUserRepository
+    public class AzureStorageUserRepository : AzureTableConnection, IUserRepository
     {
         private readonly IdentityContextTableStorageOptions _options;
         private readonly UserFactory _userFactory;
         private readonly IMapper _mapper;
 
         public AzureStorageUserRepository(IdentityContextTableStorageOptions options, UserFactory userFactory, IMapper mapper)
+            : base(options)
         {
             _options = options;
             _userFactory = userFactory;
             _mapper = mapper;
         }
 
-        public Task<Result<User>> Add(User user)
+        public Task<Either<Error, User>> Add(User user)
         {
-            return PerformStorageOperation<User>(async tableRef =>
+            return PerformStorageOperation(_options.UsersTable,
+                async tableRef =>
             {
                 var userEntity = new UserEntity(user);
                 var createOperation = TableOperation.Insert(userEntity);
 
-                var createResult = await tableRef.ExecuteAsync(createOperation);
+                var createResult = (Either<Error, TableResult>)await tableRef.ExecuteAsync(createOperation);
 
-                if (createResult.Result is UserEntity created)
-                {
-                    var newUser = _userFactory.CreateUser(_mapper.Map<UserEntity, UserFactoryDto>(created));
-
-                    return newUser;
-                }
-
-                return Error.InternalError($"Azure Storage: Failed to create user with {createResult.HttpStatusCode} error.");
+                return createResult.Match(
+                    tableResult => tableResult.Result switch
+                    {
+                        UserEntity created => (Either<Error, User>)_userFactory.CreateUser(
+                            _mapper.Map<UserEntity, UserFactoryDto>(created)),
+                        _ => Error.InternalError(
+                            $"Azure Storage: Failed to create user with {tableResult.HttpStatusCode} error.")
+                    },
+                    e => e
+                );
             }, "Add User");
         }
 
-        public Task<Result<User>> Get(TenantId tenant, UserId id)
+        public Task<Either<Error, User>> Get(TenantId tenant, UserId id)
         {
-            return PerformStorageOperation<User>(async tableRef =>
+            return PerformStorageOperation(_options.UsersTable, 
+                async tableRef =>
             {
                 var getOperation = TableOperation.Retrieve<UserEntity>(tenant.ToString(), id.ToString());
 
-                var result = await tableRef.ExecuteAsync(getOperation);
+                var getResult = (Either<Error, TableResult>)await tableRef.ExecuteAsync(getOperation);
 
-                if (result.Result is UserEntity userEntity)
-                {
-                    var userDto = _mapper.Map<UserEntity, UserFactoryDto>(userEntity);
-
-                    return _userFactory.CreateUser(userDto);
-                }
-
-                return Error.NotFound();
+                return getResult.Match(
+                    tableResult => tableResult.Result switch
+                    {
+                        UserEntity userEntity => (Either<Error, User>)_userFactory.CreateUser(
+                            _mapper.Map<UserEntity, UserFactoryDto>(userEntity)),
+                        _ => Error.NotFound()
+                    },
+                    e => e
+                );
             }, "Get User");
         }
 
-        public Task<Result<Unit>> Delete(TenantId tenant, UserId id)
+        public Task<Either<Error, Unit>> Delete(TenantId tenant, UserId id)
         {
-            return PerformStorageOperation<Unit>(async tableRef =>
+            return PerformStorageOperation<Unit>(_options.UsersTable,
+                async tableRef =>
             {
                 var userEntity = new UserEntity(tenant, id);
 
@@ -72,50 +79,8 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
                 await tableRef.ExecuteAsync(deleteOperation);
 
-                return Unit.Value;
+                return Unit.Default;
             }, "Delete User");
         }
-
-        private Result<CloudTable> OpenConnection()
-        {
-            if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
-            {
-                Log.Error("Failed to initialize Azure Storage connection. Check connection string.");
-                return Error.InternalError("Failed to initialize Azure Storage connection. Check connection string.");
-            }
-
-            var client = account.CreateCloudTableClient();
-            var tableRef = client.GetTableReference(_options.UsersTable);
-
-            return tableRef;
-        }
-
-        private async Task<Result<T>> PerformStorageOperation<T>(Func<CloudTable, Task<Result<T>>> operation, string operationName)
-            where T : class
-        {
-            var conn = OpenConnection();
-            if (!conn.IsSuccessful)
-            {
-                return conn.Error;
-            }
-            var tableRef = conn.Value;
-
-            try
-            {
-                return await operation(tableRef);
-            }
-            catch (StorageException e) when (IsConflictError(e))
-            {
-                return Error.Conflict();
-            }
-            catch (StorageException e)
-            {
-                Log.Error(e, "{AzureStorageOperation} Azure Storage operation failed.", operationName);
-                return Error.InternalError($"{operationName} Azure Storage operation failed.");
-            }
-        }
-
-        private static bool IsConflictError(StorageException e) =>
-            string.Compare("Conflict", e.Message, StringComparison.OrdinalIgnoreCase) == 0;
     }
 }

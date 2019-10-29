@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Contributors
@@ -20,7 +21,7 @@ namespace VolleyM.Domain.Contributors
 
             public Handler(IQueryObject query) => _query = query;
 
-            public Task<Result<List<ContributorDto>>> Handle(Request request) => _query.Execute(Unit.Value);
+            public Task<Either<Error, List<ContributorDto>>> Handle(Request request) => _query.Execute(Unit.Default);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using LanguageExt;
 using Serilog;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -12,7 +13,6 @@ namespace VolleyM.Domain.Framework.Authorization
     public class AuthorizationHandlerDecorator<TRequest, TResponse>
         : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : class
     {
         private readonly IAuthorizationService _authZService;
         private readonly PermissionAttributeMappingStore _permissionAttributeMap;
@@ -27,7 +27,7 @@ namespace VolleyM.Domain.Framework.Authorization
             _permissionAttributeMap = permissionAttributeMap;
         }
 
-        public async Task<Result<TResponse>> Handle(TRequest request)
+        public async Task<Either<Error, TResponse>> Handle(TRequest request)
         {
             var permissionToCheck = ExtractPermissionToCheck(RootInstance);
 
@@ -53,7 +53,7 @@ namespace VolleyM.Domain.Framework.Authorization
                 Log.Warning("Failed to obtain type of request for {HandlerType}", handler.GetType());
                 return null;
             }
-            
+
             PermissionAttribute GetPermissionAttribute(Type t)
             {
                 var declaringType = handler.GetType().DeclaringType;
@@ -78,8 +78,8 @@ namespace VolleyM.Domain.Framework.Authorization
 
         private static Type GetRequestType(IRequestHandler<TRequest, TResponse> handler)
         {
-            var handlerInterface=handler.GetType().GetInterfaces()
-                .SingleOrDefault(i=>i.Name==(typeof(IRequestHandler<,>).Name));
+            var handlerInterface = handler.GetType().GetInterfaces()
+                .SingleOrDefault(i => i.Name == (typeof(IRequestHandler<,>).Name));
 
             if (handlerInterface == null)
             {

@@ -3,10 +3,12 @@ using NSubstitute;
 using SimpleInjector;
 using System;
 using System.Reflection;
+using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
-using VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator.Fixture;
+using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
@@ -23,7 +25,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         }
 
         private HandlerType _handlerType;
-        private Result<Unit> _actualResult;
+        private Either<Error, Unit> _actualResult;
         private IAuthorizationService _authorizationService;
 
         private readonly Container _container;
@@ -83,10 +85,10 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         [Then(@"success result is returned")]
         public void ThenReturnsSuccess()
         {
-            _actualResult.Should().BeSuccessful("user has required permission");
+            _actualResult.IsRight.Should().BeTrue("user has required permission");
         }
 
-        private Result<Unit> ResolveAndCallHandler(HandlerType handlerType)
+        private Either<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)
         {
             return handlerType switch
             {
@@ -106,7 +108,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
             };
         }
 
-        private Result<Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
+        private Either<Error, Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
         {
             var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
@@ -115,7 +117,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
 
         private void RegisterHandlers()
         {
-            _container.Register(typeof(IRequestHandler<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
+            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
     }
 }

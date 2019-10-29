@@ -19,15 +19,17 @@ namespace VolleyM.Domain.Players.Handlers
         public class Handler : IRequestHandler<Request, List<PlayerDto>>
         {
             private readonly IQueryObject _query;
+            private readonly ICurrentUserProvider _currentUser;
 
-            public Handler(IQueryObject query)
+            public Handler(IQueryObject query, ICurrentUserProvider currentUser)
             {
                 _query = query;
+                _currentUser = currentUser;
             }
 
             public Task<Result<List<PlayerDto>>> Handle(Request request)
             {
-                return _query.Execute(TenantId.Default);
+                return _query.Execute(_currentUser.Tenant);
             }
         }
     }

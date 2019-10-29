@@ -9,6 +9,7 @@ using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IdentityAndAccess;
 using FluentAssertions;
 using SimpleInjector;
+using System.Threading.Tasks;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
@@ -46,7 +47,7 @@ namespace VolleyM.Domain.Players.UnitTests
         }
         
         [When(@"I query all players")]
-        public async void WhenIQueryAllPlayers()
+        public async Task WhenIQueryAllPlayers()
         {
             _handler = _container.GetInstance<IRequestHandler<GetAllPlayers.Request, List<PlayerDto>>>();
 
@@ -62,8 +63,8 @@ namespace VolleyM.Domain.Players.UnitTests
         private static List<PlayerDto> GetMockData() =>
             new List<PlayerDto>
             {
-                new PlayerDto { FirstName = "Name1", LastName = "LastName1", BirthYear = "1980", Height = "180 centimeters", Weight = "70 kg"  },
-                new PlayerDto { FirstName = "Name2", LastName = "LastName2", BirthYear = "1985", Height = "180 centimeters", Weight = "70 kg"  }
+                new PlayerDto { FirstName = "Name1", LastName = "LastName1", BirthYear = 1980, Height = 180, Weight = 70 },
+                new PlayerDto { FirstName = "Name2", LastName = "LastName2", BirthYear = 1985, Height = 180, Weight = 70 }
             };
     }
 }

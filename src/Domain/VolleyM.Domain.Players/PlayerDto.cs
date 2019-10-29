@@ -10,10 +10,10 @@ namespace VolleyM.Domain.Players
 
         public string LastName { get; set; }
 
-        public string BirthYear { get; set; }
+        public int BirthYear { get; set; }
 
-        public string Height { get; set; }
+        public int Height { get; set; }
 
-        public string Weight { get; set; }
+        public int Weight { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
-    class UnitPlayersTestFixture : IPlayersTestFixture
+    public class UnitPlayersTestFixture : IPlayersTestFixture
     {
         private IQuery<TenantId, List<PlayerDto>> _queryMock;
 

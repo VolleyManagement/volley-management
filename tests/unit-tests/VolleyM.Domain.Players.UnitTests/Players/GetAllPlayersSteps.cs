@@ -58,7 +58,7 @@ namespace VolleyM.Domain.Players.UnitTests
         [Then(@"all players received")]
         public void ThenAllPlayersReceived()
         {
-            _actualResult.Should().BeEquivalentTo(_expectedResult, "handler should return all available players");
+            _actualResult.ShouldBeEquivalent(_expectedResult, "handler should return all available players");
         }
 
         private static List<PlayerDto> GetMockData() =>

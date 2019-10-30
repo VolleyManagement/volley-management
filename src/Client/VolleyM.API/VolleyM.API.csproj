@@ -45,6 +45,7 @@
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Framework\VolleyM.Domain.Framework.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
+    <ProjectReference Include="..\..\Domain\VolleyM.Domain.Players\VolleyM.Domain.Players.csproj" />
 
     <!--Infrastructure-->
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />

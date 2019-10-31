@@ -50,6 +50,10 @@ namespace VolleyM.API
                 options.AddAspNetCore()
                     .AddControllerActivation();
             });
+
+            services.AddEsquio()
+                .AddAspNetCoreDefaultServices()
+                .AddConfigurationStore(_config, "Esquio");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -79,6 +83,7 @@ namespace VolleyM.API
                     await context.Response.WriteAsync("Hello World! CD is working and pipeline triggers for master only. Yeah!");
                 });
                 endpoints.MapControllers();
+                endpoints.MapEsquio(pattern: "esquio");
             });
         }
     }

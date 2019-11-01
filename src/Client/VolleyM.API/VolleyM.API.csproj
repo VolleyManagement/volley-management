@@ -33,7 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Players\VolleyM.Infrastructure.Players.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="$(Configuration)=='Debug'">
@@ -52,6 +51,7 @@
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\VolleyM.Infrastructure.Players\VolleyM.Infrastructure.Players.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@
   "Esquio": {
     "Products": [
       {
-        "Name": "Players.Staging",
+        "Name": "Players",
         "Features": [
           {
             "Name": "GetAll",

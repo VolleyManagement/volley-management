@@ -6,6 +6,7 @@ using System.Linq;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
+using VolleyM.Domain.Framework.FeatureManagement;
 using VolleyM.Domain.Framework.Logging;
 using VolleyM.Domain.Framework.Validation;
 using VolleyM.Infrastructure.Bootstrap;
@@ -47,6 +48,11 @@ namespace VolleyM.Domain.Framework
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
                 typeof(AuthorizationHandlerDecorator<,>),
+                Lifestyle.Scoped);
+
+            container.RegisterDecorator(
+                typeof(IRequestHandler<,>),
+                typeof(FeatureToggleDecorator<,>),
                 Lifestyle.Scoped);
 
             container.RegisterDecorator(

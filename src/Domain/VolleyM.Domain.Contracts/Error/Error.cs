@@ -22,5 +22,7 @@
             => new Error(ErrorType.NotAuthorized, message);
         public static Error NotAuthenticated()
             => new Error(ErrorType.NotAuthenticated, "User is not authenticated");
+        public static Error FeatureDisabled()
+            => new Error(ErrorType.FeatureDisabled, "Feature disabled");
     }
 }

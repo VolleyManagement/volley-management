@@ -1,16 +1,5 @@
 {
   "Esquio": {
-    "Products": [
-      {
-        "Name": "Players.Dev",
-        "Features": [
-          {
-            "Name": "GetAll",
-            "Enabled": false,
-            "Toggles": []
-          }
-        ]
-      }
-    ]
+    // leave empty and allow each env specific config to define toggles to prevent mix ups between different files.
   }
 }

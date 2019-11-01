@@ -1,0 +1,16 @@
+{
+  "Esquio": {
+    "Products": [
+      {
+        "Name": "Players.Staging",
+        "Features": [
+          {
+            "Name": "GetAll",
+            "Enabled": false,
+            "Toggles": []
+          }
+        ]
+      }
+    ]
+  }
+}

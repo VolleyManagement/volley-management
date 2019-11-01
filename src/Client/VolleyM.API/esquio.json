@@ -5,8 +5,8 @@
         "Name": "Players.Dev",
         "Features": [
           {
-            "Name": "Colored",
-            "Enabled": true,
+            "Name": "GetAll",
+            "Enabled": false,
             "Toggles": []
           }
         ]

@@ -59,7 +59,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Domain.Players.Unit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Infrastructure.AzureStorage", "Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj", "{BD78354A-5BFA-47BC-852A-CBCE3A55CE60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.API.Contracts", "Client\VolleyM.API.Contracts\VolleyM.API.Contracts.csproj", "{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.API.Contracts", "Client\VolleyM.API.Contracts\VolleyM.API.Contracts.csproj", "{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Infrastructure.Players", "Infrastructure\VolleyM.Infrastructure.Players\VolleyM.Infrastructure.Players.csproj", "{F5EFF827-295C-42F5-B569-576FA815039B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +145,10 @@ Global
 		{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5EFF827-295C-42F5-B569-576FA815039B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5EFF827-295C-42F5-B569-576FA815039B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5EFF827-295C-42F5-B569-576FA815039B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5EFF827-295C-42F5-B569-576FA815039B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -168,6 +174,7 @@ Global
 		{7574EE1B-5C38-4AB9-A5F7-4ADC65AF21C4} = {2D85CDB8-A2D9-42C0-B104-467453C93A14}
 		{BD78354A-5BFA-47BC-852A-CBCE3A55CE60} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 		{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5} = {98CD0999-BDD6-4785-A131-7580FEE95AC8}
+		{F5EFF827-295C-42F5-B569-576FA815039B} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4379AC9-D1D3-439C-971A-BA4BFFA373B5}

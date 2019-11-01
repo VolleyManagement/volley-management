@@ -8,6 +8,7 @@
         InternalError = 3,
         NotAuthorized = 4,
         NotAuthenticated = 5,
-        ValidationFailed = 6
+        ValidationFailed = 6,
+        FeatureDisabled = 7
     }
 }

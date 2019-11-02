@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SpecFlowObsoleteCodeBehindFiles Remove="FeatureManagement\ValidationDecorator.feature.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Esquio" Version="1.1.0" />
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
@@ -48,23 +44,9 @@
     <None Update="ValidationDecorator\ValidationDecorator.feature">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="FeatureManagement\FeatureToggleDecorator.feature.cs">
-      <DependentUpon>FeatureToggleDecorator.feature</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <SpecFlowFeatureFiles Update="FeatureManagement\FeatureToggleDecorator.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FeatureToggleDecorator.feature.cs</LastGenOutput>
-    </SpecFlowFeatureFiles>
+    <None Update="HandlerStructure\HandlerStructure.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

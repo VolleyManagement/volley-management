@@ -18,7 +18,7 @@ namespace VolleyM.Domain.Players.Handlers
         {
             // no params
         }
-        public class Handler// : IRequestHandler<Request, List<PlayerDto>>
+        public class Handler : IRequestHandler<Request, List<PlayerDto>>
         {
             private readonly IQueryObject _query;
             private readonly ICurrentUserProvider _currentUser;

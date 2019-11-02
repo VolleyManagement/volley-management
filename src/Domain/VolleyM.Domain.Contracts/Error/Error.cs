@@ -24,5 +24,7 @@
             => new Error(ErrorType.NotAuthenticated, "User is not authenticated");
         public static Error FeatureDisabled()
             => new Error(ErrorType.FeatureDisabled, "Feature disabled");
+        public static Error DesignViolation(string message)
+            => new Error(ErrorType.DesignViolation, message);
     }
 }

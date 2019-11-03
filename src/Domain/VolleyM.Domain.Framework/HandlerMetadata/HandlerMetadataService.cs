@@ -11,10 +11,10 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
     /// </summary>
     public class HandlerMetadataService
     {
-        private readonly ConcurrentDictionary<Type, HandlerMetadata> _handlerMetadataCache
-            = new ConcurrentDictionary<Type, HandlerMetadata>();
+        private readonly ConcurrentDictionary<Type, HandlerInfo> _handlerMetadataCache
+            = new ConcurrentDictionary<Type, HandlerInfo>();
 
-        public Either<Error, HandlerMetadata> GetHandlerMetadata<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
+        public Either<Error, HandlerInfo> GetHandlerMetadata<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
             where TRequest : IRequest<TResponse>
         {
             return from requestType in GetRequestType(handler)
@@ -37,9 +37,9 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             return handlerInterfaces[0].GenericTypeArguments.First();
         }
 
-        private Either<Error, HandlerMetadata> GetOrCreateMetadata(object handler, Type requestType)
+        private Either<Error, HandlerInfo> GetOrCreateMetadata(object handler, Type requestType)
         {
-            Either<Error, HandlerMetadata> result;
+            Either<Error, HandlerInfo> result;
 
             if (!_handlerMetadataCache.TryGetValue(requestType, out var metadata))
             {
@@ -58,18 +58,14 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             return result;
         }
 
-        private Either<Error, HandlerMetadata> GetHandlerMetadata(object handler, Type requestType)
+        private Either<Error, HandlerInfo> GetHandlerMetadata(object handler, Type requestType)
         {
             var declaringType = handler.GetType().DeclaringType;
 
             if (declaringType == null)
                 return Error.DesignViolation("Handler should be nested in a class to group handler related classes together");
 
-            return new HandlerMetadata
-            {
-                Action = declaringType.Name,
-                Context = GetContextFromNS(declaringType.Namespace)
-            };
+            return new HandlerInfo(GetContextFromNS(declaringType.Namespace), declaringType.Name);
         }
 
         private string GetContextFromNS(string declaringTypeNamespace)
@@ -85,9 +81,14 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             return interfaceType.Name == name;
         }
 
-        public void OverrideHandlerMetadata<T>(HandlerMetadata handlerMetadata)
+        public void OverrideHandlerMetadata<T>(HandlerInfo handlerInfo)
         {
-            _handlerMetadataCache.AddOrUpdate(typeof(T), handlerMetadata, (_, __) => handlerMetadata);
+            OverrideHandlerMetadata(typeof(T), handlerInfo);
+        }
+
+        private void OverrideHandlerMetadata(Type requestType, HandlerInfo handlerInfo)
+        {
+            _handlerMetadataCache.AddOrUpdate(requestType, handlerInfo, (_, __) => handlerInfo);
         }
     }
 }

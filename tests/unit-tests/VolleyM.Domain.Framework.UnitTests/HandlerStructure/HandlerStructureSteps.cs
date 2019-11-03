@@ -77,7 +77,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             var metadataService = _container.GetInstance<HandlerMetadataService>();
 
             metadataService.OverrideHandlerMetadata<MockedHandler.Request>(
-                new HandlerMetadata.HandlerMetadata {Context = "DomainFrameworkTests", Action = "MockedHandler" });
+                new HandlerMetadata.HandlerInfo("DomainFrameworkTests", "MockedHandler" ));
         }
 
         [When(@"I call decorated handler")]

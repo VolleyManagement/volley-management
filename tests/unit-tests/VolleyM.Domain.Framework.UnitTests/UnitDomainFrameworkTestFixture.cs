@@ -7,6 +7,7 @@ using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
+using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
@@ -84,8 +85,9 @@ namespace VolleyM.Domain.Framework.UnitTests
                         ci.Arg<CreateUser.Request>().UserId,
                         ci.Arg<CreateUser.Request>().Tenant)))
                 .AndDoes(ci => { _actualCreateRequest = ci.Arg<CreateUser.Request>(); });
-            SetupPermissionAttribute(typeof(CreateUser.Request),
-                new PermissionAttribute("IdentityAndAccess", "CreateUser"));
+
+            OverrideHandlerMetadata<CreateUser.Request>(
+                new HandlerInfo("IdentityAndAccess", "CreateUser"));
         }
 
         public void MockCreateUserError()
@@ -97,8 +99,8 @@ namespace VolleyM.Domain.Framework.UnitTests
         {
             _createHandler.Handle(Arg.Any<CreateUser.Request>())
                 .Returns(result);
-            SetupPermissionAttribute(typeof(CreateUser.Request),
-                new PermissionAttribute("IdentityAndAccess", "CreateUser"));
+            OverrideHandlerMetadata<CreateUser.Request>(
+                new HandlerInfo("IdentityAndAccess", "CreateUser"));
         }
         public void MockUserExists(User user)
         {
@@ -119,8 +121,8 @@ namespace VolleyM.Domain.Framework.UnitTests
         {
             _getHandler.Handle(Arg.Any<GetUser.Request>())
                 .Returns(result);
-            SetupPermissionAttribute(typeof(GetUser.Request),
-                new PermissionAttribute("IdentityAndAccess", "GetUser"));
+            OverrideHandlerMetadata<GetUser.Request>(
+                new HandlerInfo("IdentityAndAccess", "GetUser"));
         }
 
         public void MockRoleStoreError()
@@ -135,15 +137,12 @@ namespace VolleyM.Domain.Framework.UnitTests
 
         /// <summary>
         /// Mocked handlers does not work with Authorization decorator
-        /// This methods mocks internal cache to avoid attribute resolution based on required structure
+        /// This methods mocks internal cache to avoid metadata resolution based on required structure
         /// </summary>
-        private void SetupPermissionAttribute(Type requestType, PermissionAttribute attribute)
+        private void OverrideHandlerMetadata<T>(HandlerInfo info)
         {
-            var permissionAttributeMap = _container.GetInstance<PermissionAttributeMappingStore>();
-            permissionAttributeMap.AddOrUpdate(
-                requestType,
-                attribute,
-                (_, existing) => existing);
+            var metadataService = _container.GetInstance<HandlerMetadataService>();
+            metadataService.OverrideHandlerMetadata<T>(info);
         }
     }
 }

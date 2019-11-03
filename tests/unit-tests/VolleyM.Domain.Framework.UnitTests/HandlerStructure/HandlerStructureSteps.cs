@@ -3,6 +3,7 @@ using NSubstitute;
 using SimpleInjector;
 using System;
 using System.Reflection;
+using RootNs;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -24,7 +25,8 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             TwoInterfacesHandler,
             NotNestedHandler,
             SampleHandler,
-            MockedHandler
+            MockedHandler,
+            RootNsHandler
         }
 
         private HandlerType _handlerType;
@@ -71,6 +73,12 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             _handlerType = HandlerType.MockedHandler;
         }
 
+        [Given(@"I have a handler that is in short name space")]
+        public void GivenIHaveAHandlerThatIsInShortNameSpace()
+        {
+            _handlerType = HandlerType.RootNsHandler;
+        }
+
         [Given(@"I override Handler metadata for this request type")]
         public void GivenIOverrideHandlerMetadataForThisRequestType()
         {
@@ -112,6 +120,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
                 HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()),
                 HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
                 HandlerType.MockedHandler => ResolveAndCallSpecificHandler(new MockedHandler.Request()),
+                HandlerType.RootNsHandler => ResolveAndCallSpecificHandler(new RootNsHandler.Request()),
                 _ => throw new NotSupportedException()
             };
         }

@@ -22,7 +22,7 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
                    from metadata in GetOrCreateMetadata(handler, requestType)
                    select metadata;
         }
-        
+
         public bool HasValidator(Type handlerType)
         {
             return handlerType.DeclaringType? //Type which hosts all handler related classes
@@ -74,14 +74,23 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             if (declaringType == null)
                 return Error.DesignViolation("Handler should be nested in a class to group handler related classes together");
 
-            return new HandlerInfo(GetContextFromNS(declaringType.Namespace), declaringType.Name);
+
+            return GetContextFromNS(declaringType.Namespace)
+                .Map(context => new HandlerInfo(context, declaringType.Name));
         }
 
-        private string GetContextFromNS(string declaringTypeNamespace)
+        private Either<Error, string> GetContextFromNS(string declaringTypeNamespace)
         {
+            var parts = declaringTypeNamespace.Split('.');
+
+            if (parts.Length < 3)
+            {
+                return Error.DesignViolation("Handler should be defined inside VolleyM.Domain.Context namespace");
+            }
+
             // usually handlers will have NS: VolleyM.Domain.<Context>.<Handler>
             // any other schemes are not supported yet
-            return declaringTypeNamespace.Split('.')[2];
+            return parts[2];
         }
 
         private static bool IsIRequestHandler<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>

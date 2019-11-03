@@ -66,10 +66,10 @@ namespace VolleyM.Domain.Framework
         private static bool DecorateWhenHasValidator(DecoratorPredicateContext c, Container container)
         {
             var metadata = container.GetInstance<HandlerMetadataService>();
-            return c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
-                       .GetNestedTypes() //Find classes that implement IValidator<>
-                       .Any(t => t.GetInterfaces()
-                           .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
+
+            var handlerType = c?.ImplementationType;
+
+            return handlerType != null && metadata.HasValidator(handlerType);
         }
 
         private static void RegisterQueryObjectDecorators(Container container)

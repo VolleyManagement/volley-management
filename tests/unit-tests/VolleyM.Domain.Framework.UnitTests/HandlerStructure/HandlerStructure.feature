@@ -38,3 +38,10 @@ Scenario: Call handler twice to make sure cached instance is correct
 	When I call decorated handler
 	When I call decorated handler
 	Then handler result should be returned
+
+@unit @ab:996
+Scenario: Too short namespace
+	Given I have a handler that is in short name space
+	When I call decorated handler
+	Then DesignViolation error should be returned with message 'Handler should be defined inside VolleyM.Domain.Context namespace'
+	

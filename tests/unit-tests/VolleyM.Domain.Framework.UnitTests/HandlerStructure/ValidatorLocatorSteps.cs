@@ -4,6 +4,7 @@ using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
+using VolleyM.Domain.IDomainFrameworkTestFixture;
 
 namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
 {
@@ -26,6 +27,13 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             _requestType = typeof(NotNestedHandler);
         }
+
+        [Given(@"I have a handler that does not have corresponding validator")]
+        public void GivenIHaveAHandlerThatDoesNotHaveCorrespondingValidator()
+        {
+            _requestType = typeof(NoValidationHandler);
+        }
+
 
         [When(@"has validator check is performed")]
         public void WhenHasValidatorCheckIsPerformed()

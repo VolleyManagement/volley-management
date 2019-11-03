@@ -6,6 +6,7 @@ using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.DomainFrameworkTests;
+using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 
@@ -19,12 +20,13 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             TwoInterfacesHandler,
             NotNestedHandler,
-            SampleHandler
+            SampleHandler,
+            MockedHandler
         }
 
         private HandlerType _handlerType;
         private Either<Error, Unit> _actualResult;
-        
+
         private readonly Container _container;
 
         public HandlerStructureSteps(Container container)
@@ -54,6 +56,21 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         public void GivenSampleHandler()
         {
             _handlerType = HandlerType.SampleHandler;
+        }
+
+        [Given(@"I have mocked handler")]
+        public void GivenIHaveMockedHandler()
+        {
+            _handlerType = HandlerType.MockedHandler;
+        }
+
+        [Given(@"I override Handler metadata for this request type")]
+        public void GivenIOverrideHandlerMetadataForThisRequestType()
+        {
+            var metadataService = _container.GetInstance<HandlerMetadataService>();
+
+            metadataService.OverrideHandlerMetadata<NotNestedHandler.Request>(
+                new HandlerMetadata.HandlerMetadata {Context = "DomainFrameworkTests", Action = "NotNestedHandler"});
         }
 
         [When(@"I call decorated handler")]
@@ -86,6 +103,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
                 HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandler.Request()),
                 HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()),
                 HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
+                HandlerType.MockedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()), //usually it will look like not nested handler
                 _ => throw new NotSupportedException()
             };
         }

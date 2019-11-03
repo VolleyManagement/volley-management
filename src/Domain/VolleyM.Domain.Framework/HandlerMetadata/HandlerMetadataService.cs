@@ -65,13 +65,29 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             if (declaringType == null)
                 return Error.DesignViolation("Handler should be nested in a class to group handler related classes together");
 
-            return new HandlerMetadata();
+            return new HandlerMetadata
+            {
+                Action = declaringType.Name,
+                Context = GetContextFromNS(declaringType.Namespace)
+            };
+        }
+
+        private string GetContextFromNS(string declaringTypeNamespace)
+        {
+            // usually handlers will have NS: VolleyM.Domain.<Context>.<Handler>
+            // any other schemes are not supported yet
+            return declaringTypeNamespace.Split('.')[2];
         }
 
         private static bool IsIRequestHandler<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>
         {
             var name = typeof(IRequestHandler<,>).Name;
             return interfaceType.Name == name;
+        }
+
+        public void OverrideHandlerMetadata<T>(HandlerMetadata handlerMetadata)
+        {
+            throw new NotImplementedException();
         }
     }
 }

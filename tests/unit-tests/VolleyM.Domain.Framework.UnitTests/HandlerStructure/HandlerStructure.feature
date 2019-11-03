@@ -25,4 +25,11 @@ Scenario: Sample Handler
 	When I call decorated handler
 	Then handler result should be returned
 
+@unit @ab:996
+Scenario: Override Handler metadata mapping
+	Given I have mocked handler
+	And I override Handler metadata for this request type
+	When I call decorated handler
+	Then handler result should be returned
+
 # ToDo: test cached instance

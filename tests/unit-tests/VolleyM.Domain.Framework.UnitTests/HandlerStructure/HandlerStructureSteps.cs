@@ -16,7 +16,8 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
     {
         private enum HandlerType
         {
-            TwoInterfacesHandler
+            TwoInterfacesHandler,
+            NotNestedHandler
         }
 
         private HandlerType _handlerType;
@@ -41,6 +42,12 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             _handlerType = HandlerType.TwoInterfacesHandler;
         }
 
+        [Given(@"I have a handler that is not nested in a class")]
+        public void GivenHandlerIsNotNested()
+        {
+            _handlerType = HandlerType.NotNestedHandler;
+        }
+
         [When(@"I call decorated handler")]
         public void WhenICallDecoratedHandler()
         {
@@ -57,11 +64,13 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
+
         private Either<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)
         {
             return handlerType switch
             {
                 HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandler.Request()),
+                HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()),
                 _ => throw new NotSupportedException()
             };
         }

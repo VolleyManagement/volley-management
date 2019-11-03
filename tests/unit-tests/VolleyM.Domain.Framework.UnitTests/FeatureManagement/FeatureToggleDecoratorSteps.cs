@@ -8,6 +8,7 @@ using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.DomainFrameworkTests;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;

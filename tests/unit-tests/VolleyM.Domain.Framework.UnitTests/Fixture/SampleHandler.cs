@@ -4,7 +4,7 @@ using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 
-namespace VolleyM.Domain.Framework.UnitTests.Fixture
+namespace VolleyM.Domain.DomainFrameworkTests
 {
     [Permission("DomainFrameworkTests", "SampleHandler")]
     public class SampleHandler

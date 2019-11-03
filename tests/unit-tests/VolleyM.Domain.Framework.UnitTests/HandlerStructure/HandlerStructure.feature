@@ -12,3 +12,9 @@ Scenario: Handler implements multiple IRequestHandler<,> interfaces
 	Given I have a handler with several IRequestHandler<,> interfaces 
 	When I call decorated handler
 	Then DesignViolation error should be returned with message 'Handler is allowed to implement only one IRequestHandler'
+
+@unit @ab:996
+Scenario: Handler is not nested
+	Given I have a handler that is not nested in a class
+	When I call decorated handler
+	Then DesignViolation error should be returned with message 'Handler should be nested in a class to group handler related classes together'

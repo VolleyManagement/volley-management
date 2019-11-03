@@ -24,7 +24,7 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
         
         public bool HasValidator(Type requestType)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)

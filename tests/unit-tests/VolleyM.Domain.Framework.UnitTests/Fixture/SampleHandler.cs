@@ -3,7 +3,7 @@ using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.DomainFrameworkTests
+namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {
     public class SampleHandler
     {

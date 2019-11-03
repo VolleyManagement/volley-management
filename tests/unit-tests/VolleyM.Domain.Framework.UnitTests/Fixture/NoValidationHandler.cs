@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using LanguageExt;
+﻿using LanguageExt;
+using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.Framework.UnitTests.Fixture
 {

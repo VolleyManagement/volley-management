@@ -1,16 +1,16 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using LanguageExt;
+﻿using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
-using VolleyM.Domain.DomainFrameworkTests;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using VolleyM.Domain.IDomainFrameworkTestFixture;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
@@ -131,7 +131,7 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
         {
             _authorizationService
                 .CheckAccess(
-                    new Permission("DomainFrameworkTests", _handlerType.ToString()))
+                    new Permission(nameof(IDomainFrameworkTestFixture), _handlerType.ToString()))
                 .Returns(true);
         }
 

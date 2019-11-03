@@ -1,16 +1,16 @@
 ﻿using LanguageExt;
+using NSubstitute;
 using SimpleInjector;
 using System;
 using System.Reflection;
-using NSubstitute;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
-using VolleyM.Domain.DomainFrameworkTests;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using VolleyM.Domain.IDomainFrameworkTestFixture;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
@@ -77,7 +77,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             var metadataService = _container.GetInstance<HandlerMetadataService>();
 
             metadataService.OverrideHandlerMetadata<MockedHandler.Request>(
-                new HandlerMetadata.HandlerInfo("DomainFrameworkTests", "MockedHandler" ));
+                new HandlerInfo(nameof(IDomainFrameworkTestFixture), nameof(MockedHandler) ));
         }
 
         [When(@"I call decorated handler")]
@@ -125,7 +125,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             _authorizationService
                 .CheckAccess(
-                    new Permission("DomainFrameworkTests", _handlerType.ToString()))
+                    new Permission(nameof(IDomainFrameworkTestFixture), _handlerType.ToString()))
                 .Returns(true);
         }
     }

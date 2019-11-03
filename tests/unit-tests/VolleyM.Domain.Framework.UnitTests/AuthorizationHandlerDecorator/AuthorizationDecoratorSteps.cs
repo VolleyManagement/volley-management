@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
-using VolleyM.Domain.DomainFrameworkTests;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using VolleyM.Domain.IDomainFrameworkTestFixture;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
@@ -41,7 +41,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         public void GivenUserHasPermissionToCallHandler()
         {
             _authorizationService
-                .CheckAccess(new Permission("DomainFrameworkTests", nameof(SampleHandler)))
+                .CheckAccess(new Permission(nameof(IDomainFrameworkTestFixture), nameof(SampleHandler)))
                 .Returns(true);
         }
 

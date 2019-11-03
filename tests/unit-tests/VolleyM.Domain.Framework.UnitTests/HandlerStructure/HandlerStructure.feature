@@ -32,4 +32,9 @@ Scenario: Override Handler metadata mapping
 	When I call decorated handler
 	Then handler result should be returned
 
-# ToDo: test cached instance
+@unit @ab:996
+Scenario: Call handler twice to make sure cached instance is correct
+	Given I have an example handler
+	When I call decorated handler
+	When I call decorated handler
+	Then handler result should be returned

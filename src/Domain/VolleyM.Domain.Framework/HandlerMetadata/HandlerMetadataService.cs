@@ -21,6 +21,11 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
                    from metadata in GetOrCreateMetadata(handler, requestType)
                    select metadata;
         }
+        
+        public bool HasValidator(Type requestType)
+        {
+            throw new NotImplementedException();
+        }
 
         private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
             where TRequest : IRequest<TResponse>

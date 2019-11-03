@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.Framework.UnitTests.Fixture
+namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {
     public class NoValidationHandler
     {

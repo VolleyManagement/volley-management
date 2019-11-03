@@ -2,11 +2,9 @@
 using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.DomainFrameworkTests
 {
-    [Permission("DomainFrameworkTests", "SampleHandler")]
     public class SampleHandler
     {
         public class Request : IRequest<Unit>

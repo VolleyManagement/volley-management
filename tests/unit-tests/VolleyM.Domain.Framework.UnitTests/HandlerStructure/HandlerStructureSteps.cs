@@ -5,6 +5,7 @@ using System.Reflection;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.DomainFrameworkTests;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 
@@ -17,7 +18,8 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         private enum HandlerType
         {
             TwoInterfacesHandler,
-            NotNestedHandler
+            NotNestedHandler,
+            SampleHandler
         }
 
         private HandlerType _handlerType;
@@ -48,6 +50,12 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             _handlerType = HandlerType.NotNestedHandler;
         }
 
+        [Given(@"I have an example handler")]
+        public void GivenSampleHandler()
+        {
+            _handlerType = HandlerType.SampleHandler;
+        }
+
         [When(@"I call decorated handler")]
         public void WhenICallDecoratedHandler()
         {
@@ -58,6 +66,12 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         public void ThenDesignViolationErrorShouldBeReturnedWithMessage(string message)
         {
             _actualResult.ShouldBeError(Error.DesignViolation(message));
+        }
+
+        [Then(@"handler result should be returned")]
+        public void ThenHandlerResultShouldBeReturned()
+        {
+            _actualResult.ShouldBeEquivalent(Unit.Default);
         }
 
         private void RegisterHandlers()
@@ -71,6 +85,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             {
                 HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandler.Request()),
                 HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
                 _ => throw new NotSupportedException()
             };
         }

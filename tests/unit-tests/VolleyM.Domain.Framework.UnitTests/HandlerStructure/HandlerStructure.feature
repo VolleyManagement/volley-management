@@ -18,3 +18,11 @@ Scenario: Handler is not nested
 	Given I have a handler that is not nested in a class
 	When I call decorated handler
 	Then DesignViolation error should be returned with message 'Handler should be nested in a class to group handler related classes together'
+
+@unit @ab:996
+Scenario: Sample Handler
+	Given I have an example handler
+	When I call decorated handler
+	Then handler result should be returned
+
+# ToDo: test cached instance

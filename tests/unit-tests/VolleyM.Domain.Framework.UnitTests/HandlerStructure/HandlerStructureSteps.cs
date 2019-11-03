@@ -2,12 +2,15 @@
 using SimpleInjector;
 using System;
 using System.Reflection;
+using NSubstitute;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.DomainFrameworkTests;
+using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
@@ -28,6 +31,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         private Either<Error, Unit> _actualResult;
 
         private readonly Container _container;
+        private IAuthorizationService _authorizationService;
 
         public HandlerStructureSteps(Container container)
         {
@@ -38,6 +42,9 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         public void RegisterDependenciesForScenario()
         {
             RegisterHandlers();
+
+            _authorizationService = Substitute.For<IAuthorizationService>();
+            _container.RegisterInstance(_authorizationService);
         }
 
         [Given(@"I have a handler with several IRequestHandler<,> interfaces")]
@@ -69,13 +76,14 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             var metadataService = _container.GetInstance<HandlerMetadataService>();
 
-            metadataService.OverrideHandlerMetadata<NotNestedHandler.Request>(
-                new HandlerMetadata.HandlerMetadata {Context = "DomainFrameworkTests", Action = "NotNestedHandler"});
+            metadataService.OverrideHandlerMetadata<MockedHandler.Request>(
+                new HandlerMetadata.HandlerMetadata {Context = "DomainFrameworkTests", Action = "MockedHandler" });
         }
 
         [When(@"I call decorated handler")]
         public void WhenICallDecoratedHandler()
         {
+            SetPermissionForHandler();
             _actualResult = ResolveAndCallHandler(_handlerType);
         }
 
@@ -103,7 +111,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
                 HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandler.Request()),
                 HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()),
                 HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
-                HandlerType.MockedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()), //usually it will look like not nested handler
+                HandlerType.MockedHandler => ResolveAndCallSpecificHandler(new MockedHandler.Request()),
                 _ => throw new NotSupportedException()
             };
         }
@@ -112,6 +120,13 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
             var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
             return handler.Handle(request).Result;
+        }
+        private void SetPermissionForHandler()
+        {
+            _authorizationService
+                .CheckAccess(
+                    new Permission("DomainFrameworkTests", _handlerType.ToString()))
+                .Returns(true);
         }
     }
 }

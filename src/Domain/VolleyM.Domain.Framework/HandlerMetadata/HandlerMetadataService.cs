@@ -87,7 +87,7 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
 
         public void OverrideHandlerMetadata<T>(HandlerMetadata handlerMetadata)
         {
-            throw new NotImplementedException();
+            _handlerMetadataCache.AddOrUpdate(typeof(T), handlerMetadata, (_, __) => handlerMetadata);
         }
     }
 }

@@ -46,7 +46,8 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
                 result = GetHandlerMetadata(handler, requestType);
 
                 result.Match(
-                    Right: m => _handlerMetadataCache.AddOrUpdate(requestType, metadata, (t, m) => m), 
+                    Right: m => _handlerMetadataCache
+                        .AddOrUpdate(requestType, m, (_, __) => m),
                     Left: _ => { });
             }
             else

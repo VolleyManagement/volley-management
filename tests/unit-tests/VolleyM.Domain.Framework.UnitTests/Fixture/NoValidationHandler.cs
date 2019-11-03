@@ -5,7 +5,6 @@ using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.Framework.UnitTests.Fixture
 {
-    [Permission("DomainFrameworkTests", "NoValidationHandler")]
     public class NoValidationHandler
     {
         public class Request : IRequest<Unit>

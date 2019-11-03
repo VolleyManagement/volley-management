@@ -1,15 +1,14 @@
 ﻿using FluentAssertions;
+using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
-using System;
 using System.Reflection;
-using LanguageExt;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.DomainFrameworkTests;
 using VolleyM.Domain.Framework.Authorization;
-using VolleyM.Domain.Framework.UnitTests.Fixture;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
@@ -19,13 +18,6 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
     [Scope(Feature = "Authorization Decorator")]
     public class AuthorizationDecoratorSteps
     {
-        private enum HandlerType
-        {
-            SampleHandler,
-            NoAttributeHandler
-        }
-
-        private HandlerType _handlerType;
         private Either<Error, Unit> _actualResult;
         private IAuthorizationService _authorizationService;
 
@@ -45,24 +37,12 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
             _container.RegisterInstance(_authorizationService);
         }
 
-        [Given(@"I have no permission attribute on a handler")]
-        public void GivenIHaveNoPermissionAttributeOnAClass()
-        {
-            _handlerType = HandlerType.NoAttributeHandler;
-        }
-
-        [Given(@"I have handler with permission attribute")]
-        public void GivenIHandlerWithPermissionAttributeOnAClass()
-        {
-            _handlerType = HandlerType.SampleHandler;
-        }
-
         [Given(@"current user has permission to execute this handler")]
         public void GivenUserHasPermissionToCallHandler()
         {
-            var permission = GetPermissionForHandler(_handlerType);
-
-            _authorizationService.CheckAccess(permission).Returns(true);
+            _authorizationService
+                .CheckAccess(new Permission("DomainFrameworkTests", nameof(SampleHandler)))
+                .Returns(true);
         }
 
         [Given(@"current user has no permission to execute this handler")]
@@ -72,9 +52,11 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         }
 
         [When(@"I call decorated handler")]
-        public void WhenICallDecoratedHandler()
+        public async Task WhenICallDecoratedHandler()
         {
-            _actualResult = ResolveAndCallHandler(_handlerType);
+            var handler = _container.GetInstance<IRequestHandler<SampleHandler.Request, Unit>>();
+
+            _actualResult = await handler.Handle(new SampleHandler.Request());
         }
 
         [Then(@"NotAuthorized error should be returned with message ([A-Za-z ]+)")]
@@ -87,33 +69,6 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         public void ThenReturnsSuccess()
         {
             _actualResult.IsRight.Should().BeTrue("user has required permission");
-        }
-
-        private Either<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)
-        {
-            return handlerType switch
-            {
-                HandlerType.NoAttributeHandler => ResolveAndCallSpecificHandler(new NoAttributeHandler.Request()),
-                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
-                _ => throw new NotSupportedException()
-            };
-        }
-
-        private Permission GetPermissionForHandler(HandlerType handlerType)
-        {
-            return handlerType switch
-            {
-                HandlerType.NoAttributeHandler => new Permission("DomainFrameworkTests", "NoAttributeHandler"),
-                HandlerType.SampleHandler => new Permission("DomainFrameworkTests", "SampleHandler"),
-                _ => throw new NotSupportedException()
-            };
-        }
-
-        private Either<Error, Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
-        {
-            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
-
-            return handler.Handle(request).Result;
         }
 
         private void RegisterHandlers()

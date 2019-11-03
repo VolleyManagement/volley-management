@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 
@@ -22,9 +23,12 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
                    select metadata;
         }
         
-        public bool HasValidator(Type requestType)
+        public bool HasValidator(Type handlerType)
         {
-            return false;
+            return handlerType.DeclaringType? //Type which hosts all handler related classes
+                .GetNestedTypes() //Find classes that implement IValidator<>
+                .Any(t => t.GetInterfaces()
+                    .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
         }
 
         private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)

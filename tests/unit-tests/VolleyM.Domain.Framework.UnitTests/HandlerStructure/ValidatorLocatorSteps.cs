@@ -31,9 +31,14 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         [Given(@"I have a handler that does not have corresponding validator")]
         public void GivenIHaveAHandlerThatDoesNotHaveCorrespondingValidator()
         {
-            _requestType = typeof(NoValidationHandler);
+            _requestType = typeof(NoValidationHandler.Handler);
         }
 
+        [Given(@"I have a handler with validator")]
+        public void GivenIHaveAHandlerWithValidator()
+        {
+            _requestType = typeof(SampleHandler.Handler);
+        }
 
         [When(@"has validator check is performed")]
         public void WhenHasValidatorCheckIsPerformed()

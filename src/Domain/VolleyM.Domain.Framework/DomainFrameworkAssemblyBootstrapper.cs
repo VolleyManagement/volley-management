@@ -45,7 +45,7 @@ namespace VolleyM.Domain.Framework
                 typeof(IRequestHandler<,>),
                 typeof(ValidationHandlerDecorator<,>),
                 Lifestyle.Scoped,
-                DecorateWhenHasValidator);
+                context => DecorateWhenHasValidator(context, container));
 
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
@@ -63,11 +63,14 @@ namespace VolleyM.Domain.Framework
                 Lifestyle.Scoped);
         }
 
-        private static bool DecorateWhenHasValidator(DecoratorPredicateContext c) =>
-            c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
-                .GetNestedTypes() //Find classes that implement IValidator<>
-                .Any(t => t.GetInterfaces()
-                    .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
+        private static bool DecorateWhenHasValidator(DecoratorPredicateContext c, Container container)
+        {
+            var metadata = container.GetInstance<HandlerMetadataService>();
+            return c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
+                       .GetNestedTypes() //Find classes that implement IValidator<>
+                       .Any(t => t.GetInterfaces()
+                           .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
+        }
 
         private static void RegisterQueryObjectDecorators(Container container)
         {

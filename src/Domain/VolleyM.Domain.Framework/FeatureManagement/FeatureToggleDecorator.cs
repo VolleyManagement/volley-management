@@ -12,14 +12,12 @@ namespace VolleyM.Domain.Framework.FeatureManagement
         where TRequest : IRequest<TResponse>
     {
         private readonly IFeatureService _featureService;
-        private readonly PermissionAttributeMappingStore _permissionAttributeMap;
         private readonly HandlerMetadataService _handlerMetadataService;
 
-        public FeatureToggleDecorator(IRequestHandler<TRequest, TResponse> decoratee, IFeatureService featureService, PermissionAttributeMappingStore permissionAttributeMap, HandlerMetadataService handlerMetadataService)
+        public FeatureToggleDecorator(IRequestHandler<TRequest, TResponse> decoratee, IFeatureService featureService, HandlerMetadataService handlerMetadataService)
             : base(decoratee)
         {
             _featureService = featureService;
-            _permissionAttributeMap = permissionAttributeMap;
             _handlerMetadataService = handlerMetadataService;
         }
 

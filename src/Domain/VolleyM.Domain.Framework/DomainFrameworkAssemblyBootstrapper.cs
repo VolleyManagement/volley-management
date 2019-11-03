@@ -25,7 +25,6 @@ namespace VolleyM.Domain.Framework
             container.Register<ICurrentUserProvider, CurrentUserProvider>(Lifestyle.Scoped);
             container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);
 
-            container.Register<PermissionAttributeMappingStore>(Lifestyle.Singleton);
             container.Register<HandlerMetadataService>(Lifestyle.Singleton);
 
             RegisterHandlerDecorators(container);

@@ -11,17 +11,15 @@ namespace VolleyM.Domain.Framework.Authorization
         where TRequest : IRequest<TResponse>
     {
         private readonly IAuthorizationService _authZService;
-        private readonly PermissionAttributeMappingStore _permissionAttributeMap;
         private readonly HandlerMetadataService _handlerMetadataService;
 
         public AuthorizationHandlerDecorator(
             IRequestHandler<TRequest, TResponse> handler,
             IAuthorizationService authZService,
-            PermissionAttributeMappingStore permissionAttributeMap, HandlerMetadataService handlerMetadataService)
+            HandlerMetadataService handlerMetadataService)
             : base(handler)
         {
             _authZService = authZService;
-            _permissionAttributeMap = permissionAttributeMap;
             _handlerMetadataService = handlerMetadataService;
         }
 

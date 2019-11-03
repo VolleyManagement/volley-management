@@ -11,7 +11,6 @@ namespace VolleyM.Domain.Players.Handlers
 {
     using IQueryObject = IQuery<TenantId, List<PlayerDto>>;
     
-    [Permission(Permissions.GetAll)]
     public class GetAllPlayers
     {
         public class Request : IRequest<List<PlayerDto>>

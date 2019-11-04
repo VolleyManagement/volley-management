@@ -9,6 +9,7 @@ _Any specific places you want to bring attention of the reviewers? Some places y
 ### Checklist
 
 - [ ] Logger logs all newly added types correctly
+- [ ] New feature is hidden behind feature flag
 
 #### Design
 

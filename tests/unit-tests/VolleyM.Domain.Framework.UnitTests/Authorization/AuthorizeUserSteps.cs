@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
+using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -13,7 +13,8 @@ using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
-using VolleyM.Domain.UnitTests.Framework;
+
+using Constants = VolleyM.Domain.UnitTests.Framework.Constants;
 
 namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {
@@ -29,7 +30,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
         private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
         private readonly RoleId _visitorRole = new RoleId("visitor");
 
-        private Either<Error,Unit> _actualResult;
+        private Either<Error, Unit> _actualResult;
         private CreateUser.Request _expectedRequest;
 
         public AuthorizeUserSteps(IDomainFrameworkTestFixture testFixture, Container container)

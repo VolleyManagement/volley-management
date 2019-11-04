@@ -8,7 +8,7 @@ namespace VolleyM.Domain.UnitTests.Framework
     /// </summary>
     public interface IAuthFixture
     {
-        void SetTestUserPermission(Permission permission);
+        void SetTestUserPermission(string context, string action);
         void ConfigureTestUserRole(Container container);
         void ConfigureTestUser(Container container);
     }

@@ -5,7 +5,6 @@ using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
-    [Permission(Permissions.User.CreateUser)]
     public class CreateUser
     {
         public class Request : IRequest<User>

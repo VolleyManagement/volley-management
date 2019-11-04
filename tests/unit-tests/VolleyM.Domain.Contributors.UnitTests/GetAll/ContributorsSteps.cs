@@ -3,7 +3,6 @@ using SimpleInjector;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
@@ -31,7 +30,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(new Permission("Contributors", nameof(Contributors.GetAll)));
+            _authFixture.SetTestUserPermission("Contributors", nameof(Contributors.GetAll));
         }
 
         [Given(@"several contributors exist")]

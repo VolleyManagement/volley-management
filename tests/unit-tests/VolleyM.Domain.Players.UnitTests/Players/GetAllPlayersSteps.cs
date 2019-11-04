@@ -33,7 +33,7 @@ namespace VolleyM.Domain.Players.UnitTests
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(new Permission(PlayersContext.Name, nameof(GetAllPlayers)));
+            _authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(GetAllPlayers));
         }        
 
         [Given(@"several players exist")]

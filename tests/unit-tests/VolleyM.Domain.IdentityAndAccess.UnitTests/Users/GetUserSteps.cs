@@ -40,7 +40,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(new Permission(Permissions.Context, Permissions.User.GetUser));
+            _authFixture.SetTestUserPermission(IdentityAndAccessConstants.Context, nameof(GetUser));
 
             _request = new GetUser.Request();
             _userBuilder = UserBuilder.New();

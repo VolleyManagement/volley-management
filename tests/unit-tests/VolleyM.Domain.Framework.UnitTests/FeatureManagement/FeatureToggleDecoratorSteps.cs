@@ -1,4 +1,5 @@
-﻿using LanguageExt;
+﻿using Esquio.Abstractions;
+using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
 using System;
@@ -12,26 +13,25 @@ using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IDomainFrameworkTestFixture;
 using VolleyM.Domain.UnitTests.Framework;
 
-namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
+namespace VolleyM.Domain.Framework.UnitTests.FeatureManagement
 {
     [Binding]
-    [Scope(Feature = "Validation Decorator")]
-    public class ValidationDecoratorSteps
+    [Scope(Feature = "Feature Toggle Decorator")]
+    public class FeatureToggleDecoratorSteps
     {
         private enum HandlerType
         {
-            SampleHandler,
-            NoValidationHandler
+            SampleHandler
         }
 
         private HandlerType _handlerType;
-        private bool _validationSuccess;
         private Either<Error, Unit> _actualResult;
 
         private readonly Container _container;
         private IAuthorizationService _authorizationService;
+        private IFeatureService _featureService;
 
-        public ValidationDecoratorSteps(Container container)
+        public FeatureToggleDecoratorSteps(Container container)
         {
             _container = container;
         }
@@ -43,6 +43,9 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
 
             _authorizationService = Substitute.For<IAuthorizationService>();
             _container.RegisterInstance(_authorizationService);
+
+            _featureService = Substitute.For<IFeatureService>();
+            _container.RegisterInstance(_featureService);
         }
 
         [Given(@"I have a handler")]
@@ -51,30 +54,27 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
             // do nothing
         }
 
-        [Given(@"validator is not defined")]
-        public void GivenValidatorIsNotDefined()
-        {
-            _handlerType = HandlerType.NoValidationHandler;
-            SetPermissionForHandler();
-        }
-
-        [Given(@"single validator defined")]
-        public void GivenSingleValidatorDefined()
+        [Given(@"feature toggle exists")]
+        public void GivenFeatureToggleExists()
         {
             _handlerType = HandlerType.SampleHandler;
             SetPermissionForHandler();
         }
 
-        [Given(@"validator passes")]
-        public void GivenValidatorPasses()
+        [Given(@"feature toggle is enabled")]
+        public void GivenFeatureToggleIsEnabled()
         {
-            _validationSuccess = true;
+            var featureData = GetFeatureData(_handlerType);
+
+            MockFeatureService(featureData, true);
         }
 
-        [Given(@"validator fails")]
-        public void GivenValidatorFails()
+        [Given(@"feature toggle is disabled")]
+        public void GivenFeatureToggleIsDisabled()
         {
-            _validationSuccess = false;
+            var featureData = GetFeatureData(_handlerType);
+
+            MockFeatureService(featureData, false);
         }
 
         [When(@"I call decorated handler")]
@@ -89,26 +89,25 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
             _actualResult.ShouldBeEquivalent(Unit.Default);
         }
 
-        [Then(@"validation error should be returned")]
-        public void ThenValidationErrorShouldBeReturned()
+        [Then(@"feature disabled error should be returned")]
+        public void ThenFeatureDisabledErrorShouldBeReturned()
         {
-            _actualResult.ShouldBeError(ErrorType.ValidationFailed);
+            _actualResult.ShouldBeError(ErrorType.FeatureDisabled);
         }
 
         private Task<Either<Error, Unit>> ResolveAndCallHandler(HandlerType handlerType)
         {
             return handlerType switch
             {
-                HandlerType.NoValidationHandler => ResolveAndCallSpecificHandler<NoValidationHandler.Request>(HandlerParameterFactory),
-                HandlerType.SampleHandler => ResolveAndCallSpecificHandler<SampleHandler.Request>(HandlerParameterFactory),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
                 _ => throw new NotSupportedException()
             };
         }
-        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(Func<HandlerType, IRequest<Unit>> requestFactory) where T : IRequest<Unit>
+        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
         {
             var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
-            return handler.Handle((T)requestFactory(_handlerType));
+            return handler.Handle(request);
         }
 
         private void RegisterHandlers()
@@ -116,16 +115,18 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
             _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
 
-        private IRequest<Unit> HandlerParameterFactory(HandlerType type)
+        private (string Context, string Action) GetFeatureData(HandlerType handlerType)
         {
-            return type switch
+            return handlerType switch
             {
-                HandlerType.SampleHandler => (IRequest<Unit>)new SampleHandler.Request { A = _validationSuccess ? 0 : 1 },
-                HandlerType.NoValidationHandler => new NoValidationHandler.Request(),
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+                HandlerType.SampleHandler => (nameof(IDomainFrameworkTestFixture), nameof(SampleHandler)),
+                _ => throw new NotSupportedException()
             };
         }
-
+        private void MockFeatureService((string Context, string Action) featureData, bool isEnabled)
+        {
+            _featureService.IsEnabledAsync(featureData.Action, featureData.Context).Returns(Task.FromResult(isEnabled));
+        }
         private void SetPermissionForHandler()
         {
             _authorizationService
@@ -133,6 +134,5 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
                     new Permission(nameof(IDomainFrameworkTestFixture), _handlerType.ToString()))
                 .Returns(true);
         }
-
     }
 }

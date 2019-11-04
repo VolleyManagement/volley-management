@@ -1,9 +1,8 @@
-﻿using SimpleInjector;
+﻿using LanguageExt;
+using SimpleInjector;
 using System.Collections.Generic;
-using LanguageExt;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Contributors.UnitTests.GetAll
@@ -16,7 +15,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         private readonly IAuthFixture _authFixture;
         private readonly Container _container;
 
-        private IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
+        private IRequestHandler<Contributors.GetAll.Request, List<ContributorDto>> _handler;
 
         private List<ContributorDto> _expectedResult;
         private Either<Error, List<ContributorDto>> _actualResult;
@@ -31,7 +30,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(new Permission(Permissions.Context, Permissions.GetAll));
+            _authFixture.SetTestUserPermission("Contributors", nameof(Contributors.GetAll));
         }
 
         [Given(@"several contributors exist")]
@@ -44,9 +43,9 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         [When(@"I query all contributors")]
         public async void WhenIQueryAllContributors()
         {
-            _handler = _container.GetInstance<IRequestHandler<GetAllContributors.Request, List<ContributorDto>>>();
+            _handler = _container.GetInstance<IRequestHandler<Contributors.GetAll.Request, List<ContributorDto>>>();
 
-            _actualResult = await _handler.Handle(new GetAllContributors.Request());
+            _actualResult = await _handler.Handle(new Contributors.GetAll.Request());
         }
 
         [Then(@"all contributors received")]

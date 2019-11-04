@@ -5,6 +5,9 @@ using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Esquio.Abstractions;
+using NSubstitute;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Framework;
 using VolleyM.Infrastructure.Bootstrap;
@@ -44,11 +47,22 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             RegisterAssemblyBootstrappers();
 
+            RegisterFeatureService(Container);
+
             BaseTestFixture = CreateAndRegisterTestFixtureIfNeeded(TestRunFixtureBase.Target);
             AuthFixture = CreateAndRegisterAuthFixtureIfNeeded();
 
             AuthFixture?.ConfigureTestUserRole(Container);
             BaseTestFixture.RegisterScenarioDependencies(Container);
+        }
+
+        private void RegisterFeatureService(Container container)
+        {
+            var featureService = Substitute.For<IFeatureService>();
+            featureService.IsEnabledAsync(Arg.Any<string>(), Arg.Any<string>())
+                .Returns(Task.FromResult(true));
+
+            container.RegisterInstance(featureService);
         }
 
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]

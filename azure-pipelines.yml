@@ -27,7 +27,7 @@ stages:
     jobs:
       - job: build_code
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-16.04'
         displayName: Source Code
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
@@ -55,7 +55,7 @@ stages:
         displayName: Container
         dependsOn: build_code
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-16.04'
         steps:
           - template: build/azure-pipeline/set-docker-tag.yml
           - task: Docker@2

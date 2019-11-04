@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.IdentityAndAccess;
+using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
-using IAPermissions = VolleyM.Domain.IdentityAndAccess.Permissions;
 
 namespace VolleyM.Domain.Framework.Authorization
 {
@@ -65,8 +66,8 @@ namespace VolleyM.Domain.Framework.Authorization
         private static void PopulateSystemRoles()
         {
             var authZRole = new Role(_authZRoleId);
-            authZRole.AddPermission(new Permission(IAPermissions.Context, IAPermissions.User.GetUser));
-            authZRole.AddPermission(new Permission(IAPermissions.Context, IAPermissions.User.CreateUser));
+            authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(GetUser)));
+            authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(CreateUser)));
             _systemRoleStore[_authZRoleId] = authZRole;
         }
     }

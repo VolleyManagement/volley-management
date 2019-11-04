@@ -1,4 +1,4 @@
-﻿Feature: GetAllPlayers
+﻿Feature: Get All players
 
 	All contributors should be recognized and returned
 

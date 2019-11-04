@@ -27,6 +27,7 @@ namespace VolleyM.API.Contracts
                 { Type: ErrorType.Conflict } => new ConflictResult(),
                 { Type: ErrorType.NotAuthenticated } => new UnauthorizedResult(),
                 { Type: ErrorType.NotAuthorized } => new UnauthorizedResult(),
+                { Type: ErrorType.FeatureDisabled } => new StatusCodeResult(418),
                 ValidationError validationError => CreateValidationErrorResponse(validationError),
                 _ => new StatusCodeResult(500),
             };

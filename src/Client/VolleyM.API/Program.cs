@@ -85,6 +85,9 @@ namespace VolleyM.API
                 config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                       .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
+                config.AddJsonFile("esquio.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"esquio.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
                 if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
                 {
                     var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));

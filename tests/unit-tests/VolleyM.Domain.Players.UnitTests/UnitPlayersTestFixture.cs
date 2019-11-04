@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using NSubstitute;
+﻿using NSubstitute;
 using SimpleInjector;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Players.UnitTests

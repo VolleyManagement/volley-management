@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using LanguageExt;
 using System.Threading.Tasks;
-using LanguageExt;
-using Serilog;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.Framework.Authorization
@@ -15,78 +11,35 @@ namespace VolleyM.Domain.Framework.Authorization
         where TRequest : IRequest<TResponse>
     {
         private readonly IAuthorizationService _authZService;
-        private readonly PermissionAttributeMappingStore _permissionAttributeMap;
+        private readonly HandlerMetadataService _handlerMetadataService;
 
         public AuthorizationHandlerDecorator(
             IRequestHandler<TRequest, TResponse> handler,
             IAuthorizationService authZService,
-            PermissionAttributeMappingStore permissionAttributeMap)
+            HandlerMetadataService handlerMetadataService)
             : base(handler)
         {
             _authZService = authZService;
-            _permissionAttributeMap = permissionAttributeMap;
+            _handlerMetadataService = handlerMetadataService;
         }
 
         public async Task<Either<Error, TResponse>> Handle(TRequest request)
         {
-            var permissionToCheck = ExtractPermissionToCheck(RootInstance);
+            var permissionEnabled = await ExtractPermissionToCheck(RootInstance)
+                .MapAsync(async perm => await _authZService.CheckAccess(perm));
 
-            if (permissionToCheck == null)
-            {
-                return Error.NotAuthorized("Handler does not have single permission attribute");
-            }
-
-            if (!(await _authZService.CheckAccess(permissionToCheck)))
-            {
-                return Error.NotAuthorized("No permission");
-            }
-
-            return await Decoratee.Handle(request);
+            return await permissionEnabled.MatchAsync<Either<Error, TResponse>>(
+                Left: e => e,
+                RightAsync: async allowed => allowed
+                    ? await Decoratee.Handle(request)
+                    : Error.NotAuthorized("No permission"));
         }
 
-        private Permission ExtractPermissionToCheck(IRequestHandler<TRequest, TResponse> handler)
+        private Either<Error, Permission> ExtractPermissionToCheck(
+            IRequestHandler<TRequest, TResponse> handler)
         {
-            var type = GetRequestType(handler);
-
-            if (type == null)
-            {
-                Log.Warning("Failed to obtain type of request for {HandlerType}", handler.GetType());
-                return null;
-            }
-
-            PermissionAttribute GetPermissionAttribute(Type t)
-            {
-                var declaringType = handler.GetType().DeclaringType;
-
-                if (declaringType == null) return null;
-
-                var result = declaringType.GetCustomAttributes<PermissionAttribute>().SingleOrDefault();
-
-                return result;
-            }
-
-            var attribute = _permissionAttributeMap.GetOrAdd(type, GetPermissionAttribute);
-
-            if (attribute == null)
-            {
-                Log.Warning("Failed to obtain permission attribute for {HandlerType}", handler.GetType());
-                return null;
-            }
-
-            return new Permission(attribute.Context, attribute.Action);
-        }
-
-        private static Type GetRequestType(IRequestHandler<TRequest, TResponse> handler)
-        {
-            var handlerInterface = handler.GetType().GetInterfaces()
-                .SingleOrDefault(i => i.Name == (typeof(IRequestHandler<,>).Name));
-
-            if (handlerInterface == null)
-            {
-                return null;
-            }
-
-            return handlerInterface.GenericTypeArguments.FirstOrDefault();
+            return _handlerMetadataService.GetHandlerMetadata(handler)
+                .Map(m => new Permission(m.Context, m.Action));
         }
     }
 }

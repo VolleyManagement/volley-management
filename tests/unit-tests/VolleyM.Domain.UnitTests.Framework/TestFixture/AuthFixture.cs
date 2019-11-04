@@ -15,9 +15,9 @@ namespace VolleyM.Domain.UnitTests.Framework
         private User _testUser;
         private Role _testUserRole;
 
-        public void SetTestUserPermission(Permission permission)
+        public void SetTestUserPermission(string context, string action)
         {
-            _testUserRole.AddPermission(permission);
+            _testUserRole.AddPermission(new Permission(context, action));
         }
 
         public void ConfigureTestUserRole(Container container)

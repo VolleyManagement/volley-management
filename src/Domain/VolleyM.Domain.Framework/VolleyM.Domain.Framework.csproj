@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Esquio" Version="1.1.0" />
     <PackageReference Include="LanguageExt.Core" Version="3.3.29" />
   </ItemGroup>
 

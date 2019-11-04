@@ -15,6 +15,7 @@
         internal const string SERILOG_NS = "Serilog";
         internal const string LANGUAGE_EXT = "LanguageExt.Core";
         internal const string FLUENT_VALIDATION = "FluentValidation";
+        internal const string ESQUIO = "Esquio";
 
         internal static readonly string[] AllowedLayers = {
             DOMAIN_NS,

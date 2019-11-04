@@ -1,21 +1,17 @@
-﻿using System;
+﻿using LanguageExt;
+using SimpleInjector;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.Players.Handlers;
 using VolleyM.Domain.UnitTests.Framework;
-using VolleyM.Domain.Players;
-using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
-using VolleyM.Domain.IdentityAndAccess;
-using FluentAssertions;
-using SimpleInjector;
-using System.Threading.Tasks;
-using LanguageExt;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
     [Binding]
-    [Scope(Feature = "GetAllPlayers")]
+    [Scope(Feature = "Get All players")]
     public class GetAllPlayersSteps
     {
         private readonly IPlayersTestFixture _testFixture;
@@ -37,7 +33,7 @@ namespace VolleyM.Domain.Players.UnitTests
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(new Permission(Permissions.Context, Permissions.GetAll));
+            _authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(GetAllPlayers));
         }        
 
         [Given(@"several players exist")]

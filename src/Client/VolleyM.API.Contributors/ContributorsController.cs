@@ -12,9 +12,9 @@ namespace VolleyM.API.Contributors
     [ApiController]
     public class ContributorsController : ControllerBase
     {
-        private readonly IRequestHandler<GetAllContributors.Request, List<ContributorDto>> _handler;
+        private readonly IRequestHandler<GetAll.Request, List<ContributorDto>> _handler;
 
-        public ContributorsController(IRequestHandler<GetAllContributors.Request, List<ContributorDto>> handler)
+        public ContributorsController(IRequestHandler<GetAll.Request, List<ContributorDto>> handler)
         {
             _handler = handler;
         }
@@ -25,7 +25,7 @@ namespace VolleyM.API.Contributors
         {
             Log.Information("Controller {Action} action called.", nameof(GetAll));
 
-            return _handler.ExecuteHandler(new GetAllContributors.Request());
+            return _handler.ExecuteHandler(new GetAll.Request());
         }
     }
 }

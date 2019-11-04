@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Esquio.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -50,11 +51,15 @@ namespace VolleyM.API
                 options.AddAspNetCore()
                     .AddControllerActivation();
             });
+
+            services.AddEsquio(opts => opts.ConfigureNotFoundBehavior(NotFoundBehavior.SetEnabled))
+                .AddAspNetCoreDefaultServices()
+                .AddConfigurationStore(_config, "Esquio");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            _container.RegisterApplicationServices(_assemblyBootstrapper, _config);
+            app.RegisterApplicationServices(_container, _assemblyBootstrapper, _config);
 
             _container.Verify();
 
@@ -79,6 +84,7 @@ namespace VolleyM.API
                     await context.Response.WriteAsync("Hello World! CD is working and pipeline triggers for master only. Yeah!");
                 });
                 endpoints.MapControllers();
+                endpoints.MapEsquio(pattern: "esquio");
             });
         }
     }

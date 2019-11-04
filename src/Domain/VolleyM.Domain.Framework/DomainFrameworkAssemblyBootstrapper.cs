@@ -6,6 +6,8 @@ using System.Linq;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
+using VolleyM.Domain.Framework.FeatureManagement;
+using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.Logging;
 using VolleyM.Domain.Framework.Validation;
 using VolleyM.Infrastructure.Bootstrap;
@@ -23,7 +25,7 @@ namespace VolleyM.Domain.Framework
             container.Register<ICurrentUserProvider, CurrentUserProvider>(Lifestyle.Scoped);
             container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);
 
-            container.Register<PermissionAttributeMappingStore>(Lifestyle.Singleton);
+            container.Register<HandlerMetadataService>(Lifestyle.Singleton);
 
             RegisterHandlerDecorators(container);
 
@@ -42,7 +44,7 @@ namespace VolleyM.Domain.Framework
                 typeof(IRequestHandler<,>),
                 typeof(ValidationHandlerDecorator<,>),
                 Lifestyle.Scoped,
-                DecorateWhenHasValidator);
+                context => DecorateWhenHasValidator(context, container));
 
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
@@ -51,15 +53,23 @@ namespace VolleyM.Domain.Framework
 
             container.RegisterDecorator(
                 typeof(IRequestHandler<,>),
+                typeof(FeatureToggleDecorator<,>),
+                Lifestyle.Scoped);
+
+            container.RegisterDecorator(
+                typeof(IRequestHandler<,>),
                 typeof(LoggingRequestHandlerDecorator<,>),
                 Lifestyle.Scoped);
         }
 
-        private static bool DecorateWhenHasValidator(DecoratorPredicateContext c) =>
-            c?.ImplementationType?.DeclaringType? //Type which hosts all handler related classes
-                .GetNestedTypes() //Find classes that implement IValidator<>
-                .Any(t => t.GetInterfaces()
-                    .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
+        private static bool DecorateWhenHasValidator(DecoratorPredicateContext c, Container container)
+        {
+            var metadata = container.GetInstance<HandlerMetadataService>();
+
+            var handlerType = c?.ImplementationType;
+
+            return handlerType != null && metadata.HasValidator(handlerType);
+        }
 
         private static void RegisterQueryObjectDecorators(Container container)
         {

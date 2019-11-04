@@ -1,20 +1,19 @@
-﻿using LanguageExt;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.IDomainFrameworkTestFixture
+namespace RootNs
 {
-    public class NoValidationHandler
+    public class RootNsHandler
     {
         public class Request : IRequest<Unit>
         {
             public int A { get; set; }
 
             public int B { get; set; }
-
         }
 
-        public class Handler : IRequestHandler<Request, Unit>
+        public class Handler : IRequestHandler<RootNsHandler.Request, Unit>
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {

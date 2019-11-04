@@ -1,9 +1,7 @@
 ﻿using BoDi;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using TechTalk.SpecFlow;
-
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.Bootstrap;
 
@@ -12,7 +10,7 @@ namespace VolleyM.Domain.Players.UnitTests
     [Binding]
     public class PlayersTestSetup : DomainTestSetupBase
     {
-        // define ctor to satislfy base
+        // define ctor to satisfy base
         public PlayersTestSetup(IObjectContainer objectContainer) : base(objectContainer)
         {
         }

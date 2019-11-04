@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
+using Esquio.Abstractions;
+using Microsoft.AspNetCore.Builder;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using VolleyM.Infrastructure.Bootstrap;
@@ -21,14 +23,22 @@ namespace VolleyM.API.Extensions
         /// Loads plugins, composes DI.
         /// </summary>
         public static void RegisterApplicationServices(
-            this Container container, 
-            AssemblyBootstrapper bootstrapper, 
+            this IApplicationBuilder app,
+            Container container,
+            AssemblyBootstrapper bootstrapper,
             Microsoft.Extensions.Configuration.IConfiguration config)
         {
             // Application Assemblies
             bootstrapper.RegisterDependencies(container, config);
 
             RegisterAutoMapper(container, bootstrapper);
+
+            app.UseSimpleInjector(container, options =>
+            {
+                options.AutoCrossWireFrameworkComponents = false;
+
+                options.CrossWire<IFeatureService>();
+            });
         }
 
         private static void RegisterAutoMapper(Container container, AssemblyBootstrapper bootstrapper)

@@ -22,7 +22,8 @@ namespace VolleyM.Domain.Framework.EventBroker
         {
             var result = await Decoratee.Handle(request);
 
-            if (RootInstance is ICanProduceEvent eventProducer)
+            if (RootInstance is ICanProduceEvent eventProducer
+                && eventProducer.DomainEvents != null)
             {
                 var pubTasks = new List<Task>();
                 foreach (object domainEvent in eventProducer.DomainEvents)

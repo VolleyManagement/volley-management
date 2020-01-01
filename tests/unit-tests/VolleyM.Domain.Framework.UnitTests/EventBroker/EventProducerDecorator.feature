@@ -22,6 +22,12 @@ Scenario: Handler produced several events
 	When I call decorated handler
 	Then all events are published to event broker
 
-	#returns result
+@ab:1099
+Scenario: Handler returns value
+	Given I have a handler which can produce events
+	When I call decorated handler
+	Then handler result should be returned
+
+
 	#no error when no interface
 	#shows design error if domain events are not initialized

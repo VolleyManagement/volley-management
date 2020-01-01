@@ -22,6 +22,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
     {
         private enum HandlerType
         {
+            None,
             SampleHandler,
             HandlerWhichDoesNotProduceEvent,
             SeveralEventsHandler
@@ -55,7 +56,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         [Given(@"I have a handler which can produce events")]
         public void GivenIHaveAHandlerWhichCanProduceEvents()
         {
-            // do nothing
+            _handlerType = HandlerType.SampleHandler;
         }
 
         [Given(@"handler produces event")]
@@ -63,7 +64,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             _handlerType = HandlerType.SampleHandler;
         }
-        
+
         [Given(@"handler does not produce event")]
         public void GivenHandlerDoesNotProduceEvent()
         {
@@ -80,7 +81,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         public async void WhenICallDecoratedHandler()
         {
             SetPermissionForHandler();
-            await ResolveAndCallHandler(_handlerType);
+            _actualResult = await ResolveAndCallHandler(_handlerType);
         }
 
         [Then(@"event is published to event broker")]
@@ -110,6 +111,11 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
                 .PublishEvent(Arg.Any<SeveralEventsHandler.SampleEventB>());
         }
 
+        [Then(@"handler result should be returned")]
+        public void ThenHandlerResultShouldBeReturned()
+        {
+            _actualResult.ShouldBeEquivalent(Unit.Default);
+        }
 
         private void RegisterHandlers()
         {
@@ -128,8 +134,8 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             return handlerType switch
             {
-                HandlerType.SampleHandler =>ResolveAndCallSpecificHandler(new SampleHandler.Request()),
-                HandlerType.HandlerWhichDoesNotProduceEvent=> ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEvent.Request()),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
+                HandlerType.HandlerWhichDoesNotProduceEvent => ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEvent.Request()),
                 HandlerType.SeveralEventsHandler => ResolveAndCallSpecificHandler(new SeveralEventsHandler.Request()),
                 _ => throw new NotSupportedException()
             };

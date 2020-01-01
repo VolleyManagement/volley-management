@@ -5,6 +5,7 @@ using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.Framework.EventBus;
 using VolleyM.Domain.Framework.FeatureManagement;
 using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.Logging;
@@ -25,6 +26,9 @@ namespace VolleyM.Domain.Framework
             container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);
 
             container.Register<HandlerMetadataService>(Lifestyle.Singleton);
+
+            //ToDo: Remove after AB-1099
+            container.Register<IEventPublisher, NullEventPublisher>(Lifestyle.Singleton);
 
             RegisterHandlerDecorators(container);
 

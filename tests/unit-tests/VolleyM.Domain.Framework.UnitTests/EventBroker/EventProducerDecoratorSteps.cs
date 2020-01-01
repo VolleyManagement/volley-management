@@ -25,7 +25,8 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
             None,
             SampleHandler,
             HandlerWhichDoesNotProduceEvent,
-            SeveralEventsHandler
+            SeveralEventsHandler,
+            NoEventSupportHandler
         }
 
         private HandlerType _handlerType;
@@ -58,6 +59,13 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             _handlerType = HandlerType.SampleHandler;
         }
+
+        [Given(@"I have a handler which does not produce events")]
+        public void GivenIHaveAHandlerWhichDoesNotProduceEvents()
+        {
+            _handlerType = HandlerType.NoEventSupportHandler;
+        }
+
 
         [Given(@"handler produces event")]
         public void GivenHandlerProducesEvent()
@@ -137,6 +145,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
                 HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
                 HandlerType.HandlerWhichDoesNotProduceEvent => ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEvent.Request()),
                 HandlerType.SeveralEventsHandler => ResolveAndCallSpecificHandler(new SeveralEventsHandler.Request()),
+                HandlerType.NoEventSupportHandler => ResolveAndCallSpecificHandler(new NoEventSupportHandler.Request()),
                 _ => throw new NotSupportedException()
             };
         }

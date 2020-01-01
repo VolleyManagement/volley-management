@@ -50,7 +50,7 @@
     <None Update="HandlerStructure\ValidatorLocator.feature">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="EventBus\EventBus.feature">
+    <None Update="EventBroker\EventProducerDecorator.feature">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

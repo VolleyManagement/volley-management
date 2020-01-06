@@ -22,19 +22,28 @@ namespace VolleyM.Domain.Framework.EventBroker
         {
             var result = await Decoratee.Handle(request);
 
-            if (RootInstance is ICanProduceEvent eventProducer
-                && eventProducer.DomainEvents != null)
+            if (RootInstance is ICanProduceEvent eventProducer)
             {
-                var pubTasks = new List<Task>();
-                foreach (object domainEvent in eventProducer.DomainEvents)
+                if (eventProducer.DomainEvents == null)
                 {
-                    pubTasks.Add(_eventPublisher.PublishEvent(domainEvent));
+                    return Error.DesignViolation("DomainEvents property should be initialized when you inherit ICanProduceEvents interface");
                 }
 
-                await Task.WhenAll(pubTasks);
+                await PublishAllRegisteredEvents(eventProducer);
             }
 
             return result;
+        }
+
+        private async Task PublishAllRegisteredEvents(ICanProduceEvent eventProducer)
+        {
+            var pubTasks = new List<Task>();
+            foreach (object domainEvent in eventProducer.DomainEvents)
+            {
+                pubTasks.Add(_eventPublisher.PublishEvent(domainEvent));
+            }
+
+            await Task.WhenAll(pubTasks);
         }
     }
 }

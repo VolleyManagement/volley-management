@@ -131,6 +131,12 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
             _actualResult.ShouldBeEquivalent(Unit.Default);
         }
 
+        [Then(@"DesignViolation error should be returned with message '(.*)'")]
+        public void ThenDesignViolationErrorShouldBeReturnedWithMessage(string message)
+        {
+            _actualResult.ShouldBeError(Error.DesignViolation(message));
+        }
+
         private void RegisterHandlers()
         {
             _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));

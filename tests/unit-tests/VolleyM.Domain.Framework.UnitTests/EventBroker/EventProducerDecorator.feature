@@ -38,5 +38,4 @@ Scenario: Handler does not produce events
 Scenario: Handler does not have domain events property initialized
 	Given I have a handler which does not have domain events initialized
 	When I call decorated handler
-	Then nothing is published to event broker
-	And handler result should be returned
+	Then DesignViolation error should be returned with message 'DomainEvents property should be initialized when you inherit ICanProduceEvents interface'

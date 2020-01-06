@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
-using FluentValidation;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Framework.EventBroker;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {
-    public class SampleHandler
+    public class HandlerWithNullDomainEventsProperty
     {
         public class Request : IRequest<Unit>
         {
@@ -15,20 +16,14 @@ namespace VolleyM.Domain.IDomainFrameworkTestFixture
 
         }
 
-        public class Validator : AbstractValidator<Request>
-        {
-            public Validator()
-            {
-                RuleFor(r => r.A).Equal(0);
-            }
-        }
-
-        public class Handler : IRequestHandler<Request, Unit>
+        public class Handler : IRequestHandler<Request, Unit>, ICanProduceEvent
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {
                 return Task.FromResult<Either<Error, Unit>>(Unit.Default);
             }
+
+            public List<object> DomainEvents { get; }
         }
     }
 }

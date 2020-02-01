@@ -41,10 +41,11 @@
         internal static readonly string[] InfrastructureServices = {
             "AzureStorage",
             "Hardcoded",
+            "EventBroker",
             //Not service but allowed
             "Bootstrap"
         };
-        
+
         internal static readonly string[] ApiServices = {
             "Contracts"
         };

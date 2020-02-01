@@ -25,11 +25,6 @@ namespace VolleyM.Domain.IDomainFrameworkTestFixture
             }
         }
 
-        public class SampleEvent
-        {
-            public string Data { get; set; }
-        }
-
         public class Handler : IRequestHandler<Request, Unit>, ICanProduceEvent
         {
             public Task<Either<Error, Unit>> Handle(Request request)

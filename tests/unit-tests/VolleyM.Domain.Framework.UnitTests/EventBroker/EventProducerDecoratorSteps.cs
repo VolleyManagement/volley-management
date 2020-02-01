@@ -103,7 +103,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             _eventPublisher
                 .Received(Quantity.Exactly(1))
-                .PublishEvent(Arg.Any<SampleHandler.SampleEvent>());
+                .PublishEvent(Arg.Any<SampleEvent>());
         }
 
         [Then(@"nothing is published to event broker")]

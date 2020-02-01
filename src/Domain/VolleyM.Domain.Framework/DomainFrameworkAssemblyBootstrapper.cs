@@ -27,9 +27,6 @@ namespace VolleyM.Domain.Framework
 
             container.Register<HandlerMetadataService>(Lifestyle.Singleton);
 
-            //ToDo: Remove after AB-1099
-            container.Register<IEventPublisher, NullEventPublisher>(Lifestyle.Singleton);
-
             RegisterHandlerDecorators(container);
 
             RegisterQueryObjectDecorators(container);

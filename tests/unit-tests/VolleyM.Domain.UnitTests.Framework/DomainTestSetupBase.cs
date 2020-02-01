@@ -10,6 +10,8 @@ using Esquio.Abstractions;
 using NSubstitute;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Framework;
+using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.Framework.EventBus;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -49,11 +51,18 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             RegisterFeatureService(Container);
 
+            RegisterNullEventPublisher(Container);
+
             BaseTestFixture = CreateAndRegisterTestFixtureIfNeeded(TestRunFixtureBase.Target);
             AuthFixture = CreateAndRegisterAuthFixtureIfNeeded();
 
             AuthFixture?.ConfigureTestUserRole(Container);
             BaseTestFixture.RegisterScenarioDependencies(Container);
+        }
+
+        private void RegisterNullEventPublisher(Container container)
+        {
+            Container.Register<IEventPublisher, NullEventPublisher>(Lifestyle.Singleton); ;
         }
 
         private void RegisterFeatureService(Container container)

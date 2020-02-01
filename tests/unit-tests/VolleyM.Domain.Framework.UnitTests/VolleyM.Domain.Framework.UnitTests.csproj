@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.EventBroker.MassTransit\VolleyM.Infrastructure.EventBroker.MassTransit.csproj" />
     <ProjectReference Include="..\VolleyM.Domain.UnitTests.Framework\VolleyM.Domain.UnitTests.Framework.csproj" />
   </ItemGroup>
 

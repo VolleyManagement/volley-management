@@ -6,6 +6,7 @@ using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.EventBus;
 using VolleyM.Domain.IDomainFrameworkTestFixture;
 using VolleyM.Domain.UnitTests.Framework;
+using VolleyM.Infrastructure.EventBroker.MassTransit;
 
 namespace VolleyM.Domain.Framework.UnitTests.EventBroker
 {
@@ -24,6 +25,8 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         public void RegisterDependenciesForScenario()
         {
             RegisterHandlers();
+
+            _container.RegisterInstance(typeof(IEventPublisher), new MassTransitEventPublisher());
         }
 
         [Given(@"I have EventA listener")]

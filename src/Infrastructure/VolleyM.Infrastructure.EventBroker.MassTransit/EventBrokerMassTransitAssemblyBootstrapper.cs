@@ -15,6 +15,8 @@ namespace VolleyM.Infrastructure.EventBroker.MassTransit
             var massTransitPublisher = new MassTransitEventPublisher();
 
             container.RegisterInstance(massTransitPublisher);
+            container.RegisterInitializer();
+
         }
 
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)

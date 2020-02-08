@@ -28,7 +28,7 @@ namespace VolleyM.Infrastructure.EventBroker.MassTransit
 
         public Task PublishEvent<TEvent>(TEvent @event) where TEvent : class
         {
-            return Task.CompletedTask;
+            return _bus.Publish(@event);
         }
     }
 }

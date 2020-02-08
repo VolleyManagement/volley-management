@@ -11,7 +11,7 @@ namespace VolleyM.Infrastructure.EventBroker.MassTransit
     {
         public void RegisterDependencies(Container container, IConfiguration config)
         {
-            container.Register<IEventPublisher, MassTransitEventPublisher>(Lifestyle.Singleton);
+            container.Register<Domain.Framework.EventBus.IEventPublisher, MassTransitEventPublisher>(Lifestyle.Singleton);
             container.RegisterInitializer<MassTransitEventPublisher>(mtep => mtep.StartBus().RunSynchronously());
         }
 

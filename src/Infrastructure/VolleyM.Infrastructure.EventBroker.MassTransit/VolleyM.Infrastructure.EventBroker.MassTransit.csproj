@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="6.0.2" />
     <PackageReference Include="MassTransit.Analyzers" Version="1.0.0" />
-    <PackageReference Include="MassTransit.SerilogIntegration" Version="5.5.6" />
     <PackageReference Include="MassTransit.SimpleInjector" Version="6.0.2" />
   </ItemGroup>
 

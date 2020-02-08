@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MassTransit;
+using Serilog;
+using SimpleInjector;
 using VolleyM.Domain.Framework.EventBus;
 
 namespace VolleyM.Infrastructure.EventBroker.MassTransit
@@ -9,13 +11,15 @@ namespace VolleyM.Infrastructure.EventBroker.MassTransit
         private IBusControl _bus;
         private BusHandle _busHandle;
 
-        private readonly object _busInitLock = new object();
-
-        public MassTransitEventPublisher()
+        public MassTransitEventPublisher(Container container)
         {
             _bus = Bus.Factory.CreateUsingInMemory(cfg =>
             {
-
+                cfg.UseSerilog(Log.Logger);
+                cfg.ReceiveEndpoint(ep =>
+                {
+                    ep.ConfigureConsumers(container);
+                });
             });
         }
 

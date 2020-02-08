@@ -1,7 +1,6 @@
-﻿using System.Composition;
-using AutoMapper.Configuration;
+﻿using AutoMapper.Configuration;
 using SimpleInjector;
-using VolleyM.Domain.Framework.EventBus;
+using System.Composition;
 using VolleyM.Infrastructure.Bootstrap;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 

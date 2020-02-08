@@ -26,7 +26,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             RegisterHandlers();
 
-            _container.RegisterInstance(typeof(IEventPublisher), new MassTransitEventPublisher());
+            _container.RegisterInstance(typeof(IEventPublisher), new MassTransitEventPublisher(_container));
         }
 
         [Given(@"I have EventA listener")]

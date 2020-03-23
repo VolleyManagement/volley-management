@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
 using LanguageExt;
@@ -6,6 +7,7 @@ using NSubstitute;
 using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.EventBus;
 using VolleyM.Domain.UnitTests.Framework;
@@ -33,6 +35,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_REGISTER_DEPENDENCIES_ORDER)]
         public void RegisterDependenciesForScenario()
         {
+            RegisterHandlers();
+
             _container.RegisterInstance(_eventSpy);
 
             _authorizationService = Substitute.For<IAuthorizationService>();
@@ -64,6 +68,11 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         public void ThenHandlerShouldReceiveEvent()
         {
             _eventSpy.Invocations.Should().BeEquivalentTo(_expectedEvents);
+        }
+
+        private void RegisterHandlers()
+        {
+            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
     }
 }

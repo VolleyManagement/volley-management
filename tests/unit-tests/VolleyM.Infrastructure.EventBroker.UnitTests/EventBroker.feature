@@ -7,4 +7,5 @@
 Scenario: Published event to single handler
 	Given I have single event handler for EventA
 	When I publish EventA
-	Then handler should receive event
+	Then handler result should be returned
+	And handler should receive event

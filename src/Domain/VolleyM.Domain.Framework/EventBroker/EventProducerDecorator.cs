@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using LanguageExt;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using LanguageExt;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Framework.EventBus;
 
 namespace VolleyM.Domain.Framework.EventBroker
 {

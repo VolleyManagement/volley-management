@@ -61,7 +61,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Infrastructure.Azur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.API.Contracts", "Client\VolleyM.API.Contracts\VolleyM.API.Contracts.csproj", "{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Infrastructure.EventBroker.UnitTests", "..\tests\unit-tests\VolleyM.Infrastructure.EventBroker.UnitTests\VolleyM.Infrastructure.EventBroker.UnitTests.csproj", "{2ED38FB4-3CEB-4464-8344-07B1ABC92FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolleyM.Infrastructure.EventBroker.UnitTests", "..\tests\unit-tests\VolleyM.Infrastructure.EventBroker.UnitTests\VolleyM.Infrastructure.EventBroker.UnitTests.csproj", "{2ED38FB4-3CEB-4464-8344-07B1ABC92FE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyM.Infrastructure.EventBroker", "Infrastructure\VolleyM.Infrastructure.EventBroker\VolleyM.Infrastructure.EventBroker.csproj", "{2F58236C-147A-4D49-ADA1-64DDD8F410B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,6 +151,10 @@ Global
 		{2ED38FB4-3CEB-4464-8344-07B1ABC92FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ED38FB4-3CEB-4464-8344-07B1ABC92FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ED38FB4-3CEB-4464-8344-07B1ABC92FE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F58236C-147A-4D49-ADA1-64DDD8F410B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F58236C-147A-4D49-ADA1-64DDD8F410B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F58236C-147A-4D49-ADA1-64DDD8F410B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F58236C-147A-4D49-ADA1-64DDD8F410B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,6 +181,7 @@ Global
 		{BD78354A-5BFA-47BC-852A-CBCE3A55CE60} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 		{9E7FC8EE-7EDA-4C78-85A8-4F9C2FD117D5} = {98CD0999-BDD6-4785-A131-7580FEE95AC8}
 		{2ED38FB4-3CEB-4464-8344-07B1ABC92FE9} = {2D85CDB8-A2D9-42C0-B104-467453C93A14}
+		{2F58236C-147A-4D49-ADA1-64DDD8F410B2} = {4AE5524F-A9EE-41E7-A36C-17FAB69588B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4379AC9-D1D3-439C-971A-BA4BFFA373B5}

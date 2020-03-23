@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
-namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
+namespace VolleyM.Domain.ContextA
 {
     public class SampleHandler
     {

@@ -5,7 +5,6 @@ using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.EventBroker;
-using VolleyM.Domain.Framework.EventBus;
 using VolleyM.Domain.Framework.FeatureManagement;
 using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.Logging;

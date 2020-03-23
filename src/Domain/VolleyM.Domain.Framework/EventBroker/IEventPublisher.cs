@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace VolleyM.Domain.Framework.EventBus
+namespace VolleyM.Domain.Framework.EventBroker
 {
     public interface IEventPublisher
     {

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SimpleInjector;
+using VolleyM.Domain.Framework.EventBroker;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests
 {
@@ -7,6 +8,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
     {
         public void RegisterScenarioDependencies(Container container)
         {
+            container.Register<IEventPublisher, SimpleEventPublisher>();
         }
 
         public Task ScenarioSetup()

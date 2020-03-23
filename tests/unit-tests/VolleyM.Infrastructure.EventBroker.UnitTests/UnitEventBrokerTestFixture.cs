@@ -1,23 +1,22 @@
 ﻿using System.Threading.Tasks;
 using SimpleInjector;
 
-namespace VolleyM.Domain.Framework.UnitTests
+namespace VolleyM.Infrastructure.EventBroker.UnitTests
 {
     public class UnitEventBrokerTestFixture : IEventBrokerTestFixture
     {
         public void RegisterScenarioDependencies(Container container)
         {
-            throw new System.NotImplementedException();
         }
 
         public Task ScenarioSetup()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task ScenarioTearDown()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

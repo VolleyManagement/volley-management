@@ -8,7 +8,7 @@ using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
 namespace VolleyM.Domain.ContextA
 {
-    public class SampleHandler
+    public class AnotherHandler
     {
         public class Request : IRequest<Unit>
         {
@@ -19,7 +19,7 @@ namespace VolleyM.Domain.ContextA
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {
-                DomainEvents.Add(new EventA { SomeData = "SampleHandler invoked", RequestData = request.EventData });
+                DomainEvents.Add(new EventA { SomeData = "AnotherHandler invoked", RequestData = request.EventData });
                 return Task.FromResult<Either<Error, Unit>>(Unit.Default);
             }
 

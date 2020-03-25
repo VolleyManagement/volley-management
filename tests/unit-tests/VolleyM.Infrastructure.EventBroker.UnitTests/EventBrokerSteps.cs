@@ -23,7 +23,6 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
     {
         private readonly EventInvocationSpy _eventSpy = new EventInvocationSpy();
 
-
         private Either<Error, Unit> _actualResult;
         private List<object> _expectedEvents = new List<object>();
 
@@ -52,6 +51,23 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             // do nothing
         }
 
+        [Given(@"(.*) was published once")]
+        public void GivenEventWasPublishedOnce(string eventType)
+        {
+            SetPermissionForHandler();
+
+            var request = new AnotherHandler.Request
+            {
+                EventData = 10
+            };
+
+            _expectedEvents.Add(new EventA { RequestData = request.EventData, SomeData = "AnotherHandler invoked" });
+
+            var handler = _container.GetInstance<IRequestHandler<AnotherHandler.Request, Unit>>();
+
+            var result = handler.Handle(request);
+        }
+
         [When(@"I publish (.*)")]
         public async Task WhenIPublishEvent(string eventType)
         {
@@ -62,7 +78,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 EventData = 10
             };
 
-            _expectedEvents.Add(new EventA { RequestData = 10, SomeData = "SampleHandler invoked" });
+            _expectedEvents.Add(new EventA { RequestData = request.EventData, SomeData = "SampleHandler invoked" });
 
             var handler = _container.GetInstance<IRequestHandler<SampleHandler.Request, Unit>>();
 
@@ -76,6 +92,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         }
 
         [Then(@"handler should receive event")]
+        [Then("handler should receive all events")]
         public void ThenHandlerShouldReceiveEvent()
         {
             _eventSpy.Invocations.Should().BeEquivalentTo(_expectedEvents);
@@ -91,6 +108,11 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _authorizationService
                 .CheckAccess(
                     new Permission("ContextA", "SampleHandler"))
+                .Returns(true);
+
+            _authorizationService
+                .CheckAccess(
+                    new Permission("ContextA", "AnotherHandler"))
                 .Returns(true);
         }
     }

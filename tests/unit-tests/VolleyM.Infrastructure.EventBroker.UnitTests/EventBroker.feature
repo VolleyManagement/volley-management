@@ -9,3 +9,10 @@ Scenario: Published event to single handler
 	When I publish EventA
 	Then handler result should be returned
 	And handler should receive event
+
+Scenario: Event published twice
+	Given I have single event handler for EventA
+	And EventA was published once
+	When I publish EventA
+	Then handler result should be returned
+	And handler should receive all events

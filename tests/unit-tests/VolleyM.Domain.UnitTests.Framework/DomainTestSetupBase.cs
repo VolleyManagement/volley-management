@@ -11,7 +11,6 @@ using NSubstitute;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
-using VolleyM.Domain.Framework.EventBus;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework

@@ -29,6 +29,7 @@
     <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
     <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.EventBroker\VolleyM.Infrastructure.EventBroker.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />
     <ProjectReference Include="..\..\..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj" />

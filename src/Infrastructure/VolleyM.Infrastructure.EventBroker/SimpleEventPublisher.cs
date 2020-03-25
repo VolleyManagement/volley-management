@@ -1,8 +1,7 @@
 ﻿using SimpleInjector;
-using System;
 using System.Threading.Tasks;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.EventBroker;
-using VolleyM.Domain.Framework.EventBus;
 
 namespace VolleyM.Infrastructure.EventBroker
 {
@@ -22,35 +21,9 @@ namespace VolleyM.Infrastructure.EventBroker
 
             var handler = _container.GetInstance(handlerType);
 
-            var wrapper = new EventHandlerWrapper(handler, eventType);
+            var wrapper = new EventHandlerWrapper(handler);
 
             return wrapper.Handle(@event);
         }
     }
-
-    public class EventHandlerWrapper : IEventHandler<object>
-    {
-        private readonly object _handler;
-        private readonly Type _eventType;
-
-        static EventHandlerWrapper()
-        {
-        }
-
-        public EventHandlerWrapper(object handler, Type eventType)
-        {
-            _handler = handler;
-            _eventType = eventType;
-        }
-
-        public Task Handle(object @event)
-        {
-            var handleMethod = _handler.GetType().GetMethod(nameof(IEventHandler<object>.Handle));
-
-            //var method = handleMethod.MakeGenericMethod(_eventType);
-
-            return (Task)handleMethod.Invoke(_handler, new[] { @event });
-        }
-    }
-
 }

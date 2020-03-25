@@ -10,7 +10,6 @@ using VolleyM.Domain.ContextA;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
-using VolleyM.Domain.Framework.EventBus;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture;

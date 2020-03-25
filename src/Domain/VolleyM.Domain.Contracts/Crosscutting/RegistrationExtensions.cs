@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using SimpleInjector;
-using VolleyM.Domain.Framework.EventBus;
 
 namespace VolleyM.Domain.Contracts.Crosscutting
 {

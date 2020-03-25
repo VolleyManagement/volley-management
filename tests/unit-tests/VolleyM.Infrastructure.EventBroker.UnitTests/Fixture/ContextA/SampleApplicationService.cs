@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using VolleyM.Domain.Framework.EventBus;
+using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
 {

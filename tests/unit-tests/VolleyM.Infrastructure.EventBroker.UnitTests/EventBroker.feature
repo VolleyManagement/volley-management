@@ -5,14 +5,21 @@
 
 @ab:1099
 Scenario: Published event to single handler
-	Given I have single event handler for EventA
-	When I publish EventA
+	Given I have single event handler for SingleSubscriberEvent
+	When I publish SingleSubscriberEvent
 	Then handler result should be returned
 	And handler should receive event
 
 Scenario: Event published twice
-	Given I have single event handler for EventA
-	And EventA was published once
-	When I publish EventA
+	Given I have single event handler for SingleSubscriberEvent
+	And SingleSubscriberEvent was published once
+	When I publish SingleSubscriberEvent
 	Then handler result should be returned
 	And handler should receive all events
+
+	Scenario: No event handlers
+	Given I have no event handlers for NoSubscribersEvent
+	When I publish NoSubscribersEvent
+	Then handler result should be returned
+	And handler should receive all events
+

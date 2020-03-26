@@ -26,7 +26,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         {
             None,
             SampleEventAProducingHandler,
-            AnotherEventAProducingHandler
+            AnotherEventAProducingHandler,
+            SampleEventBProducingHandler
         }
 
         private readonly EventInvocationSpy _eventSpy = new EventInvocationSpy();
@@ -58,6 +59,12 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         public void GivenIHaveSingleEventHandlerForEvent(string eventType)
         {
             _handlerType = HandlerType.SampleEventAProducingHandler;
+        }
+
+        [Given("I have no event handlers for (.*)")]
+        public void GivenIHaveNoEventHandlersForEvent(string eventType)
+        {
+            _handlerType = HandlerType.SampleEventBProducingHandler;
         }
 
         [Given(@"(.*) was published once")]
@@ -116,6 +123,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             {
                 HandlerType.SampleEventAProducingHandler => ResolveAndCallSpecificHandler(new SampleEventAProducingHandler.Request(), requestBuilder),
                 HandlerType.AnotherEventAProducingHandler => ResolveAndCallSpecificHandler(new AnotherEventAProducingHandler.Request(), requestBuilder),
+                HandlerType.SampleEventBProducingHandler => ResolveAndCallSpecificHandler(new SampleEventBProducingHandler.Request(), requestBuilder),
                 _ => throw new NotSupportedException()
             };
         }

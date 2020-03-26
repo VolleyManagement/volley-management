@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture;
 using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
 namespace VolleyM.Domain.ContextA
 {
-    public class AnotherHandler
+    public class AnotherEventAProducingHandler
     {
-        public class Request : IRequest<Unit>
+        public class Request : IRequest<Unit>, IEventProducingRequest
         {
             public int EventData { get; set; }
         }
@@ -19,7 +20,7 @@ namespace VolleyM.Domain.ContextA
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {
-                DomainEvents.Add(new EventA { SomeData = "AnotherHandler invoked", RequestData = request.EventData });
+                DomainEvents.Add(new EventA { SomeData = $"{nameof(AnotherEventAProducingHandler)} invoked", RequestData = request.EventData });
                 return Task.FromResult<Either<Error, Unit>>(Unit.Default);
             }
 

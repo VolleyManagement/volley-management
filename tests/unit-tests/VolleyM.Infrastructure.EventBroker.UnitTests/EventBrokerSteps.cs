@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.ContextA;
 using VolleyM.Domain.Contracts;
@@ -21,8 +22,16 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
     [Scope(Feature = "EventBroker")]
     public class EventBrokerSteps
     {
+        private enum HandlerType
+        {
+            None,
+            SampleEventAProducingHandler,
+            AnotherEventAProducingHandler
+        }
+
         private readonly EventInvocationSpy _eventSpy = new EventInvocationSpy();
 
+        private HandlerType _handlerType;
         private Either<Error, Unit> _actualResult;
         private List<object> _expectedEvents = new List<object>();
 
@@ -48,24 +57,19 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         [Given(@"I have single event handler for (.*)")]
         public void GivenIHaveSingleEventHandlerForEvent(string eventType)
         {
-            // do nothing
+            _handlerType = HandlerType.SampleEventAProducingHandler;
         }
 
         [Given(@"(.*) was published once")]
-        public void GivenEventWasPublishedOnce(string eventType)
+        public async Task GivenEventWasPublishedOnce(string eventType)
         {
-            SetPermissionForHandler();
+            SetPermissionForHandler(handlerType: HandlerType.AnotherEventAProducingHandler);
 
-            var request = new AnotherHandler.Request
-            {
-                EventData = 10
-            };
+            const int eventData = 20;
+            _expectedEvents.Add(new EventA { RequestData = eventData, SomeData = "AnotherEventAProducingHandler invoked" });
 
-            _expectedEvents.Add(new EventA { RequestData = request.EventData, SomeData = "AnotherHandler invoked" });
-
-            var handler = _container.GetInstance<IRequestHandler<AnotherHandler.Request, Unit>>();
-
-            var result = handler.Handle(request);
+            var result = await ResolveAndCallHandler(HandlerType.AnotherEventAProducingHandler,
+                r => { r.EventData = eventData; });
         }
 
         [When(@"I publish (.*)")]
@@ -73,16 +77,11 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         {
             SetPermissionForHandler();
 
-            var request = new SampleHandler.Request
-            {
-                EventData = 10
-            };
+            const int eventData = 10;
+            _expectedEvents.Add(new EventA { RequestData = eventData, SomeData = "SampleEventAProducingHandler invoked" });
 
-            _expectedEvents.Add(new EventA { RequestData = request.EventData, SomeData = "SampleHandler invoked" });
-
-            var handler = _container.GetInstance<IRequestHandler<SampleHandler.Request, Unit>>();
-
-            _actualResult = await handler.Handle(request);
+            _actualResult = await ResolveAndCallHandler(_handlerType,
+                r => { r.EventData = eventData; }); ;
         }
 
         [Then(@"handler result should be returned")]
@@ -103,17 +102,30 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
 
-        private void SetPermissionForHandler()
+        private void SetPermissionForHandler(string context = "ContextA", HandlerType? handlerType = null)
         {
             _authorizationService
                 .CheckAccess(
-                    new Permission("ContextA", "SampleHandler"))
+                    new Permission(context, (handlerType ?? _handlerType).ToString()))
                 .Returns(true);
+        }
 
-            _authorizationService
-                .CheckAccess(
-                    new Permission("ContextA", "AnotherHandler"))
-                .Returns(true);
+        private Task<Either<Error, Unit>> ResolveAndCallHandler(HandlerType handlerType, Action<IEventProducingRequest> requestBuilder)
+        {
+            return handlerType switch
+            {
+                HandlerType.SampleEventAProducingHandler => ResolveAndCallSpecificHandler(new SampleEventAProducingHandler.Request(), requestBuilder),
+                HandlerType.AnotherEventAProducingHandler => ResolveAndCallSpecificHandler(new AnotherEventAProducingHandler.Request(), requestBuilder),
+                _ => throw new NotSupportedException()
+            };
+        }
+        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request, Action<IEventProducingRequest> requestBuilder) where T : IRequest<Unit>, IEventProducingRequest
+        {
+            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
+
+            requestBuilder(request);
+
+            return handler.Handle(request);
         }
     }
 }

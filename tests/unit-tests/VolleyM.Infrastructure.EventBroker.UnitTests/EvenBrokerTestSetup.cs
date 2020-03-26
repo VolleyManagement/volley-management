@@ -40,7 +40,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
 
         protected override IEnumerable<IAssemblyBootstrapper> GetAssemblyBootstrappers(TestTarget target)
         {
-            return Enumerable.Empty<IAssemblyBootstrapper>();
+            return new[] { new EventBrokerAssemblyBootstrapper() };
         }
     }
 }

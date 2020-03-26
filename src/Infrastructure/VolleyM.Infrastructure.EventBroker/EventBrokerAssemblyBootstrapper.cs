@@ -11,6 +11,8 @@ namespace VolleyM.Infrastructure.EventBroker
         public void RegisterDependencies(Container container, IConfiguration config)
         {
             container.Register<IEventPublisher, SimpleEventPublisher>();
+
+            container.Register<IEventHandlerWrapperCache, EventHandlerWrapperCache>(Lifestyle.Singleton);
         }
 
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)

@@ -4,8 +4,9 @@ using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Infrastructure.EventBroker
 {
-    internal class EventHandlerWrapper : IEventHandler<object>
+    public class EventHandlerWrapper : IEventHandler<object>
     {
+        //ToDo: Remove this field
         private readonly object _handler;
         private readonly MethodInfo _handleMethod;
 

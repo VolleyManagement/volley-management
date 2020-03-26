@@ -23,9 +23,9 @@ namespace VolleyM.Infrastructure.EventBroker
 
             var handler = _container.GetInstance(handlerType);
 
-            var wrapper = _eventHandlerWrapperCache.GetOrAdd(eventType, () => new EventHandlerWrapper(handler));
+            var wrapper = _eventHandlerWrapperCache.GetOrAdd(eventType, () => new EventHandlerWrapper(handlerType));
 
-            return wrapper.Handle(@event);
+            return wrapper.Handle(handler, @event);
         }
     }
 }

@@ -27,7 +27,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             None,
             SampleEventAProducingHandler,
             AnotherEventAProducingHandler,
-            SampleEventBProducingHandler
+            SampleEventBProducingHandler,
+            SampleEventCProducingHandler
         }
 
         private readonly EventInvocationSpy _eventSpy = new EventInvocationSpy();
@@ -65,6 +66,12 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         public void GivenIHaveNoEventHandlersForEvent(string eventType)
         {
             _handlerType = HandlerType.SampleEventBProducingHandler;
+        }
+
+        [Given("I have several event handlers for (.*)")]
+        public void GivenIHaveSeveralEventHandlersForEvent(string eventType)
+        {
+            _handlerType = HandlerType.SampleEventCProducingHandler;
         }
 
         [Given(@"(.*) was published once")]
@@ -124,6 +131,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 HandlerType.SampleEventAProducingHandler => ResolveAndCallSpecificHandler(new SampleEventAProducingHandler.Request(), requestBuilder),
                 HandlerType.AnotherEventAProducingHandler => ResolveAndCallSpecificHandler(new AnotherEventAProducingHandler.Request(), requestBuilder),
                 HandlerType.SampleEventBProducingHandler => ResolveAndCallSpecificHandler(new SampleEventBProducingHandler.Request(), requestBuilder),
+                HandlerType.SampleEventCProducingHandler => ResolveAndCallSpecificHandler(new SampleEventCProducingHandler.Request(), requestBuilder),
                 _ => throw new NotSupportedException()
             };
         }
@@ -138,19 +146,24 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
 
         private void AddExpectedEvent(int eventData, string eventType)
         {
-            var evt = eventType.ToLower() switch
+            switch (eventType.ToLower())
             {
-                "singlesubscriberevent" => (object)new EventA
-                {
-                    RequestData = eventData,
-                    SomeData = "SampleEventAProducingHandler invoked"
-                },
-                "nosubscribersevent" => null,
-                _ => throw new InvalidOperationException("Unknown event type")
-            };
-            if (evt != null)
-            {
-                _expectedEvents.Add(evt);
+                case "singlesubscriberevent":
+                    _expectedEvents.Add(new EventA
+                    {
+                        RequestData = eventData, SomeData = "SampleEventAProducingHandler invoked"
+                    });
+                    break;
+                case "nosubscribersevent":
+                    //do nothing
+                    break;
+                case "severalsubscribersevent":
+                    var evt = new EventC {RequestData = eventData, SomeData = "SampleEventCProducingHandler invoked"};
+                    _expectedEvents.Add(evt);
+                    _expectedEvents.Add(evt);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown event type");
             }
         }
     }

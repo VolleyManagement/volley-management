@@ -10,6 +10,7 @@ Scenario: Published event to single handler
 	Then handler result should be returned
 	And handler should receive event
 
+@ab:1099
 Scenario: Event published twice
 	Given I have single event handler for SingleSubscriberEvent
 	And SingleSubscriberEvent was published once
@@ -17,9 +18,16 @@ Scenario: Event published twice
 	Then handler result should be returned
 	And handler should receive all events
 
-	Scenario: No event handlers
+@ab:1099
+Scenario: No event handlers
 	Given I have no event handlers for NoSubscribersEvent
 	When I publish NoSubscribersEvent
 	Then handler result should be returned
 	And handler should receive all events
 
+@ab:1099
+Scenario: Several event handlers
+	Given I have several event handlers for SeveralSubscribersEvent
+	When I publish SeveralSubscribersEvent
+	Then handler result should be returned
+	And handler should receive all events

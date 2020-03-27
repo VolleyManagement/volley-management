@@ -3,7 +3,7 @@ using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
 namespace VolleyM.Domain.ContextA
 {
-    public class SampleEventAProducingHandler
+    public class SampleEventCProducingHandler
     {
         public class Request : EventProducingHandlerBase.Request
         {
@@ -13,9 +13,9 @@ namespace VolleyM.Domain.ContextA
         {
             protected override object GetEvent(IEventProducingRequest request)
             {
-                return new EventA
+                return new EventC
                 {
-                    SomeData = $"{nameof(SampleEventAProducingHandler)} invoked", RequestData = request.EventData
+                    SomeData = $"{nameof(SampleEventCProducingHandler)} invoked", RequestData = request.EventData
                 };
             }
         }

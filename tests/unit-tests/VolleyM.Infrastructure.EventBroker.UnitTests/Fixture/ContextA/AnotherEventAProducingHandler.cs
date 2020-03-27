@@ -1,30 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using LanguageExt;
-using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Framework.EventBroker;
-using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture;
+﻿using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture;
 using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
 namespace VolleyM.Domain.ContextA
 {
     public class AnotherEventAProducingHandler
     {
-        public class Request : IRequest<Unit>, IEventProducingRequest
+        public class Request : EventProducingHandlerBase.Request
         {
-            public int EventData { get; set; }
         }
 
-        public class Handler : IRequestHandler<Request, Unit>, ICanProduceEvent
+        public class Handler : EventProducingHandlerBase.Handler<Request>
         {
-            public Task<Either<Error, Unit>> Handle(Request request)
+            protected override object GetEvent(IEventProducingRequest request)
             {
-                DomainEvents.Add(new EventA { SomeData = $"{nameof(AnotherEventAProducingHandler)} invoked", RequestData = request.EventData });
-                return Task.FromResult<Either<Error, Unit>>(Unit.Default);
+                return new EventA
+                {
+                    SomeData = $"{nameof(AnotherEventAProducingHandler)} invoked",
+                    RequestData = request.EventData
+                };
             }
-
-            public List<object> DomainEvents { get; } = new List<object>();
         }
     }
 }

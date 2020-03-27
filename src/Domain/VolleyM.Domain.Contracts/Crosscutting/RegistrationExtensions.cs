@@ -9,7 +9,9 @@ namespace VolleyM.Domain.Contracts.Crosscutting
         public static void RegisterCommonDomainServices(this Container container, Assembly assembly)
         {
             container.Register(typeof(IRequestHandler<,>), assembly, Lifestyle.Scoped);
+
             container.Register(typeof(IEventHandler<>), assembly, Lifestyle.Scoped);
+            container.Collection.Register(typeof(IEventHandler<>), assembly);
 
             container.Register(typeof(IValidator<>), assembly, Lifestyle.Scoped);
         }

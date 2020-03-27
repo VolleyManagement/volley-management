@@ -85,7 +85,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             SetPermissionForHandler();
 
             const int eventData = 10;
-            _expectedEvents.Add(new EventA { RequestData = eventData, SomeData = "SampleEventAProducingHandler invoked" });
+            AddExpectedEvent(eventData, eventType);
 
             _actualResult = await ResolveAndCallHandler(_handlerType,
                 r => { r.EventData = eventData; }); ;
@@ -134,6 +134,24 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             requestBuilder(request);
 
             return handler.Handle(request);
+        }
+
+        private void AddExpectedEvent(int eventData, string eventType)
+        {
+            var evt = eventType.ToLower() switch
+            {
+                "singlesubscriberevent" => (object)new EventA
+                {
+                    RequestData = eventData,
+                    SomeData = "SampleEventAProducingHandler invoked"
+                },
+                "nosubscribersevent" => null,
+                _ => throw new InvalidOperationException("Unknown event type")
+            };
+            if (evt != null)
+            {
+                _expectedEvents.Add(evt);
+            }
         }
     }
 }

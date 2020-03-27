@@ -1,4 +1,5 @@
-﻿using SimpleInjector;
+﻿using System.Collections.Generic;
+using SimpleInjector;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.EventBroker;
@@ -21,11 +22,18 @@ namespace VolleyM.Infrastructure.EventBroker
             var eventType = @event.GetType();
             var handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
-            var handler = _container.GetInstance(handlerType);
+            var handlers = _container.GetAllInstances(handlerType);
 
             var wrapper = _eventHandlerWrapperCache.GetOrAdd(eventType, () => new EventHandlerWrapper(handlerType));
 
-            return wrapper.Handle(handler, @event);
+            List<Task> tasks = new List<Task>();
+            foreach (var handler in handlers)
+            {
+                var task = wrapper.Handle(handler, @event);
+                tasks.Add(task);
+            }
+
+            return Task.WhenAll(tasks);
         }
     }
 }

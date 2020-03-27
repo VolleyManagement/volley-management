@@ -10,7 +10,6 @@ namespace VolleyM.Domain.Contracts.Crosscutting
         {
             container.Register(typeof(IRequestHandler<,>), assembly, Lifestyle.Scoped);
 
-            container.Register(typeof(IEventHandler<>), assembly, Lifestyle.Scoped);
             container.Collection.Register(typeof(IEventHandler<>), assembly);
 
             container.Register(typeof(IValidator<>), assembly, Lifestyle.Scoped);

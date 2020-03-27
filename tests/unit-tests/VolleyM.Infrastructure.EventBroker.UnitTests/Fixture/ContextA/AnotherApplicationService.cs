@@ -3,18 +3,13 @@ using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
 {
-    public class SampleApplicationService : IEventHandler<EventA>, IEventHandler<EventC>
+    public class AnotherApplicationService : IEventHandler<EventC>
     {
         private readonly EventInvocationSpy _eventSpy;
 
-        public SampleApplicationService(EventInvocationSpy eventSpy)
+        public AnotherApplicationService(EventInvocationSpy eventSpy)
         {
             _eventSpy = eventSpy;
-        }
-
-        public Task Handle(EventA @event)
-        {
-            return RegisterEvent(@event);
         }
 
         public Task Handle(EventC @event)

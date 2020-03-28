@@ -56,10 +56,11 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _container.RegisterInstance(_authorizationService);
         }
 
-        [Given(@"I have event handler for (.*)")]
-        public void GivenIHaveEventHandlerForEvent(string eventType)
+        [Given(@"I have (\d+) event handlers for (.*)")]
+        [Given(@"I have (\d+) event handler for (.*)")]
+        public void GivenIHaveEventHandlerForEvent(int handlerCount, string eventType)
         {
-            _handlerType = SelectHandler(eventType);
+            _handlerType = SelectHandler(handlerCount);
         }
 
         [Given(@"(.*) was published once")]
@@ -155,14 +156,14 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             }
         }
 
-        private HandlerType SelectHandler(string eventType)
+        private HandlerType SelectHandler(int handlerCount)
         {
-            return eventType.ToLower() switch
+            return handlerCount switch
             {
-                "singlesubscriberevent" => HandlerType.SampleEventAProducingHandler,
-                "nosubscribersevent" => HandlerType.SampleEventBProducingHandler,
-                "severalsubscribersevent" => HandlerType.SampleEventCProducingHandler,
-                _ => throw new InvalidOperationException("Unknown event type")
+                1 => HandlerType.SampleEventAProducingHandler,
+                0 => HandlerType.SampleEventBProducingHandler,
+                2 => HandlerType.SampleEventCProducingHandler,
+                _ => throw new InvalidOperationException("Unsupported number of handlers")
             };
         }
     }

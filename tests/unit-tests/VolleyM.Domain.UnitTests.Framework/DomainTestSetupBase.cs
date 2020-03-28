@@ -40,9 +40,7 @@ namespace VolleyM.Domain.UnitTests.Framework
         public void InitializeContainer()
         {
             Container = new Container();
-            Container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
-            // Allow some tests to override existing registrations to replace it with test doubles
-            Container.Options.AllowOverridingRegistrations = true;
+            ConfigureContainer();
 
             RegisterContainerInSpecFlow(Container);
 
@@ -57,6 +55,15 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             AuthFixture?.ConfigureTestUserRole(Container);
             BaseTestFixture.RegisterScenarioDependencies(Container);
+        }
+
+        private void ConfigureContainer()
+        {
+            Container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
+            // Allow some tests to override existing registrations to replace it with test doubles
+            Container.Options.AllowOverridingRegistrations = true;
+            // should be last
+            Container.Options.LifestyleSelectionBehavior = new VolleyMLifestyleSelectionBehavior(Container.Options);
         }
 
         private void RegisterNullEventPublisher(Container container)

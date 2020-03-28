@@ -56,22 +56,10 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _container.RegisterInstance(_authorizationService);
         }
 
-        [Given(@"I have single event handler for (.*)")]
-        public void GivenIHaveSingleEventHandlerForEvent(string eventType)
+        [Given(@"I have event handler for (.*)")]
+        public void GivenIHaveEventHandlerForEvent(string eventType)
         {
-            _handlerType = HandlerType.SampleEventAProducingHandler;
-        }
-
-        [Given("I have no event handlers for (.*)")]
-        public void GivenIHaveNoEventHandlersForEvent(string eventType)
-        {
-            _handlerType = HandlerType.SampleEventBProducingHandler;
-        }
-
-        [Given("I have several event handlers for (.*)")]
-        public void GivenIHaveSeveralEventHandlersForEvent(string eventType)
-        {
-            _handlerType = HandlerType.SampleEventCProducingHandler;
+            _handlerType = SelectHandler(eventType);
         }
 
         [Given(@"(.*) was published once")]
@@ -165,6 +153,17 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 default:
                     throw new InvalidOperationException("Unknown event type");
             }
+        }
+
+        private HandlerType SelectHandler(string eventType)
+        {
+            return eventType.ToLower() switch
+            {
+                "singlesubscriberevent" => HandlerType.SampleEventAProducingHandler,
+                "nosubscribersevent" => HandlerType.SampleEventBProducingHandler,
+                "severalsubscribersevent" => HandlerType.SampleEventCProducingHandler,
+                _ => throw new InvalidOperationException("Unknown event type")
+            };
         }
     }
 }

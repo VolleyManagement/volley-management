@@ -1,8 +1,6 @@
 ﻿namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
 {
-    public class EventB
+    public class EventB : EventBase
     {
-        public string SomeData { get; set; }
-        public int RequestData { get; set; }
     }
 }

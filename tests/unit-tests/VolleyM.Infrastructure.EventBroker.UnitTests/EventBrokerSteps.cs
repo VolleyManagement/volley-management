@@ -56,9 +56,9 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _container.RegisterInstance(_authorizationService);
         }
 
-        [Given(@"I have (\d+) event handlers for (.*)")]
-        [Given(@"I have (\d+) event handler for (.*)")]
-        public void GivenIHaveEventHandlerForEvent(int handlerCount, string eventType)
+        [Given(@"I have (\d+) (.*) event handlers for (.*)")]
+        [Given(@"I have (\d+) (.*) event handler for (.*)")]
+        public void GivenIHaveEventHandlerForEvent(int handlerCount, string handlerType, string eventType)
         {
             _handlerType = SelectHandler(handlerCount);
         }
@@ -135,25 +135,16 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
 
         private void AddExpectedEvent(int eventData, string eventType)
         {
-            switch (eventType.ToLower())
+            if (!_expectedEventsMap.TryGetValue(eventType.ToLower(), out var eventsFactory))
             {
-                case "singlesubscriberevent":
-                    _expectedEvents.Add(new EventA
-                    {
-                        RequestData = eventData, SomeData = "SampleEventAProducingHandler invoked"
-                    });
-                    break;
-                case "nosubscribersevent":
-                    //do nothing
-                    break;
-                case "severalsubscribersevent":
-                    var evt = new EventC {RequestData = eventData, SomeData = "SampleEventCProducingHandler invoked"};
-                    _expectedEvents.Add(evt);
-                    _expectedEvents.Add(evt);
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown event type");
+                throw new InvalidOperationException("Unknown event type");
             }
+
+            var events = eventsFactory();
+
+            events.ForEach(e => e.RequestData = eventData);
+
+            _expectedEvents.AddRange(events);
         }
 
         private HandlerType SelectHandler(int handlerCount)
@@ -166,5 +157,28 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 _ => throw new InvalidOperationException("Unsupported number of handlers")
             };
         }
+
+        #region Expected event setup
+
+        private static Dictionary<string, Func<List<EventBase>>> _expectedEventsMap
+            = new Dictionary<string, Func<List<EventBase>>>
+            {
+                ["singlesubscriberevent"] = GetSingleInternalCaseEvents,
+                ["nosubscribersevent"] = GetNoInternalCaseEvents,
+                ["severalsubscribersevent"] = GetSeveralInternalCaseEvents
+            };
+
+        private static List<EventBase> GetSingleInternalCaseEvents()
+        {
+            return new List<EventBase> { new EventA { SomeData = "SampleEventAProducingHandler invoked" } };
+        }
+        private static List<EventBase> GetNoInternalCaseEvents() { return new List<EventBase>(); }
+        private static List<EventBase> GetSeveralInternalCaseEvents()
+        {
+            return new List<EventBase> { new EventC { SomeData = "SampleEventCProducingHandler invoked" } };
+        }
+        //private static List<EventBase> GetSingleInternalCaseEvents() { return new List<EventBase>(); }
+
+        #endregion
     }
 }

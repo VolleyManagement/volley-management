@@ -4,21 +4,22 @@
 	Which will deliver events to registered event handlers
 
 @ab:1099
-Scenario Outline: Published event to single handler
-	Given I have <HandlerCount> event handlers for <Event>
+Scenario Outline: Publish event
+	Given I have <HandlerCount> <HandlerType> event handlers for <Event>
 	When I publish <Event>
 	Then handler result should be returned
 	And handler should receive event
 
 	Examples:
-		| Event                   | HandlerCount |
-		| SingleSubscriberEvent   | 1            |
-		| NoSubscribersEvent      | 0            |
-		| SeveralSubscribersEvent | 2            |
+		| Event                       | HandlerCount | HandlerType |
+		| SingleSubscriberEvent       | 1            | Internal    |
+		| NoSubscribersEvent          | 0            | Internal    |
+		| SeveralSubscribersEvent     | 2            | Internal    |
+		| PublicSingleSubscriberEvent | 1            | Public      |
 
 @ab:1099
 Scenario: Event published twice
-	Given I have 1 event handler for SingleSubscriberEvent
+	Given I have 1 internal event handler for SingleSubscriberEvent
 	And SingleSubscriberEvent was published once
 	When I publish SingleSubscriberEvent
 	Then handler result should be returned

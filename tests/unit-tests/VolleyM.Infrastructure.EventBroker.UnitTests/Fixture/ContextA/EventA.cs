@@ -1,8 +1,8 @@
-﻿namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
+﻿using Gherkin.Events;
+
+namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
 {
-    public class EventA
+    public class EventA : EventBase
     {
-        public string SomeData { get; set; }
-        public int RequestData { get; set; }
     }
 }

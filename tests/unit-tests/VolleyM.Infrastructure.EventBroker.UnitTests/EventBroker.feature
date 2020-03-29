@@ -27,6 +27,12 @@ Scenario: Event published twice
 	When I publish SingleSubscriberEvent
 	Then handler result should be returned
 	And handler should receive all events
-# 1. Design violation if cannot find EventType
+
+@ab:1099
+Scenario: Event has internal and external subscribers
+	Given I have internal and public event handler for InternalAndPublicEvent
+	When I publish InternalAndPublicEvent
+	Then handler result should be returned
+	And handler should receive event
 # 2. Event published to both internal and public
 # 3. Public consumer can skip properties

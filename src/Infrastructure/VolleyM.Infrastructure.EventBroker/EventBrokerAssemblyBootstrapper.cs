@@ -11,6 +11,7 @@ namespace VolleyM.Infrastructure.EventBroker
         public void RegisterDependencies(Container container, IConfiguration config)
         {
             container.Register<IEventPublisher, SimpleEventPublisher>();
+            container.RegisterInitializer((SimpleEventPublisher p) => p.Initialize());
 
             container.Register<IEventHandlerWrapperCache, EventHandlerWrapperCache>(Lifestyle.Singleton);
         }

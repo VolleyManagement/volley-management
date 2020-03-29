@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LanguageExt;
+using Newtonsoft.Json;
 using SimpleInjector;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using LanguageExt;
-using Newtonsoft.Json;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.IdentityAndAccess.Handlers;
 
 namespace VolleyM.Infrastructure.EventBroker
 {
@@ -14,57 +16,73 @@ namespace VolleyM.Infrastructure.EventBroker
     {
         private readonly Container _container;
         private readonly IEventHandlerWrapperCache _eventHandlerWrapperCache;
-        private readonly List<IEventHandler> _allHandlers;
+        private readonly IEnumerable<IEventHandler> _allHandlers;
+        private readonly List<(IEventHandler Handler, Type EventType)> _mappedHandlers;
 
-        public SimpleEventPublisher(Container container, IEventHandlerWrapperCache eventHandlerWrapperCache, List<IEventHandler> allHandlers)
+        public SimpleEventPublisher(Container container, IEventHandlerWrapperCache eventHandlerWrapperCache, IEnumerable<IEventHandler> allHandlers)
         {
             _container = container;
             _eventHandlerWrapperCache = eventHandlerWrapperCache;
             _allHandlers = allHandlers;
+            _mappedHandlers = new List<(IEventHandler Handler, Type EventType)>();
+        }
+
+        /// <summary>
+        /// Initializes internal caches
+        /// </summary>
+        public void Initialize()
+        {
+            _mappedHandlers.AddRange(_allHandlers
+                .SelectMany(h => 
+                        GetEventTypes(h.GetType())
+                        .Select(t => (Handler: h, EventType: t)))
+                .ToList());
         }
 
         public Task PublishEvent<TEvent>(TEvent @event) where TEvent : IEvent
         {
-            if (@event is IPublicEvent)
-            {
-                var allEventHandlers = _allHandlers
-                    .Select(h => (Handler: h, EventType: GetEventType(h.GetType())))
-                    .Where(p => IsForeignContextEventHandler(@event.GetType(), p.EventType))
-                    .ToList();
-
-                if (allEventHandlers.Count > 0)
-                {
-                    var serializedEvent = SerializeEvent(@event);
-                    var eventType1 = allEventHandlers[0].EventType;
-
-                    var targetEvent = (IEvent)JsonConvert.DeserializeObject(serializedEvent, eventType1);
-
-                    var handlerType1 = typeof(IEventHandler<>).MakeGenericType(eventType1);
-
-                    var handlers1 = allEventHandlers.Select(p => p.Handler);
-
-                    var wrapper1 = _eventHandlerWrapperCache.GetOrAdd(eventType1, () => new EventHandlerWrapper(handlerType1));
-
-                    return Task.WhenAll(handlers1
-                        .Select(handler => CallHandler(targetEvent, wrapper1, handler)));
-                }
-            }
+            var handlerTasks = new List<Task>();
 
             var eventType = @event.GetType();
-            var handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
-            var handlers = _container.GetAllInstances(handlerType);
+            List<(IEventHandler Handler, Type EventType)> matchedHandlers;
 
-            var wrapper = _eventHandlerWrapperCache.GetOrAdd(eventType, () => new EventHandlerWrapper(handlerType));
+            if (@event is IPublicEvent)
+            {
+                matchedHandlers = _mappedHandlers
+                    .Where(p => IsMatchingType(@event.GetType(), p.EventType))
+                    .ToList();
+            }
+            else
+            {
+                matchedHandlers = _mappedHandlers
+                    .Where(p => IsMatchingInternalType(@event.GetType(), p.EventType))
+                    .ToList();
+            }
 
-            return Task.WhenAll(handlers
-                .Select(handler => CallHandler(@event, wrapper, handler)));
-        }
+            if (matchedHandlers.Count == 0) return Task.CompletedTask;
 
-        private Type GetEventType(Type handlerType)
-        {
-            return handlerType.GetInterfaces()
-                .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEventHandler<>)).GetGenericArguments()[0];
+            foreach (var (handler, handlerEventType) in matchedHandlers)
+            {
+                IEvent handlerEvent;
+
+                if (handlerEventType != @eventType)
+                {
+                    var serializedEvent = SerializeEvent(@event);
+
+                    handlerEvent = (IEvent)JsonConvert.DeserializeObject(serializedEvent, handlerEventType);
+                }
+                else
+                {
+                    handlerEvent = @event;
+                }
+
+                var wrapper = _eventHandlerWrapperCache.GetOrAdd(handlerEventType, () => new EventHandlerWrapper(handlerEventType));
+
+                handlerTasks.Add(CallHandler(handlerEvent, wrapper, handler));
+            }
+
+            return Task.WhenAll(handlerTasks);
         }
 
         private static Task CallHandler<TEvent>(TEvent @event, EventHandlerWrapper wrapper, object handler) where TEvent : IEvent
@@ -72,9 +90,21 @@ namespace VolleyM.Infrastructure.EventBroker
             return wrapper.Handle(handler, @event);
         }
 
-        private static bool IsForeignContextEventHandler(Type producedType, Type eventType)
+        private IEnumerable<Type> GetEventTypes(Type handlerType)
+        {
+            return handlerType.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEventHandler<>))
+                .Select(i => i.GetGenericArguments()[0]);
+        }
+
+        private static bool IsMatchingType(Type producedType, Type eventType)
         {
             return producedType.Name == eventType.Name;
+        }
+
+        private static bool IsMatchingInternalType(Type producedType, Type eventType)
+        {
+            return producedType.FullName == eventType.FullName;
         }
 
         private string SerializeEvent<TEvent>(TEvent @event) where TEvent : IEvent

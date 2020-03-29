@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Domain.Framework.EventBroker
 {
@@ -37,7 +38,7 @@ namespace VolleyM.Domain.Framework.EventBroker
         private async Task PublishAllRegisteredEvents(ICanProduceEvent eventProducer)
         {
             var pubTasks = new List<Task>();
-            foreach (object domainEvent in eventProducer.DomainEvents)
+            foreach (IEvent domainEvent in eventProducer.DomainEvents)
             {
                 pubTasks.Add(_eventPublisher.PublishEvent(domainEvent));
             }

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using VolleyM.Domain.Contracts.EventBroker;
 
-namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
+namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextB
 {
-    public class AnotherApplicationService : IEventHandler<EventC>
+    public class AnotherApplicationService : IEventHandler<EventF>
     {
         private readonly EventInvocationSpy _eventSpy;
 
@@ -12,7 +12,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
             _eventSpy = eventSpy;
         }
 
-        public Task Handle(EventC @event)
+        public Task Handle(EventF @event)
         {
             return RegisterEvent(@event);
         }

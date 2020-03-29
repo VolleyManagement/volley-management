@@ -31,6 +31,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             SampleEventCProducingHandler,   // produces internal event
             SampleEventDProducingHandler,   // produces public event
             SampleEventEProducingHandler,   // produces public event
+            SampleEventFProducingHandler,   // produces public event
         }
 
         /*
@@ -38,10 +39,10 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
          * | Event  | Internal  | Public |
          * | EventA | 1         | 0      |
          * | EventB | 1         | 0      |
-         * | EventC | 1         | 0      |
+         * | EventC | 2         | 0      |
          * | EventD | 0         | 1      |
          * | EventE | 0         | 0      |
-         * | EventF | 1         |       |
+         * | EventF | 0         | 2      |
          * | EventG | 1         |       |
          * | EventH | 1         |       |
          */
@@ -138,6 +139,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 RequestHandlerType.SampleEventCProducingHandler => ResolveAndCallSpecificHandler(new SampleEventCProducingHandler.Request(), requestBuilder),
                 RequestHandlerType.SampleEventDProducingHandler => ResolveAndCallSpecificHandler(new SampleEventDProducingHandler.Request(), requestBuilder),
                 RequestHandlerType.SampleEventEProducingHandler => ResolveAndCallSpecificHandler(new SampleEventEProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.SampleEventFProducingHandler => ResolveAndCallSpecificHandler(new SampleEventFProducingHandler.Request(), requestBuilder),
                 _ => throw new NotSupportedException()
             };
         }
@@ -180,7 +182,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 {
                     1 => RequestHandlerType.SampleEventDProducingHandler,
                     0 => RequestHandlerType.SampleEventEProducingHandler,
-                    //2 => RequestHandlerType.SampleEventCProducingHandler,
+                    2 => RequestHandlerType.SampleEventFProducingHandler,
                     _ => throw new InvalidOperationException("Unsupported number of handlers")
                 }),
                 _ => throw new InvalidOperationException("Unsupported handler type")
@@ -196,7 +198,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 ["nosubscribersevent"] = GetNoInternalCaseEvents,
                 ["severalsubscribersevent"] = GetSeveralInternalCaseEvents,
                 ["publicsinglesubscriberevent"] = GetSinglePublicCaseEvents,
-                ["publicnosubscribersevent"] = GetNoPublicCaseEvents
+                ["publicnosubscribersevent"] = GetNoPublicCaseEvents,
+                ["publicseveralsubscribersevent"] = GetPublicSeveralInternalCaseEvents
             };
 
         private static List<EventBase> GetSingleInternalCaseEvents()
@@ -208,15 +211,27 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         {
             return new List<EventBase>
             {
-                new EventC { SomeData = "SampleEventCProducingHandler invoked" }, 
+                new EventC { SomeData = "SampleEventCProducingHandler invoked" },
                 new EventC { SomeData = "SampleEventCProducingHandler invoked" }
             };
         }
         private static List<EventBase> GetSinglePublicCaseEvents()
         {
-            return new List<EventBase> { new Fixture.ContextB.EventD { SomeData = "SampleEventDProducingHandler invoked" } };
+            return new List<EventBase>
+            {
+                new Fixture.ContextB.EventD {SomeData = "SampleEventDProducingHandler invoked"}
+            };
         }
+
         private static List<EventBase> GetNoPublicCaseEvents() { return new List<EventBase>(); }
+        private static List<EventBase> GetPublicSeveralInternalCaseEvents()
+        {
+            return new List<EventBase>
+            {
+                new EventF { SomeData = "SampleEventFProducingHandler invoked" },
+                new EventF { SomeData = "SampleEventFProducingHandler invoked" }
+            };
+        }
 
         #endregion
     }

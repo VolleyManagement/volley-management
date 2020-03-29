@@ -3,7 +3,7 @@ using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextB
 {
-    public class SamplePublicApplicationService : IEventHandler<EventD>
+    public class SamplePublicApplicationService : IEventHandler<EventD>, IEventHandler<EventF>
     {
         private readonly EventInvocationSpy _eventSpy;
 
@@ -13,6 +13,11 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextB
         }
 
         public Task Handle(EventD @event)
+        {
+            return RegisterEvent(@event);
+        }
+
+        public Task Handle(EventF @event)
         {
             return RegisterEvent(@event);
         }

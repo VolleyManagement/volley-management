@@ -50,7 +50,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
 
         private RequestHandlerType _requestHandlerType;
         private Either<Error, Unit> _actualResult;
-        private List<object> _expectedEvents = new List<object>();
+        private readonly List<object> _expectedEvents = new List<object>();
 
         private readonly Container _container;
         private IAuthorizationService _authorizationService;
@@ -86,7 +86,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             const int eventData = 20;
             _expectedEvents.Add(new EventA { RequestData = eventData, SomeData = "AnotherEventAProducingHandler invoked" });
 
-            var result = await ResolveAndCallHandler(RequestHandlerType.AnotherEventAProducingHandler,
+            await ResolveAndCallHandler(RequestHandlerType.AnotherEventAProducingHandler,
                 r => { r.EventData = eventData; });
         }
 
@@ -99,7 +99,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             AddExpectedEvent(eventData, eventType);
 
             _actualResult = await ResolveAndCallHandler(_requestHandlerType,
-                r => { r.EventData = eventData; }); ;
+                r => { r.EventData = eventData; });
         }
 
         [Then(@"handler result should be returned")]
@@ -167,33 +167,29 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         private RequestHandlerType SelectHandler(int handlerCount, string handlerType)
         {
             var handlerTypeStr = handlerType.ToLower();
-            if (handlerTypeStr == "internal")
+            return handlerTypeStr switch
             {
-                return handlerCount switch
+                "internal" => (handlerCount switch
                 {
                     1 => RequestHandlerType.SampleEventAProducingHandler,
                     0 => RequestHandlerType.SampleEventBProducingHandler,
                     2 => RequestHandlerType.SampleEventCProducingHandler,
                     _ => throw new InvalidOperationException("Unsupported number of handlers")
-                };
-            }
-            else if (handlerTypeStr == "public")
-            {
-                return handlerCount switch
+                }),
+                "public" => (handlerCount switch
                 {
                     1 => RequestHandlerType.SampleEventDProducingHandler,
                     0 => RequestHandlerType.SampleEventEProducingHandler,
                     //2 => RequestHandlerType.SampleEventCProducingHandler,
                     _ => throw new InvalidOperationException("Unsupported number of handlers")
-                };
-            }
-
-            throw new InvalidOperationException("Unsupported handler type");
+                }),
+                _ => throw new InvalidOperationException("Unsupported handler type")
+            };
         }
 
         #region Expected event setup
 
-        private static Dictionary<string, Func<List<EventBase>>> _expectedEventsMap
+        private static readonly Dictionary<string, Func<List<EventBase>>> _expectedEventsMap
             = new Dictionary<string, Func<List<EventBase>>>
             {
                 ["singlesubscriberevent"] = GetSingleInternalCaseEvents,

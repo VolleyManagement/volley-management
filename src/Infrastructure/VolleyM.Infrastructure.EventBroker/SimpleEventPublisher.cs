@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
 
 namespace VolleyM.Infrastructure.EventBroker

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
@@ -16,12 +17,12 @@ namespace VolleyM.Domain.IDomainFrameworkTestFixture
 
         }
 
-        public class SampleEventA
+        public class SampleEventA: IEvent
         {
             public string Data { get; set; }
         }
 
-        public class SampleEventB
+        public class SampleEventB: IEvent
         {
             public string Data { get; set; }
         }
@@ -35,7 +36,7 @@ namespace VolleyM.Domain.IDomainFrameworkTestFixture
                 return Task.FromResult<Either<Error, Unit>>(Unit.Default);
             }
 
-            public List<object> DomainEvents { get; } = new List<object>();
+            public List<IEvent> DomainEvents { get; } = new List<IEvent>();
         }
     }
 }

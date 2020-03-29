@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {

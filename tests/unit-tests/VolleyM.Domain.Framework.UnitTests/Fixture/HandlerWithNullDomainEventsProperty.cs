@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
@@ -23,7 +24,7 @@ namespace VolleyM.Domain.IDomainFrameworkTestFixture
                 return Task.FromResult<Either<Error, Unit>>(Unit.Default);
             }
 
-            public List<object> DomainEvents { get; }
+            public List<IEvent> DomainEvents { get; }
         }
     }
 }

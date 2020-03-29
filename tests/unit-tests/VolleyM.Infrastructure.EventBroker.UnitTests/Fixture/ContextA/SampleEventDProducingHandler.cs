@@ -4,7 +4,7 @@ using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
 namespace VolleyM.Domain.ContextA
 {
-    public class SampleEventCProducingHandler
+    public class SampleEventDProducingHandler
     {
         public class Request : EventProducingHandlerBase.Request
         {
@@ -14,9 +14,9 @@ namespace VolleyM.Domain.ContextA
         {
             protected override IEvent GetEvent(IEventProducingRequest request)
             {
-                return new EventC
+                return new EventD
                 {
-                    SomeData = $"{nameof(SampleEventCProducingHandler)} invoked", RequestData = request.EventData
+                    SomeData = $"{nameof(SampleEventDProducingHandler)} invoked", RequestData = request.EventData
                 };
             }
         }

@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Infrastructure.EventBroker
 {
@@ -11,7 +12,7 @@ namespace VolleyM.Infrastructure.EventBroker
 
         public EventHandlerWrapper(Type handlerType)
         {
-            _handleMethod = handlerType.GetMethod(nameof(IEventHandler<object>.Handle));
+            _handleMethod = handlerType.GetMethod(nameof(IEventHandler<IEvent>.Handle));
         }
 
         public Task Handle(object handler, object @event)

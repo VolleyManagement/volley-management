@@ -2,6 +2,7 @@
 using SimpleInjector;
 using SimpleInjector.Advanced;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Domain.Framework
 {

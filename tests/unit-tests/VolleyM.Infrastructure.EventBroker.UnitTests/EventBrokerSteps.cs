@@ -15,6 +15,7 @@ using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture;
 using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
+using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextB;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests
 {
@@ -22,18 +23,32 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
     [Scope(Feature = "EventBroker")]
     public class EventBrokerSteps
     {
-        private enum HandlerType
+        private enum RequestHandlerType
         {
             None,
-            SampleEventAProducingHandler,
-            AnotherEventAProducingHandler,
-            SampleEventBProducingHandler,
-            SampleEventCProducingHandler
+            SampleEventAProducingHandler,   // produces internal event
+            AnotherEventAProducingHandler,  // produces internal event
+            SampleEventBProducingHandler,   // produces internal event
+            SampleEventCProducingHandler,   // produces internal event
+            SampleEventDProducingHandler,   // produces public event
         }
+
+        /*
+         * Each event type has hardcoded set of event handlers
+         * | Event  | Internal  | Public |
+         * | EventA | 1         | 0      |
+         * | EventB | 1         | 0      |
+         * | EventC | 1         | 0      |
+         * | EventD | 0         | 1      |
+         * | EventE | 1         |       |
+         * | EventF | 1         |       |
+         * | EventG | 1         |       |
+         * | EventH | 1         |       |
+         */
 
         private readonly EventInvocationSpy _eventSpy = new EventInvocationSpy();
 
-        private HandlerType _handlerType;
+        private RequestHandlerType _requestHandlerType;
         private Either<Error, Unit> _actualResult;
         private List<object> _expectedEvents = new List<object>();
 
@@ -60,18 +75,18 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         [Given(@"I have (\d+) (.*) event handler for (.*)")]
         public void GivenIHaveEventHandlerForEvent(int handlerCount, string handlerType, string eventType)
         {
-            _handlerType = SelectHandler(handlerCount);
+            _requestHandlerType = SelectHandler(handlerCount, handlerType);
         }
 
         [Given(@"(.*) was published once")]
         public async Task GivenEventWasPublishedOnce(string eventType)
         {
-            SetPermissionForHandler(handlerType: HandlerType.AnotherEventAProducingHandler);
+            SetPermissionForHandler(handlerType: RequestHandlerType.AnotherEventAProducingHandler);
 
             const int eventData = 20;
             _expectedEvents.Add(new EventA { RequestData = eventData, SomeData = "AnotherEventAProducingHandler invoked" });
 
-            var result = await ResolveAndCallHandler(HandlerType.AnotherEventAProducingHandler,
+            var result = await ResolveAndCallHandler(RequestHandlerType.AnotherEventAProducingHandler,
                 r => { r.EventData = eventData; });
         }
 
@@ -83,7 +98,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             const int eventData = 10;
             AddExpectedEvent(eventData, eventType);
 
-            _actualResult = await ResolveAndCallHandler(_handlerType,
+            _actualResult = await ResolveAndCallHandler(_requestHandlerType,
                 r => { r.EventData = eventData; }); ;
         }
 
@@ -105,22 +120,23 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
         }
 
-        private void SetPermissionForHandler(string context = "ContextA", HandlerType? handlerType = null)
+        private void SetPermissionForHandler(string context = "ContextA", RequestHandlerType? handlerType = null)
         {
             _authorizationService
                 .CheckAccess(
-                    new Permission(context, (handlerType ?? _handlerType).ToString()))
+                    new Permission(context, (handlerType ?? _requestHandlerType).ToString()))
                 .Returns(true);
         }
 
-        private Task<Either<Error, Unit>> ResolveAndCallHandler(HandlerType handlerType, Action<IEventProducingRequest> requestBuilder)
+        private Task<Either<Error, Unit>> ResolveAndCallHandler(RequestHandlerType requestHandlerType, Action<IEventProducingRequest> requestBuilder)
         {
-            return handlerType switch
+            return requestHandlerType switch
             {
-                HandlerType.SampleEventAProducingHandler => ResolveAndCallSpecificHandler(new SampleEventAProducingHandler.Request(), requestBuilder),
-                HandlerType.AnotherEventAProducingHandler => ResolveAndCallSpecificHandler(new AnotherEventAProducingHandler.Request(), requestBuilder),
-                HandlerType.SampleEventBProducingHandler => ResolveAndCallSpecificHandler(new SampleEventBProducingHandler.Request(), requestBuilder),
-                HandlerType.SampleEventCProducingHandler => ResolveAndCallSpecificHandler(new SampleEventCProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.SampleEventAProducingHandler => ResolveAndCallSpecificHandler(new SampleEventAProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.AnotherEventAProducingHandler => ResolveAndCallSpecificHandler(new AnotherEventAProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.SampleEventBProducingHandler => ResolveAndCallSpecificHandler(new SampleEventBProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.SampleEventCProducingHandler => ResolveAndCallSpecificHandler(new SampleEventCProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.SampleEventDProducingHandler => ResolveAndCallSpecificHandler(new SampleEventDProducingHandler.Request(), requestBuilder),
                 _ => throw new NotSupportedException()
             };
         }
@@ -147,15 +163,31 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _expectedEvents.AddRange(events);
         }
 
-        private HandlerType SelectHandler(int handlerCount)
+        private RequestHandlerType SelectHandler(int handlerCount, string handlerType)
         {
-            return handlerCount switch
+            var handlerTypeStr = handlerType.ToLower();
+            if (handlerTypeStr == "internal")
             {
-                1 => HandlerType.SampleEventAProducingHandler,
-                0 => HandlerType.SampleEventBProducingHandler,
-                2 => HandlerType.SampleEventCProducingHandler,
-                _ => throw new InvalidOperationException("Unsupported number of handlers")
-            };
+                return handlerCount switch
+                {
+                    1 => RequestHandlerType.SampleEventAProducingHandler,
+                    0 => RequestHandlerType.SampleEventBProducingHandler,
+                    2 => RequestHandlerType.SampleEventCProducingHandler,
+                    _ => throw new InvalidOperationException("Unsupported number of handlers")
+                };
+            }
+            else if (handlerTypeStr == "public")
+            {
+                return handlerCount switch
+                {
+                    1 => RequestHandlerType.SampleEventDProducingHandler,
+                    //0 => RequestHandlerType.SampleEventBProducingHandler,
+                    //2 => RequestHandlerType.SampleEventCProducingHandler,
+                    _ => throw new InvalidOperationException("Unsupported number of handlers")
+                };
+            }
+
+            throw new InvalidOperationException("Unsupported handler type");
         }
 
         #region Expected event setup
@@ -165,7 +197,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             {
                 ["singlesubscriberevent"] = GetSingleInternalCaseEvents,
                 ["nosubscribersevent"] = GetNoInternalCaseEvents,
-                ["severalsubscribersevent"] = GetSeveralInternalCaseEvents
+                ["severalsubscribersevent"] = GetSeveralInternalCaseEvents,
+                ["publicsinglesubscriberevent"] = GetSinglePublicCaseEvents
             };
 
         private static List<EventBase> GetSingleInternalCaseEvents()
@@ -175,9 +208,16 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         private static List<EventBase> GetNoInternalCaseEvents() { return new List<EventBase>(); }
         private static List<EventBase> GetSeveralInternalCaseEvents()
         {
-            return new List<EventBase> { new EventC { SomeData = "SampleEventCProducingHandler invoked" } };
+            return new List<EventBase>
+            {
+                new EventC { SomeData = "SampleEventCProducingHandler invoked" }, 
+                new EventC { SomeData = "SampleEventCProducingHandler invoked" }
+            };
         }
-        //private static List<EventBase> GetSingleInternalCaseEvents() { return new List<EventBase>(); }
+        private static List<EventBase> GetSinglePublicCaseEvents()
+        {
+            return new List<EventBase> { new Fixture.ContextB.EventD { SomeData = "SampleEventDProducingHandler invoked" } };
+        }
 
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
 {
@@ -17,7 +18,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
             return RegisterEvent(@event);
         }
 
-        private Task RegisterEvent(object @event)
+        private Task RegisterEvent(IEvent @event)
         {
             _eventSpy.RegisterInvocation(@event);
             return Task.CompletedTask;

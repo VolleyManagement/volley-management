@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture
@@ -22,9 +23,9 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture
                 return Task.FromResult<Either<Error, Unit>>(Unit.Default);
             }
 
-            protected abstract object GetEvent(IEventProducingRequest request);
+            protected abstract IEvent GetEvent(IEventProducingRequest request);
 
-            public List<object> DomainEvents { get; } = new List<object>();
+            public List<IEvent> DomainEvents { get; } = new List<IEvent>();
         }
     }
 }

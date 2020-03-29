@@ -34,5 +34,10 @@ Scenario: Event has internal and external subscribers
 	When I publish InternalAndPublicEvent
 	Then handler result should be returned
 	And handler should receive event
-# 2. Event published to both internal and public
-# 3. Public consumer can skip properties
+	
+@ab:1099
+Scenario: Consumer can have less properties on the event
+	Given I have internal and public event handler for IgnorePropertyEvent
+	When I publish IgnorePropertyEvent
+	Then handler result should be returned
+	And handler should receive event

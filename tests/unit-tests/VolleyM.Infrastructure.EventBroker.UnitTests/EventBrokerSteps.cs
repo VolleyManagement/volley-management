@@ -34,6 +34,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             SampleEventFProducingHandler,   // produces public event
             SampleEventGProducingHandler,   // produces public event
             SampleEventHProducingHandler,   // produces public event
+            SampleEventIProducingHandler,   // produces public event
         }
 
         /*
@@ -47,6 +48,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
          * | EventF | 0         | 2      |
          * | EventG | 0         | 3      | in different contexts
          * | EventH | 1         | 1      |
+         * | EventI | 1         | 1      |
          */
 
         private readonly EventInvocationSpy _eventSpy = new EventInvocationSpy();
@@ -98,7 +100,14 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         {
             _requestHandlerType = RequestHandlerType.SampleEventHProducingHandler;
         }
-        
+
+        [Given(@"I have internal and public event handler for IgnorePropertyEvent")]
+        public void GivenIHaveInternalAndPublicEventHandlerForIgnorePropertyEvent()
+        {
+            _requestHandlerType = RequestHandlerType.SampleEventIProducingHandler;
+        }
+
+
         [When(@"I publish (.*)")]
         public async Task WhenIPublishEvent(string eventType)
         {
@@ -150,6 +159,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 RequestHandlerType.SampleEventFProducingHandler => ResolveAndCallSpecificHandler(new SampleEventFProducingHandler.Request(), requestBuilder),
                 RequestHandlerType.SampleEventGProducingHandler => ResolveAndCallSpecificHandler(new SampleEventGProducingHandler.Request(), requestBuilder),
                 RequestHandlerType.SampleEventHProducingHandler => ResolveAndCallSpecificHandler(new SampleEventHProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.SampleEventIProducingHandler => ResolveAndCallSpecificHandler(new SampleEventIProducingHandler.Request(), requestBuilder),
                 _ => throw new NotSupportedException()
             };
         }
@@ -212,7 +222,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 ["publicnosubscribersevent"] = GetNoPublicCaseEvents,
                 ["publicseveralsubscribersevent"] = GetPublicSeveralCaseEvents,
                 ["publicseveraldifferentcontextsubscribersevent"] = GetMultiplePublicContextsEvents,
-                ["internalandpublicevent"] = GetInternalAndPublicEvent
+                ["internalandpublicevent"] = GetInternalAndPublicEvent,
+                ["ignorepropertyevent"] = GetIgnorePropertyEvent
             };
 
         private static List<EventBase> GetSingleInternalCaseEvents()
@@ -260,6 +271,17 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             {
                 new Fixture.ContextA.EventH { SomeData = "SampleEventHProducingHandler invoked" },
                 new Fixture.ContextB.EventH { SomeData = "SampleEventHProducingHandler invoked" }
+            };
+        }
+        private static List<EventBase> GetIgnorePropertyEvent()
+        {
+            return new List<EventBase>
+            {
+                new Fixture.ContextA.EventI
+                {
+                    SomeData = "SampleEventIProducingHandler invoked", IgnoredProperty = "irrelevant data"
+                },
+                new Fixture.ContextC.EventI {SomeData = "SampleEventIProducingHandler invoked"}
             };
         }
 

@@ -16,6 +16,7 @@ Scenario Outline: Publish event
 		| NoSubscribersEvent          | 0            | Internal    |
 		| SeveralSubscribersEvent     | 2            | Internal    |
 		| PublicSingleSubscriberEvent | 1            | Public      |
+		| PublicNoSubscribersEvent    | 0            | Public      |
 
 @ab:1099
 Scenario: Event published twice
@@ -24,7 +25,6 @@ Scenario: Event published twice
 	When I publish SingleSubscriberEvent
 	Then handler result should be returned
 	And handler should receive all events
-
 # 1. Design violation if cannot find EventType
 # 2. Event published to both internal and public
 # 3. Public consumer can skip properties

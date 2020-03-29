@@ -38,7 +38,6 @@ namespace VolleyM.Infrastructure.EventBroker
 
         public Task PublishEvent<TEvent>(TEvent @event) where TEvent : IEvent
         {
-            var handlerTasks = new List<Task>();
             var eventType = @event.GetType();
 
             List<(IEventHandler Handler, Type EventType)> matchedHandlers
@@ -54,15 +53,15 @@ namespace VolleyM.Infrastructure.EventBroker
                 var handlerEvent = GetHandlerEventInstance(@event, handlerEventType, eventType, targetEventCache, ref serializedEvent);
                 var wrapper = _eventHandlerWrapperCache.GetOrAdd(handlerEventType, () => new EventHandlerWrapper(handlerEventType));
 
-                handlerTasks.Add(CallHandler(handlerEvent, wrapper, handler));
+                CallHandler(handlerEvent, wrapper, handler);
             }
 
-            return Task.WhenAll(handlerTasks);
+            return Task.CompletedTask;
         }
 
-        private static Task CallHandler<TEvent>(TEvent @event, EventHandlerWrapper wrapper, object handler) where TEvent : IEvent
+        private static void CallHandler<TEvent>(TEvent @event, EventHandlerWrapper wrapper, object handler) where TEvent : IEvent
         {
-            return wrapper.Handle(handler, @event);
+            wrapper.Handle(handler, @event);
         }
 
         private List<(IEventHandler Handler, Type EventType)> FindMatchingHandlers<TEvent>(TEvent @event) where TEvent : IEvent

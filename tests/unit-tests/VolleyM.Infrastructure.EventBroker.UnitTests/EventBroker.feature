@@ -11,13 +11,14 @@ Scenario Outline: Publish event
 	And handler should receive event
 
 	Examples:
-		| Event                         | HandlerCount | HandlerType |
-		| SingleSubscriberEvent         | 1            | Internal    |
-		| NoSubscribersEvent            | 0            | Internal    |
-		| SeveralSubscribersEvent       | 2            | Internal    |
-		| PublicSingleSubscriberEvent   | 1            | Public      |
-		| PublicNoSubscribersEvent      | 0            | Public      |
-		| PublicSeveralSubscribersEvent | 2            | Public      |
+		| Event                                         | HandlerCount | HandlerType |
+		| SingleSubscriberEvent                         | 1            | Internal    |
+		| NoSubscribersEvent                            | 0            | Internal    |
+		| SeveralSubscribersEvent                       | 2            | Internal    |
+		| PublicSingleSubscriberEvent                   | 1            | Public      |
+		| PublicNoSubscribersEvent                      | 0            | Public      |
+		| PublicSeveralSubscribersEvent                 | 2            | Public      |
+		| PublicSeveralDifferentContextSubscribersEvent | 3            | Public      |
 
 @ab:1099
 Scenario: Event published twice

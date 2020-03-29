@@ -1,25 +1,15 @@
 ﻿using System.Threading.Tasks;
 using VolleyM.Domain.Contracts.EventBroker;
 
-namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextB
+namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextC
 {
-    public class SamplePublicApplicationService : IEventHandler<EventD>, IEventHandler<EventF>, IEventHandler<EventG>
+    public class SamplePublicApplicationService : IEventHandler<EventG>
     {
         private readonly EventInvocationSpy _eventSpy;
 
         public SamplePublicApplicationService(EventInvocationSpy eventSpy)
         {
             _eventSpy = eventSpy;
-        }
-
-        public Task Handle(EventD @event)
-        {
-            return RegisterEvent(@event);
-        }
-
-        public Task Handle(EventF @event)
-        {
-            return RegisterEvent(@event);
         }
 
         public Task Handle(EventG @event)

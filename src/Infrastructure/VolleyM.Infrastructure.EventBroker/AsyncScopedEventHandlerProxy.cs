@@ -21,7 +21,7 @@ namespace VolleyM.Infrastructure.EventBroker
         {
             using (AsyncScopedLifestyle.BeginScope(_container))
             {
-                var handler = _decorateeFactory();
+                var handler = _decorateeFactory.Invoke();
                 return handler.Handle(@event);
             }
         }

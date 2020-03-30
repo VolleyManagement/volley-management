@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using LanguageExt;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture
 {
@@ -18,9 +17,14 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture
             }
         }
 
-        private static readonly IEnumerator<string> _scopes;
+        private static IEnumerator<string> _scopes;
 
         static ScopeLitmus()
+        {
+            RestartCounter();
+        }
+
+        public static void RestartCounter()
         {
             _scopes = GetScopes().GetEnumerator();
             _scopes.MoveNext();

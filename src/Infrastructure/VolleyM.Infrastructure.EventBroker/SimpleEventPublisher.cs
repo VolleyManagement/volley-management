@@ -14,14 +14,14 @@ namespace VolleyM.Infrastructure.EventBroker
         private readonly Container _container;
         private readonly IEventHandlerWrapperCache _eventHandlerWrapperCache;
         private readonly IEnumerable<IEventHandler> _allHandlers;
-        private readonly List<(IEventHandler Handler, Type EventType)> _mappedHandlers;
+        private readonly List<Type> _handlerEventTypes;
 
         public SimpleEventPublisher(Container container, IEventHandlerWrapperCache eventHandlerWrapperCache, IEnumerable<IEventHandler> allHandlers)
         {
             _container = container;
             _eventHandlerWrapperCache = eventHandlerWrapperCache;
             _allHandlers = allHandlers;
-            _mappedHandlers = new List<(IEventHandler Handler, Type EventType)>();
+            _handlerEventTypes = new List<Type>();
         }
 
         /// <summary>
@@ -29,31 +29,30 @@ namespace VolleyM.Infrastructure.EventBroker
         /// </summary>
         public void Initialize()
         {
-            _mappedHandlers.AddRange(_allHandlers
-                .SelectMany(h =>
-                        GetEventTypes(h.GetType())
-                        .Select(t => (Handler: h, EventType: t)))
-                .ToList());
+            _handlerEventTypes.AddRange(_allHandlers.SelectMany(h => GetEventTypes(h.GetType())).Distinct());
         }
 
         public Task PublishEvent<TEvent>(TEvent @event) where TEvent : IEvent
         {
             var eventType = @event.GetType();
 
-            List<(IEventHandler Handler, Type EventType)> matchedHandlers
-                = FindMatchingHandlers(@event);
+            var matchingEventTypes = FindMatchingTypes(@event);
 
-            if (matchedHandlers.Count == 0) return Task.CompletedTask;
+            if (matchingEventTypes.Count == 0) return Task.CompletedTask;
 
             string serializedEvent = null;
-            var targetEventCache = new Dictionary<Type, IEvent>();
 
-            foreach ((IEventHandler handler, Type handlerEventType) in matchedHandlers)
+            foreach (Type handlerEventType in matchingEventTypes)
             {
-                var handlerEvent = GetHandlerEventInstance(@event, handlerEventType, eventType, targetEventCache, ref serializedEvent);
+                var handlerEvent = GetHandlerEventInstance(@event, handlerEventType, eventType, ref serializedEvent);
                 var wrapper = _eventHandlerWrapperCache.GetOrAdd(handlerEventType, () => new EventHandlerWrapper(handlerEventType));
 
-                CallHandler(handlerEvent, wrapper, handler);
+                var handlers = _container.GetAllInstances(wrapper.HandlerType);
+
+                foreach (var handler in handlers)
+                {
+                    CallHandler(handlerEvent, wrapper, handler);
+                }
             }
 
             return Task.CompletedTask;
@@ -64,32 +63,26 @@ namespace VolleyM.Infrastructure.EventBroker
             wrapper.Handle(handler, @event);
         }
 
-        private List<(IEventHandler Handler, Type EventType)> FindMatchingHandlers<TEvent>(TEvent @event) where TEvent : IEvent
+        private List<Type> FindMatchingTypes<TEvent>(TEvent @event) where TEvent : IEvent
         {
             Func<Type, Type, bool> handlerMatcher =
                 @event is IPublicEvent ? (Func<Type, Type, bool>)IsMatchingType : IsMatchingInternalType;
 
-            List<(IEventHandler Handler, Type EventType)> matchedHandlers = _mappedHandlers
-                .Where(p => handlerMatcher(@event.GetType(), p.EventType))
+            List<Type> matchingTypes = _handlerEventTypes
+                .Where(t => handlerMatcher(@event.GetType(), t))
                 .ToList();
-            return matchedHandlers;
+            return matchingTypes;
         }
 
-        private static IEvent GetHandlerEventInstance<TEvent>(TEvent @event, Type handlerEventType, Type eventType,
-            IDictionary<Type, IEvent> targetEventCache, ref string serializedEvent) where TEvent : IEvent
+        private static IEvent GetHandlerEventInstance<TEvent>(TEvent @event, Type handlerEventType, Type eventType, ref string serializedEvent) where TEvent : IEvent
         {
             IEvent handlerEvent;
-            if (handlerEventType != @eventType)
+            if (handlerEventType != eventType)
             {
                 // Cache result of serialization
                 serializedEvent ??= SerializeEvent(@event);
 
-                // Cache deserialized objects
-                if (!targetEventCache.TryGetValue(handlerEventType, out handlerEvent))
-                {
-                    targetEventCache[handlerEventType] =
-                        handlerEvent = DeserializeEvent(serializedEvent, handlerEventType);
-                }
+                handlerEvent = DeserializeEvent(serializedEvent, handlerEventType);
             }
             else
             {

@@ -11,9 +11,11 @@ namespace VolleyM.Infrastructure.EventBroker
 
         public EventHandlerWrapper(Type eventType)
         {
-            var handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
-            _handleMethod = handlerType.GetMethod(nameof(IEventHandler<IEvent>.Handle));
+            HandlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
+            _handleMethod = HandlerType.GetMethod(nameof(IEventHandler<IEvent>.Handle));
         }
+
+        public Type HandlerType { get; }
 
         public Task Handle(object handler, object @event)
         {

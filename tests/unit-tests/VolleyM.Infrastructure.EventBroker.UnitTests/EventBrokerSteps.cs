@@ -112,10 +112,12 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _requestHandlerType = RequestHandlerType.SampleEventIProducingHandler;
         }
 
-        [Given(@"I have (.*) event handlers for SeparateScopesEvent")]
-        public void GivenIHaveEventHandlersForSeparateScopesEvent(int p0)
+        [Given(@"I have 2 event handlers for SeparateScopesEvent")]
+        public void GivenIHaveEventHandlersForSeparateScopesEvent()
         {
             _requestHandlerType = RequestHandlerType.ScopeAwareRequestHandler;
+
+            ScopeLitmus.RestartCounter();
         }
 
         [When(@"I publish (.*)")]

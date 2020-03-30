@@ -41,3 +41,13 @@ Scenario: Consumer can have less properties on the event
 	When I publish IgnorePropertyEvent
 	Then handler result should be returned
 	And handler should receive event
+
+@ab:1099
+Scenario: Each event handler is invoked in separate scope
+	Given I have 2 event handlers for SeparateScopesEvent
+	When I publish SeparateScopesEvent
+	Then handler result should be returned
+	And events received by handlers should have following data:
+		| RequestScope | EventHandlerScope |
+		| rootScope    | eventScope1       |
+		| rootScope    | eventScope2       |

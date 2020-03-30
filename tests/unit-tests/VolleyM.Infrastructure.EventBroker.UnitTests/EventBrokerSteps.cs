@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.ContextA;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -35,6 +36,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             SampleEventGProducingHandler,   // produces public event
             SampleEventHProducingHandler,   // produces public event
             SampleEventIProducingHandler,   // produces public event
+            ScopeAwareRequestHandler,       // produces public event
         }
 
         /*
@@ -49,6 +51,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
          * | EventG | 0         | 3      | in different contexts
          * | EventH | 1         | 1      |
          * | EventI | 1         | 1      |
+         * | EventJ | 2         | 0      |
          */
 
         private readonly EventInvocationSpy _eventSpy = new EventInvocationSpy();
@@ -71,6 +74,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             RegisterHandlers();
 
             _container.RegisterInstance(_eventSpy);
+
+            _container.Register<ScopeLitmus, ScopeLitmus>(Lifestyle.Scoped);
 
             _authorizationService = Substitute.For<IAuthorizationService>();
             _container.RegisterInstance(_authorizationService);
@@ -107,6 +112,11 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _requestHandlerType = RequestHandlerType.SampleEventIProducingHandler;
         }
 
+        [Given(@"I have (.*) event handlers for SeparateScopesEvent")]
+        public void GivenIHaveEventHandlersForSeparateScopesEvent(int p0)
+        {
+            _requestHandlerType = RequestHandlerType.ScopeAwareRequestHandler;
+        }
 
         [When(@"I publish (.*)")]
         public async Task WhenIPublishEvent(string eventType)
@@ -131,6 +141,18 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         public void ThenHandlerShouldReceiveEvent()
         {
             _eventSpy.Invocations.Should().BeEquivalentTo(_expectedEvents);
+        }
+
+        [Then(@"events received by handlers should have following data:")]
+        public void ThenEventsReceivedByHandlersShouldHaveFollowingData(Table table)
+        {
+            var expectedEvents = table.CreateSet<EventJ>();
+
+            _eventSpy.Invocations.Should().BeEquivalentTo(expectedEvents,
+                opts =>
+                    opts.ExcludingProperties()
+                        .Including(e => e.RequestScope)
+                        .Including(e => e.EventHandlerScope));
         }
 
         private void RegisterHandlers()
@@ -160,6 +182,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 RequestHandlerType.SampleEventGProducingHandler => ResolveAndCallSpecificHandler(new SampleEventGProducingHandler.Request(), requestBuilder),
                 RequestHandlerType.SampleEventHProducingHandler => ResolveAndCallSpecificHandler(new SampleEventHProducingHandler.Request(), requestBuilder),
                 RequestHandlerType.SampleEventIProducingHandler => ResolveAndCallSpecificHandler(new SampleEventIProducingHandler.Request(), requestBuilder),
+                RequestHandlerType.ScopeAwareRequestHandler => ResolveAndCallSpecificHandler(new ScopeAwareRequestHandler.Request(), requestBuilder),
                 _ => throw new NotSupportedException()
             };
         }
@@ -223,7 +246,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 ["publicseveralsubscribersevent"] = GetPublicSeveralCaseEvents,
                 ["publicseveraldifferentcontextsubscribersevent"] = GetMultiplePublicContextsEvents,
                 ["internalandpublicevent"] = GetInternalAndPublicEvent,
-                ["ignorepropertyevent"] = GetIgnorePropertyEvent
+                ["ignorepropertyevent"] = GetIgnorePropertyEvent,
+                ["separatescopesevent"] = () => new List<EventBase>()
             };
 
         private static List<EventBase> GetSingleInternalCaseEvents()

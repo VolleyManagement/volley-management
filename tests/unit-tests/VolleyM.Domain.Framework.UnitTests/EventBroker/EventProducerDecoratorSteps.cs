@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LanguageExt;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
@@ -8,8 +9,9 @@ using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.Authorization;
-using VolleyM.Domain.Framework.EventBus;
+using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IDomainFrameworkTestFixture;
 using VolleyM.Domain.UnitTests.Framework;
@@ -48,7 +50,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
             RegisterHandlers();
 
             _eventPublisher = Substitute.For<IEventPublisher>();
-            _eventPublisher.PublishEvent(Arg.Any<object>()).Returns(Task.CompletedTask);
+            _eventPublisher.PublishEvent(Arg.Any<IEvent>()).Returns(Task.CompletedTask);
             _container.RegisterInstance(_eventPublisher);
 
             _authorizationService = Substitute.For<IAuthorizationService>();
@@ -103,7 +105,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             _eventPublisher
                 .Received(Quantity.Exactly(1))
-                .PublishEvent(Arg.Any<SampleHandler.SampleEvent>());
+                .PublishEvent(Arg.Any<SampleEvent>());
         }
 
         [Then(@"nothing is published to event broker")]
@@ -111,7 +113,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             _eventPublisher
                 .DidNotReceive()
-                .PublishEvent(Arg.Any<object>());
+                .PublishEvent(Arg.Any<IEvent>());
         }
 
         [Then(@"all events are published to event broker")]
@@ -139,7 +141,8 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
 
         private void RegisterHandlers()
         {
-            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
+            FrameworkDomainComponentDependencyRegistrar.RegisterCommonServices(_container,
+                new List<Assembly> { Assembly.GetAssembly(GetType()) });
         }
 
         private void SetPermissionForHandler()

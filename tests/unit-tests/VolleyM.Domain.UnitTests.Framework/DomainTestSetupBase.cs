@@ -5,11 +5,15 @@ using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Esquio.Abstractions;
 using NSubstitute;
+using Serilog;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Framework;
+using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -39,9 +43,7 @@ namespace VolleyM.Domain.UnitTests.Framework
         public void InitializeContainer()
         {
             Container = new Container();
-            Container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
-            // Allow some tests to override existing registrations to replace it with test doubles
-            Container.Options.AllowOverridingRegistrations = true;
+            ConfigureContainer();
 
             RegisterContainerInSpecFlow(Container);
 
@@ -49,11 +51,27 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             RegisterFeatureService(Container);
 
+            RegisterNullEventPublisher(Container);
+
             BaseTestFixture = CreateAndRegisterTestFixtureIfNeeded(TestRunFixtureBase.Target);
             AuthFixture = CreateAndRegisterAuthFixtureIfNeeded();
 
             AuthFixture?.ConfigureTestUserRole(Container);
             BaseTestFixture.RegisterScenarioDependencies(Container);
+        }
+
+        private void ConfigureContainer()
+        {
+            Container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
+            // Allow some tests to override existing registrations to replace it with test doubles
+            Container.Options.AllowOverridingRegistrations = true;
+            // should be last
+            Container.Options.LifestyleSelectionBehavior = new VolleyMLifestyleSelectionBehavior(Container.Options);
+        }
+
+        private void RegisterNullEventPublisher(Container container)
+        {
+            Container.Register<IEventPublisher, NullEventPublisher>(Lifestyle.Singleton); ;
         }
 
         private void RegisterFeatureService(Container container)
@@ -110,7 +128,25 @@ namespace VolleyM.Domain.UnitTests.Framework
         {
             var mce = new MapperConfigurationExpression();
             mce.ConstructServicesUsing(Container.GetInstance);
+            var bootstrappers = GetBootstrappers();
 
+            Log.Debug("Registering common bootstrappers");
+            var assembliesToRegister = bootstrappers
+                .Where(b => b.HasDomainComponents)
+                .Select(GetAssemblyFromBootstrapper)
+                .ToList();
+
+            var componentsRegistrars = bootstrappers
+                .Select(b => b.DomainComponentDependencyRegistrar)
+                .Where(r => r != null)
+                .ToList();
+
+            foreach (var registrar in componentsRegistrars)
+            {
+                registrar.RegisterCommonDependencies(Container, assembliesToRegister);
+            }
+
+            Log.Debug("Registering individual bootstrappers");
             foreach (var bootstrapper in GetBootstrappers())
             {
                 bootstrapper.RegisterDependencies(Container, TestRunFixtureBase.Configuration);
@@ -155,6 +191,10 @@ namespace VolleyM.Domain.UnitTests.Framework
         private void RegisterContainerInSpecFlow(Container container)
         {
             _objectContainer.RegisterInstanceAs(container);
+        }
+        private static Assembly GetAssemblyFromBootstrapper(IAssemblyBootstrapper bootstrapper)
+        {
+            return Assembly.GetAssembly(bootstrapper.GetType());
         }
 
         #endregion

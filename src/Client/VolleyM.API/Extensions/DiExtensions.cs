@@ -4,6 +4,7 @@ using Esquio.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
+using VolleyM.Domain.Framework;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.API.Extensions
@@ -15,6 +16,8 @@ namespace VolleyM.API.Extensions
             var container = new Container();
 
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+            //should be last
+            container.Options.LifestyleSelectionBehavior = new VolleyMLifestyleSelectionBehavior(container.Options);
 
             return container;
         }

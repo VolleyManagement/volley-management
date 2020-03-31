@@ -17,6 +17,11 @@ namespace VolleyM.Infrastructure.Hardcoded
 
             container.Register(typeof(IQuery<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
         }
+
+        public bool HasDomainComponents { get; } = false;
+
+        public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = null;
+
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)
         {
             // no mapping

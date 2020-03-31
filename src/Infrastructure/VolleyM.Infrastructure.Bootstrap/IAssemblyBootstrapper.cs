@@ -11,6 +11,16 @@ namespace VolleyM.Infrastructure.Bootstrap
     {
         void RegisterDependencies(Container container, IConfiguration config);
 
+        /// <summary>
+        /// Indicates whether this assembly is a target for common registrations
+        /// </summary>
+        bool HasDomainComponents { get; }
+
+        /// <summary>
+        /// Provides registrar for common dependencies; or null
+        /// </summary>
+        IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; }
+
         void RegisterMappingProfiles(MapperConfigurationExpression mce);
     }
 }

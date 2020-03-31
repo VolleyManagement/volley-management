@@ -46,15 +46,37 @@ namespace VolleyM.Infrastructure.Bootstrap
 
             foreach (var bootstrapper in Bootstrappers)
             {
-                bootstrappedAssemblies.Add(Assembly.GetAssembly(bootstrapper.GetType()));
+                bootstrappedAssemblies.Add(GetAssemblyFromBootstrapper(bootstrapper));
             }
 
             DiscoveredAssemblies = bootstrappedAssemblies.ToImmutableList();
             Log.Information("Discovered and loaded {BootstrappersCount} bootstrappers.", Bootstrappers.Count);
         }
 
+        private static Assembly GetAssemblyFromBootstrapper(IAssemblyBootstrapper bootstrapper)
+        {
+            return Assembly.GetAssembly(bootstrapper.GetType());
+        }
+
         public void RegisterDependencies(Container iocContainer, Microsoft.Extensions.Configuration.IConfiguration config)
         {
+            Log.Debug("Registering common bootstrappers");
+            var assembliesToRegister = Bootstrappers
+                .Where(b => b.HasDomainComponents)
+                .Select(GetAssemblyFromBootstrapper)
+                .ToList();
+
+            var componentsRegistrars = Bootstrappers
+                .Select(b => b.DomainComponentDependencyRegistrar)
+                .Where(r => r != null)
+                .ToList();
+
+            foreach (var registrar in componentsRegistrars)
+            {
+                registrar.RegisterCommonDependencies(iocContainer, assembliesToRegister);
+            }
+
+            Log.Debug("Registering individual bootstrappers");
             foreach (var bootstrapper in Bootstrappers)
             {
                 RunAction(p => p.RegisterDependencies(iocContainer, config), bootstrapper, "Register Dependencies");

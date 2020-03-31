@@ -1,15 +1,20 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
-# C# files
-[*.cs]
+###############################
+# Core EditorConfig Options   #
+###############################
 
-#### Core EditorConfig Options ####
+root = true
 
-# Indentation and spacing
-indent_size = 4
-indent_style = space
+# All files
+[*]
+indent_style = tab
+
+# Code files
+[*.{cs,csx}]
 tab_width = 4
+charset = utf-8-bom
 
 # New line preferences
 end_of_line = crlf
@@ -18,8 +23,8 @@ insert_final_newline = false
 #### .NET Coding Conventions ####
 
 # Organize usings
-dotnet_separate_import_directive_groups = false
-dotnet_sort_system_directives_first = false
+dotnet_separate_import_directive_groups = true
+dotnet_sort_system_directives_first = true
 
 # this. and Me. preferences
 dotnet_style_qualification_for_event = false:silent

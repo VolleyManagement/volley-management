@@ -5,9 +5,12 @@ using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Esquio.Abstractions;
 using NSubstitute;
+using Serilog;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
@@ -125,7 +128,25 @@ namespace VolleyM.Domain.UnitTests.Framework
         {
             var mce = new MapperConfigurationExpression();
             mce.ConstructServicesUsing(Container.GetInstance);
+            var bootstrappers = GetBootstrappers();
 
+            Log.Debug("Registering common bootstrappers");
+            var assembliesToRegister = bootstrappers
+                .Where(b => b.HasDomainComponents)
+                .Select(GetAssemblyFromBootstrapper)
+                .ToList();
+
+            var componentsRegistrars = bootstrappers
+                .Select(b => b.DomainComponentDependencyRegistrar)
+                .Where(r => r != null)
+                .ToList();
+
+            foreach (var registrar in componentsRegistrars)
+            {
+                registrar.RegisterCommonDependencies(Container, assembliesToRegister);
+            }
+
+            Log.Debug("Registering individual bootstrappers");
             foreach (var bootstrapper in GetBootstrappers())
             {
                 bootstrapper.RegisterDependencies(Container, TestRunFixtureBase.Configuration);
@@ -170,6 +191,10 @@ namespace VolleyM.Domain.UnitTests.Framework
         private void RegisterContainerInSpecFlow(Container container)
         {
             _objectContainer.RegisterInstanceAs(container);
+        }
+        private static Assembly GetAssemblyFromBootstrapper(IAssemblyBootstrapper bootstrapper)
+        {
+            return Assembly.GetAssembly(bootstrapper.GetType());
         }
 
         #endregion

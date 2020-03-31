@@ -11,6 +11,7 @@ using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.ContextA;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.UnitTests.Framework;
@@ -159,7 +160,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
 
         private void RegisterHandlers()
         {
-            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
+            FrameworkDomainComponentDependencyRegistrar.RegisterCommonServices(_container,
+                new List<Assembly> { Assembly.GetAssembly(GetType()) });
         }
 
         private void SetPermissionForHandler(string context = "ContextA", RequestHandlerType? handlerType = null)

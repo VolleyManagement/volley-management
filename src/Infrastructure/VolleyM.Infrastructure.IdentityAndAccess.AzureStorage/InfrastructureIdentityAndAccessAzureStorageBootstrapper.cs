@@ -23,6 +23,10 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
             container.RegisterInstance(options);
         }
 
+        public bool HasDomainComponents { get; } = false;
+
+        public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = null;
+
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)
         {
             mce.CreateMap<UserEntity, UserFactoryDto>()

@@ -3,6 +3,7 @@ using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
@@ -112,7 +113,8 @@ namespace VolleyM.Domain.Framework.UnitTests.FeatureManagement
 
         private void RegisterHandlers()
         {
-            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
+            FrameworkDomainComponentDependencyRegistrar.RegisterCommonServices(_container,
+                new List<Assembly> { Assembly.GetAssembly(GetType()) });
         }
 
         private (string Context, string Action) GetFeatureData(HandlerType handlerType)

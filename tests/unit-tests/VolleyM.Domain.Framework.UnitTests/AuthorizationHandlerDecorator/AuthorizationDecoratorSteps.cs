@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
@@ -73,7 +74,8 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
 
         private void RegisterHandlers()
         {
-            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
+            FrameworkDomainComponentDependencyRegistrar.RegisterCommonServices(_container,
+                new List<Assembly> { Assembly.GetAssembly(GetType()) });
         }
     }
 }

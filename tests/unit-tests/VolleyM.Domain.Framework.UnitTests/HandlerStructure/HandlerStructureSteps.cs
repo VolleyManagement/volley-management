@@ -2,6 +2,7 @@
 using NSubstitute;
 using SimpleInjector;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using RootNs;
 using TechTalk.SpecFlow;
@@ -109,7 +110,8 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
 
         private void RegisterHandlers()
         {
-            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
+            FrameworkDomainComponentDependencyRegistrar.RegisterCommonServices(_container,
+                new List<Assembly> { Assembly.GetAssembly(GetType()) });
         }
 
         private Either<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)

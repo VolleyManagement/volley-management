@@ -31,6 +31,10 @@ namespace VolleyM.Domain.Framework
             RegisterQueryObjectDecorators(container);
         }
 
+        public bool HasDomainComponents { get; } = false;
+
+        public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; }=new FrameworkDomainComponentDependencyRegistrar();
+
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)
         {
             // no need for mappers

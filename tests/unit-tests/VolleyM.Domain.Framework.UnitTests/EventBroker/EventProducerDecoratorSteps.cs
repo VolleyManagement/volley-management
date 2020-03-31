@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LanguageExt;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
@@ -140,7 +141,8 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
 
         private void RegisterHandlers()
         {
-            _container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
+            FrameworkDomainComponentDependencyRegistrar.RegisterCommonServices(_container,
+                new List<Assembly> { Assembly.GetAssembly(GetType()) });
         }
 
         private void SetPermissionForHandler()

@@ -13,6 +13,10 @@ namespace VolleyM.API.Contributors
             // no dependencies
         }
 
+        public bool HasDomainComponents { get; } = false;
+
+        public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = null;
+
         public void RegisterMappingProfiles(MapperConfigurationExpression mce) =>
             mce.AddProfile<ContributorsApiMappingProfile>();
     }

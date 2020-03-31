@@ -1,9 +1,6 @@
 ﻿using AutoMapper.Configuration;
 using SimpleInjector;
 using System.Composition;
-using System.Reflection;
-using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.Players
@@ -13,8 +10,11 @@ namespace VolleyM.Domain.Players
     {
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
-            container.RegisterCommonDomainServices(Assembly.GetAssembly(GetType()));
+            // do nothing
         }
+
+        public bool HasDomainComponents { get; } = true;
+        public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = null;
 
         public void RegisterMappingProfiles(MapperConfigurationExpression mce)
         {

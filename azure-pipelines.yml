@@ -28,9 +28,11 @@ stages:
       - job: build_code
         pool:
           vmImage: 'ubuntu-16.04'
-        displayName: Source Code
+        displayName: 'Source Code'
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
+          # Need to set this var for the build to avoid Specflow issue https://github.com/SpecFlowOSS/SpecFlow/issues/1912
+          - script: echo "##vso[task.setvariable variable=MSBUILDSINGLELOADCONTEXT;]1"
           - task: DotNetCoreCLI@2
             displayName: .net build
             inputs:
@@ -75,6 +77,8 @@ stages:
         displayName: Integration Tests
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
+          # Need to set this var for the build to avoid Specflow issue https://github.com/SpecFlowOSS/SpecFlow/issues/1912
+          - script: echo "##vso[task.setvariable variable=MSBUILDSINGLELOADCONTEXT;]1"
           - script: |
               echo "##vso[task.setvariable variable=VOLLEYM_TESTTARGET;]AzureCloud"
               echo "##vso[task.setvariable variable=VOLLEYM_IDENTITYCONTEXTTABLESTORAGEOPTIONS__CONNECTIONSTRING;]$(vm_azstorage_connection_string_staging)"

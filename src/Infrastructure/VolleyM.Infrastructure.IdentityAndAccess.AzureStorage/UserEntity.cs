@@ -11,7 +11,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public UserEntity()
         {
-
+	        
         }
 
         public UserEntity(User user)

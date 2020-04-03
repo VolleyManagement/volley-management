@@ -1,12 +1,13 @@
-﻿using NSubstitute;
-using SimpleInjector;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using NSubstitute;
+using SimpleInjector;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Players.PlayerAggregate;
 
-namespace VolleyM.Domain.Players.UnitTests
+namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
-    public class UnitPlayersTestFixture : IPlayersTestFixture
+	public class UnitPlayersTestFixture : IPlayersTestFixture
     {
         private IQuery<TenantId, List<PlayerDto>> _queryMock;
 
@@ -29,5 +30,10 @@ namespace VolleyM.Domain.Players.UnitTests
 
         public void MockSeveralPlayersExist(List<PlayerDto> testData) =>
             _queryMock.Execute(TenantId.Default).Returns(testData);
+
+        public Task VerifyPlayerCreated(Player expectedPlayer)
+        {
+	        throw new System.NotImplementedException();
+        }
     }
 }

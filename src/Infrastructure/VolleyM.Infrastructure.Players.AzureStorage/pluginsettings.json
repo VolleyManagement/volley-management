@@ -1,0 +1,6 @@
+{
+	"PlayersContextTableStorageOptions": {
+		"ConnectionString": "UseDevelopmentStorage=true;",
+		"PlayersTable": "players"
+	}
+}

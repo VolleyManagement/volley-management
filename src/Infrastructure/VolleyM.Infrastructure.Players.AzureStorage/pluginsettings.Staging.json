@@ -1,0 +1,5 @@
+{
+	"PlayersContextTableStorageOptions": {
+		"PlayersTable": "players0staging"
+	}
+}

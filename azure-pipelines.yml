@@ -50,7 +50,7 @@ stages:
             artifact: unitTestsResults
             condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging
           - pwsh: ./migrations/publish-azure-storage-migration.ps1
-            displayName: Preapre Azure Storage migration
+            displayName: Prepare Azure Storage migration
           - publish: $(Build.SourcesDirectory)/migrations/azure-storage-migrations
             artifact: azureStorageMigration
       - job: container_build

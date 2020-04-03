@@ -1,4 +1,5 @@
 ﻿using System.Composition;
+using System.Reflection;
 using AutoMapper.Configuration;
 using Microsoft.Extensions.Configuration;
 using SimpleInjector;
@@ -21,6 +22,8 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 				.Get<PlayersContextTableStorageOptions>();
 
 			container.RegisterInstance(options);
+
+			container.Register(typeof(IQuery<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
 		}
 
 		public bool HasDomainComponents { get; } = false;

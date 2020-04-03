@@ -66,5 +66,19 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 					);
 				}, "Create Player");
 		}
+
+		public Task<Either<Error, Unit>> Delete(TenantId tenant, PlayerId id)
+		{
+			return PerformStorageOperation<Unit>(_options.PlayersTable,
+				async tableRef =>
+				{
+					var playerEntity = new PlayerEntity(tenant, id);
+					var deleteOperation = TableOperation.Delete(playerEntity);
+
+					await tableRef.ExecuteAsync(deleteOperation);
+
+					return Unit.Default;
+				}, "Delete Player");
+		}
 	}
 }

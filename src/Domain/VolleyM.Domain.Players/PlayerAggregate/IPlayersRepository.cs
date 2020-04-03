@@ -9,5 +9,7 @@ namespace VolleyM.Domain.Players.PlayerAggregate
 		Task<Either<Error, Player>> Get(TenantId tenant, PlayerId id);
 
 		Task<Either<Error, Player>> Add(Player player);
+
+		Task<Either<Error, Unit>> Delete(TenantId tenant, PlayerId id);
 	}
 }

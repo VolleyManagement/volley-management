@@ -49,7 +49,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			return target switch
 			{
-				TestTarget.Unit => new UnitPlayersTestFixture(),
+				TestTarget.Unit => new UnitPlayersTestFixture(Container),
 				TestTarget.AzureCloud => new AzureCloudPlayersTestFixture(Container),
 				_ => throw new NotSupportedException()
 			};

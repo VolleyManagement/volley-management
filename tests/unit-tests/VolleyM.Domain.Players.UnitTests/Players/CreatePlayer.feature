@@ -6,8 +6,8 @@
 @ab:1022 @azurecloud
 Scenario: Create player
 	Given I have CreatePlayerRequest
-		| Tenant  | Id      | FirstName | LastName |
-		| tenantA | player1 | John      | Smith    |
+		| Tenant  | FirstName | LastName |
+		| tenantA | John      | Smith    |
 	When I execute CreatePlayer
 	Then player is created
 	And player is returned

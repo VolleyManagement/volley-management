@@ -42,7 +42,10 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			_request = GetPlayer(table);
 
-			_expectedPlayer = new Player(_request.Tenant, _request.Id, _request.FirstName, _request.LastName);
+			var playerId = new PlayerId("player1");
+			_testFixture.MockNextRandomId(playerId.ToString());
+
+			_expectedPlayer = new Player(_request.Tenant, playerId, _request.FirstName, _request.LastName);
 		}
 
 		[When(@"I execute CreatePlayer")]
@@ -71,7 +74,6 @@ namespace VolleyM.Domain.Players.UnitTests
 			var player = table.CreateInstance<CreatePlayer.Request>();
 
 			player.Tenant = new TenantId(table.Rows[0][nameof(Player.Tenant)]);
-			player.Id = new PlayerId(table.Rows[0][nameof(Player.Id)]);
 
 			return player;
 		}

@@ -3,21 +3,15 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using SimpleInjector;
 using VolleyM.Domain.Players.PlayerAggregate;
+using VolleyM.Domain.Players.UnitTests.Fixture;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
-	public class AzureCloudPlayersTestFixture : IPlayersTestFixture
+	public class AzureCloudPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
 	{
-		private readonly Container _container;
-
-		public AzureCloudPlayersTestFixture(Container container)
+		public AzureCloudPlayersTestFixture(Container container) 
+			: base(container)
 		{
-			_container = container;
-		}
-
-		public void RegisterScenarioDependencies(Container container)
-		{
-			// do nothing
 		}
 
 		public Task ScenarioSetup()

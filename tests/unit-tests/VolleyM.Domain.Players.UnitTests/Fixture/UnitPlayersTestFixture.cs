@@ -7,13 +7,19 @@ using VolleyM.Domain.Players.PlayerAggregate;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
-	public class UnitPlayersTestFixture : IPlayersTestFixture
+	public class UnitPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
     {
         private IQuery<TenantId, List<PlayerDto>> _queryMock;
 
-        public void RegisterScenarioDependencies(Container container)
+        public UnitPlayersTestFixture(Container container) : base(container)
         {
-            _queryMock = Substitute.For<IQuery<TenantId, List<PlayerDto>>>();
+        }
+
+		public override void RegisterScenarioDependencies(Container container)
+		{
+			base.RegisterScenarioDependencies(container);
+
+			_queryMock = Substitute.For<IQuery<TenantId, List<PlayerDto>>>();
 
             container.Register(() => _queryMock, Lifestyle.Scoped);
         }

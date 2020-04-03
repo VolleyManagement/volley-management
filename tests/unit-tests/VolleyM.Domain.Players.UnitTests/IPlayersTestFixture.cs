@@ -10,5 +10,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		void MockSeveralPlayersExist(List<PlayerDto> testData);
 
 		Task VerifyPlayerCreated(Player expectedPlayer);
+
+		void MockNextRandomId(string id);
 	}
 }

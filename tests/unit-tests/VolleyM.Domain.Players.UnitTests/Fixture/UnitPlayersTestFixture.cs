@@ -54,5 +54,12 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 			return Task.CompletedTask;
 		}
+
+		public Task VerifyPlayerNotCreated(Player expectedPlayer)
+		{
+			_actualPlayer.Should().BeNull("player should not be created");
+
+			return Task.CompletedTask;
+		}
 	}
 }

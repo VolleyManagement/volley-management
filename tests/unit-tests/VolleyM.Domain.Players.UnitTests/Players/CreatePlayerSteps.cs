@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using LanguageExt;
 using SimpleInjector;
@@ -64,18 +65,57 @@ namespace VolleyM.Domain.Players.UnitTests
 		[Then(@"player is returned")]
 		public void ThenPlayerIsReturned()
 		{
-			_actualResult.IsRight.Should().BeTrue("created player should be returned");
-			_actualResult.IfRight(u => u.Should()
-				.BeEquivalentTo(_expectedPlayer, "created player should be returned"));
+			_actualResult.ShouldBeEquivalent(_expectedPlayer, "created player should be returned");
 		}
+
+		[Then(@"player is not created")]
+		public async Task ThenPlayerIsNotCreated()
+		{
+			await _testFixture.VerifyPlayerNotCreated(_expectedPlayer);
+		}
+
+		[Then(@"ValidationError is returned")]
+		public void ThenValidationErrorIsReturned()
+		{
+			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
+		}
+
 
 		private static CreatePlayer.Request GetPlayer(Table table)
 		{
 			var player = table.CreateInstance<CreatePlayer.Request>();
 
-			player.Tenant = new TenantId(table.Rows[0][nameof(Player.Tenant)]);
+			player.Tenant = SetTenant(table);
+
+			player.FirstName = SetNameField(player.FirstName);
+			player.LastName = SetNameField(player.LastName);
 
 			return player;
+		}
+
+		private static TenantId SetTenant(Table table)
+		{
+			var val = table.Rows[0][nameof(Player.Tenant)];
+			if (val == "<null>")
+			{
+				return null;
+			}
+
+			return new TenantId(val);
+		}
+
+		private static string SetNameField(string val)
+		{
+			if (val == "<60+ symbols name>")
+			{
+				return new string(Enumerable.Repeat('a', 61).ToArray());
+			}
+			if (val == "<null>")
+			{
+				return null;
+			}
+
+			return val;
 		}
 	}
 }

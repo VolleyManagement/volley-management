@@ -6,8 +6,8 @@
 @ab:1022 @unit @azurecloud
 Scenario: Create player
 	Given I have CreatePlayerRequest
-		| Tenant  | FirstName | LastName |
-		| tenantA | John      | Smith    |
+		| FirstName | LastName |
+		| John      | Smith    |
 	When I execute CreatePlayer
 	Then player is created
 	And player is returned
@@ -15,18 +15,17 @@ Scenario: Create player
 @ab:1022 @unit
 Scenario: Validation cases
 	Given I have CreatePlayerRequest
-		| Tenant   | FirstName   | LastName   |
-		| <Tenant> | <FirstName> | <LastName> |
+		| FirstName   | LastName   |
+		| <FirstName> | <LastName> |
 	When I execute CreatePlayer
 	Then player is not created
 	And ValidationError is returned
 
 	Examples:
-		| Tenant  | FirstName          | LastName           |
-		| tenantA | <60+ symbols name> | Smith              |
-		| tenantA | <null>             | Smith              |
-		| tenantA |                    | Smith              |
-		| tenantA | John               | <60+ symbols name> |
-		| tenantA | John               | <null>             |
-		| tenantA | John               |                    |
-		| <null>  | John               | Smith              |
+		| FirstName          | LastName           |
+		| <60+ symbols name> | Smith              |
+		| <null>             | Smith              |
+		|                    | Smith              |
+		| John               | <60+ symbols name> |
+		| John               | <null>             |
+		| John               |                    |

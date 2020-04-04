@@ -13,79 +13,81 @@ using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.Framework
 {
-    [Export(typeof(IAssemblyBootstrapper))]
-    public class DomainFrameworkAssemblyBootstrapper : IAssemblyBootstrapper
-    {
-        public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
-        {
-            container.Register<IAuthorizationHandler, DefaultAuthorizationHandler>(Lifestyle.Scoped);
-            container.Register<IAuthorizationService, AuthorizationService>(Lifestyle.Scoped);
+	[Export(typeof(IAssemblyBootstrapper))]
+	public class DomainFrameworkAssemblyBootstrapper : IAssemblyBootstrapper
+	{
+		public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
+		{
+			container.Register<IAuthorizationHandler, DefaultAuthorizationHandler>(Lifestyle.Scoped);
+			container.Register<IAuthorizationService, AuthorizationService>(Lifestyle.Scoped);
 
-            container.Register<ICurrentUserProvider, CurrentUserProvider>(Lifestyle.Scoped);
-            container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);
+			container.Register<ICurrentUserProvider, CurrentUserProvider>(Lifestyle.Scoped);
+			container.Register<ICurrentUserManager, CurrentUserProvider>(Lifestyle.Scoped);
 
-            container.Register<HandlerMetadataService>(Lifestyle.Singleton);
+			container.Register<HandlerMetadataService>(Lifestyle.Singleton);
 
-            RegisterHandlerDecorators(container);
+			RegisterHandlerDecorators(container);
 
-            RegisterQueryObjectDecorators(container);
-        }
+			RegisterQueryObjectDecorators(container);
 
-        public bool HasDomainComponents { get; } = false;
+			container.Register<IRandomIdGenerator, RandomIdGenerator>(Lifestyle.Singleton);
+		}
 
-        public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; }=new FrameworkDomainComponentDependencyRegistrar();
+		public bool HasDomainComponents { get; } = false;
 
-        public void RegisterMappingProfiles(MapperConfigurationExpression mce)
-        {
-            // no need for mappers
-        }
+		public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = new FrameworkDomainComponentDependencyRegistrar();
 
-        private static void RegisterHandlerDecorators(Container container)
-        {
-            // order is important. First decorator will wrap real instance
-            container.RegisterDecorator(
-                typeof(IRequestHandler<,>),
-                typeof(EventProducerDecorator<,>),
-                Lifestyle.Scoped);
+		public void RegisterMappingProfiles(MapperConfigurationExpression mce)
+		{
+			// no need for mappers
+		}
 
-            container.RegisterDecorator(
-                typeof(IRequestHandler<,>),
-                typeof(ValidationHandlerDecorator<,>),
-                Lifestyle.Scoped,
-                context => DecorateWhenHasValidator(context, container));
+		private static void RegisterHandlerDecorators(Container container)
+		{
+			// order is important. First decorator will wrap real instance
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(EventProducerDecorator<,>),
+				Lifestyle.Scoped);
 
-            container.RegisterDecorator(
-                typeof(IRequestHandler<,>),
-                typeof(AuthorizationHandlerDecorator<,>),
-                Lifestyle.Scoped);
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(ValidationHandlerDecorator<,>),
+				Lifestyle.Scoped,
+				context => DecorateWhenHasValidator(context, container));
 
-            container.RegisterDecorator(
-                typeof(IRequestHandler<,>),
-                typeof(FeatureToggleDecorator<,>),
-                Lifestyle.Scoped);
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(AuthorizationHandlerDecorator<,>),
+				Lifestyle.Scoped);
 
-            container.RegisterDecorator(
-                typeof(IRequestHandler<,>),
-                typeof(LoggingRequestHandlerDecorator<,>),
-                Lifestyle.Scoped);
-        }
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(FeatureToggleDecorator<,>),
+				Lifestyle.Scoped);
 
-        private static bool DecorateWhenHasValidator(DecoratorPredicateContext c, Container container)
-        {
-            var metadata = container.GetInstance<HandlerMetadataService>();
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(LoggingRequestHandlerDecorator<,>),
+				Lifestyle.Scoped);
+		}
 
-            var handlerType = c?.ImplementationType;
+		private static bool DecorateWhenHasValidator(DecoratorPredicateContext c, Container container)
+		{
+			var metadata = container.GetInstance<HandlerMetadataService>();
 
-            return handlerType != null && metadata.HasValidator(handlerType);
-        }
+			var handlerType = c?.ImplementationType;
 
-        private static void RegisterQueryObjectDecorators(Container container)
-        {
-            // order is important. First decorator will wrap real instance
-            container.RegisterDecorator(
-                typeof(IQuery<,>),
-                typeof(LoggingQueryObjectDecorator<,>),
-                Lifestyle.Scoped);
-        }
-    }
+			return handlerType != null && metadata.HasValidator(handlerType);
+		}
+
+		private static void RegisterQueryObjectDecorators(Container container)
+		{
+			// order is important. First decorator will wrap real instance
+			container.RegisterDecorator(
+				typeof(IQuery<,>),
+				typeof(LoggingQueryObjectDecorator<,>),
+				Lifestyle.Scoped);
+		}
+	}
 }

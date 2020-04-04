@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
@@ -46,7 +45,7 @@ namespace VolleyM.Domain.Players.UnitTests
 			var playerId = new PlayerId("player1");
 			_testFixture.MockNextRandomId(playerId.ToString());
 
-			_expectedPlayer = new Player(_request.Tenant, playerId, _request.FirstName, _request.LastName);
+			_expectedPlayer = new Player(TenantId.Default, playerId, _request.FirstName, _request.LastName);
 		}
 
 		[When(@"I execute CreatePlayer")]
@@ -85,23 +84,10 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			var player = table.CreateInstance<CreatePlayer.Request>();
 
-			player.Tenant = SetTenant(table);
-
 			player.FirstName = SetNameField(player.FirstName);
 			player.LastName = SetNameField(player.LastName);
 
 			return player;
-		}
-
-		private static TenantId SetTenant(Table table)
-		{
-			var val = table.Rows[0][nameof(Player.Tenant)];
-			if (val == "<null>")
-			{
-				return null;
-			}
-
-			return new TenantId(val);
 		}
 
 		private static string SetNameField(string val)

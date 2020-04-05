@@ -43,6 +43,7 @@
 
     <!--API plugins-->
     <ProjectReference Include="..\VolleyM.API.Contributors\VolleyM.API.Contributors.csproj" />
+    <ProjectReference Include="..\VolleyM.API.Players\VolleyM.API.Players.csproj" />
 
     <!--Domain-->
     <ProjectReference Include="..\..\Domain\VolleyM.Domain.Framework\VolleyM.Domain.Framework.csproj" />

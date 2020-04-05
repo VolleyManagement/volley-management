@@ -25,6 +25,7 @@ RUN dotnet publish "src/Domain/VolleyM.Domain.Contracts/VolleyM.Domain.Contracts
     && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.Players.AzureStorage/VolleyM.Infrastructure.Players.AzureStorage.csproj" -c Release -o /app\
     && dotnet publish "src/Infrastructure/VolleyM.Infrastructure.EventBroker/VolleyM.Infrastructure.EventBroker.csproj" -c Release -o /app\
     && dotnet publish "src/Client/VolleyM.API.Contributors/VolleyM.API.Contributors.csproj" -c Release -o /app\
+    && dotnet publish "src/Client/VolleyM.API.Players/VolleyM.API.Players.csproj" -c Release -o /app\
     && dotnet publish "src/Client/VolleyM.API/VolleyM.API.csproj" -c Release -o /app
 
 FROM base AS final

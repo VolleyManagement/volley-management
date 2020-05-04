@@ -92,3 +92,13 @@ Scenario: API application authorized directly
 	When I authorize user
 	Then user should be authorized
 	And user is assigned SysAdmin role
+
+@ab:1128
+Scenario: API application is not authorized if some claim is missing
+	Given new user is being authorized
+	And hosting environment is not Production
+	And Auth0 client id is 'clientIdString'
+	And user has 'sub' claim with 'wrongClientIdString@clients' value
+	When I authorize user
+	Then user should be authorized
+	And user is assigned Visitor role

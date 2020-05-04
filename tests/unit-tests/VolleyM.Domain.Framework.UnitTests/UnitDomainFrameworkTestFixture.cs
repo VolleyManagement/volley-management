@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
+using NSubstitute.Core;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -42,6 +43,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 			container.Register(() => _rolesStore, Lifestyle.Scoped);
 
 			_applicationInfo = Substitute.For<IApplicationInfo>();
+			_applicationInfo.IsRunningInProduction.Returns(true);
 			container.Register(() => _applicationInfo, Lifestyle.Singleton);
 		}
 
@@ -83,11 +85,24 @@ namespace VolleyM.Domain.Framework.UnitTests
 
 		public void MockCreateUserSuccess()
 		{
+			User BuildUser(CallInfo ci)
+			{
+				var req = ci.Arg<CreateUser.Request>();
+				var result = new User(
+					req.UserId,
+					req.Tenant);
+
+				if (req.Role != null)
+				{
+					result.AssignRole(req.Role);
+				}
+
+				return result;
+			}
+
 			_createHandler.Handle(Arg.Any<CreateUser.Request>())
 				.Returns(ci => Task.FromResult(
-					(Either<Error, User>)new User(
-						ci.Arg<CreateUser.Request>().UserId,
-						ci.Arg<CreateUser.Request>().Tenant)))
+					(Either<Error, User>)BuildUser(ci)))
 				.AndDoes(ci => { _actualCreateRequest = ci.Arg<CreateUser.Request>(); });
 
 			OverrideHandlerMetadata<CreateUser.Request>(

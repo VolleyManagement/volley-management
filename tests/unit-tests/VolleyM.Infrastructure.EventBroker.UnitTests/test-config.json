@@ -1,0 +1,5 @@
+{
+	"ApplicationTrust": {
+		"Auth0ClientId": "someIdString"
+	}
+}

@@ -88,6 +88,7 @@ Scenario: API application authorized directly
 	And user has 'azp' claim with 'clientIdString' value
 	And user has 'gty' claim with 'client-credentials' value
 	And hosting environment is not Production
+	And Auth0 client id is 'clientIdString'
 	When I authorize user
 	Then user should be authorized
 	And user is assigned SysAdmin role

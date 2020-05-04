@@ -112,11 +112,18 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 		{
 			_testFixture.MockCreateUserError();
 		}
-		
+
 		[Given(@"hosting environment is not Production")]
 		public void GivenHostingEnvironmentIsNotProduction()
 		{
-			ScenarioContext.Current.Pending();
+			_testFixture.MockHostingEnvironmentIsProduction(false);
+		}
+
+		[Given(@"Auth0 client id is '(.*)'")]
+		public void GivenAuthClientIdIs(string clientIdString)
+		{
+			var options = _container.GetInstance<ApplicationTrustOptions>();
+			options.Auth0ClientId = clientIdString;
 		}
 
 		#endregion

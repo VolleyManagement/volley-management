@@ -2,6 +2,6 @@
 
 steps:
   - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK 3.0.x'
+    displayName: 'Use .NET SDK 5.0.x'
     inputs:
-      version: 3.0.x
+      version: 5.0.x

@@ -5,4 +5,4 @@ steps:
     displayName: 'Use .NET SDK 5.0.x'
     inputs:
       version: 5.0.x
-    includePreviewVersions: true
+      includePreviewVersions: true

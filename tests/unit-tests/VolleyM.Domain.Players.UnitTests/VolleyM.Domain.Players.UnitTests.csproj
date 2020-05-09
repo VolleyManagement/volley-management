@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="SpecFlow" Version="3.1.89" />
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.1.89" />
     <PackageReference Include="SpecFlow.xUnit" Version="3.1.89" />
@@ -16,11 +16,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.0.1" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Players\VolleyM.Domain.Players.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Players.AzureStorage\VolleyM.Infrastructure.Players.AzureStorage.csproj" />
     <ProjectReference Include="..\VolleyM.Domain.UnitTests.Framework\VolleyM.Domain.UnitTests.Framework.csproj" />
   </ItemGroup>
 

@@ -29,7 +29,7 @@ namespace VolleyM.Domain.UnitTests.Framework
         public static void ShouldBeEquivalent<T>(
             this Either<Error, T> actualResult,
             T expected,
-            string because = "error should be reported",
+            string because = "",
             params object[] becauseArgs)
         {
             actualResult.IsRight.Should().BeTrue("successful result is expected");

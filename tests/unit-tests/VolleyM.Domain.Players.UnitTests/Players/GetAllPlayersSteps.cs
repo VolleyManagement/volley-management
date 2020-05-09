@@ -1,16 +1,15 @@
-﻿using LanguageExt;
-using SimpleInjector;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using LanguageExt;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.Players.Handlers;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Get All players")]
     public class GetAllPlayersSteps
     {

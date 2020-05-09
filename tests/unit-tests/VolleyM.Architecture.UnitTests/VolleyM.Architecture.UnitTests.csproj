@@ -7,16 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.9.0" />
-    <PackageReference Include="Microsoft.Build" Version="16.3.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
-    <PackageReference Include="NetArchTest.Rules" Version="1.2.3" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.Build" Version="16.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="NetArchTest.Rules" Version="1.2.5" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.1.0">
+    <PackageReference Include="coverlet.collector" Version="1.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -33,6 +33,8 @@
     <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.EventBroker\VolleyM.Infrastructure.EventBroker.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Players.AzureStorage\VolleyM.Infrastructure.Players.AzureStorage.csproj" />
     <ProjectReference Include="..\..\..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj" />
   </ItemGroup>
 

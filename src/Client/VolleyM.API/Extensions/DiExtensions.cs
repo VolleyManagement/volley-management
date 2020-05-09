@@ -36,12 +36,7 @@ namespace VolleyM.API.Extensions
 
             RegisterAutoMapper(container, bootstrapper);
 
-            app.UseSimpleInjector(container, options =>
-            {
-                options.AutoCrossWireFrameworkComponents = false;
-
-                options.CrossWire<IFeatureService>();
-            });
+            app.UseSimpleInjector(container);
         }
 
         private static void RegisterAutoMapper(Container container, AssemblyBootstrapper bootstrapper)

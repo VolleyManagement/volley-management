@@ -25,6 +25,7 @@ namespace VolleyM.Domain.Framework.Authorization
 		private readonly IRequestHandler<CreateUser.Request, User> _createUserHandler;
 		private readonly ICurrentUserManager _currentUserManager;
 		private readonly IApplicationInfo _applicationInfo;
+		private readonly ApplicationTrustOptions _trustOptions;
 
 		private readonly List<string> _idClaimTypes = new List<string>
 		{
@@ -35,12 +36,13 @@ namespace VolleyM.Domain.Framework.Authorization
 		public DefaultAuthorizationHandler(
 			IRequestHandler<CreateUser.Request, User> createUserHandler,
 			ICurrentUserManager currentUserManager,
-			IRequestHandler<GetUser.Request, User> getUserHandler, IApplicationInfo applicationInfo)
+			IRequestHandler<GetUser.Request, User> getUserHandler, IApplicationInfo applicationInfo, ApplicationTrustOptions trustOptions)
 		{
 			_createUserHandler = createUserHandler;
 			_currentUserManager = currentUserManager;
 			_getUserHandler = getUserHandler;
 			_applicationInfo = applicationInfo;
+			_trustOptions = trustOptions;
 		}
 
 		public async Task<Either<Error, Unit>> AuthorizeUser(ClaimsPrincipal user)
@@ -136,7 +138,8 @@ namespace VolleyM.Domain.Framework.Authorization
 		private EitherAsync<Error, User> CreateUser(string idValue)
 		{
 			var role = _visitorRole;
-			if (!_applicationInfo.IsRunningInProduction)
+			if (!_applicationInfo.IsRunningInProduction
+			&& string.Compare($"{_trustOptions.Auth0ClientId}@clients", idValue, StringComparison.OrdinalIgnoreCase) == 0)
 			{
 				role = _sysAdminRole;
 			}

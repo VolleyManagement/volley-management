@@ -98,7 +98,7 @@ Scenario: API application is not authorized if 'sub' claim is wrong
 	Given new user is being authorized
 	And hosting environment is not Production
 	And Auth0 client id is 'clientIdString'
-	And user has 'sub' claim with 'wrongClientIdString@clients' value
+	And user has 'sub' claim with 'WRONG--ClientIdString@clients' value
 	When I authorize user
 	Then user should be authorized
 	And user is assigned Visitor role
@@ -108,7 +108,8 @@ Scenario: API application is not authorized if 'azp' claim is wrong
 	Given new user is being authorized
 	And hosting environment is not Production
 	And Auth0 client id is 'clientIdString'
-	And user has 'azp' claim with 'wrongClientIdString' value
+	And user has 'sub' claim with 'clientIdString@clients' value
+	And user has 'azp' claim with 'WRONG--ClientIdString' value
 	When I authorize user
 	Then user should be authorized
 	And user is assigned Visitor role

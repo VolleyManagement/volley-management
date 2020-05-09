@@ -29,8 +29,11 @@ namespace VolleyM.Domain.Framework.Authorization
 
 		private readonly List<string> _idClaimTypes = new List<string>
 		{
-			"sub", "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+			"sub",
+			"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
 		};
+
+		private const string AUTHORIZED_PARTY_CLAIM = "azp";
 
 
 		public DefaultAuthorizationHandler(
@@ -48,6 +51,7 @@ namespace VolleyM.Domain.Framework.Authorization
 		public async Task<Either<Error, Unit>> AuthorizeUser(ClaimsPrincipal user)
 		{
 			var idValueOption = GetUserIdFromClaims(user);
+			var azpValueOption = GetAuthorizedPartyClaim(user);
 
 			var getUser =
 				from anonUser in CheckUnauthenticatedUser(user)
@@ -63,7 +67,7 @@ namespace VolleyM.Domain.Framework.Authorization
 					{ Type: ErrorType.NotAuthenticated }
 						=> GetAnonymousUser(),
 					{ Type: ErrorType.NotFound }
-						=> CreateUser(idValueOption.ValueUnsafe()),
+						=> CreateUser(idValueOption.ValueUnsafe(), azpValueOption),
 					var left => left
 				})
 				.Match(EitherAsync<Error, User>.Right, l => l);
@@ -89,9 +93,17 @@ namespace VolleyM.Domain.Framework.Authorization
 
 		private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)
 		{
-			var idClaim = user.FindFirst(type => _idClaimTypes.Contains(type.Type));
+			var idClaim = user.FindFirst(claim => _idClaimTypes.Contains(claim.Type));
 			return idClaim != null
 				? Option<string>.Some(idClaim.Value)
+				: Option<string>.None;
+		}
+		private Option<string> GetAuthorizedPartyClaim(ClaimsPrincipal user)
+		{
+			var azpClaim = user.FindFirst(claim =>
+				string.Compare(claim.Type, AUTHORIZED_PARTY_CLAIM, StringComparison.OrdinalIgnoreCase) == 0);
+			return azpClaim != null
+				? Option<string>.Some(azpClaim.Value)
 				: Option<string>.None;
 		}
 
@@ -135,10 +147,10 @@ namespace VolleyM.Domain.Framework.Authorization
 			return _getUserHandler.Handle(getRequest).ToAsync();
 		}
 
-		private EitherAsync<Error, User> CreateUser(string idValue)
+		private EitherAsync<Error, User> CreateUser(string idValue, Option<string> azpValueOption)
 		{
 			var role = _visitorRole;
-			if (IsTrustedApiClientAuthentication(idValue))
+			if (IsTrustedApiClientAuthentication(idValue, azpValueOption))
 			{
 				role = _sysAdminRole;
 			}
@@ -153,10 +165,11 @@ namespace VolleyM.Domain.Framework.Authorization
 			return _createUserHandler.Handle(createRequest).ToAsync();
 		}
 
-		private bool IsTrustedApiClientAuthentication(string idValue)
+		private bool IsTrustedApiClientAuthentication(string idValue, Option<string> azpValueOption)
 		{
 			return !_applicationInfo.IsRunningInProduction
-			       && string.Compare($"{_trustOptions.Auth0ClientId}@clients", idValue, StringComparison.OrdinalIgnoreCase) == 0;
+				   && string.Compare($"{_trustOptions.Auth0ClientId}@clients", idValue, StringComparison.OrdinalIgnoreCase) == 0
+				&& azpValueOption.ValueUnsafe() == _trustOptions.Auth0ClientId;
 		}
 
 		/// <summary>

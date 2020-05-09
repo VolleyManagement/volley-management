@@ -138,8 +138,7 @@ namespace VolleyM.Domain.Framework.Authorization
 		private EitherAsync<Error, User> CreateUser(string idValue)
 		{
 			var role = _visitorRole;
-			if (!_applicationInfo.IsRunningInProduction
-			&& string.Compare($"{_trustOptions.Auth0ClientId}@clients", idValue, StringComparison.OrdinalIgnoreCase) == 0)
+			if (IsTrustedApiClientAuthentication(idValue))
 			{
 				role = _sysAdminRole;
 			}
@@ -152,6 +151,12 @@ namespace VolleyM.Domain.Framework.Authorization
 			};
 			using var _ = BeginAuthZUserScope();
 			return _createUserHandler.Handle(createRequest).ToAsync();
+		}
+
+		private bool IsTrustedApiClientAuthentication(string idValue)
+		{
+			return !_applicationInfo.IsRunningInProduction
+			       && string.Compare($"{_trustOptions.Auth0ClientId}@clients", idValue, StringComparison.OrdinalIgnoreCase) == 0;
 		}
 
 		/// <summary>

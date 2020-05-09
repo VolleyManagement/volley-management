@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +13,8 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
-    <PackageReference Include="SimpleInjector" Version="4.9.1" />
-    <PackageReference Include="SpecFlow" Version="3.1.89" />
+    <PackageReference Include="SimpleInjector" Version="4.10.2" />
+    <PackageReference Include="SpecFlow" Version="3.1.97" />
   </ItemGroup>
 
   <ItemGroup>

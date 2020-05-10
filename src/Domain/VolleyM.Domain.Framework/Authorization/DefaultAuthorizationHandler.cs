@@ -34,6 +34,7 @@ namespace VolleyM.Domain.Framework.Authorization
 		};
 
 		private const string AUTHORIZED_PARTY_CLAIM = "azp";
+		private const string GRANT_TYPE_CLAIM = "gty";
 
 
 		public DefaultAuthorizationHandler(
@@ -158,9 +159,11 @@ namespace VolleyM.Domain.Framework.Authorization
 			}
 
 			var azpClaim = GetClaimValue(user, AUTHORIZED_PARTY_CLAIM);
+			var gtyClaim = GetClaimValue(user, GRANT_TYPE_CLAIM);
 
 			return AreEqual($"{_trustOptions.Auth0ClientId}@clients", idValue)
-				&& AreEqual(azpClaim.ValueUnsafe(), _trustOptions.Auth0ClientId);
+			       && AreEqual(azpClaim.ValueUnsafe(), _trustOptions.Auth0ClientId)
+			       && AreEqual(gtyClaim.ValueUnsafe(), "client-credentials");
 		}
 
 		private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)

@@ -98,4 +98,4 @@ Scenario Outline: API application authorized directly
 		| not Production | clientIdString | clientIdString@clients | clientIdString | client-credentials | SysAdmin      |
 		| not Production | clientIdString | WRONG!!!!!             | clientIdString | client-credentials | Visitor       |
 		| not Production | clientIdString | clientIdString@clients | WRONG!!!!!     | client-credentials | Visitor       |
-		#| not Production | clientIdString | clientIdString@clients | clientIdString | WRONG!!!!!         | Visitor       |
+		| not Production | clientIdString | clientIdString@clients | clientIdString | WRONG!!!!!         | Visitor       |

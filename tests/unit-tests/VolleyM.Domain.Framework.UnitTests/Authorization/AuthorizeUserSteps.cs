@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
@@ -18,177 +19,222 @@ using Constants = VolleyM.Domain.UnitTests.Framework.Constants;
 
 namespace VolleyM.Domain.Framework.UnitTests.Authorization
 {
-    [Binding]
-    [Scope(Feature = "Authorize User")]
-    public class AuthorizeUserSteps
-    {
-        private readonly IDomainFrameworkTestFixture _testFixture;
-        private readonly Container _container;
+	[Binding]
+	[Scope(Feature = "Authorize User")]
+	public class AuthorizeUserSteps
+	{
+		private readonly IDomainFrameworkTestFixture _testFixture;
+		private readonly Container _container;
 
-        private ClaimsIdentity _userClaims;
+		private ClaimsIdentity _userClaims;
 
-        private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
-        private readonly RoleId _visitorRole = new RoleId("visitor");
+		private readonly UserId _predefinedAnonymousUserId = new UserId("anonym@volleym.idp");
 
-        private Either<Error, Unit> _actualResult;
-        private CreateUser.Request _expectedRequest;
+		private static readonly RoleId _sysAdminRole = new RoleId("sysadmin");
+		private static readonly RoleId _visitorRole = new RoleId("visitor");
 
-        public AuthorizeUserSteps(IDomainFrameworkTestFixture testFixture, Container container)
-        {
-            _testFixture = testFixture;
-            _container = container;
-        }
+		private Either<Error, Unit> _actualResult;
+		private CreateUser.Request _expectedRequest;
 
-        [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
-        public void ScenarioSetup()
-        {
-            _expectedRequest = new CreateUser.Request
-            {
-                Tenant = TenantId.Default,
-                Role = _visitorRole
-            };
-        }
+		public AuthorizeUserSteps(IDomainFrameworkTestFixture testFixture, Container container)
+		{
+			_testFixture = testFixture;
+			_container = container;
+		}
 
-        #region Given
+		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
+		public void ScenarioSetup()
+		{
+			_expectedRequest = new CreateUser.Request
+			{
+				Tenant = TenantId.Default,
+				Role = _visitorRole
+			};
+		}
 
-        [Given("new user is being authorized")]
-        public void GivenNewUserIsBeingAuthorized()
-        {
-            _userClaims = CreateAuthenticatedIdentity();
-            _testFixture.MockUserNotFound();
-            _testFixture.MockCreateUserSuccess();
-        }
+		#region Given
 
-        [Given("unauthenticated user is being authorized")]
-        public void GivenNotAuthenticatedUserIsBeingAuthorized()
-        {
-            _userClaims = CreateNotAuthenticatedIdentity();
-            _testFixture.MockUserNotFound();
-            _testFixture.MockCreateUserSuccess();
-        }
+		[Given("new user is being authorized")]
+		public void GivenNewUserIsBeingAuthorized()
+		{
+			_userClaims = CreateAuthenticatedIdentity();
+			_testFixture.MockUserNotFound();
+			_testFixture.MockCreateUserSuccess();
+		}
 
-        [Given("existing user is being authorized")]
-        public void GivenExistingUserIsBeingAuthorized()
-        {
-            _userClaims = CreateAuthenticatedIdentity();
-            GivenUserHasIdClaim();
-            _testFixture.MockUserExists(new User(_expectedRequest.UserId, _expectedRequest.Tenant));
-        }
+		[Given("unauthenticated user is being authorized")]
+		public void GivenNotAuthenticatedUserIsBeingAuthorized()
+		{
+			_userClaims = CreateNotAuthenticatedIdentity();
+			_testFixture.MockUserNotFound();
+			_testFixture.MockCreateUserSuccess();
+		}
 
-        [Given(@"user has '(\S+)' claim with '(\S+)' value")]
-        public void GivenUserHasClaim(string claim, string value)
-        {
-            //Note: this might not work if you have several 'user has claim' statements in spec
-            _expectedRequest.UserId = new UserId(value);
+		[Given("existing user is being authorized")]
+		public void GivenExistingUserIsBeingAuthorized()
+		{
+			_userClaims = CreateAuthenticatedIdentity();
+			GivenUserHasIdClaim();
+			_testFixture.MockUserExists(new User(_expectedRequest.UserId, _expectedRequest.Tenant));
+		}
 
-            _userClaims.AddClaim(new Claim(claim, value));
-        }
+		[Given(@"user has '(\S+)' claim with '(\S+)' value")]
+		public void GivenUserHasClaim(string claim, string value)
+		{
+			//Note: this might not work if you have several 'user has claim' statements in spec
+			_expectedRequest.UserId = new UserId(value);
 
-        [Given(@"user has no claims")]
-        public void GivenUserHasNoClaims()
-        {
-            var claims = _userClaims.Claims.ToList();
+			_userClaims.AddClaim(new Claim(claim, value));
+		}
 
-            claims.ForEach(_userClaims.RemoveClaim);
-        }
+		[Given(@"user has no claims")]
+		public void GivenUserHasNoClaims()
+		{
+			var claims = _userClaims.Claims.ToList();
 
-        [Given(@"user has correct ID claim")]
-        public void GivenUserHasIdClaim()
-        {
-            GivenUserHasClaim("sub", "user123");
-        }
+			claims.ForEach(_userClaims.RemoveClaim);
+		}
 
-        [Given(@"get user operation has error")]
-        public void GivenGetUserReturnsError()
-        {
-            _testFixture.MockGetUserError();
-        }
+		[Given(@"user has correct ID claim")]
+		public void GivenUserHasIdClaim()
+		{
+			GivenUserHasClaim("sub", "user123");
+		}
 
-        [Given(@"create user operation has error")]
-        public void GivenCreateUserReturnsError()
-        {
-            _testFixture.MockCreateUserError();
-        }
+		[Given(@"get user operation has error")]
+		public void GivenGetUserReturnsError()
+		{
+			_testFixture.MockGetUserError();
+		}
 
-        #endregion
+		[Given(@"create user operation has error")]
+		public void GivenCreateUserReturnsError()
+		{
+			_testFixture.MockCreateUserError();
+		}
 
-        #region When
+		[Given(@"hosting environment is not Production")]
+		public void GivenHostingEnvironmentIsNotProduction()
+		{
+			_testFixture.MockHostingEnvironmentIsProduction(false);
+		}
 
-        [When("I authorize user")]
-        public async Task WhenIAuthorizeUser()
-        {
-            var userToAuthorize = new ClaimsPrincipal(_userClaims);
+		[Given(@"hosting environment is Production")]
+		public void GivenHostingEnvironmentIsProduction()
+		{
+			_testFixture.MockHostingEnvironmentIsProduction(true);
+		}
 
-            var handler = _container.GetInstance<IAuthorizationHandler>();
-            _actualResult = await handler.AuthorizeUser(userToAuthorize);
-        }
+		[Given(@"Auth0 client id is '(.*)'")]
+		public void GivenAuthClientIdIs(string clientIdString)
+		{
+			var options = _container.GetInstance<ApplicationTrustOptions>();
+			options.Auth0ClientId = clientIdString;
+		}
 
-        #endregion
+		#endregion
 
-        #region Then
+		#region When
 
-        [Then("user should be authorized")]
-        public void ThenUserShouldBeAuthorized()
-        {
-            _actualResult.IsRight.Should().BeTrue("user should be authorized");
-        }
+		[When("I authorize user")]
+		public async Task WhenIAuthorizeUser()
+		{
+			var userToAuthorize = new ClaimsPrincipal(_userClaims);
 
-        [Then("user should not be authorized")]
-        public void ThenUserShouldNotBeAuthorized()
-        {
-            _actualResult.IsLeft.Should().BeTrue("user should not be authorized");
-        }
+			var handler = _container.GetInstance<IAuthorizationHandler>();
+			_actualResult = await handler.AuthorizeUser(userToAuthorize);
+		}
 
-        [Then("this user is set into current context")]
-        public void UserIsSetAsCurrent()
-        {
-            var currentUser = _container.GetInstance<ICurrentUserProvider>();
+		#endregion
 
-            currentUser.UserId.Should().Be(_expectedRequest.UserId, "user with this Id was logged in");
-            currentUser.Tenant.Should().Be(_expectedRequest.Tenant, "current tenant should be set");
-        }
+		#region Then
 
-        [Then("new user should be created in the system")]
-        public void ThenNewUserIsCreated()
-        {
-            _testFixture.VerifyUserCreated(_expectedRequest);
-        }
+		[Then("user should be authorized")]
+		public void ThenUserShouldBeAuthorized()
+		{
+			_actualResult.IsRight.Should().BeTrue("user should be authorized");
+		}
 
-        [Then("new user should not be created in the system")]
-        public void ThenNewUserIsNotCreated()
-        {
-            _testFixture.VerifyUserNotCreated();
-        }
+		[Then("user should not be authorized")]
+		public void ThenUserShouldNotBeAuthorized()
+		{
+			_actualResult.IsLeft.Should().BeTrue("user should not be authorized");
+		}
 
-        [Then("anonymous visitor set as current user")]
-        public void ThenAnonymousSetAsCurrentUser()
-        {
-            var currentUser = _container.GetInstance<ICurrentUserManager>();
+		[Then("this user is set into current context")]
+		public void UserIsSetAsCurrent()
+		{
+			var currentUser = _container.GetInstance<ICurrentUserProvider>();
 
-            currentUser.Context.User.Id.Should().Be(_predefinedAnonymousUserId, "user was not authenticated");
-            currentUser.Context.User.Role.Should().Be(_visitorRole, "anonymous user should have Visitor role assigned");
-        }
+			currentUser.UserId.Should().Be(_expectedRequest.UserId, "user with this Id was logged in");
+			currentUser.Tenant.Should().Be(_expectedRequest.Tenant, "current tenant should be set");
+		}
 
-        #endregion
+		[Then("new user should be created in the system")]
+		public void ThenNewUserIsCreated()
+		{
+			_testFixture.VerifyUserCreated(_expectedRequest);
+		}
 
-        #region Creation methods
+		[Then("new user should not be created in the system")]
+		public void ThenNewUserIsNotCreated()
+		{
+			_testFixture.VerifyUserNotCreated();
+		}
 
-        private static ClaimsIdentity CreateAuthenticatedIdentity()
-        {
-            var baseIdentity = Substitute.For<IIdentity>();
-            baseIdentity.IsAuthenticated.Returns(true);
-            baseIdentity.AuthenticationType.Returns("AuthenticationTypes.Federation");
-            return new ClaimsIdentity(baseIdentity);
-        }
+		[Then("anonymous visitor set as current user")]
+		public void ThenAnonymousSetAsCurrentUser()
+		{
+			var currentUser = _container.GetInstance<ICurrentUserManager>();
+
+			currentUser.Context.User.Id.Should().Be(_predefinedAnonymousUserId, "user was not authenticated");
+			currentUser.Context.User.Role.Should().Be(_visitorRole, "anonymous user should have Visitor role assigned");
+		}
+
+		[Then(@"user is assigned (.*) role")]
+		public void ThenUserIsAssignedSysAdminRole(string role)
+		{
+			var expectedRole = GetExpectedRole(role);
+
+			var currentUser = _container.GetInstance<ICurrentUserManager>();
+
+			currentUser.Context.User.Role.Should().Be(expectedRole, $"anonymous user should have {role} role assigned");
+		}
+
+		#endregion
+
+		#region Creation methods
+
+		private static ClaimsIdentity CreateAuthenticatedIdentity()
+		{
+			var baseIdentity = Substitute.For<IIdentity>();
+			baseIdentity.IsAuthenticated.Returns(true);
+			baseIdentity.AuthenticationType.Returns("AuthenticationTypes.Federation");
+			return new ClaimsIdentity(baseIdentity);
+		}
 
 
-        private static ClaimsIdentity CreateNotAuthenticatedIdentity()
-        {
-            var baseIdentity = Substitute.For<IIdentity>();
-            baseIdentity.IsAuthenticated.Returns(false);
-            return new ClaimsIdentity(baseIdentity);
-        }
+		private static ClaimsIdentity CreateNotAuthenticatedIdentity()
+		{
+			var baseIdentity = Substitute.For<IIdentity>();
+			baseIdentity.IsAuthenticated.Returns(false);
+			return new ClaimsIdentity(baseIdentity);
+		}
 
-        #endregion
-    }
+		#endregion
+
+		#region
+
+		private static RoleId GetExpectedRole(string role)
+		{
+			return role.ToLowerInvariant() switch
+			{
+				"sysadmin" => _sysAdminRole,
+				"visitor" => _visitorRole,
+				_ => throw new InvalidOperationException($"Unknown role: {role}.")
+			};
+		}
+
+		#endregion
+	}
 }

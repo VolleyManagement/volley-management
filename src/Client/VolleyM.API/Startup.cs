@@ -13,84 +13,87 @@ using VolleyM.API.Authentication;
 using VolleyM.API.Authorization;
 using VolleyM.API.CORS;
 using VolleyM.API.Extensions;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.API
 {
-    public class Startup
-    {
-        private readonly IConfiguration _config;
+	public class Startup
+	{
+		private readonly IConfiguration _config;
 
-        private readonly Container _container = DiExtensions.CreateContainer();
-        private readonly AssemblyBootstrapper _assemblyBootstrapper = new AssemblyBootstrapper();
+		private readonly Container _container = DiExtensions.CreateContainer();
+		private readonly AssemblyBootstrapper _assemblyBootstrapper = new AssemblyBootstrapper();
 
-        public Startup(IConfiguration config)
-        {
-            _config = config;
+		public Startup(IConfiguration config)
+		{
+			_config = config;
 
-            _assemblyBootstrapper.Compose(_config[Constants.VM_PLUGIN_PATH]);
-        }
+			_assemblyBootstrapper.Compose(_config[Constants.VM_PLUGIN_PATH]);
+		}
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.UseJwtAuth()
-                .AddAuth0JwtBearer(_config.GetSection("Auth0").Get<Auth0Options>());
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.UseJwtAuth()
+				.AddAuth0JwtBearer(_config.GetSection("Auth0").Get<Auth0Options>());
 
-            services.AddCorsFromSettings(_config.GetSection("CORS").Get<CorsOptions>());
+			services.AddCorsFromSettings(_config.GetSection("CORS").Get<CorsOptions>());
 
-            services.AddControllers(opts =>
-                {
-                    opts.Filters.Add(new AuthorizeFilter());
-                })
-                .AddVolleyManagementApiParts(_assemblyBootstrapper);
+			services.AddControllers(opts =>
+				{
+					opts.Filters.Add(new AuthorizeFilter());
+				})
+				.AddVolleyManagementApiParts(_assemblyBootstrapper);
 
-            services.AddDefaultVolleyMAuthorization(_container);
+			services.AddDefaultVolleyMAuthorization(_container);
 
-            services.AddSimpleInjector(_container, options =>
-            {
-	            options.AutoCrossWireFrameworkComponents = false; 
-	            
-	            options.CrossWire<IFeatureService>();
+			services.AddSimpleInjector(_container, options =>
+			{
+				options.AutoCrossWireFrameworkComponents = false;
+
+				options.CrossWire<IFeatureService>();
 
 				// AddAspNetCore() wraps web requests in a Simple Injector scope.
 				options.AddAspNetCore()
-                    .AddControllerActivation();
-            });
+					.AddControllerActivation();
+			});
 
-            services.AddEsquio(opts => opts.ConfigureNotFoundBehavior(NotFoundBehavior.SetEnabled))
-                .AddAspNetCoreDefaultServices()
-                .AddConfigurationStore(_config, "Esquio");
-        }
+			services.AddEsquio(opts => opts.ConfigureNotFoundBehavior(NotFoundBehavior.SetEnabled))
+				.AddAspNetCoreDefaultServices()
+				.AddConfigurationStore(_config, "Esquio");
+		}
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.RegisterApplicationServices(_container, _assemblyBootstrapper, _config);
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			_container.RegisterInstance<IApplicationInfo>(new VolleyMApiApplicationInfo(env.IsProduction()));
 
-            _container.Verify();
+			app.RegisterApplicationServices(_container, _assemblyBootstrapper, _config);
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+			_container.Verify();
 
-            app.UseSerilogRequestLogging();
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseRouting();
+			app.UseSerilogRequestLogging();
 
-            app.UseCors();
+			app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+			app.UseCors();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World! CD is working and pipeline triggers for master only. Yeah!");
-                });
-                endpoints.MapControllers();
-                endpoints.MapEsquio(pattern: "esquio");
-            });
-        }
-    }
+			app.UseAuthentication();
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapGet("/", async context =>
+				{
+					await context.Response.WriteAsync("Hello World! CD is working and pipeline triggers for master only. Yeah!");
+				});
+				endpoints.MapControllers();
+				endpoints.MapEsquio(pattern: "esquio");
+			});
+		}
+	}
 }

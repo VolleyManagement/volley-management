@@ -1,4 +1,7 @@
 {
-  "TestTarget": "Unit",
-  "TestLogName": "contributors-test-run.log"
+	"TestTarget": "Unit",
+	"TestLogName": "contributors-test-run.log",
+	"ApplicationTrust": {
+		"Auth0ClientId": "someIdString"
+	}
 }

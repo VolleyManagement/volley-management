@@ -119,6 +119,12 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 			_testFixture.MockHostingEnvironmentIsProduction(false);
 		}
 
+		[Given(@"hosting environment is Production")]
+		public void GivenHostingEnvironmentIsProduction()
+		{
+			_testFixture.MockHostingEnvironmentIsProduction(true);
+		}
+
 		[Given(@"Auth0 client id is '(.*)'")]
 		public void GivenAuthClientIdIs(string clientIdString)
 		{

@@ -51,7 +51,6 @@ namespace VolleyM.Domain.Framework.Authorization
 		public async Task<Either<Error, Unit>> AuthorizeUser(ClaimsPrincipal user)
 		{
 			var idValueOption = GetUserIdFromClaims(user);
-			var azpValueOption = GetAuthorizedPartyClaim(user);
 
 			var getUser =
 				from anonUser in CheckUnauthenticatedUser(user)
@@ -67,7 +66,7 @@ namespace VolleyM.Domain.Framework.Authorization
 					{ Type: ErrorType.NotAuthenticated }
 						=> GetAnonymousUser(),
 					{ Type: ErrorType.NotFound }
-						=> CreateUser(idValueOption.ValueUnsafe(), azpValueOption),
+						=> CreateUser(idValueOption.ValueUnsafe(), user),
 					var left => left
 				})
 				.Match(EitherAsync<Error, User>.Right, l => l);
@@ -89,22 +88,6 @@ namespace VolleyM.Domain.Framework.Authorization
 		private static EitherAsync<Error, User> GetAnonymousUser()
 		{
 			return GetAnonymousVisitor(_predefinedAnonymousUserId);
-		}
-
-		private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)
-		{
-			var idClaim = user.FindFirst(claim => _idClaimTypes.Contains(claim.Type));
-			return idClaim != null
-				? Option<string>.Some(idClaim.Value)
-				: Option<string>.None;
-		}
-		private Option<string> GetAuthorizedPartyClaim(ClaimsPrincipal user)
-		{
-			var azpClaim = user.FindFirst(claim =>
-				string.Compare(claim.Type, AUTHORIZED_PARTY_CLAIM, StringComparison.OrdinalIgnoreCase) == 0);
-			return azpClaim != null
-				? Option<string>.Some(azpClaim.Value)
-				: Option<string>.None;
 		}
 
 		private static Option<Unit> IsNotPredefinedSystemId(string idValue)
@@ -147,10 +130,10 @@ namespace VolleyM.Domain.Framework.Authorization
 			return _getUserHandler.Handle(getRequest).ToAsync();
 		}
 
-		private EitherAsync<Error, User> CreateUser(string idValue, Option<string> azpValueOption)
+		private EitherAsync<Error, User> CreateUser(string idValue, ClaimsPrincipal user)
 		{
 			var role = _visitorRole;
-			if (IsTrustedApiClientAuthentication(idValue, azpValueOption))
+			if (IsTrustedApiClientAuthentication(idValue, user))
 			{
 				role = _sysAdminRole;
 			}
@@ -165,11 +148,36 @@ namespace VolleyM.Domain.Framework.Authorization
 			return _createUserHandler.Handle(createRequest).ToAsync();
 		}
 
-		private bool IsTrustedApiClientAuthentication(string idValue, Option<string> azpValueOption)
+		private bool IsTrustedApiClientAuthentication(string idValue, ClaimsPrincipal user)
 		{
-			return !_applicationInfo.IsRunningInProduction
-				   && string.Compare($"{_trustOptions.Auth0ClientId}@clients", idValue, StringComparison.OrdinalIgnoreCase) == 0
-				&& azpValueOption.ValueUnsafe() == _trustOptions.Auth0ClientId;
+			if (_applicationInfo.IsRunningInProduction) return false;
+
+			static bool AreEqual(string x, string y)
+			{
+				return string.Compare(x, y, StringComparison.OrdinalIgnoreCase) == 0;
+			}
+
+			var azpClaim = GetClaimValue(user, AUTHORIZED_PARTY_CLAIM);
+
+			return AreEqual($"{_trustOptions.Auth0ClientId}@clients", idValue)
+				&& AreEqual(azpClaim.ValueUnsafe(), _trustOptions.Auth0ClientId);
+		}
+
+		private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)
+		{
+			var idClaim = user.FindFirst(claim => _idClaimTypes.Contains(claim.Type));
+			return idClaim != null
+				? Option<string>.Some(idClaim.Value)
+				: Option<string>.None;
+		}
+
+		private Option<string> GetClaimValue(ClaimsPrincipal user, string claimToFind)
+		{
+			var claim = user.FindFirst(c =>
+				string.Compare(c.Type, claimToFind, StringComparison.OrdinalIgnoreCase) == 0);
+			return claim != null
+				? Option<string>.Some(claim.Value)
+				: Option<string>.None;
 		}
 
 		/// <summary>

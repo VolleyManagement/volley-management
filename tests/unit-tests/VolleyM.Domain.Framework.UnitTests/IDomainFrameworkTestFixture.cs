@@ -18,5 +18,6 @@ namespace VolleyM.Domain.Framework.UnitTests
         User CreateAUser();
         void MockRoleStoreError();
         void SetupRole(Role role);
+        void MockHostingEnvironmentIsProduction(bool isProduction);
     }
 }

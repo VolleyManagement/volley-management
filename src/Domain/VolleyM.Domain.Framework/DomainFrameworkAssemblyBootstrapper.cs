@@ -1,6 +1,7 @@
 ﻿using AutoMapper.Configuration;
 using SimpleInjector;
 using System.Composition;
+using Microsoft.Extensions.Configuration;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
@@ -31,6 +32,9 @@ namespace VolleyM.Domain.Framework
 			RegisterQueryObjectDecorators(container);
 
 			container.Register<IRandomIdGenerator, RandomIdGenerator>(Lifestyle.Singleton);
+
+			var appTrustConfig = config.GetSection(ApplicationTrustOptions.ConfigKey).Get<ApplicationTrustOptions>();
+			container.RegisterInstance(appTrustConfig);
 		}
 
 		public bool HasDomainComponents { get; } = false;

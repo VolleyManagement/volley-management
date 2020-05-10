@@ -79,37 +79,23 @@ Scenario Outline: Authorized user id matches system Id
 		| authz.user@volleym.idp |
 
 @ab:1128
-Scenario: API application authorized directly
+Scenario Outline: API application authorized directly
 	# We look at the case when Auth0 API has been authorized using ClientId
 	# intention here is to give those users Admin rights to run API tests on non-prod envs
 	Given new user is being authorized
 	# API client is authorizing
-	And user has 'sub' claim with 'clientIdString@clients' value
-	And user has 'azp' claim with 'clientIdString' value
-	And user has 'gty' claim with 'client-credentials' value
-	And hosting environment is not Production
-	And Auth0 client id is 'clientIdString'
+	And user has 'sub' claim with '<sub>' value
+	And user has 'azp' claim with '<azp>' value
+	And user has 'gty' claim with '<gty>' value
+	And hosting environment is <Deployment>
+	And Auth0 client id is '<Auth0ClientId>'
 	When I authorize user
 	Then user should be authorized
-	And user is assigned SysAdmin role
+	And user is assigned <ResultingRole> role
 
-@ab:1128
-Scenario: API application is not authorized if 'sub' claim is wrong
-	Given new user is being authorized
-	And hosting environment is not Production
-	And Auth0 client id is 'clientIdString'
-	And user has 'sub' claim with 'WRONG--ClientIdString@clients' value
-	When I authorize user
-	Then user should be authorized
-	And user is assigned Visitor role
-
-@ab:1128
-Scenario: API application is not authorized if 'azp' claim is wrong
-	Given new user is being authorized
-	And hosting environment is not Production
-	And Auth0 client id is 'clientIdString'
-	And user has 'sub' claim with 'clientIdString@clients' value
-	And user has 'azp' claim with 'WRONG--ClientIdString' value
-	When I authorize user
-	Then user should be authorized
-	And user is assigned Visitor role
+	Examples:
+		| Deployment     | Auth0ClientId  | sub                    | azp            | gty                | ResultingRole |
+		| not Production | clientIdString | clientIdString@clients | clientIdString | client-credentials | SysAdmin      |
+		| not Production | clientIdString | WRONG!!!!!             | clientIdString | client-credentials | Visitor       |
+		| not Production | clientIdString | clientIdString@clients | WRONG!!!!!     | client-credentials | Visitor       |
+		#| not Production | clientIdString | clientIdString@clients | clientIdString | WRONG!!!!!         | Visitor       |

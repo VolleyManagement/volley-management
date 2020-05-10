@@ -99,4 +99,34 @@ Scenario Outline: API application authorized directly
 		| not Production | clientIdString | WRONG!!!!!             | clientIdString | client-credentials | Visitor       |
 		| not Production | clientIdString | clientIdString@clients | WRONG!!!!!     | client-credentials | Visitor       |
 		| not Production | clientIdString | clientIdString@clients | clientIdString | WRONG!!!!!         | Visitor       |
-		| Production     | clientIdString | clientIdString@clients | clientIdString | WRONG!!!!!         | Visitor       |
+		| Production     | clientIdString | clientIdString@clients | clientIdString | client-credentials | Visitor       |
+
+@ab:1128
+Scenario: API application authorized directly with no AZP claim
+	# We look at the case when Auth0 API has been authorized using ClientId
+	# intention here is to give those users Admin rights to run API tests on non-prod envs
+	Given new user is being authorized
+	# API client is authorizing
+	And user has 'sub' claim with 'clientIdString@clients' value
+	# And user has no 'azp' claim
+	And user has 'gty' claim with 'client-credentials' value
+	And hosting environment is not Production
+	And Auth0 client id is 'clientIdString'
+	When I authorize user
+	Then user should be authorized
+	And user is assigned Visitor role
+
+@ab:1128
+Scenario: API application authorized directly with no GTY claim
+	# We look at the case when Auth0 API has been authorized using ClientId
+	# intention here is to give those users Admin rights to run API tests on non-prod envs
+	Given new user is being authorized
+	# API client is authorizing
+	And user has 'sub' claim with 'clientIdString@clients' value
+	And user has 'azp' claim with 'clientIdString' value
+	# And user has no 'gty' claim
+	And hosting environment is not Production
+	And Auth0 client id is 'clientIdString'
+	When I authorize user
+	Then user should be authorized
+	And user is assigned Visitor role

@@ -136,6 +136,7 @@ stages:
               vstsFeedPackage: 'karate'
               vstsPackageVersion: '0.9.6-rc2'
               downloadDirectory: '$(System.DefaultWorkingDirectory)/karate/'
+              verbosity: debug
           - script: |
               ls $(System.DefaultWorkingDirectory)
               echo ================

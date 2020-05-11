@@ -28,7 +28,7 @@ namespace VolleyM.API.Contributors
 		{
 			Log.Information("Controller {Action} action called.", nameof(GetAll));
 
-			return _handler.ExecuteHandler(new GetAll.Request(), _mapper.Map<Contributor>);
+			return _handler.ExecuteHandler(new GetAll.Request(), _mapper.Map<List<Contributor>>);
 		}
 	}
 }

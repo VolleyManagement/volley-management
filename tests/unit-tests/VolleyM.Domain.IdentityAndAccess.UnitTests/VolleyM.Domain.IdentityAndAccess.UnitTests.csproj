@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" />
     <ProjectReference Include="..\VolleyM.Domain.UnitTests.Framework\VolleyM.Domain.UnitTests.Framework.csproj" />
   </ItemGroup>

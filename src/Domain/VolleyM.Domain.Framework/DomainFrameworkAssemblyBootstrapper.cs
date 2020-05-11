@@ -42,9 +42,7 @@ namespace VolleyM.Domain.Framework
 		public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = new FrameworkDomainComponentDependencyRegistrar();
 
 		public void RegisterMappingProfiles(MapperConfigurationExpression mce)
-		{
-			// no need for mappers
-		}
+			=> mce.AddProfile<DomainFrameworkMappingProfile>();
 
 		private static void RegisterHandlerDecorators(Container container)
 		{

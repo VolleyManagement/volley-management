@@ -7,7 +7,7 @@ using VolleyM.Domain.Players.PlayerAggregate;
 
 namespace VolleyM.Domain.Players.Handlers
 {
-	public class CreatePlayer
+	public class Create
 	{
 		public class Request : IRequest<Player>
 		{

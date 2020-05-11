@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
@@ -7,15 +8,16 @@ namespace VolleyM.API.Contracts
 {
     public static class ResultExtensions
     {
-        public static async Task<IActionResult> ExecuteHandler<TRequest, TResponse>(
+        public static async Task<IActionResult> ExecuteHandler<TRequest, TResponse, TModel>(
             this IRequestHandler<TRequest, TResponse> handler,
-            TRequest request)
+            TRequest request,
+            Func<TResponse, TModel> resultConverter)
             where TRequest : IRequest<TResponse>
         {
             var result = await handler.Handle(request);
 
             return result.Match(
-                v => new OkObjectResult(v),
+                v => new OkObjectResult(resultConverter(v)),
                 ConvertToHttpError);
         }
 

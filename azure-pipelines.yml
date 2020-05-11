@@ -138,8 +138,10 @@ stages:
               downloadDirectory: '$(Agent.ToolsDirectory)/karate'
               verbosity: debug
           - script: |
+              echo $(Agent.ToolsDirectory)
               ls $(Agent.ToolsDirectory)
               echo ================
+              echo $(Agent.ToolsDirectory)/karate
               ls $(Agent.ToolsDirectory)/karate
               echo ================
               cd tests/api-tests

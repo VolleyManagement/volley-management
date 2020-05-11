@@ -10,4 +10,4 @@ Feature: Players API
 		And request {'firstName': 'Ivan', 'lastName': 'Petrov'}
 		And method POST
 		Then status 200
-		And match response == {tenant: '#notnull', 'id':'#notnull', 'firstName': 'Ivan', 'lastName': 'Petrov'}
+		And match response == {tenant: '#string', 'id':'#string', 'firstName': 'Ivan', 'lastName': 'Petrov'}

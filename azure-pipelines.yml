@@ -137,6 +137,8 @@ stages:
               vstsPackageVersion: '0.9.6-rc2'
               downloadDirectory: '$(System.DefaultWorkingDirectory)'
           - script: |
+              ls $(System.DefaultWorkingDirectory)
+              echo ================
               cd tests/api-tests
               java -jar $(System.DefaultWorkingDirectory)/karate.jar -e staging .
             env:

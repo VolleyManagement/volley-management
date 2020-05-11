@@ -134,7 +134,7 @@ stages:
               command: download
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
-              vstsPackageVersion: '0.9.4'
+              vstsPackageVersion: '0.9.6-rc2'
               downloadDirectory: '$(System.DefaultWorkingDirectory)'
           - script: |
               cd tests/api-tests

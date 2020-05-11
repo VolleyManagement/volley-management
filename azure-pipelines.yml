@@ -139,6 +139,8 @@ stages:
           - script: |
               ls $(System.DefaultWorkingDirectory)
               echo ================
+              ls $(System.DefaultWorkingDirectory)/karate
+              echo ================
               cd tests/api-tests
               java -jar $(System.DefaultWorkingDirectory)/karate/karate.jar -e staging .
             env:

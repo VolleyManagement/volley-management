@@ -19,7 +19,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
 
-		private CreatePlayer.Request _request;
+		private Create.Request _request;
 		private Player _expectedPlayer;
 
 		private Either<Error, Player> _actualResult;
@@ -34,10 +34,10 @@ namespace VolleyM.Domain.Players.UnitTests
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
 		public void ScenarioSetup()
 		{
-			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(CreatePlayer));
+			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(Create));
 		}
 
-		[Given(@"I have CreatePlayerRequest")]
+		[Given(@"I have CreateRequest")]
 		public void GivenIHaveCreatePlayerRequest(Table table)
 		{
 			_request = GetPlayer(table);
@@ -48,10 +48,10 @@ namespace VolleyM.Domain.Players.UnitTests
 			_expectedPlayer = new Player(TenantId.Default, playerId, _request.FirstName, _request.LastName);
 		}
 
-		[When(@"I execute CreatePlayer")]
+		[When(@"I execute Create")]
 		public async Task WhenIExecuteCreatePlayer()
 		{
-			var handler = _container.GetInstance<IRequestHandler<CreatePlayer.Request, Player>>();
+			var handler = _container.GetInstance<IRequestHandler<Create.Request, Player>>();
 			_actualResult = await handler.Handle(_request);
 		}
 
@@ -80,9 +80,9 @@ namespace VolleyM.Domain.Players.UnitTests
 		}
 
 
-		private static CreatePlayer.Request GetPlayer(Table table)
+		private static Create.Request GetPlayer(Table table)
 		{
-			var player = table.CreateInstance<CreatePlayer.Request>();
+			var player = table.CreateInstance<Create.Request>();
 
 			player.FirstName = SetNameField(player.FirstName);
 			player.LastName = SetNameField(player.LastName);

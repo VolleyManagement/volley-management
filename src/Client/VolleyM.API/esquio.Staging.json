@@ -1,16 +1,21 @@
 {
-  "Esquio": {
-    "Products": [
-      {
-        "Name": "Players",
-        "Features": [
-          {
-            "Name": "GetAll",
-            "Enabled": false,
-            "Toggles": []
-          }
-        ]
-      }
-    ]
-  }
+	"Esquio": {
+		"Products": [
+			{
+				"Name": "Players",
+				"Features": [
+					{
+						"Name": "GetAll",
+						"Enabled": false,
+						"Toggles": []
+					},
+					{
+						"Name": "Create",
+						"Enabled": true,
+						"Toggles": []
+					}
+				]
+			}
+		]
+	}
 }

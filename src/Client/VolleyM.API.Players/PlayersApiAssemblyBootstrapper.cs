@@ -1,10 +1,12 @@
-﻿using AutoMapper.Configuration;
+﻿using System.Composition;
+using AutoMapper.Configuration;
 using SimpleInjector;
 using VolleyM.Infrastructure.Bootstrap;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace VolleyM.API.Players
 {
+	[Export(typeof(IAssemblyBootstrapper))]
 	public class PlayersApiAssemblyBootstrapper : IAssemblyBootstrapper
 	{
 		public void RegisterDependencies(Container container, IConfiguration config)
@@ -15,9 +17,7 @@ namespace VolleyM.API.Players
 		public bool HasDomainComponents { get; } = false;
 
 		public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = null;
-		public void RegisterMappingProfiles(MapperConfigurationExpression mce)
-		{
-			//do nothing
-		}
+		public void RegisterMappingProfiles(MapperConfigurationExpression mce) 
+			=> mce.AddProfile<PlayersApiMappingProfile>();
 	}
 }

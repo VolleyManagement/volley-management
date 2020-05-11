@@ -12,12 +12,12 @@ namespace VolleyM.API.Players
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class PlayersController:ControllerBase
+	public class PlayersController : ControllerBase
 	{
-		private readonly IRequestHandler<CreatePlayer.Request, DomainPlayer> _handler;
+		private readonly IRequestHandler<Create.Request, DomainPlayer> _handler;
 		private readonly IMapper _mapper;
 
-		public PlayersController(IRequestHandler<CreatePlayer.Request, DomainPlayer> handler, IMapper mapper)
+		public PlayersController(IRequestHandler<Create.Request, DomainPlayer> handler, IMapper mapper)
 		{
 			_handler = handler;
 			_mapper = mapper;
@@ -25,7 +25,7 @@ namespace VolleyM.API.Players
 
 		[HttpPost]
 		[Route("")]
-		public Task<IActionResult> Create(CreatePlayer.Request request)
+		public Task<IActionResult> Create(Create.Request request)
 		{
 			return _handler.ExecuteHandler(request, _mapper.Map<ApiPlayer>);
 		}

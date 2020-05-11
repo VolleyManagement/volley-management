@@ -135,12 +135,12 @@ stages:
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
               vstsPackageVersion: '0.9.6-rc2'
-              downloadDirectory: '$(System.DefaultWorkingDirectory)'
+              downloadDirectory: '$(System.DefaultWorkingDirectory)/karate/'
           - script: |
               ls $(System.DefaultWorkingDirectory)
               echo ================
               cd tests/api-tests
-              java -jar $(System.DefaultWorkingDirectory)/karate.jar -e staging .
+              java -jar $(System.DefaultWorkingDirectory)/karate/karate.jar -e staging .
             env:
               VM_KARATE_AUTH0_CLIENT_SECRET: $(vm_api_tests_auth0_secret)
             displayName: 'Run Karate tests'

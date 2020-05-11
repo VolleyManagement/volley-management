@@ -5,6 +5,7 @@ using TechTalk.SpecFlow;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.Bootstrap;
+using VolleyM.Infrastructure.Hardcoded;
 using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
@@ -66,6 +67,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
             if (target == TestTarget.AzureCloud)
             {
                 result.Add(new InfrastructureIdentityAndAccessAzureStorageBootstrapper());
+                result.Add(new InfrastructureHardcodedAssemblyBootstrapper());
             }
 
             return result;

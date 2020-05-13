@@ -135,30 +135,9 @@ stages:
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
               vstsPackageVersion: '0.9.6-rc2'
-              downloadDirectory: '$(Agent.ToolsDirectory)/karate'
+              downloadDirectory: '$(Agent.ToolsDirectory)/karate/'
               verbosity: debug
           - script: |
-              find ~/work -name "karate*" | echo
-              echo ================
-              echo ~/work
-              ls ~/work
-              echo ================
-              echo ~/work/_tasks/UniversalPackages_e0b79640-8625-11e8-91be-db2878ff888a
-              ls ~/work/_tasks/UniversalPackages_e0b79640-8625-11e8-91be-db2878ff888a
-              echo ================
-              echo ~/work/_temp/artifactTool
-              ls ~/work/_temp/artifactTool
-              echo ================
-              echo $(Agent.ToolsDirectory)
-              ls $(Agent.ToolsDirectory)
-              echo ================
-              echo $(Agent.ToolsDirectory)/ArtifactTool
-              ls $(Agent.ToolsDirectory)/ArtifactTool
-              echo ================
-              echo $(Agent.ToolsDirectory)/ArtifactTool/0.2.128/x64
-              ls $(Agent.ToolsDirectory)/ArtifactTool/0.2.128/x64
-              echo ================
-              cd tests/api-tests
               java -jar $(Agent.ToolsDirectory)/karate/karate.jar -e staging .
             env:
               VM_KARATE_AUTH0_CLIENT_SECRET: $(vm_api_tests_auth0_secret)

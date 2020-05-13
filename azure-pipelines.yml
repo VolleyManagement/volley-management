@@ -138,17 +138,20 @@ stages:
               downloadDirectory: '$(Agent.ToolsDirectory)/karate'
               verbosity: debug
           - script: |
-              echo /
-              ls /
+              echo ~/work
+              ls ~/work
               echo ================
-              echo ~
-              ls ~
+              echo ~/agents
+              ls ~/agents
               echo ================
               echo $(Agent.ToolsDirectory)
               ls $(Agent.ToolsDirectory)
               echo ================
-              echo $(Agent.ToolsDirectory)/karate
-              ls $(Agent.ToolsDirectory)/karate
+              echo $(Agent.ToolsDirectory)/ArtifactTool
+              ls $(Agent.ToolsDirectory)/ArtifactTool
+              echo ================
+              echo $(Agent.ToolsDirectory)/ArtifactTool
+              ls $(Agent.ToolsDirectory)/ArtifactTool
               echo ================
               cd tests/api-tests
               java -jar $(Agent.ToolsDirectory)/karate/karate.jar -e staging .

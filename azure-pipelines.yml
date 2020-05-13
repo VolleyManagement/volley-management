@@ -138,6 +138,8 @@ stages:
               downloadDirectory: '$(Agent.ToolsDirectory)/karate'
               verbosity: debug
           - script: |
+              find ~/work -name "karate*" | echo
+              echo ================
               echo ~/work
               ls ~/work
               echo ================

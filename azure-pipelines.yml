@@ -141,8 +141,11 @@ stages:
               echo ~/work
               ls ~/work
               echo ================
-              echo ~/agents
-              ls ~/agents
+              echo ~/work/_tasks
+              ls ~/work/_tasks
+              echo ================
+              echo ~/work/_temp
+              ls ~/work/_temp
               echo ================
               echo $(Agent.ToolsDirectory)
               ls $(Agent.ToolsDirectory)
@@ -150,8 +153,8 @@ stages:
               echo $(Agent.ToolsDirectory)/ArtifactTool
               ls $(Agent.ToolsDirectory)/ArtifactTool
               echo ================
-              echo $(Agent.ToolsDirectory)/ArtifactTool
-              ls $(Agent.ToolsDirectory)/ArtifactTool
+              echo $(Agent.ToolsDirectory)/ArtifactTool/0.2.128
+              ls $(Agent.ToolsDirectory)/ArtifactTool/0.2.128
               echo ================
               cd tests/api-tests
               java -jar $(Agent.ToolsDirectory)/karate/karate.jar -e staging .

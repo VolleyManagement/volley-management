@@ -27,7 +27,7 @@ stages:
     jobs:
       - job: build_code
         pool:
-          vmImage: 'ubuntu-16.04'
+          vmImage: 'ubuntu-latest'
         displayName: 'Source Code'
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
@@ -57,7 +57,7 @@ stages:
         displayName: Container
         dependsOn: build_code
         pool:
-          vmImage: 'ubuntu-16.04'
+          vmImage: 'ubuntu-latest'
         steps:
           - template: build/azure-pipeline/set-docker-tag.yml
           - task: Docker@2
@@ -134,11 +134,10 @@ stages:
               command: download
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
-              vstsPackageVersion: '0.9.4'
-              downloadDirectory: '$(System.DefaultWorkingDirectory)'
+              vstsPackageVersion: '0.9.6-rc2-final'
+              downloadDirectory: '$(Agent.ToolsDirectory)/karate/'
           - script: |
-              cd tests/api-tests
-              java -jar $(System.DefaultWorkingDirectory)/karate.jar -e staging .
+              java -jar $(Agent.ToolsDirectory)/karate/karate.jar -e staging .
             env:
               VM_KARATE_AUTH0_CLIENT_SECRET: $(vm_api_tests_auth0_secret)
             displayName: 'Run Karate tests'

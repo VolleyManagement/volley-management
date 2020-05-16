@@ -134,26 +134,9 @@ stages:
               command: download
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
-              vstsPackageVersion: '0.9.6-rc2-test2'
+              vstsPackageVersion: '0.9.6-rc2-final'
               downloadDirectory: '$(Agent.ToolsDirectory)/karate/'
-              verbosity: debug 
-          - task: UniversalPackages@0
-            displayName: 'Download Karate ZIP from Artifacts'
-            inputs:
-              command: download
-              vstsFeed: 'VolleyManagement'
-              vstsFeedPackage: 'karate'
-              vstsPackageVersion: '0.9.6-rc2-zip-test2'
-              downloadDirectory: '$(Agent.ToolsDirectory)/karate-zip/'
-              verbosity: debug
           - script: |
-              mkdir $(Agent.ToolsDirectory)/test-dir
-              ls $(Agent.ToolsDirectory)/test-dir
-              echo ==================
-              ls $(Agent.ToolsDirectory)/karate
-              echo ==================
-              ls $(Agent.ToolsDirectory)/karate-zip
-              echo ==================
               java -jar $(Agent.ToolsDirectory)/karate/karate.jar -e staging .
             env:
               VM_KARATE_AUTH0_CLIENT_SECRET: $(vm_api_tests_auth0_secret)

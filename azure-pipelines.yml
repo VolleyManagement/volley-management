@@ -143,7 +143,7 @@ stages:
               command: download
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
-              vstsPackageVersion: '0.9.6-rc2-2'
+              vstsPackageVersion: '0.9.6-rc2-zip'
               downloadDirectory: '$(Agent.ToolsDirectory)/karate-zip/'
               verbosity: debug
           - script: |

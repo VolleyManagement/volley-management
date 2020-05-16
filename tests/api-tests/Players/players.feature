@@ -1,4 +1,4 @@
-Feature: Players API
+﻿Feature: Players API
 
 	Background:
 		Given url vmAppUrl

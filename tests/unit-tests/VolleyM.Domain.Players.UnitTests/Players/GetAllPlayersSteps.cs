@@ -17,7 +17,7 @@ namespace VolleyM.Domain.Players.UnitTests
         private readonly IAuthFixture _authFixture;
         private readonly Container _container;
 
-        private IRequestHandler<GetAllPlayers.Request, List<PlayerDto>> _handler;
+        private IRequestHandler<GetAll.Request, List<PlayerDto>> _handler;
 
         private List<PlayerDto> _expectedResult;
         private Either<Error, List<PlayerDto>> _actualResult;
@@ -32,7 +32,7 @@ namespace VolleyM.Domain.Players.UnitTests
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(GetAllPlayers));
+            _authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(GetAll));
         }        
 
         [Given(@"several players exist")]
@@ -45,9 +45,9 @@ namespace VolleyM.Domain.Players.UnitTests
         [When(@"I query all players")]
         public async Task WhenIQueryAllPlayers()
         {
-            _handler = _container.GetInstance<IRequestHandler<GetAllPlayers.Request, List<PlayerDto>>>();
+            _handler = _container.GetInstance<IRequestHandler<GetAll.Request, List<PlayerDto>>>();
 
-            _actualResult = await _handler.Handle(new GetAllPlayers.Request());
+            _actualResult = await _handler.Handle(new GetAll.Request());
         }
         
         [Then(@"all players received")]

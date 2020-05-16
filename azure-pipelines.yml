@@ -134,7 +134,7 @@ stages:
               command: download
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
-              vstsPackageVersion: '0.9.6-rc2-2'
+              vstsPackageVersion: '0.9.6-rc2-test2'
               downloadDirectory: '$(Agent.ToolsDirectory)/karate/'
               verbosity: debug 
           - task: UniversalPackages@0
@@ -143,13 +143,16 @@ stages:
               command: download
               vstsFeed: 'VolleyManagement'
               vstsFeedPackage: 'karate'
-              vstsPackageVersion: '0.9.6-rc2-zip'
+              vstsPackageVersion: '0.9.6-rc2-zip-test2'
               downloadDirectory: '$(Agent.ToolsDirectory)/karate-zip/'
               verbosity: debug
           - script: |
-              ls $(Agent.ToolsDirectory)/karate/
+              mkdir $(Agent.ToolsDirectory)/test-dir
+              ls $(Agent.ToolsDirectory)/test-dir
               echo ==================
-              ls $(Agent.ToolsDirectory)/karate-zip/
+              ls $(Agent.ToolsDirectory)/karate
+              echo ==================
+              ls $(Agent.ToolsDirectory)/karate-zip
               echo ==================
               java -jar $(Agent.ToolsDirectory)/karate/karate.jar -e staging .
             env:

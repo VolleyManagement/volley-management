@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
@@ -50,7 +51,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		public Task MockSeveralPlayersExist(List<Player> testData)
 		{
-			var mappedData = _mapper.Map<List<PlayerDto>>(testData);
+			var mappedData = testData.Select(p => new PlayerDto { FirstName = p.FirstName, LastName = p.LastName }).ToList();
 			_queryMock.Execute(TenantId.Default).Returns(mappedData);
 
 			return Task.CompletedTask;

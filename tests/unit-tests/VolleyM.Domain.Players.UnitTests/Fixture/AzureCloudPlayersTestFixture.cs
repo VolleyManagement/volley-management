@@ -6,12 +6,13 @@ using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.Players.UnitTests.Fixture;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
 	public class AzureCloudPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
 	{
-		private List<Tuple<TenantId, PlayerId>> _playersToTeardown;
+		private List<(TenantId Tenant, PlayerId Id)> _playersToTeardown;
 
 		public AzureCloudPlayersTestFixture(Container container)
 			: base(container)
@@ -20,7 +21,7 @@ namespace VolleyM.Domain.Players.UnitTests
 
 		public Task ScenarioSetup()
 		{
-			_playersToTeardown = new List<Tuple<TenantId, PlayerId>>();
+			_playersToTeardown = new List<(TenantId Tenant, PlayerId Id)>();
 			return Task.CompletedTask;
 		}
 
@@ -29,8 +30,14 @@ namespace VolleyM.Domain.Players.UnitTests
 			await CleanUpPlayers();
 		}
 
-		public void MockSeveralPlayersExist(List<PlayerDto> testData)
+		public async Task MockSeveralPlayersExist(List<Player> testData)
 		{
+			var repo = _container.GetInstance<IPlayersRepository>();
+			foreach (var player in testData)
+			{
+				var createResult = await repo.Add(player);
+				createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
+			}
 		}
 
 		public async Task VerifyPlayerCreated(Player expectedPlayer)
@@ -41,6 +48,8 @@ namespace VolleyM.Domain.Players.UnitTests
 
 			savedPlayer.IsRight.Should().BeTrue("player should be created");
 			savedPlayer.IfRight(u => u.Should().BeEquivalentTo(expectedPlayer, "all attributes should be saved correctly"));
+
+			_playersToTeardown.Add((expectedPlayer.Tenant, expectedPlayer.Id));
 		}
 
 		public async Task VerifyPlayerNotCreated(Player expectedPlayer)

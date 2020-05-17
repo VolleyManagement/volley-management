@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
 using SimpleInjector;
@@ -12,6 +13,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 	{
 		private IQuery<TenantId, List<PlayerDto>> _queryMock;
 		private IPlayersRepository _repoMock;
+		private IMapper _mapper;
 
 		private Player _actualPlayer;
 
@@ -37,6 +39,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		public Task ScenarioSetup()
 		{
+			_mapper = _container.GetInstance<IMapper>();
 			return Task.CompletedTask;
 		}
 
@@ -45,8 +48,13 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			return Task.CompletedTask;
 		}
 
-		public void MockSeveralPlayersExist(List<PlayerDto> testData) =>
-			_queryMock.Execute(TenantId.Default).Returns(testData);
+		public Task MockSeveralPlayersExist(List<Player> testData)
+		{
+			var mappedData = _mapper.Map<List<PlayerDto>>(testData);
+			_queryMock.Execute(TenantId.Default).Returns(mappedData);
+
+			return Task.CompletedTask;
+		}
 
 		public Task VerifyPlayerCreated(Player expectedPlayer)
 		{

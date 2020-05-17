@@ -7,11 +7,12 @@ namespace VolleyM.Domain.Players.UnitTests
 {
 	public interface IPlayersTestFixture : ITestFixture
 	{
-		void MockSeveralPlayersExist(List<PlayerDto> testData);
+		Task MockSeveralPlayersExist(List<Player> testData);
 
 		Task VerifyPlayerCreated(Player expectedPlayer);
 
 		void MockNextRandomId(string id);
+
 		Task VerifyPlayerNotCreated(Player expectedPlayer);
 	}
 }

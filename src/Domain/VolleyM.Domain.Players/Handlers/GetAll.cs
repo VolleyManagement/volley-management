@@ -1,17 +1,14 @@
-﻿using LanguageExt;
-using LanguageExt.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.Players.Handlers
 {
-    using IQueryObject = IQuery<TenantId, List<PlayerDto>>;
-    
-    public class GetAllPlayers
+	using IQueryObject = IQuery<TenantId, List<PlayerDto>>;
+
+	public class GetAll
     {
         public class Request : IRequest<List<PlayerDto>>
         {
@@ -27,7 +24,8 @@ namespace VolleyM.Domain.Players.Handlers
                 _query = query;
                 _currentUser = currentUser;
             }
-            public Task<Either<Contracts.Error, List<PlayerDto>>> Handle(Request request)
+
+            public Task<Either<Error, List<PlayerDto>>> Handle(Request request)
             {
                 return _query.Execute(_currentUser.Tenant);
             }

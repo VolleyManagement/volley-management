@@ -31,16 +31,6 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 		public IDomainComponentDependencyRegistrar DomainComponentDependencyRegistrar { get; } = null;
 
 		public void RegisterMappingProfiles(MapperConfigurationExpression mce)
-		{
-			mce.CreateMap<PlayerEntity, PlayerFactoryDto>()
-				.ForMember(m => m.Id,
-					m => m.MapFrom(src => new PlayerId(src.RowKey)))
-				.ForMember(m => m.Tenant,
-					m => m.MapFrom(src => new TenantId(src.PartitionKey)))
-				.ForMember(m => m.FirstName,
-					m => m.MapFrom(pe => pe.FirstName))
-				.ForMember(m => m.LastName,
-					m => m.MapFrom(pe => pe.LastName));
-		}
+			=> mce.AddProfile<PlayersAzureStorageMappingProfile>();
 	}
 }

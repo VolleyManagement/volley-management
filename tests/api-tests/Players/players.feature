@@ -4,7 +4,6 @@
 		Given url vmAppUrl
 
 	Scenario: Create Player
-
 		Given path 'api/players'
 		And header Authorization = auth_header
 		And request {'firstName': 'Ivan', 'lastName': 'Petrov'}
@@ -25,5 +24,5 @@
 		And method GET
 		Then status 200
 		And match response == '#[2]'
-		And match response contains {'firstName': 'Ivan', 'lastName': 'Petrov'}
-		And match response contains {'firstName': 'John', 'lastName': 'Smith'}
+		And match response contains {tenant: '#string', 'id':'#string', 'firstName': 'Ivan', 'lastName': 'Petrov'}
+		And match response contains {tenant: '#string', 'id':'#string', 'firstName': 'John', 'lastName': 'Smith'}

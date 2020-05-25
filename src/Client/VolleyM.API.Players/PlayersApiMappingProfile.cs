@@ -7,6 +7,7 @@ namespace VolleyM.API.Players
 		public PlayersApiMappingProfile()
 		{
 			CreateMap<Domain.Players.PlayerAggregate.Player, Player>();
+			CreateMap<Domain.Players.PlayerDto, Player>();
 		}
 	}
 }

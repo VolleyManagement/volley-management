@@ -89,7 +89,7 @@ stages:
               command: 'test'
               testRunTitle: 'Azure Cloud Integration Tests'
               projects: $(sln_path)
-              arguments: '--filter Category=azurecloud -- xunit.maxParallelThreads=1'
+              arguments: '--filter Category=azurecloud -- xunit.maxParallelThreads=1 -v n'
           - publish: $(Build.SourcesDirectory)/tests/unit-tests #note: files which are published controlled by .artifactignore file
             artifact: integrationTestsResults
             condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging

@@ -24,6 +24,7 @@ namespace VolleyM.Infrastructure.Hardcoded
 			var sysadmin = new Role(_sysAdmin);
 			sysadmin.AddPermission(new Permission("contributors", "getall"));
 			sysadmin.AddPermission(new Permission("players", "create"));
+			sysadmin.AddPermission(new Permission("players", "getall"));
 
 			_roles[_sysAdmin] = sysadmin;
 		}

@@ -51,7 +51,13 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		public Task MockSeveralPlayersExist(List<Player> testData)
 		{
-			var mappedData = testData.Select(p => new PlayerDto { FirstName = p.FirstName, LastName = p.LastName }).ToList();
+			var mappedData = testData.Select(p => new PlayerDto
+			{
+				Tenant = p.Tenant,
+				Id = p.Id,
+				FirstName = p.FirstName,
+				LastName = p.LastName
+			}).ToList();
 			_queryMock.Execute(TenantId.Default).Returns(mappedData);
 
 			return Task.CompletedTask;

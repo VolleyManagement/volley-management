@@ -81,7 +81,13 @@ namespace VolleyM.Domain.Players.UnitTests
 
 		private static List<PlayerDto> GetSeveralPlayersCaseExpectedData(List<Player> inputData) =>
 			inputData
-				.Select(p => new PlayerDto { FirstName = p.FirstName, LastName = p.LastName })
+				.Select(p => new PlayerDto
+				{
+					Tenant = p.Tenant,
+					Id = p.Id,
+					FirstName = p.FirstName,
+					LastName = p.LastName
+				})
 				.ToList();
 
 		private static List<Player> GetSeveralPlayersCaseData()

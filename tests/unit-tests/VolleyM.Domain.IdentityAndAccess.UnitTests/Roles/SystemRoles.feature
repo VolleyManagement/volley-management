@@ -19,3 +19,4 @@ Scenario: SysAdmin
 		| Context      | Action |
 		| contributors | getall |
 		| players      | create |
+		| players      | getall |

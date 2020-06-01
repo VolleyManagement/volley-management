@@ -2,7 +2,7 @@
 
 namespace VolleyM.Domain.Players.Events
 {
-	public class PlayerCreated : IEvent
+	public class PlayerCreated : IPublicEvent
 	{
 
 	}

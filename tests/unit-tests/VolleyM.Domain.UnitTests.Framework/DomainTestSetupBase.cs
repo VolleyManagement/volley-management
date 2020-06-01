@@ -70,7 +70,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		private void RegisterNullEventPublisher(Container container)
 		{
-			Container.Register<IEventPublisher, NullEventPublisher>(Lifestyle.Singleton); ;
+			container.Register<IEventPublisher, TestSpyEventPublisher>(Lifestyle.Singleton); ;
 		}
 
 		private void RegisterFeatureService(Container container)

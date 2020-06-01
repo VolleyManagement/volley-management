@@ -1,8 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.EventBroker;
+using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.Players.Events;
 using VolleyM.Domain.Players.PlayerAggregate;
 
 namespace VolleyM.Domain.Players.Handlers
@@ -35,7 +39,7 @@ namespace VolleyM.Domain.Players.Handlers
 			}
 		}
 
-		public class Handler : IRequestHandler<Request, Player>
+		public class Handler : IRequestHandler<Request, Player>, ICanProduceEvent
 		{
 			private readonly IPlayersRepository _repository;
 			private readonly IRandomIdGenerator _idGenerator;
@@ -55,8 +59,15 @@ namespace VolleyM.Domain.Players.Handlers
 
 				var addResult = await _repository.Add(player);
 
-				return addResult;
+				return addResult
+					.Map(createdPlayer =>
+					{
+						DomainEvents.Add(new PlayerCreated());
+						return createdPlayer;
+					});
 			}
+
+			public List<IEvent> DomainEvents { get; } = new List<IEvent>();
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using SimpleInjector;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Domain.UnitTests.Framework;
@@ -26,6 +27,14 @@ namespace VolleyM.Domain.Players.UnitTests
 			var evt = GetReceivedEvent(eventName);
 
 			evt.Should().NotBeNull();
+
+			var eventType = evt.GetType();
+
+			var expectedEvent = Activator.CreateInstance(eventType);
+
+			table.FillInstance(expectedEvent);
+
+			evt.Should().BeEquivalentTo(expectedEvent);
 		}
 
 		[Then(@"(.*) event is (.*)")]

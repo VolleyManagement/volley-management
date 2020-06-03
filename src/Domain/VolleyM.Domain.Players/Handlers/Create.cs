@@ -62,7 +62,13 @@ namespace VolleyM.Domain.Players.Handlers
 				return addResult
 					.Map(createdPlayer =>
 					{
-						DomainEvents.Add(new PlayerCreated());
+						DomainEvents.Add(new PlayerCreated
+						{
+							TenantId = player.Tenant,
+							PlayerId = player.Id,
+							FirstName = player.FirstName,
+							LastName = player.LastName
+						});
 						return createdPlayer;
 					});
 			}

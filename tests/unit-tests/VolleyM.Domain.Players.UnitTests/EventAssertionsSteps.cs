@@ -5,8 +5,10 @@ using FluentAssertions;
 using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
@@ -28,16 +30,16 @@ namespace VolleyM.Domain.Players.UnitTests
 
 			evt.Should().NotBeNull();
 
-			var eventType = evt.GetType();
+			object expectedEvent = GetExpectedEvent(table, evt);
 
-			var expectedEvent = Activator.CreateInstance(eventType);
-
-			table.FillInstance(expectedEvent);
-
-			evt.Should().BeEquivalentTo(expectedEvent);
+			evt.Should().BeEquivalentTo(expectedEvent, cfg=>
+			{
+				cfg.Using<PlayerId>(ctx => ctx.Subject.Should().NotBeNull());
+				return cfg;
+			});
 		}
 
-		[Then(@"(.*) event is (.*)")]
+		[Then(@"(.*) event is (Public|Internal)")]
 		public void ThenPlayerCreatedEventHasProperScope(string eventName, string eventScope)
 		{
 			var evt = GetReceivedEvent(eventName);
@@ -53,6 +55,15 @@ namespace VolleyM.Domain.Players.UnitTests
 				evt.Should().NotBeAssignableTo<IPublicEvent>();
 			}
 		}
+
+		[Then(@"(.*) event is not produced")]
+		public void ThenPlayerCreatedEventIsNotProduced(string eventName)
+		{
+			var evt = GetReceivedEvent(eventName);
+
+			evt.Should().BeNull();
+		}
+
 
 		private IEvent GetReceivedEvent(string eventName)
 		{
@@ -73,6 +84,39 @@ namespace VolleyM.Domain.Players.UnitTests
 		private bool PublicEventExpected(string eventScope)
 		{
 			return string.Compare("public", eventScope, StringComparison.OrdinalIgnoreCase) == 0;
+		}
+		private static object GetExpectedEvent(Table table, IEvent evt)
+		{
+			var eventType = evt.GetType();
+
+			var expectedEvent = Activator.CreateInstance(eventType);
+
+			foreach (var propertyInfo in eventType.GetProperties())
+			{
+				object value = null;
+				var rawValue = table.Rows[0][propertyInfo.Name];
+				var propType = propertyInfo.PropertyType;
+
+				if (propType == typeof(TenantId))
+				{
+					value = rawValue == "<default>" 
+						? TenantId.Default 
+						: new TenantId(rawValue);
+				}
+				else if (propType == typeof(PlayerId))
+				{
+					value = new PlayerId(rawValue);
+				}
+
+				if (value != null)
+				{
+					propertyInfo.SetValue(expectedEvent, value);
+				}
+			}
+
+			table.FillInstance(expectedEvent);
+
+			return expectedEvent;
 		}
 	}
 }

@@ -11,6 +11,10 @@ Scenario: Create player
 	When I execute Create
 	Then player is created
 	And player is returned
+	And PlayerCreated event is produced
+		| TenantId  | PlayerId | FirstName | LastName |
+		| <default> | player1  | John      | Smith    |
+	And PlayerCreated event is Public
 
 @ab:1022 @unit
 Scenario: Validation cases
@@ -20,6 +24,7 @@ Scenario: Validation cases
 	When I execute Create
 	Then player is not created
 	And ValidationError is returned
+	And PlayerCreated event is not produced
 
 	Examples:
 		| FirstName          | LastName           |

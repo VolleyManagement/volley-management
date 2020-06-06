@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using VolleyM.Domain.Contracts.EventBroker;
 
-namespace VolleyM.Domain.Framework.EventBroker
+namespace VolleyM.Domain.Contracts.EventBroker
 {
     public interface ICanProduceEvent
     {

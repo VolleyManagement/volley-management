@@ -7,7 +7,7 @@
 Scenario: Create player
 	Given I have CreateRequest
 		| FirstName | LastName |
-		| John      | Smith    |sea
+		| John      | Smith    |
 	When I execute Create
 	Then player is created
 	And player is returned

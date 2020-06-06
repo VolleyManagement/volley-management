@@ -70,5 +70,13 @@ namespace VolleyM.Domain.Players.UnitTests
 
 			return result;
 		}
+
+		protected override List<ISpecFlowTransform> GetAssemblyTransforms()
+		{
+			return new List<ISpecFlowTransform>
+			{
+				new PlayerIdTransform()
+			};
+		}
 	}
 }

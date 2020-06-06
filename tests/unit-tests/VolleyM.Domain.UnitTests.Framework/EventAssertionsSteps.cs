@@ -5,22 +5,21 @@ using FluentAssertions;
 using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
-using VolleyM.Domain.Players.PlayerAggregate;
-using VolleyM.Domain.UnitTests.Framework;
 
-namespace VolleyM.Domain.Players.UnitTests
+namespace VolleyM.Domain.UnitTests.Framework
 {
 	[Binding]
-	public class EventAssertionsSteps
+	public abstract class EventAssertionsSteps
 	{
 		private readonly Container _container;
+		private readonly ISpecFlowTransformFactory _transformFactory;
 
-		public EventAssertionsSteps(Container container)
+		protected EventAssertionsSteps(Container container, ISpecFlowTransformFactory transformFactory)
 		{
 			_container = container;
+			_transformFactory = transformFactory;
 		}
 
 		[Then(@"(.*) event is produced")]
@@ -32,11 +31,7 @@ namespace VolleyM.Domain.Players.UnitTests
 
 			object expectedEvent = GetExpectedEvent(table, evt);
 
-			evt.Should().BeEquivalentTo(expectedEvent, cfg=>
-			{
-				cfg.Using<PlayerId>(ctx => ctx.Subject.Should().NotBeNull());
-				return cfg;
-			});
+			evt.Should().BeEquivalentTo(expectedEvent);
 		}
 
 		[Then(@"(.*) event is (Public|Internal)")]
@@ -64,7 +59,6 @@ namespace VolleyM.Domain.Players.UnitTests
 			evt.Should().BeNull();
 		}
 
-
 		private IEvent GetReceivedEvent(string eventName)
 		{
 			List<IEvent> publishedEvents = null;
@@ -81,11 +75,12 @@ namespace VolleyM.Domain.Players.UnitTests
 			return target;
 		}
 
-		private bool PublicEventExpected(string eventScope)
+		private static bool PublicEventExpected(string eventScope)
 		{
 			return string.Compare("public", eventScope, StringComparison.OrdinalIgnoreCase) == 0;
 		}
-		private static object GetExpectedEvent(Table table, IEvent evt)
+
+		private object GetExpectedEvent(Table table, IEvent evt)
 		{
 			var eventType = evt.GetType();
 
@@ -93,20 +88,12 @@ namespace VolleyM.Domain.Players.UnitTests
 
 			foreach (var propertyInfo in eventType.GetProperties())
 			{
-				object value = null;
 				var rawValue = table.Rows[0][propertyInfo.Name];
 				var propType = propertyInfo.PropertyType;
 
-				if (propType == typeof(TenantId))
-				{
-					value = rawValue == "<default>" 
-						? TenantId.Default 
-						: new TenantId(rawValue);
-				}
-				else if (propType == typeof(PlayerId))
-				{
-					value = new PlayerId(rawValue);
-				}
+				var transform = _transformFactory.GetTransform(propType);
+
+				var value = transform.GetValue(rawValue);
 
 				if (value != null)
 				{

@@ -46,6 +46,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 			ConfigureContainer();
 
 			RegisterContainerInSpecFlow(Container);
+			RegisterSpecFlowTransforms();
 
 			RegisterAssemblyBootstrappers();
 
@@ -80,6 +81,18 @@ namespace VolleyM.Domain.UnitTests.Framework
 				.Returns(Task.FromResult(true));
 
 			container.RegisterInstance(featureService);
+		}
+
+		private void RegisterSpecFlowTransforms()
+		{
+			var transformFactory = new SpecFlowTransformFactory();
+
+			var transforms = GetAssemblyTransforms();
+			transforms.Add(new TenantIdTransform());
+
+			transforms.ForEach(t => transformFactory.RegisterTransform(t));
+
+			_objectContainer.RegisterInstanceAs(transformFactory, typeof(ISpecFlowTransformFactory));
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
@@ -119,6 +132,15 @@ namespace VolleyM.Domain.UnitTests.Framework
 		protected virtual ITestFixture CreateTestFixture(TestTarget testTarget)
 		{
 			return new NoOpTestFixture();
+		}
+
+		/// <summary>
+		/// Provides list of transformations used in the Feature file bindings for the cases where SpecFlow cannot handle it
+		/// </summary>
+		/// <returns></returns>
+		protected virtual List<ISpecFlowTransform> GetAssemblyTransforms()
+		{
+			return new List<ISpecFlowTransform>();
 		}
 
 		#region Test Configuration

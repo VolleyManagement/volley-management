@@ -5,7 +5,6 @@ using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Contracts.EventBroker;
-using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Domain.Players.Events;
 using VolleyM.Domain.Players.PlayerAggregate;
 

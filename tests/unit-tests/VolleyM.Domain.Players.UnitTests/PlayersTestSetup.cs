@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Players.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.Bootstrap;
@@ -24,6 +25,8 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			TestRunFixtureBase.OneTimeFixtureCreator = CreateOneTimeTestFixture;
 			TestRunFixtureBase.BeforeTestRun();
+
+			Service.Instance.ValueRetrievers.Register(new PlayerIdTransform());
 		}
 
 		[AfterTestRun]

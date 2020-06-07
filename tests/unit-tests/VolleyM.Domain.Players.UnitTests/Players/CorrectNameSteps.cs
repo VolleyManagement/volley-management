@@ -19,7 +19,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
 
-
+		private PlayerId _existingPlayerId;
 		private CorrectName.Request _request;
 		private Either<Error, Unit> _actualResult;
 
@@ -40,6 +40,8 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		public async Task GivenPlayerExists(Table table)
 		{
 			var player = table.CreateInstance<TestPlayerDto>();
+			_existingPlayerId = player.PlayerId;
+			_testFixture.MockNextRandomId(_existingPlayerId.ToString());
 
 			await _testFixture.MockPlayerExists(player);
 		}
@@ -63,5 +65,19 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			_actualResult.ShouldBeEquivalent(Unit.Default);
 		}
 
+		[Then(@"player name is")]
+		public async Task ThenPlayerNameIs(Table table)
+		{
+			var expectedPlayer = new
+			{
+				FirstName = table.Rows[0][0],
+				LastName = table.Rows[0][1]
+			};
+
+			var playerRepository = _container.GetInstance<IPlayersRepository>();
+			var actualPlayer = await playerRepository.Get(TenantId.Default, _existingPlayerId);
+
+			actualPlayer.ShouldBeEquivalent(expectedPlayer);
+		}
 	}
 }

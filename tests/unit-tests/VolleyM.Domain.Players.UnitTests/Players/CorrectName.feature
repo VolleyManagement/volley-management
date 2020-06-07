@@ -6,12 +6,12 @@
 Scenario: Correct Name
 	Given player exists
 		| PlayerId | FirstName | LastName |
-		| player1  | Marko     | Ivanov   |
+		| player-to-correct-name  | Marko     | Ivanov   |
 	And I have CorrectNameRequest
 		| PlayerId | FirstName | LastName |
-		| player1  | Jane      | Doe      |
+		| player-to-correct-name  | Jane      | Doe      |
 	When I execute CorrectName
 	Then success result is returned
-	#And player name is
-	#	| FirstName | LastName |
-	#	| Jane      | Doe      |
+	And player name is
+		| FirstName | LastName |
+		| Jane      | Doe      |

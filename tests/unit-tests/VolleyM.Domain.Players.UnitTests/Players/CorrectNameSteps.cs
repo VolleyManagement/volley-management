@@ -1,35 +1,66 @@
-﻿namespace VolleyM.Domain.Players.UnitTests.Players
+﻿using System.Threading.Tasks;
+using LanguageExt;
+using SimpleInjector;
+using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
+using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Players.Handlers;
+using VolleyM.Domain.Players.PlayerAggregate;
+using VolleyM.Domain.Players.UnitTests.Fixture;
+using VolleyM.Domain.UnitTests.Framework;
+
+namespace VolleyM.Domain.Players.UnitTests.Players
 {
+	[Binding]
+	[Scope(Feature = "Correct Player Name")]
 	public class CorrectNameSteps
 	{
-		[Given(@"player exists")]
-		public void GivenPlayerExists(Table table)
+		private readonly IPlayersTestFixture _testFixture;
+		private readonly IAuthFixture _authFixture;
+		private readonly Container _container;
+
+
+		private CorrectName.Request _request;
+		private Either<Error, Unit> _actualResult;
+
+		public CorrectNameSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
 		{
-			ScenarioContext.Current.Pending();
+			_testFixture = testFixture;
+			_authFixture = authFixture;
+			_container = container;
+		}
+
+		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
+		public void ScenarioSetup()
+		{
+			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(CorrectName));
+		}
+
+		[Given(@"player exists")]
+		public async Task GivenPlayerExists(Table table)
+		{
+			var player = table.CreateInstance<TestPlayerDto>();
+
+			await _testFixture.MockPlayerExists(player);
 		}
 
 		[Given(@"I have CorrectNameRequest")]
 		public void GivenIHaveCorrectNameRequest(Table table)
 		{
-			ScenarioContext.Current.Pending();
+			_request = table.CreateInstance<CorrectName.Request>();
 		}
 
 		[When(@"I execute CorrectName")]
-		public void WhenIExecuteCorrectName()
+		public async Task WhenIExecuteCorrectName()
 		{
-			ScenarioContext.Current.Pending();
+			var handler = _container.GetInstance<IRequestHandler<CorrectName.Request, Unit>>();
+			_actualResult = await handler.Handle(_request);
 		}
 
 		[Then(@"success result is returned")]
 		public void ThenSuccessResultIsReturned()
 		{
-			ScenarioContext.Current.Pending();
-		}
-
-		[Then(@"player name is")]
-		public void ThenPlayerNameIs(Table table)
-		{
-			ScenarioContext.Current.Pending();
+			_actualResult.ShouldBeEquivalent(Unit.Default);
 		}
 
 	}

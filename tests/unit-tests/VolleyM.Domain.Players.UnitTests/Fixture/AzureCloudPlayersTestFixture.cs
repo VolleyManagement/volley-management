@@ -30,6 +30,11 @@ namespace VolleyM.Domain.Players.UnitTests
 			await CleanUpPlayers();
 		}
 
+		public Task MockPlayerExists(TestPlayerDto player)
+		{
+			return Task.CompletedTask;
+		}
+
 		public async Task MockSeveralPlayersExist(List<Player> testData)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();

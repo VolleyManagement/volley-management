@@ -11,7 +11,7 @@
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
     <PackageReference Include="SimpleInjector" Version="4.10.2" />
     <PackageReference Include="System.Composition" Version="1.4.0" />
-    <PackageReference Include="System.Composition.Hosting" Version="1.4.0" />
+    <PackageReference Include="System.Composition.Hosting" Version="1.4.1" />
   </ItemGroup>
 
 </Project>

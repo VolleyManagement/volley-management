@@ -12,6 +12,8 @@ using Esquio.Abstractions;
 using NSubstitute;
 using Serilog;
 using TechTalk.SpecFlow;
+using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Infrastructure.Bootstrap;
@@ -21,6 +23,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 	public abstract class DomainTestSetupBase
 	{
 		private readonly IObjectContainer _objectContainer;
+		private readonly FeatureContext _featureContext;
 
 		#region Scenario variables
 
@@ -32,9 +35,10 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		private Scope _scope;
 
-		protected DomainTestSetupBase(IObjectContainer objectContainer)
+		protected DomainTestSetupBase(IObjectContainer objectContainer, FeatureContext featureContext)
 		{
 			_objectContainer = objectContainer;
+			_featureContext = featureContext;
 		}
 
 		#endregion
@@ -88,7 +92,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 			var transformFactory = new SpecFlowTransformFactory();
 
 			var transforms = GetAssemblyTransforms();
-			transforms.Add(new TenantIdTransform());
+			transforms.Add(new TenantIdTransform(CurrentTenantProvider));
 
 			transforms.ForEach(t => transformFactory.RegisterTransform(t));
 
@@ -100,9 +104,17 @@ namespace VolleyM.Domain.UnitTests.Framework
 		{
 			_scope = ThreadScopedLifestyle.BeginScope(Container);
 
-			AuthFixture?.ConfigureTestUser(Container);
+			AuthFixture?.ConfigureTestUser(Container, GetFeatureTenantId());
 
 			BaseTestFixture.ScenarioSetup();
+		}
+
+		private TenantId GetFeatureTenantId()
+		{
+			var feature = _featureContext.FeatureInfo.Title;
+			feature = feature.ToLowerInvariant().Replace(' ', '-');
+
+			return new TenantId($"F:{feature}");
 		}
 
 		[AfterScenario(Order = Constants.AFTER_SCENARIO_TEST_FRAMEWORK_ORDER)]
@@ -141,6 +153,11 @@ namespace VolleyM.Domain.UnitTests.Framework
 		protected virtual List<ISpecFlowTransform> GetAssemblyTransforms()
 		{
 			return new List<ISpecFlowTransform>();
+		}
+
+		private TenantId CurrentTenantProvider()
+		{
+			return Container.GetInstance<ICurrentUserProvider>().Tenant;
 		}
 
 		#region Test Configuration

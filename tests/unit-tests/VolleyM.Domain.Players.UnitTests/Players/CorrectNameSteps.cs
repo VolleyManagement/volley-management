@@ -75,7 +75,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			};
 
 			var playerRepository = _container.GetInstance<IPlayersRepository>();
-			var actualPlayer = await playerRepository.Get(TenantId.Default, _existingPlayerId);
+			var actualPlayer = await playerRepository.Get(_testFixture.CurrentTenant, _existingPlayerId);
 
 			actualPlayer.ShouldBeEquivalent(expectedPlayer);
 		}

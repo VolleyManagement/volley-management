@@ -5,11 +5,11 @@
 @azurecloud
 Scenario: Correct Name
 	Given player exists
-		| PlayerId | FirstName | LastName |
-		| player-to-correct-name  | Marko     | Ivanov   |
+		| PlayerId               | FirstName | LastName |
+		| player-to-correct-name | Marko     | Ivanov   |
 	And I have CorrectNameRequest
-		| PlayerId | FirstName | LastName |
-		| player-to-correct-name  | Jane      | Doe      |
+		| PlayerId               | FirstName | LastName |
+		| player-to-correct-name | Jane      | Doe      |
 	When I execute CorrectName
 	Then success result is returned
 	And player name is

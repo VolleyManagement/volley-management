@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
-	public interface IPlayersTestFixture : ITestFixture
+	public interface IPlayersTestFixture : ITenantTestFixture
 	{
-		Task MockSeveralPlayersExist(List<Player> testData);
+		Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData);
 
 		Task VerifyPlayerCreated(Player expectedPlayer);
 

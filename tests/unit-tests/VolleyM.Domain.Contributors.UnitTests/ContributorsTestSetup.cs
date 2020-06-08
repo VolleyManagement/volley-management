@@ -10,8 +10,9 @@ namespace VolleyM.Domain.Contributors.UnitTests
     [Binding]
     public class ContributorsTestSetup : DomainTestSetupBase
     {
-        public ContributorsTestSetup(IObjectContainer objectContainer) : base(objectContainer)
-        {
+        public ContributorsTestSetup(IObjectContainer objectContainer, FeatureContext featureContext)
+	        : base(objectContainer, featureContext)
+		{
         }
 
         [BeforeTestRun]

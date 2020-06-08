@@ -26,20 +26,6 @@ namespace VolleyM.Domain.Players.UnitTests
 		private List<PlayerDto> _expectedResult;
 		private Either<Error, List<PlayerDto>> _actualResult;
 
-		private static readonly Faker<Player> _playerFaker;
-
-		static GetAllPlayersSteps()
-		{
-			_playerFaker = new Faker<Player>()
-				.StrictMode(true)
-				.CustomInstantiator(f =>
-					new Player(
-						TenantId.Default,
-						new PlayerId(f.Random.Utf16String(10, 20)),
-						f.Person.FirstName,
-						f.Person.LastName));
-		}
-
 		public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
 		{
 			_testFixture = testFixture;
@@ -60,7 +46,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		public async Task GivenSeveralPlayersExist()
 		{
 			var inputData = GetSeveralPlayersCaseData();
-			await _testFixture.MockSeveralPlayersExist(inputData);
+			await _testFixture.MockSeveralPlayersExist(_testFixture.CurrentTenant, inputData);
 
 			_expectedResult = GetSeveralPlayersCaseExpectedData(inputData);
 		}
@@ -90,9 +76,21 @@ namespace VolleyM.Domain.Players.UnitTests
 				})
 				.ToList();
 
-		private static List<Player> GetSeveralPlayersCaseData()
+		private List<Player> GetSeveralPlayersCaseData()
 		{
-			return _playerFaker.Generate(3);
+			return GetFaker(_testFixture.CurrentTenant).Generate(3);
+		}
+
+		private static Faker<Player> GetFaker(TenantId tenant)
+		{
+			return new Faker<Player>()
+				.StrictMode(true)
+				.CustomInstantiator(f =>
+					new Player(
+						tenant,
+						new PlayerId(f.Random.Utf16String(10, 20)),
+						f.Person.FirstName,
+						f.Person.LastName));
 		}
 	}
 }

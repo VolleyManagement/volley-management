@@ -1,6 +1,6 @@
 ﻿Feature: Get All players
 
-	All contributors should be recognized and returned
+	All existing players should be listed
 
 @unit @azurecloud @ab:1021 
 Scenario: Query all players

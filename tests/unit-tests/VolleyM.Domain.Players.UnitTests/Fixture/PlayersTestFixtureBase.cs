@@ -1,22 +1,23 @@
 ﻿using NSubstitute;
 using SimpleInjector;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
-	public class PlayersTestFixtureBase
+	public abstract class PlayersTestFixtureBase : TenantTestFixtureBase
 	{
-		protected readonly Container _container;
 		private readonly IRandomIdGenerator _idGenerator;
 
-		protected PlayersTestFixtureBase(Container container)
+		protected PlayersTestFixtureBase()
 		{
-			_container = container;
 			_idGenerator = Substitute.For<IRandomIdGenerator>();
 		}
 
-		public virtual void RegisterScenarioDependencies(Container container)
+		public override void RegisterScenarioDependencies(Container container)
 		{
+			base.RegisterScenarioDependencies(container);
+
 			container.RegisterInstance(_idGenerator);
 		}
 

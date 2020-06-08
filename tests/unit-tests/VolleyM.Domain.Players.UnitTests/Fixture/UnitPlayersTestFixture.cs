@@ -18,17 +18,12 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		private Player _actualPlayer;
 
-		public UnitPlayersTestFixture(Container container) : base(container)
-		{
-		}
-
 		public override void RegisterScenarioDependencies(Container container)
 		{
 			base.RegisterScenarioDependencies(container);
 
 			_queryMock = Substitute.For<IQuery<TenantId, List<PlayerDto>>>();
 			container.Register(() => _queryMock, Lifestyle.Scoped);
-
 
 			_repoMock = Substitute.For<IPlayersRepository>();
 			_repoMock.Add(Arg.Any<Player>())
@@ -38,18 +33,18 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			container.Register(() => _repoMock, Lifestyle.Scoped);
 		}
 
-		public Task ScenarioSetup()
+		public override Task ScenarioSetup()
 		{
 			_mapper = _container.GetInstance<IMapper>();
 			return Task.CompletedTask;
 		}
 
-		public Task ScenarioTearDown()
+		public override Task ScenarioTearDown()
 		{
 			return Task.CompletedTask;
 		}
 
-		public Task MockSeveralPlayersExist(List<Player> testData)
+		public Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData)
 		{
 			var mappedData = testData.Select(p => new PlayerDto
 			{
@@ -58,7 +53,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 				FirstName = p.FirstName,
 				LastName = p.LastName
 			}).ToList();
-			_queryMock.Execute(TenantId.Default).Returns(mappedData);
+			_queryMock.Execute(tenant).Returns(mappedData);
 
 			return Task.CompletedTask;
 		}

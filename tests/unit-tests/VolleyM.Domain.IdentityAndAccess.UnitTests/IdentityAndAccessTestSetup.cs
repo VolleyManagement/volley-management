@@ -13,7 +13,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
     [Binding]
     public class IdentityAndAccessTestSetup : DomainTestSetupBase
     {
-        public IdentityAndAccessTestSetup(IObjectContainer objectContainer) : base(objectContainer) { }
+        public IdentityAndAccessTestSetup(IObjectContainer objectContainer, FeatureContext featureContext)
+	        : base(objectContainer, featureContext) { }
 
         #region One Time Fixture Setup
 

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.Players.UnitTests.Fixture;
-using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
@@ -14,18 +11,13 @@ namespace VolleyM.Domain.Players.UnitTests
 	{
 		private List<(TenantId Tenant, PlayerId Id)> _playersToTeardown;
 
-		public AzureCloudPlayersTestFixture(Container container)
-			: base(container)
-		{
-		}
-
-		public Task ScenarioSetup()
+		public override Task ScenarioSetup()
 		{
 			_playersToTeardown = new List<(TenantId Tenant, PlayerId Id)>();
 			return Task.CompletedTask;
 		}
 
-		public async Task ScenarioTearDown()
+		public override async Task ScenarioTearDown()
 		{
 			await CleanUpPlayers();
 		}
@@ -39,7 +31,7 @@ namespace VolleyM.Domain.Players.UnitTests
 			_playersToTeardown.Add((TenantId.Default, player.PlayerId));
 		}
 
-		public async Task MockSeveralPlayersExist(List<Player> testData)
+		public async Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
 			foreach (var player in testData)

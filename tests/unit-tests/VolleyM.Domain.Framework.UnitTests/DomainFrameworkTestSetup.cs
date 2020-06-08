@@ -11,7 +11,8 @@ namespace VolleyM.Domain.Framework.UnitTests
     [Binding]
     public class DomainFrameworkTestSetup : DomainTestSetupBase
     {
-        public DomainFrameworkTestSetup(IObjectContainer objectContainer) : base(objectContainer) { }
+        public DomainFrameworkTestSetup(IObjectContainer objectContainer, FeatureContext featureContext)
+	        : base(objectContainer, featureContext) { }
 
         [BeforeTestRun]
         public static void OneTimeSetup()

@@ -29,9 +29,10 @@ namespace VolleyM.Domain.UnitTests.Framework
 
             container.Register(() => store, Lifestyle.Scoped);
         }
-        public void ConfigureTestUser(Container container)
+
+        public void ConfigureTestUser(Container container, TenantId tenant)
         {
-            _testUser = new User(_testUserId, TenantId.Default);
+            _testUser = new User(_testUserId, tenant);
             _testUser.AssignRole(_testUserRoleId);
 
             var manager = container.GetInstance<ICurrentUserManager>();

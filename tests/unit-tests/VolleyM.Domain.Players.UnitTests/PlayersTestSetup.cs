@@ -14,7 +14,8 @@ namespace VolleyM.Domain.Players.UnitTests
 	public class PlayersTestSetup : DomainTestSetupBase
 	{
 		// define ctor to satisfy base
-		public PlayersTestSetup(IObjectContainer objectContainer) : base(objectContainer)
+		public PlayersTestSetup(IObjectContainer objectContainer, FeatureContext featureContext) 
+			: base(objectContainer, featureContext)
 		{
 		}
 
@@ -52,8 +53,8 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			return target switch
 			{
-				TestTarget.Unit => new UnitPlayersTestFixture(Container),
-				TestTarget.AzureCloud => new AzureCloudPlayersTestFixture(Container),
+				TestTarget.Unit => new UnitPlayersTestFixture(),
+				TestTarget.AzureCloud => new AzureCloudPlayersTestFixture(),
 				_ => throw new NotSupportedException()
 			};
 		}

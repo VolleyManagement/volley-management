@@ -22,13 +22,21 @@ namespace VolleyM.Domain.Players.UnitTests
 			await CleanUpPlayers();
 		}
 
+		public async Task MockPlayerExists(TestPlayerDto player)
+		{
+			var repo = _container.GetInstance<IPlayersRepository>();
+			var playerDomain = new Player(CurrentTenant, player.PlayerId, player.FirstName, player.LastName);
+			await EnsureSuccessfulCreation(repo, playerDomain);
+
+			_playersToTeardown.Add((CurrentTenant, player.PlayerId));
+		}
+
 		public async Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
 			foreach (var player in testData)
 			{
-				var createResult = await repo.Add(player);
-				createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
+				await EnsureSuccessfulCreation(repo, player);
 			}
 		}
 
@@ -64,6 +72,12 @@ namespace VolleyM.Domain.Players.UnitTests
 			}
 
 			await Task.WhenAll(deleteTasks.ToArray());
+		}
+
+		private static async Task EnsureSuccessfulCreation(IPlayersRepository repo, Player player)
+		{
+			var createResult = await repo.Add(player);
+			createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
 		}
 	}
 }

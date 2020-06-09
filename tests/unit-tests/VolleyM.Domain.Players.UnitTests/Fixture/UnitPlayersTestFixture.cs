@@ -44,6 +44,11 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			return Task.CompletedTask;
 		}
 
+		public Task MockPlayerExists(TestPlayerDto player)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData)
 		{
 			var mappedData = testData.Select(p => new PlayerDto

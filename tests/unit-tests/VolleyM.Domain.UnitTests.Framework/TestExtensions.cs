@@ -28,7 +28,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         public static void ShouldBeEquivalent<T>(
             this Either<Error, T> actualResult,
-            T expected,
+            object expected,
             string because = "",
             params object[] becauseArgs)
         {

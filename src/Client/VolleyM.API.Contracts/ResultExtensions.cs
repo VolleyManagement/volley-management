@@ -9,7 +9,7 @@ namespace VolleyM.API.Contracts
     public static class ResultExtensions
     {
         public static async Task<IActionResult> ExecuteHandler<TRequest, TResponse, TModel>(
-            this IRequestHandler<TRequest, TResponse> handler,
+            this IRequestHandlerOld<TRequest, TResponse> handler,
             TRequest request,
             Func<TResponse, TModel> resultConverter)
             where TRequest : IRequest<TResponse>

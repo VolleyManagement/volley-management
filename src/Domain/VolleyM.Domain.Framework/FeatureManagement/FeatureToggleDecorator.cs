@@ -8,13 +8,13 @@ using VolleyM.Domain.Framework.HandlerMetadata;
 namespace VolleyM.Domain.Framework.FeatureManagement
 {
     public class FeatureToggleDecorator<TRequest, TResponse>
-        : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
+        : DecoratorBase<IRequestHandlerOld<TRequest, TResponse>>, IRequestHandlerOld<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
         private readonly IFeatureService _featureService;
         private readonly HandlerMetadataService _handlerMetadataService;
 
-        public FeatureToggleDecorator(IRequestHandler<TRequest, TResponse> decoratee, IFeatureService featureService, HandlerMetadataService handlerMetadataService)
+        public FeatureToggleDecorator(IRequestHandlerOld<TRequest, TResponse> decoratee, IFeatureService featureService, HandlerMetadataService handlerMetadataService)
             : base(decoratee)
         {
             _featureService = featureService;
@@ -35,7 +35,7 @@ namespace VolleyM.Domain.Framework.FeatureManagement
 
 
         private Either<Error, (string Context, string Action)> GetFeatureInfo(
-            IRequestHandler<TRequest, TResponse> handler)
+            IRequestHandlerOld<TRequest, TResponse> handler)
         {
             return _handlerMetadataService.GetHandlerMetadata(handler)
                 .Map(m => (m.Context, m.Action));

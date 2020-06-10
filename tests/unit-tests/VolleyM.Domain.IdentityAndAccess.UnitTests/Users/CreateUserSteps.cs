@@ -25,7 +25,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         private CreateUser.Request _request;
         private UserBuilder _expectedUser;
 
-        private IRequestHandler<CreateUser.Request, User> _handler;
+        private IRequestHandlerOld<CreateUser.Request, User> _handler;
 
         private Either<Error, User> _actualResult;
 
@@ -83,7 +83,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         [When("I execute CreateUser")]
         public async Task WhenExecuteCommand()
         {
-            _handler = _container.GetInstance<IRequestHandler<CreateUser.Request, User>>();
+            _handler = _container.GetInstance<IRequestHandlerOld<CreateUser.Request, User>>();
 
             _actualResult = await _handler.Handle(_request);
         }

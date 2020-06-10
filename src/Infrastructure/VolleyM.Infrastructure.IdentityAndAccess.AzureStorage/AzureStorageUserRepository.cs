@@ -25,7 +25,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public Task<Either<Error, User>> Add(User user)
         {
-            return PerformStorageOperation(_options.UsersTable,
+            return PerformStorageOperationOld(_options.UsersTable,
                 async tableRef =>
             {
                 var userEntity = new UserEntity(user);
@@ -48,7 +48,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public Task<Either<Error, User>> Get(TenantId tenant, UserId id)
         {
-            return PerformStorageOperation(_options.UsersTable, 
+            return PerformStorageOperationOld(_options.UsersTable, 
                 async tableRef =>
             {
                 var getOperation = TableOperation.Retrieve<UserEntity>(tenant.ToString(), id.ToString());
@@ -69,7 +69,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public Task<Either<Error, Unit>> Delete(TenantId tenant, UserId id)
         {
-            return PerformStorageOperation<Unit>(_options.UsersTable,
+            return PerformStorageOperationOld<Unit>(_options.UsersTable,
                 async tableRef =>
             {
                 var userEntity = new UserEntity(tenant, id);

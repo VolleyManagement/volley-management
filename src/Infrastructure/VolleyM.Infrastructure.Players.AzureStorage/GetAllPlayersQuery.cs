@@ -27,7 +27,7 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 
 		public Task<Either<Error, List<PlayerDto>>> Execute(TenantId tenant)
 		{
-			return PerformStorageOperation(_options.PlayersTable,
+			return PerformStorageOperationOld(_options.PlayersTable,
 				async tableRef =>
 				{
 					var filter = TableQuery.GenerateFilterCondition(

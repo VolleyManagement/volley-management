@@ -192,7 +192,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         }
         private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request, Action<IEventProducingRequest> requestBuilder) where T : IRequest<Unit>, IEventProducingRequest
         {
-            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
+            var handler = _container.GetInstance<IRequestHandlerOld<T, Unit>>();
 
             requestBuilder(request);
 

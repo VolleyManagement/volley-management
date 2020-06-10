@@ -14,7 +14,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture
             public int EventData { get; set; }
         }
 
-        public abstract class Handler<T> : IRequestHandler<T, Unit>, ICanProduceEvent 
+        public abstract class Handler<T> : IRequestHandlerOld<T, Unit>, ICanProduceEvent 
             where T:Request
         {
             public Task<Either<Error, Unit>> Handle(T request)

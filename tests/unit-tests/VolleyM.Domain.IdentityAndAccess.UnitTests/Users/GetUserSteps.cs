@@ -26,7 +26,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         private GetUser.Request _request;
         private User _expectedUser;
 
-        private IRequestHandler<GetUser.Request, User> _handler;
+        private IRequestHandlerOld<GetUser.Request, User> _handler;
 
         private Either<Error, User> _actualResult;
 
@@ -75,7 +75,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [When("I get user")]
         public async Task WhenExecuteCommand()
         {
-            _handler = _container.GetInstance<IRequestHandler<GetUser.Request, User>>();
+            _handler = _container.GetInstance<IRequestHandlerOld<GetUser.Request, User>>();
 
             _actualResult = await _handler.Handle(_request);
         }

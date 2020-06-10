@@ -107,7 +107,7 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
         }
         private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(Func<HandlerType, IRequest<Unit>> requestFactory) where T : IRequest<Unit>
         {
-            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
+            var handler = _container.GetInstance<IRequestHandlerOld<T, Unit>>();
 
             return handler.Handle((T)requestFactory(_handlerType));
         }

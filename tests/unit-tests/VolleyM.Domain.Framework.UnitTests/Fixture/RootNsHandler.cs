@@ -13,7 +13,7 @@ namespace RootNs
             public int B { get; set; }
         }
 
-        public class Handler : IRequestHandler<RootNsHandler.Request, Unit>
+        public class Handler : IRequestHandlerOld<RootNsHandler.Request, Unit>
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {

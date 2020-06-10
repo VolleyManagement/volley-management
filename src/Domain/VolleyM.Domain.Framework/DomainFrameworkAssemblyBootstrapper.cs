@@ -28,6 +28,7 @@ namespace VolleyM.Domain.Framework
 			container.Register<HandlerMetadataService>(Lifestyle.Singleton);
 
 			RegisterHandlerDecorators(container);
+			RegisterHandlerDecoratorsOld(container);
 
 			RegisterQueryObjectDecorators(container);
 
@@ -58,18 +59,48 @@ namespace VolleyM.Domain.Framework
 				Lifestyle.Scoped,
 				context => DecorateWhenHasValidator(context, container));
 
+			//container.RegisterDecorator(
+			//	typeof(IRequestHandlerOld<,>),
+			//	typeof(AuthorizationHandlerDecorator<,>),
+			//	Lifestyle.Scoped);
+
+			//container.RegisterDecorator(
+			//	typeof(IRequestHandlerOld<,>),
+			//	typeof(FeatureToggleDecorator<,>),
+			//	Lifestyle.Scoped);
+
+			//container.RegisterDecorator(
+			//	typeof(IRequestHandlerOld<,>),
+			//	typeof(LoggingRequestHandlerDecorator<,>),
+			//	Lifestyle.Scoped);
+		}
+
+		private static void RegisterHandlerDecoratorsOld(Container container)
+		{
+			// order is important. First decorator will wrap real instance
 			container.RegisterDecorator(
-				typeof(IRequestHandler<,>),
+				typeof(IRequestHandlerOld<,>),
+				typeof(EventProducerDecoratorOld<,>),
+				Lifestyle.Scoped);
+
+			container.RegisterDecorator(
+				typeof(IRequestHandlerOld<,>),
+				typeof(ValidationHandlerDecoratorOld<,>),
+				Lifestyle.Scoped,
+				context => DecorateWhenHasValidator(context, container));
+
+			container.RegisterDecorator(
+				typeof(IRequestHandlerOld<,>),
 				typeof(AuthorizationHandlerDecorator<,>),
 				Lifestyle.Scoped);
 
 			container.RegisterDecorator(
-				typeof(IRequestHandler<,>),
+				typeof(IRequestHandlerOld<,>),
 				typeof(FeatureToggleDecorator<,>),
 				Lifestyle.Scoped);
 
 			container.RegisterDecorator(
-				typeof(IRequestHandler<,>),
+				typeof(IRequestHandlerOld<,>),
 				typeof(LoggingRequestHandlerDecorator<,>),
 				Lifestyle.Scoped);
 		}

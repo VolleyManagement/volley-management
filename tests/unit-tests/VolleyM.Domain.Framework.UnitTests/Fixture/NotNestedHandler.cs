@@ -4,7 +4,7 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.UnitTests.Fixture
 {
-    public class NotNestedHandler : IRequestHandler<NotNestedHandler.Request, Unit>
+    public class NotNestedHandler : IRequestHandlerOld<NotNestedHandler.Request, Unit>
     {
         public class Request : IRequest<Unit>
         {

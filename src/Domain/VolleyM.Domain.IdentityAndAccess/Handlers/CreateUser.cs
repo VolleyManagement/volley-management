@@ -21,7 +21,7 @@ namespace VolleyM.Domain.IdentityAndAccess.Handlers
             }
         }
 
-        public class Handler : IRequestHandler<Request, User>
+        public class Handler : IRequestHandlerOld<Request, User>
         {
             private readonly IUserRepository _repository;
 

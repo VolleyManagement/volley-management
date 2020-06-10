@@ -6,53 +6,52 @@ using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Infrastructure.AzureStorage;
 using VolleyM.Infrastructure.Players.AzureStorage.TableConfiguration;
-using Error = VolleyM.Domain.Contracts.Error;
 
 namespace VolleyM.Infrastructure.Players.AzureStorage
 {
-	public class PlayersRepository : AzureTableConnection, IPlayersRepository
+	public class PlayersRepositoryOld : AzureTableConnection, IPlayersRepositoryOld
 	{
 		private readonly PlayersContextTableStorageOptions _options;
 		private readonly PlayerFactory _playerFactory;
 		private readonly IMapper _mapper;
 
-		public PlayersRepository(PlayersContextTableStorageOptions options, PlayerFactory playerFactory, IMapper mapper) : base(options)
+		public PlayersRepositoryOld(PlayersContextTableStorageOptions options, PlayerFactory playerFactory, IMapper mapper) : base(options)
 		{
 			_options = options;
 			_playerFactory = playerFactory;
 			_mapper = mapper;
 		}
 
-		public EitherAsync<Error, Player> Get(TenantId tenant, PlayerId id)
+		public Task<Either<Error, Player>> Get(TenantId tenant, PlayerId id)
 		{
-			return PerformStorageOperation(_options.PlayersTable,
-				 tableRef =>
+			return PerformStorageOperationOld(_options.PlayersTable,
+				async tableRef =>
 				{
 					var getOperation = TableOperation.Retrieve<PlayerEntity>(tenant.ToString(), id.ToString());
 
-					var getResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(getOperation);
+					var getResult = (Either<Error, TableResult>)await tableRef.ExecuteAsync(getOperation);
 
-					return getResult.Match<Either<Error, Player>>(
+					return getResult.Match(
 						tableResult => tableResult.Result switch
 						{
-							PlayerEntity playerEntity => _playerFactory.Create(
+							PlayerEntity playerEntity => (Either<Error, Player>)_playerFactory.Create(
 								_mapper.Map<PlayerEntity, PlayerFactoryDto>(playerEntity)),
 							_ => Error.NotFound()
 						},
 						e => e
-					).ToAsync();
+					);
 				}, "Get Player");
 		}
 
-		public EitherAsync<Error, Player> Add(Player player)
+		public Task<Either<Error, Player>> Add(Player player)
 		{
-			return PerformStorageOperation(_options.PlayersTable,
-				tableRef =>
+			return PerformStorageOperationOld(_options.PlayersTable,
+				async tableRef =>
 				{
 					var playerEntity = new PlayerEntity(player);
 					var createOperation = TableOperation.Insert(playerEntity);
 
-					var createResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(createOperation);
+					var createResult = (Either<Error, TableResult>)await tableRef.ExecuteAsync(createOperation);
 
 					return createResult.Match(
 						tableResult => tableResult.Result switch
@@ -63,21 +62,21 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 								$"Azure Storage: Failed to create player with {tableResult.HttpStatusCode} error.")
 						},
 						e => e
-					).ToAsync();
+					);
 				}, "Create Player");
 		}
 
-		public EitherAsync<Error, Unit> Delete(TenantId tenant, PlayerId id)
+		public Task<Either<Error, Unit>> Delete(TenantId tenant, PlayerId id)
 		{
-			return PerformStorageOperation<Unit>(_options.PlayersTable,
-				tableRef =>
+			return PerformStorageOperationOld<Unit>(_options.PlayersTable,
+				async tableRef =>
 				{
 					var playerEntity = new PlayerEntity(tenant, id);
 					var deleteOperation = TableOperation.Delete(playerEntity);
 
-					EitherAsync<Error, TableResult> result = tableRef.ExecuteAsync(deleteOperation);
+					await tableRef.ExecuteAsync(deleteOperation);
 
-					return result.Map(tr => Unit.Default);
+					return Unit.Default;
 				}, "Delete Player");
 		}
 	}

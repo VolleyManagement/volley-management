@@ -27,7 +27,7 @@ namespace VolleyM.Domain.IDomainFrameworkTestFixture
             public string Data { get; set; }
         }
 
-        public class Handler : IRequestHandler<Request, Unit>, ICanProduceEvent
+        public class Handler : IRequestHandlerOld<Request, Unit>, ICanProduceEvent
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {

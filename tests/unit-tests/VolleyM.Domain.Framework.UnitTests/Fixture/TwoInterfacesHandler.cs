@@ -22,7 +22,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Fixture
 
         }
 
-        public class Handler : IRequestHandler<Request, Unit>, IRequestHandler<Request2, Unit>
+        public class Handler : IRequestHandlerOld<Request, Unit>, IRequestHandlerOld<Request2, Unit>
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {

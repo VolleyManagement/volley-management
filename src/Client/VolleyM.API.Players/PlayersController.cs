@@ -16,13 +16,13 @@ namespace VolleyM.API.Players
 	[ApiController]
 	public class PlayersController : ControllerBase
 	{
-		private readonly IRequestHandler<Create.Request, DomainPlayer> _createHandler;
-		private readonly IRequestHandler<GetAll.Request, List<PlayerDto>> _getAllHandler;
+		private readonly IRequestHandlerOld<Create.Request, DomainPlayer> _createHandler;
+		private readonly IRequestHandlerOld<GetAll.Request, List<PlayerDto>> _getAllHandler;
 		private readonly IMapper _mapper;
 
 		public PlayersController(
-			IRequestHandler<Create.Request, DomainPlayer> createHandler, 
-			IRequestHandler<GetAll.Request, List<PlayerDto>> getAllHandler, 
+			IRequestHandlerOld<Create.Request, DomainPlayer> createHandler, 
+			IRequestHandlerOld<GetAll.Request, List<PlayerDto>> getAllHandler, 
 			IMapper mapper)
 		{
 			_createHandler = createHandler;

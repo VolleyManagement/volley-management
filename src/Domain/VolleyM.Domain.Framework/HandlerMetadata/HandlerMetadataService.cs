@@ -15,7 +15,7 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
         private readonly ConcurrentDictionary<Type, HandlerInfo> _handlerMetadataCache
             = new ConcurrentDictionary<Type, HandlerInfo>();
 
-        public Either<Error, HandlerInfo> GetHandlerMetadata<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
+        public Either<Error, HandlerInfo> GetHandlerMetadata<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
             where TRequest : IRequest<TResponse>
         {
             return from requestType in GetRequestType(handler)
@@ -31,7 +31,7 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
                     .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
         }
 
-        private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
+        private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
             where TRequest : IRequest<TResponse>
         {
             var handlerInterfaces = handler.GetType().GetInterfaces()
@@ -95,7 +95,7 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
 
         private static bool IsIRequestHandler<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>
         {
-            var name = typeof(IRequestHandler<,>).Name;
+            var name = typeof(IRequestHandlerOld<,>).Name;
             return interfaceType.Name == name;
         }
 

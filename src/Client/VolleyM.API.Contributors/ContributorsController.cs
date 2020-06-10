@@ -13,10 +13,10 @@ namespace VolleyM.API.Contributors
 	[ApiController]
 	public class ContributorsController : ControllerBase
 	{
-		private readonly IRequestHandler<GetAll.Request, List<ContributorDto>> _handler;
+		private readonly IRequestHandlerOld<GetAll.Request, List<ContributorDto>> _handler;
 		private readonly IMapper _mapper;
 
-		public ContributorsController(IRequestHandler<GetAll.Request, List<ContributorDto>> handler, IMapper mapper)
+		public ContributorsController(IRequestHandlerOld<GetAll.Request, List<ContributorDto>> handler, IMapper mapper)
 		{
 			_handler = handler;
 			_mapper = mapper;

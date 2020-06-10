@@ -14,7 +14,7 @@ namespace VolleyM.Domain.IDomainFrameworkTestFixture
 
         }
 
-        public class Handler : IRequestHandler<Request, Unit>
+        public class Handler : IRequestHandlerOld<Request, Unit>
         {
             public Task<Either<Error, Unit>> Handle(Request request)
             {

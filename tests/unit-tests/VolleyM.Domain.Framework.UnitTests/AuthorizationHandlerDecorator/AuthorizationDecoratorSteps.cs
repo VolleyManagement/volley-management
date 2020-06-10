@@ -55,7 +55,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         [When(@"I call decorated handler")]
         public async Task WhenICallDecoratedHandler()
         {
-            var handler = _container.GetInstance<IRequestHandler<SampleHandler.Request, Unit>>();
+            var handler = _container.GetInstance<IRequestHandlerOld<SampleHandler.Request, Unit>>();
 
             _actualResult = await handler.Handle(new SampleHandler.Request());
         }

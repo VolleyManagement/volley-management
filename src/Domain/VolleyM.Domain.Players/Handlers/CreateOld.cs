@@ -10,7 +10,7 @@ using VolleyM.Domain.Players.PlayerAggregate;
 
 namespace VolleyM.Domain.Players.Handlers
 {
-	public class Create
+	public class CreateOld
 	{
 		public class Request : IRequest<Player>
 		{
@@ -38,36 +38,37 @@ namespace VolleyM.Domain.Players.Handlers
 			}
 		}
 
-		public class Handler : IRequestHandler<Request, Player>, ICanProduceEvent
+		public class Handler : IRequestHandlerOld<Request, Player>, ICanProduceEvent
 		{
-			private readonly IPlayersRepository _repository;
+			private readonly IPlayersRepositoryOld _repository;
 			private readonly IRandomIdGenerator _idGenerator;
 			private readonly ICurrentUserProvider _currentUser;
 
-			public Handler(IPlayersRepository repository, IRandomIdGenerator idGenerator, ICurrentUserProvider currentUser)
+			public Handler(IPlayersRepositoryOld repository, IRandomIdGenerator idGenerator, ICurrentUserProvider currentUser)
 			{
 				_repository = repository;
 				_idGenerator = idGenerator;
 				_currentUser = currentUser;
 			}
 
-			public EitherAsync<Error, Player> Handle(Request request)
+			public async Task<Either<Error, Player>> Handle(Request request)
 			{
 				var id = new PlayerId(_idGenerator.GetRandomId());
 				var player = new Player(_currentUser.Tenant, id, request.FirstName, request.LastName);
 
-				var addResult = _repository.Add(player);
+				var addResult = await _repository.Add(player);
 
 				return addResult
-					.Do(createdPlayer =>
+					.Map(createdPlayer =>
 					{
 						DomainEvents.Add(new PlayerCreated
 						{
-							TenantId = createdPlayer.Tenant,
-							PlayerId = createdPlayer.Id,
-							FirstName = createdPlayer.FirstName,
-							LastName = createdPlayer.LastName
+							TenantId = player.Tenant,
+							PlayerId = player.Id,
+							FirstName = player.FirstName,
+							LastName = player.LastName
 						});
+						return createdPlayer;
 					});
 			}
 

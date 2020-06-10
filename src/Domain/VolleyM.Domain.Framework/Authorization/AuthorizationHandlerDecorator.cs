@@ -7,14 +7,14 @@ using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 namespace VolleyM.Domain.Framework.Authorization
 {
     public class AuthorizationHandlerDecorator<TRequest, TResponse>
-        : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
+        : DecoratorBase<IRequestHandlerOld<TRequest, TResponse>>, IRequestHandlerOld<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
         private readonly IAuthorizationService _authZService;
         private readonly HandlerMetadataService _handlerMetadataService;
 
         public AuthorizationHandlerDecorator(
-            IRequestHandler<TRequest, TResponse> handler,
+            IRequestHandlerOld<TRequest, TResponse> handler,
             IAuthorizationService authZService,
             HandlerMetadataService handlerMetadataService)
             : base(handler)
@@ -36,7 +36,7 @@ namespace VolleyM.Domain.Framework.Authorization
         }
 
         private Either<Error, Permission> ExtractPermissionToCheck(
-            IRequestHandler<TRequest, TResponse> handler)
+            IRequestHandlerOld<TRequest, TResponse> handler)
         {
             return _handlerMetadataService.GetHandlerMetadata(handler)
                 .Map(m => new Permission(m.Context, m.Action));

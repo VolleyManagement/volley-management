@@ -4,7 +4,7 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.UnitTests.Fixture
 {
-    public class MockedHandler : IRequestHandler<MockedHandler.Request, Unit>
+    public class MockedHandler : IRequestHandlerOld<MockedHandler.Request, Unit>
     {
         public class Request : IRequest<Unit>
         {

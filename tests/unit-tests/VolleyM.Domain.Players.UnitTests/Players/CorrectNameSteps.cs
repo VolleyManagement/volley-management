@@ -55,7 +55,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		[When(@"I execute CorrectName")]
 		public async Task WhenIExecuteCorrectName()
 		{
-			var handler = _container.GetInstance<IRequestHandler<CorrectName.Request, Unit>>();
+			var handler = _container.GetInstance<IRequestHandlerOld<CorrectName.Request, Unit>>();
 			_actualResult = await handler.Handle(_request);
 		}
 
@@ -74,7 +74,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 				LastName = table.Rows[0][1]
 			};
 
-			var playerRepository = _container.GetInstance<IPlayersRepository>();
+			var playerRepository = _container.GetInstance<IPlayersRepositoryOld>();
 			var actualPlayer = await playerRepository.Get(_testFixture.CurrentTenant, _existingPlayerId);
 
 			actualPlayer.ShouldBeEquivalent(expectedPlayer);

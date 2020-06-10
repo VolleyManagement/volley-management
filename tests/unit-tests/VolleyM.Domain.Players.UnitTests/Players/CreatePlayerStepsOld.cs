@@ -12,19 +12,19 @@ using VolleyM.Domain.UnitTests.Framework;
 namespace VolleyM.Domain.Players.UnitTests
 {
 	[Binding]
-	[Scope(Feature = "Create Player")]
-	public class CreatePlayerSteps
+	[Scope(Feature = "Create Player Old")]
+	public class CreatePlayerStepsOld
 	{
 		private readonly IPlayersTestFixture _testFixture;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
 
-		private Create.Request _request;
+		private CreateOld.Request _request;
 		private Player _expectedPlayer;
 
 		private Either<Error, Player> _actualResult;
 
-		public CreatePlayerSteps(Container container, IAuthFixture authFixture, IPlayersTestFixture testFixture)
+		public CreatePlayerStepsOld(Container container, IAuthFixture authFixture, IPlayersTestFixture testFixture)
 		{
 			_container = container;
 			_authFixture = authFixture;
@@ -34,7 +34,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
 		public void ScenarioSetup()
 		{
-			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(Create));
+			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(CreateOld));
 		}
 
 		[Given(@"I have CreateRequest")]
@@ -51,9 +51,8 @@ namespace VolleyM.Domain.Players.UnitTests
 		[When(@"I execute Create")]
 		public async Task WhenIExecuteCreatePlayer()
 		{
-			var handler = _container.GetInstance<IRequestHandler<Create.Request, Player>>();
-			var result = handler.Handle(_request);
-			_actualResult = await result.ToEither();
+			var handler = _container.GetInstance<IRequestHandlerOld<CreateOld.Request, Player>>();
+			_actualResult = await handler.Handle(_request);
 		}
 
 		[Then(@"player is created")]
@@ -80,9 +79,10 @@ namespace VolleyM.Domain.Players.UnitTests
 			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
 		}
 
-		private static Create.Request GetPlayer(Table table)
+
+		private static CreateOld.Request GetPlayer(Table table)
 		{
-			var player = table.CreateInstance<Create.Request>();
+			var player = table.CreateInstance<CreateOld.Request>();
 
 			player.FirstName = SetNameField(player.FirstName);
 			player.LastName = SetNameField(player.LastName);

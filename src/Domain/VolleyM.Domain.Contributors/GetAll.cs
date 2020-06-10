@@ -14,7 +14,7 @@ namespace VolleyM.Domain.Contributors
             // no params
         }
 
-        public class Handler : IRequestHandler<Request, List<ContributorDto>>
+        public class Handler : IRequestHandlerOld<Request, List<ContributorDto>>
         {
             private readonly IQueryObject _query;
 

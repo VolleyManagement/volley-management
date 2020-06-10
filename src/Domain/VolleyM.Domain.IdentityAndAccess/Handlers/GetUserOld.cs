@@ -4,7 +4,7 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
-    public class GetUser
+    public class GetUserOld
     {
         public class Request : IRequest<User>
         {

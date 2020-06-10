@@ -6,7 +6,7 @@ using VolleyM.Domain.Contributors;
 
 namespace VolleyM.Infrastructure.Hardcoded
 {
-    public class GetAllContributorsQuery : IQuery<Unit, List<ContributorDto>>
+    public class GetAllContributorsQuery : IQueryOld<Unit, List<ContributorDto>>
     {
         public Task<Either<Error, List<ContributorDto>>> Execute(Unit param) =>
             Task.FromResult<Either<Error, List<ContributorDto>>>(new List<ContributorDto> {

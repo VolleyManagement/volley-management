@@ -9,9 +9,10 @@ namespace VolleyM.Domain.Contracts
 	/// </summary>
 	/// <typeparam name="TParam">Query parameters</typeparam>
 	/// <typeparam name="TResult">Query result</typeparam>
-	public interface IQuery<in TParam, TResult>
-		where TResult : class
-	{
-		EitherAsync<Error, TResult> Execute(TParam param);
-	}
+	[Obsolete]
+	public interface IQueryOld<in TParam, TResult>
+        where TResult : class
+    {
+        Task<Either<Error, TResult>> Execute(TParam param);
+    }
 }

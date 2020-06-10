@@ -23,10 +23,10 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
         private UserBuilder _userBuilder;
 
-        private GetUser.Request _request;
+        private GetUserOld.Request _request;
         private User _expectedUser;
 
-        private IRequestHandlerOld<GetUser.Request, User> _handler;
+        private IRequestHandlerOld<GetUserOld.Request, User> _handler;
 
         private Either<Error, User> _actualResult;
 
@@ -40,9 +40,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(IdentityAndAccessConstants.Context, nameof(GetUser));
+            _authFixture.SetTestUserPermission(IdentityAndAccessConstants.Context, nameof(GetUserOld));
 
-            _request = new GetUser.Request();
+            _request = new GetUserOld.Request();
             _userBuilder = UserBuilder.New();
         }
 
@@ -75,7 +75,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [When("I get user")]
         public async Task WhenExecuteCommand()
         {
-            _handler = _container.GetInstance<IRequestHandlerOld<GetUser.Request, User>>();
+            _handler = _container.GetInstance<IRequestHandlerOld<GetUserOld.Request, User>>();
 
             _actualResult = await _handler.Handle(_request);
         }

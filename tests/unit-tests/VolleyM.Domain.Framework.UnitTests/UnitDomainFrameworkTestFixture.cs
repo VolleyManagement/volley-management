@@ -18,12 +18,12 @@ namespace VolleyM.Domain.Framework.UnitTests
 	{
 		private readonly Container _container;
 
-		private IRequestHandlerOld<CreateUser.Request, User> _createHandler;
-		private IRequestHandlerOld<GetUser.Request, User> _getHandler;
+		private IRequestHandlerOld<CreateUserOld.Request, User> _createHandler;
+		private IRequestHandlerOld<GetUserOld.Request, User> _getHandler;
 		private IRolesStore _rolesStore;
 		private IApplicationInfo _applicationInfo;
 
-		private CreateUser.Request _actualCreateRequest;
+		private CreateUserOld.Request _actualCreateRequest;
 
 		public UnitDomainFrameworkTestFixture(Container container)
 		{
@@ -32,10 +32,10 @@ namespace VolleyM.Domain.Framework.UnitTests
 
 		public void RegisterScenarioDependencies(Container container)
 		{
-			_createHandler = Substitute.For<IRequestHandlerOld<CreateUser.Request, User>>();
+			_createHandler = Substitute.For<IRequestHandlerOld<CreateUserOld.Request, User>>();
 			container.Register(() => _createHandler, Lifestyle.Scoped);
 
-			_getHandler = Substitute.For<IRequestHandlerOld<GetUser.Request, User>>();
+			_getHandler = Substitute.For<IRequestHandlerOld<GetUserOld.Request, User>>();
 			container.Register(() => _getHandler, Lifestyle.Scoped);
 
 			_rolesStore = Substitute.For<IRolesStore>();
@@ -73,10 +73,10 @@ namespace VolleyM.Domain.Framework.UnitTests
 
 		public void VerifyUserNotCreated()
 		{
-			_createHandler.DidNotReceive().Handle(Arg.Any<CreateUser.Request>());
+			_createHandler.DidNotReceive().Handle(Arg.Any<CreateUserOld.Request>());
 		}
 
-		public void VerifyUserCreated(CreateUser.Request expectedRequest)
+		public void VerifyUserCreated(CreateUserOld.Request expectedRequest)
 		{
 			_actualCreateRequest.Should().BeEquivalentTo(expectedRequest,
 				"user should be created with ID claim, with default tenant and assigned visitor role");
@@ -86,7 +86,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 		{
 			User BuildUser(CallInfo ci)
 			{
-				var req = ci.Arg<CreateUser.Request>();
+				var req = ci.Arg<CreateUserOld.Request>();
 				var result = new User(
 					req.UserId,
 					req.Tenant);
@@ -99,13 +99,13 @@ namespace VolleyM.Domain.Framework.UnitTests
 				return result;
 			}
 
-			_createHandler.Handle(Arg.Any<CreateUser.Request>())
+			_createHandler.Handle(Arg.Any<CreateUserOld.Request>())
 				.Returns(ci => Task.FromResult(
 					(Either<Error, User>)BuildUser(ci)))
-				.AndDoes(ci => { _actualCreateRequest = ci.Arg<CreateUser.Request>(); });
+				.AndDoes(ci => { _actualCreateRequest = ci.Arg<CreateUserOld.Request>(); });
 
-			OverrideHandlerMetadata<CreateUser.Request>(
-				new HandlerInfo("IdentityAndAccess", "CreateUser"));
+			OverrideHandlerMetadata<CreateUserOld.Request>(
+				new HandlerInfo("IdentityAndAccess", "CreateUserOld"));
 		}
 
 		public void MockCreateUserError()
@@ -115,10 +115,10 @@ namespace VolleyM.Domain.Framework.UnitTests
 
 		private void MockCreateUser(Either<Error, User> result)
 		{
-			_createHandler.Handle(Arg.Any<CreateUser.Request>())
+			_createHandler.Handle(Arg.Any<CreateUserOld.Request>())
 				.Returns(result);
-			OverrideHandlerMetadata<CreateUser.Request>(
-				new HandlerInfo("IdentityAndAccess", "CreateUser"));
+			OverrideHandlerMetadata<CreateUserOld.Request>(
+				new HandlerInfo("IdentityAndAccess", "CreateUserOld"));
 		}
 		public void MockUserExists(User user)
 		{
@@ -137,10 +137,10 @@ namespace VolleyM.Domain.Framework.UnitTests
 
 		private void MockGetUser(Either<Error, User> result)
 		{
-			_getHandler.Handle(Arg.Any<GetUser.Request>())
+			_getHandler.Handle(Arg.Any<GetUserOld.Request>())
 				.Returns(result);
-			OverrideHandlerMetadata<GetUser.Request>(
-				new HandlerInfo("IdentityAndAccess", "GetUser"));
+			OverrideHandlerMetadata<GetUserOld.Request>(
+				new HandlerInfo("IdentityAndAccess", "GetUserOld"));
 		}
 
 		public void MockRoleStoreError()

@@ -15,15 +15,24 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
         private readonly ConcurrentDictionary<Type, HandlerInfo> _handlerMetadataCache
             = new ConcurrentDictionary<Type, HandlerInfo>();
 
-        public Either<Error, HandlerInfo> GetHandlerMetadata<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
+        [Obsolete]
+		public Either<Error, HandlerInfo> GetHandlerMetadataOld<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
             where TRequest : IRequest<TResponse>
         {
-            return from requestType in GetRequestType(handler)
+            return from requestType in GetRequestTypeOld(handler)
                    from metadata in GetOrCreateMetadata(handler, requestType)
                    select metadata;
         }
 
-        public bool HasValidator(Type handlerType)
+        public Either<Error, HandlerInfo> GetHandlerMetadata<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
+	        where TRequest : IRequest<TResponse>
+        {
+	        return from requestType in GetRequestType(handler)
+		        from metadata in GetOrCreateMetadata(handler, requestType)
+		        select metadata;
+        }
+
+		public bool HasValidator(Type handlerType)
         {
             return handlerType.DeclaringType? //Type which hosts all handler related classes
                 .GetNestedTypes() //Find classes that implement IValidator<>
@@ -31,11 +40,12 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
                     .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
         }
 
-        private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
+		[Obsolete]
+        private static Either<Error, Type> GetRequestTypeOld<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
             where TRequest : IRequest<TResponse>
         {
             var handlerInterfaces = handler.GetType().GetInterfaces()
-                .Where(IsIRequestHandler<TRequest, TResponse>)
+                .Where(IsIRequestHandlerOld<TRequest, TResponse>)
                 .ToArray();
 
             if (handlerInterfaces.Length > 1)
@@ -44,9 +54,24 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             }
 
             return handlerInterfaces[0].GenericTypeArguments.First();
+		}
+
+        private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
+	        where TRequest : IRequest<TResponse>
+        {
+	        var handlerInterfaces = handler.GetType().GetInterfaces()
+		        .Where(IsIRequestHandler<TRequest, TResponse>)
+		        .ToArray();
+
+	        if (handlerInterfaces.Length > 1)
+	        {
+		        return Error.DesignViolation("Handler is allowed to implement only one IRequestHandler");
+	        }
+
+	        return handlerInterfaces[0].GenericTypeArguments.First();
         }
 
-        private Either<Error, HandlerInfo> GetOrCreateMetadata(object handler, Type requestType)
+		private Either<Error, HandlerInfo> GetOrCreateMetadata(object handler, Type requestType)
         {
             Either<Error, HandlerInfo> result;
 
@@ -93,13 +118,20 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             return parts[2];
         }
 
-        private static bool IsIRequestHandler<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>
+		[Obsolete]
+        private static bool IsIRequestHandlerOld<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>
         {
             var name = typeof(IRequestHandlerOld<,>).Name;
             return interfaceType.Name == name;
         }
 
-        public void OverrideHandlerMetadata<T>(HandlerInfo handlerInfo)
+        private static bool IsIRequestHandler<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>
+        {
+	        var name = typeof(IRequestHandler<,>).Name;
+	        return interfaceType.Name == name;
+        }
+
+		public void OverrideHandlerMetadata<T>(HandlerInfo handlerInfo)
         {
             OverrideHandlerMetadata(typeof(T), handlerInfo);
         }

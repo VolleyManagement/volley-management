@@ -29,8 +29,8 @@ Scenario Outline: AuthZ Handler role authorization
 
 	Examples: predefined AuthZ handler permissions
 		| permissionContext | permissionAction |
-		| IdentityAndAccess | GetUser          |
-		| IdentityAndAccess | CreateUser       |
+		| IdentityAndAccess | GetUserOld       |
+		| IdentityAndAccess | CreateUserOld    |
 
 @ab:1026
 Scenario: Permission check is case insensitive

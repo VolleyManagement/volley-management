@@ -6,7 +6,7 @@ using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.Players.Handlers
 {
-	using IQueryObject = IQuery<TenantId, List<PlayerDto>>;
+	using IQueryObject = IQueryOld<TenantId, List<PlayerDto>>;
 
 	public class GetAll
     {

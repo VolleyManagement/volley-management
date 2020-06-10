@@ -5,7 +5,7 @@ using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
-    public class CreateUser
+    public class CreateUserOld
     {
         public class Request : IRequest<User>
         {

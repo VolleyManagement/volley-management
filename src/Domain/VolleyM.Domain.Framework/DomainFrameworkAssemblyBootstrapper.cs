@@ -31,6 +31,7 @@ namespace VolleyM.Domain.Framework
 			RegisterHandlerDecoratorsOld(container);
 
 			RegisterQueryObjectDecorators(container);
+			RegisterQueryObjectDecoratorsOld(container);
 
 			container.Register<IRandomIdGenerator, RandomIdGenerator>(Lifestyle.Singleton);
 
@@ -59,20 +60,20 @@ namespace VolleyM.Domain.Framework
 				Lifestyle.Scoped,
 				context => DecorateWhenHasValidator(context, container));
 
-			//container.RegisterDecorator(
-			//	typeof(IRequestHandlerOld<,>),
-			//	typeof(AuthorizationHandlerDecorator<,>),
-			//	Lifestyle.Scoped);
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(AuthorizationHandlerDecorator<,>),
+				Lifestyle.Scoped);
 
-			//container.RegisterDecorator(
-			//	typeof(IRequestHandlerOld<,>),
-			//	typeof(FeatureToggleDecorator<,>),
-			//	Lifestyle.Scoped);
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(FeatureToggleDecorator<,>),
+				Lifestyle.Scoped);
 
-			//container.RegisterDecorator(
-			//	typeof(IRequestHandlerOld<,>),
-			//	typeof(LoggingRequestHandlerDecorator<,>),
-			//	Lifestyle.Scoped);
+			container.RegisterDecorator(
+				typeof(IRequestHandler<,>),
+				typeof(LoggingRequestHandlerDecorator<,>),
+				Lifestyle.Scoped);
 		}
 
 		private static void RegisterHandlerDecoratorsOld(Container container)
@@ -91,17 +92,17 @@ namespace VolleyM.Domain.Framework
 
 			container.RegisterDecorator(
 				typeof(IRequestHandlerOld<,>),
-				typeof(AuthorizationHandlerDecorator<,>),
+				typeof(AuthorizationHandlerDecoratorOld<,>),
 				Lifestyle.Scoped);
 
 			container.RegisterDecorator(
 				typeof(IRequestHandlerOld<,>),
-				typeof(FeatureToggleDecorator<,>),
+				typeof(FeatureToggleDecoratorOld<,>),
 				Lifestyle.Scoped);
 
 			container.RegisterDecorator(
 				typeof(IRequestHandlerOld<,>),
-				typeof(LoggingRequestHandlerDecorator<,>),
+				typeof(LoggingRequestHandlerDecoratorOld<,>),
 				Lifestyle.Scoped);
 		}
 
@@ -112,6 +113,15 @@ namespace VolleyM.Domain.Framework
 			var handlerType = c?.ImplementationType;
 
 			return handlerType != null && metadata.HasValidator(handlerType);
+		}
+
+		private static void RegisterQueryObjectDecoratorsOld(Container container)
+		{
+			// order is important. First decorator will wrap real instance
+			container.RegisterDecorator(
+				typeof(IQueryOld<,>),
+				typeof(LoggingQueryObjectDecoratorOld<,>),
+				Lifestyle.Scoped);
 		}
 
 		private static void RegisterQueryObjectDecorators(Container container)

@@ -12,7 +12,7 @@ using VolleyM.Infrastructure.Players.AzureStorage.TableConfiguration;
 
 namespace VolleyM.Infrastructure.Players.AzureStorage
 {
-	public class GetAllPlayersQuery : AzureTableConnection, IQuery<TenantId, List<PlayerDto>>
+	public class GetAllPlayersQuery : AzureTableConnection, IQueryOld<TenantId, List<PlayerDto>>
 	{
 		private readonly PlayersContextTableStorageOptions _options;
 		private readonly PlayerFactory _playerFactory;

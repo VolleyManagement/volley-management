@@ -66,8 +66,8 @@ namespace VolleyM.Domain.Framework.Authorization
         private static void PopulateSystemRoles()
         {
             var authZRole = new Role(_authZRoleId);
-            authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(GetUser)));
-            authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(CreateUser)));
+            authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(GetUserOld)));
+            authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(CreateUserOld)));
             _systemRoleStore[_authZRoleId] = authZRole;
         }
     }

@@ -5,7 +5,7 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Contributors
 {
-    using IQueryObject = IQuery<Unit, List<ContributorDto>>;
+    using IQueryObject = IQueryOld<Unit, List<ContributorDto>>;
 
     public class GetAll
     {

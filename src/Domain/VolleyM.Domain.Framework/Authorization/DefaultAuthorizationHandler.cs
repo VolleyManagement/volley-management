@@ -21,8 +21,8 @@ namespace VolleyM.Domain.Framework.Authorization
 		private static readonly RoleId _visitorRole = new RoleId("visitor");
 		private static readonly RoleId _sysAdminRole = new RoleId("sysadmin");
 
-		private readonly IRequestHandlerOld<GetUser.Request, User> _getUserHandler;
-		private readonly IRequestHandlerOld<CreateUser.Request, User> _createUserHandler;
+		private readonly IRequestHandlerOld<GetUserOld.Request, User> _getUserHandler;
+		private readonly IRequestHandlerOld<CreateUserOld.Request, User> _createUserHandler;
 		private readonly ICurrentUserManager _currentUserManager;
 		private readonly IApplicationInfo _applicationInfo;
 		private readonly ApplicationTrustOptions _trustOptions;
@@ -38,9 +38,9 @@ namespace VolleyM.Domain.Framework.Authorization
 
 
 		public DefaultAuthorizationHandler(
-			IRequestHandlerOld<CreateUser.Request, User> createUserHandler,
+			IRequestHandlerOld<CreateUserOld.Request, User> createUserHandler,
 			ICurrentUserManager currentUserManager,
-			IRequestHandlerOld<GetUser.Request, User> getUserHandler, IApplicationInfo applicationInfo, ApplicationTrustOptions trustOptions)
+			IRequestHandlerOld<GetUserOld.Request, User> getUserHandler, IApplicationInfo applicationInfo, ApplicationTrustOptions trustOptions)
 		{
 			_createUserHandler = createUserHandler;
 			_currentUserManager = currentUserManager;
@@ -121,7 +121,7 @@ namespace VolleyM.Domain.Framework.Authorization
 
 		private EitherAsync<Error, User> GetUser(string idValue)
 		{
-			var getRequest = new GetUser.Request
+			var getRequest = new GetUserOld.Request
 			{
 				UserId = new UserId(idValue),
 				Tenant = TenantId.Default
@@ -139,7 +139,7 @@ namespace VolleyM.Domain.Framework.Authorization
 				role = _sysAdminRole;
 			}
 
-			var createRequest = new CreateUser.Request
+			var createRequest = new CreateUserOld.Request
 			{
 				UserId = new UserId(idValue),
 				Tenant = TenantId.Default,

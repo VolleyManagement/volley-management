@@ -9,19 +9,33 @@ namespace VolleyM.API.Contracts
     public static class ResultExtensions
     {
         public static async Task<IActionResult> ExecuteHandler<TRequest, TResponse, TModel>(
-            this IRequestHandlerOld<TRequest, TResponse> handler,
+            this IRequestHandler<TRequest, TResponse> handler,
             TRequest request,
             Func<TResponse, TModel> resultConverter)
             where TRequest : IRequest<TResponse>
         {
-            var result = await handler.Handle(request);
+            var result = handler.Handle(request);
 
-            return result.Match(
+            return await result.Match(
                 v => new OkObjectResult(resultConverter(v)),
                 ConvertToHttpError);
         }
 
-        private static IActionResult ConvertToHttpError(Error e)
+		[Obsolete]
+        public static async Task<IActionResult> ExecuteHandlerOld<TRequest, TResponse, TModel>(
+	        this IRequestHandlerOld<TRequest, TResponse> handler,
+	        TRequest request,
+	        Func<TResponse, TModel> resultConverter)
+	        where TRequest : IRequest<TResponse>
+        {
+	        var result = await handler.Handle(request);
+
+	        return result.Match(
+		        v => new OkObjectResult(resultConverter(v)),
+		        ConvertToHttpError);
+        }
+
+		private static IActionResult ConvertToHttpError(Error e)
         {
             return e switch
             {

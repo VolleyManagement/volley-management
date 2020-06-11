@@ -16,12 +16,12 @@ namespace VolleyM.API.Players
 	[ApiController]
 	public class PlayersController : ControllerBase
 	{
-		private readonly IRequestHandlerOld<Create.Request, DomainPlayer> _createHandler;
+		private readonly IRequestHandler<Create.Request, DomainPlayer> _createHandler;
 		private readonly IRequestHandlerOld<GetAll.Request, List<PlayerDto>> _getAllHandler;
 		private readonly IMapper _mapper;
 
 		public PlayersController(
-			IRequestHandlerOld<Create.Request, DomainPlayer> createHandler, 
+			IRequestHandler<Create.Request, DomainPlayer> createHandler, 
 			IRequestHandlerOld<GetAll.Request, List<PlayerDto>> getAllHandler, 
 			IMapper mapper)
 		{
@@ -41,7 +41,7 @@ namespace VolleyM.API.Players
 		[Route("")]
 		public Task<IActionResult> GetAll()
 		{
-			return _getAllHandler.ExecuteHandler(new GetAll.Request(), _mapper.Map<List<ApiPlayer>>);
+			return _getAllHandler.ExecuteHandlerOld(new GetAll.Request(), _mapper.Map<List<ApiPlayer>>);
 		}
 	}
 }

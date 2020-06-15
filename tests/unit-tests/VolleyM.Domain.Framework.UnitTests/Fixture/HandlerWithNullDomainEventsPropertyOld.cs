@@ -7,7 +7,7 @@ using VolleyM.Domain.Framework.EventBroker;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {
-    public class HandlerWithNullDomainEventsProperty
+    public class HandlerWithNullDomainEventsPropertyOld
     {
         public class Request : IRequest<Unit>
         {

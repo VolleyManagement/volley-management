@@ -6,7 +6,7 @@ using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {
-	public class HandlerWhichDoesNotProduceEvent
+	public class HandlerWhichDoesNotProduceEventOld
     {
         public class Request : IRequest<Unit>
         {

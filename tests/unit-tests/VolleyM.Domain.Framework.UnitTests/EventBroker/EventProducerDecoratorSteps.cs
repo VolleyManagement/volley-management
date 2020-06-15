@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
 using LanguageExt;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using SimpleInjector;
-using System.Reflection;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.EventBroker;
@@ -18,7 +17,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.EventBroker
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Domain Event dispatching")]
     public class EventProducerDecoratorSteps
     {
@@ -97,7 +96,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         public async void WhenICallDecoratedHandler()
         {
             SetPermissionForHandler();
-            _actualResult = await ResolveAndCallHandler(_handlerType);
+            _actualResult = await ResolveAndCallHandler(_handlerType).ToEither();
         }
 
         [Then(@"event is published to event broker")]
@@ -121,10 +120,10 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             _eventPublisher
                 .Received(Quantity.Exactly(1))
-                .PublishEvent(Arg.Any<SeveralEventsHandlerOld.SampleEventA>());
+                .PublishEvent(Arg.Any<SeveralEventsHandler.SampleEventA>());
             _eventPublisher
                 .Received(Quantity.Exactly(1))
-                .PublishEvent(Arg.Any<SeveralEventsHandlerOld.SampleEventB>());
+                .PublishEvent(Arg.Any<SeveralEventsHandler.SampleEventB>());
         }
 
         [Then(@"handler result should be returned")]
@@ -153,21 +152,21 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
                 .Returns(true);
         }
 
-        private Task<Either<Error, Unit>> ResolveAndCallHandler(HandlerType handlerType)
+        private EitherAsync<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)
         {
             return handlerType switch
             {
-                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandlerOld.Request()),
-                HandlerType.HandlerWhichDoesNotProduceEvent => ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEventOld.Request()),
-                HandlerType.SeveralEventsHandler => ResolveAndCallSpecificHandler(new SeveralEventsHandlerOld.Request()),
-                HandlerType.NoEventSupportHandler => ResolveAndCallSpecificHandler(new NoEventSupportHandlerOld.Request()),
-                HandlerType.HandlerWithNullDomainEventsProperty => ResolveAndCallSpecificHandler(new HandlerWithNullDomainEventsPropertyOld.Request()),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
+                HandlerType.HandlerWhichDoesNotProduceEvent => ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEvent.Request()),
+                HandlerType.SeveralEventsHandler => ResolveAndCallSpecificHandler(new SeveralEventsHandler.Request()),
+                HandlerType.NoEventSupportHandler => ResolveAndCallSpecificHandler(new NoEventSupportHandler.Request()),
+                HandlerType.HandlerWithNullDomainEventsProperty => ResolveAndCallSpecificHandler(new HandlerWithNullDomainEventsProperty.Request()),
                 _ => throw new NotSupportedException()
             };
         }
-        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
+        private EitherAsync<Error, Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
         {
-            var handler = _container.GetInstance<IRequestHandlerOld<T, Unit>>();
+            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
             return handler.Handle(request);
         }

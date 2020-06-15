@@ -22,10 +22,10 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         private readonly TenantId _aTenantId = new TenantId("auto-tests-tenant");
         private readonly RoleId _aRoleId = new RoleId("roleA");
 
-        private CreateUserOld.Request _request;
+        private CreateUser.Request _request;
         private UserBuilder _expectedUser;
 
-        private IRequestHandlerOld<CreateUserOld.Request, User> _handler;
+        private IRequestHandler<CreateUser.Request, User> _handler;
 
         private Either<Error, User> _actualResult;
 
@@ -39,10 +39,10 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(IdentityAndAccessConstants.Context, nameof(CreateUserOld));
+            _authFixture.SetTestUserPermission(IdentityAndAccessConstants.Context, nameof(CreateUser));
 
             _expectedUser = UserBuilder.New();
-            _request = new CreateUserOld.Request();
+            _request = new CreateUser.Request();
         }
 
         [Given("UserId provided")]
@@ -83,9 +83,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         [When("I execute CreateUser")]
         public async Task WhenExecuteCommand()
         {
-            _handler = _container.GetInstance<IRequestHandlerOld<CreateUserOld.Request, User>>();
+            _handler = _container.GetInstance<IRequestHandler<CreateUser.Request, User>>();
 
-            _actualResult = await _handler.Handle(_request);
+            _actualResult = await _handler.Handle(_request).ToEither();
         }
 
         [Then("user is created")]

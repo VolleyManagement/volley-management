@@ -32,6 +32,10 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 					var userEntity = new UserEntity(user);
 					var createOperation = TableOperation.Insert(userEntity);
 
+					var tryA=Prelude.TryAsync(tableRef.ExecuteAsync(createOperation));
+					
+					tryA.ToEither(err=>err.)
+
 					var createResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(createOperation);
 
 					return createResult.Match(
@@ -42,9 +46,14 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 							_ => Error.InternalError(
 								$"Azure Storage: Failed to create user with {tableResult.HttpStatusCode} error.")
 						},
-						e => e
+						MapError
 					).ToAsync();
 				}, "Add User");
+		}
+
+		private static Either<Error, User> MapError(Error e)
+		{
+			return  e;
 		}
 
 		public EitherAsync<Error, User> Get(TenantId tenant, UserId id)

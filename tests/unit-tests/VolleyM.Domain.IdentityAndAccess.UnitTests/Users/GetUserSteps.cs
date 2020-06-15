@@ -1,17 +1,16 @@
-﻿using FluentAssertions;
-using SimpleInjector;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using LanguageExt;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
-using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Get User by ID")]
     public class GetUserSteps
     {
@@ -23,10 +22,10 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 
         private UserBuilder _userBuilder;
 
-        private GetUserOld.Request _request;
+        private GetUser.Request _request;
         private User _expectedUser;
 
-        private IRequestHandlerOld<GetUserOld.Request, User> _handler;
+        private IRequestHandler<GetUser.Request, User> _handler;
 
         private Either<Error, User> _actualResult;
 
@@ -40,9 +39,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
         public void ScenarioSetup()
         {
-            _authFixture.SetTestUserPermission(IdentityAndAccessConstants.Context, nameof(GetUserOld));
+            _authFixture.SetTestUserPermission(IdentityAndAccessConstants.Context, nameof(GetUser));
 
-            _request = new GetUserOld.Request();
+            _request = new GetUser.Request();
             _userBuilder = UserBuilder.New();
         }
 
@@ -75,9 +74,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [When("I get user")]
         public async Task WhenExecuteCommand()
         {
-            _handler = _container.GetInstance<IRequestHandlerOld<GetUserOld.Request, User>>();
+            _handler = _container.GetInstance<IRequestHandler<GetUser.Request, User>>();
 
-            _actualResult = await _handler.Handle(_request);
+            _actualResult = await _handler.Handle(_request).ToEither();
         }
 
         [Then("user is returned")]

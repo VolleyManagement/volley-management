@@ -30,6 +30,16 @@ namespace VolleyM.Infrastructure.AzureStorage
             return account.CreateCloudTableClient();
         }
 
+        protected Error MapStorageError(LanguageExt.Common.Error storageError)
+        {
+			storageError
+				.Exception
+				.Filter(ex=>ex is StorageException)
+				.
+
+			return Error.InternalError(storageError.Message);
+        }
+
 		protected EitherAsync<Error, T> PerformStorageOperation<T>(string tableName, Func<CloudTable, EitherAsync<Error, T>> operation, string operationName)
 		{
 			var conn = OpenConnection();
@@ -40,10 +50,6 @@ namespace VolleyM.Infrastructure.AzureStorage
 				return table.Match(
 					operation,
 					e => (EitherAsync<Error, T>)e);
-			}
-			catch (StorageException e) when (IsConflictError(e))
-			{
-				return Error.Conflict();
 			}
 			catch (StorageException e)
 			{

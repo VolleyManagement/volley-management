@@ -8,12 +8,12 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
     internal class UnitTestIdentityAndAccessFixture : IIdentityAndAccessFixture
     {
-        private IUserRepositoryOld _repositoryMock;
+        private IUserRepository _repositoryMock;
         private User _actualUser;
 
         public void RegisterScenarioDependencies(Container container)
         {
-            _repositoryMock = Substitute.For<IUserRepositoryOld>();
+            _repositoryMock = Substitute.For<IUserRepository>();
 
             container.Register(() => _repositoryMock, Lifestyle.Scoped);
         }

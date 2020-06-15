@@ -80,7 +80,7 @@ namespace VolleyM.Domain.Framework.UnitTests.FeatureManagement
 		[When(@"I call decorated handler")]
 		public async Task WhenICallDecoratedHandler()
 		{
-			_actualResult = await ResolveAndCallHandler(_handlerType);
+			_actualResult = await ResolveAndCallHandler(_handlerType).ToEither();
 		}
 
 		[Then(@"handler result should be returned")]
@@ -95,7 +95,7 @@ namespace VolleyM.Domain.Framework.UnitTests.FeatureManagement
 			_actualResult.ShouldBeError(ErrorType.FeatureDisabled);
 		}
 
-		private Task<Either<Error, Unit>> ResolveAndCallHandler(HandlerType handlerType)
+		private EitherAsync<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)
 		{
 			return handlerType switch
 			{
@@ -103,9 +103,9 @@ namespace VolleyM.Domain.Framework.UnitTests.FeatureManagement
 				_ => throw new NotSupportedException()
 			};
 		}
-		private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
+		private EitherAsync<Error, Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
 		{
-			var handler = _container.GetInstance<IRequestHandlerOld<T, Unit>>();
+			var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
 			return handler.Handle(request);
 		}

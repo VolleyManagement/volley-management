@@ -157,7 +157,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             return handlerType switch
             {
-                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandlerOld.Request()),
                 HandlerType.HandlerWhichDoesNotProduceEvent => ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEvent.Request()),
                 HandlerType.SeveralEventsHandler => ResolveAndCallSpecificHandler(new SeveralEventsHandler.Request()),
                 HandlerType.NoEventSupportHandler => ResolveAndCallSpecificHandler(new NoEventSupportHandler.Request()),

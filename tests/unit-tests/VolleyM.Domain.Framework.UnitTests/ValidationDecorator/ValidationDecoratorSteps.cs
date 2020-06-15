@@ -1,13 +1,12 @@
-﻿using LanguageExt;
-using NSubstitute;
-using SimpleInjector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using LanguageExt;
+using NSubstitute;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IDomainFrameworkTestFixture;
@@ -15,7 +14,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Validation Decorator")]
     public class ValidationDecoratorSteps
     {
@@ -81,7 +80,7 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
         [When(@"I call decorated handler")]
         public async Task WhenICallDecoratedHandler()
         {
-            _actualResult = await ResolveAndCallHandler(_handlerType);
+            _actualResult = await ResolveAndCallHandler(_handlerType).ToEither();
         }
 
         [Then(@"handler result should be returned")]
@@ -96,7 +95,7 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
             _actualResult.ShouldBeError(ErrorType.ValidationFailed);
         }
 
-        private Task<Either<Error, Unit>> ResolveAndCallHandler(HandlerType handlerType)
+        private EitherAsync<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)
         {
             return handlerType switch
             {
@@ -105,9 +104,9 @@ namespace VolleyM.Domain.Framework.UnitTests.ValidationDecorator
                 _ => throw new NotSupportedException()
             };
         }
-        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(Func<HandlerType, IRequest<Unit>> requestFactory) where T : IRequest<Unit>
+        private EitherAsync<Error, Unit> ResolveAndCallSpecificHandler<T>(Func<HandlerType, IRequest<Unit>> requestFactory) where T : IRequest<Unit>
         {
-            var handler = _container.GetInstance<IRequestHandlerOld<T, Unit>>();
+            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
             return handler.Handle((T)requestFactory(_handlerType));
         }

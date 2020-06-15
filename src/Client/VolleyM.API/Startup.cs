@@ -49,9 +49,9 @@ namespace VolleyM.API
 
 			services.AddSimpleInjector(_container, options =>
 			{
-				options.AutoCrossWireFrameworkComponents = false;
+				options.AutoCrossWireFrameworkComponents = true;
 
-				options.CrossWire<IFeatureService>();
+				//options.CrossWire<IFeatureService>();
 
 				// AddAspNetCore() wraps web requests in a Simple Injector scope.
 				options.AddAspNetCore()

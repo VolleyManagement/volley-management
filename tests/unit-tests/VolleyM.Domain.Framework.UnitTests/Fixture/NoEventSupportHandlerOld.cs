@@ -1,10 +1,10 @@
-﻿using LanguageExt;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {
-    public class NoValidationHandlerOld
+    public class NoEventSupportHandlerOld
     {
         public class Request : IRequest<Unit>
         {

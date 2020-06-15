@@ -121,10 +121,10 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         {
             _eventPublisher
                 .Received(Quantity.Exactly(1))
-                .PublishEvent(Arg.Any<SeveralEventsHandler.SampleEventA>());
+                .PublishEvent(Arg.Any<SeveralEventsHandlerOld.SampleEventA>());
             _eventPublisher
                 .Received(Quantity.Exactly(1))
-                .PublishEvent(Arg.Any<SeveralEventsHandler.SampleEventB>());
+                .PublishEvent(Arg.Any<SeveralEventsHandlerOld.SampleEventB>());
         }
 
         [Then(@"handler result should be returned")]
@@ -158,10 +158,10 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
             return handlerType switch
             {
                 HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandlerOld.Request()),
-                HandlerType.HandlerWhichDoesNotProduceEvent => ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEvent.Request()),
-                HandlerType.SeveralEventsHandler => ResolveAndCallSpecificHandler(new SeveralEventsHandler.Request()),
-                HandlerType.NoEventSupportHandler => ResolveAndCallSpecificHandler(new NoEventSupportHandler.Request()),
-                HandlerType.HandlerWithNullDomainEventsProperty => ResolveAndCallSpecificHandler(new HandlerWithNullDomainEventsProperty.Request()),
+                HandlerType.HandlerWhichDoesNotProduceEvent => ResolveAndCallSpecificHandler(new HandlerWhichDoesNotProduceEventOld.Request()),
+                HandlerType.SeveralEventsHandler => ResolveAndCallSpecificHandler(new SeveralEventsHandlerOld.Request()),
+                HandlerType.NoEventSupportHandler => ResolveAndCallSpecificHandler(new NoEventSupportHandlerOld.Request()),
+                HandlerType.HandlerWithNullDomainEventsProperty => ResolveAndCallSpecificHandler(new HandlerWithNullDomainEventsPropertyOld.Request()),
                 _ => throw new NotSupportedException()
             };
         }

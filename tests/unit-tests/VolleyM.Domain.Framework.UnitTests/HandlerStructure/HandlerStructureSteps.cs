@@ -1,13 +1,12 @@
-﻿using LanguageExt;
-using NSubstitute;
-using SimpleInjector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using LanguageExt;
+using NSubstitute;
 using RootNs;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
@@ -17,7 +16,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Handler Structure validation")]
     public class HandlerStructureSteps
     {
@@ -118,9 +117,9 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             return handlerType switch
             {
-                HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandler.Request()),
-                HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()),
-                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
+                HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandlerOld.Request()),
+                HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandlerOld.Request()),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandlerOld.Request()),
                 HandlerType.MockedHandler => ResolveAndCallSpecificHandler(new MockedHandler.Request()),
                 HandlerType.RootNsHandler => ResolveAndCallSpecificHandler(new RootNsHandler.Request()),
                 _ => throw new NotSupportedException()

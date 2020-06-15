@@ -25,7 +25,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         [Given(@"I have a handler that is not nested in a class")]
         public void GivenIHaveAHandlerThatIsNotNestedInAClass()
         {
-            _requestType = typeof(NotNestedHandler);
+            _requestType = typeof(NotNestedHandlerOld);
         }
 
         [Given(@"I have a handler that does not have corresponding validator")]

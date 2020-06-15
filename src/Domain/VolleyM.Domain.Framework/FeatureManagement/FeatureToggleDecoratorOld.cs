@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Esquio.Abstractions;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.FeatureManagement;
 using VolleyM.Domain.Framework.HandlerMetadata;
 
 namespace VolleyM.Domain.Framework.FeatureManagement
@@ -10,20 +10,20 @@ namespace VolleyM.Domain.Framework.FeatureManagement
 		: DecoratorBase<IRequestHandlerOld<TRequest, TResponse>>, IRequestHandlerOld<TRequest, TResponse>
 		where TRequest : IRequest<TResponse>
 	{
-		private readonly IFeatureService _featureService;
+		private readonly IFeatureManager _featureManager;
 		private readonly HandlerMetadataService _handlerMetadataService;
 
-		public FeatureToggleDecoratorOld(IRequestHandlerOld<TRequest, TResponse> decoratee, IFeatureService featureService, HandlerMetadataService handlerMetadataService)
+		public FeatureToggleDecoratorOld(IRequestHandlerOld<TRequest, TResponse> decoratee, IFeatureManager featureManager, HandlerMetadataService handlerMetadataService)
 			: base(decoratee)
 		{
-			_featureService = featureService;
+			_featureManager = featureManager;
 			_handlerMetadataService = handlerMetadataService;
 		}
 
 		public async Task<Either<Error, TResponse>> Handle(TRequest request)
 		{
 			var isEnabled = await GetFeatureInfo(RootInstance)
-				.MapAsync(async fi => await _featureService.IsEnabledAsync(fi.Action, fi.Context));
+				.MapAsync(async fi => await _featureManager.IsEnabledAsync(fi.Action, fi.Context));
 
 			return await isEnabled.MatchAsync<Either<Error, TResponse>>(
 				Left: e => e,

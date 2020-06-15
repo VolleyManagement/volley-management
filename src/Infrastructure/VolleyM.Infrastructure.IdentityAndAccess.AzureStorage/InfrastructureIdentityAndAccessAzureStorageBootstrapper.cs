@@ -15,6 +15,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
     {
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
+            container.Register<IUserRepositoryOld, AzureStorageUserRepositoryOld>(Lifestyle.Scoped);
             container.Register<IUserRepository, AzureStorageUserRepository>(Lifestyle.Scoped);
 
             var options = config.GetSection("IdentityContextTableStorageOptions")

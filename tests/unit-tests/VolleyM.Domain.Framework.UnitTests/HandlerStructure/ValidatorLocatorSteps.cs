@@ -25,19 +25,19 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         [Given(@"I have a handler that is not nested in a class")]
         public void GivenIHaveAHandlerThatIsNotNestedInAClass()
         {
-            _requestType = typeof(NotNestedHandlerOld);
+            _requestType = typeof(NotNestedHandler);
         }
 
         [Given(@"I have a handler that does not have corresponding validator")]
         public void GivenIHaveAHandlerThatDoesNotHaveCorrespondingValidator()
         {
-            _requestType = typeof(NoValidationHandlerOld.Handler);
+            _requestType = typeof(NoValidationHandler.Handler);
         }
 
         [Given(@"I have a handler with validator")]
         public void GivenIHaveAHandlerWithValidator()
         {
-            _requestType = typeof(SampleHandlerOld.Handler);
+            _requestType = typeof(SampleHandler.Handler);
         }
 
         [When(@"has validator check is performed")]
@@ -52,6 +52,5 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             _actualResult.Should().Be(result);
         }
-
     }
 }

@@ -117,9 +117,9 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             return handlerType switch
             {
-                HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandlerOld.Request()),
-                HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandlerOld.Request()),
-                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandlerOld.Request()),
+                HandlerType.TwoInterfacesHandler => ResolveAndCallSpecificHandler(new TwoInterfacesHandler.Request()),
+                HandlerType.NotNestedHandler => ResolveAndCallSpecificHandler(new NotNestedHandler.Request()),
+                HandlerType.SampleHandler => ResolveAndCallSpecificHandler(new SampleHandler.Request()),
                 HandlerType.MockedHandler => ResolveAndCallSpecificHandler(new MockedHandler.Request()),
                 HandlerType.RootNsHandler => ResolveAndCallSpecificHandler(new RootNsHandler.Request()),
                 _ => throw new NotSupportedException()
@@ -127,9 +127,9 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         }
         private Either<Error, Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
         {
-            var handler = _container.GetInstance<IRequestHandlerOld<T, Unit>>();
+            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
-            return handler.Handle(request).Result;
+            return handler.Handle(request).ToEither().Result;
         }
         private void SetPermissionForHandler()
         {

@@ -60,7 +60,7 @@ namespace VolleyM.Infrastructure.AzureStorage
 					operation,
 					e => (EitherAsync<Error, T>)e);
 			}
-			catch (StorageException e)
+			catch (Exception e)
 			{
 				Log.Error(e, "{AzureStorageOperation} Azure Storage operation failed.", operationName);
 				return Error.InternalError($"{operationName} Azure Storage operation failed.");

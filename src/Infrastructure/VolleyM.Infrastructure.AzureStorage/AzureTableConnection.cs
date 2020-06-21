@@ -1,44 +1,53 @@
-﻿using LanguageExt;
+﻿using System;
+using System.Threading.Tasks;
+using LanguageExt;
 using Microsoft.Azure.Cosmos.Table;
 using Serilog;
-using System;
-using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Infrastructure.AzureStorage
 {
-    /// <summary>
-    /// Base class for all classes that need access to Azure Storage
-    /// </summary>
-    public abstract class AzureTableConnection
-    {
-        private readonly AzureTableStorageOptions _options;
+	/// <summary>
+	/// Base class for all classes that need access to Azure Storage
+	/// </summary>
+	public abstract class AzureTableConnection
+	{
+		private readonly AzureTableStorageOptions _options;
 
-        protected AzureTableConnection(AzureTableStorageOptions options)
-        {
-            _options = options;
-        }
+		protected AzureTableConnection(AzureTableStorageOptions options)
+		{
+			_options = options;
+		}
 
-        protected Either<Error, CloudTableClient> OpenConnection()
-        {
-            if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
-            {
-                Log.Error("Azure Storage connection failed. Connection string is invalid");
-                return Error.InternalError("Azure Storage account connection is invalid.");
-            }
+		protected Either<Error, CloudTableClient> OpenConnection()
+		{
+			if (!CloudStorageAccount.TryParse(_options.ConnectionString, out CloudStorageAccount account))
+			{
+				Log.Error("Azure Storage connection failed. Connection string is invalid");
+				return Error.InternalError("Azure Storage account connection is invalid.");
+			}
 
-            return account.CreateCloudTableClient();
-        }
+			return account.CreateCloudTableClient();
+		}
 
-        protected Error MapStorageError(LanguageExt.Common.Error storageError)
-        {
-			storageError
+		protected static Error MapStorageError(LanguageExt.Common.Error storageError)
+		{
+			return storageError
 				.Exception
-				.Filter(ex=>ex is StorageException)
-				.
+				.Match<Error>(
+					TranslateException,
+					() => Error.InternalError(storageError.Message));
+		}
 
-			return Error.InternalError(storageError.Message);
-        }
+		private static Error TranslateException(Exception e)
+		{
+			return e switch
+			{
+				StorageException { Message: "Conflict" } => Error.Conflict(),
+				StorageException stEx => Error.InternalError($"Azure Storage Error: {stEx.Message}"),
+				_ => Error.InternalError($"Unknown Error: {e.Message}")
+			};
+		}
 
 		protected EitherAsync<Error, T> PerformStorageOperation<T>(string tableName, Func<CloudTable, EitherAsync<Error, T>> operation, string operationName)
 		{
@@ -81,6 +90,6 @@ namespace VolleyM.Infrastructure.AzureStorage
 		}
 
 		private static bool IsConflictError(StorageException e) =>
-            string.Compare("Conflict", e.Message, StringComparison.OrdinalIgnoreCase) == 0;
-    }
+			string.Compare("Conflict", e.Message, StringComparison.OrdinalIgnoreCase) == 0;
+	}
 }

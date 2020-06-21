@@ -32,11 +32,9 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 					var userEntity = new UserEntity(user);
 					var createOperation = TableOperation.Insert(userEntity);
 
-					var tryA=Prelude.TryAsync(tableRef.ExecuteAsync(createOperation));
-					
-					tryA.ToEither(err=>err.)
-
-					var createResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(createOperation);
+					var createResult = Prelude
+						.TryAsync(tableRef.ExecuteAsync(createOperation))
+						.ToEither(MapStorageError);
 
 					return createResult.Match(
 						tableResult => tableResult.Result switch

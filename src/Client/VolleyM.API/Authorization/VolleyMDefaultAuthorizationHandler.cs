@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using SimpleInjector;
-using System.Threading.Tasks;
 
 namespace VolleyM.API.Authorization
 {
-    public class VolleyMDefaultAuthorizationHandler : AuthorizationHandler<DefaultVolleyMAuthorizationRequirement>
+	public class VolleyMDefaultAuthorizationHandler : AuthorizationHandler<DefaultVolleyMAuthorizationRequirement>
     {
         private readonly Container _container;
 
@@ -13,13 +13,12 @@ namespace VolleyM.API.Authorization
             _container = container;
         }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, DefaultVolleyMAuthorizationRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, DefaultVolleyMAuthorizationRequirement requirement)
         {
-            var authZHandler = _container.GetInstance<VolleyM.Domain.Contracts.Crosscutting.IAuthorizationHandler>();
+            var authZHandler = _container.GetInstance<Domain.Contracts.Crosscutting.IAuthorizationHandler>();
 
-            var authResult = await authZHandler.AuthorizeUser(context.User);
-
-            authResult.Match(
+            return authZHandler.AuthorizeUser(context.User)
+	            .Match(
                 _ => context.Succeed(requirement),
                 _ => context.Fail()
             );

@@ -8,7 +8,7 @@ namespace VolleyM.Domain.Framework.UnitTests
     public interface IDomainFrameworkTestFixture : ITestFixture
     {
         void VerifyUserNotCreated();
-        void VerifyUserCreated(CreateUserOld.Request expectedRequest);
+        void VerifyUserCreated(CreateUser.Request expectedRequest);
         void MockCreateUserSuccess();
         void MockCreateUserError();
         void MockUserExists(User user);

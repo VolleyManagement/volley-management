@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.IdentityAndAccess.Handlers
 {
+	[Obsolete]
     public class CreateUserOld
     {
         public class Request : IRequest<User>

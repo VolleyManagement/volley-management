@@ -34,7 +34,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 		private static readonly RoleId _visitorRole = new RoleId("visitor");
 
 		private Either<Error, Unit> _actualResult;
-		private CreateUserOld.Request _expectedRequest;
+		private CreateUser.Request _expectedRequest;
 
 		public AuthorizeUserSteps(IDomainFrameworkTestFixture testFixture, Container container)
 		{
@@ -45,7 +45,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
 		public void ScenarioSetup()
 		{
-			_expectedRequest = new CreateUserOld.Request
+			_expectedRequest = new CreateUser.Request
 			{
 				Tenant = TenantId.Default,
 				Role = _visitorRole
@@ -142,7 +142,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 			var userToAuthorize = new ClaimsPrincipal(_userClaims);
 
 			var handler = _container.GetInstance<IAuthorizationHandler>();
-			_actualResult = await handler.AuthorizeUser(userToAuthorize);
+			_actualResult = await handler.AuthorizeUser(userToAuthorize).ToEither();
 		}
 
 		#endregion

@@ -16,7 +16,8 @@ namespace VolleyM.Infrastructure.Hardcoded
             container.Register<IRolesStore, HardcodedRolesStore>(Lifestyle.Scoped);
 
             container.Register(typeof(IQueryOld<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
-        }
+            container.Register(typeof(IQuery<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
+		}
 
         public bool HasDomainComponents { get; } = false;
 

@@ -15,7 +15,7 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         private readonly IAuthFixture _authFixture;
         private readonly Container _container;
 
-        private IRequestHandlerOld<Contributors.GetAll.Request, List<ContributorDto>> _handler;
+        private IRequestHandler<Contributors.GetAll.Request, List<ContributorDto>> _handler;
 
         private List<ContributorDto> _expectedResult;
         private Either<Error, List<ContributorDto>> _actualResult;
@@ -43,9 +43,9 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         [When(@"I query all contributors")]
         public async void WhenIQueryAllContributors()
         {
-            _handler = _container.GetInstance<IRequestHandlerOld<Contributors.GetAll.Request, List<ContributorDto>>>();
+            _handler = _container.GetInstance<IRequestHandler<Contributors.GetAll.Request, List<ContributorDto>>>();
 
-            _actualResult = await _handler.Handle(new Contributors.GetAll.Request());
+            _actualResult = await _handler.Handle(new Contributors.GetAll.Request()).ToEither();
         }
 
         [Then(@"all contributors received")]

@@ -9,11 +9,11 @@ namespace VolleyM.Domain.Contributors.UnitTests
 {
     public class UnitContributorsTestFixture : IContributorsTestFixture
     {
-        private IQueryOld<Unit, List<ContributorDto>> _queryMock;
+        private IQuery<Unit, List<ContributorDto>> _queryMock;
 
         public void RegisterScenarioDependencies(Container container)
         {
-            _queryMock = Substitute.For<IQueryOld<Unit, List<ContributorDto>>>();
+            _queryMock = Substitute.For<IQuery<Unit, List<ContributorDto>>>();
 
             container.Register(() => _queryMock, Lifestyle.Scoped);
         }

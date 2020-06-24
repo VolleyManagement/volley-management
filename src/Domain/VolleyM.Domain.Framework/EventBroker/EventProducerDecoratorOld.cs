@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
@@ -6,6 +7,7 @@ using VolleyM.Domain.Contracts.EventBroker;
 
 namespace VolleyM.Domain.Framework.EventBroker
 {
+	[Obsolete]
 	public class EventProducerDecoratorOld<TRequest, TResponse>
 		: DecoratorBase<IRequestHandlerOld<TRequest, TResponse>>, IRequestHandlerOld<TRequest, TResponse>
 		where TRequest : IRequest<TResponse>

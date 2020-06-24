@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.Validation
 {
+	[Obsolete]
 	public class ValidationHandlerDecoratorOld<TRequest, TResponse>
 		: DecoratorBase<IRequestHandlerOld<TRequest, TResponse>>, IRequestHandlerOld<TRequest, TResponse>
 		where TRequest : IRequest<TResponse>

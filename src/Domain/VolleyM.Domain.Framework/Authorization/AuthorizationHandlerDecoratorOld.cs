@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.HandlerMetadata;
@@ -6,6 +7,7 @@ using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Domain.Framework.Authorization
 {
+	[Obsolete]
 	public class AuthorizationHandlerDecoratorOld<TRequest, TResponse>
 		: DecoratorBase<IRequestHandlerOld<TRequest, TResponse>>, IRequestHandlerOld<TRequest, TResponse>
 		where TRequest : IRequest<TResponse>

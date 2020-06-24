@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using LanguageExt;
 using Serilog;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.Logging
 {
+	[Obsolete]
 	public class LoggingQueryObjectDecoratorOld<TParam, TResponse> : DecoratorBase<IQueryOld<TParam, TResponse>>, IQueryOld<TParam, TResponse>
 		where TResponse : class
 	{

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using LanguageExt;
 
 namespace VolleyM.Domain.Contracts
@@ -8,6 +9,7 @@ namespace VolleyM.Domain.Contracts
     /// </summary>
     /// <typeparam name="TRequest">The type of request being handled</typeparam>
     /// <typeparam name="TResponse">The type of response from the handler</typeparam>
+    [Obsolete]
     public interface IRequestHandlerOld<in TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {

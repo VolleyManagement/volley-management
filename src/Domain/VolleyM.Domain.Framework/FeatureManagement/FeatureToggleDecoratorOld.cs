@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.FeatureManagement;
@@ -6,6 +7,7 @@ using VolleyM.Domain.Framework.HandlerMetadata;
 
 namespace VolleyM.Domain.Framework.FeatureManagement
 {
+	[Obsolete]
 	public class FeatureToggleDecoratorOld<TRequest, TResponse>
 		: DecoratorBase<IRequestHandlerOld<TRequest, TResponse>>, IRequestHandlerOld<TRequest, TResponse>
 		where TRequest : IRequest<TResponse>

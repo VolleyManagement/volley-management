@@ -22,7 +22,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
         public void ConfigureTestUserRole(Container container)
         {
-            var store = Substitute.For<IRolesStore>();
+            var store = Substitute.For<IRolesStoreOld>();
 
             _testUserRole = new Role(_testUserRoleId);
             store.Get(_testUserRoleId).Returns(_testUserRole);

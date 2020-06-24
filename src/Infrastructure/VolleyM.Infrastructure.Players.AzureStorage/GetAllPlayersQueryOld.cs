@@ -13,21 +13,24 @@ using VolleyM.Infrastructure.Players.AzureStorage.TableConfiguration;
 
 namespace VolleyM.Infrastructure.Players.AzureStorage
 {
-	public class GetAllPlayersQuery : AzureTableConnection, IQuery<TenantId, List<PlayerDto>>
+	[Obsolete]
+	public class GetAllPlayersQueryOld : AzureTableConnection, IQueryOld<TenantId, List<PlayerDto>>
 	{
 		private readonly PlayersContextTableStorageOptions _options;
+		private readonly PlayerFactory _playerFactory;
 		private readonly IMapper _mapper;
 
-		public GetAllPlayersQuery(PlayersContextTableStorageOptions options, IMapper mapper) : base(options)
+		public GetAllPlayersQueryOld(PlayersContextTableStorageOptions options, PlayerFactory playerFactory, IMapper mapper) : base(options)
 		{
 			_options = options;
+			_playerFactory = playerFactory;
 			_mapper = mapper;
 		}
 
-		public EitherAsync<Error, List<PlayerDto>> Execute(TenantId tenant)
+		public Task<Either<Error, List<PlayerDto>>> Execute(TenantId tenant)
 		{
-			return PerformStorageOperation(_options.PlayersTable,
-				tableRef =>
+			return PerformStorageOperationOld(_options.PlayersTable,
+				async tableRef =>
 				{
 					var filter = TableQuery.GenerateFilterCondition(
 						nameof(PlayerEntity.PartitionKey),
@@ -39,23 +42,16 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 					// We are taking first segment for now as we don't have other cases yet
 					// once it is not working feel free to refactor heavily
 					var continuationToken = new TableContinuationToken();
-
-					var getResult=Prelude
-						.TryAsync(tableRef.ExecuteQuerySegmentedAsync(query, continuationToken))
-						.ToEither(MapStorageError);
+					var getResult = (Either<Error, TableQuerySegment<PlayerEntity>>)
+						await tableRef.ExecuteQuerySegmentedAsync(query, continuationToken);
 
 					return getResult.Match(
-						tableResult => tableResult.Results
+						tableResult => (Either<Error, List<PlayerDto>>)tableResult.Results
 							.Select(p => _mapper.Map<PlayerEntity, PlayerDto>(p))
 							.ToList(),
-						MapError
-					).ToAsync();
+						e => e
+					);
 				}, "Get All Player");
-		}
-		
-		private static Either<Error, List<PlayerDto>> MapError(Error e)
-		{
-			return e;
 		}
 	}
 }

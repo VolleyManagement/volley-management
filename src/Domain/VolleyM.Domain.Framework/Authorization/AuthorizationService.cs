@@ -13,7 +13,7 @@ namespace VolleyM.Domain.Framework.Authorization
     {
         internal static RoleId _authZRoleId = new RoleId("authz.handler");
 
-        private readonly IRolesStore _rolesStore;
+        private readonly IRolesStoreOld _rolesStore;
         private readonly ICurrentUserManager _currentUserManager;
 
         private static readonly Dictionary<RoleId, Role> _systemRoleStore = new Dictionary<RoleId, Role>();
@@ -23,7 +23,7 @@ namespace VolleyM.Domain.Framework.Authorization
             PopulateSystemRoles();
         }
 
-        public AuthorizationService(IRolesStore rolesStore, ICurrentUserManager currentUserManager)
+        public AuthorizationService(IRolesStoreOld rolesStore, ICurrentUserManager currentUserManager)
         {
             _rolesStore = rolesStore;
             _currentUserManager = currentUserManager;

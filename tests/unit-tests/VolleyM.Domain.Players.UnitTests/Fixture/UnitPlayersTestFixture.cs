@@ -12,9 +12,8 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
 	public class UnitPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
 	{
-		private IQueryOld<TenantId, List<PlayerDto>> _queryMock;
+		private IQuery<TenantId, List<PlayerDto>> _queryMock;
 		private IPlayersRepository _repoMock;
-		private IMapper _mapper;
 
 		private Player _actualPlayer;
 
@@ -22,7 +21,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 		{
 			base.RegisterScenarioDependencies(container);
 
-			_queryMock = Substitute.For<IQueryOld<TenantId, List<PlayerDto>>>();
+			_queryMock = Substitute.For<IQuery<TenantId, List<PlayerDto>>>();
 			container.Register(() => _queryMock, Lifestyle.Scoped);
 
 			_repoMock = Substitute.For<IPlayersRepository>();
@@ -35,7 +34,6 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		public override Task ScenarioSetup()
 		{
-			_mapper = _container.GetInstance<IMapper>();
 			return Task.CompletedTask;
 		}
 

@@ -21,7 +21,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
 
-		private IRequestHandlerOld<GetAll.Request, List<PlayerDto>> _handler;
+		private IRequestHandler<GetAll.Request, List<PlayerDto>> _handler;
 
 		private List<PlayerDto> _expectedResult;
 		private Either<Error, List<PlayerDto>> _actualResult;
@@ -54,9 +54,9 @@ namespace VolleyM.Domain.Players.UnitTests
 		[When(@"I query all players")]
 		public async Task WhenIQueryAllPlayers()
 		{
-			_handler = _container.GetInstance<IRequestHandlerOld<GetAll.Request, List<PlayerDto>>>();
+			_handler = _container.GetInstance<IRequestHandler<GetAll.Request, List<PlayerDto>>>();
 
-			_actualResult = await _handler.Handle(new GetAll.Request());
+			_actualResult = await _handler.Handle(new GetAll.Request()).ToEither();
 		}
 
 		[Then(@"all players received")]

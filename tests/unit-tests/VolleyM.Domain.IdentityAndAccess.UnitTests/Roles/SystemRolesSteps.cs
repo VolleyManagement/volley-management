@@ -32,7 +32,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_INIT_CONTAINER_ORDER)]
 		public void ScenarioSetup()
 		{
-			_container.Register<IRolesStore, HardcodedRolesStore>();
+			_container.Register<IRolesStoreOld, HardcodedRolesStoreOld>();
 		}
 
 		[Given(@"I have Visitor role")]
@@ -51,7 +51,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 		[When(@"I request role from the store")]
 		public async Task WhenIRequestRoleFromTheStore()
 		{
-			var store = _container.GetInstance<IRolesStore>();
+			var store = _container.GetInstance<IRolesStoreOld>();
 			_roleResult = await store.Get(_roleId);
 		}
 

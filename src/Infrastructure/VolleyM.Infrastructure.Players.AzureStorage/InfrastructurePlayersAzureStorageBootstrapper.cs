@@ -25,6 +25,7 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 			container.RegisterInstance(options);
 
 			container.Register(typeof(IQueryOld<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
+			container.Register(typeof(IQuery<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
 		}
 
 		public bool HasDomainComponents { get; } = false;

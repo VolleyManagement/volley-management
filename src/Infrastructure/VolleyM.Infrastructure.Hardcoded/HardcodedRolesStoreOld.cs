@@ -1,19 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using LanguageExt;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 
 namespace VolleyM.Infrastructure.Hardcoded
 {
-	public class HardcodedRolesStore : IRolesStore
+	[Obsolete]
+	public class HardcodedRolesStoreOld : IRolesStoreOld
 	{
 		private static readonly RoleId _visitor = new RoleId("visitor");
 		private static readonly RoleId _sysAdmin = new RoleId("sysadmin");
 
 		private readonly Dictionary<RoleId, Role> _roles = new Dictionary<RoleId, Role>();
 
-		public HardcodedRolesStore()
+		public HardcodedRolesStoreOld()
 		{
 			var visitor = new Role(_visitor);
 			visitor.AddPermission(new Permission("contributors", "getall"));
@@ -28,13 +31,13 @@ namespace VolleyM.Infrastructure.Hardcoded
 			_roles[_sysAdmin] = sysadmin;
 		}
 
-		public EitherAsync<Error, Role> Get(RoleId roleId)
+		public Task<Either<Error, Role>> Get(RoleId roleId)
 		{
 			if (_roles.TryGetValue(roleId, out var role))
 			{
-				return role;
+				return Task.FromResult<Either<Error, Role>>(role);
 			}
-			return Error.NotFound();
+			return Task.FromResult<Either<Error, Role>>(Error.NotFound());
 		}
 	}
 }

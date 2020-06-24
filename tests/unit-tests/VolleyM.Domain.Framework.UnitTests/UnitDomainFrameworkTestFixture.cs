@@ -20,7 +20,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 
 		private IRequestHandler<CreateUser.Request, User> _createHandler;
 		private IRequestHandler<GetUser.Request, User> _getHandler;
-		private IRolesStore _rolesStore;
+		private IRolesStoreOld _rolesStore;
 		private IApplicationInfo _applicationInfo;
 
 		private CreateUser.Request _actualCreateRequest;
@@ -38,7 +38,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 			_getHandler = Substitute.For<IRequestHandler<GetUser.Request, User>>();
 			container.Register(() => _getHandler, Lifestyle.Scoped);
 
-			_rolesStore = Substitute.For<IRolesStore>();
+			_rolesStore = Substitute.For<IRolesStoreOld>();
 			container.Register(() => _rolesStore, Lifestyle.Scoped);
 
 			_applicationInfo = Substitute.For<IApplicationInfo>();

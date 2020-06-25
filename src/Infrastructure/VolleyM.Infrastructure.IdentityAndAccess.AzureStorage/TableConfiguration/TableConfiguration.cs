@@ -8,7 +8,7 @@ using VolleyM.Infrastructure.AzureStorage;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration
 {
-    public class TableConfiguration : AzureTableConnection
+    public class TableConfiguration : AzureTableConfiguration
     {
         private readonly IdentityContextTableStorageOptions _options;
 

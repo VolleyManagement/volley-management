@@ -8,7 +8,7 @@ using VolleyM.Infrastructure.AzureStorage;
 
 namespace VolleyM.Infrastructure.Players.AzureStorage.TableConfiguration
 {
-	public class TableConfiguration : AzureTableConnection
+	public class TableConfiguration : AzureTableConfiguration
 	{
 		private readonly PlayersContextTableStorageOptions _options;
 

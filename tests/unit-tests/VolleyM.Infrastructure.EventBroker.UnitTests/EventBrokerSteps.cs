@@ -1,16 +1,15 @@
-﻿using FluentAssertions;
-using LanguageExt;
-using NSubstitute;
-using SimpleInjector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using FluentAssertions;
+using LanguageExt;
+using NSubstitute;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.ContextA;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
@@ -20,7 +19,7 @@ using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "EventBroker")]
     public class EventBrokerSteps
     {

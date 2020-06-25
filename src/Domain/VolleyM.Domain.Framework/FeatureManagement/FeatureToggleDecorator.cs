@@ -28,7 +28,7 @@ namespace VolleyM.Domain.Framework.FeatureManagement
 		                : Error.FeatureDisabled(),
 	                Left: e => e
                 ))
-                .ToAsync(); ;
+                .ToAsync();
 
             return featureEnabled.Bind(_ => Decoratee.Handle(request));
         }

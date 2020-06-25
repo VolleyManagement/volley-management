@@ -58,7 +58,7 @@ namespace VolleyM.Tools.MigrationTool
 
         private static string GetMigrationTasksDirectory()
         {
-            return Path.Combine(AppContext.BaseDirectory, "tasks"); ;
+            return Path.Combine(AppContext.BaseDirectory, "tasks");
         }
 
         private static void InitConfiguration()

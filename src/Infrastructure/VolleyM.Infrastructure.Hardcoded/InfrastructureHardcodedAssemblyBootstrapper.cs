@@ -13,10 +13,8 @@ namespace VolleyM.Infrastructure.Hardcoded
     {
         public void RegisterDependencies(Container container, Microsoft.Extensions.Configuration.IConfiguration config)
         {
-            container.Register<IRolesStoreOld, HardcodedRolesStoreOld>(Lifestyle.Scoped);
             container.Register<IRolesStore, HardcodedRolesStore>(Lifestyle.Scoped);
 
-            container.Register(typeof(IQueryOld<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
             container.Register(typeof(IQuery<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
 		}
 

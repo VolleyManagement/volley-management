@@ -15,15 +15,6 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
         private readonly ConcurrentDictionary<Type, HandlerInfo> _handlerMetadataCache
             = new ConcurrentDictionary<Type, HandlerInfo>();
 
-        [Obsolete]
-		public Either<Error, HandlerInfo> GetHandlerMetadataOld<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
-            where TRequest : IRequest<TResponse>
-        {
-            return from requestType in GetRequestTypeOld(handler)
-                   from metadata in GetOrCreateMetadata(handler, requestType)
-                   select metadata;
-        }
-
         public Either<Error, HandlerInfo> GetHandlerMetadata<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
 	        where TRequest : IRequest<TResponse>
         {
@@ -39,22 +30,6 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
                 .Any(t => t.GetInterfaces()
                     .Any(i => i.Name == typeof(IValidator<>).Name)) ?? false;
         }
-
-		[Obsolete]
-        private static Either<Error, Type> GetRequestTypeOld<TRequest, TResponse>(IRequestHandlerOld<TRequest, TResponse> handler)
-            where TRequest : IRequest<TResponse>
-        {
-            var handlerInterfaces = handler.GetType().GetInterfaces()
-                .Where(IsIRequestHandlerOld<TRequest, TResponse>)
-                .ToArray();
-
-            if (handlerInterfaces.Length > 1)
-            {
-                return Error.DesignViolation("Handler is allowed to implement only one IRequestHandler");
-            }
-
-            return handlerInterfaces[0].GenericTypeArguments.First();
-		}
 
         private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
 	        where TRequest : IRequest<TResponse>
@@ -116,13 +91,6 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             // usually handlers will have NS: VolleyM.Domain.<Context>.<Handler>
             // any other schemes are not supported yet
             return parts[2];
-        }
-
-		[Obsolete]
-        private static bool IsIRequestHandlerOld<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>
-        {
-            var name = typeof(IRequestHandlerOld<,>).Name;
-            return interfaceType.Name == name;
         }
 
         private static bool IsIRequestHandler<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>

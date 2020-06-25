@@ -26,7 +26,7 @@ namespace VolleyM.Infrastructure.AzureStorage
 				{
 					var tables = GetTablesForContext();
 
-					var createTasks = Enumerable.Select<string, Task<bool>>(tables, table =>
+					var createTasks = tables.Select(table =>
 					{
 						var tableRef = client.GetTableReference(table);
 						return tableRef.CreateIfNotExistsAsync();
@@ -47,7 +47,7 @@ namespace VolleyM.Infrastructure.AzureStorage
 				{
 					var tables = GetTablesForContext();
 
-					var deleteTasks = Enumerable.Select<string, Task<bool>>(tables, table =>
+					var deleteTasks = tables.Select(table =>
 					{
 						var tableRef = client.GetTableReference(table);
 						return tableRef.DeleteIfExistsAsync();

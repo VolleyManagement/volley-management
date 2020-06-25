@@ -28,10 +28,8 @@ namespace VolleyM.Domain.Framework
 			container.Register<HandlerMetadataService>(Lifestyle.Singleton);
 
 			RegisterHandlerDecorators(container);
-			RegisterHandlerDecoratorsOld(container);
 
 			RegisterQueryObjectDecorators(container);
-			RegisterQueryObjectDecoratorsOld(container);
 
 			container.Register<IRandomIdGenerator, RandomIdGenerator>(Lifestyle.Singleton);
 
@@ -76,36 +74,6 @@ namespace VolleyM.Domain.Framework
 				Lifestyle.Scoped);
 		}
 
-		private static void RegisterHandlerDecoratorsOld(Container container)
-		{
-			// order is important. First decorator will wrap real instance
-			container.RegisterDecorator(
-				typeof(IRequestHandlerOld<,>),
-				typeof(EventProducerDecoratorOld<,>),
-				Lifestyle.Scoped);
-
-			container.RegisterDecorator(
-				typeof(IRequestHandlerOld<,>),
-				typeof(ValidationHandlerDecoratorOld<,>),
-				Lifestyle.Scoped,
-				context => DecorateWhenHasValidator(context, container));
-
-			container.RegisterDecorator(
-				typeof(IRequestHandlerOld<,>),
-				typeof(AuthorizationHandlerDecoratorOld<,>),
-				Lifestyle.Scoped);
-
-			container.RegisterDecorator(
-				typeof(IRequestHandlerOld<,>),
-				typeof(FeatureToggleDecoratorOld<,>),
-				Lifestyle.Scoped);
-
-			container.RegisterDecorator(
-				typeof(IRequestHandlerOld<,>),
-				typeof(LoggingRequestHandlerDecoratorOld<,>),
-				Lifestyle.Scoped);
-		}
-
 		private static bool DecorateWhenHasValidator(DecoratorPredicateContext c, Container container)
 		{
 			var metadata = container.GetInstance<HandlerMetadataService>();
@@ -113,15 +81,6 @@ namespace VolleyM.Domain.Framework
 			var handlerType = c?.ImplementationType;
 
 			return handlerType != null && metadata.HasValidator(handlerType);
-		}
-
-		private static void RegisterQueryObjectDecoratorsOld(Container container)
-		{
-			// order is important. First decorator will wrap real instance
-			container.RegisterDecorator(
-				typeof(IQueryOld<,>),
-				typeof(LoggingQueryObjectDecoratorOld<,>),
-				Lifestyle.Scoped);
 		}
 
 		private static void RegisterQueryObjectDecorators(Container container)

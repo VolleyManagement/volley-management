@@ -21,21 +21,7 @@ namespace VolleyM.API.Contracts
                 ConvertToHttpError);
         }
 
-		[Obsolete]
-        public static async Task<IActionResult> ExecuteHandlerOld<TRequest, TResponse, TModel>(
-	        this IRequestHandlerOld<TRequest, TResponse> handler,
-	        TRequest request,
-	        Func<TResponse, TModel> resultConverter)
-	        where TRequest : IRequest<TResponse>
-        {
-	        var result = await handler.Handle(request);
-
-	        return result.Match(
-		        v => new OkObjectResult(resultConverter(v)),
-		        ConvertToHttpError);
-        }
-
-		private static IActionResult ConvertToHttpError(Error e)
+        private static IActionResult ConvertToHttpError(Error e)
         {
             return e switch
             {

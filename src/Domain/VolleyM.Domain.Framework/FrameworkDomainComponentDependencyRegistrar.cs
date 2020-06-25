@@ -17,7 +17,6 @@ namespace VolleyM.Domain.Framework
 
         public static void RegisterCommonServices(Container container, List<Assembly> domainComponentsAssemblies)
         {
-            container.Register(typeof(IRequestHandlerOld<,>), domainComponentsAssemblies, Lifestyle.Scoped);
             container.Register(typeof(IRequestHandler<,>), domainComponentsAssemblies, Lifestyle.Scoped);
 
             container.Collection.Register(typeof(IEventHandler<>), domainComponentsAssemblies);

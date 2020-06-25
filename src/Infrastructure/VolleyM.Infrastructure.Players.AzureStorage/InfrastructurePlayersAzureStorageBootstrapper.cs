@@ -17,14 +17,12 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 		public void RegisterDependencies(Container container, IConfiguration config)
 		{
 			container.Register<IPlayersRepository, PlayersRepository>(Lifestyle.Scoped);
-			container.Register<IPlayersRepositoryOld, PlayersRepositoryOld>(Lifestyle.Scoped);
 
 			var options = config.GetSection("PlayersContextTableStorageOptions")
 				.Get<PlayersContextTableStorageOptions>();
 
 			container.RegisterInstance(options);
 
-			container.Register(typeof(IQueryOld<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
 			container.Register(typeof(IQuery<,>), Assembly.GetAssembly(GetType()), Lifestyle.Scoped);
 		}
 

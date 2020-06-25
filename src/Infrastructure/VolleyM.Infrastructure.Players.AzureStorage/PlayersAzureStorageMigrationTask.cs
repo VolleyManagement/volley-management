@@ -26,7 +26,7 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 
         public async Task MigrateUp()
         {
-            await _tableConfig.ConfigureTablesOld();
+            await _tableConfig.ConfigureTables().ToEither();
             Log.Information("PlayersContext migration complete.");
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using LanguageExt;
 using Microsoft.Azure.Cosmos.Table;
 using VolleyM.Domain.Contracts;

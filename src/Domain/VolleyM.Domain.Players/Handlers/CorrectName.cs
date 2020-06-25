@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using LanguageExt;
+﻿using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 
@@ -21,11 +20,11 @@ namespace VolleyM.Domain.Players.Handlers
 			}
 		}
 
-		public class Handler : IRequestHandlerOld<Request, Unit>
+		public class Handler : IRequestHandler<Request, Unit>
 		{
-			public Task<Either<Error, Unit>> Handle(Request request)
+			public EitherAsync<Error, Unit> Handle(Request request)
 			{
-				return Task.FromResult<Either<Error, Unit>>(Unit.Default);
+				return Unit.Default;
 			}
 		}
 	}

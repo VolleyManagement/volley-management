@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using LanguageExt;
 using Microsoft.Azure.Cosmos.Table;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players;
-using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Infrastructure.AzureStorage;
 using VolleyM.Infrastructure.Players.AzureStorage.TableConfiguration;
 

@@ -55,8 +55,8 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		[When(@"I execute CorrectName")]
 		public async Task WhenIExecuteCorrectName()
 		{
-			var handler = _container.GetInstance<IRequestHandlerOld<CorrectName.Request, Unit>>();
-			_actualResult = await handler.Handle(_request);
+			var handler = _container.GetInstance<IRequestHandler<CorrectName.Request, Unit>>();
+			_actualResult = await handler.Handle(_request).ToEither();
 		}
 
 		[Then(@"success result is returned")]

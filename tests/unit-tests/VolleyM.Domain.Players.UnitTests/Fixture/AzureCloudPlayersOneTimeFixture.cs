@@ -16,14 +16,14 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 				.Get<PlayersContextTableStorageOptions>();
 
 			_tableConfig = new TableConfiguration(_options);
-			var result = _tableConfig.ConfigureTables().Result;
+			var result = _tableConfig.ConfigureTablesOld().Result;
 
 			result.IsRight.Should().BeTrue("Azure Storage should be configured correctly");
 		}
 
 		public void OneTimeTearDown()
 		{
-			var result = _tableConfig.CleanTables().Result;
+			var result = _tableConfig.CleanTablesOld().Result;
 			result.IsRight.Should().BeTrue("Azure Storage should be cleaned up correctly");
 		}
 	}

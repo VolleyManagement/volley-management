@@ -1,4 +1,5 @@
-﻿using LanguageExt;
+﻿using System;
+using LanguageExt;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +18,14 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             _options = options;
         }
 
-        public async Task<Either<Error, Unit>> ConfigureTables()
+		[Obsolete]
+        public async Task<Either<Error, Unit>> ConfigureTablesOld()
         {
             var conn = OpenConnection();
 
             return await conn.MapAsync(async client =>
             {
-                var tables = GetTables(_options);
+                var tables = GetTablesForContext();
 
                 var createTasks = tables.Select(table =>
                 {
@@ -37,13 +39,14 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             });
         }
 
-        public async Task<Either<Error, Unit>> CleanTables()
+		[Obsolete]
+        public async Task<Either<Error, Unit>> CleanTablesOld()
         {
             var conn = OpenConnection();
 
             return await conn.MapAsync(async client =>
             {
-                var tables = GetTables(_options);
+                var tables = GetTablesForContext();
 
                 var deleteTasks = tables.Select(table =>
                 {
@@ -57,12 +60,12 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfigurati
             });
         }
 
-        private static IEnumerable<string> GetTables(IdentityContextTableStorageOptions options)
+        protected override IEnumerable<string> GetTablesForContext()
         {
-            return new List<string>
-            {
-                options.UsersTable
-            };
-        }
+			return new List<string>
+			{
+				_options.UsersTable
+			};
+		}
     }
 }

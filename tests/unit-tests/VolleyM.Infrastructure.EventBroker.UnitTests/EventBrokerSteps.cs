@@ -98,7 +98,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _expectedEvents.Add(new EventA { RequestData = eventData, SomeData = "AnotherEventAProducingHandler invoked" });
 
             await ResolveAndCallHandler(RequestHandlerType.AnotherEventAProducingHandler,
-                r => { r.EventData = eventData; });
+                r => { r.EventData = eventData; })
+	            .ToEither();
         }
 
         [Given(@"I have internal and public event handler for InternalAndPublicEvent")]
@@ -130,7 +131,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             AddExpectedEvent(eventData, eventType);
 
             _actualResult = await ResolveAndCallHandler(_requestHandlerType,
-                r => { r.EventData = eventData; });
+                r => { r.EventData = eventData; })
+	            .ToEither();
         }
 
         [Then(@"handler result should be returned")]
@@ -172,7 +174,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 .Returns(true);
         }
 
-        private Task<Either<Error, Unit>> ResolveAndCallHandler(RequestHandlerType requestHandlerType, Action<IEventProducingRequest> requestBuilder)
+        private EitherAsync<Error, Unit> ResolveAndCallHandler(RequestHandlerType requestHandlerType, Action<IEventProducingRequest> requestBuilder)
         {
             return requestHandlerType switch
             {
@@ -190,9 +192,9 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 _ => throw new NotSupportedException()
             };
         }
-        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request, Action<IEventProducingRequest> requestBuilder) where T : IRequest<Unit>, IEventProducingRequest
+        private EitherAsync<Error, Unit> ResolveAndCallSpecificHandler<T>(T request, Action<IEventProducingRequest> requestBuilder) where T : IRequest<Unit>, IEventProducingRequest
         {
-            var handler = _container.GetInstance<IRequestHandlerOld<T, Unit>>();
+            var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
             requestBuilder(request);
 

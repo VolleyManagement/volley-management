@@ -57,7 +57,7 @@ namespace VolleyM.Infrastructure.AzureStorage
 			{
 				var table = conn.Map(c => c.GetTableReference(tableName));
 				return table.Match(
-					operation,
+					t => TryOperation(operation(t)),
 					e => (EitherAsync<Error, T>)e);
 			}
 			catch (Exception e)
@@ -65,6 +65,16 @@ namespace VolleyM.Infrastructure.AzureStorage
 				Log.Error(e, "{AzureStorageOperation} Azure Storage operation failed.", operationName);
 				return Error.InternalError($"{operationName} Azure Storage operation failed.");
 			}
+		}
+
+		private EitherAsync<Error, T> TryOperation<T>(EitherAsync<Error, T> operationResult)
+		{
+			return Prelude.TryAsync(operationResult.ToEither())
+				.ToEither(MapStorageError)
+				.Match<Either<Error, T>>(
+					Right: r => r,
+					Left: l => l)
+				.ToAsync();
 		}
 	}
 }

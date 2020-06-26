@@ -29,7 +29,7 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 				{
 					var getOperation = TableOperation.Retrieve<PlayerEntity>(tenant.ToString(), id.ToString());
 
-					var getResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(getOperation);
+					EitherAsync<Error, TableResult> getResult = tableRef.ExecuteAsync(getOperation);
 
 					return getResult.Match<Either<Error, Player>>(
 						tableResult => tableResult.Result switch

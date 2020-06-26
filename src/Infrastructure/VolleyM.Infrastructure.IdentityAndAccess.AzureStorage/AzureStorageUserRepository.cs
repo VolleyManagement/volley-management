@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using LanguageExt;
 using Microsoft.Azure.Cosmos.Table;
 using VolleyM.Domain.Contracts;
@@ -32,9 +30,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 					var userEntity = new UserEntity(user);
 					var createOperation = TableOperation.Insert(userEntity);
 
-					var createResult = Prelude
-						.TryAsync(tableRef.ExecuteAsync(createOperation))
-						.ToEither(MapStorageError);
+					EitherAsync<Error,TableResult> createResult = tableRef.ExecuteAsync(createOperation);
 
 					return createResult.Match(
 						tableResult => tableResult.Result switch
@@ -49,11 +45,6 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 				}, "Add User");
 		}
 
-		private static Either<Error, User> MapError(Error e)
-		{
-			return  e;
-		}
-
 		public EitherAsync<Error, User> Get(TenantId tenant, UserId id)
 		{
 			return PerformStorageOperation(_options.UsersTable, 
@@ -61,7 +52,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 				{
 					var getOperation = TableOperation.Retrieve<UserEntity>(tenant.ToString(), id.ToString());
 
-					var getResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(getOperation);
+					EitherAsync<Error, TableResult> getResult = tableRef.ExecuteAsync(getOperation);
 
 					return getResult.Match(
 						tableResult => tableResult.Result switch
@@ -70,7 +61,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 								_mapper.Map<UserEntity, UserFactoryDto>(userEntity)),
 							_ => Error.NotFound()
 						},
-						e => e
+						MapError
 					).ToAsync();
 				}, "Get User");
 		}
@@ -89,6 +80,11 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
 					return result.Map(tr => Unit.Default);
 				}, "Delete User");
+		}
+
+		private static Either<Error, User> MapError(Error e)
+		{
+			return e;
 		}
 	}
 }

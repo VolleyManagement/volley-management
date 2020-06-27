@@ -142,7 +142,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 			var userToAuthorize = new ClaimsPrincipal(_userClaims);
 
 			var handler = _container.GetInstance<IAuthorizationHandler>();
-			_actualResult = await handler.AuthorizeUser(userToAuthorize);
+			_actualResult = await handler.AuthorizeUser(userToAuthorize).ToEither();
 		}
 
 		#endregion

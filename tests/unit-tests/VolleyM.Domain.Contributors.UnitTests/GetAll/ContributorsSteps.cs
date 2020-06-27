@@ -1,6 +1,7 @@
 ﻿using LanguageExt;
 using SimpleInjector;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.UnitTests.Framework;
@@ -41,11 +42,11 @@ namespace VolleyM.Domain.Contributors.UnitTests.GetAll
         }
 
         [When(@"I query all contributors")]
-        public async void WhenIQueryAllContributors()
+        public async Task WhenIQueryAllContributors()
         {
             _handler = _container.GetInstance<IRequestHandler<Contributors.GetAll.Request, List<ContributorDto>>>();
 
-            _actualResult = await _handler.Handle(new Contributors.GetAll.Request());
+            _actualResult = await _handler.Handle(new Contributors.GetAll.Request()).ToEither();
         }
 
         [Then(@"all contributors received")]

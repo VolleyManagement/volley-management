@@ -26,7 +26,7 @@ namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage
 
         public async Task MigrateUp()
         {
-            await _tableConfig.ConfigureTables();
+            await _tableConfig.ConfigureTables().ToEither();
             Log.Information("IaAContext migration complete.");
         }
     }

@@ -1,6 +1,5 @@
-﻿using LanguageExt;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
@@ -29,13 +28,13 @@ namespace VolleyM.Infrastructure.Hardcoded
 			_roles[_sysAdmin] = sysadmin;
 		}
 
-		public Task<Either<Error, Role>> Get(RoleId roleId)
+		public EitherAsync<Error, Role> Get(RoleId roleId)
 		{
 			if (_roles.TryGetValue(roleId, out var role))
 			{
-				return Task.FromResult<Either<Error, Role>>(role);
+				return role;
 			}
-			return Task.FromResult<Either<Error, Role>>(Error.NotFound());
+			return Error.NotFound();
 		}
 	}
 }

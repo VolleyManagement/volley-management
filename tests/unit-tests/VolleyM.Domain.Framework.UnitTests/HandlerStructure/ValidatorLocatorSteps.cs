@@ -52,6 +52,5 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             _actualResult.Should().Be(result);
         }
-
     }
 }

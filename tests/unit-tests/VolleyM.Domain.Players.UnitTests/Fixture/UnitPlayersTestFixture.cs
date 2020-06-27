@@ -14,7 +14,6 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 	{
 		private IQuery<TenantId, List<PlayerDto>> _queryMock;
 		private IPlayersRepository _repoMock;
-		private IMapper _mapper;
 
 		private Player _actualPlayer;
 
@@ -35,7 +34,6 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		public override Task ScenarioSetup()
 		{
-			_mapper = _container.GetInstance<IMapper>();
 			return Task.CompletedTask;
 		}
 

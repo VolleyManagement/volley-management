@@ -1,5 +1,4 @@
-﻿using Esquio.Abstractions;
-using Esquio.DependencyInjection;
+﻿using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -49,9 +48,7 @@ namespace VolleyM.API
 
 			services.AddSimpleInjector(_container, options =>
 			{
-				options.AutoCrossWireFrameworkComponents = false;
-
-				options.CrossWire<IFeatureService>();
+				options.AutoCrossWireFrameworkComponents = true;
 
 				// AddAspNetCore() wraps web requests in a Simple Injector scope.
 				options.AddAspNetCore()

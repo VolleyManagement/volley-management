@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Esquio.Abstractions;
 using NSubstitute;
 using Serilog;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Contracts.FeatureManagement;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Infrastructure.Bootstrap;
@@ -75,12 +75,12 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		private void RegisterNullEventPublisher(Container container)
 		{
-			container.Register<IEventPublisher, TestSpyEventPublisher>(Lifestyle.Singleton); ;
+			container.Register<IEventPublisher, TestSpyEventPublisher>(Lifestyle.Singleton);
 		}
 
 		private void RegisterFeatureService(Container container)
 		{
-			var featureService = Substitute.For<IFeatureService>();
+			var featureService = Substitute.For<IFeatureManager>();
 			featureService.IsEnabledAsync(Arg.Any<string>(), Arg.Any<string>())
 				.Returns(Task.FromResult(true));
 

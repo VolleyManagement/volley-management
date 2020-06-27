@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Serilog;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using VolleyM.API.Contracts;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contributors;

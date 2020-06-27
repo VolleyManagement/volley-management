@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using LanguageExt;
 using Microsoft.Azure.Cosmos.Table;
 using VolleyM.Domain.Contracts;
@@ -23,36 +22,36 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 			_mapper = mapper;
 		}
 
-		public Task<Either<Error, Player>> Get(TenantId tenant, PlayerId id)
+		public EitherAsync<Error, Player> Get(TenantId tenant, PlayerId id)
 		{
 			return PerformStorageOperation(_options.PlayersTable,
-				async tableRef =>
+				 tableRef =>
 				{
 					var getOperation = TableOperation.Retrieve<PlayerEntity>(tenant.ToString(), id.ToString());
 
-					var getResult = (Either<Error, TableResult>)await tableRef.ExecuteAsync(getOperation);
+					EitherAsync<Error, TableResult> getResult = tableRef.ExecuteAsync(getOperation);
 
-					return getResult.Match(
+					return getResult.Match<Either<Error, Player>>(
 						tableResult => tableResult.Result switch
 						{
-							PlayerEntity playerEntity => (Either<Error, Player>)_playerFactory.Create(
+							PlayerEntity playerEntity => _playerFactory.Create(
 								_mapper.Map<PlayerEntity, PlayerFactoryDto>(playerEntity)),
 							_ => Error.NotFound()
 						},
 						e => e
-					);
+					).ToAsync();
 				}, "Get Player");
 		}
 
-		public Task<Either<Error, Player>> Add(Player player)
+		public EitherAsync<Error, Player> Add(Player player)
 		{
 			return PerformStorageOperation(_options.PlayersTable,
-				async tableRef =>
+				tableRef =>
 				{
 					var playerEntity = new PlayerEntity(player);
 					var createOperation = TableOperation.Insert(playerEntity);
 
-					var createResult = (Either<Error, TableResult>)await tableRef.ExecuteAsync(createOperation);
+					var createResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(createOperation);
 
 					return createResult.Match(
 						tableResult => tableResult.Result switch
@@ -63,21 +62,21 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 								$"Azure Storage: Failed to create player with {tableResult.HttpStatusCode} error.")
 						},
 						e => e
-					);
+					).ToAsync();
 				}, "Create Player");
 		}
 
-		public Task<Either<Error, Unit>> Delete(TenantId tenant, PlayerId id)
+		public EitherAsync<Error, Unit> Delete(TenantId tenant, PlayerId id)
 		{
 			return PerformStorageOperation<Unit>(_options.PlayersTable,
-				async tableRef =>
+				tableRef =>
 				{
 					var playerEntity = new PlayerEntity(tenant, id);
 					var deleteOperation = TableOperation.Delete(playerEntity);
 
-					await tableRef.ExecuteAsync(deleteOperation);
+					EitherAsync<Error, TableResult> result = tableRef.ExecuteAsync(deleteOperation);
 
-					return Unit.Default;
+					return result.Map(tr => Unit.Default);
 				}, "Delete Player");
 		}
 	}

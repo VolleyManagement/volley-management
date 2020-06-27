@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
 using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
 using SimpleInjector;
-using System.Reflection;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IDomainFrameworkTestFixture;
@@ -15,7 +14,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Authorization Decorator")]
     public class AuthorizationDecoratorSteps
     {
@@ -57,7 +56,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         {
             var handler = _container.GetInstance<IRequestHandler<SampleHandler.Request, Unit>>();
 
-            _actualResult = await handler.Handle(new SampleHandler.Request());
+            _actualResult = await handler.Handle(new SampleHandler.Request()).ToEither();
         }
 
         [Then(@"NotAuthorized error should be returned with message ([A-Za-z ]+)")]

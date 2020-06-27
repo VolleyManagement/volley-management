@@ -16,14 +16,14 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
             = new ConcurrentDictionary<Type, HandlerInfo>();
 
         public Either<Error, HandlerInfo> GetHandlerMetadata<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
-            where TRequest : IRequest<TResponse>
+	        where TRequest : IRequest<TResponse>
         {
-            return from requestType in GetRequestType(handler)
-                   from metadata in GetOrCreateMetadata(handler, requestType)
-                   select metadata;
+	        return from requestType in GetRequestType(handler)
+		        from metadata in GetOrCreateMetadata(handler, requestType)
+		        select metadata;
         }
 
-        public bool HasValidator(Type handlerType)
+		public bool HasValidator(Type handlerType)
         {
             return handlerType.DeclaringType? //Type which hosts all handler related classes
                 .GetNestedTypes() //Find classes that implement IValidator<>
@@ -32,21 +32,21 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
         }
 
         private static Either<Error, Type> GetRequestType<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
-            where TRequest : IRequest<TResponse>
+	        where TRequest : IRequest<TResponse>
         {
-            var handlerInterfaces = handler.GetType().GetInterfaces()
-                .Where(IsIRequestHandler<TRequest, TResponse>)
-                .ToArray();
+	        var handlerInterfaces = handler.GetType().GetInterfaces()
+		        .Where(IsIRequestHandler<TRequest, TResponse>)
+		        .ToArray();
 
-            if (handlerInterfaces.Length > 1)
-            {
-                return Error.DesignViolation("Handler is allowed to implement only one IRequestHandler");
-            }
+	        if (handlerInterfaces.Length > 1)
+	        {
+		        return Error.DesignViolation("Handler is allowed to implement only one IRequestHandler");
+	        }
 
-            return handlerInterfaces[0].GenericTypeArguments.First();
+	        return handlerInterfaces[0].GenericTypeArguments.First();
         }
 
-        private Either<Error, HandlerInfo> GetOrCreateMetadata(object handler, Type requestType)
+		private Either<Error, HandlerInfo> GetOrCreateMetadata(object handler, Type requestType)
         {
             Either<Error, HandlerInfo> result;
 
@@ -95,11 +95,11 @@ namespace VolleyM.Domain.Framework.HandlerMetadata
 
         private static bool IsIRequestHandler<TRequest, TResponse>(Type interfaceType) where TRequest : IRequest<TResponse>
         {
-            var name = typeof(IRequestHandler<,>).Name;
-            return interfaceType.Name == name;
+	        var name = typeof(IRequestHandler<,>).Name;
+	        return interfaceType.Name == name;
         }
 
-        public void OverrideHandlerMetadata<T>(HandlerInfo handlerInfo)
+		public void OverrideHandlerMetadata<T>(HandlerInfo handlerInfo)
         {
             OverrideHandlerMetadata(typeof(T), handlerInfo);
         }

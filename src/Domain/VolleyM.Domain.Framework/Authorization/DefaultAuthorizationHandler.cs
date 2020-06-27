@@ -1,10 +1,9 @@
-﻿using LanguageExt;
-using LanguageExt.UnsafeValueAccess;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using LanguageExt;
+using LanguageExt.UnsafeValueAccess;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.IdentityAndAccess;
@@ -40,7 +39,9 @@ namespace VolleyM.Domain.Framework.Authorization
 		public DefaultAuthorizationHandler(
 			IRequestHandler<CreateUser.Request, User> createUserHandler,
 			ICurrentUserManager currentUserManager,
-			IRequestHandler<GetUser.Request, User> getUserHandler, IApplicationInfo applicationInfo, ApplicationTrustOptions trustOptions)
+			IRequestHandler<GetUser.Request, User> getUserHandler,
+			IApplicationInfo applicationInfo,
+			ApplicationTrustOptions trustOptions)
 		{
 			_createUserHandler = createUserHandler;
 			_currentUserManager = currentUserManager;
@@ -49,7 +50,7 @@ namespace VolleyM.Domain.Framework.Authorization
 			_trustOptions = trustOptions;
 		}
 
-		public async Task<Either<Error, Unit>> AuthorizeUser(ClaimsPrincipal user)
+		public EitherAsync<Error, Unit> AuthorizeUser(ClaimsPrincipal user)
 		{
 			var idValueOption = GetUserIdFromClaims(user);
 
@@ -62,17 +63,19 @@ namespace VolleyM.Domain.Framework.Authorization
 				from user1 in GetUser(id)
 				select user1;
 
-			var createUserMap = await getUser.MapLeft(e => e switch
+			var createUserMap = getUser.MapLeft(e => e switch
 				{
 					{ Type: ErrorType.NotAuthenticated }
 						=> GetAnonymousUser(),
 					{ Type: ErrorType.NotFound }
 						=> CreateUser(idValueOption.ValueUnsafe(), user),
 					var left => left
-				})
-				.Match(EitherAsync<Error, User>.Right, l => l);
+				}).MatchAsync<Either<Error, User>>(
+					Right: u => u,
+					LeftAsync: async left => await left.ToEither())
+				.ToAsync();
 
-			return (await createUserMap.ToEither())
+			return createUserMap
 				.Do(SetCurrentContext)
 				.Map(_ => Unit.Default);
 		}
@@ -128,7 +131,7 @@ namespace VolleyM.Domain.Framework.Authorization
 			};
 
 			using var _ = BeginAuthZUserScope();
-			return _getUserHandler.Handle(getRequest).ToAsync();
+			return _getUserHandler.Handle(getRequest);
 		}
 
 		private EitherAsync<Error, User> CreateUser(string idValue, ClaimsPrincipal user)
@@ -146,7 +149,7 @@ namespace VolleyM.Domain.Framework.Authorization
 				Role = role
 			};
 			using var _ = BeginAuthZUserScope();
-			return _createUserHandler.Handle(createRequest).ToAsync();
+			return _createUserHandler.Handle(createRequest);
 		}
 
 		private bool IsTrustedApiClientAuthentication(string idValue, ClaimsPrincipal user)
@@ -162,8 +165,8 @@ namespace VolleyM.Domain.Framework.Authorization
 			var gtyClaim = GetClaimValue(user, GRANT_TYPE_CLAIM);
 
 			return AreEqual($"{_trustOptions.Auth0ClientId}@clients", idValue)
-			       && AreEqual(azpClaim.ValueUnsafe(), _trustOptions.Auth0ClientId)
-			       && AreEqual(gtyClaim.ValueUnsafe(), "client-credentials");
+				   && AreEqual(azpClaim.ValueUnsafe(), _trustOptions.Auth0ClientId)
+				   && AreEqual(gtyClaim.ValueUnsafe(), "client-credentials");
 		}
 
 		private Option<string> GetUserIdFromClaims(ClaimsPrincipal user)

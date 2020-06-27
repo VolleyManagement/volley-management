@@ -1,7 +1,4 @@
-﻿using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Players.PlayerAggregate;
-
-namespace VolleyM.API.Players
+﻿namespace VolleyM.API.Players
 {
 	public class Player
 	{

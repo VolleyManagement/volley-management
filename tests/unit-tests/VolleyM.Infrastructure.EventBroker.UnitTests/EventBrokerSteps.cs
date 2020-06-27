@@ -1,16 +1,15 @@
-﻿using FluentAssertions;
-using LanguageExt;
-using NSubstitute;
-using SimpleInjector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using FluentAssertions;
+using LanguageExt;
+using NSubstitute;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.ContextA;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
@@ -20,7 +19,7 @@ using VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "EventBroker")]
     public class EventBrokerSteps
     {
@@ -98,7 +97,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             _expectedEvents.Add(new EventA { RequestData = eventData, SomeData = "AnotherEventAProducingHandler invoked" });
 
             await ResolveAndCallHandler(RequestHandlerType.AnotherEventAProducingHandler,
-                r => { r.EventData = eventData; });
+                r => { r.EventData = eventData; })
+	            .ToEither();
         }
 
         [Given(@"I have internal and public event handler for InternalAndPublicEvent")]
@@ -130,7 +130,8 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
             AddExpectedEvent(eventData, eventType);
 
             _actualResult = await ResolveAndCallHandler(_requestHandlerType,
-                r => { r.EventData = eventData; });
+                r => { r.EventData = eventData; })
+	            .ToEither();
         }
 
         [Then(@"handler result should be returned")]
@@ -172,7 +173,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 .Returns(true);
         }
 
-        private Task<Either<Error, Unit>> ResolveAndCallHandler(RequestHandlerType requestHandlerType, Action<IEventProducingRequest> requestBuilder)
+        private EitherAsync<Error, Unit> ResolveAndCallHandler(RequestHandlerType requestHandlerType, Action<IEventProducingRequest> requestBuilder)
         {
             return requestHandlerType switch
             {
@@ -190,7 +191,7 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
                 _ => throw new NotSupportedException()
             };
         }
-        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request, Action<IEventProducingRequest> requestBuilder) where T : IRequest<Unit>, IEventProducingRequest
+        private EitherAsync<Error, Unit> ResolveAndCallSpecificHandler<T>(T request, Action<IEventProducingRequest> requestBuilder) where T : IRequest<Unit>, IEventProducingRequest
         {
             var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 

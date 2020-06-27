@@ -10,7 +10,7 @@ using Serilog.Core;
 
 namespace VolleyM.API
 {
-    public class Program
+    public static class Program
     {
         public static int Main(string[] args)
         {

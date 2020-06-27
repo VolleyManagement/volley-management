@@ -85,7 +85,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         {
             _handler = _container.GetInstance<IRequestHandler<CreateUser.Request, User>>();
 
-            _actualResult = await _handler.Handle(_request);
+            _actualResult = await _handler.Handle(_request).ToEither();
         }
 
         [Then("user is created")]

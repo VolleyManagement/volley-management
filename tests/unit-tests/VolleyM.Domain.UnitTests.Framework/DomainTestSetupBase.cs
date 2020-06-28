@@ -16,7 +16,10 @@ using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Contracts.FeatureManagement;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.IdentityAndAccess;
+using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Infrastructure.Bootstrap;
+using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {
@@ -51,7 +54,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			RegisterContainerInSpecFlow(Container);
 			RegisterSpecFlowTransforms();
-
+			
+			RegisterMinimalInfrastructureDependencies(Container);
 			RegisterAssemblyBootstrappers();
 
 			RegisterFeatureService(Container);
@@ -62,6 +66,15 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			AuthFixture?.ConfigureTestUserRole(Container);
 			BaseTestFixture.RegisterScenarioDependencies(Container);
+		}
+
+		private void RegisterMinimalInfrastructureDependencies(Container container)
+		{
+			// Need to register some components as SimpleInjector performs a Verify during first resolve.
+			// Should go before Assembly Bootstrappers
+			container.RegisterInstance(Substitute.For<IRequestHandler<CreateUser.Request, User>>());
+			container.RegisterInstance(Substitute.For<IRequestHandler<GetUser.Request, User>>());
+			container.RegisterInstance(Substitute.For<IApplicationInfo>());
 		}
 
 		private void ConfigureContainer()

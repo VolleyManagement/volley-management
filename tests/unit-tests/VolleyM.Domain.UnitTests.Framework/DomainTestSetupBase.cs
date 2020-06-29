@@ -1,15 +1,15 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration;
-using BoDi;
-using SimpleInjector;
-using SimpleInjector.Lifestyles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.Configuration;
+using BoDi;
 using NSubstitute;
 using Serilog;
+using SimpleInjector;
+using SimpleInjector.Lifestyles;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -19,7 +19,6 @@ using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Infrastructure.Bootstrap;
-using VolleyM.Infrastructure.IdentityAndAccess.AzureStorage;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {

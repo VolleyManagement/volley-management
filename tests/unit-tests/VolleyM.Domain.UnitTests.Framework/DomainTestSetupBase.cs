@@ -1,21 +1,23 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration;
-using BoDi;
-using SimpleInjector;
-using SimpleInjector.Lifestyles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.Configuration;
+using BoDi;
 using NSubstitute;
 using Serilog;
+using SimpleInjector;
+using SimpleInjector.Lifestyles;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Contracts.FeatureManagement;
 using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.IdentityAndAccess;
+using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -51,7 +53,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			RegisterContainerInSpecFlow(Container);
 			RegisterSpecFlowTransforms();
-
+			
+			RegisterMinimalInfrastructureDependencies(Container);
 			RegisterAssemblyBootstrappers();
 
 			RegisterFeatureService(Container);
@@ -62,6 +65,15 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			AuthFixture?.ConfigureTestUserRole(Container);
 			BaseTestFixture.RegisterScenarioDependencies(Container);
+		}
+
+		private void RegisterMinimalInfrastructureDependencies(Container container)
+		{
+			// Need to register some components as SimpleInjector performs a Verify during first resolve.
+			// Should go before Assembly Bootstrappers
+			container.RegisterInstance(Substitute.For<IRequestHandler<CreateUser.Request, User>>());
+			container.RegisterInstance(Substitute.For<IRequestHandler<GetUser.Request, User>>());
+			container.RegisterInstance(Substitute.For<IApplicationInfo>());
 		}
 
 		private void ConfigureContainer()

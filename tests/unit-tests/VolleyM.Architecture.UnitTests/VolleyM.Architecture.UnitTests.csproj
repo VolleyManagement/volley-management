@@ -1,42 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp5.0</TargetFramework>
 
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.10.3" />
-    <PackageReference Include="Microsoft.Build" Version="16.6.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
-    <PackageReference Include="NetArchTest.Rules" Version="1.2.5" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="5.10.3" />
+		<PackageReference Include="SimpleInjector" Version="5.0.1" />
+		<PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Build" Version="16.6.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+		<PackageReference Include="NetArchTest.Rules" Version="1.2.5" />
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="1.3.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Client\VolleyM.API.Contributors\VolleyM.API.Contributors.csproj" />
-    <ProjectReference Include="..\..\..\src\Client\VolleyM.API.Players\VolleyM.API.Players.csproj" />
-    <ProjectReference Include="..\..\..\src\Client\VolleyM.API\VolleyM.API.csproj" />
-    <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
-    <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Players\VolleyM.Domain.Players.csproj" />
-    <ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
-    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj" />
-    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.EventBroker\VolleyM.Infrastructure.EventBroker.csproj" />
-    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
-    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />
-    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" />
-    <ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Players.AzureStorage\VolleyM.Infrastructure.Players.AzureStorage.csproj" />
-    <ProjectReference Include="..\..\..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\Client\VolleyM.API.Contributors\VolleyM.API.Contributors.csproj" />
+		<ProjectReference Include="..\..\..\src\Client\VolleyM.API.Players\VolleyM.API.Players.csproj" />
+		<ProjectReference Include="..\..\..\src\Client\VolleyM.API\VolleyM.API.csproj" />
+		<ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Contracts\VolleyM.Domain.Contracts.csproj" />
+		<ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Contributors\VolleyM.Domain.Contributors.csproj" />
+		<ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.Players\VolleyM.Domain.Players.csproj" />
+		<ProjectReference Include="..\..\..\src\Domain\VolleyM.Domain.IdentityAndAccess\VolleyM.Domain.IdentityAndAccess.csproj" />
+		<ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.AzureStorage\VolleyM.Infrastructure.AzureStorage.csproj" />
+		<ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.EventBroker\VolleyM.Infrastructure.EventBroker.csproj" />
+		<ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Bootstrap\VolleyM.Infrastructure.Bootstrap.csproj" />
+		<ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Hardcoded\VolleyM.Infrastructure.Hardcoded.csproj" />
+		<ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage\VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.csproj" />
+		<ProjectReference Include="..\..\..\src\Infrastructure\VolleyM.Infrastructure.Players.AzureStorage\VolleyM.Infrastructure.Players.AzureStorage.csproj" />
+		<ProjectReference Include="..\..\..\tools\VolleyM.Tools.MigrationTool\VolleyM.Tools.MigrationTool.csproj" />
+	</ItemGroup>
 
 </Project>

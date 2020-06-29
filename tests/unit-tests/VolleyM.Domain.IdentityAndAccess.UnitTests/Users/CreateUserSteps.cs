@@ -98,6 +98,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         [Then("Conflict error is returned")]
         public void ThenConflictErrorReturned()
         {
+			AssertionOptions.EquivalencySteps
             _actualResult.ShouldBeError(Error.Conflict(), "such user already exists");
         }
 

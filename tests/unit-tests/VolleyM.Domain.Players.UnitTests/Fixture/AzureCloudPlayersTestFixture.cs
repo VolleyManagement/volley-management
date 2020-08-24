@@ -4,6 +4,7 @@ using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.Players.UnitTests.Fixture;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
@@ -46,8 +47,7 @@ namespace VolleyM.Domain.Players.UnitTests
 
 			var savedPlayer = await repo.Get(expectedPlayer.Tenant, expectedPlayer.Id).ToEither();
 
-			savedPlayer.IsRight.Should().BeTrue("player should be created");
-			savedPlayer.IfRight(u => u.Should().BeEquivalentTo(expectedPlayer, "all attributes should be saved correctly"));
+			savedPlayer.ShouldBeEquivalent(expectedPlayer, "all attributes should be saved correctly");
 
 			_playersToTeardown.Add((expectedPlayer.Tenant, expectedPlayer.Id));
 		}
@@ -58,8 +58,7 @@ namespace VolleyM.Domain.Players.UnitTests
 
 			var savedPlayer = await repo.Get(expectedPlayer.Tenant, expectedPlayer.Id).ToEither();
 
-			savedPlayer.IsRight.Should().BeFalse("player should not be created");
-			savedPlayer.IfLeft(u => u.Should().BeEquivalentTo(Error.NotFound(), "NotFound error is expected"));
+			savedPlayer.ShouldBeError(Error.NotFound(), "NotFound error is expected");
 		}
 
 		private async Task CleanUpPlayers()

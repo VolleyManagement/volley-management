@@ -1,30 +1,27 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
 using LanguageExt;
-using LanguageExt.SomeHelp;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {
 	public static class TestExtensions
 	{
-		public static EitherAssertions<TLeft, TRight> Should<TLeft, TRight>(this Either<TLeft, TRight> either)
-		{
-			return new EitherAssertions<TLeft, TRight>(either);
-		}
-
 		public static void ShouldBeError<T>(
 			this Either<Error, T> actualResult,
 			Error expected,
 			string because = "error should be reported",
 			params object[] becauseArgs)
 		{
-			//actualResult.IsLeft.Should().BeTrue("error is expected");
-			//actualResult.IfLeft(e => e.Should().BeEquivalentTo(expected, because, becauseArgs));
+			using (new AssertionScope())
+			{
+				actualResult.IsLeft.Should().BeTrue("error is expected");
 
-			var p = (Either<Error, T>)expected;
+				object actual = GetTransformedActual(actualResult);
 
-			actualResult.Should().BeEquivalentTo(p, because, becauseArgs);
+				var expectation = new { Value = default(T), Error = expected };
+				PerformAssertion<T>(because, becauseArgs, actual, expectation);
+			}
 		}
 
 		public static void ShouldBeError<T>(
@@ -33,8 +30,15 @@ namespace VolleyM.Domain.UnitTests.Framework
 			string because = "error should be reported",
 			params object[] becauseArgs)
 		{
-			actualResult.IsLeft.Should().BeTrue("error is expected");
-			actualResult.IfLeft(e => e.Type.Should().BeEquivalentTo(expectedType, because, becauseArgs));
+			using (new AssertionScope())
+			{
+				actualResult.IsLeft.Should().BeTrue("error is expected");
+
+				object actual = GetTransformedActual(actualResult);
+
+				var expectation = new { Value = default(T), Error = new { Type = expectedType } };
+				PerformAssertion<T>(because, becauseArgs, actual, expectation);
+			}
 		}
 
 		public static void ShouldBeEquivalent<T>(
@@ -43,43 +47,28 @@ namespace VolleyM.Domain.UnitTests.Framework
 			string because = "",
 			params object[] becauseArgs)
 		{
-			//actualResult.IsRight.Should().BeTrue("successful result is expected");
-			//actualResult.IfRight(v => v.Should().BeEquivalentTo(expected, because, becauseArgs));
+			using (new AssertionScope())
+			{
+				actualResult.IsRight.Should().BeTrue("successful result is expected");
 
-			//var p = (Either<Error, T>)expected;
+				object actual = GetTransformedActual(actualResult);
 
-
-			actualResult.Should().BeEquivalentTo(expected, because, becauseArgs);
-		}
-	}
-
-	public class EitherAssertions<TLeft, TRight>
-	{
-		private readonly Either<TLeft, TRight> _instance;
-
-		public EitherAssertions(Either<TLeft, TRight> instance)
-		{
-			_instance = instance;
+				var expectation = new { Value = expected, Error = (Error)null };
+				PerformAssertion<T>(because, becauseArgs, actual, expectation);
+			}
 		}
 
-		public AndConstraint<EitherAssertions<TLeft1, TRight1>> BeError<TLeft1, TRight1>(
-			Error expected,
-			string because = "error should be reported",
-			params object[] becauseArgs) where TLeft1 : Error
+		private static void PerformAssertion<T>(string because, object[] becauseArgs, object actual, object expectation)
 		{
-			Execute.Assertion
-				.BecauseOf(because, becauseArgs)
-				.ForCondition(_instance.IsLeft)
-				.FailWith("error should be reported")
-				.Then
-				.Given(() => _instance.Match<Error>(r => default(Error), l => (Error) l))
-				.ForCondition(left =>
-				{
-					left.Should().Be(expected);
-					return true;
-				});
+			actual.Should().BeEquivalentTo(expectation, because, becauseArgs);
+		}
 
-			return new AndConstraint<EitherAssertions<TLeft1, TRight1>>(this);
+		private static object GetTransformedActual<T>(Either<Error, T> actualResult)
+		{
+			var either = actualResult.ToArr()[0];
+
+			var actual = new {Value = either.Right, Error = either.Left};
+			return actual;
 		}
 	}
 }

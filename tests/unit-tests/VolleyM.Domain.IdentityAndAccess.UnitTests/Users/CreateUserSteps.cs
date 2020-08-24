@@ -98,16 +98,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         [Then("Conflict error is returned")]
         public void ThenConflictErrorReturned()
         {
-			AssertionOptions.EquivalencySteps
             _actualResult.ShouldBeError(Error.Conflict(), "such user already exists");
         }
 
         [Then("user is returned")]
         public void ThenUserIsReturned()
         {
-            _actualResult.IsRight.Should().BeTrue("created user should be returned");
-            _actualResult.IfRight(u => u.Should()
-                .BeEquivalentTo(_expectedUser.Build(), "created user should be returned"));
+			_actualResult.ShouldBeEquivalent(_expectedUser.Build(), "created user should be returned");
         }
     }
 }

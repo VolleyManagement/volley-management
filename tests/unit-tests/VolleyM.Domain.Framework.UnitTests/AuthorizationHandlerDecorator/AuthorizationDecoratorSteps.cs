@@ -68,7 +68,7 @@ namespace VolleyM.Domain.Framework.UnitTests.AuthorizationHandlerDecorator
         [Then(@"success result is returned")]
         public void ThenReturnsSuccess()
         {
-            _actualResult.IsRight.Should().BeTrue("user has required permission");
+			_actualResult.ShouldBeEquivalent(Unit.Default, "user has required permission");
         }
 
         private void RegisterHandlers()

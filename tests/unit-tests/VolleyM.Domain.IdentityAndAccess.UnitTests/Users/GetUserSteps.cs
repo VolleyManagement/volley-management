@@ -82,8 +82,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         [Then("user is returned")]
         public void ThenUserIsReturned()
         {
-            _actualResult.IsRight.Should().BeTrue("user exists");
-            _actualResult.IfRight(u => u.Should().BeEquivalentTo(_expectedUser, "all user attributes should be returned"));
+	        _actualResult.ShouldBeEquivalent(_expectedUser, "all user attributes should be returned");
         }
 
         [Then("NotFound error is returned")]

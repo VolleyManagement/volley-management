@@ -11,12 +11,19 @@ namespace VolleyM.Domain.Players.PlayerAggregate
 			FirstName = firstName;
 			LastName = lastName;
 		}
+
 		public TenantId Tenant { get; }
 
 		public PlayerId Id { get; }
 
-		public string FirstName { get; }
+		public string FirstName { get; private set; }
 
-		public string LastName { get; }
+		public string LastName { get; private set; }
+
+		public void ChangeName(string firstName, string lastName)
+		{
+			this.FirstName = firstName;
+			this.LastName = lastName;
+		}
 	}
 }

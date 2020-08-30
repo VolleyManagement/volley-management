@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.Framework.Validation
 {
-    public class ValidationHandlerDecorator<TRequest, TResponse>
+	public class ValidationHandlerDecorator<TRequest, TResponse>
         : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
@@ -17,13 +16,13 @@ namespace VolleyM.Domain.Framework.Validation
             _validator = validator;
         }
 
-        public Task<Either<Error, TResponse>> Handle(TRequest request)
+        public EitherAsync<Error, TResponse> Handle(TRequest request)
         {
             var validationResult = _validator.Validate(request);
 
             if (!validationResult.IsValid)
             {
-                return Task.FromResult<Either<Error, TResponse>>(new ValidationError(validationResult));
+                return new ValidationError(validationResult);
             }
 
             return base.Decoratee.Handle(request);

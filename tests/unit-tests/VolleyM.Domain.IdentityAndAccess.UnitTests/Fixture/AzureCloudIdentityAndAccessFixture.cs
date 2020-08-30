@@ -1,14 +1,14 @@
-﻿using FluentAssertions;
-using SimpleInjector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentAssertions;
+using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
-    public class AzureCloudIdentityAndAccessFixture : IIdentityAndAccessFixture
+	public class AzureCloudIdentityAndAccessFixture : IIdentityAndAccessFixture
     {
         private Container Container { get; }
 
@@ -38,8 +38,8 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         public async Task ConfigureUserExists(TenantId tenant, UserId id, User user)
         {
             var repo = Container.GetInstance<IUserRepository>();
-
-            await repo.Add(user);
+            
+            await repo.Add(user).ToEither();
             _usersToTeardown.Add(Tuple.Create(tenant, id));
         }
 
@@ -53,10 +53,9 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
         {
             var repo = Container.GetInstance<IUserRepository>();
 
-            var savedUser = await repo.Get(user.Tenant, user.Id);
+            var savedUser = await repo.Get(user.Tenant, user.Id).ToEither();
 
-            savedUser.IsRight.Should().BeTrue("user should be created");
-            savedUser.IfRight(u => u.Should().BeEquivalentTo(user, "all attributes should be saved correctly"));
+			savedUser.ShouldBeEquivalent(user, "all attributes should be saved correctly");
         }
 
         private async Task CleanUpUsers(IEnumerable<Tuple<TenantId, UserId>> usersToTeardown)
@@ -65,7 +64,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
             var deleteTasks = new List<Task>();
             foreach (var (tenant, user) in usersToTeardown)
             {
-                deleteTasks.Add(repo.Delete(tenant, user));
+                deleteTasks.Add(repo.Delete(tenant, user).ToEither());
             }
 
             await Task.WhenAll(deleteTasks.ToArray());

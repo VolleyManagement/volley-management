@@ -4,6 +4,7 @@ using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.Players.UnitTests.Fixture;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
@@ -44,10 +45,9 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
 
-			var savedPlayer = await repo.Get(expectedPlayer.Tenant, expectedPlayer.Id);
+			var savedPlayer = await repo.Get(expectedPlayer.Tenant, expectedPlayer.Id).ToEither();
 
-			savedPlayer.IsRight.Should().BeTrue("player should be created");
-			savedPlayer.IfRight(u => u.Should().BeEquivalentTo(expectedPlayer, "all attributes should be saved correctly"));
+			savedPlayer.ShouldBeEquivalent(expectedPlayer, "all attributes should be saved correctly");
 
 			_playersToTeardown.Add((expectedPlayer.Tenant, expectedPlayer.Id));
 		}
@@ -56,10 +56,9 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
 
-			var savedPlayer = await repo.Get(expectedPlayer.Tenant, expectedPlayer.Id);
+			var savedPlayer = await repo.Get(expectedPlayer.Tenant, expectedPlayer.Id).ToEither();
 
-			savedPlayer.IsRight.Should().BeFalse("player should not be created");
-			savedPlayer.IfLeft(u => u.Should().BeEquivalentTo(Error.NotFound(), "NotFound error is expected"));
+			savedPlayer.ShouldBeError(Error.NotFound(), "NotFound error is expected");
 		}
 
 		private async Task CleanUpPlayers()
@@ -68,7 +67,7 @@ namespace VolleyM.Domain.Players.UnitTests
 			var deleteTasks = new List<Task>();
 			foreach (var (tenant, player) in _playersToTeardown)
 			{
-				deleteTasks.Add(repo.Delete(tenant, player));
+				deleteTasks.Add(repo.Delete(tenant, player).ToEither());
 			}
 
 			await Task.WhenAll(deleteTasks.ToArray());
@@ -76,7 +75,7 @@ namespace VolleyM.Domain.Players.UnitTests
 
 		private static async Task EnsureSuccessfulCreation(IPlayersRepository repo, Player player)
 		{
-			var createResult = await repo.Add(player);
+			var createResult = await repo.Add(player).ToEither();
 			createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
 		}
 	}

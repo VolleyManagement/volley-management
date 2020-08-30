@@ -1,15 +1,14 @@
-﻿using System.Threading.Tasks;
-using LanguageExt;
+﻿using LanguageExt;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess
 {
-    public interface IUserRepository
-    {
-        Task<Either<Error, User>> Add(User user);
+	public interface IUserRepository
+	{
+		EitherAsync<Error, User> Add(User user);
 
-        Task<Either<Error, User>> Get(TenantId tenant, UserId id);
+		EitherAsync<Error, User> Get(TenantId tenant, UserId id);
 
-        Task<Either<Error, Unit>> Delete(TenantId tenant, UserId id);
-    }
+		EitherAsync<Error, Unit> Delete(TenantId tenant, UserId id);
+	}
 }

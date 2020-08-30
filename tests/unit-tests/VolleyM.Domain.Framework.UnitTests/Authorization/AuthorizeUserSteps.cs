@@ -14,7 +14,7 @@ using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
-
+using VolleyM.Domain.UnitTests.Framework;
 using Constants = VolleyM.Domain.UnitTests.Framework.Constants;
 
 namespace VolleyM.Domain.Framework.UnitTests.Authorization
@@ -142,7 +142,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 			var userToAuthorize = new ClaimsPrincipal(_userClaims);
 
 			var handler = _container.GetInstance<IAuthorizationHandler>();
-			_actualResult = await handler.AuthorizeUser(userToAuthorize);
+			_actualResult = await handler.AuthorizeUser(userToAuthorize).ToEither();
 		}
 
 		#endregion
@@ -152,7 +152,7 @@ namespace VolleyM.Domain.Framework.UnitTests.Authorization
 		[Then("user should be authorized")]
 		public void ThenUserShouldBeAuthorized()
 		{
-			_actualResult.IsRight.Should().BeTrue("user should be authorized");
+			_actualResult.ShouldBeEquivalent(Unit.Default, "user should be authorized");
 		}
 
 		[Then("user should not be authorized")]

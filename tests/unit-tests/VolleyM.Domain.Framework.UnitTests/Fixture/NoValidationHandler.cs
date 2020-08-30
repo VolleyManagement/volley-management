@@ -1,25 +1,23 @@
 ﻿using LanguageExt;
-using System.Threading.Tasks;
 using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IDomainFrameworkTestFixture
 {
-    public class NoValidationHandler
-    {
-        public class Request : IRequest<Unit>
-        {
-            public int A { get; set; }
+	public class NoValidationHandler
+	{
+		public class Request : IRequest<Unit>
+		{
+			public int A { get; set; }
 
-            public int B { get; set; }
+			public int B { get; set; }
+		}
 
-        }
-
-        public class Handler : IRequestHandler<Request, Unit>
-        {
-            public Task<Either<Error, Unit>> Handle(Request request)
-            {
-                return Task.FromResult<Either<Error, Unit>>(Unit.Default);
-            }
-        }
-    }
+		public class Handler : IRequestHandler<Request, Unit>
+		{
+			public EitherAsync<Error, Unit> Handle(Request request)
+			{
+				return Unit.Default;
+			}
+		}
+	}
 }

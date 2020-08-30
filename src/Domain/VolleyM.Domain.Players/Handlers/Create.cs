@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
@@ -51,24 +50,23 @@ namespace VolleyM.Domain.Players.Handlers
 				_currentUser = currentUser;
 			}
 
-			public async Task<Either<Error, Player>> Handle(Request request)
+			public EitherAsync<Error, Player> Handle(Request request)
 			{
 				var id = new PlayerId(_idGenerator.GetRandomId());
 				var player = new Player(_currentUser.Tenant, id, request.FirstName, request.LastName);
 
-				var addResult = await _repository.Add(player);
+				var addResult = _repository.Add(player);
 
 				return addResult
-					.Map(createdPlayer =>
+					.Do(createdPlayer =>
 					{
 						DomainEvents.Add(new PlayerCreated
 						{
-							TenantId = player.Tenant,
-							PlayerId = player.Id,
-							FirstName = player.FirstName,
-							LastName = player.LastName
+							TenantId = createdPlayer.Tenant,
+							PlayerId = createdPlayer.Id,
+							FirstName = createdPlayer.FirstName,
+							LastName = createdPlayer.LastName
 						});
-						return createdPlayer;
 					});
 			}
 

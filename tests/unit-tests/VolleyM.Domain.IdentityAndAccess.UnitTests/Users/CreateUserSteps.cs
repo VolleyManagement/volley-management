@@ -85,7 +85,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         {
             _handler = _container.GetInstance<IRequestHandler<CreateUser.Request, User>>();
 
-            _actualResult = await _handler.Handle(_request);
+            _actualResult = await _handler.Handle(_request).ToEither();
         }
 
         [Then("user is created")]
@@ -104,9 +104,7 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Users
         [Then("user is returned")]
         public void ThenUserIsReturned()
         {
-            _actualResult.IsRight.Should().BeTrue("created user should be returned");
-            _actualResult.IfRight(u => u.Should()
-                .BeEquivalentTo(_expectedUser.Build(), "created user should be returned"));
+			_actualResult.ShouldBeEquivalent(_expectedUser.Build(), "created user should be returned");
         }
     }
 }

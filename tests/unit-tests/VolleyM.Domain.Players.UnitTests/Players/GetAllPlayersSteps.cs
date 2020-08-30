@@ -56,7 +56,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			_handler = _container.GetInstance<IRequestHandler<GetAll.Request, List<PlayerDto>>>();
 
-			_actualResult = await _handler.Handle(new GetAll.Request());
+			_actualResult = await _handler.Handle(new GetAll.Request()).ToEither();
 		}
 
 		[Then(@"all players received")]

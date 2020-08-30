@@ -14,9 +14,9 @@ namespace VolleyM.API.Contracts
             Func<TResponse, TModel> resultConverter)
             where TRequest : IRequest<TResponse>
         {
-            var result = await handler.Handle(request);
+            var result = handler.Handle(request);
 
-            return result.Match(
+            return await result.Match(
                 v => new OkObjectResult(resultConverter(v)),
                 ConvertToHttpError);
         }

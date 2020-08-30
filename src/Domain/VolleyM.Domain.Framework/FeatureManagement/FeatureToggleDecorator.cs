@@ -1,36 +1,36 @@
-﻿using Esquio.Abstractions;
-using LanguageExt;
-using System.Threading.Tasks;
+﻿using LanguageExt;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Framework.Authorization;
+using VolleyM.Domain.Contracts.FeatureManagement;
 using VolleyM.Domain.Framework.HandlerMetadata;
 
 namespace VolleyM.Domain.Framework.FeatureManagement
 {
-    public class FeatureToggleDecorator<TRequest, TResponse>
+	public class FeatureToggleDecorator<TRequest, TResponse>
         : DecoratorBase<IRequestHandler<TRequest, TResponse>>, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly IFeatureService _featureService;
+        private readonly IFeatureManager _featureManager;
         private readonly HandlerMetadataService _handlerMetadataService;
 
-        public FeatureToggleDecorator(IRequestHandler<TRequest, TResponse> decoratee, IFeatureService featureService, HandlerMetadataService handlerMetadataService)
+        public FeatureToggleDecorator(IRequestHandler<TRequest, TResponse> decoratee, IFeatureManager featureManager, HandlerMetadataService handlerMetadataService)
             : base(decoratee)
         {
-            _featureService = featureService;
+            _featureManager = featureManager;
             _handlerMetadataService = handlerMetadataService;
         }
 
-        public async Task<Either<Error, TResponse>> Handle(TRequest request)
+        public EitherAsync<Error, TResponse> Handle(TRequest request)
         {
-            var isEnabled = await GetFeatureInfo(RootInstance)
-                .MapAsync(async fi => await _featureService.IsEnabledAsync(fi.Action, fi.Context));
+            var featureEnabled = GetFeatureInfo(RootInstance)
+                .MapAsync(async fi => await _featureManager.IsEnabledAsync(fi.Action, fi.Context)).Map(p => p.Match(
+	                Right: enabled => enabled
+		                ? (Either<Error, Unit>)Unit.Default
+		                : Error.FeatureDisabled(),
+	                Left: e => e
+                ))
+                .ToAsync();
 
-            return await isEnabled.MatchAsync<Either<Error, TResponse>>(
-                Left: e => e,
-                RightAsync: async enabled => enabled
-                        ? await Decoratee.Handle(request)
-                        : Error.FeatureDisabled());
+            return featureEnabled.Bind(_ => Decoratee.Handle(request));
         }
 
 

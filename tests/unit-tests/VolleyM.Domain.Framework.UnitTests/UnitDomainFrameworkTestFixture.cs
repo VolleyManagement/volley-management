@@ -100,8 +100,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 			}
 
 			_createHandler.Handle(Arg.Any<CreateUser.Request>())
-				.Returns(ci => Task.FromResult(
-					(Either<Error, User>)BuildUser(ci)))
+				.Returns(ci => BuildUser(ci))
 				.AndDoes(ci => { _actualCreateRequest = ci.Arg<CreateUser.Request>(); });
 
 			OverrideHandlerMetadata<CreateUser.Request>(
@@ -113,7 +112,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 			MockCreateUser(Error.InternalError("random test error"));
 		}
 
-		private void MockCreateUser(Either<Error, User> result)
+		private void MockCreateUser(EitherAsync<Error, User> result)
 		{
 			_createHandler.Handle(Arg.Any<CreateUser.Request>())
 				.Returns(result);
@@ -135,7 +134,7 @@ namespace VolleyM.Domain.Framework.UnitTests
 			MockGetUser(Error.InternalError("any test error"));
 		}
 
-		private void MockGetUser(Either<Error, User> result)
+		private void MockGetUser(EitherAsync<Error, User> result)
 		{
 			_getHandler.Handle(Arg.Any<GetUser.Request>())
 				.Returns(result);

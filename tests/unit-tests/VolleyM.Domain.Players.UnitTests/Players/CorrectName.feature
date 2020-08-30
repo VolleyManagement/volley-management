@@ -2,7 +2,7 @@
 	In order to correct mistakes in the name or react to name changes
 	I want VolleyM system to alow changing players name
 
-@azurecloud
+@azurecloud @ignore
 Scenario: Correct Name
 	Given player exists
 		| PlayerId               | FirstName | LastName |

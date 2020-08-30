@@ -48,10 +48,9 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         }
 
         [Then(@"(.*) is returned")]
-        public void ThenFalseIsReturned(bool result)
+        public void ThenResultIsReturned(bool result)
         {
             _actualResult.Should().Be(result);
         }
-
     }
 }

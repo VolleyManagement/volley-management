@@ -40,7 +40,7 @@ namespace VolleyM.Domain.Framework.Authorization
 
             var roleRes = GetSystemRole(user.Role)
                 .ToEither(Error.NotFound())
-                .MapLeft(_ => _rolesStore.Get(user.Role).ToAsync())
+                .MapLeft(_ => _rolesStore.Get(user.Role))
                 .Match(EitherAsync<Error, Role>.Right, l => l);
 
             return (await roleRes.ToEither())
@@ -68,7 +68,7 @@ namespace VolleyM.Domain.Framework.Authorization
             var authZRole = new Role(_authZRoleId);
             authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(GetUser)));
             authZRole.AddPermission(new Permission(IdentityAndAccessConstants.Context, nameof(CreateUser)));
-            _systemRoleStore[_authZRoleId] = authZRole;
+			_systemRoleStore[_authZRoleId] = authZRole;
         }
     }
 }

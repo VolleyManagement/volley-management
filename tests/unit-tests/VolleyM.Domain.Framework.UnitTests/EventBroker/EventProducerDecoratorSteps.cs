@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
 using LanguageExt;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using SimpleInjector;
-using System.Reflection;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.EventBroker;
@@ -18,7 +17,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.EventBroker
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Domain Event dispatching")]
     public class EventProducerDecoratorSteps
     {
@@ -97,7 +96,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
         public async void WhenICallDecoratedHandler()
         {
             SetPermissionForHandler();
-            _actualResult = await ResolveAndCallHandler(_handlerType);
+            _actualResult = await ResolveAndCallHandler(_handlerType).ToEither();
         }
 
         [Then(@"event is published to event broker")]
@@ -153,7 +152,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
                 .Returns(true);
         }
 
-        private Task<Either<Error, Unit>> ResolveAndCallHandler(HandlerType handlerType)
+        private EitherAsync<Error, Unit> ResolveAndCallHandler(HandlerType handlerType)
         {
             return handlerType switch
             {
@@ -165,7 +164,7 @@ namespace VolleyM.Domain.Framework.UnitTests.EventBroker
                 _ => throw new NotSupportedException()
             };
         }
-        private Task<Either<Error, Unit>> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
+        private EitherAsync<Error, Unit> ResolveAndCallSpecificHandler<T>(T request) where T : IRequest<Unit>
         {
             var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 

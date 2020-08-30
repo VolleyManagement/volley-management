@@ -1,17 +1,16 @@
-﻿using FluentAssertions;
-using SimpleInjector;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using LanguageExt;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
-using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
 using VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Get User by ID")]
     public class GetUserSteps
     {
@@ -77,14 +76,13 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests
         {
             _handler = _container.GetInstance<IRequestHandler<GetUser.Request, User>>();
 
-            _actualResult = await _handler.Handle(_request);
+            _actualResult = await _handler.Handle(_request).ToEither();
         }
 
         [Then("user is returned")]
         public void ThenUserIsReturned()
         {
-            _actualResult.IsRight.Should().BeTrue("user exists");
-            _actualResult.IfRight(u => u.Should().BeEquivalentTo(_expectedUser, "all user attributes should be returned"));
+	        _actualResult.ShouldBeEquivalent(_expectedUser, "all user attributes should be returned");
         }
 
         [Then("NotFound error is returned")]

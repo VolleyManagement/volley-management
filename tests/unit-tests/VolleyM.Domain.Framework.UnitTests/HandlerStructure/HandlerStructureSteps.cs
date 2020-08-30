@@ -1,13 +1,12 @@
-﻿using LanguageExt;
-using NSubstitute;
-using SimpleInjector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using LanguageExt;
+using NSubstitute;
 using RootNs;
+using SimpleInjector;
 using TechTalk.SpecFlow;
 using VolleyM.Domain.Contracts;
-using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Framework.Authorization;
 using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.Framework.UnitTests.Fixture;
@@ -17,7 +16,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
 {
-    [Binding]
+	[Binding]
     [Scope(Feature = "Handler Structure validation")]
     public class HandlerStructureSteps
     {
@@ -130,7 +129,7 @@ namespace VolleyM.Domain.Framework.UnitTests.HandlerStructure
         {
             var handler = _container.GetInstance<IRequestHandler<T, Unit>>();
 
-            return handler.Handle(request).Result;
+            return handler.Handle(request).ToEither().Result;
         }
         private void SetPermissionForHandler()
         {

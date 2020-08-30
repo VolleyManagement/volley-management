@@ -16,14 +16,14 @@ namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
                 .Get<IdentityContextTableStorageOptions>();
 
             _tableConfig = new TableConfiguration(_options);
-            var result = _tableConfig.ConfigureTables().Result;
+            var result = _tableConfig.ConfigureTables().ToEither().Result;
 
             result.IsRight.Should().BeTrue("Azure Storage should be configured correctly");
         }
 
         public void OneTimeTearDown()
         {
-            var result = _tableConfig.CleanTables().Result;
+            var result = _tableConfig.CleanTables().ToEither().Result;
             result.IsRight.Should().BeTrue("Azure Storage should be cleaned up correctly");
         }
     }

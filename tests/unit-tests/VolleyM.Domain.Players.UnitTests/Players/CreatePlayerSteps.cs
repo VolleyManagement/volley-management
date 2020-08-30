@@ -52,7 +52,8 @@ namespace VolleyM.Domain.Players.UnitTests
 		public async Task WhenIExecuteCreatePlayer()
 		{
 			var handler = _container.GetInstance<IRequestHandler<Create.Request, Player>>();
-			_actualResult = await handler.Handle(_request);
+			var result = handler.Handle(_request);
+			_actualResult = await result.ToEither();
 		}
 
 		[Then(@"player is created")]
@@ -78,7 +79,6 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
 		}
-
 
 		private static Create.Request GetPlayer(Table table)
 		{

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FluentValidation;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
@@ -21,6 +22,20 @@ namespace VolleyM.Domain.Players.Handlers
 			public override string ToString()
 			{
 				return $"Name={FirstName} {LastName}";
+			}
+		}
+
+		public class Validator : AbstractValidator<CorrectName.Request>
+		{
+			public Validator()
+			{
+				RuleFor(r => r.FirstName)
+					.NotEmpty()
+					.MaximumLength(60);
+
+				RuleFor(r => r.LastName)
+					.NotEmpty()
+					.MaximumLength(60);
 			}
 		}
 

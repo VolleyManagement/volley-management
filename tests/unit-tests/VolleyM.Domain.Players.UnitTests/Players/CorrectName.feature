@@ -5,7 +5,7 @@
 @azurecloud @api:512
 Scenario: Name corrected
 	Given player exists
-		| PlayerId               | FirstName | LastName |
+		| Id                     | FirstName | LastName |
 		| player-to-correct-name | Marko     | Ivanov   |
 	And I have CorrectNameRequest
 		| PlayerId               | FirstName | LastName |
@@ -19,7 +19,7 @@ Scenario: Name corrected
 @azurecloud @api:512
 Scenario: PlayerNameCorrected event
 	Given player exists
-		| PlayerId            | FirstName | LastName |
+		| Id                  | FirstName | LastName |
 		| correct-name-evt-id | Marko     | Ivanov   |
 	And I have CorrectNameRequest
 		| PlayerId            | FirstName | LastName |
@@ -29,3 +29,25 @@ Scenario: PlayerNameCorrected event
 		| TenantId  | PlayerId            | FirstName | LastName |
 		| <default> | correct-name-evt-id | Jane      | Doe      |
 	And PlayerNameCorrected event is Public
+
+@azurecloud @api:512
+Scenario: Validation Cases
+	Given player exists
+		| Id                         | FirstName | LastName |
+		| correct-name-validation-id | Marko     | Ivanov   |
+	And I have CorrectNameRequest
+		| PlayerId                   | FirstName   | LastName   |
+		| correct-name-validation-id | <FirstName> | <LastName> |
+	When I execute CorrectName
+	Then player is not changed
+	And ValidationError is returned
+	And PlayerNameCorrected event is not produced
+
+	Examples:
+		| FirstName          | LastName           |
+		| <60+ symbols name> | Smith              |
+		| <null>             | Smith              |
+		|                    | Smith              |
+		| John               | <60+ symbols name> |
+		| John               | <null>             |
+		| John               |                    |

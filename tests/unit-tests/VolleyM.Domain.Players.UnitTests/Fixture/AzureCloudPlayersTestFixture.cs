@@ -26,10 +26,10 @@ namespace VolleyM.Domain.Players.UnitTests
 		public async Task MockPlayerExists(TestPlayerDto player)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
-			var playerDomain = new Player(CurrentTenant, player.PlayerId, player.FirstName, player.LastName);
+			var playerDomain = new Player(CurrentTenant, player.Id, player.FirstName, player.LastName);
 			await EnsureSuccessfulCreation(repo, playerDomain);
 
-			_playersToTeardown.Add((CurrentTenant, player.PlayerId));
+			_playersToTeardown.Add((CurrentTenant, player.Id));
 		}
 
 		public async Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData)

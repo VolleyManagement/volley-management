@@ -4,7 +4,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
 	public class TestPlayerDto
 	{
-		public PlayerId PlayerId { get; set; }
+		public PlayerId Id { get; set; }
 
 		public string FirstName { get; set; }
 

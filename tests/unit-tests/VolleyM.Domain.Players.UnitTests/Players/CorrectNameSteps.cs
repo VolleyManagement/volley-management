@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
@@ -22,6 +23,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		private PlayerId _existingPlayerId;
 		private CorrectName.Request _request;
 		private Either<Error, Unit> _actualResult;
+		private TestPlayerDto _originalPlayer;
 
 		public CorrectNameSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
 		{
@@ -40,8 +42,9 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		public async Task GivenPlayerExists(Table table)
 		{
 			var player = table.CreateInstance<TestPlayerDto>();
-			_existingPlayerId = player.PlayerId;
+			_existingPlayerId = player.Id;
 			_testFixture.MockNextRandomId(_existingPlayerId.ToString());
+			_originalPlayer = player;
 
 			await _testFixture.MockPlayerExists(player);
 		}
@@ -49,7 +52,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		[Given(@"I have CorrectNameRequest")]
 		public void GivenIHaveCorrectNameRequest(Table table)
 		{
-			_request = table.CreateInstance<CorrectName.Request>();
+			_request = GetPlayer(table);
 		}
 
 		[When(@"I execute CorrectName")]
@@ -74,6 +77,45 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			var actualPlayer = await playerRepository.Get(_testFixture.CurrentTenant, _existingPlayerId).ToEither();
 
 			actualPlayer.ShouldBeEquivalent(expectedPlayer);
+		}
+
+		[Then(@"player is not changed")]
+		public async Task ThenPlayerIsNotChanged()
+		{
+			var playerRepository = _container.GetInstance<IPlayersRepository>();
+			var actualPlayer = await playerRepository.Get(_testFixture.CurrentTenant, _existingPlayerId).ToEither();
+
+			actualPlayer.ShouldBeEquivalent(_originalPlayer);
+		}
+
+		[Then(@"ValidationError is returned")]
+		public void ThenValidationErrorIsReturned()
+		{
+			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
+		}
+
+		private static CorrectName.Request GetPlayer(Table table)
+		{
+			var player = table.CreateInstance<CorrectName.Request>();
+
+			player.FirstName = SetNameField(player.FirstName);
+			player.LastName = SetNameField(player.LastName);
+
+			return player;
+		}
+
+		private static string SetNameField(string val)
+		{
+			if (val == "<60+ symbols name>")
+			{
+				return new string(Enumerable.Repeat('a', 61).ToArray());
+			}
+			if (val == "<null>")
+			{
+				return null;
+			}
+
+			return val;
 		}
 
 		private class CorrectPlayerNameDto

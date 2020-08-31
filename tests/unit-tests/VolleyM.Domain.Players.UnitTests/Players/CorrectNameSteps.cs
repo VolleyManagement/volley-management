@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
@@ -12,7 +11,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests.Players
 {
-	[Binding]
+    [Binding]
 	[Scope(Feature = "Correct Player Name")]
 	public class CorrectNameSteps
 	{
@@ -94,28 +93,13 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
 		}
 
-		private static CorrectName.Request GetPlayer(Table table)
+		private CorrectName.Request GetPlayer(Table table)
 		{
 			var player = table.CreateInstance<CorrectName.Request>();
 
-			player.FirstName = SetNameField(player.FirstName);
-			player.LastName = SetNameField(player.LastName);
+			_testFixture.SetupPlayerName(player);
 
 			return player;
-		}
-
-		private static string SetNameField(string val)
-		{
-			if (val == "<60+ symbols name>")
-			{
-				return new string(Enumerable.Repeat('a', 61).ToArray());
-			}
-			if (val == "<null>")
-			{
-				return null;
-			}
-
-			return val;
 		}
 
 		private class CorrectPlayerNameDto

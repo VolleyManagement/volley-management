@@ -80,12 +80,11 @@ namespace VolleyM.Domain.Players.UnitTests
 			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
 		}
 
-		private static Create.Request GetPlayer(Table table)
+		private Create.Request GetPlayer(Table table)
 		{
 			var player = table.CreateInstance<Create.Request>();
 
-			player.FirstName = SetNameField(player.FirstName);
-			player.LastName = SetNameField(player.LastName);
+			_testFixture.SetupPlayerName(player);
 
 			return player;
 		}

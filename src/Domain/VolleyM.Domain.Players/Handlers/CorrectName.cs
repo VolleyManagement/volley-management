@@ -11,7 +11,7 @@ namespace VolleyM.Domain.Players.Handlers
 {
 	public class CorrectName
 	{
-		public class Request : IRequest<Unit>
+		public class Request : IRequest<Unit>, IPlayerNameRequest
 		{
 			public PlayerId PlayerId { get; set; }
 
@@ -29,13 +29,7 @@ namespace VolleyM.Domain.Players.Handlers
 		{
 			public Validator()
 			{
-				RuleFor(r => r.FirstName)
-					.NotEmpty()
-					.MaximumLength(60);
-
-				RuleFor(r => r.LastName)
-					.NotEmpty()
-					.MaximumLength(60);
+				Include(new PlayerNameValidator());
 			}
 		}
 

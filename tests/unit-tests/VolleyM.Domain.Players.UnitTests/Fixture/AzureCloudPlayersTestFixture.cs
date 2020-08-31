@@ -8,7 +8,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
 {
-	public class AzureCloudPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
+    public class AzureCloudPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
 	{
 		private List<(TenantId Tenant, PlayerId Id)> _playersToTeardown;
 

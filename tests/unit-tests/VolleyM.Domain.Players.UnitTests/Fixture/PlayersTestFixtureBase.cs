@@ -1,6 +1,8 @@
-﻿using NSubstitute;
+﻿using System.Linq;
+using NSubstitute;
 using SimpleInjector;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Players.Handlers;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
@@ -24,6 +26,26 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 		public void MockNextRandomId(string id)
 		{
 			_idGenerator.GetRandomId().Returns(id);
+		}
+
+		public void SetupPlayerName(IPlayerNameRequest request)
+		{
+			request.FirstName = SetNameField(request.FirstName);
+			request.LastName = SetNameField(request.LastName);
+		}
+
+		private static string SetNameField(string val)
+		{
+			if (val == "<60+ symbols name>")
+			{
+				return new string(Enumerable.Repeat('a', 61).ToArray());
+			}
+			if (val == "<null>")
+			{
+				return null;
+			}
+
+			return val;
 		}
 	}
 }

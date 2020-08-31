@@ -37,16 +37,15 @@ namespace VolleyM.Domain.Players.Handlers
 				var player = _repo.Get(_currentUser.Tenant, request.PlayerId);
 
 				var result = player.Map(p =>
-				  {
-					  p.ChangeName(request.FirstName, request.LastName);
-					  return p;
-				  })
-					.Map(p => _repo.Update(p));
-
-				return result.MatchAsync<Either<Error, Unit>>(
+					{
+						p.ChangeName(request.FirstName, request.LastName);
+						return _repo.Update(p);
+					}).MatchAsync(
 						RightAsync: async right => await right.ToEither(),
 						Left: l => l)
 					.ToAsync();
+
+				return result;
 			}
 		}
 	}

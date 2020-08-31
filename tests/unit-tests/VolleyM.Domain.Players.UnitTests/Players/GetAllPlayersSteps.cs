@@ -90,7 +90,9 @@ namespace VolleyM.Domain.Players.UnitTests
 						tenant,
 						new PlayerId(f.Random.Utf16String(10, 20)),
 						f.Person.FirstName,
-						f.Person.LastName));
+						f.Person.LastName))
+				.Ignore(p=>p.FirstName)
+				.Ignore(p=>p.LastName);
 		}
 	}
 }

@@ -68,16 +68,18 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		[Then(@"player name is")]
 		public async Task ThenPlayerNameIs(Table table)
 		{
-			var expectedPlayer = new
-			{
-				FirstName = table.Rows[0][0],
-				LastName = table.Rows[0][1]
-			};
+			var expectedPlayer = table.CreateInstance<CorrectPlayerNameDto>();
 
 			var playerRepository = _container.GetInstance<IPlayersRepository>();
 			var actualPlayer = await playerRepository.Get(_testFixture.CurrentTenant, _existingPlayerId).ToEither();
 
 			actualPlayer.ShouldBeEquivalent(expectedPlayer);
+		}
+
+		private class CorrectPlayerNameDto
+		{
+			public string FirstName { get; set; }
+			public string LastName { get; set; }
 		}
 	}
 }

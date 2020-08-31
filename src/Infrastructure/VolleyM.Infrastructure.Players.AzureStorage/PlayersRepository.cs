@@ -97,6 +97,9 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 				tableRef =>
 				{
 					var playerEntity = new PlayerEntity(tenant, id);
+
+					playerEntity.ETag = "*";
+
 					var deleteOperation = TableOperation.Delete(playerEntity);
 
 					EitherAsync<Error, TableResult> result = tableRef.ExecuteAsync(deleteOperation);

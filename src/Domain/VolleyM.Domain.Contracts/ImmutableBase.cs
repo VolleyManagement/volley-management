@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace VolleyM.Domain.Contracts
 {
-    public abstract class IdBase<TUnderlyingType> : IEquatable<IdBase<TUnderlyingType>>
+    public abstract class ImmutableBase<TUnderlyingType> : IEquatable<ImmutableBase<TUnderlyingType>>
     {
         private readonly TUnderlyingType _value;
 
-        protected IdBase(TUnderlyingType value)
+        protected ImmutableBase(TUnderlyingType value)
         {
             _value = value;
         }
@@ -15,7 +15,7 @@ namespace VolleyM.Domain.Contracts
         public override string ToString() => _value.ToString();
 
 
-        public bool Equals(IdBase<TUnderlyingType> other)
+        public bool Equals(ImmutableBase<TUnderlyingType> other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -47,7 +47,7 @@ namespace VolleyM.Domain.Contracts
                 return false;
             }
 
-            return Equals((IdBase<TUnderlyingType>)obj);
+            return Equals((ImmutableBase<TUnderlyingType>)obj);
         }
 
         public override int GetHashCode()
@@ -55,7 +55,7 @@ namespace VolleyM.Domain.Contracts
             return EqualityComparer<TUnderlyingType>.Default.GetHashCode(_value);
         }
 
-        public static bool operator ==(IdBase<TUnderlyingType> left, IdBase<TUnderlyingType> right)
+        public static bool operator ==(ImmutableBase<TUnderlyingType> left, ImmutableBase<TUnderlyingType> right)
         {
             if (ReferenceEquals(null, left) && ReferenceEquals(null, right))
                 return false;
@@ -66,7 +66,7 @@ namespace VolleyM.Domain.Contracts
             return false;
         }
 
-        public static bool operator !=(IdBase<TUnderlyingType> left, IdBase<TUnderlyingType> right)
+        public static bool operator !=(ImmutableBase<TUnderlyingType> left, ImmutableBase<TUnderlyingType> right)
         {
             if (ReferenceEquals(null, left) && ReferenceEquals(null, right))
                 return false;

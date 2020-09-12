@@ -9,8 +9,8 @@ namespace VolleyM.Domain.Players.UnitTests
 	/// </summary>
 	public class EventAssertionStepsHook : EventAssertionsSteps
 	{
-		public EventAssertionStepsHook(Container container, ISpecFlowTransformFactory transformFactory)
-			: base(container, transformFactory)
+		public EventAssertionStepsHook(Container container)
+			: base(container)
 		{
 		}
 	}

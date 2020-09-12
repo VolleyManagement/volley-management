@@ -11,6 +11,7 @@ using Serilog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Contracts.FeatureManagement;
@@ -101,14 +102,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		private void RegisterSpecFlowTransforms()
 		{
-			var transformFactory = new SpecFlowTransformFactory();
-
-			var transforms = GetAssemblyTransforms();
-			transforms.Add(new TenantIdTransform(CurrentTenantProvider));
-
-			transforms.ForEach(t => transformFactory.RegisterTransform(t));
-
-			_objectContainer.RegisterInstanceAs(transformFactory, typeof(ISpecFlowTransformFactory));
+			Service.Instance.ValueRetrievers.Register(new TenantIdValueRetriever(CurrentTenantProvider));
+			Service.Instance.ValueRetrievers.Register<VersionValueRetriever>();
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
@@ -156,15 +151,6 @@ namespace VolleyM.Domain.UnitTests.Framework
 		protected virtual ITestFixture CreateTestFixture(TestTarget testTarget)
 		{
 			return new NoOpTestFixture();
-		}
-
-		/// <summary>
-		/// Provides list of transformations used in the Feature file bindings for the cases where SpecFlow cannot handle it
-		/// </summary>
-		/// <returns></returns>
-		protected virtual List<ISpecFlowTransform> GetAssemblyTransforms()
-		{
-			return new List<ISpecFlowTransform>();
 		}
 
 		private TenantId CurrentTenantProvider()

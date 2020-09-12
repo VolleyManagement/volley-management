@@ -1,22 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using VolleyM.Domain.Players.PlayerAggregate;
-using VolleyM.Domain.UnitTests.Framework;
 using TechTalk.SpecFlow.Assist;
+using Version = VolleyM.Domain.Contracts.Version;
 
-namespace VolleyM.Domain.Players.UnitTests
+namespace VolleyM.Domain.UnitTests.Framework
 {
-	public class PlayerIdTransform : ISpecFlowTransform, IValueRetriever
+	public class VersionValueRetriever:IValueRetriever
 	{
-		public Type TargetType { get; } = typeof(PlayerId);
-		public object GetValue(string rawValue)
-		{
-			return new PlayerId(rawValue);
-		}
-
 		public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
 		{
-			return propertyType == typeof(PlayerId);
+			return propertyType == typeof(Version);
 		}
 
 		public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
@@ -27,6 +20,11 @@ namespace VolleyM.Domain.Players.UnitTests
 			}
 
 			return GetValue(keyValuePair.Value);
+		}
+
+		public Version GetValue(string rawValue)
+		{
+			return new Version(rawValue);
 		}
 	}
 }

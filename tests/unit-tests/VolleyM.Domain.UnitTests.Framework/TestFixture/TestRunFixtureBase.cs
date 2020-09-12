@@ -4,6 +4,7 @@ using Serilog;
 using System;
 using System.IO;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {

@@ -27,7 +27,7 @@ namespace VolleyM.Domain.Players.UnitTests
 			TestRunFixtureBase.OneTimeFixtureCreator = CreateOneTimeTestFixture;
 			TestRunFixtureBase.BeforeTestRun();
 
-			Service.Instance.ValueRetrievers.Register(new PlayerIdTransform());
+			Service.Instance.ValueRetrievers.Register(new PlayerIdValueRetriever());
 		}
 
 		[AfterTestRun]
@@ -73,14 +73,6 @@ namespace VolleyM.Domain.Players.UnitTests
 			}
 
 			return result;
-		}
-
-		protected override List<ISpecFlowTransform> GetAssemblyTransforms()
-		{
-			return new List<ISpecFlowTransform>
-			{
-				new PlayerIdTransform()
-			};
 		}
 	}
 }

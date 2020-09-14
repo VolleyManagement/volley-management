@@ -52,6 +52,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			{
 				Tenant = tenant,
 				Id = p.PlayerId,
+				Version = new Version("<some-version>"),
 				FirstName = p.FirstName,
 				LastName = p.LastName
 			}).ToList();

@@ -45,7 +45,7 @@ namespace VolleyM.Domain.Players.UnitTests
 			var playerId = new PlayerId("player1");
 			_testFixture.MockNextRandomId(playerId.ToString());
 
-			_expectedPlayer = new Player(_testFixture.CurrentTenant, playerId, _request.FirstName, _request.LastName);
+			_expectedPlayer = new Player(_testFixture.CurrentTenant, new Version("<some-version>"),  playerId, _request.FirstName, _request.LastName);
 		}
 
 		[When(@"I execute Create")]

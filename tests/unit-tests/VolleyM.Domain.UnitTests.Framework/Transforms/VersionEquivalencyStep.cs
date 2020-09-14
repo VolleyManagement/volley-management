@@ -16,7 +16,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 			structuralEqualityValidator, IEquivalencyAssertionOptions config)
 		{
 			var version = context.Subject as Version;
-			if (context.Expectation?.ToString() == "<some-version>")
+			var versionString = context.Expectation?.ToString();
+			if (versionString == "<some-version>" && versionString != Version.Initial.ToString())
 			{
 				version.Should().NotBeNull(context.Because, context.BecauseArgs);
 			}

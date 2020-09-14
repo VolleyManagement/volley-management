@@ -5,5 +5,7 @@
 		public Version(string value) : base(value)
 		{
 		}
+
+		public static Version Initial = new Version("initial");
 	}
 }

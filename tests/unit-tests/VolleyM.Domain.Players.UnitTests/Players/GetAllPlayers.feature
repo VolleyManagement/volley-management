@@ -10,7 +10,7 @@ Scenario: Query all players
 		| <default> | player3  | Marco      | Polo     |
 	When I query all players
 	Then all players are returned
-		| Tenant  | Id | FisrstName | LastName |
-		| <default> | player1  | Ivan       | Ivanov   |
-		| <default> | player2  | John       | Doe      |
-		| <default> | player3  | Marco      | Polo     |
+		| Tenant    | Version        | Id      | FisrstName | LastName |
+		| <default> | <some-version> | player1 | Ivan       | Ivanov   |
+		| <default> | <some-version> | player2 | John       | Doe      |
+		| <default> | <some-version> | player3 | Marco      | Polo     |

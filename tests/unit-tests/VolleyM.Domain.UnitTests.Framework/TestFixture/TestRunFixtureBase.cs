@@ -34,6 +34,8 @@ namespace VolleyM.Domain.UnitTests.Framework
             Log.Information("Test is started for {Target}.", Target);
 
             SetupOneTimeFixture();
+
+			FluentAssertions.AssertionOptions.EquivalencySteps.Insert<VersionEquivalencyStep>();
         }
 
         public static void AfterTestRun()

@@ -32,6 +32,8 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 					m => m.MapFrom(src => new PlayerId(src.RowKey)))
 				.ForMember(m => m.Tenant,
 					m => m.MapFrom(src => new TenantId(src.PartitionKey)))
+				.ForMember(m => m.Version,
+					m => m.MapFrom(pe => new Version(pe.ETag)))
 				.ForMember(m => m.FirstName,
 					m => m.MapFrom(pe => pe.FirstName))
 				.ForMember(m => m.LastName,

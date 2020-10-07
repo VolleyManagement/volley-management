@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using LanguageExt;
+using Serilog;
 using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -65,6 +67,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		[Then(@"player is returned")]
 		public void ThenPlayerIsReturned()
 		{
+			Log.Warning("CreatePlayer.AssertPlayerCreated; Thread: {ThreadId}", Thread.CurrentThread.ManagedThreadId);
 			_actualResult.ShouldBeEquivalent(_expectedPlayer, "created player should be returned");
 		}
 

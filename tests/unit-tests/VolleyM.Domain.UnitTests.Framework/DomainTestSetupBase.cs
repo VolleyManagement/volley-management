@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration;
@@ -109,6 +111,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
 		public void ScenarioSetup()
 		{
+			Log.Warning("Scope started. Feature={FeatureTitle}, {ThreadId}; ", _featureContext.FeatureInfo.Title, Thread.CurrentThread.ManagedThreadId);
 			_scope = ThreadScopedLifestyle.BeginScope(Container);
 
 			AuthFixture?.ConfigureTestUser(Container, GetFeatureTenantId());
@@ -129,6 +132,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		{
 			BaseTestFixture.ScenarioTearDown();
 
+			Log.Warning("Scope is about to be disposed. Feature={FeatureTitle}, {ThreadId}; ", _featureContext.FeatureInfo.Title, Thread.CurrentThread.ManagedThreadId);
 			_scope.Dispose();
 			_scope = null;
 			Container.Dispose();

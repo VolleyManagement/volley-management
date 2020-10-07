@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Bogus;
 using LanguageExt;
+using Serilog;
 using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -60,6 +63,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		[Then(@"all players are returned")]
 		public void ThenAllPlayersReceived(Table table)
 		{
+			Log.Warning("ThenAllPlayersReceived invoked; Thread: {ThreadId}", Thread.CurrentThread.ManagedThreadId);
 			var expectedResult = table.CreateSet<PlayerDto>();
 
 			_actualResult.ShouldBeEquivalent(expectedResult, "handler should return all available players");

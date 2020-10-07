@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
+using Serilog;
 using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -23,6 +25,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		[Then(@"(.*) event is produced")]
 		public void ThenPlayerCreatedEventIsProduced(string eventName, Table table)
 		{
+			Log.Warning("EventAssertion started for {EventName}; Thread: {ThreadId}", eventName, Thread.CurrentThread.ManagedThreadId);
 			var evt = GetReceivedEvent(eventName);
 
 			evt.Should().NotBeNull();
@@ -30,6 +33,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 			object expectedEvent = GetExpectedEvent(table, evt);
 
 			evt.Should().BeEquivalentTo(expectedEvent);
+			Log.Warning("EventAssertion completed for {EventName}; Thread: {ThreadId}", eventName, Thread.CurrentThread.ManagedThreadId);
 		}
 
 		[Then(@"(.*) event is (Public|Internal)")]

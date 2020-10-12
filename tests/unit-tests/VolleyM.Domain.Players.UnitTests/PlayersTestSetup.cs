@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Players.UnitTests.Fixture;
+using VolleyM.Domain.Players.UnitTests.Transforms;
 using VolleyM.Domain.UnitTests.Framework;
 using VolleyM.Infrastructure.Bootstrap;
 using VolleyM.Infrastructure.Players.AzureStorage;
@@ -26,8 +27,6 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			TestRunFixtureBase.OneTimeFixtureCreator = CreateOneTimeTestFixture;
 			TestRunFixtureBase.BeforeTestRun();
-
-			Service.Instance.ValueRetrievers.Register(new PlayerIdValueRetriever());
 		}
 
 		[AfterTestRun]
@@ -73,6 +72,14 @@ namespace VolleyM.Domain.Players.UnitTests
 			}
 
 			return result;
+		}
+
+		protected override List<ISpecFlowTransform> GetAssemblyTransforms()
+		{
+			return new List<ISpecFlowTransform>
+			{
+				new PlayerIdTransform()
+			};
 		}
 	}
 }

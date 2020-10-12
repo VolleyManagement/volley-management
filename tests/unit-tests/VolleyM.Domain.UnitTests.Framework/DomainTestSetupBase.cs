@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -13,7 +12,6 @@ using Serilog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Contracts.FeatureManagement;
@@ -21,6 +19,8 @@ using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
+using VolleyM.Domain.UnitTests.Framework.Common;
+using VolleyM.Domain.UnitTests.Framework.Transforms.Common;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -104,14 +104,20 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		private void RegisterSpecFlowTransforms()
 		{
-			Service.Instance.ValueRetrievers.Register(new TenantIdValueRetriever(CurrentTenantProvider));
-			Service.Instance.ValueRetrievers.Register<VersionValueRetriever>();
+			var transformFactory = new SpecFlowTransformFactory();
+
+			var transforms = GetAssemblyTransforms();
+			transforms.Add(new TenantIdTransform(CurrentTenantProvider));
+			transforms.Add(new VersionTransform());
+
+			transforms.ForEach(t => transformFactory.RegisterTransform(t));
+
+			_objectContainer.RegisterInstanceAs(transformFactory, typeof(ISpecFlowTransformFactory));
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
 		public void ScenarioSetup()
 		{
-			Log.Warning("Scope started. Feature={FeatureTitle}, {ThreadId}; ", _featureContext.FeatureInfo.Title, Thread.CurrentThread.ManagedThreadId);
 			_scope = ThreadScopedLifestyle.BeginScope(Container);
 
 			AuthFixture?.ConfigureTestUser(Container, GetFeatureTenantId());
@@ -157,6 +163,15 @@ namespace VolleyM.Domain.UnitTests.Framework
 			return new NoOpTestFixture();
 		}
 
+		/// <summary>
+		/// Provides list of transformations used in the Feature file bindings for the cases where SpecFlow cannot handle it
+		/// </summary>
+		/// <returns></returns>
+		protected virtual List<ISpecFlowTransform> GetAssemblyTransforms()
+		{
+			return new List<ISpecFlowTransform>();
+		}
+
 		private TenantId CurrentTenantProvider()
 		{
 			return Container.GetInstance<ICurrentUserProvider>().Tenant;
@@ -168,7 +183,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		{
 			var mce = new MapperConfigurationExpression();
 			mce.ConstructServicesUsing(Container.GetInstance);
-			var bootstrappers = GetBootstrappers();
+			var bootstrappers = GetBootstrappers().ToList();
 
 			Log.Debug("Registering common bootstrappers");
 			var assembliesToRegister = bootstrappers

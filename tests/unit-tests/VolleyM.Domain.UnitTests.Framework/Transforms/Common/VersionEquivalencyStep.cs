@@ -2,7 +2,7 @@
 using FluentAssertions.Equivalency;
 using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.UnitTests.Framework
+namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 {
 	public class VersionEquivalencyStep : IEquivalencyStep
 	{

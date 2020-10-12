@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using FluentAssertions;
-using Serilog;
 using SimpleInjector;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -16,16 +14,17 @@ namespace VolleyM.Domain.UnitTests.Framework
 	public abstract class EventAssertionsSteps
 	{
 		private readonly Container _container;
+		private readonly ISpecFlowTransformFactory _transformFactory;
 
-		protected EventAssertionsSteps(Container container)
+		protected EventAssertionsSteps(Container container, ISpecFlowTransformFactory transformFactory)
 		{
 			_container = container;
+			_transformFactory = transformFactory;
 		}
 
 		[Then(@"(.*) event is produced")]
 		public void ThenPlayerCreatedEventIsProduced(string eventName, Table table)
 		{
-			Log.Warning("EventAssertion started for {EventName}; Thread: {ThreadId}", eventName, Thread.CurrentThread.ManagedThreadId);
 			var evt = GetReceivedEvent(eventName);
 
 			evt.Should().NotBeNull();
@@ -33,7 +32,6 @@ namespace VolleyM.Domain.UnitTests.Framework
 			object expectedEvent = GetExpectedEvent(table, evt);
 
 			evt.Should().BeEquivalentTo(expectedEvent);
-			Log.Warning("EventAssertion completed for {EventName}; Thread: {ThreadId}", eventName, Thread.CurrentThread.ManagedThreadId);
 		}
 
 		[Then(@"(.*) event is (Public|Internal)")]
@@ -87,6 +85,21 @@ namespace VolleyM.Domain.UnitTests.Framework
 			var eventType = evt.GetType();
 
 			var expectedEvent = Activator.CreateInstance(eventType);
+
+			foreach (var propertyInfo in eventType.GetProperties())
+			{
+				var rawValue = table.Rows[0][propertyInfo.Name];
+				var propType = propertyInfo.PropertyType;
+
+				var transform = _transformFactory.GetTransform(propType);
+
+				var value = transform.GetValue(rawValue);
+
+				if (value != null)
+				{
+					propertyInfo.SetValue(expectedEvent, value);
+				}
+			}
 
 			table.FillInstance(expectedEvent);
 

@@ -56,7 +56,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			RegisterContainerInSpecFlow(Container);
 			RegisterSpecFlowTransforms();
-			
+
 			RegisterMinimalInfrastructureDependencies(Container);
 			RegisterAssemblyBootstrappers();
 
@@ -112,7 +112,9 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			transforms.ForEach(t => transformFactory.RegisterTransform(t));
 
-			_objectContainer.RegisterInstanceAs(transformFactory, typeof(ISpecFlowTransformFactory));
+			var transform = new SpecFlowTransform(transformFactory);
+
+			_objectContainer.RegisterInstanceAs(transform, typeof(SpecFlowTransform));
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]

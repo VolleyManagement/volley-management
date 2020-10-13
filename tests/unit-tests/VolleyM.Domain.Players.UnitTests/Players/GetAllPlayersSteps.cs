@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using LanguageExt;
@@ -21,16 +20,18 @@ namespace VolleyM.Domain.Players.UnitTests
 		private readonly IPlayersTestFixture _testFixture;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
+		private readonly SpecFlowTransform _transform;
 
 		private IRequestHandler<GetAll.Request, List<PlayerDto>> _handler;
 
 		private Either<Error, List<PlayerDto>> _actualResult;
 
-		public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
+		public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container, SpecFlowTransform transform)
 		{
 			_testFixture = testFixture;
 			_authFixture = authFixture;
 			_container = container;
+			_transform = transform;
 
 			// Configure seed to have deterministic results
 			Randomizer.Seed = new Random(1116170520);
@@ -45,8 +46,8 @@ namespace VolleyM.Domain.Players.UnitTests
 		[Given(@"several players exist")]
 		public async Task GivenSeveralPlayersExist(Table table)
 		{
-			var inputData = table.CreateSet<TestPlayerDto>();
-			await _testFixture.MockSeveralPlayersExist(_testFixture.CurrentTenant, inputData.ToList());
+			var inputData = _transform.GetCollection<TestPlayerDto>(table);
+			await _testFixture.MockSeveralPlayersExist(_testFixture.CurrentTenant, inputData);
 		}
 
 		[When(@"I query all players")]
@@ -60,7 +61,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		[Then(@"all players are returned")]
 		public void ThenAllPlayersReceived(Table table)
 		{
-			var expectedResult = table.CreateSet<PlayerDto>();
+			var expectedResult = _transform.GetCollection<PlayerDto>(table);
 
 			_actualResult.ShouldBeEquivalent(expectedResult, "handler should return all available players");
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using Version = VolleyM.Domain.Contracts.Version;
 
 namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 {

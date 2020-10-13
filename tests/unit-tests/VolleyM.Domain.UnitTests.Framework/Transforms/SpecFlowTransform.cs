@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
@@ -18,16 +20,39 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		public T GetInstance<T>(Table table)
 		{
-			return (T)GetInsance(table, typeof(T));
+			return (T)GetInstance(table, typeof(T));
 		}
 
-		public object GetInsance(Table table, Type instanceType)
+		public object GetInstance(Table table, Type instanceType)
 		{
 			var instance = Activator.CreateInstance(instanceType);
 
-			foreach (var propertyInfo in instanceType.GetProperties())
+			table.FillInstance(instance);
+
+			FillInstanceFromRow(instance, table.Rows[0]);
+
+			return instance;
+		}
+
+		public List<T> GetCollection<T>(Table table)
+		{
+			var result = table.CreateSet<T>().ToList();
+
+			var i = 0;
+			foreach (var item in result)
 			{
-				var rawValue = table.Rows[0][propertyInfo.Name];
+				FillInstanceFromRow(item, table.Rows[i]);
+				i++;
+			}
+
+			return result;
+		}
+
+		private void FillInstanceFromRow(object instance, TableRow row)
+		{
+			foreach (var propertyInfo in instance.GetType().GetProperties())
+			{
+				var rawValue = row[propertyInfo.Name];
 				var propType = propertyInfo.PropertyType;
 
 				var transform = _transformFactory.GetTransform(propType);
@@ -39,10 +64,6 @@ namespace VolleyM.Domain.UnitTests.Framework
 					propertyInfo.SetValue(instance, value);
 				}
 			}
-
-			table.FillInstance(instance);
-
-			return instance;
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			evt.Should().NotBeNull();
 
-			object expectedEvent = _transform.GetInsance(table, evt.GetType());
+			object expectedEvent = _transform.GetInstance(table, evt.GetType());
 
 			evt.Should().BeEquivalentTo(expectedEvent);
 		}

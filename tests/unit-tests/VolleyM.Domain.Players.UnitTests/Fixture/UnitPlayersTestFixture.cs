@@ -46,12 +46,13 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			throw new System.NotImplementedException();
 		}
 
-		public Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData)
+		public Task MockSeveralPlayersExist(TenantId tenant, List<TestPlayerDto> testData)
 		{
 			var mappedData = testData.Select(p => new PlayerDto
 			{
-				Tenant = p.Tenant,
-				Id = p.Id,
+				Tenant = tenant,
+				Id = p.PlayerId,
+				Version = new Version("<some-version>"),
 				FirstName = p.FirstName,
 				LastName = p.LastName
 			}).ToList();

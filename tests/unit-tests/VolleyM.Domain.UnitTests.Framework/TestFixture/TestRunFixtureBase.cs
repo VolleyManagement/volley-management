@@ -4,6 +4,8 @@ using Serilog;
 using System;
 using System.IO;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
+using VolleyM.Domain.UnitTests.Framework.Transforms.Common;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {
@@ -33,6 +35,8 @@ namespace VolleyM.Domain.UnitTests.Framework
             Log.Information("Test is started for {Target}.", Target);
 
             SetupOneTimeFixture();
+
+			FluentAssertions.AssertionOptions.EquivalencySteps.Insert<VersionEquivalencyStep>();
         }
 
         public static void AfterTestRun()

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.Handlers;
 using VolleyM.Domain.Players.PlayerAggregate;
@@ -16,6 +15,7 @@ namespace VolleyM.Domain.Players.UnitTests
 	public class CreatePlayerSteps
 	{
 		private readonly IPlayersTestFixture _testFixture;
+		private readonly SpecFlowTransform _transform;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
 
@@ -24,11 +24,12 @@ namespace VolleyM.Domain.Players.UnitTests
 
 		private Either<Error, Player> _actualResult;
 
-		public CreatePlayerSteps(Container container, IAuthFixture authFixture, IPlayersTestFixture testFixture)
+		public CreatePlayerSteps(Container container, IAuthFixture authFixture, IPlayersTestFixture testFixture, SpecFlowTransform transform)
 		{
 			_container = container;
 			_authFixture = authFixture;
 			_testFixture = testFixture;
+			_transform = transform;
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
@@ -45,7 +46,7 @@ namespace VolleyM.Domain.Players.UnitTests
 			var playerId = new PlayerId("player1");
 			_testFixture.MockNextRandomId(playerId.ToString());
 
-			_expectedPlayer = new Player(_testFixture.CurrentTenant, playerId, _request.FirstName, _request.LastName);
+			_expectedPlayer = new Player(_testFixture.CurrentTenant, new Version("<some-version>"),  playerId, _request.FirstName, _request.LastName);
 		}
 
 		[When(@"I execute Create")]
@@ -80,9 +81,9 @@ namespace VolleyM.Domain.Players.UnitTests
 			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
 		}
 
-		private static Create.Request GetPlayer(Table table)
+		private Create.Request GetPlayer(Table table)
 		{
-			var player = table.CreateInstance<Create.Request>();
+			var player = _transform.GetInstance<Create.Request>(table);
 
 			player.FirstName = SetNameField(player.FirstName);
 			player.LastName = SetNameField(player.LastName);

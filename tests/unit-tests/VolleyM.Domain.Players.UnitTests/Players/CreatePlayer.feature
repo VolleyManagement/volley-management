@@ -12,8 +12,8 @@ Scenario: Create player
 	Then player is created
 	And player is returned
 	And PlayerCreated event is produced
-		| TenantId  | PlayerId | FirstName | LastName |
-		| <default> | player1  | John      | Smith    |
+		| TenantId  | Version        | PlayerId | FirstName | LastName |
+		| <default> | <some-version> | player1  | John      | Smith    |
 	And PlayerCreated event is Public
 
 @ab:1022 @unit

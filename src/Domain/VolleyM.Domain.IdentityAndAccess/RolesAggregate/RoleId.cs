@@ -4,7 +4,7 @@ using VolleyM.Domain.Contracts;
 namespace VolleyM.Domain.IdentityAndAccess.RolesAggregate
 {
     [LogAsScalar]
-    public class RoleId : IdBase<string>
+    public class RoleId : ImmutableBase<string>
     {
         public RoleId(string value) : base(value) { }
     }

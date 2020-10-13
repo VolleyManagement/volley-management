@@ -1,7 +1,8 @@
 ﻿using System;
+using Serilog;
 using VolleyM.Domain.Contracts;
 
-namespace VolleyM.Domain.UnitTests.Framework
+namespace VolleyM.Domain.UnitTests.Framework.Common
 {
 	public class TenantIdTransform : ISpecFlowTransform
 	{
@@ -16,9 +17,27 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		public object GetValue(string rawValue)
 		{
+			if (string.IsNullOrEmpty(rawValue))
+			{
+				return null;
+			}
+
 			return rawValue == "<default>"
-				? _currentTenantProvider()
+				? GetCurrentTenant()
 				: new TenantId(rawValue);
+		}
+
+		private TenantId GetCurrentTenant()
+		{
+			try
+			{
+				return _currentTenantProvider();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e, "Failed to get Current tenant");
+				throw;
+			}
 		}
 	}
 }

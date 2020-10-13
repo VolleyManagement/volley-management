@@ -2,6 +2,9 @@
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
+	/// <summary>
+	/// Represents player data to simplify creation of objects
+	/// </summary>
 	public class TestPlayerDto
 	{
 		public PlayerId PlayerId { get; set; }

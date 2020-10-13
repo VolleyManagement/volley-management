@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.Handlers;
-using VolleyM.Domain.Players.PlayerAggregate;
+using VolleyM.Domain.Players.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests
@@ -20,17 +20,18 @@ namespace VolleyM.Domain.Players.UnitTests
 		private readonly IPlayersTestFixture _testFixture;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
+		private readonly SpecFlowTransform _transform;
 
 		private IRequestHandler<GetAll.Request, List<PlayerDto>> _handler;
 
-		private List<PlayerDto> _expectedResult;
 		private Either<Error, List<PlayerDto>> _actualResult;
 
-		public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
+		public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container, SpecFlowTransform transform)
 		{
 			_testFixture = testFixture;
 			_authFixture = authFixture;
 			_container = container;
+			_transform = transform;
 
 			// Configure seed to have deterministic results
 			Randomizer.Seed = new Random(1116170520);
@@ -43,12 +44,10 @@ namespace VolleyM.Domain.Players.UnitTests
 		}
 
 		[Given(@"several players exist")]
-		public async Task GivenSeveralPlayersExist()
+		public async Task GivenSeveralPlayersExist(Table table)
 		{
-			var inputData = GetSeveralPlayersCaseData();
+			var inputData = _transform.GetCollection<TestPlayerDto>(table);
 			await _testFixture.MockSeveralPlayersExist(_testFixture.CurrentTenant, inputData);
-
-			_expectedResult = GetSeveralPlayersCaseExpectedData(inputData);
 		}
 
 		[When(@"I query all players")]
@@ -59,38 +58,12 @@ namespace VolleyM.Domain.Players.UnitTests
 			_actualResult = await _handler.Handle(new GetAll.Request()).ToEither();
 		}
 
-		[Then(@"all players received")]
-		public void ThenAllPlayersReceived()
+		[Then(@"all players are returned")]
+		public void ThenAllPlayersReceived(Table table)
 		{
-			_actualResult.ShouldBeEquivalent(_expectedResult, "handler should return all available players");
-		}
+			var expectedResult = _transform.GetCollection<PlayerDto>(table);
 
-		private static List<PlayerDto> GetSeveralPlayersCaseExpectedData(List<Player> inputData) =>
-			inputData
-				.Select(p => new PlayerDto
-				{
-					Tenant = p.Tenant,
-					Id = p.Id,
-					FirstName = p.FirstName,
-					LastName = p.LastName
-				})
-				.ToList();
-
-		private List<Player> GetSeveralPlayersCaseData()
-		{
-			return GetFaker(_testFixture.CurrentTenant).Generate(3);
-		}
-
-		private static Faker<Player> GetFaker(TenantId tenant)
-		{
-			return new Faker<Player>()
-				.StrictMode(true)
-				.CustomInstantiator(f =>
-					new Player(
-						tenant,
-						new PlayerId(f.Random.Utf16String(10, 20)),
-						f.Person.FirstName,
-						f.Person.LastName));
+			_actualResult.ShouldBeEquivalent(expectedResult, "handler should return all available players");
 		}
 	}
 }

@@ -8,9 +8,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="5.10.3" />
-		<PackageReference Include="SimpleInjector" Version="5.0.3" />
+		<PackageReference Include="SimpleInjector" Version="5.0.4" />
 		<PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="5.1.0" />
-		<PackageReference Include="Microsoft.Build" Version="16.6.0" />
+		<PackageReference Include="Microsoft.Build" Version="16.7.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
 		<PackageReference Include="NetArchTest.Rules" Version="1.2.6" />
 		<PackageReference Include="xunit" Version="2.4.1" />

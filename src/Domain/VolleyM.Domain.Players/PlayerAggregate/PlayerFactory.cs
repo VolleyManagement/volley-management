@@ -4,7 +4,7 @@
 	{
 		public Player Create(PlayerFactoryDto dto)
 		{
-			return new Player(dto.Tenant, dto.Id, dto.FirstName, dto.LastName);
+			return new Player(dto.Tenant,dto.Version, dto.Id, dto.FirstName, dto.LastName);
 		}
 	}
 }

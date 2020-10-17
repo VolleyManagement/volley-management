@@ -4,7 +4,7 @@ using VolleyM.Domain.Contracts;
 namespace VolleyM.Domain.Players.PlayerAggregate
 {
 	[LogAsScalar]
-	public class PlayerId : IdBase<string>
+	public class PlayerId : ImmutableBase<string>
 	{
 		public PlayerId(string id) : base(id) { }
 	}

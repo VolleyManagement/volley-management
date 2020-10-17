@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration;
@@ -18,6 +19,8 @@ using VolleyM.Domain.Framework;
 using VolleyM.Domain.Framework.EventBroker;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
+using VolleyM.Domain.UnitTests.Framework.Common;
+using VolleyM.Domain.UnitTests.Framework.Transforms.Common;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.Domain.UnitTests.Framework
@@ -53,7 +56,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			RegisterContainerInSpecFlow(Container);
 			RegisterSpecFlowTransforms();
-			
+
 			RegisterMinimalInfrastructureDependencies(Container);
 			RegisterAssemblyBootstrappers();
 
@@ -105,10 +108,13 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			var transforms = GetAssemblyTransforms();
 			transforms.Add(new TenantIdTransform(CurrentTenantProvider));
+			transforms.Add(new VersionTransform());
 
 			transforms.ForEach(t => transformFactory.RegisterTransform(t));
 
-			_objectContainer.RegisterInstanceAs(transformFactory, typeof(ISpecFlowTransformFactory));
+			var transform = new SpecFlowTransform(transformFactory);
+
+			_objectContainer.RegisterInstanceAs(transform, typeof(SpecFlowTransform));
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
@@ -134,6 +140,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		{
 			BaseTestFixture.ScenarioTearDown();
 
+			Log.Warning("Scope is about to be disposed. Feature={FeatureTitle}, {ThreadId}; ", _featureContext.FeatureInfo.Title, Thread.CurrentThread.ManagedThreadId);
 			_scope.Dispose();
 			_scope = null;
 			Container.Dispose();
@@ -178,7 +185,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		{
 			var mce = new MapperConfigurationExpression();
 			mce.ConstructServicesUsing(Container.GetInstance);
-			var bootstrappers = GetBootstrappers();
+			var bootstrappers = GetBootstrappers().ToList();
 
 			Log.Debug("Registering common bootstrappers");
 			var assembliesToRegister = bootstrappers

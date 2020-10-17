@@ -3,7 +3,7 @@
 namespace VolleyM.Domain.Contracts
 {
     [LogAsScalar]
-    public class TenantId : IdBase<string>
+    public class TenantId : ImmutableBase<string>
     {
         public TenantId(string id) : base(id) { }
 

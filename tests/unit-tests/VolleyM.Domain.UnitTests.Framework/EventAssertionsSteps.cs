@@ -4,7 +4,6 @@ using System.Linq;
 using FluentAssertions;
 using SimpleInjector;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;
 
@@ -14,12 +13,12 @@ namespace VolleyM.Domain.UnitTests.Framework
 	public abstract class EventAssertionsSteps
 	{
 		private readonly Container _container;
-		private readonly ISpecFlowTransformFactory _transformFactory;
+		private readonly SpecFlowTransform _transform;
 
-		protected EventAssertionsSteps(Container container, ISpecFlowTransformFactory transformFactory)
+		protected EventAssertionsSteps(Container container, SpecFlowTransform transform)
 		{
 			_container = container;
-			_transformFactory = transformFactory;
+			_transform = transform;
 		}
 
 		[Then(@"(.*) event is produced")]
@@ -29,7 +28,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 			evt.Should().NotBeNull();
 
-			object expectedEvent = GetExpectedEvent(table, evt);
+			object expectedEvent = _transform.GetInstance(table, evt.GetType());
 
 			evt.Should().BeEquivalentTo(expectedEvent);
 		}
@@ -78,32 +77,6 @@ namespace VolleyM.Domain.UnitTests.Framework
 		private static bool PublicEventExpected(string eventScope)
 		{
 			return string.Compare("public", eventScope, StringComparison.OrdinalIgnoreCase) == 0;
-		}
-
-		private object GetExpectedEvent(Table table, IEvent evt)
-		{
-			var eventType = evt.GetType();
-
-			var expectedEvent = Activator.CreateInstance(eventType);
-
-			foreach (var propertyInfo in eventType.GetProperties())
-			{
-				var rawValue = table.Rows[0][propertyInfo.Name];
-				var propType = propertyInfo.PropertyType;
-
-				var transform = _transformFactory.GetTransform(propType);
-
-				var value = transform.GetValue(rawValue);
-
-				if (value != null)
-				{
-					propertyInfo.SetValue(expectedEvent, value);
-				}
-			}
-
-			table.FillInstance(expectedEvent);
-
-			return expectedEvent;
 		}
 	}
 }

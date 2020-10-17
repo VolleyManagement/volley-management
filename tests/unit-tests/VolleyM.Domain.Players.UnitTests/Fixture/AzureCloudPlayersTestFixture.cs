@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
-using VolleyM.Domain.Players.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
 
-namespace VolleyM.Domain.Players.UnitTests
+namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
     public class AzureCloudPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
 	{
@@ -26,13 +25,12 @@ namespace VolleyM.Domain.Players.UnitTests
 		public async Task MockPlayerExists(TestPlayerDto player)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
-			var playerDomain = new Player(CurrentTenant, player.Id, player.FirstName, player.LastName);
-			await EnsureSuccessfulCreation(repo, playerDomain);
+			await EnsureSuccessfulCreation(repo, player);
 
 			_playersToTeardown.Add((CurrentTenant, player.Id));
 		}
 
-		public async Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData)
+		public async Task MockSeveralPlayersExist(TenantId tenant, List<TestPlayerDto> testData)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
 			foreach (var player in testData)
@@ -73,9 +71,10 @@ namespace VolleyM.Domain.Players.UnitTests
 			await Task.WhenAll(deleteTasks.ToArray());
 		}
 
-		private static async Task EnsureSuccessfulCreation(IPlayersRepository repo, Player player)
+		private async Task EnsureSuccessfulCreation(IPlayersRepository repo, TestPlayerDto player)
 		{
-			var createResult = await repo.Add(player).ToEither();
+			var playerDomain = new Player(CurrentTenant, Version.Initial, player.PlayerId, player.FirstName, player.LastName);
+			var createResult = await repo.Add(playerDomain).ToEither();
 			createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
 		}
 	}

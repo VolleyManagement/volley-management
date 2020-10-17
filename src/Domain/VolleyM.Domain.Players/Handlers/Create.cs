@@ -47,7 +47,7 @@ namespace VolleyM.Domain.Players.Handlers
 			public EitherAsync<Error, Player> Handle(Request request)
 			{
 				var id = new PlayerId(_idGenerator.GetRandomId());
-				var player = new Player(_currentUser.Tenant, id, request.FirstName, request.LastName);
+				var player = new Player(_currentUser.Tenant, Version.Initial, id, request.FirstName, request.LastName);
 
 				var addResult = _repository.Add(player);
 
@@ -57,6 +57,7 @@ namespace VolleyM.Domain.Players.Handlers
 						DomainEvents.Add(new PlayerCreated
 						{
 							TenantId = createdPlayer.Tenant,
+							Version = createdPlayer.Version,
 							PlayerId = createdPlayer.Id,
 							FirstName = createdPlayer.FirstName,
 							LastName = createdPlayer.LastName

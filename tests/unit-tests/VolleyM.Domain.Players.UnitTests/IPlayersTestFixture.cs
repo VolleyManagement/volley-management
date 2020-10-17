@@ -12,7 +12,7 @@ namespace VolleyM.Domain.Players.UnitTests
 	{
 		Task MockPlayerExists(TestPlayerDto player);
 
-		Task MockSeveralPlayersExist(TenantId tenant, List<Player> testData);
+		Task MockSeveralPlayersExist(TenantId tenant, List<TestPlayerDto> testData);
 
 		Task VerifyPlayerCreated(Player expectedPlayer);
 

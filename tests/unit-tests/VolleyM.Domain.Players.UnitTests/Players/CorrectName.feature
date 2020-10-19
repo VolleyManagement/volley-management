@@ -33,11 +33,11 @@ Scenario: PlayerNameCorrected event
 @azurecloud @api:512
 Scenario: Validation Cases
 	Given player exists
-		| Id                         | FirstName | LastName |
-		| correct-name-validation-id | Marko     | Ivanov   |
+		| Id                         | Version  | FirstName | LastName |
+		| correct-name-validation-id | version1 | Marko     | Ivanov   |
 	And I have CorrectNameRequest
-		| PlayerId                   | FirstName   | LastName   |
-		| correct-name-validation-id | <FirstName> | <LastName> |
+		| PlayerId                   | EntityVersion | FirstName   | LastName   |
+		| correct-name-validation-id | version1      | <FirstName> | <LastName> |
 	When I execute CorrectName
 	Then player is not changed
 	And ValidationError is returned

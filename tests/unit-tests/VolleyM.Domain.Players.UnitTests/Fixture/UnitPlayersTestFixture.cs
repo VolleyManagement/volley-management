@@ -51,7 +51,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			var mappedData = testData.Select(p => new PlayerDto
 			{
 				Tenant = tenant,
-				Id = p.PlayerId,
+				Id = p.Id,
 				Version = new Version("<some-version>"),
 				FirstName = p.FirstName,
 				LastName = p.LastName

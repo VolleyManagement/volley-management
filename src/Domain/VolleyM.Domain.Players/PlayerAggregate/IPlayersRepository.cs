@@ -9,7 +9,7 @@ namespace VolleyM.Domain.Players.PlayerAggregate
 
 		EitherAsync<Error, Player> Add(Player player);
 
-		EitherAsync<Error, Unit> Update(Player player);
+		EitherAsync<Error, Player> Update(Player player);
 
 		EitherAsync<Error, Unit> Delete(TenantId tenant, PlayerId id);
 	}

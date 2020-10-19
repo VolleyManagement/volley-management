@@ -4,7 +4,7 @@
 @unit @azurecloud @ab:1021
 Scenario: Query all players
 	Given several players exist
-		| TenantId  | PlayerId | FirstName | LastName |
+		| TenantId  | Id | FirstName | LastName |
 		| <default> | player1  | Ivan      | Ivanov   |
 		| <default> | player2  | John      | Doe      |
 		| <default> | player3  | Marco     | Polo     |

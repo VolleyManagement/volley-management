@@ -9,6 +9,8 @@ namespace VolleyM.Domain.Players.Events
 		public TenantId TenantId { get; set; }
 
 		public PlayerId PlayerId { get; set; }
+		
+		public Version Version { get; set; }
 
 		public string FirstName { get; set; }
 

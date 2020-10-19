@@ -18,17 +18,19 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		private readonly IPlayersTestFixture _testFixture;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
+		private readonly SpecFlowTransform _transform;
 
 		private PlayerId _existingPlayerId;
 		private CorrectName.Request _request;
 		private Either<Error, Unit> _actualResult;
 		private TestPlayerDto _originalPlayer;
 
-		public CorrectNameSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
+		public CorrectNameSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container, SpecFlowTransform transform)
 		{
 			_testFixture = testFixture;
 			_authFixture = authFixture;
 			_container = container;
+			_transform = transform;
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
@@ -40,7 +42,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		[Given(@"player exists")]
 		public async Task GivenPlayerExists(Table table)
 		{
-			var player = table.CreateInstance<TestPlayerDto>();
+			var player = _transform.GetInstance<TestPlayerDto>(table);
 			_existingPlayerId = player.Id;
 			_testFixture.MockNextRandomId(_existingPlayerId.ToString());
 			_originalPlayer = player;
@@ -95,7 +97,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 
 		private CorrectName.Request GetPlayer(Table table)
 		{
-			var player = table.CreateInstance<CorrectName.Request>();
+			var player = _transform.GetInstance<CorrectName.Request>(table);
 
 			_testFixture.SetupPlayerName(player);
 

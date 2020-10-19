@@ -66,7 +66,7 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 				}, "Create Player");
 		}
 
-		public EitherAsync<Error, Unit> Update(Player player)
+		public EitherAsync<Error, Player> Update(Player player)
 		{
 			return PerformStorageOperation(_options.PlayersTable,
 				tableRef =>
@@ -82,7 +82,8 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 					return mergeResult.Match(
 						tableResult => tableResult.Result switch
 						{
-							PlayerEntity updated => (Either<Error, Unit>)Unit.Default,
+							PlayerEntity updated => (Either<Error, Player>)_playerFactory.Create(
+								_mapper.Map<PlayerEntity, PlayerFactoryDto>(updated)),
 							_ => Error.InternalError(
 								$"Azure Storage: Failed to create player with {tableResult.HttpStatusCode} error.")
 						},

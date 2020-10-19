@@ -58,13 +58,15 @@ namespace VolleyM.Domain.Players.Handlers
 						RightAsync: async right => await right.ToEither(),
 						Left: l => l)
 					.ToAsync()
-					.Do(_ => DomainEvents.Add(new PlayerNameCorrected
+					.Do(p => DomainEvents.Add(new PlayerNameCorrected
 					{
-						TenantId = _currentUser.Tenant,
-						PlayerId = request.PlayerId,
-						FirstName = request.FirstName,
-						LastName = request.LastName
-					}));
+						TenantId = p.Tenant,
+						PlayerId = p.Id,
+						Version = p.Version,
+						FirstName = p.FirstName,
+						LastName = p.LastName
+					}))
+					.Map(p => Unit.Default);
 
 				return result;
 			}

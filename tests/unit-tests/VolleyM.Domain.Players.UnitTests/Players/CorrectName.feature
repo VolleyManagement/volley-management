@@ -5,11 +5,11 @@
 @azurecloud @api:512
 Scenario: Name corrected
 	Given player exists
-		| Id                     | FirstName | LastName |
-		| player-to-correct-name | Marko     | Ivanov   |
+		| Id                     | Version  | FirstName | LastName |
+		| player-to-correct-name | version1 | Marko     | Ivanov   |
 	And I have CorrectNameRequest
-		| PlayerId               | FirstName | LastName |
-		| player-to-correct-name | Jane      | Doe      |
+		| PlayerId               | EntityVersion | FirstName | LastName |
+		| player-to-correct-name | version1      | Jane      | Doe      |
 	When I execute CorrectName
 	Then success result is returned
 	And player name is
@@ -19,15 +19,15 @@ Scenario: Name corrected
 @azurecloud @api:512
 Scenario: PlayerNameCorrected event
 	Given player exists
-		| Id                  | FirstName | LastName |
-		| correct-name-evt-id | Marko     | Ivanov   |
+		| Id                  | Version  | FirstName | LastName |
+		| correct-name-evt-id | version1 | Marko     | Ivanov   |
 	And I have CorrectNameRequest
-		| PlayerId            | FirstName | LastName |
-		| correct-name-evt-id | Jane      | Doe      |
+		| PlayerId            | EntityVersion | FirstName | LastName |
+		| correct-name-evt-id | version1      | Jane      | Doe      |
 	When I execute CorrectName
 	Then PlayerNameCorrected event is produced
-		| TenantId  | PlayerId            | FirstName | LastName |
-		| <default> | correct-name-evt-id | Jane      | Doe      |
+		| TenantId  | PlayerId            | Version  | FirstName | LastName |
+		| <default> | correct-name-evt-id | version1 | Jane      | Doe      |
 	And PlayerNameCorrected event is Public
 
 @azurecloud @api:512

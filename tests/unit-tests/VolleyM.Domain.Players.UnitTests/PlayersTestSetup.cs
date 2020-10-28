@@ -81,5 +81,13 @@ namespace VolleyM.Domain.Players.UnitTests
 				new PlayerIdTransform()
 			};
 		}
+
+		protected override List<Type> GetAssemblyTransformTypes()
+		{
+			return new List<Type>
+			{
+				typeof(PlayerIdTransform)
+			};
+		}
 	}
 }

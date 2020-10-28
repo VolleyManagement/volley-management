@@ -8,7 +8,7 @@ namespace VolleyM.Domain.Players.UnitTests.Transforms
 	{
 		public Type TargetType { get; } = typeof(PlayerId);
 
-		public object GetValue(string rawValue)
+		public object GetValue(object instance, string rawValue)
 		{
 			if (string.IsNullOrEmpty(rawValue))
 			{

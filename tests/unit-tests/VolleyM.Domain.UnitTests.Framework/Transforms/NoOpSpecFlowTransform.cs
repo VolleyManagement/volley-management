@@ -6,7 +6,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 	{
 		public Type TargetType { get; } = typeof(object);
 
-		public object GetValue(string rawValue)
+		public object GetValue(object instance, string rawValue)
 		{
 			return null;
 		}

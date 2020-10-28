@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using NSubstitute;
 using SimpleInjector;
+using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
 using VolleyM.Domain.Players.Handlers;
+using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
@@ -21,6 +23,17 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			base.RegisterScenarioDependencies(container);
 
 			container.RegisterInstance(_idGenerator);
+		}
+
+		public override EntityId GetEntityId(object instance)
+		{
+			return instance switch
+			{
+				Player p => GetIdForPlayer(p.Tenant, p.Id),
+				PlayerDto dto => GetIdForPlayer(dto.Tenant, dto.Id),
+				TestPlayerDto test => GetIdForPlayer(base.CurrentTenant, test.Id),
+				_ => null
+			};
 		}
 
 		public void MockNextRandomId(string id)
@@ -46,6 +59,11 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			}
 
 			return val;
+		}
+
+		private EntityId GetIdForPlayer(TenantId tenantId, PlayerId playerId)
+		{
+			return new EntityId($"{tenantId}|{playerId}");
 		}
 	}
 }

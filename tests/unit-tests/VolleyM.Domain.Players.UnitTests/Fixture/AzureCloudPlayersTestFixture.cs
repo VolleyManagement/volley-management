@@ -7,9 +7,12 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
-    public class AzureCloudPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
+	public class AzureCloudPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
 	{
 		private List<(TenantId Tenant, PlayerId Id)> _playersToTeardown;
+
+		private Dictionary<(TenantId Tenant, PlayerId Id, Version Version), Version> _actualVersionMap
+			= new Dictionary<(TenantId Tenant, PlayerId Id, Version Version), Version>();
 
 		public override Task ScenarioSetup()
 		{
@@ -76,6 +79,11 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			var playerDomain = new Player(CurrentTenant, Version.Initial, player.Id, player.FirstName, player.LastName);
 			var createResult = await repo.Add(playerDomain).ToEither();
 			createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
+
+			createResult.Do(p =>
+			{
+				_actualVersionMap[(p.Tenant, p.Id, player.Version)] = p.Version;
+			});
 		}
 	}
 }

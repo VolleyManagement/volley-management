@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SimpleInjector;
 
@@ -14,6 +15,13 @@ namespace VolleyM.Domain.UnitTests.Framework
         Task ScenarioSetup();
 
         Task ScenarioTearDown();
+
+		/// <summary>
+		/// Domain Entities doe snot require aggregated Id, but for tests it's useful to aggregate those into single one.
+		/// </summary>
+		/// <param name="instance">Domain instance</param>
+		/// <returns>Id or null</returns>
+        EntityId GetEntityId(object instance);
     }
 
     public interface IOneTimeTestFixture

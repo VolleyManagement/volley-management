@@ -18,24 +18,24 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		private readonly IPlayersTestFixture _testFixture;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
-		private readonly SpecFlowTransform _transform;
+		private SpecFlowTransform _transform;
 
 		private PlayerId _existingPlayerId;
 		private CorrectName.Request _request;
 		private Either<Error, Unit> _actualResult;
 		private TestPlayerDto _originalPlayer;
 
-		public CorrectNameSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container, SpecFlowTransform transform)
+		public CorrectNameSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
 		{
 			_testFixture = testFixture;
 			_authFixture = authFixture;
 			_container = container;
-			_transform = transform;
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
 		public void ScenarioSetup()
 		{
+			_transform = _container.GetInstance<SpecFlowTransform>();
 			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(CorrectName));
 		}
 

@@ -1,21 +1,22 @@
 ﻿using System;
 using Serilog;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Contracts.Crosscutting;
 
 namespace VolleyM.Domain.UnitTests.Framework.Common
 {
 	public class TenantIdTransform : ISpecFlowTransform
 	{
-		private readonly Func<TenantId> _currentTenantProvider;
+		private readonly ICurrentUserProvider _currentUserProvider;
 
-		public TenantIdTransform(Func<TenantId> currentTenantProvider)
+		public TenantIdTransform(ICurrentUserProvider currentUserProvider)
 		{
-			_currentTenantProvider = currentTenantProvider;
+			_currentUserProvider = currentUserProvider;
 		}
 
 		public Type TargetType { get; } = typeof(TenantId);
 
-		public object GetValue(string rawValue)
+		public object GetValue(object instance, string rawValue)
 		{
 			if (string.IsNullOrEmpty(rawValue))
 			{
@@ -31,7 +32,7 @@ namespace VolleyM.Domain.UnitTests.Framework.Common
 		{
 			try
 			{
-				return _currentTenantProvider();
+				return _currentUserProvider.Tenant;
 			}
 			catch (Exception e)
 			{

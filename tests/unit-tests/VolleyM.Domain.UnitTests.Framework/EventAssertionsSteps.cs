@@ -15,10 +15,10 @@ namespace VolleyM.Domain.UnitTests.Framework
 		private readonly Container _container;
 		private readonly SpecFlowTransform _transform;
 
-		protected EventAssertionsSteps(Container container, SpecFlowTransform transform)
+		protected EventAssertionsSteps(Container container)
 		{
 			_container = container;
-			_transform = transform;
+			_transform = container.GetInstance<SpecFlowTransform>();
 		}
 
 		[Then(@"(.*) event is produced")]

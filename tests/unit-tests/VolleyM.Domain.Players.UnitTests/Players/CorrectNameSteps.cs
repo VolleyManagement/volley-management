@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
+using FluentAssertions.Execution;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
@@ -8,10 +10,11 @@ using VolleyM.Domain.Players.Handlers;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.Players.UnitTests.Fixture;
 using VolleyM.Domain.UnitTests.Framework;
+using VolleyM.Domain.UnitTests.Framework.Transforms.Common;
 
 namespace VolleyM.Domain.Players.UnitTests.Players
 {
-    [Binding]
+	[Binding]
 	[Scope(Feature = "Correct Player Name")]
 	public class CorrectNameSteps
 	{
@@ -19,6 +22,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
 		private SpecFlowTransform _transform;
+		private NonMockableVersionMap _versionMap;
 
 		private PlayerId _existingPlayerId;
 		private CorrectName.Request _request;
@@ -36,6 +40,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		public void ScenarioSetup()
 		{
 			_transform = _container.GetInstance<SpecFlowTransform>();
+			_versionMap = _container.GetInstance<NonMockableVersionMap>();
 			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(CorrectName));
 		}
 
@@ -86,7 +91,14 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			var playerRepository = _container.GetInstance<IPlayersRepository>();
 			var actualPlayer = await playerRepository.Get(_testFixture.CurrentTenant, _existingPlayerId).ToEither();
 
-			actualPlayer.ShouldBeEquivalent(_originalPlayer);
+			using (new AssertionScope())
+			{
+				actualPlayer.ShouldBeEquivalent(_originalPlayer, opts => opts.Excluding(p => p.Version));
+				actualPlayer.Do(p =>
+				{
+					p.Version.Should().Be(_versionMap[_testFixture.GetEntityId(p)].Actual);
+				});
+			}
 		}
 
 		[Then(@"ValidationError is returned")]

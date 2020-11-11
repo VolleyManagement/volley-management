@@ -27,7 +27,7 @@ Scenario: PlayerNameCorrected event
 	When I execute CorrectName
 	Then PlayerNameCorrected event is produced
 		| TenantId  | PlayerId            | Version  | FirstName | LastName |
-		| <default> | correct-name-evt-id | version1 | Jane      | Doe      |
+		| <default> | correct-name-evt-id | version2 | Jane      | Doe      |
 	And PlayerNameCorrected event is Public
 
 @azurecloud @api:512

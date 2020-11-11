@@ -8,14 +8,9 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 	/// </summary>
 	public class NonMockableVersionMap
 	{
-		private readonly Dictionary<EntityId, Version> _map;
+		private readonly Dictionary<EntityId, (Version Actual, Version Mocked)> _map = new Dictionary<EntityId, (Version Actual, Version Mocked)>();
 
-		public NonMockableVersionMap(Dictionary<EntityId, Version> map)
-		{
-			_map = map;
-		}
-
-		public Version this[EntityId key]
+		public (Version Actual, Version Mocked) this[EntityId key]
 		{
 			get
 			{
@@ -24,7 +19,7 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 					return result;
 				}
 
-				return null;
+				return (null, null);
 			}
 			set
 			{

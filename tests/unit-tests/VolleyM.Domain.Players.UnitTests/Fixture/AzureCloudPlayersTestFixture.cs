@@ -4,6 +4,7 @@ using FluentAssertions;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.UnitTests.Framework;
+using VolleyM.Domain.UnitTests.Framework.Transforms.Common;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
@@ -11,12 +12,12 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 	{
 		private List<(TenantId Tenant, PlayerId Id)> _playersToTeardown;
 
-		private Dictionary<(TenantId Tenant, PlayerId Id, Version Version), Version> _actualVersionMap
-			= new Dictionary<(TenantId Tenant, PlayerId Id, Version Version), Version>();
+		private NonMockableVersionMap _versionMap;
 
 		public override Task ScenarioSetup()
 		{
 			_playersToTeardown = new List<(TenantId Tenant, PlayerId Id)>();
+			_versionMap = _container.GetInstance<NonMockableVersionMap>();
 			return Task.CompletedTask;
 		}
 
@@ -82,7 +83,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 			createResult.Do(p =>
 			{
-				_actualVersionMap[(p.Tenant, p.Id, player.Version)] = p.Version;
+				_versionMap[GetEntityId(p)] = (p.Version, player.Version);
 			});
 		}
 	}

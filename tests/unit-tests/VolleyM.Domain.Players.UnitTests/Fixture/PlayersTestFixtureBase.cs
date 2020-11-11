@@ -3,6 +3,7 @@ using NSubstitute;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;
+using VolleyM.Domain.Players.Events;
 using VolleyM.Domain.Players.Handlers;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.UnitTests.Framework;
@@ -32,6 +33,8 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 				Player p => GetIdForPlayer(p.Tenant, p.Id),
 				PlayerDto dto => GetIdForPlayer(dto.Tenant, dto.Id),
 				TestPlayerDto test => GetIdForPlayer(base.CurrentTenant, test.Id),
+				PlayerCreated pce => GetIdForPlayer(pce.TenantId, pce.PlayerId),
+				PlayerNameCorrected pnce => GetIdForPlayer(pnce.TenantId, pnce.PlayerId),
 				_ => null
 			};
 		}

@@ -117,7 +117,9 @@ namespace VolleyM.Domain.UnitTests.Framework
 			Container.Collection.Register<ISpecFlowTransform>(serviceTypes);
 
 			// 2. Make transforms aware of the context
-			
+
+			// Needed for Version Transform
+			Container.Register<NonMockableVersionMap>(Lifestyle.Scoped);
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
@@ -242,6 +244,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 			{
 				_objectContainer.RegisterInstanceAs(result, fixtureType);
 			}
+
+			Container.Register(() => result);
 
 			return result;
 		}

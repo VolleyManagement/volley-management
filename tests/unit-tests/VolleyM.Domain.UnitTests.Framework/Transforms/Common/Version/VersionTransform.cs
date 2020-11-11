@@ -8,9 +8,10 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 		private readonly ITestFixture _testFixture;
 		private readonly NonMockableVersionMap _versionMap;
 
-		public VersionTransform(ITestFixture testFixture)
+		public VersionTransform(ITestFixture testFixture, NonMockableVersionMap versionMap)
 		{
 			_testFixture = testFixture;
+			_versionMap = versionMap;
 		}
 
 		public Type TargetType { get; } = typeof(Version);
@@ -37,7 +38,7 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 
 			if (key == null) return false;
 
-			value = _versionMap[key];
+			value = _versionMap[key].Actual;
 
 			return value != null;
 		}

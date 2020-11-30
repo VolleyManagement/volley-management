@@ -12,7 +12,7 @@
         /// </summary>
         public VolleyContextConfiguration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             MigrationsDirectory = @"Context\Migrations";
             ContextKey = "VolleyManagement.Data.MsSql.Context.VolleyManagementEntities";
         }

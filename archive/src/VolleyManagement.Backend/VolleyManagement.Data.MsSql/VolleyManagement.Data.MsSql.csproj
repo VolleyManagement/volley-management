@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <Configurations>Debug;Release</Configurations>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -154,6 +154,10 @@
     <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.cs" />
     <Compile Include="Context\Migrations\201804080807417_AddTournamentLocation.Designer.cs">
       <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\20201113083900_AddScoreScheme.cs" />
+    <Compile Include="Context\Migrations\20201113083900_AddScoreScheme.Designer.cs">
+      <DependentUpon>20201113083900_AddScoreScheme.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -305,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201804080807417_AddTournamentLocation.resx">
       <DependentUpon>201804080807417_AddTournamentLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\20201113083900_AddScoreScheme.resx">
+      <DependentUpon>20201113083900_AddScoreScheme.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx" />
   </ItemGroup>

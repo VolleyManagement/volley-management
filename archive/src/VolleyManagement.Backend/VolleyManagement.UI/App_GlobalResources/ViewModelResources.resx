@@ -366,4 +366,7 @@
   <data name="RequestNotFound" xml:space="preserve">
     <value>Request with such id not found</value>
   </data>
+  <data name="ScoreScheme" xml:space="preserve">
+    <value>Score Scheme</value>
+  </data>
 </root>

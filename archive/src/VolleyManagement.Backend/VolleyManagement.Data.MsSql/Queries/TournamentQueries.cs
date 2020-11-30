@@ -207,6 +207,7 @@
                     Location = t.Location,
                     RegulationsLink = t.RegulationsLink,
                     Scheme = (TournamentSchemeEnum)t.Scheme,
+                    ScoreScheme = (ScoreSchemeEnum)t.ScoreScheme,
                     Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
                     GamesStart = t.GamesStart,
                     GamesEnd = t.GamesEnd,

@@ -53,6 +53,8 @@
         /// <value>Scheme of tournament.</value>
         public TournamentSchemeEnum Scheme { get; set; }
 
+        public ScoreSchemeEnum ScoreScheme { get; set; } = ScoreSchemeEnum.BestOf5;
+
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.
         /// </summary>

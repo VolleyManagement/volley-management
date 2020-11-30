@@ -34,6 +34,9 @@
     <div class="display-label">@Html.LabelFor(model => model.Scheme)</div>
     <div class="display-field">@Model.Scheme.ToDescription()</div>
 
+	<div class="display-label">@Html.LabelFor(model => model.ScoreScheme)</div>
+	<div class="display-field">@Model.ScoreScheme.ToDescription()</div>
+
     <div class="display-label">@Html.LabelFor(model => model.RegulationsLink)</div>
     @if (!string.IsNullOrEmpty(Model.RegulationsLink))
     {

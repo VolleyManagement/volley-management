@@ -69,6 +69,7 @@
                 && x.Location == y.Location
                 && x.Season == y.Season
                 && x.Scheme == y.Scheme
+                && x.ScoreScheme == y.ScoreScheme
                 && x.RegulationsLink == y.RegulationsLink
                 && x.IsArchived == y.IsArchived;
         }

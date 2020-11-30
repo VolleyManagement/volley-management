@@ -315,6 +315,7 @@
             var testTournament = new TournamentBuilder()
                                         .WithId(1)
                                         .WithName("Test Tournament")
+                                        .WithScoreScheme(ScoreSchemeEnum.BestOf3)
                                         .Build();
             var sut = BuildSUT();
 
@@ -675,6 +676,7 @@
 
             var newTournament = new TournamentBuilder().WithApplyingPeriodStart(applyingPeriodStart)
                                                        .WithApplyingPeriodEnd(applyingPeriodEnd)
+                                                       .WithScoreScheme(ScoreSchemeEnum.BestOf3)
                                                        .WithGamesStart(gamesStart)
                                                        .WithGamesEnd(gamesEnd)
                                                        .WithTransferStart(transferStart)

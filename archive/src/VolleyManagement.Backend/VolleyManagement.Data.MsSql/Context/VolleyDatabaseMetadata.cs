@@ -17,6 +17,8 @@
 
         public const string TOURNAMENT_SCHEME_COLUMN_NAME = "SchemeCode";
 
+        public const string TOURNAMENT_SCORE_SCHEME_COLUMN_NAME = "ScoreSchemeCode";
+
         public const string TOURNAMENT_SEASON_COLUMN_NAME = "SeasonOffset";
 
         public const string FEEDBACKS_TABLE_NAME = "Feedbacks";

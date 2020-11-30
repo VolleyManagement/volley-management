@@ -33,6 +33,8 @@
         /// </summary>
         public byte Scheme { get; set; }
 
+		public byte ScoreScheme { get; set; }
+
         /// <summary>
         /// Gets or sets the tournament season as a byte offset from the 1900
         /// </summary>

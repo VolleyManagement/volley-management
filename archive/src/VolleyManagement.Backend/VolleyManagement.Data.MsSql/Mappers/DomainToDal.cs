@@ -32,6 +32,7 @@
             to.Description = from.Description;
             to.Location = from.Location;
             to.Scheme = (byte)from.Scheme;
+            to.ScoreScheme = (byte)from.ScoreScheme;
             to.RegulationsLink = from.RegulationsLink;
             to.GamesStart = from.GamesStart;
             to.GamesEnd = from.GamesEnd;

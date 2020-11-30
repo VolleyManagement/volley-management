@@ -54,6 +54,14 @@
 </div>
 
 <div class="editor-label">
+	@Html.LabelFor(model => model.ScoreScheme)
+</div>
+<div class="editor-field">
+	@Html.DropDownListFor(model => model.ScoreScheme, new SelectList(Model.ScoreSchemeList, Model.ScoreScheme))
+	@Html.ValidationMessageFor(model => model.ScoreScheme)
+</div>
+
+<div class="editor-label">
     @Html.LabelFor(model => model.RegulationsLink)
 </div>
 <div class="editor-field">
@@ -107,15 +115,18 @@
     @Html.Label(Resources.UI.TournamentViews.TournamentFieldsTitle)
 </div>
 <div class="editor-field">
-    @Html.TextBoxForShortDate(model => model.GamesStart, Model.GamesStart, new { @readonly = "readonly" })
-    -
-    @Html.TextBoxForShortDate(model => model.GamesEnd, Model.GamesEnd, new { @readonly = "readonly" })
+	@Html.TextBoxForShortDate(model => model.GamesStart, Model.GamesStart, new { @readonly = "readonly" })
+	-
+	@Html.TextBoxForShortDate(model => model.GamesEnd, Model.GamesEnd, new { @readonly = "readonly" })
 
-    @Html.ValidationMessage(TournamentConstants.APPLYING_END_DATE_AFTER_START_GAMES)
-    @Html.ValidationMessageFor(model => model.GamesStart)
-    @Html.ValidationMessage(TournamentConstants.START_GAMES_AFTER_END_GAMES)
-    @Html.ValidationMessage(TournamentConstants.TRANSFER_END_AFTER_GAMES_END)
-    @Html.ValidationMessageFor(model => model.GamesEnd)
+	@Html.ValidationMessage(TournamentConstants.APPLYING_END_DATE_AFTER_START_GAMES)
+	@Html.ValidationMessageFor(model => model.GamesStart)
+	@Html.ValidationMessage(TournamentConstants.START_GAMES_AFTER_END_GAMES)
+	@Html.ValidationMessage(TournamentConstants.TRANSFER_END_AFTER_GAMES_END)
+	@Html.ValidationMessageFor(model => model.GamesEnd)
+</div>
+<div>
+
 </div>
 <div class="checkbox_transfer">
     @Html.CheckBoxFor(model => model.IsTransferEnabled, new { id = "transferDatesSwitcher" })

@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Data.MsSql.Context
+﻿using System.Data.Entity.Migrations;
+
+namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
@@ -158,8 +160,14 @@
                 .IsRequired()
                 .HasColumnName(VolleyDatabaseMetadata.TOURNAMENT_SCHEME_COLUMN_NAME);
 
-            // Season
+            // ScoreScheme
             modelBuilder.Entity<TournamentEntity>()
+	            .Property(t => t.ScoreScheme)
+	            .IsRequired()
+	            .HasColumnName(VolleyDatabaseMetadata.TOURNAMENT_SCORE_SCHEME_COLUMN_NAME);
+
+			// Season
+			modelBuilder.Entity<TournamentEntity>()
                 .Property(t => t.Season)
                 .IsRequired()
                 .HasColumnName(VolleyDatabaseMetadata.TOURNAMENT_SEASON_COLUMN_NAME);

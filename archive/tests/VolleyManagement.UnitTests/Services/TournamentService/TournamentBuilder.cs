@@ -37,6 +37,7 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
                 Location = "Location 1",
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
+				ScoreScheme = ScoreSchemeEnum.BestOf5,
                 RegulationsLink = "http://default.com",
                 ApplyingPeriodStart = new DateTime(2015, 06, 02),
                 ApplyingPeriodEnd = new DateTime(2015, 09, 02),
@@ -133,12 +134,18 @@ namespace VolleyManagement.UnitTests.Services.TournamentService
             return this;
         }
 
-        /// <summary>
-        /// Sets season of test tournament
-        /// </summary>
-        /// <param name="season">Season for test tournament</param>
-        /// <returns>Tournament builder object</returns>
-        public TournamentBuilder WithSeason(short season)
+        public TournamentBuilder WithScoreScheme(ScoreSchemeEnum scheme)
+        {
+	        _tournament.ScoreScheme = scheme;
+	        return this;
+        }
+
+		/// <summary>
+		/// Sets season of test tournament
+		/// </summary>
+		/// <param name="season">Season for test tournament</param>
+		/// <returns>Tournament builder object</returns>
+		public TournamentBuilder WithSeason(short season)
         {
             _tournament.Season = season;
             return this;

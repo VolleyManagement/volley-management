@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Domain.GamesAggregate
+﻿using VolleyManagement.Domain.TournamentsAggregate;
+
+namespace VolleyManagement.Domain.GamesAggregate
 {
     using System;
 
@@ -87,5 +89,7 @@
         /// Gets or sets link to game video.
         /// </summary>
         public string UrlToGameVideo { get; set; }
+
+        public ScoreSchemeEnum ScoreScheme { get; set; }
     }
 }

@@ -59,7 +59,7 @@
         /// <returns>View with empty fields of game result.</returns>
         public ActionResult Create(int tournamentId)
         {
-            var gameResultViewModel = new GameResultViewModel {
+            var gameResultViewModel = new GameResultViewModel(5) {
                 TournamentId = tournamentId,
             };
 

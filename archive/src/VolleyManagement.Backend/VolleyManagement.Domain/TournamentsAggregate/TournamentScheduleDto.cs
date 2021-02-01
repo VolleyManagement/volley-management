@@ -37,5 +37,7 @@
         /// Gets or sets the tournament scheme
         /// </summary>
         public TournamentSchemeEnum Scheme { get; set; }
+
+		public ScoreSchemeEnum ScoreScheme { get; set; }
     }
 }

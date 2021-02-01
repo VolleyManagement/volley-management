@@ -28,6 +28,14 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 				.Returns(ci => ci.Arg<Player>())
 				.AndDoes(ci => { _actualPlayer = ci.Arg<Player>(); });
 
+			_repoMock.Update(Arg.Any<Player>())
+				.Returns(ci => ci.Arg<Player>())
+				.AndDoes(ci =>
+				{
+					if (_actualPlayer == null) return;
+					_actualPlayer = ci.Arg<Player>();
+				});
+
 			container.Register(() => _repoMock, Lifestyle.Scoped);
 		}
 
@@ -43,7 +51,13 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		public Task<Player> MockPlayerExists(TestPlayerDto player)
 		{
-			throw new System.NotImplementedException();
+			var p = new Player(CurrentTenant, player.Version,
+				player.Id, player.FirstName, player.LastName);
+
+			_repoMock.Get(CurrentTenant, player.Id)
+				.Returns(p);
+
+			return Task.FromResult(p);
 		}
 
 		public Task MockSeveralPlayersExist(TenantId tenant, List<TestPlayerDto> testData)

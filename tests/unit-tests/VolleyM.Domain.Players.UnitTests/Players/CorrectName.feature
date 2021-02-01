@@ -43,6 +43,14 @@ Scenario: Validation Cases
 	And ValidationError is returned
 	And PlayerNameCorrected event is not produced
 
+	# make sure we have at least one test for e2e flow
+	@azurecloud
+	Examples:
+		| FirstName          | LastName           |
+		| <60+ symbols name> | Smith              |
+
+	# cover rest of the cases with faster unit tests
+	@unit
 	Examples:
 		| FirstName          | LastName           |
 		| <60+ symbols name> | Smith              |

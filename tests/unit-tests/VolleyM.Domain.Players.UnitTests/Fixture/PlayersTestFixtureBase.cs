@@ -24,12 +24,14 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			base.RegisterScenarioDependencies(container);
 
 			container.RegisterInstance(_idGenerator);
+			container.RegisterDecorator(typeof(IPlayersRepository),typeof(PlayersRepositoryVersionCaptureDecorator));
 		}
 
 		public override EntityId GetEntityId(object instance)
 		{
 			return instance switch
 			{
+				(TenantId t, PlayerId p) => GetIdForPlayer(t, p),
 				Player p => GetIdForPlayer(p.Tenant, p.Id),
 				PlayerDto dto => GetIdForPlayer(dto.Tenant, dto.Id),
 				TestPlayerDto test => GetIdForPlayer(base.CurrentTenant, test.Id),
@@ -64,7 +66,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			return val;
 		}
 
-		private EntityId GetIdForPlayer(TenantId tenantId, PlayerId playerId)
+		internal static EntityId GetIdForPlayer(TenantId tenantId, PlayerId playerId)
 		{
 			return new EntityId($"{tenantId}|{playerId}");
 		}

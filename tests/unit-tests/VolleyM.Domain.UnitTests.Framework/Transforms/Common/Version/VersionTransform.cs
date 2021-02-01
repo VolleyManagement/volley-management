@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Version = VolleyM.Domain.Contracts.Version;
 
 namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
@@ -38,7 +39,9 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 
 			if (key == null) return false;
 
-			value = _versionMap[key].Actual;
+			var log = _versionMap.GetVersionLog(key);
+
+			value = log.LastOrDefault();
 
 			return value != null;
 		}

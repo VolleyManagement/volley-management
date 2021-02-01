@@ -10,7 +10,7 @@ namespace VolleyM.Domain.Players.UnitTests
 {
 	public interface IPlayersTestFixture : ITenantTestFixture
 	{
-		Task MockPlayerExists(TestPlayerDto player);
+		Task<Player> MockPlayerExists(TestPlayerDto player);
 
 		Task MockSeveralPlayersExist(TenantId tenant, List<TestPlayerDto> testData);
 

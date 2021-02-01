@@ -7,5 +7,7 @@
 		}
 
 		public static Version Initial = new Version("initial");
+		// Object was deleted
+		public static Version Deleted = new Version("deleted");
 	}
 }

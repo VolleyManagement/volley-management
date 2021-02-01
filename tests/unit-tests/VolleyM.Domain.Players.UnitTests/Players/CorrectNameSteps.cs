@@ -27,6 +27,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 		private PlayerId _existingPlayerId;
 		private CorrectName.Request _request;
 		private Either<Error, Unit> _actualResult;
+
 		private TestPlayerDto _originalPlayer;
 
 		public CorrectNameSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
@@ -52,7 +53,9 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			_testFixture.MockNextRandomId(_existingPlayerId.ToString());
 			_originalPlayer = player;
 
-			await _testFixture.MockPlayerExists(player);
+			var created = await _testFixture.MockPlayerExists(player);
+			// We need that because in integration tests Version might be created by the storage, thus it will be different from originally set
+			_originalPlayer.Version = created.Version;
 		}
 
 		[Given(@"I have CorrectNameRequest")]
@@ -91,14 +94,7 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			var playerRepository = _container.GetInstance<IPlayersRepository>();
 			var actualPlayer = await playerRepository.Get(_testFixture.CurrentTenant, _existingPlayerId).ToEither();
 
-			using (new AssertionScope())
-			{
-				actualPlayer.ShouldBeEquivalent(_originalPlayer, opts => opts.Excluding(p => p.Version));
-				actualPlayer.Do(p =>
-				{
-					p.Version.Should().Be(_versionMap[_testFixture.GetEntityId(p)].Actual);
-				});
-			}
+			actualPlayer.ShouldBeEquivalent(_originalPlayer);
 		}
 
 		[Then(@"ValidationError is returned")]

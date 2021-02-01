@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LanguageExt.UnsafeValueAccess;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.UnitTests.Framework;
@@ -26,12 +27,14 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			await CleanUpPlayers();
 		}
 
-		public async Task MockPlayerExists(TestPlayerDto player)
+		public async Task<Player> MockPlayerExists(TestPlayerDto player)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
-			await EnsureSuccessfulCreation(repo, player);
+			var result = await EnsureSuccessfulCreation(repo, player);
 
 			_playersToTeardown.Add((CurrentTenant, player.Id));
+
+			return result;
 		}
 
 		public async Task MockSeveralPlayersExist(TenantId tenant, List<TestPlayerDto> testData)
@@ -75,16 +78,13 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			await Task.WhenAll(deleteTasks.ToArray());
 		}
 
-		private async Task EnsureSuccessfulCreation(IPlayersRepository repo, TestPlayerDto player)
+		private async Task<Player> EnsureSuccessfulCreation(IPlayersRepository repo, TestPlayerDto player)
 		{
 			var playerDomain = new Player(CurrentTenant, Version.Initial, player.Id, player.FirstName, player.LastName);
 			var createResult = await repo.Add(playerDomain).ToEither();
 			createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
 
-			createResult.Do(p =>
-			{
-				_versionMap[GetEntityId(p)] = (p.Version, player.Version);
-			});
+			return createResult.ValueUnsafe();
 		}
 	}
 }

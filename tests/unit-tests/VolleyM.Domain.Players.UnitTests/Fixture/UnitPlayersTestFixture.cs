@@ -41,7 +41,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			return Task.CompletedTask;
 		}
 
-		public Task MockPlayerExists(TestPlayerDto player)
+		public Task<Player> MockPlayerExists(TestPlayerDto player)
 		{
 			throw new System.NotImplementedException();
 		}

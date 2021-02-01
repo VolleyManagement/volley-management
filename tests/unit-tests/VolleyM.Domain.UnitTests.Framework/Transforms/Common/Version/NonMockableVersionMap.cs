@@ -8,23 +8,40 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 	/// </summary>
 	public class NonMockableVersionMap
 	{
-		private readonly Dictionary<EntityId, (Version Actual, Version Mocked)> _map = new Dictionary<EntityId, (Version Actual, Version Mocked)>();
+		private readonly Dictionary<EntityId, List<Version>> _log = new();
 
-		public (Version Actual, Version Mocked) this[EntityId key]
+		public IReadOnlyList<Version> GetVersionLog(EntityId key)
 		{
-			get
+			if (_log.TryGetValue(key, out var result))
 			{
-				if (_map.TryGetValue(key, out var result))
-				{
-					return result;
-				}
+				return result.AsReadOnly();
+			}
 
-				return (null, null);
-			}
-			set
+			return new List<Version>();
+		}
+
+		public void RecordVersionChange(EntityId key, Version newVersion)
+		{
+			var log = GetCurrentVersionLog(key);
+			log.Add(newVersion);
+		}
+
+		public void RecordEndVersion(EntityId key)
+		{
+			var log = GetCurrentVersionLog(key);
+			log.Add(Version.Deleted);
+		}
+
+		private List<Version> GetCurrentVersionLog(EntityId key)
+		{
+			if (_log.TryGetValue(key, out var result))
 			{
-				_map[key] = value;
+				return result;
 			}
+
+			result = new List<Version> {Version.Initial};
+			_log[key] = result;
+			return result;
 		}
 	}
 }

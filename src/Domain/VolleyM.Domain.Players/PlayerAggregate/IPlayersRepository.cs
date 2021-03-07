@@ -9,7 +9,13 @@ namespace VolleyM.Domain.Players.PlayerAggregate
 
 		EitherAsync<Error, Player> Add(Player player);
 
-		EitherAsync<Error, Player> Update(Player player);
+		/// <summary>
+		///Persists changes to the Player
+		/// </summary>
+		/// <param name="player">Instance to persist</param>
+		/// <param name="lastKnownEntityVersion">Last known entity version to do concurrency check</param>
+		/// <returns></returns>
+		EitherAsync<Error, Player> Update(Player player, Version lastKnownEntityVersion);
 
 		EitherAsync<Error, Unit> Delete(TenantId tenant, PlayerId id);
 	}

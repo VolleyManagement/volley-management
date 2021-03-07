@@ -81,7 +81,12 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 		private async Task<Player> EnsureSuccessfulCreation(IPlayersRepository repo, TestPlayerDto player)
 		{
 			var playerDomain = new Player(CurrentTenant, Version.Initial, player.Id, player.FirstName, player.LastName);
-			var createResult = await repo.Add(playerDomain).ToEither();
+			var createResult = await repo.Add(playerDomain)
+				.Do(created =>
+				{
+					_versionMap.AssociateTestVersions(GetEntityId(player), created.Version, player.Version);
+				})
+				.ToEither();
 			createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
 
 			return createResult.ValueUnsafe();

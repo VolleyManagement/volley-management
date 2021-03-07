@@ -28,7 +28,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 				.Returns(ci => ci.Arg<Player>())
 				.AndDoes(ci => { _actualPlayer = ci.Arg<Player>(); });
 
-			_repoMock.Update(Arg.Any<Player>())
+			_repoMock.Update(Arg.Any<Player>(), Arg.Any<Version>())
 				.Returns(ci => ci.Arg<Player>())
 				.AndDoes(ci =>
 				{

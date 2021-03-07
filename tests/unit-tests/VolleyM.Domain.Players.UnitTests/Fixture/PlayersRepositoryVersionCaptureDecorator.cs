@@ -28,13 +28,14 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			return _decoratee.Add(player)
 				.Do(p =>
 				{
+					player.ToString();
 					_versionMap.RecordVersionChange(GetEntityId(p), p.Version);
 				});
 		}
 
-		public EitherAsync<Error, Player> Update(Player player)
+		public EitherAsync<Error, Player> Update(Player player, Version lastKnownEntityVersion)
 		{
-			return _decoratee.Update(player)
+			return _decoratee.Update(player, lastKnownEntityVersion)
 				.Do(p => { _versionMap.RecordVersionChange(GetEntityId(p), p.Version); });
 		}
 

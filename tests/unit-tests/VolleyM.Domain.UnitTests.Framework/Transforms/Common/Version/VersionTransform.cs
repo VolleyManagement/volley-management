@@ -24,7 +24,7 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 				return null;
 			}
 
-			if (TryGetValueFromContext(instance, out var result))
+			if (TryGetValueFromContext(instance, rawValue, out var result))
 			{
 				return result;
 			}
@@ -32,7 +32,7 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 			return new Version(rawValue);
 		}
 
-		private bool TryGetValueFromContext(object instance, out Version value)
+		private bool TryGetValueFromContext(object instance, string rawValue, out Version value)
 		{
 			value = null;
 			var key = _testFixture.GetEntityId(instance);
@@ -42,6 +42,21 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 			var log = _versionMap.GetVersionLog(key);
 
 			value = log.LastOrDefault();
+			if (value == null)
+			{
+				return false;
+			}
+
+			var tv=_versionMap.GetTestVersion(value);
+			if (key != tv.entityId)
+			{
+				value = null;
+			}
+
+			if (tv.testVersion.ToString() != rawValue)
+			{
+				value = null;
+			}
 
 			return value != null;
 		}

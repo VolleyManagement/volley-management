@@ -24,7 +24,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			base.RegisterScenarioDependencies(container);
 
 			container.RegisterInstance(_idGenerator);
-			container.RegisterDecorator(typeof(IPlayersRepository),typeof(PlayersRepositoryVersionCaptureDecorator));
+			container.RegisterDecorator(typeof(IPlayersRepository), typeof(PlayersRepositoryVersionCaptureDecorator));
 		}
 
 		public override EntityId GetEntityId(object instance)
@@ -37,6 +37,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 				TestPlayerDto test => GetIdForPlayer(base.CurrentTenant, test.Id),
 				PlayerCreated pce => GetIdForPlayer(pce.TenantId, pce.PlayerId),
 				PlayerNameCorrected pnce => GetIdForPlayer(pnce.TenantId, pnce.PlayerId),
+				CorrectName.Request cnr => GetIdForPlayer(base.CurrentTenant, cnr.PlayerId),
 				_ => null
 			};
 		}

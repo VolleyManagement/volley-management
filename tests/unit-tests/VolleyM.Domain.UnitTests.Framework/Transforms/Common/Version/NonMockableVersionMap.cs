@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using VolleyM.Domain.Contracts;
+﻿using System;
+using System.Collections.Generic;
+using Version = VolleyM.Domain.Contracts.Version;
 
 namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 {
@@ -9,6 +10,9 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 	public class NonMockableVersionMap
 	{
 		private readonly Dictionary<EntityId, List<Version>> _log = new();
+
+		private Dictionary<Version, (Version testVersion, EntityId entityId)> _testMap =
+			new();
 
 		public IReadOnlyList<Version> GetVersionLog(EntityId key)
 		{
@@ -42,6 +46,21 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 			result = new List<Version> {Version.Initial};
 			_log[key] = result;
 			return result;
+		}
+
+		public void AssociateTestVersions(EntityId key, Version createdVersion, Version testVersion)
+		{
+			_testMap[createdVersion] = (testVersion, key);
+		}
+
+		public (Version testVersion, EntityId entityId) GetTestVersion(Version v)
+		{
+			if (_testMap.TryGetValue(v, out var result))
+			{
+				return result;
+			}
+
+			return (null, null);
 		}
 	}
 }

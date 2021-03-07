@@ -66,14 +66,14 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 				}, "Create Player");
 		}
 
-		public EitherAsync<Error, Player> Update(Player player)
+		public EitherAsync<Error, Player> Update(Player player, Version lastKnownEntityVersion)
 		{
 			return PerformStorageOperation(_options.PlayersTable,
 				tableRef =>
 				{
 					var playerEntity = new PlayerEntity(player);
 
-					playerEntity.ETag = "*";
+					playerEntity.ETag = lastKnownEntityVersion.ToString();
 
 					var mergeOperation = TableOperation.Merge(playerEntity);
 

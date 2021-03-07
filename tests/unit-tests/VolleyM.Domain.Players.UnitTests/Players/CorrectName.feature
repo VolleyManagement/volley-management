@@ -2,7 +2,7 @@
 	In order to correct mistakes in the name or react to name changes
 	I want VolleyM system to alow changing players name
 
-@azurecloud @api:512
+@azurecloud @unit @api:512
 Scenario: Name corrected
 	Given player exists
 		| Id                     | Version  | FirstName | LastName |
@@ -16,7 +16,7 @@ Scenario: Name corrected
 		| FirstName | LastName |
 		| Jane      | Doe      |
 
-@azurecloud @api:512
+@unit @api:512
 Scenario: PlayerNameCorrected event
 	Given player exists
 		| Id                  | Version  | FirstName | LastName |
@@ -30,7 +30,7 @@ Scenario: PlayerNameCorrected event
 		| <default> | correct-name-evt-id | version2 | Jane      | Doe      |
 	And PlayerNameCorrected event is Public
 
-@azurecloud @api:512
+@api:512
 Scenario: Validation Cases
 	Given player exists
 		| Id                         | Version  | FirstName | LastName |
@@ -46,8 +46,8 @@ Scenario: Validation Cases
 	# make sure we have at least one test for e2e flow
 	@azurecloud
 	Examples:
-		| FirstName          | LastName           |
-		| <60+ symbols name> | Smith              |
+		| FirstName          | LastName |
+		| <60+ symbols name> | Smith    |
 
 	# cover rest of the cases with faster unit tests
 	@unit
@@ -59,3 +59,14 @@ Scenario: Validation Cases
 		| John               | <60+ symbols name> |
 		| John               | <null>             |
 		| John               |                    |
+
+@azurecloud @api:512
+Scenario: Correct Name fails when provided version does not match stored
+	Given player exists
+		| Id                | Version  | FirstName | LastName |
+		| cn-concurrency-id | version1 | Marko     | Ivanov   |
+	And I have CorrectNameRequest
+		| PlayerId          | EntityVersion | FirstName | LastName |
+		| cn-concurrency-id | notversion1   | John      | Doe      |
+	When I execute CorrectName
+	Then player is not changed

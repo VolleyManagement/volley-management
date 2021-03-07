@@ -15,6 +15,8 @@ namespace VolleyM.Domain.Players.Handlers
 		{
 			public PlayerId PlayerId { get; set; }
 
+			public Version EntityVersion { get; set; }
+
 			public string FirstName { get; set; }
 
 			public string LastName { get; set; }
@@ -52,7 +54,7 @@ namespace VolleyM.Domain.Players.Handlers
 					.Map(p =>
 					{
 						p.ChangeName(request.FirstName, request.LastName);
-						return _repo.Update(p);
+						return _repo.Update(p, request.EntityVersion);
 					})
 					.MatchAsync(
 						RightAsync: async right => await right.ToEither(),

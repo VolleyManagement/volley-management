@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LanguageExt;
 using Version = VolleyM.Domain.Contracts.Version;
 
 namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
@@ -12,6 +13,8 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 		private readonly Dictionary<EntityId, List<Version>> _log = new();
 
 		private Dictionary<Version, (Version testVersion, EntityId entityId)> _testMap =
+			new();
+		private Dictionary<Version, (Version CreatedVersion, EntityId EntityId)> _createdVersionMap =
 			new();
 
 		public IReadOnlyList<Version> GetVersionLog(EntityId key)
@@ -51,16 +54,27 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 		public void AssociateTestVersions(EntityId key, Version createdVersion, Version testVersion)
 		{
 			_testMap[createdVersion] = (testVersion, key);
+			_createdVersionMap[testVersion] = (createdVersion, key);
 		}
 
-		public (Version testVersion, EntityId entityId) GetTestVersion(Version v)
+		public Option<(Version testVersion, EntityId entityId)> GetTestVersion(Version v)
 		{
 			if (_testMap.TryGetValue(v, out var result))
 			{
 				return result;
 			}
 
-			return (null, null);
+			return Option<(Version testVersion, EntityId entityId)>.None;
+		}
+
+		public Option<(Version CreatedVersion, EntityId EntityId)> GetFromTestVersion(Version testVersion)
+		{
+			if (_createdVersionMap.TryGetValue(testVersion, out var result))
+			{
+				return result;
+			}
+
+			return Option<(Version CreatedVersion, EntityId EntityId)>.None;
 		}
 	}
 }

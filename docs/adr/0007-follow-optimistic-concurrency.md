@@ -52,15 +52,6 @@ When something is going to be edited record is locked for change. And everyone w
 * ❌ Terrible perfromance
 * ❌ Is not aligned to Azure Table storage
 
-### [option 3]
-
-[example | description | pointer to more information | …] <!-- optional -->
-
-* ✔ [argument a]
-* ✔ [argument b]
-* ❌ [argument c]
-* … <!-- numbers of pros and cons can vary -->
-
 ## Links <!-- optional -->
 
 * Partially a consequence of [ADR-0006](0006-use-azure-table-storage-for-persistence.md)

@@ -28,7 +28,6 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			return _decoratee.Add(player)
 				.Do(p =>
 				{
-					player.ToString();
 					_versionMap.RecordVersionChange(GetEntityId(p), p.Version);
 				});
 		}

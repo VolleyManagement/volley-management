@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Google.Protobuf.WellKnownTypes;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
@@ -97,10 +99,17 @@ namespace VolleyM.Domain.Players.UnitTests.Players
 			actualPlayer.ShouldBeEquivalent(_originalPlayer);
 		}
 
-		[Then(@"ValidationError is returned")]
-		public void ThenValidationErrorIsReturned()
+		[Then(@"(.*) error is returned")]
+		public void ThenErrorIsReturned(string errorTypeString)
 		{
-			_actualResult.ShouldBeError(ErrorType.ValidationFailed);
+			if (!System.Enum.TryParse(typeof(ErrorType), errorTypeString, out var errorTypeObj))
+			{
+				throw new InvalidOperationException($"Error type is unknown: {errorTypeString}");
+			}
+
+			var errorType = (ErrorType)errorTypeObj;
+
+			_actualResult.ShouldBeError(errorType);
 		}
 
 		private CorrectName.Request GetPlayer(Table table)

@@ -40,7 +40,7 @@ Chosen option: "Optimistic concurrency", because it is a better from the perfrom
 
 Storage layer has some indication of 'row version' for each record which changes every time the change to the record is made. When write operation happens it checks for row version match beforehand.
 
-* ✔ Has better perfromance
+* ✔ Has better performance
 * ✔ Azure Table Storage uses Optimistic concurrency model
 * ❌ our business logic will have to take this into account
 
@@ -49,7 +49,7 @@ Storage layer has some indication of 'row version' for each record which changes
 When something is going to be edited record is locked for change. And everyone waits while operation completes.
 
 * ✔ Easier to implement
-* ❌ Terrible perfromance
+* ❌ Terrible performance
 * ❌ Is not aligned to Azure Table storage
 
 ## Links <!-- optional -->

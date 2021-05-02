@@ -40,7 +40,7 @@ Scenario: Validation Cases
 		| correct-name-validation-id | version1      | <FirstName> | <LastName> |
 	When I execute CorrectName
 	Then player is not changed
-	And ValidationError is returned
+	And ValidationFailed error is returned
 	And PlayerNameCorrected event is not produced
 
 	# make sure we have at least one test for e2e flow
@@ -66,7 +66,10 @@ Scenario: Correct Name fails when provided version does not match stored
 		| Id                | Version  | FirstName | LastName |
 		| cn-concurrency-id | version1 | Marko     | Ivanov   |
 	And I have CorrectNameRequest
-		| PlayerId          | EntityVersion | FirstName | LastName |
-		| cn-concurrency-id | notversion1   | John      | Doe      |
+		| PlayerId          | EntityVersion                             | FirstName | LastName |
+		| cn-concurrency-id | W/"datetime'2021-05-02T13%3A51%3A31.23Z'" | John      | Doe      |
+	# version value above        👆 is always wrong but it has to be in Azure Table specific format
 	When I execute CorrectName
 	Then player is not changed
+	And ConcurrencyCheckFailed error is returned
+	And PlayerNameCorrected event is not produced

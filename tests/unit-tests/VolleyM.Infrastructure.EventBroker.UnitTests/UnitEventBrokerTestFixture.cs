@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SimpleInjector;
 using VolleyM.Domain.Framework.EventBroker;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Infrastructure.EventBroker.UnitTests
 {
@@ -19,6 +20,11 @@ namespace VolleyM.Infrastructure.EventBroker.UnitTests
         public Task ScenarioTearDown()
         {
             return Task.CompletedTask;
+        }
+
+        public EntityId GetEntityId(object instance)
+        {
+	        return null;
         }
     }
 }

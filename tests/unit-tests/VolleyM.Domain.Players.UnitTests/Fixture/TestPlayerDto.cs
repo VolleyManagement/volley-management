@@ -1,4 +1,5 @@
-﻿using VolleyM.Domain.Players.PlayerAggregate;
+﻿using VolleyM.Domain.Contracts;
+using VolleyM.Domain.Players.PlayerAggregate;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
@@ -7,7 +8,9 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 	/// </summary>
 	public class TestPlayerDto
 	{
-		public PlayerId PlayerId { get; set; }
+		public PlayerId Id { get; set; }
+
+		public Version Version { get; set; }
 
 		public string FirstName { get; set; }
 

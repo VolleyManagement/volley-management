@@ -26,5 +26,7 @@
             => new Error(ErrorType.FeatureDisabled, "Feature disabled");
         public static Error DesignViolation(string message)
             => new Error(ErrorType.DesignViolation, message);
-    }
+        public static Error ConcurrencyCheckFailed(string message = "Entity is outdated. Please retry operation.")
+	        => new Error(ErrorType.ConcurrencyCheckFailed, message);
+	}
 }

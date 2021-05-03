@@ -20,18 +20,17 @@ namespace VolleyM.Domain.Players.UnitTests
 		private readonly IPlayersTestFixture _testFixture;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
-		private readonly SpecFlowTransform _transform;
+		private SpecFlowTransform _transform;
 
 		private IRequestHandler<GetAll.Request, List<PlayerDto>> _handler;
 
 		private Either<Error, List<PlayerDto>> _actualResult;
 
-		public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container, SpecFlowTransform transform)
+		public GetAllPlayersSteps(IPlayersTestFixture testFixture, IAuthFixture authFixture, Container container)
 		{
 			_testFixture = testFixture;
 			_authFixture = authFixture;
 			_container = container;
-			_transform = transform;
 
 			// Configure seed to have deterministic results
 			Randomizer.Seed = new Random(1116170520);
@@ -40,6 +39,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
 		public void ScenarioSetup()
 		{
+			_transform = _container.GetInstance<SpecFlowTransform>();
 			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(GetAll));
 		}
 

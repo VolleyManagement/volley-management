@@ -8,7 +8,7 @@ using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
-	public class AzureCloudIdentityAndAccessFixture : IIdentityAndAccessFixture
+	public class AzureCloudIdentityAndAccessFixture : IdentityAndAccessFixtureBase, IIdentityAndAccessFixture
     {
         private Container Container { get; }
 

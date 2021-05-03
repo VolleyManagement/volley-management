@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
+using FluentAssertions.Equivalency;
 using FluentAssertions.Execution;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
@@ -17,10 +19,9 @@ namespace VolleyM.Domain.UnitTests.Framework
 			{
 				actualResult.IsLeft.Should().BeTrue("error is expected");
 
-				object actual = GetTransformedActual(actualResult);
+				object actual = GetActual(actualResult);
 
-				var expectation = new { Value = default(T), Error = expected };
-				PerformAssertion<T>(because, becauseArgs, actual, expectation);
+				PerformAssertion<T, Error>(actual, expected, because, becauseArgs);
 			}
 		}
 
@@ -34,10 +35,9 @@ namespace VolleyM.Domain.UnitTests.Framework
 			{
 				actualResult.IsLeft.Should().BeTrue("error is expected");
 
-				object actual = GetTransformedActual(actualResult);
+				object actual = GetActual(actualResult);
 
-				var expectation = new { Value = default(T), Error = new { Type = expectedType } };
-				PerformAssertion<T>(because, becauseArgs, actual, expectation);
+				PerformAssertion<T, object>(actual, new { Type = expectedType }, because, becauseArgs);
 			}
 		}
 
@@ -47,27 +47,61 @@ namespace VolleyM.Domain.UnitTests.Framework
 			string because = "",
 			params object[] becauseArgs)
 		{
+			ShouldBeEquivalent(
+				actualResult,
+				expected,
+				opts => opts,
+				because,
+				becauseArgs);
+		}
+
+		public static void ShouldBeEquivalent<TActual, TExpectation>(
+			this Either<Error, TActual> actualResult,
+			TExpectation expected,
+			Func<EquivalencyAssertionOptions<TExpectation>, EquivalencyAssertionOptions<TExpectation>> config,
+			string because = "",
+			params object[] becauseArgs)
+		{
 			using (new AssertionScope())
 			{
 				actualResult.IsRight.Should().BeTrue("successful result is expected");
 
-				object actual = GetTransformedActual(actualResult);
-
-				var expectation = new { Value = expected, Error = (Error)null };
-				PerformAssertion<T>(because, becauseArgs, actual, expectation);
+				object actual = GetActual(actualResult);
+				PerformAssertion<TActual, TExpectation>(actual, expected, config, because, becauseArgs);
 			}
 		}
 
-		private static void PerformAssertion<T>(string because, object[] becauseArgs, object actual, object expectation)
+		private static void PerformAssertion<TActual, TExpectation>(object actual, TExpectation expectation, string because = "", params object[] becauseArgs)
 		{
-			actual.Should().BeEquivalentTo(expectation, because, becauseArgs);
+			PerformAssertion<TActual, TExpectation>(actual, expectation, opts => opts, because, becauseArgs);
 		}
 
-		private static object GetTransformedActual<T>(Either<Error, T> actualResult)
+		private static void PerformAssertion<TActual, TExpectation>(
+			object actual,
+			TExpectation expectation,
+			Func<EquivalencyAssertionOptions<TExpectation>, EquivalencyAssertionOptions<TExpectation>> config,
+			string because = "",
+			params object[] becauseArgs)
 		{
-			var either = actualResult.ToArr()[0];
+			switch (actual)
+			{
+				case TActual value:
+					value.Should().BeEquivalentTo(expectation, config, because, becauseArgs);
+					break;
+				case Error error:
+					error.Should().BeEquivalentTo(expectation, because, becauseArgs);
+					break;
+			}
+		}
 
-			var actual = new {Value = either.Right, Error = either.Left};
+		private static object GetActual<T>(Either<Error, T> actualResult)
+		{
+			var actual = actualResult.Case switch
+			{
+				LeftCase<Error, T>(var error) => error,
+				RightCase<Error, T>(var result) => (object)result,
+				_ => throw new InvalidOperationException()
+			};
 			return actual;
 		}
 	}

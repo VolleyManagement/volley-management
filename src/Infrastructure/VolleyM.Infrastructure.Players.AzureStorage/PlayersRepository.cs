@@ -66,12 +66,39 @@ namespace VolleyM.Infrastructure.Players.AzureStorage
 				}, "Create Player");
 		}
 
+		public EitherAsync<Error, Player> Update(Player player, Version lastKnownEntityVersion)
+		{
+			return PerformStorageOperation(_options.PlayersTable,
+				tableRef =>
+				{
+					var playerEntity = new PlayerEntity(player);
+
+					playerEntity.ETag = lastKnownEntityVersion.ToString();
+
+					var mergeOperation = TableOperation.Merge(playerEntity);
+
+					var mergeResult = (EitherAsync<Error, TableResult>)tableRef.ExecuteAsync(mergeOperation);
+
+					return mergeResult.Match(
+						tableResult => tableResult.Result switch
+						{
+							PlayerEntity updated => (Either<Error, Player>)_playerFactory.Create(
+								_mapper.Map<PlayerEntity, PlayerFactoryDto>(updated)),
+							_ => Error.InternalError(
+								$"Azure Storage: Failed to create player with {tableResult.HttpStatusCode} error.")
+						},
+						e => e
+					).ToAsync();
+				}, "Update Player");
+		}
+
 		public EitherAsync<Error, Unit> Delete(TenantId tenant, PlayerId id)
 		{
 			return PerformStorageOperation<Unit>(_options.PlayersTable,
 				tableRef =>
 				{
 					var playerEntity = new PlayerEntity(tenant, id);
+
 					playerEntity.ETag = "*";
 
 					var deleteOperation = TableOperation.Delete(playerEntity);

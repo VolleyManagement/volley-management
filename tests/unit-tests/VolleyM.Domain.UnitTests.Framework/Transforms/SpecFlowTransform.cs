@@ -57,7 +57,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 				var transform = _transformFactory.GetTransform(propType);
 
-				var value = transform.GetValue(rawValue);
+				var value = transform.GetValue(instance, rawValue);
 
 				if (value != null)
 				{

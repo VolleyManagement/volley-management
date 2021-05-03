@@ -1,5 +1,5 @@
 {
-	"TestTarget": "AzureCloud",
+	"TestTarget": "Unit",
 	"TestLogName": "pl-test-run.log",
 	"ApplicationTrust": {
 		"Auth0ClientId": "someIdString"

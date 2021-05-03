@@ -15,14 +15,14 @@ namespace VolleyM.Domain.UnitTests.Framework
 		private readonly Container _container;
 		private readonly SpecFlowTransform _transform;
 
-		protected EventAssertionsSteps(Container container, SpecFlowTransform transform)
+		protected EventAssertionsSteps(Container container)
 		{
 			_container = container;
-			_transform = transform;
+			_transform = container.GetInstance<SpecFlowTransform>();
 		}
 
 		[Then(@"(.*) event is produced")]
-		public void ThenPlayerCreatedEventIsProduced(string eventName, Table table)
+		public void ThenEventIsProduced(string eventName, Table table)
 		{
 			var evt = GetReceivedEvent(eventName);
 
@@ -34,7 +34,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		}
 
 		[Then(@"(.*) event is (Public|Internal)")]
-		public void ThenPlayerCreatedEventHasProperScope(string eventName, string eventScope)
+		public void ThenEventHasProperScope(string eventName, string eventScope)
 		{
 			var evt = GetReceivedEvent(eventName);
 
@@ -51,7 +51,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		}
 
 		[Then(@"(.*) event is not produced")]
-		public void ThenPlayerCreatedEventIsNotProduced(string eventName)
+		public void ThenEventIsNotProduced(string eventName)
 		{
 			var evt = GetReceivedEvent(eventName);
 

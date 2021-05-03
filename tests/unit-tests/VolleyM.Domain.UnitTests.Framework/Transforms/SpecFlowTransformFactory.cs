@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VolleyM.Domain.UnitTests.Framework
 {
 	internal class SpecFlowTransformFactory : ISpecFlowTransformFactory
 	{
-		private readonly Dictionary<Type, ISpecFlowTransform> _registry = new Dictionary<Type, ISpecFlowTransform>();
+		private readonly Dictionary<Type, ISpecFlowTransform> _registry;
 
 		private readonly ISpecFlowTransform _empty = new NoOpSpecFlowTransform();
+
+		public SpecFlowTransformFactory(IEnumerable<ISpecFlowTransform> transforms)
+		{
+			_registry = transforms.ToDictionary(t => t.TargetType, t => t);
+		}
 
 		public ISpecFlowTransform GetTransform(Type targetType)
 		{
@@ -21,7 +27,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		public void RegisterTransform(ISpecFlowTransform transform)
 		{
-			_registry[transform.TargetType] = transform;
+			// do nothing
 		}
 	}
 }

@@ -25,5 +25,7 @@ namespace VolleyM.Domain.UnitTests.Framework
 		public abstract Task ScenarioSetup();
 
 		public abstract Task ScenarioTearDown();
+
+		public abstract EntityId GetEntityId(object instance);
 	}
 }

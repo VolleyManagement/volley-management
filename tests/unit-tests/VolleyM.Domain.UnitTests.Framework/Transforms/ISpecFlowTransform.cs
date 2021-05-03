@@ -6,6 +6,6 @@ namespace VolleyM.Domain.UnitTests.Framework
 	{
 		Type TargetType { get; }
 
-		object GetValue(string rawValue);
+		object GetValue(object instance, string rawValue);
 	}
 }

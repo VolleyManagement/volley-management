@@ -90,7 +90,7 @@ namespace VolleyM.Domain.UnitTests.Framework.Transforms.Common
 				var indexStr = rawValue[VERSION.Length..];
 				if (byte.TryParse(indexStr, out var index))
 				{
-					if (changeLog.Count >= index)
+					if (changeLog.Count > index)
 					{
 						// there is always 'initial' version
 						return changeLog[index];

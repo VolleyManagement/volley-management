@@ -6,19 +6,24 @@ using NSubstitute;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
+using VolleyM.Domain.UnitTests.Framework.Transforms.Common;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
 	public class UnitPlayersTestFixture : PlayersTestFixtureBase, IPlayersTestFixture
 	{
+		private Container _container;
+
 		private IQuery<TenantId, List<PlayerDto>> _queryMock;
 		private IPlayersRepository _repoMock;
+		private NonMockableVersionMap _versionMap;
 
 		private Player _actualPlayer;
 
 		public override void RegisterScenarioDependencies(Container container)
 		{
 			base.RegisterScenarioDependencies(container);
+			_container = container;
 
 			_queryMock = Substitute.For<IQuery<TenantId, List<PlayerDto>>>();
 			container.Register(() => _queryMock, Lifestyle.Scoped);
@@ -29,7 +34,18 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 				.AndDoes(ci => { _actualPlayer = ci.Arg<Player>(); });
 
 			_repoMock.Update(Arg.Any<Player>(), Arg.Any<Version>())
-				.Returns(ci => ci.Arg<Player>())
+				.Returns(ci =>
+				{
+					var original= ci.Arg<Player>();
+					var updatedVersion = new Version($"updated-{original.Version}");
+					
+					_versionMap.RecordVersionChange(this.GetEntityId(original), updatedVersion);
+
+					var updated = new Player(original.Tenant, updatedVersion, original.Id, original.FirstName,
+						original.LastName);
+
+					return updated;
+				})
 				.AndDoes(ci =>
 				{
 					if (_actualPlayer == null) return;
@@ -41,6 +57,7 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 
 		public override Task ScenarioSetup()
 		{
+			_versionMap = _container.GetInstance<NonMockableVersionMap>();
 			return Task.CompletedTask;
 		}
 

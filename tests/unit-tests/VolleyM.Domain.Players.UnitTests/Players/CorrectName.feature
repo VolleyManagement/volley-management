@@ -16,7 +16,7 @@ Scenario: Name corrected
 		| FirstName | LastName |
 		| Jane      | Doe      |
 
-@unit @api:512
+@unit @api:512 @azurecloud
 Scenario: PlayerNameCorrected event
 	Given player exists
 		| Id                  | Version  | FirstName | LastName |

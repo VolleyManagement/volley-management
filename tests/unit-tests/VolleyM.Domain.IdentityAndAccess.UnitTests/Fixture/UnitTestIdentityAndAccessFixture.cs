@@ -6,7 +6,7 @@ using VolleyM.Domain.Contracts;
 
 namespace VolleyM.Domain.IdentityAndAccess.UnitTests.Fixture
 {
-    internal class UnitTestIdentityAndAccessFixture : IIdentityAndAccessFixture
+    internal class UnitTestIdentityAndAccessFixture : IdentityAndAccessFixtureBase, IIdentityAndAccessFixture
     {
         private IUserRepository _repositoryMock;
         private User _actualUser;

@@ -21,5 +21,10 @@ namespace VolleyM.Domain.UnitTests.Framework
             //do nothing
             return Task.CompletedTask;
         }
+
+        public EntityId GetEntityId(object instance)
+        {
+	        return null;
+        }
     }
 }

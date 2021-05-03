@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LanguageExt.UnsafeValueAccess;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.PlayerAggregate;
 using VolleyM.Domain.UnitTests.Framework;
+using VolleyM.Domain.UnitTests.Framework.Transforms.Common;
 
 namespace VolleyM.Domain.Players.UnitTests.Fixture
 {
@@ -11,9 +13,12 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 	{
 		private List<(TenantId Tenant, PlayerId Id)> _playersToTeardown;
 
+		private NonMockableVersionMap _versionMap;
+
 		public override Task ScenarioSetup()
 		{
 			_playersToTeardown = new List<(TenantId Tenant, PlayerId Id)>();
+			_versionMap = _container.GetInstance<NonMockableVersionMap>();
 			return Task.CompletedTask;
 		}
 
@@ -22,12 +27,14 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			await CleanUpPlayers();
 		}
 
-		public async Task MockPlayerExists(TestPlayerDto player)
+		public async Task<Player> MockPlayerExists(TestPlayerDto player)
 		{
 			var repo = _container.GetInstance<IPlayersRepository>();
-			await EnsureSuccessfulCreation(repo, player);
+			var result = await EnsureSuccessfulCreation(repo, player);
 
-			_playersToTeardown.Add((CurrentTenant, player.PlayerId));
+			_playersToTeardown.Add((CurrentTenant, player.Id));
+
+			return result;
 		}
 
 		public async Task MockSeveralPlayersExist(TenantId tenant, List<TestPlayerDto> testData)
@@ -71,11 +78,18 @@ namespace VolleyM.Domain.Players.UnitTests.Fixture
 			await Task.WhenAll(deleteTasks.ToArray());
 		}
 
-		private async Task EnsureSuccessfulCreation(IPlayersRepository repo, TestPlayerDto player)
+		private async Task<Player> EnsureSuccessfulCreation(IPlayersRepository repo, TestPlayerDto player)
 		{
-			var playerDomain = new Player(CurrentTenant, Version.Initial, player.PlayerId, player.FirstName, player.LastName);
-			var createResult = await repo.Add(playerDomain).ToEither();
+			var playerDomain = new Player(CurrentTenant, Version.Initial, player.Id, player.FirstName, player.LastName);
+			var createResult = await repo.Add(playerDomain)
+				.Do(created =>
+				{
+					_versionMap.AssociateTestVersions(GetEntityId(player), created.Version, player.Version);
+				})
+				.ToEither();
 			createResult.IsRight.Should().BeTrue("no error in player creation should be detected");
+
+			return createResult.ValueUnsafe();
 		}
 	}
 }

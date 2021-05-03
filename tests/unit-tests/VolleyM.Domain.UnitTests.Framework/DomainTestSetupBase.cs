@@ -104,17 +104,22 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		private void RegisterSpecFlowTransforms()
 		{
-			var transformFactory = new SpecFlowTransformFactory();
+			Container.Register<ISpecFlowTransformFactory, SpecFlowTransformFactory>(Lifestyle.Scoped);
+			Container.Register<SpecFlowTransform>(Lifestyle.Scoped);
+			var serviceTypes = new List<Type>
+			{
+				typeof(VersionTransform),
+				typeof(TenantIdTransform)
+			};
 
-			var transforms = GetAssemblyTransforms();
-			transforms.Add(new TenantIdTransform(CurrentTenantProvider));
-			transforms.Add(new VersionTransform());
+			serviceTypes.AddRange(GetAssemblyTransformTypes());
 
-			transforms.ForEach(t => transformFactory.RegisterTransform(t));
+			Container.Collection.Register<ISpecFlowTransform>(serviceTypes);
 
-			var transform = new SpecFlowTransform(transformFactory);
+			// 2. Make transforms aware of the context
 
-			_objectContainer.RegisterInstanceAs(transform, typeof(SpecFlowTransform));
+			// Needed for Version Transform
+			Container.Register<NonMockableVersionMap>(Lifestyle.Scoped);
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_BASE_ORDER)]
@@ -174,6 +179,15 @@ namespace VolleyM.Domain.UnitTests.Framework
 			return new List<ISpecFlowTransform>();
 		}
 
+		/// <summary>
+		/// Provides list of transformations used in the Feature file bindings for registering in the DI
+		/// </summary>
+		/// <returns></returns>
+		protected virtual List<Type> GetAssemblyTransformTypes()
+		{
+			return new List<Type>();
+		}
+
 		private TenantId CurrentTenantProvider()
 		{
 			return Container.GetInstance<ICurrentUserProvider>().Tenant;
@@ -230,6 +244,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 			{
 				_objectContainer.RegisterInstanceAs(result, fixtureType);
 			}
+
+			Container.Register(() => result);
 
 			return result;
 		}

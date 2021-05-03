@@ -44,6 +44,7 @@ namespace VolleyM.Infrastructure.AzureStorage
 			return e switch
 			{
 				StorageException { Message: "Conflict" } => Error.Conflict(),
+				StorageException { Message: "Precondition Failed" } => Error.ConcurrencyCheckFailed(),
 				StorageException stEx => Error.InternalError($"Azure Storage Error: {stEx.Message}"),
 				_ => Error.InternalError($"Unknown Error: {e.Message}")
 			};

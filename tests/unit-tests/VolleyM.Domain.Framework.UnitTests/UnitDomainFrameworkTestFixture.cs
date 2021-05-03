@@ -11,6 +11,7 @@ using VolleyM.Domain.Framework.HandlerMetadata;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.Handlers;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Framework.UnitTests
 {
@@ -54,6 +55,11 @@ namespace VolleyM.Domain.Framework.UnitTests
 		public Task ScenarioTearDown()
 		{
 			return Task.CompletedTask;
+		}
+
+		public EntityId GetEntityId(object instance)
+		{
+			return null;
 		}
 
 		public void SetCurrentUser(User currentUser)

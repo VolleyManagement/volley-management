@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LanguageExt;
 using VolleyM.Domain.Contracts;
+using VolleyM.Domain.UnitTests.Framework;
 
 namespace VolleyM.Domain.Contributors.UnitTests
 {
@@ -26,6 +27,11 @@ namespace VolleyM.Domain.Contributors.UnitTests
         public Task ScenarioTearDown()
         {
             return Task.CompletedTask;
+        }
+
+        public EntityId GetEntityId(object instance)
+        {
+	        return null;
         }
 
         public void MockSeveralContributorsExist(List<ContributorDto> testData) =>

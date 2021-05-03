@@ -15,7 +15,7 @@ namespace VolleyM.Domain.Players.UnitTests
 	public class CreatePlayerSteps
 	{
 		private readonly IPlayersTestFixture _testFixture;
-		private readonly SpecFlowTransform _transform;
+		private SpecFlowTransform _transform;
 		private readonly IAuthFixture _authFixture;
 		private readonly Container _container;
 
@@ -24,17 +24,17 @@ namespace VolleyM.Domain.Players.UnitTests
 
 		private Either<Error, Player> _actualResult;
 
-		public CreatePlayerSteps(Container container, IAuthFixture authFixture, IPlayersTestFixture testFixture, SpecFlowTransform transform)
+		public CreatePlayerSteps(Container container, IAuthFixture authFixture, IPlayersTestFixture testFixture)
 		{
 			_container = container;
 			_authFixture = authFixture;
 			_testFixture = testFixture;
-			_transform = transform;
 		}
 
 		[BeforeScenario(Order = Constants.BEFORE_SCENARIO_STEPS_ORDER)]
 		public void ScenarioSetup()
 		{
+			_transform = _container.GetInstance<SpecFlowTransform>();
 			_authFixture.SetTestUserPermission(PlayersConstants.Name, nameof(Create));
 		}
 
@@ -85,8 +85,7 @@ namespace VolleyM.Domain.Players.UnitTests
 		{
 			var player = _transform.GetInstance<Create.Request>(table);
 
-			player.FirstName = SetNameField(player.FirstName);
-			player.LastName = SetNameField(player.LastName);
+			_testFixture.SetupPlayerName(player);
 
 			return player;
 		}

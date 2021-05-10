@@ -1,0 +1,59 @@
+ContextMap VolleyManagement {
+	contains TenantManagementUI
+	contains TenantManagementContext
+	contains IdentityAndAccessContext
+	contains PlayersContext
+	contains TeamsContext
+
+	TeamsContext [D, CF]<-[U, OHS] TenantManagementContext
+
+	PlayersContext [D, CF]<-[U, OHS] TenantManagementContext
+
+	TeamsContext [D, ACL]<-[U, OHS] PlayersContext {
+		implementationTechnology "Messaging"
+	}
+}
+
+BoundedContext TenantManagementUI implements TenantManagement {
+	domainVisionStatement "Provides UI for creating and reconfiguring tenants"
+	type APPLICATION
+}
+
+BoundedContext TenantManagementContext implements TenantManagement{
+	domainVisionStatement "Implements features related to creating and managing tenants"
+	type FEATURE
+}
+
+BoundedContext IdentityAndAccessContext{
+}
+
+BoundedContext PlayersContext implements Players{
+	domainVisionStatement "Implements features required to manage players in the system"
+	type FEATURE
+}
+
+BoundedContext TeamsContext implements Teams {
+	domainVisionStatement "Implements Team management"
+	type FEATURE
+}
+
+Domain VolleyTournamentManagement{
+	domainVisionStatement "Provides capabilities for organizing, scheduling and running volleyball tournaments"
+
+	Subdomain TenantManagement{
+		domainVisionStatement "Provides capabilities needed to manage multi-tenant application"
+		type GENERIC_SUBDOMAIN
+	}
+
+	Subdomain Players {
+		domainVisionStatement "Responsible for organizing players and their attributes"
+		type SUPPORTING_DOMAIN
+	}
+
+	Subdomain Teams {
+		domainVisionStatement "Managing teams and their roster"
+		type SUPPORTING_DOMAIN
+	}
+
+}
+

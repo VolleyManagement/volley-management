@@ -172,3 +172,6 @@ tests/api-tests/target/
 
 #Migrations output
 migrations/azure-storage-migrations/
+
+#Context Mapper output
+src-gen/

@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0.5-alpine3.13 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0.202-alpine3.13 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0.203-alpine3.13 AS build
 # Need to set this var for the build to avoid Specflow issue
 # https://github.com/SpecFlowOSS/SpecFlow/issues/1912
 ENV MSBUILDSINGLELOADCONTEXT=1

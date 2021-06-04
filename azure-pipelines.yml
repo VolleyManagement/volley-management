@@ -31,6 +31,8 @@ stages:
         displayName: 'Source Code'
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
+            parameters:
+              version: 5.0.300
           # Need to set this var for the build to avoid Specflow issue https://github.com/SpecFlowOSS/SpecFlow/issues/1912
           - script: echo "##vso[task.setvariable variable=MSBUILDSINGLELOADCONTEXT;]1"
           - task: DotNetCoreCLI@2
@@ -77,6 +79,8 @@ stages:
         displayName: Integration Tests
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
+            parameters:
+              version: 5.0.300
           # Need to set this var for the build to avoid Specflow issue https://github.com/SpecFlowOSS/SpecFlow/issues/1912
           - script: echo "##vso[task.setvariable variable=MSBUILDSINGLELOADCONTEXT;]1"
           - script: |
@@ -99,6 +103,8 @@ stages:
           - download: current
             artifact: azureStorageMigration
           - template: build/azure-pipeline/setup-dotnet-cli.yml
+            parameters:
+              version: 5.0.300
           - pwsh: |
               cd $(Pipeline.Workspace)/azureStorageMigration
               dotnet VolleyM.Tools.MigrationTool.dll 
@@ -152,6 +158,8 @@ stages:
           - download: current
             artifact: azureStorageMigration
           - template: build/azure-pipeline/setup-dotnet-cli.yml
+            parameters:
+              version: 5.0.300
           - pwsh: |
               cd $(Pipeline.Workspace)/azureStorageMigration
               dotnet VolleyM.Tools.MigrationTool.dll 

@@ -14,7 +14,7 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
     <PackageReference Include="SimpleInjector" Version="5.3.1" />
-    <PackageReference Include="SpecFlow" Version="3.8.14" />
+    <PackageReference Include="SpecFlow" Version="3.9.22" />
   </ItemGroup>
 
   <ItemGroup>

@@ -141,14 +141,14 @@ namespace VolleyM.Domain.UnitTests.Framework
 		}
 
 		[AfterScenario(Order = Constants.AFTER_SCENARIO_TEST_FRAMEWORK_ORDER)]
-		public void AfterEachScenario()
+		public async Task AfterEachScenario()
 		{
-			BaseTestFixture.ScenarioTearDown();
+			await BaseTestFixture.ScenarioTearDown();
 
 			Log.Warning("Scope is about to be disposed. Feature={FeatureTitle}, {ThreadId}; ", _featureContext.FeatureInfo.Title, Thread.CurrentThread.ManagedThreadId);
-			_scope.Dispose();
+			await _scope.DisposeScopeAsync();
 			_scope = null;
-			Container.Dispose();
+			await Container.DisposeContainerAsync();
 			Container = null;
 		}
 

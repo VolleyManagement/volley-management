@@ -77,6 +77,8 @@ stages:
     jobs:
       - job: integration_test
         displayName: Integration Tests
+        pool:
+          vmImage: 'ubuntu-latest'
         steps:
           - template: build/azure-pipeline/setup-dotnet-cli.yml
             parameters:
@@ -99,6 +101,8 @@ stages:
             condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging
       - job: azure_storage_migrations
         displayName: Run Azure Storage Migrations
+        pool:
+          vmImage: 'ubuntu-latest'
         steps:
           - download: current
             artifact: azureStorageMigration
@@ -131,6 +135,8 @@ stages:
                 -PLAYERSCONTEXTTABLESTORAGEOPTIONS__CONNECTIONSTRING $(vm_azstorage_connection_string_staging)
       - job: run_api_tests
         displayName: API Tests
+        pool:
+          vmImage: 'ubuntu-latest'
         dependsOn:
         - deploy_app_service_int
         steps:
@@ -154,6 +160,8 @@ stages:
     jobs:
       - job: azure_storage_migrations
         displayName: Run Azure Storage Migrations
+        pool:
+          vmImage: 'ubuntu-latest'
         steps:
           - download: current
             artifact: azureStorageMigration
@@ -170,6 +178,8 @@ stages:
               VOLLEYM_MIGRATION_PLAYERSCONTEXTTABLESTORAGEOPTIONS__CONNECTIONSTRING: $(vm_azstorage_connection_string_production)
       - job: deploy_app_service_prod
         displayName: Deploy App Service
+        pool:
+          vmImage: 'ubuntu-latest'
         dependsOn:
           azure_storage_migrations
         steps:

@@ -3,7 +3,7 @@
 	As a captain
 	I want to create player
 
-@ab:1022 @unit @azurecloud
+@ab:1022 @unit
 Scenario: Create player
 	Given I have CreateRequest
 		| FirstName | LastName |

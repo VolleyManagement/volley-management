@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Google.Protobuf.WellKnownTypes;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;

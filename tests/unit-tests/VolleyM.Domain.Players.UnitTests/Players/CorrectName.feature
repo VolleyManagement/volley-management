@@ -16,7 +16,7 @@ Scenario: Name corrected
 		| FirstName | LastName |
 		| Jane      | Doe      |
 
-@unit @api:512 @azurecloud
+@unit @api:512
 Scenario: PlayerNameCorrected event
 	Given player exists
 		| Id                  | Version  | FirstName | LastName |
@@ -44,7 +44,7 @@ Scenario: Validation Cases
 	And PlayerNameCorrected event is not produced
 
 	# make sure we have at least one test for e2e flow
-	@azurecloud
+	@unit
 	Examples:
 		| FirstName          | LastName |
 		| <60+ symbols name> | Smith    |
@@ -60,7 +60,7 @@ Scenario: Validation Cases
 		| John               | <null>             |
 		| John               |                    |
 
-@azurecloud @api:512
+@azurecloud @api:512 @ignore
 Scenario: Correct Name fails when provided version does not match stored
 	Given player exists
 		| Id                | Version  | FirstName | LastName |

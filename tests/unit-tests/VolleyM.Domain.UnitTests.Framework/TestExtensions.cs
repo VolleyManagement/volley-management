@@ -98,8 +98,8 @@ namespace VolleyM.Domain.UnitTests.Framework
 		{
 			var actual = actualResult.Case switch
 			{
-				Error error => error,
-				T result => (object)result,
+				LeftCase<Error, T>(var error) => error,
+				RightCase<Error, T>(var result) => (object)result,
 				_ => throw new InvalidOperationException()
 			};
 			return actual;

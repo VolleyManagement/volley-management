@@ -2,7 +2,7 @@
 	In order to correct mistakes in the name or react to name changes
 	I want VolleyM system to alow changing players name
 
-@unit @api:512
+@unit @azurecloud @api:512
 Scenario: Name corrected
 	Given player exists
 		| Id                     | Version  | FirstName | LastName |
@@ -16,7 +16,7 @@ Scenario: Name corrected
 		| FirstName | LastName |
 		| Jane      | Doe      |
 
-@unit @api:512
+@unit @azurecloud @api:512
 Scenario: PlayerNameCorrected event
 	Given player exists
 		| Id                  | Version  | FirstName | LastName |
@@ -44,7 +44,7 @@ Scenario: Validation Cases
 	And PlayerNameCorrected event is not produced
 
 	# make sure we have at least one test for e2e flow
-	@unit
+	@azurecloud
 	Examples:
 		| FirstName          | LastName |
 		| <60+ symbols name> | Smith    |
@@ -60,7 +60,7 @@ Scenario: Validation Cases
 		| John               | <null>             |
 		| John               |                    |
 
-@azurecloud @api:512 @ignore
+@azurecloud @api:512
 Scenario: Correct Name fails when provided version does not match stored
 	Given player exists
 		| Id                | Version  | FirstName | LastName |

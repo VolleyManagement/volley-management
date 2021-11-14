@@ -2,7 +2,7 @@
 	In order to correct mistakes in the name or react to name changes
 	I want VolleyM system to alow changing players name
 
-@azurecloud @unit @api:512
+@unit @azurecloud @api:512
 Scenario: Name corrected
 	Given player exists
 		| Id                     | Version  | FirstName | LastName |
@@ -16,7 +16,7 @@ Scenario: Name corrected
 		| FirstName | LastName |
 		| Jane      | Doe      |
 
-@unit @api:512 @azurecloud
+@unit @azurecloud @api:512
 Scenario: PlayerNameCorrected event
 	Given player exists
 		| Id                  | Version  | FirstName | LastName |

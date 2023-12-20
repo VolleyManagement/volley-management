@@ -1,7 +1,4 @@
-﻿using LanguageExt.ClassInstances;
-using VolleyM.Domain.Contracts.EventBroker;
-
-namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
+﻿namespace VolleyM.Infrastructure.EventBroker.UnitTests.Fixture.ContextA
 {
     public class EventJ : EventBase
     {

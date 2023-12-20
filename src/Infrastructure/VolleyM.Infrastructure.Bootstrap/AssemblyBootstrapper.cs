@@ -1,5 +1,4 @@
-﻿using AutoMapper.Configuration;
-using Serilog;
+﻿using Serilog;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using AutoMapper;
 
 namespace VolleyM.Infrastructure.Bootstrap
 {

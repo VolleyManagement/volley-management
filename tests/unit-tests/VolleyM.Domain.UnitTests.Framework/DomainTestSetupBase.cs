@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.Configuration;
 using BoDi;
 using NSubstitute;
 using Serilog;

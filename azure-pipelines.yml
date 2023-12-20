@@ -128,7 +128,7 @@ stages:
           - task: AzureWebAppContainer@1
             displayName: "Deploy App Service"
             inputs:
-              azureSubscription: "Azure VM Integration"
+              azureSubscription: staging-v3-arm
               appName: "staging-volley-mgmt"
               containers: "$(docker_repository_name):$(image_tag)"
               appSettings: >-
@@ -188,7 +188,7 @@ stages:
           - task: AzureWebAppContainer@1
             displayName: "Deploy App Service"
             inputs:
-              azureSubscription: "Azure VM Prod"
+              azureSubscription: prod-v3-arm
               appName: "volley-prod"
               containers: "$(docker_repository_name):$(image_tag)"
               appSettings: >-

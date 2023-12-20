@@ -9,6 +9,9 @@ namespace VolleyM.Domain.Framework
 		{
 			CreateMap<TenantId, string>()
 				.ConvertUsing(t => t.ToString());
+			
+			CreateMap<string, TenantId>()
+				.ConvertUsing(t => new TenantId(t));
 		}
 	}
 }

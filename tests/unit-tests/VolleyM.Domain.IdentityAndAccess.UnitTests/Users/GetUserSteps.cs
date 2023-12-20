@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using FluentAssertions;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;

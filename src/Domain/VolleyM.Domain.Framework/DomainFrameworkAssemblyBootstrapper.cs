@@ -1,6 +1,6 @@
-﻿using AutoMapper.Configuration;
-using SimpleInjector;
+﻿using SimpleInjector;
 using System.Composition;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Contracts.Crosscutting;

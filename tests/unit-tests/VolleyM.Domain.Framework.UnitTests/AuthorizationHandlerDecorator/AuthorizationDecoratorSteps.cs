@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
 using SimpleInjector;

@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using FluentAssertions;
 using NetArchTest.Rules;
 using NetArchTest.Rules.Policies;
-using Xunit;
 
 namespace VolleyM.Architecture.UnitTests
 {

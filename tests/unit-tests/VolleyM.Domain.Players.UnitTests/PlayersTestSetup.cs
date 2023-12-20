@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Players.UnitTests.Fixture;
 using VolleyM.Domain.Players.UnitTests.Transforms;
 using VolleyM.Domain.UnitTests.Framework;

@@ -1,5 +1,5 @@
 ﻿using System.Composition;
-using AutoMapper.Configuration;
+using AutoMapper;
 using SimpleInjector;
 using VolleyM.Domain.Contracts.EventBroker;
 using VolleyM.Domain.Framework.EventBroker;

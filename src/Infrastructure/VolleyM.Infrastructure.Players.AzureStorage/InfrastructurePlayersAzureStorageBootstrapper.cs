@@ -1,6 +1,6 @@
 ﻿using System.Composition;
 using System.Reflection;
-using AutoMapper.Configuration;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;

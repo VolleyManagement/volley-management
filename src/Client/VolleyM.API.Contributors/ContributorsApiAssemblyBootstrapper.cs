@@ -1,6 +1,6 @@
-﻿using AutoMapper.Configuration;
-using SimpleInjector;
+﻿using SimpleInjector;
 using System.Composition;
+using AutoMapper;
 using VolleyM.Infrastructure.Bootstrap;
 
 namespace VolleyM.API.Contributors

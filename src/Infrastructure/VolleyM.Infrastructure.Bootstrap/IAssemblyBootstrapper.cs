@@ -1,4 +1,4 @@
-﻿using AutoMapper.Configuration;
+﻿using AutoMapper;
 using SimpleInjector;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 

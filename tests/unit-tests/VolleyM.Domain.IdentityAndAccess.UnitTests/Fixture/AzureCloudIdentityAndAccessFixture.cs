@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FluentAssertions;
 using SimpleInjector;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.UnitTests.Framework;

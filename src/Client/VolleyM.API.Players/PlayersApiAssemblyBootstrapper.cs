@@ -1,5 +1,5 @@
 ﻿using System.Composition;
-using AutoMapper.Configuration;
+using AutoMapper;
 using SimpleInjector;
 using VolleyM.Infrastructure.Bootstrap;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;

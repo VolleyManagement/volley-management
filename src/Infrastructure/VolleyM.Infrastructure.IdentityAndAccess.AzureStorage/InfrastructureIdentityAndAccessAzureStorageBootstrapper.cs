@@ -1,7 +1,7 @@
-﻿using AutoMapper.Configuration;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using SimpleInjector;
 using System.Composition;
+using AutoMapper;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.IdentityAndAccess;
 using VolleyM.Domain.IdentityAndAccess.RolesAggregate;

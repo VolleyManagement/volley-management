@@ -5,7 +5,6 @@ using Bogus;
 using LanguageExt;
 using SimpleInjector;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using VolleyM.Domain.Contracts;
 using VolleyM.Domain.Players.Handlers;
 using VolleyM.Domain.Players.UnitTests.Fixture;

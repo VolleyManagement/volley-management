@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using LanguageExt;
 using Microsoft.Azure.Cosmos.Table;
 using Serilog;

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Builder;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;

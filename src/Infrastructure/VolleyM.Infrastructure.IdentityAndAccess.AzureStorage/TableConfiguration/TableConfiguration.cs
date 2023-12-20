@@ -1,9 +1,4 @@
-﻿using System;
-using LanguageExt;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using VolleyM.Domain.Contracts;
+﻿using System.Collections.Generic;
 using VolleyM.Infrastructure.AzureStorage;
 
 namespace VolleyM.Infrastructure.IdentityAndAccess.AzureStorage.TableConfiguration

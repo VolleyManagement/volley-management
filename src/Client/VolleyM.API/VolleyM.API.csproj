@@ -25,7 +25,7 @@
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
     <PackageReference Include="SimpleInjector" Version="5.4.3" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="5.5.0" />
-    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="5.3.0" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="5.5.0" />
   </ItemGroup>
 
   <ItemGroup>

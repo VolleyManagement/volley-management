@@ -13,7 +13,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SimpleInjector" Version="5.4.3" />
+    <PackageReference Include="SimpleInjector" Version="5.4.4" />
     <PackageReference Include="SpecFlow" Version="3.9.74" />
   </ItemGroup>
 

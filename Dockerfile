@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0.101 AS build
 # Need to set this var for the build to avoid Specflow issue
 # https://github.com/SpecFlowOSS/SpecFlow/issues/1912
 ENV MSBUILDSINGLELOADCONTEXT=1

@@ -96,12 +96,19 @@ namespace VolleyM.Domain.UnitTests.Framework
 
 		private static object GetActual<T>(Either<Error, T> actualResult)
 		{
-			var actual = actualResult.Case switch
+			object actual;
+			switch (actualResult.Case)
 			{
-				LeftCase<Error, T>(var error) => error,
-				RightCase<Error, T>(var result) => (object)result,
-				_ => throw new InvalidOperationException()
-			};
+				case (Error error):
+					actual = error;
+					break;
+				case (T result):
+					actual = result;
+					break;
+				default:
+					throw new InvalidOperationException();
+			}
+
 			return actual;
 		}
 	}

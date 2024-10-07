@@ -51,6 +51,9 @@
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp />
   </PropertyGroup>
+	<PropertyGroup >
+    <NoWarn>NU1903</NoWarn>   
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FeatureToggle" Version="3.5.1" />
     <PackageReference Include="FeatureToggle.Core" Version="3.5.1" />

@@ -69,7 +69,7 @@
 
             foreach (var groupedTeams in teamsInTournamentByDivisions)
             {
-                var standings = CalculateStandingsForDivision(groupedTeams.Value, gameResults);
+                var standings = CalculateStandingsForDivision(tournament, groupedTeams.Value, gameResults);
 
                 var standingsDto = new StandingsDto
                 {
@@ -101,7 +101,7 @@
             {
                 var gameResultsForDivision = GetGamesResultsForDivision(gameResults, groupedTeams.Value);
 
-                var teamStandingsInDivision = CalculateStandingsForDivision(groupedTeams.Value, gameResultsForDivision)
+                var teamStandingsInDivision = CalculateStandingsForDivision(tournament, groupedTeams.Value, gameResultsForDivision)
                     .Select(MapToTeamStandingsDto())
                     .ToList();
 
@@ -137,7 +137,7 @@
 
         #region Private methods
 
-        private static List<StandingsEntry> CalculateStandingsForDivision(List<TeamTournamentDto> teams, IEnumerable<GameResultDto> gameResults)
+        private static List<StandingsEntry> CalculateStandingsForDivision(Tournament tournament, List<TeamTournamentDto> teams, IEnumerable<GameResultDto> gameResults)
         {
             var standings = CreateEntriesForTeams(teams);
 
@@ -152,6 +152,16 @@
 
                 CalculateSetsStatistics(gameResultsForDivision, standings);
                 CalculateBallsStatistics(gameResultsForDivision, standings);
+            }
+
+            // Starting 24/25 season we decided to calculate standings differently, but did not want to affect past tournaments
+            if (tournament.GamesStart > new DateTime(2024, 9, 1))
+            {
+                return standings.OrderByDescending(s => s.GamesWon)
+                .ThenByDescending(s => s.Points)
+                .ThenByDescending(s => s.SetsRatio)
+                .ThenByDescending(s => s.BallsRatio)
+                .ToList();
             }
             return standings.OrderByDescending(s => s.Points)
                 .ThenByDescending(s => s.GamesWon)

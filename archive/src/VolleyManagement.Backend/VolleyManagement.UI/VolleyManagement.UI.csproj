@@ -585,6 +585,9 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Areas\Mvc\Views\Tournaments\Archived.cshtml" />
+    <None Include="Properties\PublishProfiles\volley-mgmt - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\volley-mgmt - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\volley-mgmt - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\volley-mgmt-app - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
@@ -773,6 +776,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+	<PropertyGroup >
+    <NoWarn>NU1903</NoWarn>   
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />

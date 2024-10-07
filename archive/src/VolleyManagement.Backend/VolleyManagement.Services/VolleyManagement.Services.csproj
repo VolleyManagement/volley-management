@@ -51,6 +51,9 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp />
   </PropertyGroup>
+	<PropertyGroup >
+    <NoWarn>NU1903</NoWarn>   
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj" />
     <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj" />
